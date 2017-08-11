@@ -1,0 +1,23 @@
+{
+  "name": "vim-vixen",
+  "description": "Vim vixen",
+  "scripts": {
+    "start": "webpack -w --debug"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ueokande/vim-vixen.git"
+  },
+  "author": "Shin'ya Ueoka",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ueokande/vim-vixen/issues"
+  },
+  "homepage": "https://github.com/ueokande/vim-vixen",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-loader": "^7.1.1",
+    "babel-preset-es2015": "^6.24.1",
+    "webpack": "^3.5.3"
+  }
+}
