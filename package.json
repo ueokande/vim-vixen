@@ -1,0 +1,17 @@
+{
+  "name": "vim-vixen",
+  "description": "Vim vixen",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ueokande/vim-vixen.git"
+  },
+  "author": "Shin'ya Ueoka",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ueokande/vim-vixen/issues"
+  },
+  "homepage": "https://github.com/ueokande/vim-vixen"
+}
