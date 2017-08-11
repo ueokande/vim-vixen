@@ -3,7 +3,8 @@
   "description": "Vim vixen",
   "scripts": {
     "start": "webpack -w --debug",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "test": "true"
   },
   "repository": {
     "type": "git",
