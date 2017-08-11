@@ -2,7 +2,7 @@
   "name": "vim-vixen",
   "description": "Vim vixen",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack -w --debug"
   },
   "repository": {
     "type": "git",
