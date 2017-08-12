@@ -2,7 +2,9 @@
   "name": "vim-vixen",
   "description": "Vim vixen",
   "scripts": {
-    "start": "webpack -w --debug"
+    "start": "webpack -w --debug",
+    "lint": "eslint src",
+    "test": "true"
   },
   "repository": {
     "type": "git",
@@ -16,8 +18,10 @@
   "homepage": "https://github.com/ueokande/vim-vixen",
   "devDependencies": {
     "babel-cli": "^6.24.1",
+    "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.1",
     "babel-preset-es2015": "^6.24.1",
+    "eslint": "^4.4.1",
     "webpack": "^3.5.3"
   }
 }

@@ -1,4 +1,4 @@
-const initialize = (url) => {
+const initialize = () => {
   let p = document.createElement("p");
   p.textContent = "Hello Vim Vixen";
   p.style.position = 'fixed';
