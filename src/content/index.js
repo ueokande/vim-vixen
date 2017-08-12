@@ -1,9 +1,12 @@
 window.addEventListener("keypress", (e) => {
   browser.runtime.sendMessage({
-    which: e.which || e.keyCode,
-  }).then((msg) => {
-    console.log(`Message from the background script:  ${msg.response}`);
+    key: e.which || e.keyCode,
+    shift: e.shift,
+    alt: e.alt,
+    meta: e.meta,
+    ctrl: e.ctrl,
+  }).then(() => {
   }, (err) => {
-    console.log(`Error: ${err}`);
+    console.log(`Vim Vixen: ${err}`);
   });
 });
