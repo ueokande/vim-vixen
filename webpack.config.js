@@ -5,7 +5,8 @@ const dist = path.resolve(__dirname, 'build');
 
 module.exports = {
   entry: {
-    index: path.join(src, 'index.js')
+    index: path.join(src, 'content'),
+    background: path.join(src, 'background')
   },
 
   output: {
