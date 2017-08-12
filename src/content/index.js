@@ -1,3 +1,16 @@
+import * as scrolls from './scrolls';
+
+const invokeEvent = (type) => {
+  switch (type) {
+  case 'scroll.up':
+    scrolls.scrollUp(window);
+    break;
+  case 'scroll.down':
+    scrolls.scrollDown(window);
+    break;
+  }
+}
+
 window.addEventListener("keypress", (e) => {
   browser.runtime.sendMessage({
     key: e.which || e.keyCode,
@@ -5,7 +18,10 @@ window.addEventListener("keypress", (e) => {
     alt: e.alt,
     meta: e.meta,
     ctrl: e.ctrl,
-  }).then(() => {
+  }).then((response) => {
+    if (response) {
+      invokeEvent(response);
+    }
   }, (err) => {
     console.log(`Vim Vixen: ${err}`);
   });
