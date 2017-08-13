@@ -16,6 +16,10 @@ const invokeEvent = (action) => {
 }
 
 window.addEventListener("keydown", (e) => {
+  if (e.target instanceof HTMLInputElement) {
+    return;
+  }
+
   let request = {
     type: 'event.keydown',
     code: e.keyCode,
