@@ -11,9 +11,9 @@ const invokeEvent = (type) => {
   }
 }
 
-window.addEventListener("keypress", (e) => {
+window.addEventListener("keydown", (e) => {
   browser.runtime.sendMessage({
-    key: e.which || e.keyCode,
+    code: e.keyCode,
     shift: e.shift,
     alt: e.alt,
     meta: e.meta,

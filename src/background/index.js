@@ -1,16 +1,16 @@
 import * as tabs from './tabs';
 
 const KEY_MAP = {
-  'tabs.prev': 104,
-  'tabs.next': 108,
-  'scroll.up': 107,
-  'scroll.down': 106
+  'tabs.prev': KeyboardEvent.DOM_VK_H,
+  'tabs.next': KeyboardEvent.DOM_VK_L,
+  'scroll.up': KeyboardEvent.DOM_VK_K,
+  'scroll.down': KeyboardEvent.DOM_VK_J
 };
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   let response = null;
 
-  switch (request.key) {
+  switch (request.code) {
   case KEY_MAP['tabs.prev']:
     tabs.selectPrevTab(sender.tab.index);
     break;
