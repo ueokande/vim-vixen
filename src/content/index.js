@@ -1,28 +1,33 @@
 import * as scrolls from './scrolls';
 
-const invokeEvent = (type) => {
-  switch (type) {
+const invokeEvent = (action) => {
+  if (typeof action === 'undefined' || action === null) {
+    return;
+  }
+
+  switch (action[0]) {
   case 'scroll.up':
-    scrolls.scrollUp(window);
+    scrolls.scrollUp(window, action[1] || 1);
     break;
   case 'scroll.down':
-    scrolls.scrollDown(window);
+    scrolls.scrollDown(window, action[1] || 1);
     break;
   }
 }
 
 window.addEventListener("keydown", (e) => {
-  browser.runtime.sendMessage({
+  let request = {
+    type: 'event.keydown',
     code: e.keyCode,
     shift: e.shift,
     alt: e.alt,
     meta: e.meta,
     ctrl: e.ctrl,
-  }).then((response) => {
-    if (response) {
-      invokeEvent(response);
-    }
-  }, (err) => {
-    console.log(`Vim Vixen: ${err}`);
-  });
+  }
+
+  browser.runtime.sendMessage(request)
+    .then(invokeEvent,
+      (err) => {
+        console.log(`Vim Vixen: ${err}`);
+      });
 });

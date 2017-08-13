@@ -1,14 +1,14 @@
 const SCROLL_DELTA = 48;
 
-const scrollUp = (page) => {
+const scrollUp = (page, count) => {
   let x = page.scrollX;
-  var y = page.scrollY - SCROLL_DELTA;
+  var y = page.scrollY - SCROLL_DELTA * count;
   page.scrollTo(x, y);
 };
 
-const scrollDown = (page) => {
+const scrollDown = (page, count) => {
   let x = page.scrollX;
-  var y = page.scrollY + SCROLL_DELTA;
+  var y = page.scrollY + SCROLL_DELTA * count;
   page.scrollTo(x, y);
 };
 

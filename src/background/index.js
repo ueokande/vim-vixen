@@ -1,28 +1,46 @@
+import * as actions from '../shared/actions';
 import * as tabs from './tabs';
+import KeyQueue from './key-queue';
 
-const KEY_MAP = {
-  'tabs.prev': KeyboardEvent.DOM_VK_H,
-  'tabs.next': KeyboardEvent.DOM_VK_L,
-  'scroll.up': KeyboardEvent.DOM_VK_K,
-  'scroll.down': KeyboardEvent.DOM_VK_J
-};
+const queue = new KeyQueue();
 
-browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  let response = null;
+const keyDownHandle = (request) => {
+  return queue.push({
+    code: request.code,
+    shift: request.shift,
+    ctrl: request.ctrl,
+    alt: request.alt,
+    meta: request.meta
+  })
+}
 
-  switch (request.code) {
-  case KEY_MAP['tabs.prev']:
-    tabs.selectPrevTab(sender.tab.index);
+const doBackgroundAction = (sender, action) => {
+  switch(action[0]) {
+  case actions.TABS_PREV:
+    tabs.selectPrevTab(sender.tab.index, actions[1] || 1);
     break;
-  case KEY_MAP['tabs.next']:
-    tabs.selectNextTab(sender.tab.index);
-    break;
-  case KEY_MAP['scroll.up']:
-    response = 'scroll.up'
-    break;
-  case KEY_MAP['scroll.down']:
-    response = 'scroll.down'
+  case actions.TABS_NEXT:
+    tabs.selectNextTab(sender.tab.index, actions[1] || 1);
     break;
   }
-  sendResponse(response);
+}
+
+browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  let action = null;
+
+  switch (request.type) {
+  case 'event.keydown':
+    action = keyDownHandle(request);
+    break;
+  }
+
+  if (action == null) {
+    return;
+  }
+
+  if (actions.isBackgroundAction(action[0])) {
+    doBackgroundAction(sender, action);
+  } else if (actions.isContentAction(action[0])) {
+    sendResponse(action);
+  }
 });
