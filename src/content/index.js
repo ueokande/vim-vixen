@@ -1,5 +1,8 @@
 import * as scrolls from './scrolls';
+import FooterLine from './footer-line';
 import * as actions from '../shared/actions';
+
+var footer = null;
 
 const invokeEvent = (action) => {
   if (typeof action === 'undefined' || action === null) {
@@ -7,6 +10,11 @@ const invokeEvent = (action) => {
   }
 
   switch (action[0]) {
+  case actions.CMD_OPEN:
+    footer = new FooterLine(document);
+    footer.input.value = ':';
+    footer.focus();
+    break;
   case actions.SCROLL_UP:
     scrolls.scrollUp(window, action[1] || 1);
     break;

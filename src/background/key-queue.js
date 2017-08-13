@@ -2,6 +2,7 @@ import * as keys from './keys';
 import * as actions from '../shared/actions';
 
 const DEFAULT_KEYMAP = [
+  { keys: [{ code: KeyboardEvent.DOM_VK_SEMICOLON, shift: true }], action: [ actions.CMD_OPEN ]},
   { keys: [{ code: KeyboardEvent.DOM_VK_K }], action: [ actions.SCROLL_UP, 1 ]},
   { keys: [{ code: KeyboardEvent.DOM_VK_J }], action: [ actions.SCROLL_DOWN, 1 ]},
   { keys: [{ code: KeyboardEvent.DOM_VK_G }, { code: KeyboardEvent.DOM_VK_G }], action: [ actions.SCROLL_TOP ]},

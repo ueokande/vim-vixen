@@ -1,0 +1,29 @@
+.vimvixen-footerline {
+  border-top: 1px solid gray;
+  bottom: 0;
+  box-sizing: border-box;
+  font-family: monospace;
+  font-size: 12px;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  right: 0;
+  z-index: 10000;
+}
+
+.vimvixen-footerline-title {
+  background-color: lightgray;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+}
+
+.vimvixen-footerline-input{
+  background-color: white;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  border: none;
+}
