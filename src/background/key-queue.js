@@ -4,6 +4,8 @@ import * as actions from '../shared/actions';
 const DEFAULT_KEYMAP = [
   { keys: [{ code: KeyboardEvent.DOM_VK_K }], action: [ actions.SCROLL_UP, 1 ]},
   { keys: [{ code: KeyboardEvent.DOM_VK_J }], action: [ actions.SCROLL_DOWN, 1 ]},
+  { keys: [{ code: KeyboardEvent.DOM_VK_G }, { code: KeyboardEvent.DOM_VK_G }], action: [ actions.SCROLL_TOP ]},
+  { keys: [{ code: KeyboardEvent.DOM_VK_G, shift: true }], action: [ actions.SCROLL_BOTTOM ]},
   { keys: [{ code: KeyboardEvent.DOM_VK_H }], action: [ actions.TABS_PREV, 1 ]},
   { keys: [{ code: KeyboardEvent.DOM_VK_L }], action: [ actions.TABS_NEXT, 1 ]},
 ]

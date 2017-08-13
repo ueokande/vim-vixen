@@ -2,6 +2,8 @@ export const TABS_PREV = 'tabs.prev';
 export const TABS_NEXT = 'tabs.next';
 export const SCROLL_UP = 'scroll.up';
 export const SCROLL_DOWN = 'scroll.down';
+export const SCROLL_TOP = 'scroll.top';
+export const SCROLL_BOTTOM = 'scroll.bottom';
 
 const BACKGROUND_ACTION_SET = new Set([
   TABS_PREV,
@@ -10,7 +12,9 @@ const BACKGROUND_ACTION_SET = new Set([
 
 const CONTENT_ACTION_SET = new Set([
   SCROLL_UP,
-  SCROLL_DOWN
+  SCROLL_DOWN,
+  SCROLL_TOP,
+  SCROLL_BOTTOM
 ]);
 
 export const isBackgroundAction = (action) => {

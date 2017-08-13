@@ -10,7 +10,7 @@ const hasPrefix = (keys, prefix) => {
   if (keys.length < prefix.length) {
     return false;
   }
-  for (let i = 0; i < keys.length; ++i) {
+  for (let i = 0; i < prefix.length; ++i) {
     if (!identifyKey(keys[i], prefix[i])) {
       return false;
     }
