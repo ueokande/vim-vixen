@@ -2,7 +2,8 @@
   "env": {
     "es6": true,
     "node" : true,
-    "browser" : true
+    "browser" : true,
+    "webextensions": true
   },
   "parser": "babel-eslint",
   "parserOptions": {
@@ -20,7 +21,7 @@
     "newline-before-return": "off",
     "multiline-ternary": "off",
     "max-statements": ["error", 15],
-    "no-console": ["error", { allow: ["warn", "error"] }],
+    "no-console": "off",
     "no-magic-numbers": ["error", { "ignore": [0, 1, 2] }],
     "no-param-reassign": "off",
     "no-ternary": "off",

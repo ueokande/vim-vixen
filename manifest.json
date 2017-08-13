@@ -8,5 +8,8 @@
       "matches": [ "http://*/*", "https://*/*" ],
       "js": [ "build/index.js" ]
     }
-  ]
+  ],
+  "background": {
+    "scripts": ["build/background.js"]
+  }
 }
