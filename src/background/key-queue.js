@@ -17,10 +17,18 @@ export default class KeyQueue {
 
   push(key) {
     this.data.push(key);
-    for (let map of DEFAULT_KEYMAP) {
-      if (keys.keysEquals(map.keys, this.data)) {
+    let filtered = DEFAULT_KEYMAP.filter((map) => {
+      return keys.hasPrefix(map.keys, this.data)
+    });
+
+    if (filtered.length == 0) {
+      this.data = [];
+      return;
+    } else if (filtered.length == 1) {
+      let map = filtered[0];
+      if (map.keys.length == this.data.length) {
         this.data = [];
-        return map.action
+        return map.action;
       }
     }
     return null;
