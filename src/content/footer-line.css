@@ -19,9 +19,26 @@
   padding: 0;
 }
 
-.vimvixen-footerline-input{
+.vimvixen-footerline-container-outer {
   background-color: white;
-  bottom: 0;
+  position: relative;
+}
+
+.vimvixen-footerline-container-outer:before {
+  content: ':';
+  background-color: white;
+  float: left;
+  text-align: right;
+  width: 12px;
+}
+
+.vimvixen-footerline-container-inner {
+  position: absolute;
+  left: 12px;
+  right: 0;
+}
+
+.vimvixen-footerline-input {
   margin: 0;
   padding: 0;
   width: 100%;
