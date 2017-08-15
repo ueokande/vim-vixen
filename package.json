@@ -23,6 +23,12 @@
     "babel-preset-es2015": "^6.24.1",
     "chai": "^4.1.1",
     "eslint": "^4.4.1",
+    "karma": "^1.7.0",
+    "karma-firefox-launcher": "^1.0.1",
+    "karma-mocha": "^1.3.0",
+    "karma-mocha-reporter": "^2.2.3",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^2.0.4",
     "mocha": "^3.5.0",
     "webpack": "^3.5.3"
   }
