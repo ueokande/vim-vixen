@@ -4,7 +4,7 @@
   "scripts": {
     "start": "webpack -w --debug",
     "lint": "eslint src",
-    "test": "true"
+    "test": "karma start"
   },
   "repository": {
     "type": "git",
