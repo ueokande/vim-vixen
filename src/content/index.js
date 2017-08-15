@@ -12,7 +12,20 @@ const invokeEvent = (action) => {
   switch (action[0]) {
   case actions.CMD_OPEN:
     footer = new FooterLine(document);
-    footer.input.value = ':';
+    footer.onPromptChange((e) => {
+      let request = {
+        type: 'event.cmd.suggest',
+        text: e.target.value
+      };
+      browser.runtime.sendMessage(request);
+    });
+    footer.onEntered((e) => {
+      let request = {
+        type: 'event.cmd.enter',
+        text: e.target.value
+      };
+      browser.runtime.sendMessage(request);
+    });
     footer.focus();
     break;
   case actions.SCROLL_UP:

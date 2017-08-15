@@ -1,18 +1,28 @@
 import * as actions from '../shared/actions';
 import * as tabs from './tabs';
+import * as commands from './commands';
 import KeyQueue from './key-queue';
 
 const queue = new KeyQueue();
 
-const keyDownHandle = (request) => {
-  return queue.push({
+const keyDownHandle = (request, sender, sendResponse) => {
+  let action = queue.push({
     code: request.code,
     shift: request.shift,
     ctrl: request.ctrl,
     alt: request.alt,
     meta: request.meta
-  })
-}
+  });
+  if (!action) {
+    return;
+  }
+
+  if (actions.isBackgroundAction(action[0])) {
+    doBackgroundAction(sender, action);
+  } else if (actions.isContentAction(action[0])) {
+    sendResponse(action);
+  }
+};
 
 const doBackgroundAction = (sender, action) => {
   switch(action[0]) {
@@ -25,22 +35,32 @@ const doBackgroundAction = (sender, action) => {
   }
 }
 
-browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  let action = null;
+const normalizeUrl = (string) => {
+  return 'http://' + string;
+}
 
-  switch (request.type) {
-  case 'event.keydown':
-    action = keyDownHandle(request);
-    break;
-  }
-
-  if (action == null) {
+const cmdEnterHandle = (request, sender) => {
+  let words = request.text.split(' ').filter((s) => s.length > 0);
+  switch (words[0]) {
+  case commands.OPEN:
+    browser.tabs.update(sender.tab.id, { url: normalizeUrl(words[1]) });
+    return;
+  case commands.TABOPEN:
+    browser.tabs.create({ url: normalizeUrl(words[1]) });
     return;
   }
+};
 
-  if (actions.isBackgroundAction(action[0])) {
-    doBackgroundAction(sender, action);
-  } else if (actions.isContentAction(action[0])) {
-    sendResponse(action);
+browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  switch (request.type) {
+  case 'event.keydown':
+    keyDownHandle(request, sender, sendResponse);
+    break;
+  case 'event.cmd.enter':
+    cmdEnterHandle(request, sender, sendResponse);
+    break;
+  case 'event.cmd.suggest':
+    // TODO make suggestion and return via sendResponse
+    break;
   }
 });
