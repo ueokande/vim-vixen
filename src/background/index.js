@@ -36,7 +36,11 @@ const doBackgroundAction = (sender, action) => {
 }
 
 const normalizeUrl = (string) => {
-  return 'http://' + string;
+  try {
+    return new URL(string).href
+  } catch (e) {
+    return 'http://' + string;
+  }
 }
 
 const cmdEnterHandle = (request, sender) => {

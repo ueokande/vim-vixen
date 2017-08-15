@@ -1,7 +1,7 @@
 import './footer-line.css';
 
 export default class FooterLine {
-  constructor(doc) {
+  constructor(doc, initial = '') {
     this.initUi(doc);
 
     this.enteredCallback = () => {}
@@ -10,6 +10,7 @@ export default class FooterLine {
     this.input.addEventListener('blur', this.handleBlur.bind(this));
     this.input.addEventListener('keydown', this.handleKeydown.bind(this));
     this.input.addEventListener('keyup', this.handleKeyup.bind(this));
+    this.input.value = initial;
   }
 
   initUi(doc) {

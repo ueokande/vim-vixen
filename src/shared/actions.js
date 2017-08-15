@@ -1,4 +1,5 @@
 export const CMD_OPEN = 'cmd.open';
+export const CMD_TABS_OPEN = 'cmd.tabs.open';
 export const TABS_PREV = 'tabs.prev';
 export const TABS_NEXT = 'tabs.next';
 export const SCROLL_UP = 'scroll.up';
@@ -13,6 +14,7 @@ const BACKGROUND_ACTION_SET = new Set([
 
 const CONTENT_ACTION_SET = new Set([
   CMD_OPEN,
+  CMD_TABS_OPEN,
   SCROLL_UP,
   SCROLL_DOWN,
   SCROLL_TOP,
