@@ -12,20 +12,20 @@ const DEFAULT_KEYMAP = [
 
 export default class KeyQueue {
 
-  constructor(keymap) {
+  constructor() {
     this.data = [];
-    this.keymap = keymap;
+    this.keymap = DEFAULT_KEYMAP;
   }
 
   push(key) {
     this.data.push(key);
-    let filtered = DEFAULT_KEYMAP.filter((map) => {
+    let filtered = this.keymap.filter((map) => {
       return keys.hasPrefix(map.keys, this.data)
     });
 
     if (filtered.length == 0) {
       this.data = [];
-      return;
+      return null;
     } else if (filtered.length == 1) {
       let map = filtered[0];
       if (map.keys.length == this.data.length) {
@@ -34,5 +34,9 @@ export default class KeyQueue {
       }
     }
     return null;
+  }
+
+  queuedKeys() {
+    return this.data;
   }
 }

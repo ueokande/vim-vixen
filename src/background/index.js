@@ -2,7 +2,7 @@ import * as actions from '../shared/actions';
 import * as tabs from './tabs';
 import KeyQueue from './key-queue';
 
-const queue = new KeyQueue();
+const queue = new KeyQueue(KeyQueue.DEFAULT_KEYMAP);
 
 const keyDownHandle = (request) => {
   return queue.push({
