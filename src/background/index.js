@@ -26,6 +26,12 @@ const keyDownHandle = (request, sender, sendResponse) => {
 
 const doBackgroundAction = (sender, action) => {
   switch(action[0]) {
+  case actions.TABS_CLOSE:
+    tabs.closeTab(sender.tab.id);
+    break;
+  case actions.TABS_REOPEN:
+    tabs.reopenTab();
+    break;
   case actions.TABS_PREV:
     tabs.selectPrevTab(sender.tab.index, actions[1] || 1);
     break;

@@ -11,5 +11,8 @@
   ],
   "background": {
     "scripts": ["build/background.js"]
-  }
+  },
+  "permissions": [
+    "sessions"
+  ]
 }

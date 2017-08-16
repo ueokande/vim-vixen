@@ -1,5 +1,7 @@
 export const CMD_OPEN = 'cmd.open';
 export const CMD_TABS_OPEN = 'cmd.tabs.open';
+export const TABS_CLOSE = 'tabs.close';
+export const TABS_REOPEN = 'tabs.reopen';
 export const TABS_PREV = 'tabs.prev';
 export const TABS_NEXT = 'tabs.next';
 export const SCROLL_UP = 'scroll.up';
@@ -8,6 +10,8 @@ export const SCROLL_TOP = 'scroll.top';
 export const SCROLL_BOTTOM = 'scroll.bottom';
 
 const BACKGROUND_ACTION_SET = new Set([
+  TABS_CLOSE,
+  TABS_REOPEN,
   TABS_PREV,
   TABS_NEXT
 ]);
