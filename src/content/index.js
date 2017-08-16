@@ -1,5 +1,27 @@
 import * as scrolls from './scrolls';
+import FooterLine from './footer-line';
 import * as actions from '../shared/actions';
+
+var footer = null;
+
+const createFooterLine = (initial = '') => {
+  footer = new FooterLine(document, initial);
+  footer.onPromptChange((e) => {
+    let request = {
+      type: 'event.cmd.suggest',
+      text: e.target.value
+    };
+    browser.runtime.sendMessage(request);
+  });
+  footer.onEntered((e) => {
+    let request = {
+      type: 'event.cmd.enter',
+      text: e.target.value
+    };
+    browser.runtime.sendMessage(request);
+  });
+  footer.focus();
+}
 
 const invokeEvent = (action) => {
   if (typeof action === 'undefined' || action === null) {
@@ -7,6 +29,17 @@ const invokeEvent = (action) => {
   }
 
   switch (action[0]) {
+  case actions.CMD_OPEN:
+    createFooterLine();
+    break;
+  case actions.CMD_TABS_OPEN:
+    if (action[1] || false) {
+      // alter url
+      createFooterLine('open ' + window.location.href);
+    } else {
+      createFooterLine('open ');
+    }
+    break;
   case actions.SCROLL_UP:
     scrolls.scrollUp(window, action[1] || 1);
     break;
