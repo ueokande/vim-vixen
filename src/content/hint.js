@@ -2,6 +2,10 @@ import './hint.css';
 
 export default class Hint {
   constructor(target, tag) {
+    if (!(document.body instanceof HTMLElement)) {
+      throw new TypeError('target is not an HTMLElement');
+    }
+
     this.target = target;
 
     let doc = target.ownerDocument
@@ -31,8 +35,7 @@ export default class Hint {
 
   activate() {
     if (this.target.tagName.toLowerCase() === 'a') {
-      let href = this.target.href;
-      window.location.href = href;
+      this.target.click();
     }
   }
 }
