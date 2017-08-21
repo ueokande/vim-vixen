@@ -11,4 +11,15 @@ describe('Follow class', () => {
       expect(Follow.codeChars([])).to.be.equal('');
     });
   });
+
+  describe('#getTargetElements', () => {
+    beforeEach(() => {
+      document.body.innerHTML = __html__['test/content/follow.html'];
+    });
+
+    it('returns visible links', () => {
+      let links = Follow.getTargetElements(window.document);
+      expect(links).to.have.lengthOf(1);
+    });
+  });
 });

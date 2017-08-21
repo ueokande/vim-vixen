@@ -105,6 +105,20 @@ export default class Follow {
   }
 
   static getTargetElements(doc) {
-    return doc.querySelectorAll('a')
+    let all = doc.querySelectorAll('a');
+    let filtered = Array.prototype.filter.call(all, (e) => {
+      return Follow.isVisibleElement(e);
+    });
+    return filtered;
+  }
+
+  static isVisibleElement(element) {
+    var style = window.getComputedStyle(element);
+    if (style.display === 'none') {
+      return false;
+    } else if (style.visibility === 'hidden') {
+      return false;
+    }
+    return true;
   }
 }
