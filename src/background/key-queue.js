@@ -13,6 +13,8 @@ const DEFAULT_KEYMAP = [
   { keys: [{ code: KeyboardEvent.DOM_VK_U }], action: [ actions.TABS_REOPEN]},
   { keys: [{ code: KeyboardEvent.DOM_VK_H }], action: [ actions.TABS_PREV, 1 ]},
   { keys: [{ code: KeyboardEvent.DOM_VK_L }], action: [ actions.TABS_NEXT, 1 ]},
+  { keys: [{ code: KeyboardEvent.DOM_VK_F }], action: [ actions.FOLLOW_START, false ]},
+  { keys: [{ code: KeyboardEvent.DOM_VK_F, shift: true }], action: [ actions.FOLLOW_START, true ]},
 ]
 
 export default class KeyQueue {
