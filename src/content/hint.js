@@ -10,12 +10,14 @@ export default class Hint {
 
     let doc = target.ownerDocument
     let { top, left } = target.getBoundingClientRect();
+    let scrollX = window.scrollX;
+    let scrollY = window.scrollY;
 
     this.element = doc.createElement('span');
     this.element.className = 'vimvixen-hint';
     this.element.textContent = tag;
-    this.element.style.top = top + 'px';
-    this.element.style.left = left + 'px';
+    this.element.style.left = left + scrollX + 'px';
+    this.element.style.top = top + scrollY + 'px';
 
     this.show();
     doc.body.append(this.element);
