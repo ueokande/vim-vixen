@@ -35,7 +35,8 @@ export default class Follow {
       return;
     } else if (keyCode === KeyboardEvent.DOM_VK_ENTER ||
                keyCode === KeyboardEvent.DOM_VK_RETURN) {
-      this.openUrl(this.keys);
+      let chars = Follow.codeChars(this.keys);
+      this.hintElements[chars].activate();
       return;
     } else if (Follow.availableKey(keyCode)) {
       this.keys.push(keyCode);
@@ -44,20 +45,23 @@ export default class Follow {
       this.keys.pop();
     }
 
+    this.refreshKeys();
+  }
 
-    let keysAsString = Follow.codeChars(this.keys);
+  refreshKeys() {
+    let chars = Follow.codeChars(this.keys);
     let shown = Object.keys(this.hintElements).filter((key) => {
-      return key.startsWith(keysAsString);
+      return key.startsWith(chars);
     });
     let hidden = Object.keys(this.hintElements).filter((key) => {
-      return !key.startsWith(keysAsString);
+      return !key.startsWith(chars);
     });
     if (shown.length == 0) {
       this.remove();
       return;
     } else if (shown.length == 1) {
-      this.openUrl(this.keys);
-      return;
+      this.remove();
+      this.hintElements[chars].activate();
     }
 
     shown.forEach((key) => {
@@ -74,11 +78,6 @@ export default class Follow {
     Object.keys(this.hintElements).forEach((key) => {
       this.hintElements[key].remove();
     });
-  }
-
-  openUrl(keys) {
-    let chars = Follow.codeChars(keys);
-    this.hintElements[chars].activate();
   }
 
   static availableKey(keyCode) {
