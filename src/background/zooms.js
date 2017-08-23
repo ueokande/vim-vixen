@@ -18,7 +18,7 @@ const zoomIn = (tabId = undefined) => {
       }
     }
   });
-}
+};
 
 const zoomOut = (tabId = undefined) => {
   browser.tabs.getZoom(tabId).then((factor) => {
@@ -29,6 +29,10 @@ const zoomOut = (tabId = undefined) => {
       }
     }
   });
-}
+};
 
-export { zoomIn, zoomOut };
+const neutral = (tabId = undefined) => {
+  browser.tabs.setZoom(tabId, 1);
+};
+
+export { zoomIn, zoomOut, neutral };

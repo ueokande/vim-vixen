@@ -13,6 +13,7 @@ export const HISTORY_PREV = 'history.prev';
 export const HISTORY_NEXT = 'history.next';
 export const ZOOM_IN = 'zoom.in';
 export const ZOOM_OUT = 'zoom.out';
+export const ZOOM_NEUTRAL = 'zoom.neutral';
 
 const BACKGROUND_ACTION_SET = new Set([
   TABS_CLOSE,
@@ -20,7 +21,8 @@ const BACKGROUND_ACTION_SET = new Set([
   TABS_PREV,
   TABS_NEXT,
   ZOOM_IN,
-  ZOOM_OUT
+  ZOOM_OUT,
+  ZOOM_NEUTRAL
 ]);
 
 const CONTENT_ACTION_SET = new Set([

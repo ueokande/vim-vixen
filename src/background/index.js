@@ -45,6 +45,9 @@ const doBackgroundAction = (sender, action) => {
   case actions.ZOOM_OUT:
     zooms.zoomOut();
     break;
+  case actions.ZOOM_NEUTRAL:
+    zooms.neutral();
+    break;
   }
 }
 
