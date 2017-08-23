@@ -11,12 +11,16 @@ export const SCROLL_BOTTOM = 'scroll.bottom';
 export const FOLLOW_START = 'follow.start';
 export const HISTORY_PREV = 'history.prev';
 export const HISTORY_NEXT = 'history.next';
+export const ZOOM_IN = 'zoom.in';
+export const ZOOM_OUT = 'zoom.out';
 
 const BACKGROUND_ACTION_SET = new Set([
   TABS_CLOSE,
   TABS_REOPEN,
   TABS_PREV,
-  TABS_NEXT
+  TABS_NEXT,
+  ZOOM_IN,
+  ZOOM_OUT
 ]);
 
 const CONTENT_ACTION_SET = new Set([
