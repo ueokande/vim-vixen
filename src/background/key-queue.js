@@ -13,6 +13,8 @@ const DEFAULT_KEYMAP = [
   { keys: [{ code: KeyboardEvent.DOM_VK_U }], action: [ actions.TABS_REOPEN]},
   { keys: [{ code: KeyboardEvent.DOM_VK_H }], action: [ actions.TABS_PREV, 1 ]},
   { keys: [{ code: KeyboardEvent.DOM_VK_L }], action: [ actions.TABS_NEXT, 1 ]},
+  { keys: [{ code: KeyboardEvent.DOM_VK_R }], action: [ actions.TABS_RELOAD, false ]},
+  { keys: [{ code: KeyboardEvent.DOM_VK_R, shift: true }], action: [ actions.TABS_RELOAD, true ]},
   { keys: [{ code: KeyboardEvent.DOM_VK_Z }, { code: KeyboardEvent.DOM_VK_I }], action: [ actions.ZOOM_IN ]},
   { keys: [{ code: KeyboardEvent.DOM_VK_Z }, { code: KeyboardEvent.DOM_VK_O }], action: [ actions.ZOOM_OUT ]},
   { keys: [{ code: KeyboardEvent.DOM_VK_Z }, { code: KeyboardEvent.DOM_VK_Z }], action: [ actions.ZOOM_NEUTRAL]},

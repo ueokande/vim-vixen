@@ -40,4 +40,11 @@ const selectNextTab = (current, count) => {
   });
 };
 
-export { closeTab, reopenTab, selectNextTab, selectPrevTab };
+const reload = (current, cache) => {
+  browser.tabs.reload(
+    current.id,
+    { bypassCache: cache }
+  );
+};
+
+export { closeTab, reopenTab, selectNextTab, selectPrevTab, reload };

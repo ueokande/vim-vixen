@@ -39,6 +39,9 @@ const doBackgroundAction = (sender, action) => {
   case actions.TABS_NEXT:
     tabs.selectNextTab(sender.tab.index, actions[1] || 1);
     break;
+  case actions.TABS_RELOAD:
+    tabs.reload(sender.tab, actions[1] || false);
+    break;
   case actions.ZOOM_IN:
     zooms.zoomIn();
     break;

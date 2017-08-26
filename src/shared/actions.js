@@ -4,6 +4,7 @@ export const TABS_CLOSE = 'tabs.close';
 export const TABS_REOPEN = 'tabs.reopen';
 export const TABS_PREV = 'tabs.prev';
 export const TABS_NEXT = 'tabs.next';
+export const TABS_RELOAD = 'tabs.reload';
 export const SCROLL_UP = 'scroll.up';
 export const SCROLL_DOWN = 'scroll.down';
 export const SCROLL_TOP = 'scroll.top';
@@ -20,6 +21,7 @@ const BACKGROUND_ACTION_SET = new Set([
   TABS_REOPEN,
   TABS_PREV,
   TABS_NEXT,
+  TABS_RELOAD,
   ZOOM_IN,
   ZOOM_OUT,
   ZOOM_NEUTRAL
