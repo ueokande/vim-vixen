@@ -1,6 +1,7 @@
 import * as actions from '../shared/actions';
 import * as tabs from './tabs';
 import * as commands from './commands';
+import * as zooms from './zooms';
 import KeyQueue from './key-queue';
 
 const queue = new KeyQueue();
@@ -37,6 +38,18 @@ const doBackgroundAction = (sender, action) => {
     break;
   case actions.TABS_NEXT:
     tabs.selectNextTab(sender.tab.index, actions[1] || 1);
+    break;
+  case actions.TABS_RELOAD:
+    tabs.reload(sender.tab, actions[1] || false);
+    break;
+  case actions.ZOOM_IN:
+    zooms.zoomIn();
+    break;
+  case actions.ZOOM_OUT:
+    zooms.zoomOut();
+    break;
+  case actions.ZOOM_NEUTRAL:
+    zooms.neutral();
     break;
   }
 }

@@ -1,7 +1,8 @@
 import * as scrolls from './scrolls';
+import * as histories from './histories';
+import * as actions from '../shared/actions';
 import FooterLine from './footer-line';
 import Follow from './follow';
-import * as actions from '../shared/actions';
 
 var footer = null;
 
@@ -55,6 +56,12 @@ const invokeEvent = (action) => {
     break;
   case actions.FOLLOW_START:
     new Follow(window.document, action[1] || false);
+    break;
+  case actions.HISTORY_PREV:
+    histories.prev(window);
+    break;
+  case actions.HISTORY_NEXT:
+    histories.next(window);
     break;
   }
 }
