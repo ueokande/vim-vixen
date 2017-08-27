@@ -6,6 +6,13 @@ const scrollLines = (page, count) => {
   page.scrollTo(x, y);
 };
 
+const scrollPages = (page, count) => {
+  let height = page.innerHeight;
+  let x = page.scrollX;
+  let y = page.scrollY + height * count;
+  page.scrollTo(x, y);
+};
+
 const scrollTop = (page) => {
   let x = page.scrollX;
   let y = 0;
@@ -18,4 +25,4 @@ const scrollBottom = (page) => {
   page.scrollTo(x, y);
 };
 
-export { scrollLines, scrollTop, scrollBottom }
+export { scrollLines, scrollPages, scrollTop, scrollBottom }

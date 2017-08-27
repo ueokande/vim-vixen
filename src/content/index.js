@@ -45,6 +45,9 @@ const invokeEvent = (action) => {
   case actions.SCROLL_LINES:
     scrolls.scrollLines(window, action[1]);
     break;
+  case actions.SCROLL_PAGES:
+    scrolls.scrollPages(window, action[1]);
+    break;
   case actions.SCROLL_TOP:
     scrolls.scrollTop(window, action[1]);
     break;

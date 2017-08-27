@@ -6,6 +6,7 @@ export const TABS_PREV = 'tabs.prev';
 export const TABS_NEXT = 'tabs.next';
 export const TABS_RELOAD = 'tabs.reload';
 export const SCROLL_LINES = 'scroll.lines';
+export const SCROLL_PAGES = 'scroll.pages';
 export const SCROLL_TOP = 'scroll.top';
 export const SCROLL_BOTTOM = 'scroll.bottom';
 export const FOLLOW_START = 'follow.start';
@@ -30,6 +31,7 @@ const CONTENT_ACTION_SET = new Set([
   CMD_OPEN,
   CMD_TABS_OPEN,
   SCROLL_LINES,
+  SCROLL_PAGES,
   SCROLL_TOP,
   SCROLL_BOTTOM,
   FOLLOW_START,
