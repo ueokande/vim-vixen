@@ -66,27 +66,14 @@ const invokeEvent = (action) => {
   }
 }
 
-const isModifier = (code) => {
-  return code === KeyboardEvent.DOM_VK_SHIFT ||
-    code === KeyboardEvent.DOM_VK_ALT ||
-    code === KeyboardEvent.DOM_VK_CONTROL ||
-    code === KeyboardEvent.DOM_VK_META;
-}
-
-window.addEventListener("keydown", (e) => {
+window.addEventListener("keypress", (e) => {
   if (e.target instanceof HTMLInputElement) {
-    return;
-  }
-  if (isModifier(e.keyCode)) {
     return;
   }
 
   let request = {
-    type: 'event.keydown',
-    code: e.keyCode,
-    shift: e.shiftKey,
-    alt: e.altKey,
-    meta: e.metaKey,
+    type: 'event.keypress',
+    code: e.which,
     ctrl: e.ctrlKey,
   }
 

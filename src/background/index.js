@@ -6,13 +6,10 @@ import KeyQueue from './key-queue';
 
 const queue = new KeyQueue();
 
-const keyDownHandle = (request, sender, sendResponse) => {
+const keyPressHandle = (request, sender, sendResponse) => {
   let action = queue.push({
     code: request.code,
-    shift: request.shift,
-    ctrl: request.ctrl,
-    alt: request.alt,
-    meta: request.meta
+    ctrl: request.ctrl
   });
   if (!action) {
     return;
@@ -76,8 +73,8 @@ const cmdEnterHandle = (request, sender) => {
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.type) {
-  case 'event.keydown':
-    keyDownHandle(request, sender, sendResponse);
+  case 'event.keypress':
+    keyPressHandle(request, sender, sendResponse);
     break;
   case 'event.cmd.enter':
     cmdEnterHandle(request, sender, sendResponse);
