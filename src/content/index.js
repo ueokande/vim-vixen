@@ -42,11 +42,8 @@ const invokeEvent = (action) => {
       createFooterLine('open ');
     }
     break;
-  case actions.SCROLL_UP:
-    scrolls.scrollUp(window, action[1] || 1);
-    break;
-  case actions.SCROLL_DOWN:
-    scrolls.scrollDown(window, action[1] || 1);
+  case actions.SCROLL_LINES:
+    scrolls.scrollLines(window, action[1]);
     break;
   case actions.SCROLL_TOP:
     scrolls.scrollTop(window, action[1]);

@@ -1,12 +1,6 @@
 const SCROLL_DELTA = 48;
 
-const scrollUp = (page, count) => {
-  let x = page.scrollX;
-  let y = page.scrollY - SCROLL_DELTA * count;
-  page.scrollTo(x, y);
-};
-
-const scrollDown = (page, count) => {
+const scrollLines = (page, count) => {
   let x = page.scrollX;
   let y = page.scrollY + SCROLL_DELTA * count;
   page.scrollTo(x, y);
@@ -24,4 +18,4 @@ const scrollBottom = (page) => {
   page.scrollTo(x, y);
 };
 
-export { scrollUp, scrollDown, scrollTop, scrollBottom }
+export { scrollLines, scrollTop, scrollBottom }
