@@ -49,10 +49,16 @@ const invokeEvent = (action) => {
     scrolls.scrollPages(window, action[1]);
     break;
   case actions.SCROLL_TOP:
-    scrolls.scrollTop(window, action[1]);
+    scrolls.scrollTop(window);
     break;
   case actions.SCROLL_BOTTOM:
-    scrolls.scrollBottom(window, action[1]);
+    scrolls.scrollBottom(window);
+    break;
+  case actions.SCROLL_LEFT:
+    scrolls.scrollLeft(window);
+    break;
+  case actions.SCROLL_RIGHT:
+    scrolls.scrollRight(window);
     break;
   case actions.FOLLOW_START:
     new Follow(window.document, action[1] || false);

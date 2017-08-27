@@ -25,4 +25,16 @@ const scrollBottom = (page) => {
   page.scrollTo(x, y);
 };
 
-export { scrollLines, scrollPages, scrollTop, scrollBottom }
+const scrollLeft = (page) => {
+  let x = 0;
+  let y = page.scrollY;
+  page.scrollTo(x, y);
+};
+
+const scrollRight = (page) => {
+  let x = page.scrollMaxX;
+  let y = page.scrollY;
+  page.scrollTo(x, y);
+};
+
+export { scrollLines, scrollPages, scrollTop, scrollBottom, scrollLeft, scrollRight }

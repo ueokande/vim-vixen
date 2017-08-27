@@ -14,6 +14,8 @@ const DEFAULT_KEYMAP = {
   '<C-F>': [ actions.SCROLL_PAGES, 1 ],
   'gg': [ actions.SCROLL_TOP ],
   'G': [ actions.SCROLL_BOTTOM ],
+  '0': [ actions.SCROLL_LEFT ],
+  '$': [ actions.SCROLL_RIGHT ],
   'd': [ actions.TABS_CLOSE ],
   'u': [ actions.TABS_REOPEN],
   'h': [ actions.TABS_PREV, 1 ],
