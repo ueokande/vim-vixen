@@ -24,6 +24,7 @@
     "chai": "^4.1.1",
     "css-loader": "^0.28.4",
     "eslint": "^4.4.1",
+    "html-webpack-plugin": "^2.30.1",
     "karma": "^1.7.0",
     "karma-firefox-launcher": "^1.0.1",
     "karma-html2js-preprocessor": "^1.1.0",
