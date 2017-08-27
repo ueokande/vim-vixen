@@ -1,62 +1,79 @@
-import * as keys from './keys';
 import * as actions from '../shared/actions';
 
-const DEFAULT_KEYMAP = [
-  { keys: [{ code: KeyboardEvent.DOM_VK_SEMICOLON, shift: true }], action: [ actions.CMD_OPEN ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_O }], action: [ actions.CMD_TABS_OPEN, false ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_O, shift: true }], action: [ actions.CMD_TABS_OPEN, true ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_K }], action: [ actions.SCROLL_LINES, -1 ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_J }], action: [ actions.SCROLL_LINES, 1 ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_E, ctrl: true }], action: [ actions.SCROLL_LINES, -1 ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_Y, ctrl: true }], action: [ actions.SCROLL_LINES, 1 ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_U, ctrl: true }], action: [ actions.SCROLL_PAGES, -0.5 ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_D, ctrl: true }], action: [ actions.SCROLL_PAGES, 0.5 ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_B, ctrl: true }], action: [ actions.SCROLL_PAGES, -1 ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_F, ctrl: true }], action: [ actions.SCROLL_PAGES, 1 ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_G }, { code: KeyboardEvent.DOM_VK_G }], action: [ actions.SCROLL_TOP ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_G, shift: true }], action: [ actions.SCROLL_BOTTOM ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_D }], action: [ actions.TABS_CLOSE ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_U }], action: [ actions.TABS_REOPEN]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_H }], action: [ actions.TABS_PREV, 1 ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_L }], action: [ actions.TABS_NEXT, 1 ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_R }], action: [ actions.TABS_RELOAD, false ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_R, shift: true }], action: [ actions.TABS_RELOAD, true ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_Z }, { code: KeyboardEvent.DOM_VK_I }], action: [ actions.ZOOM_IN ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_Z }, { code: KeyboardEvent.DOM_VK_O }], action: [ actions.ZOOM_OUT ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_Z }, { code: KeyboardEvent.DOM_VK_Z }], action: [ actions.ZOOM_NEUTRAL]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_F }], action: [ actions.FOLLOW_START, false ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_F, shift: true }], action: [ actions.FOLLOW_START, true ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_H, shift: true }], action: [ actions.HISTORY_PREV ]},
-  { keys: [{ code: KeyboardEvent.DOM_VK_L, shift: true }], action: [ actions.HISTORY_NEXT ]},
-]
+const DEFAULT_KEYMAP = {
+  ':': [ actions.CMD_OPEN ],
+  'o': [ actions.CMD_TABS_OPEN, false ],
+  'O': [ actions.CMD_TABS_OPEN, true ],
+  'k': [ actions.SCROLL_LINES, -1 ],
+  'j': [ actions.SCROLL_LINES, 1 ],
+  '<C-e>': [ actions.SCROLL_LINES, -1 ],
+  '<C-y>': [ actions.SCROLL_LINES, 1 ],
+  '<C-u>': [ actions.SCROLL_PAGES, -0.5 ],
+  '<C-d>': [ actions.SCROLL_PAGES, 0.5 ],
+  '<C-b>': [ actions.SCROLL_PAGES, -1 ],
+  '<C-f>': [ actions.SCROLL_PAGES, 1 ],
+  'gg': [ actions.SCROLL_TOP ],
+  'G': [ actions.SCROLL_BOTTOM ],
+  'd': [ actions.TABS_CLOSE ],
+  'u': [ actions.TABS_REOPEN],
+  'h': [ actions.TABS_PREV, 1 ],
+  'l': [ actions.TABS_NEXT, 1 ],
+  'r': [ actions.TABS_RELOAD, false ],
+  'R': [ actions.TABS_RELOAD, true ],
+  'zi': [ actions.ZOOM_IN ],
+  'zo': [ actions.ZOOM_OUT ],
+  'zz': [ actions.ZOOM_NEUTRAL],
+  'f': [ actions.FOLLOW_START, false ],
+  'F': [ actions.FOLLOW_START, true ],
+  'H': [ actions.HISTORY_PREV ],
+  'L': [ actions.HISTORY_NEXT ],
+}
 
 export default class KeyQueue {
 
-  constructor() {
+  constructor(keymap = DEFAULT_KEYMAP) {
     this.data = [];
-    this.keymap = DEFAULT_KEYMAP;
+    this.keymap = keymap;
   }
 
   push(key) {
     this.data.push(key);
-    let filtered = this.keymap.filter((map) => {
-      return keys.hasPrefix(map.keys, this.data)
+
+    let current = this.asKeymapChars();
+    let filtered = Object.keys(this.keymap).filter((keys) => {
+      return keys.startsWith(current);
     });
 
     if (filtered.length == 0) {
       this.data = [];
       return null;
-    } else if (filtered.length == 1) {
-      let map = filtered[0];
-      if (map.keys.length == this.data.length) {
-        this.data = [];
-        return map.action;
-      }
+    } else if (filtered.length === 1 && current === filtered[0]) {
+      let action = this.keymap[filtered[0]];
+      this.data = [];
+      return action;
     }
     return null;
   }
 
-  queuedKeys() {
-    return this.data;
+  asKeymapChars() {
+    return this.data.map((k) => {
+      let c = String.fromCharCode(k.code);
+      if (k.ctrl) {
+        return '<C-' + c.toUpperCase() + '>';
+      } else {
+        return c
+      }
+    }).join('');
+  }
+
+  asCaretChars() {
+    return this.data.map((k) => {
+      let c = String.fromCharCode(k.code);
+      if (k.ctrl) {
+        return '^' + c.toUpperCase();
+      } else {
+        return c;
+      }
+    }).join('');
   }
 }

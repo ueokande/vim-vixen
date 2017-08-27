@@ -1,47 +1,50 @@
 import { expect } from "chai";
 import KeyQueue from '../../src/background/key-queue';
-import * as actions from '../../src/shared/actions';
 
 describe("keyQueue class", () => {
-  const KEYMAP = [
-    { keys: [{ code: KeyboardEvent.DOM_VK_G }, { code: KeyboardEvent.DOM_VK_G }],
-      action: [ actions.SCROLL_TOP ]},
-    { keys: [{ code: KeyboardEvent.DOM_VK_J }],
-      action: [ actions.SCROLL_DOWN ]},
-  ]
+  const KEYMAP = {
+    'g<C-X>GG': [],
+    'gg': [ 'scroll.top' ],
+  };
+
+  const g = 'g'.charCodeAt(0);
+  const G = 'G'.charCodeAt(0);
+  const x = 'x'.charCodeAt(0);
 
   describe("#push", () => {
     it("returns matched action", () => {
       let queue = new KeyQueue(KEYMAP);
-      queue.push({ code: KeyboardEvent.DOM_VK_G });
-      let action = queue.push({ code: KeyboardEvent.DOM_VK_G });
+      queue.push({ code: g });
+      let action = queue.push({ code: g });
 
-      expect(action).to.deep.equal([ actions.SCROLL_TOP ]);
+      expect(action).to.deep.equal([ 'scroll.top' ]);
     });
 
     it("returns null on no actions matched", () => {
       let queue = new KeyQueue(KEYMAP);
-      queue.push({ code: KeyboardEvent.DOM_VK_G });
-      let action = queue.push({ code: KeyboardEvent.DOM_VK_X });
+      queue.push({ code: g });
+      let action = queue.push({ code: G });
 
       expect(action).to.be.null;
+      expect(queue.asKeymapChars()).to.be.empty;
     });
   });
 
-  describe("#queuedKeys", () => {
-    it("queues keys on matched actions exist", () => {
-      let queue = new KeyQueue(KEYMAP);
-      queue.push({ code: KeyboardEvent.DOM_VK_G });
+  describe('#asKeymapChars', () => {
+    let queue = new KeyQueue(KEYMAP);
+    queue.push({ code: g });
+    queue.push({ code: x, ctrl: true });
+    queue.push({ code: G });
 
-      expect(queue.queuedKeys()).to.have.lengthOf(1);
-    });
+    expect(queue.asKeymapChars()).to.equal('g<C-X>G');
+  });
 
-    it("flushs keys on no actions matched", () => {
-      let queue = new KeyQueue(KEYMAP);
-      queue.push({ code: KeyboardEvent.DOM_VK_G });
-      queue.push({ code: KeyboardEvent.DOM_VK_Z });
+  describe('#asCaretChars', () => {
+    let queue = new KeyQueue(KEYMAP);
+    queue.push({ code: g });
+    queue.push({ code: x, ctrl: true });
+    queue.push({ code: G });
 
-      expect(queue.queuedKeys()).to.be.empty;
-    });
+    expect(queue.asCaretChars()).to.equal('g^XG');
   });
 });
