@@ -1,0 +1,42 @@
+html, body, * {
+  margin: 0;
+  padding: 0;
+}
+
+.vimvixen-command-line {
+  border-top: 1px solid gray;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+
+  &-title {
+    background-color: lightgray;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+  }
+
+  &-line {
+    background-color: white;
+    display: flex;
+
+    @mixin input-style {
+      font-style: normal;
+      font-family: monospace;
+      font-size: 12px;
+    }
+
+    &-prompt:before {
+      content: ':';
+
+      @include input-style;
+    }
+
+    &-input {
+      border: none;
+      flex-grow: 1;
+
+      @include input-style;
+    }
+  }
+}
