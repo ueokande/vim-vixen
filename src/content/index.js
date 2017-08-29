@@ -1,29 +1,10 @@
 import * as scrolls from './scrolls';
 import * as histories from './histories';
 import * as actions from '../shared/actions';
-import FooterLine from './footer-line';
+import CommandLineFrame from '../command-line/command-line-frame';
 import Follow from './follow';
 
-var footer = null;
-
-const createFooterLine = (initial = '') => {
-  footer = new FooterLine(document, initial);
-  footer.onPromptChange((e) => {
-    let request = {
-      type: 'event.cmd.suggest',
-      text: e.target.value
-    };
-    browser.runtime.sendMessage(request);
-  });
-  footer.onEntered((e) => {
-    let request = {
-      type: 'event.cmd.enter',
-      text: e.target.value
-    };
-    browser.runtime.sendMessage(request);
-  });
-  footer.focus();
-}
+let cmd = null;
 
 const invokeEvent = (action) => {
   if (typeof action === 'undefined' || action === null) {
@@ -32,14 +13,14 @@ const invokeEvent = (action) => {
 
   switch (action[0]) {
   case actions.CMD_OPEN:
-    createFooterLine();
+    cmd = new CommandLineFrame(window);
     break;
   case actions.CMD_TABS_OPEN:
     if (action[1] || false) {
       // alter url
-      createFooterLine('open ' + window.location.href);
+      cmd = new CommandLineFrame(window, 'open ' + window.location.href);
     } else {
-      createFooterLine('open ');
+      cmd = new CommandLineFrame(window, 'open ');
     }
     break;
   case actions.SCROLL_LINES:
@@ -88,4 +69,37 @@ window.addEventListener("keypress", (e) => {
       (err) => {
         console.log(`Vim Vixen: ${err}`);
       });
+});
+
+window.addEventListener('message', (e) => {
+  let message;
+  try {
+    message = JSON.parse(e.data);
+  } catch (e) {
+    // ignore message posted by author of web page
+    return;
+  }
+
+  switch (message.type) {
+  case 'vimvixen.commandline.blur':
+    if (cmd) {
+      cmd.remove();
+      cmd = null;
+    }
+    break;
+  case 'vimvixen.commandline.enter':
+    browser.runtime.sendMessage({
+      type: 'event.cmd.enter',
+      text: message.value
+    });
+    break;
+  case 'vimvixen.commandline.change':
+    browser.runtime.sendMessage({
+      type: 'event.cmd.suggest',
+      text: message.value
+    });
+    break;
+  default:
+    return;
+  }
 });
