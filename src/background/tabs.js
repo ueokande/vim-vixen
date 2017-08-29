@@ -18,6 +18,19 @@ const reopenTab = () => {
   });
 };
 
+const selectAt = (index) => {
+  chrome.tabs.query({ currentWindow: true }, (tabs) => {
+    if (tabs.length < 2) {
+      return;
+    }
+    if (index < 0 || tabs.length <= index) {
+      throw new RangeError(`buffer ${index} does not exist`)
+    }
+    let id = tabs[index].id;
+    chrome.tabs.update(id, { active: true })
+  });
+}
+
 const selectPrevTab = (current, count) => {
   chrome.tabs.query({ currentWindow: true }, (tabs) => {
     if (tabs.length < 2) {
@@ -47,4 +60,4 @@ const reload = (current, cache) => {
   );
 };
 
-export { closeTab, reopenTab, selectNextTab, selectPrevTab, reload };
+export { closeTab, reopenTab, selectAt, selectNextTab, selectPrevTab, reload };

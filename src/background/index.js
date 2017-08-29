@@ -1,6 +1,5 @@
 import * as actions from '../shared/actions';
 import * as tabs from './tabs';
-import * as commands from './commands';
 import * as zooms from './zooms';
 import KeyQueue from './key-queue';
 
@@ -59,14 +58,28 @@ const normalizeUrl = (string) => {
   }
 }
 
+const cmdBuffer = (arg) => {
+  if (isNaN(arg)) {
+    // TODO support buffer identification by non-number value
+    throw new TypeError(`${arg} is not a number`);
+  }
+
+  let index = parseInt(arg, 10) - 1;
+  tabs.selectAt(index);
+}
+
 const cmdEnterHandle = (request, sender) => {
   let words = request.text.split(' ').filter((s) => s.length > 0);
   switch (words[0]) {
-  case commands.OPEN:
+  case 'open':
     browser.tabs.update(sender.tab.id, { url: normalizeUrl(words[1]) });
     return;
-  case commands.TABOPEN:
+  case 'tabopen':
     browser.tabs.create({ url: normalizeUrl(words[1]) });
+    return;
+  case 'b':
+  case 'buffer':
+    cmdBuffer(words[1]);
     return;
   }
 };
