@@ -24,6 +24,9 @@ const invokeEvent = (action) => {
       vvConsole.showCommand('open ');
     }
     break;
+  case actions.CMD_BUFFER:
+    vvConsole.showCommand('buffer ');
+    break;
   case actions.SCROLL_LINES:
     scrolls.scrollLines(window, action[1]);
     break;
