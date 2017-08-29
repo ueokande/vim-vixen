@@ -10,9 +10,14 @@
     }
   ],
   "background": {
-    "scripts": ["build/background.js"]
+    "scripts": [
+      "build/background.js"
+    ]
   },
   "permissions": [
     "sessions"
+  ],
+  "web_accessible_resources": [
+    "build/command-line.html"
   ]
 }
