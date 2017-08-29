@@ -3,28 +3,38 @@ html, body, * {
   padding: 0;
 }
 
+body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
 .vimvixen-command-line {
   border-top: 1px solid gray;
   bottom: 0;
   margin: 0;
   padding: 0;
 
+  @mixin input-style {
+    font-style: normal;
+    font-family: monospace;
+    font-size: 12px;
+  }
+
+
   &-title {
     background-color: lightgray;
     font-weight: bold;
     margin: 0;
     padding: 0;
+
+    @include input-style;
   }
 
   &-line {
     background-color: white;
     display: flex;
-
-    @mixin input-style {
-      font-style: normal;
-      font-family: monospace;
-      font-size: 12px;
-    }
 
     &-prompt:before {
       content: ':';
