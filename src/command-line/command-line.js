@@ -1,4 +1,4 @@
-import './index.scss';
+import './command-line.scss';
 
 const parent = window.parent;
 

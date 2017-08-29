@@ -8,7 +8,7 @@ module.exports = {
   entry: {
     index: path.join(src, 'content'),
     background: path.join(src, 'background'),
-    'command-line': path.join(src, 'command-line')
+    'command-line': path.join(src, 'command-line', 'command-line.js')
   },
 
   output: {
@@ -43,7 +43,7 @@ module.exports = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(src, 'command-line', 'index.html'),
+      template: path.join(src, 'command-line', 'command-line.html'),
       filename: path.join(dist, 'command-line.html'),
       inject: false
     })
