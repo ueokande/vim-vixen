@@ -24,11 +24,29 @@ const selectAt = (index) => {
       return;
     }
     if (index < 0 || tabs.length <= index) {
-      throw new RangeError(`buffer ${index} does not exist`)
+      throw new RangeError(`tab ${index} does not exist`)
     }
     let id = tabs[index].id;
     chrome.tabs.update(id, { active: true })
   });
+};
+
+const selectByKeyword = (keyword) => {
+  chrome.tabs.query({ currentWindow: true }, (tabs) => {
+    let tab = tabs.find((tab) => tab.url.includes(keyword))
+    if (tab) {
+      chrome.tabs.update(tab.id, { active: true });
+      return;
+    }
+
+    tab = tabs.find((tab) => tab.title.includes(keyword))
+    if (tab) {
+      chrome.tabs.update(tab.id, { active: true });
+      return;
+    }
+
+    throw new RangeError('No matching buffer for ' + keyword);
+  })
 }
 
 const selectPrevTab = (current, count) => {
@@ -60,4 +78,4 @@ const reload = (current, cache) => {
   );
 };
 
-export { closeTab, reopenTab, selectAt, selectNextTab, selectPrevTab, reload };
+export { closeTab, reopenTab, selectAt, selectByKeyword, selectNextTab, selectPrevTab, reload };

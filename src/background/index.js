@@ -60,12 +60,11 @@ const normalizeUrl = (string) => {
 
 const cmdBuffer = (arg) => {
   if (isNaN(arg)) {
-    // TODO support buffer identification by non-number value
-    throw new TypeError(`${arg} is not a number`);
+    tabs.selectByKeyword(arg);
+  } else {
+    let index = parseInt(arg, 10) - 1;
+    tabs.selectAt(index);
   }
-
-  let index = parseInt(arg, 10) - 1;
-  tabs.selectAt(index);
 }
 
 const cmdEnterHandle = (request, sender) => {
