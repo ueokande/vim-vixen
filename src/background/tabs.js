@@ -33,19 +33,17 @@ const selectAt = (index) => {
 
 const selectByKeyword = (keyword) => {
   chrome.tabs.query({ currentWindow: true }, (tabs) => {
-    let tab = tabs.find((tab) => tab.url.includes(keyword))
-    if (tab) {
-      chrome.tabs.update(tab.id, { active: true });
-      return;
+    let matched = tabs.filter((t) => {
+      return t.url.includes(keyword) || t.title.includes(keyword)
+    })
+
+    if (matched.length == 0) {
+      throw new RangeError('No matching buffer for ' + keyword);
+    } else if (matched.length >= 2) {
+      throw new RangeError('More than one match for ' + keyword);
     }
 
-    tab = tabs.find((tab) => tab.title.includes(keyword))
-    if (tab) {
-      chrome.tabs.update(tab.id, { active: true });
-      return;
-    }
-
-    throw new RangeError('No matching buffer for ' + keyword);
+    chrome.tabs.update(matched[0].id, { active: true });
   })
 }
 
