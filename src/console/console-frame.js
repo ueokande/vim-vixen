@@ -1,13 +1,13 @@
-import './command-line-frame.scss';
+import './console-frame.scss';
 
-export default class CommandLineFrame {
+export default class ConsoleFrame {
   constructor(win, initial = '') {
-    let url = browser.runtime.getURL('build/command-line.html') +
+    let url = browser.runtime.getURL('build/console.html') +
       '#' + encodeURIComponent(initial);
 
     let element = window.document.createElement('iframe');
     element.src = url;
-    element.className = 'vimvixen-command-line-frame';
+    element.className = 'vimvixen-console-frame';
     win.document.body.append(element);
 
     this.element = element;

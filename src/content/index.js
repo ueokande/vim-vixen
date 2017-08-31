@@ -1,7 +1,7 @@
 import * as scrolls from './scrolls';
 import * as histories from './histories';
 import * as actions from '../shared/actions';
-import CommandLineFrame from '../command-line/command-line-frame';
+import ConsoleFrame from '../console/console-frame';
 import Follow from './follow';
 
 let cmd = null;
@@ -13,14 +13,14 @@ const invokeEvent = (action) => {
 
   switch (action[0]) {
   case actions.CMD_OPEN:
-    cmd = new CommandLineFrame(window);
+    cmd = new ConsoleFrame(window);
     break;
   case actions.CMD_TABS_OPEN:
     if (action[1] || false) {
       // alter url
-      cmd = new CommandLineFrame(window, 'open ' + window.location.href);
+      cmd = new ConsoleFrame(window, 'open ' + window.location.href);
     } else {
-      cmd = new CommandLineFrame(window, 'open ');
+      cmd = new ConsoleFrame(window, 'open ');
     }
     break;
   case actions.SCROLL_LINES:

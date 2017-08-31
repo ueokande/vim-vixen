@@ -18,6 +18,6 @@
     "sessions"
   ],
   "web_accessible_resources": [
-    "build/command-line.html"
+    "build/console.html"
   ]
 }

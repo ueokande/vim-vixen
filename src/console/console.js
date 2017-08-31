@@ -1,4 +1,4 @@
-import './command-line.scss';
+import './console.scss';
 
 const parent = window.parent;
 
@@ -55,7 +55,7 @@ window.addEventListener('load', () => {
     initial = decodeURIComponent(hash.substring(1));
   }
 
-  let input = window.document.querySelector('#vimvixen-command-line-line-input');
+  let input = window.document.querySelector('#vimvixen-console-command-input');
   input.addEventListener('blur', handleBlur);
   input.addEventListener('keydown', handleKeydown);
   input.addEventListener('keyup', handleKeyup);
