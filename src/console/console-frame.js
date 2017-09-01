@@ -2,7 +2,7 @@ import './console-frame.scss';
 import * as messages from '../shared/messages';
 
 export default class ConsoleFrame {
-  constructor(win, initial = '') {
+  constructor(win) {
     let element = window.document.createElement('iframe');
     element.src = browser.runtime.getURL('build/console.html');
     element.className = 'vimvixen-console-frame';

@@ -56,17 +56,34 @@ window.addEventListener('load', () => {
   input.addEventListener('keyup', handleKeyup);
 });
 
+const showCommand = (text) => {
+  let input = window.document.querySelector('#vimvixen-console-command-input');
+  input.value = text;
+  input.focus();
+
+  let command = window.document.querySelector('#vimvixen-console-command');
+  command.style.display = 'block';
+
+  let error = window.document.querySelector('#vimvixen-console-error');
+  error.style.display = 'none';
+}
+
+const showError = (text) => {
+  let error = window.document.querySelector('#vimvixen-console-error');
+  error.textContent = text;
+  error.style.display = 'block';
+
+  let command = window.document.querySelector('#vimvixen-console-command');
+  command.style.display = 'none';
+}
+
 messages.receive(window, (message) => {
   switch (message.type) {
   case 'vimvixen.console.show.command':
-    if (message.text) {
-      let input = window.document.querySelector('#vimvixen-console-command-input');
-      input.value = message.text;
-      input.focus();
-    }
+    showCommand(message.text);
     break;
   case 'vimvixen.console.show.error':
-    window.document.querySelector('#vimvixen-console-error').textContent = message.text;
+    showError(message.text);
     break;
   }
 });
