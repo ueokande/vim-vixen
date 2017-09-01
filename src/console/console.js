@@ -50,16 +50,23 @@ const handleKeyup = (e) => {
 };
 
 window.addEventListener('load', () => {
-  let hash = window.location.hash;
-  let initial = '';
-  if (hash.length > 0) {
-    initial = decodeURIComponent(hash.substring(1));
-  }
-
   let input = window.document.querySelector('#vimvixen-console-command-input');
   input.addEventListener('blur', handleBlur);
   input.addEventListener('keydown', handleKeydown);
   input.addEventListener('keyup', handleKeyup);
-  input.value = initial;
-  input.focus();
+});
+
+messages.receive(window, (message) => {
+  switch (message.type) {
+  case 'vimvixen.console.show.command':
+    if (message.text) {
+      let input = window.document.querySelector('#vimvixen-console-command-input');
+      input.value = message.text;
+      input.focus();
+    }
+    break;
+  case 'vimvixen.console.show.error':
+    window.document.querySelector('#vimvixen-console-error').textContent = message.text;
+    break;
+  }
 });
