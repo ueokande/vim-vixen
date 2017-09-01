@@ -1,6 +1,7 @@
 import * as scrolls from './scrolls';
 import * as histories from './histories';
 import * as actions from '../shared/actions';
+import * as messages from '../shared/messages';
 import ConsoleFrame from '../console/console-frame';
 import Follow from './follow';
 
@@ -71,15 +72,7 @@ window.addEventListener("keypress", (e) => {
       });
 });
 
-window.addEventListener('message', (e) => {
-  let message;
-  try {
-    message = JSON.parse(e.data);
-  } catch (e) {
-    // ignore message posted by author of web page
-    return;
-  }
-
+messages.receive(window, (message) => {
   switch (message.type) {
   case 'vimvixen.commandline.blur':
     if (cmd) {

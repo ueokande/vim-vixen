@@ -1,41 +1,42 @@
 import './console.scss';
+import * as messages from '../shared/messages';
 
 const parent = window.parent;
 
 // TODO consider object-oriented
 var prevValue = "";
 
-const blurData = () => {
-  return JSON.stringify({
+const blurMessage = () => {
+  return {
     type: 'vimvixen.commandline.blur'
-  });
+  };
 };
 
-const keydownData = (input) => {
-  return JSON.stringify({
+const keydownMessage = (input) => {
+  return {
     type: 'vimvixen.commandline.enter',
     value: input.value
-  });
+  };
 };
 
-const keyupData = (input) => {
-  return JSON.stringify({
+const keyupMessage = (input) => {
+  return {
     type: 'vimvixen.commandline.change',
     value: input.value
-  });
+  };
 };
 
 const handleBlur = () => {
-  parent.postMessage(blurData(), '*');
+  messages.send(parent, blurMessage());
 };
 
 const handleKeydown = (e) => {
   switch(e.keyCode) {
   case KeyboardEvent.DOM_VK_ESCAPE:
-    parent.postMessage(blurData(), '*');
+    messages.send(parent, blurMessage());
     break;
   case KeyboardEvent.DOM_VK_RETURN:
-    parent.postMessage(keydownData(e.target), '*');
+    messages.send(parent, keydownMessage(e.target));
     break;
   }
 };
@@ -44,7 +45,7 @@ const handleKeyup = (e) => {
   if (e.target.value === prevValue) {
     return;
   }
-  parent.postMessage(keyupData(e.target), '*');
+  messages.send(parent, keyupMessage(e.target));
   prevValue = e.target.value;
 };
 
