@@ -39,5 +39,6 @@ export default class ConsoleFrame {
 
   hide() {
     this.element.style.display = 'none';
+    this.element.blur();
   }
 }
