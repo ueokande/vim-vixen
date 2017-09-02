@@ -77,16 +77,16 @@ window.addEventListener("keypress", (e) => {
 
 messages.receive(window, (message) => {
   switch (message.type) {
-  case 'vimvixen.commandline.blur':
+  case 'vimvixen.command.blur':
     vvConsole.hide();
     break;
-  case 'vimvixen.commandline.enter':
+  case 'vimvixen.command.enter':
     browser.runtime.sendMessage({
       type: 'event.cmd.enter',
       text: message.value
     });
     break;
-  case 'vimvixen.commandline.change':
+  case 'vimvixen.command.change':
     browser.runtime.sendMessage({
       type: 'event.cmd.suggest',
       text: message.value

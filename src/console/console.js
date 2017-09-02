@@ -8,20 +8,20 @@ var prevValue = "";
 
 const blurMessage = () => {
   return {
-    type: 'vimvixen.commandline.blur'
+    type: 'vimvixen.command.blur'
   };
 };
 
 const keydownMessage = (input) => {
   return {
-    type: 'vimvixen.commandline.enter',
+    type: 'vimvixen.command.enter',
     value: input.value
   };
 };
 
 const keyupMessage = (input) => {
   return {
-    type: 'vimvixen.commandline.change',
+    type: 'vimvixen.command.change',
     value: input.value
   };
 };
