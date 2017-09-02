@@ -1,4 +1,4 @@
-.vimvixen-command-line-frame {
+.vimvixen-console-frame {
   margin: 0;
   padding: 0;
   bottom: 0;
@@ -8,4 +8,5 @@
   position: fixed;
   z-index: 10000;
   border: none;
+  pointer-events:none;
 }

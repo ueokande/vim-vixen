@@ -1,10 +1,11 @@
 import * as scrolls from './scrolls';
 import * as histories from './histories';
 import * as actions from '../shared/actions';
-import CommandLineFrame from '../command-line/command-line-frame';
+import * as messages from '../shared/messages';
+import ConsoleFrame from '../console/console-frame';
 import Follow from './follow';
 
-let cmd = null;
+let vvConsole = new ConsoleFrame(window);
 
 const invokeEvent = (action) => {
   if (typeof action === 'undefined' || action === null) {
@@ -13,14 +14,14 @@ const invokeEvent = (action) => {
 
   switch (action[0]) {
   case actions.CMD_OPEN:
-    cmd = new CommandLineFrame(window);
+    vvConsole.showCommand('');
     break;
   case actions.CMD_TABS_OPEN:
     if (action[1] || false) {
       // alter url
-      cmd = new CommandLineFrame(window, 'open ' + window.location.href);
+      vvConsole.showCommand('open ' + window.location.href);
     } else {
-      cmd = new CommandLineFrame(window, 'open ');
+      vvConsole.showCommand('open ');
     }
     break;
   case actions.SCROLL_LINES:
@@ -71,21 +72,10 @@ window.addEventListener("keypress", (e) => {
       });
 });
 
-window.addEventListener('message', (e) => {
-  let message;
-  try {
-    message = JSON.parse(e.data);
-  } catch (e) {
-    // ignore message posted by author of web page
-    return;
-  }
-
+messages.receive(window, (message) => {
   switch (message.type) {
   case 'vimvixen.commandline.blur':
-    if (cmd) {
-      cmd.remove();
-      cmd = null;
-    }
+    vvConsole.hide();
     break;
   case 'vimvixen.commandline.enter':
     browser.runtime.sendMessage({

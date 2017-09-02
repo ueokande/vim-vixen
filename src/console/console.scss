@@ -10,16 +10,25 @@ body {
   right: 0;
 }
 
-.vimvixen-command-line {
+.vimvixen-console {
   border-top: 1px solid gray;
   bottom: 0;
   margin: 0;
   padding: 0;
 
-  @mixin input-style {
+  @mixin consoole-font {
     font-style: normal;
     font-family: monospace;
     font-size: 12px;
+    line-height: 16px;
+  }
+
+  &-error {
+    background-color: red;
+    font-weight: bold;
+    color: white;
+
+    @include consoole-font;
   }
 
 
@@ -29,24 +38,24 @@ body {
     margin: 0;
     padding: 0;
 
-    @include input-style;
+    @include consoole-font;
   }
 
-  &-line {
+  &-command {
     background-color: white;
     display: flex;
 
     &-prompt:before {
       content: ':';
 
-      @include input-style;
+      @include consoole-font;
     }
 
     &-input {
       border: none;
       flex-grow: 1;
 
-      @include input-style;
+      @include consoole-font;
     }
   }
 }
