@@ -17,7 +17,10 @@ const keyPressHandle = (request, sender, sendResponse) => {
   if (actions.isBackgroundAction(action[0])) {
     doBackgroundAction(sender, action);
   } else if (actions.isContentAction(action[0])) {
-    sendResponse(action);
+    sendResponse({
+      type: 'response.action',
+      action: action
+    });
   }
 };
 
