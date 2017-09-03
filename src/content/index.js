@@ -83,6 +83,7 @@ window.addEventListener("keypress", (e) => {
   browser.runtime.sendMessage(request)
     .then(handleResponse)
     .catch((err) => {
+      vvConsole.showError(err.message);
       console.log(`Vim Vixen: ${err}`);
     });
 });
@@ -96,12 +97,16 @@ messages.receive(window, (message) => {
     browser.runtime.sendMessage({
       type: 'event.cmd.enter',
       text: message.value
+    }).catch((e) => {
+      vvConsole.showError(e.message);
     });
     break;
   case 'vimvixen.command.change':
     browser.runtime.sendMessage({
       type: 'event.cmd.suggest',
       text: message.value
+    }).catch((e) => {
+      vvConsole.showError(e.message);
     });
     break;
   default:

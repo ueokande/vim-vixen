@@ -5,52 +5,46 @@ import KeyQueue from './key-queue';
 
 const queue = new KeyQueue();
 
-const keyPressHandle = (request, sender, sendResponse) => {
+const keyPressHandle = (request, sender) => {
   let action = queue.push({
     code: request.code,
     ctrl: request.ctrl
   });
   if (!action) {
-    return;
+    return Promise.resolve();
   }
 
   if (actions.isBackgroundAction(action[0])) {
-    doBackgroundAction(sender, action);
+    return doBackgroundAction(sender, action);
   } else if (actions.isContentAction(action[0])) {
-    sendResponse({
+    return Promise.resolve({
       type: 'response.action',
       action: action
     });
   }
+  return Promise.resolve();
 };
 
 const doBackgroundAction = (sender, action) => {
   switch(action[0]) {
   case actions.TABS_CLOSE:
-    tabs.closeTab(sender.tab.id);
-    break;
+    return tabs.closeTab(sender.tab.id);
   case actions.TABS_REOPEN:
-    tabs.reopenTab();
-    break;
+    return tabs.reopenTab();
   case actions.TABS_PREV:
-    tabs.selectPrevTab(sender.tab.index, actions[1] || 1);
-    break;
+    return tabs.selectPrevTab(sender.tab.index, actions[1] || 1);
   case actions.TABS_NEXT:
-    tabs.selectNextTab(sender.tab.index, actions[1] || 1);
-    break;
+    return tabs.selectNextTab(sender.tab.index, actions[1] || 1);
   case actions.TABS_RELOAD:
-    tabs.reload(sender.tab, actions[1] || false);
-    break;
+    return tabs.reload(sender.tab, actions[1] || false);
   case actions.ZOOM_IN:
-    zooms.zoomIn();
-    break;
+    return zooms.zoomIn();
   case actions.ZOOM_OUT:
-    zooms.zoomOut();
-    break;
+    return zooms.zoomOut();
   case actions.ZOOM_NEUTRAL:
-    zooms.neutral();
-    break;
+    return zooms.neutral();
   }
+  return Promise.resolve();
 }
 
 const normalizeUrl = (string) => {
@@ -63,10 +57,10 @@ const normalizeUrl = (string) => {
 
 const cmdBuffer = (arg) => {
   if (isNaN(arg)) {
-    tabs.selectByKeyword(arg);
+    return tabs.selectByKeyword(arg);
   } else {
     let index = parseInt(arg, 10) - 1;
-    tabs.selectAt(index);
+    return tabs.selectAt(index);
   }
 }
 
@@ -74,28 +68,25 @@ const cmdEnterHandle = (request, sender) => {
   let words = request.text.split(' ').filter((s) => s.length > 0);
   switch (words[0]) {
   case 'open':
-    browser.tabs.update(sender.tab.id, { url: normalizeUrl(words[1]) });
-    return;
+    return browser.tabs.update(sender.tab.id, { url: normalizeUrl(words[1]) });
   case 'tabopen':
-    browser.tabs.create({ url: normalizeUrl(words[1]) });
-    return;
+    return browser.tabs.create({ url: normalizeUrl(words[1]) });
   case 'b':
   case 'buffer':
-    cmdBuffer(words[1]);
-    return;
+    return cmdBuffer(words[1]);
   }
+  throw new Error(words[0] + ' command is not defined');
 };
 
-browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+browser.runtime.onMessage.addListener((request, sender) => {
   switch (request.type) {
   case 'event.keypress':
-    keyPressHandle(request, sender, sendResponse);
-    break;
+    return keyPressHandle(request, sender);
   case 'event.cmd.enter':
-    cmdEnterHandle(request, sender, sendResponse);
-    break;
+    return cmdEnterHandle(request, sender);
   case 'event.cmd.suggest':
-    // TODO make suggestion and return via sendResponse
+    // TODO make suggestion and return
     break;
   }
+  return Promise.resolve();
 });
