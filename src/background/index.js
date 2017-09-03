@@ -55,9 +55,9 @@ const normalizeUrl = (string) => {
   }
 }
 
-const cmdBuffer = (arg) => {
+const cmdBuffer = (sender, arg) => {
   if (isNaN(arg)) {
-    return tabs.selectByKeyword(arg);
+    return tabs.selectByKeyword(sender.tab, arg);
   } else {
     let index = parseInt(arg, 10) - 1;
     return tabs.selectAt(index);
@@ -73,7 +73,7 @@ const cmdEnterHandle = (request, sender) => {
     return browser.tabs.create({ url: normalizeUrl(words[1]) });
   case 'b':
   case 'buffer':
-    return cmdBuffer(words[1]);
+    return cmdBuffer(sender, words[1]);
   }
   throw new Error(words[0] + ' command is not defined');
 };
