@@ -91,7 +91,9 @@ window.addEventListener("keypress", (e) => {
 messages.receive(window, (message) => {
   switch (message.type) {
   case 'vimvixen.command.blur':
-    vvConsole.hide();
+    if (!vvConsole.isErrorShown()) {
+      vvConsole.hide();
+    }
     break;
   case 'vimvixen.command.enter':
     browser.runtime.sendMessage({

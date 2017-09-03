@@ -57,15 +57,15 @@ window.addEventListener('load', () => {
 });
 
 const showCommand = (text) => {
-  let input = window.document.querySelector('#vimvixen-console-command-input');
-  input.value = text;
-  input.focus();
-
   let command = window.document.querySelector('#vimvixen-console-command');
   command.style.display = 'block';
 
   let error = window.document.querySelector('#vimvixen-console-error');
   error.style.display = 'none';
+
+  let input = window.document.querySelector('#vimvixen-console-command-input');
+  input.value = text;
+  input.focus();
 }
 
 const showError = (text) => {
