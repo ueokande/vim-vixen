@@ -7,7 +7,7 @@ import Follow from './follow';
 
 let vvConsole = new ConsoleFrame(window);
 
-const invokeEvent = (action) => {
+const doAction = (action) => {
   if (typeof action === 'undefined' || action === null) {
     return;
   }
@@ -23,6 +23,9 @@ const invokeEvent = (action) => {
     } else {
       vvConsole.showCommand('open ');
     }
+    break;
+  case actions.CMD_BUFFER:
+    vvConsole.showCommand('buffer ');
     break;
   case actions.SCROLL_LINES:
     scrolls.scrollLines(window, action[1]);
@@ -54,6 +57,18 @@ const invokeEvent = (action) => {
   }
 }
 
+const handleResponse = (response) => {
+  if (!response) {
+    return;
+  }
+
+  switch(response.type) {
+  case 'response.action':
+    doAction(response.action);
+    break;
+  }
+};
+
 window.addEventListener("keypress", (e) => {
   if (e.target instanceof HTMLInputElement) {
     return;
@@ -66,27 +81,34 @@ window.addEventListener("keypress", (e) => {
   }
 
   browser.runtime.sendMessage(request)
-    .then(invokeEvent,
-      (err) => {
-        console.log(`Vim Vixen: ${err}`);
-      });
+    .then(handleResponse)
+    .catch((err) => {
+      vvConsole.showError(err.message);
+      console.log(`Vim Vixen: ${err}`);
+    });
 });
 
 messages.receive(window, (message) => {
   switch (message.type) {
-  case 'vimvixen.commandline.blur':
-    vvConsole.hide();
+  case 'vimvixen.command.blur':
+    if (!vvConsole.isErrorShown()) {
+      vvConsole.hide();
+    }
     break;
-  case 'vimvixen.commandline.enter':
+  case 'vimvixen.command.enter':
     browser.runtime.sendMessage({
       type: 'event.cmd.enter',
       text: message.value
+    }).catch((e) => {
+      vvConsole.showError(e.message);
     });
     break;
-  case 'vimvixen.commandline.change':
+  case 'vimvixen.command.change':
     browser.runtime.sendMessage({
       type: 'event.cmd.suggest',
       text: message.value
+    }).catch((e) => {
+      vvConsole.showError(e.message);
     });
     break;
   default:

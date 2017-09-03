@@ -10,6 +10,8 @@ export default class ConsoleFrame {
 
     this.element = element;
 
+    this.errorShown = true;
+
     this.hide();
   }
 
@@ -21,6 +23,7 @@ export default class ConsoleFrame {
       text: text
     };
     messages.send(this.element.contentWindow, message);
+    this.errorShown = false;
   }
 
   showError(text) {
@@ -31,6 +34,8 @@ export default class ConsoleFrame {
       text: text
     };
     messages.send(this.element.contentWindow, message);
+    this.errorShown = true;
+    this.element.blur();
   }
 
   showFrame() {
@@ -40,5 +45,10 @@ export default class ConsoleFrame {
   hide() {
     this.element.style.display = 'none';
     this.element.blur();
+    this.errorShown = false;
+  }
+
+  isErrorShown() {
+    return this.element.style.display === 'block' && this.errorShown;
   }
 }

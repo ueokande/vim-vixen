@@ -15,7 +15,8 @@
     ]
   },
   "permissions": [
-    "sessions"
+    "sessions",
+    "tabs"
   ],
   "web_accessible_resources": [
     "build/console.html"

@@ -1,5 +1,6 @@
 export const CMD_OPEN = 'cmd.open';
 export const CMD_TABS_OPEN = 'cmd.tabs.open';
+export const CMD_BUFFER = 'cmd.buffer';
 export const TABS_CLOSE = 'tabs.close';
 export const TABS_REOPEN = 'tabs.reopen';
 export const TABS_PREV = 'tabs.prev';
@@ -32,6 +33,7 @@ const BACKGROUND_ACTION_SET = new Set([
 const CONTENT_ACTION_SET = new Set([
   CMD_OPEN,
   CMD_TABS_OPEN,
+  CMD_BUFFER,
   SCROLL_LINES,
   SCROLL_PAGES,
   SCROLL_TOP,

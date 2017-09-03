@@ -4,6 +4,7 @@ const DEFAULT_KEYMAP = {
   ':': [ actions.CMD_OPEN ],
   'o': [ actions.CMD_TABS_OPEN, false ],
   'O': [ actions.CMD_TABS_OPEN, true ],
+  'b': [ actions.CMD_BUFFER ],
   'k': [ actions.SCROLL_LINES, -1 ],
   'j': [ actions.SCROLL_LINES, 1 ],
   '<C-E>': [ actions.SCROLL_LINES, -1 ],

@@ -10,7 +10,7 @@ const ZOOM_SETTINGS = [
 ];
 
 const zoomIn = (tabId = undefined) => {
-  browser.tabs.getZoom(tabId).then((factor) => {
+  return browser.tabs.getZoom(tabId).then((factor) => {
     for (let f of ZOOM_SETTINGS) {
       if (f > factor) {
         browser.tabs.setZoom(tabId, f);
@@ -21,7 +21,7 @@ const zoomIn = (tabId = undefined) => {
 };
 
 const zoomOut = (tabId = undefined) => {
-  browser.tabs.getZoom(tabId).then((factor) => {
+  return browser.tabs.getZoom(tabId).then((factor) => {
     for (let f of [].concat(ZOOM_SETTINGS).reverse()) {
       if (f < factor) {
         browser.tabs.setZoom(tabId, f);
@@ -32,7 +32,7 @@ const zoomOut = (tabId = undefined) => {
 };
 
 const neutral = (tabId = undefined) => {
-  browser.tabs.setZoom(tabId, 1);
+  return browser.tabs.setZoom(tabId, 1);
 };
 
 export { zoomIn, zoomOut, neutral };
