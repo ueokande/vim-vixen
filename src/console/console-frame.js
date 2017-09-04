@@ -51,4 +51,8 @@ export default class ConsoleFrame {
   isErrorShown() {
     return this.element.style.display === 'block' && this.errorShown;
   }
+
+  setCompletions(completions) {
+    messages.send(this.element.contentWindow, completions);
+  }
 }

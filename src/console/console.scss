@@ -23,20 +23,40 @@ body {
     line-height: 16px;
   }
 
+  &-completion {
+    background-color: white;
+
+    @include consoole-font;
+
+    &-title {
+      background-color: lightgray;
+      font-weight: bold;
+      margin: 0;
+      padding: 0;
+    }
+
+    &-item {
+      padding-left: 1.5rem;
+      background-position: 0 center;
+      background-repeat: no-repeat;
+
+      &-caption {
+        display: inline-block;
+        width: 40%;
+      }
+
+      &-url {
+        display: inline-block;
+        color: green;
+      }
+    }
+
+  }
+
   &-error {
     background-color: red;
     font-weight: bold;
     color: white;
-
-    @include consoole-font;
-  }
-
-
-  &-title {
-    background-color: lightgray;
-    font-weight: bold;
-    margin: 0;
-    padding: 0;
 
     @include consoole-font;
   }

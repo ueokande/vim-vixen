@@ -75,6 +75,42 @@ const showError = (text) => {
 
   let command = window.document.querySelector('#vimvixen-console-command');
   command.style.display = 'none';
+
+  let completion  = window.document.querySelector('#vimvixen-console-completion');
+  command.style.display = 'none';
+}
+
+const setCompletions = (completions) => {
+  let completion  = window.document.querySelector('#vimvixen-console-completion');
+  completion.style.display = 'block';
+  completion.innerHTML = '';
+
+  for (let group of completions) {
+    let title = window.document.createElement('li');
+    title.className = 'vimvixen-console-completion-title';
+    title.textContent = group.name;
+
+    completion.append(title);
+
+    for (let item of group.items) {
+      let caption = window.document.createElement('span');
+      caption.textContent = item.caption;
+      caption.className = 'vimvixen-console-completion-item-caption';
+
+      let url = window.document.createElement('span');
+      url.textContent = item.url;
+      url.className = 'vimvixen-console-completion-item-url';
+
+      let li = window.document.createElement('li');
+      li.style.backgroundImage = 'url(' + item.icon + ')';
+      li.className = 'vimvixen-console-completion-item';
+      li.append(caption);
+      li.append(url);
+      li.setAttribute('data-content', item.content);
+
+      completion.append(li);
+    }
+  }
 }
 
 messages.receive(window, (message) => {
@@ -84,6 +120,9 @@ messages.receive(window, (message) => {
     break;
   case 'vimvixen.console.show.error':
     showError(message.text);
+    break;
+  case 'vimvixen.console.set.completions':
+    setCompletions(message.completions);
     break;
   }
 });
