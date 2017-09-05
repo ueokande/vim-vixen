@@ -31,7 +31,7 @@ const selectAt = (index) => {
   });
 };
 
-const selectByKeyword = (keyword) => {
+const selectByKeyword = (current, keyword) => {
   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
     let matched = tabs.filter((t) => {
       return t.url.includes(keyword) || t.title.includes(keyword)
@@ -39,13 +39,24 @@ const selectByKeyword = (keyword) => {
 
     if (matched.length == 0) {
       throw new RangeError('No matching buffer for ' + keyword);
-    } else if (matched.length >= 2) {
-      throw new RangeError('More than one match for ' + keyword);
     }
-
+    for (let tab of matched) {
+      if (tab.index > current.index) {
+        return browser.tabs.update(tab.id, { active: true });
+      }
+    }
     return browser.tabs.update(matched[0].id, { active: true });
   });
 }
+
+const getCompletions = (keyword) => {
+  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
+    let matched = tabs.filter((t) => {
+      return t.url.includes(keyword) || t.title.includes(keyword)
+    })
+    return matched;
+  });
+};
 
 const selectPrevTab = (current, count) => {
   return browser.tabs.query({ currentWindow: true }, (tabs) => {
@@ -76,4 +87,4 @@ const reload = (current, cache) => {
   );
 };
 
-export { closeTab, reopenTab, selectAt, selectByKeyword, selectNextTab, selectPrevTab, reload };
+export { closeTab, reopenTab, selectAt, selectByKeyword, getCompletions, selectPrevTab, selectNextTab, reload };
