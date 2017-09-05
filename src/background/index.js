@@ -84,8 +84,20 @@ browser.runtime.onMessage.addListener((request, sender) => {
     return keyPressHandle(request, sender);
   case 'event.cmd.enter':
     return cmdEnterHandle(request, sender);
-  case 'event.cmd.suggest':
-    // TODO make suggestion and return
+  case 'event.cmd.tabs.completion':
+    return tabs.getCompletions(request.text).then((tabs) => {
+      let items = tabs.map((tab) => {
+        return {
+          caption: tab.title,
+          content: tab.title,
+          url: tab.url
+        }
+      });
+      return {
+        name: "Buffers",
+        items: items
+      };
+    });
     break;
   }
   return Promise.resolve();

@@ -53,6 +53,9 @@ export default class ConsoleFrame {
   }
 
   setCompletions(completions) {
-    messages.send(this.element.contentWindow, completions);
+    messages.send(this.element.contentWindow, {
+      type: 'vimvixen.console.set.completions',
+      completions: completions
+    });
   }
 }
