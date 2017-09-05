@@ -6,7 +6,7 @@ const parent = window.parent;
 
 // TODO consider object-oriented
 var prevValue = "";
-window.completion = null;
+var completion = null;
 var completionOrigin = "";
 
 const blurMessage = () => {
@@ -34,10 +34,10 @@ const handleBlur = () => {
 };
 
 const completeNext = () => {
-  if (!window.completion) {
+  if (!completion) {
     return;
   }
-  let item = window.completion.next();
+  let item = completion.next();
   if (!item) {
     return;
   }
@@ -49,10 +49,10 @@ const completeNext = () => {
 }
 
 const completePrev = () => {
-  if (!window.completion) {
+  if (!completion) {
     return;
   }
-  let item = window.completion.prev();
+  let item = completion.prev();
   if (!item) {
     return;
   }
@@ -125,53 +125,67 @@ const showError = (text) => {
   completion.style.display = 'none';
 }
 
+const createCompletionTitle = (text) => {
+  let li = document.createElement('li');
+  li.className = 'vimvixen-console-completion-title';
+  li.textContent = text;
+  return li
+}
+
+const createCompletionItem = (icon, caption, url) => {
+  let captionEle = document.createElement('span');
+  captionEle.className = 'vimvixen-console-completion-item-caption';
+  captionEle.textContent = caption
+
+  let urlEle = document.createElement('span');
+  urlEle.className = 'vimvixen-console-completion-item-url';
+  urlEle.textContent = url
+
+  let li = document.createElement('li');
+  li.style.backgroundImage = 'url(' + icon + ')';
+  li.className = 'vimvixen-console-completion-item';
+  li.append(captionEle);
+  li.append(urlEle);
+  return li;
+}
+
 const setCompletions = (completions) => {
-  let completion  = window.document.querySelector('#vimvixen-console-completion');
-  completion.style.display = 'block';
-  completion.innerHTML = '';
+  let container  = window.document.querySelector('#vimvixen-console-completion');
+  container.style.display = 'block';
+  container.innerHTML = '';
 
   let pairs = [];
 
   for (let group of completions) {
-    let title = window.document.createElement('li');
-    title.className = 'vimvixen-console-completion-title';
-    title.textContent = group.name;
-
-    completion.append(title);
+    let title = createCompletionTitle(group.name);
+    container.append(title);
 
     for (let item of group.items) {
-      let caption = window.document.createElement('span');
-      caption.textContent = item.caption;
-      caption.className = 'vimvixen-console-completion-item-caption';
-
-      let url = window.document.createElement('span');
-      url.textContent = item.url;
-      url.className = 'vimvixen-console-completion-item-url';
-
-      let li = window.document.createElement('li');
-      li.style.backgroundImage = 'url(' + item.icon + ')';
-      li.className = 'vimvixen-console-completion-item';
-      li.append(caption);
-      li.append(url);
-
-      completion.append(li);
+      let li = createCompletionItem(item.icon, item.caption, item.url);
+      container.append(li);
 
       pairs.push([item, li]);
     }
   }
 
-  window.completion = new Completion(pairs);
+  completion = new Completion(pairs);
 
   let input = window.document.querySelector('#vimvixen-console-command-input');
   completionOrigin = input.value.split(' ')[0];
 }
 
-const selectCompletion = (element) => {
-  let elements = window.document.querySelectorAll('.vimvixen-console-completion-item');
-  Array.prototype.forEach.call(elements, (ele) => {
-    ele.className = 'vimvixen-console-completion-item';
+const selectCompletion = (target) => {
+  let container  = window.document.querySelector('#vimvixen-console-completion');
+  Array.prototype.forEach.call(container.children, (ele) => {
+    if (!ele.classList.contains('vimvixen-console-completion-item')) {
+      return;
+    }
+    if (ele === target) {
+      ele.classList.add('vimvixen-completion-selected');
+    } else {
+      ele.classList.remove('vimvixen-completion-selected');
+    }
   });
-  element.classList.add('vimvixen-completion-selected');
 };
 
 messages.receive(window, (message) => {
