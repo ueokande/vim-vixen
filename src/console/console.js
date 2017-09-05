@@ -111,6 +111,11 @@ const showCommand = (text) => {
   let input = window.document.querySelector('#vimvixen-console-command-input');
   input.value = text;
   input.focus();
+
+  completion = null;
+  let container  = window.document.querySelector('#vimvixen-console-completion');
+  container.innerHTML = '';
+  messages.send(parent, keyupMessage(input));
 }
 
 const showError = (text) => {
