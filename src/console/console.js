@@ -43,7 +43,9 @@ const completeNext = () => {
   }
 
   let input = window.document.querySelector('#vimvixen-console-command-input');
-  input.value = completionOrigin + ' ' + item.content;
+  input.value = completionOrigin + ' ' + item[0].content;
+
+  selectCompletion(item[1]);
 }
 
 const completePrev = () => {
@@ -56,7 +58,9 @@ const completePrev = () => {
   }
 
   let input = window.document.querySelector('#vimvixen-console-command-input');
-  input.value = completionOrigin + ' ' + item.content;
+  input.value = completionOrigin + ' ' + item[0].content;
+
+  selectCompletion(item[1]);
 }
 
 const handleKeydown = (e) => {
@@ -126,6 +130,8 @@ const setCompletions = (completions) => {
   completion.style.display = 'block';
   completion.innerHTML = '';
 
+  let pairs = [];
+
   for (let group of completions) {
     let title = window.document.createElement('li');
     title.className = 'vimvixen-console-completion-title';
@@ -147,21 +153,26 @@ const setCompletions = (completions) => {
       li.className = 'vimvixen-console-completion-item';
       li.append(caption);
       li.append(url);
-      li.setAttribute('data-content', item.content);
 
       completion.append(li);
+
+      pairs.push([item, li]);
     }
   }
 
-  let flatten = [];
-  for (let group of completions) {
-    flatten = flatten.concat(group.items);
-  }
-  window.completion = new Completion(flatten);
+  window.completion = new Completion(pairs);
 
   let input = window.document.querySelector('#vimvixen-console-command-input');
   completionOrigin = input.value.split(' ')[0];
 }
+
+const selectCompletion = (element) => {
+  let elements = window.document.querySelectorAll('.vimvixen-console-completion-item');
+  Array.prototype.forEach.call(elements, (ele) => {
+    ele.className = 'vimvixen-console-completion-item';
+  });
+  element.classList.add('vimvixen-completion-selected');
+};
 
 messages.receive(window, (message) => {
   switch (message.type) {

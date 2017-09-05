@@ -43,6 +43,10 @@ body {
       background-repeat: no-repeat;
       white-space: nowrap;
 
+      &.vimvixen-completion-selected {
+        background-color: yellow;
+      }
+
       &-caption {
         display: inline-block;
         width: 40%;
@@ -53,7 +57,6 @@ body {
         color: green;
       }
     }
-
   }
 
   &-error {
