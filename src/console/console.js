@@ -43,7 +43,7 @@ const completeNext = () => {
   }
 
   let input = window.document.querySelector('#vimvixen-console-command-input');
-  input.value = completionOrigin + item.content;
+  input.value = completionOrigin + ' ' + item.content;
 }
 
 const completePrev = () => {
@@ -56,7 +56,7 @@ const completePrev = () => {
   }
 
   let input = window.document.querySelector('#vimvixen-console-command-input');
-  input.value = completionOrigin + item.content;
+  input.value = completionOrigin + ' ' + item.content;
 }
 
 const handleKeydown = (e) => {
@@ -80,6 +80,9 @@ const handleKeydown = (e) => {
 };
 
 const handleKeyup = (e) => {
+  if (e.keyCode === KeyboardEvent.DOM_VK_TAB) {
+    return;
+  }
   if (e.target.value === prevValue) {
     return;
   }
@@ -157,7 +160,7 @@ const setCompletions = (completions) => {
   window.completion = new Completion(flatten);
 
   let input = window.document.querySelector('#vimvixen-console-command-input');
-  completionOrigin = input.value;
+  completionOrigin = input.value.split(' ')[0];
 }
 
 messages.receive(window, (message) => {

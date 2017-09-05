@@ -90,7 +90,8 @@ browser.runtime.onMessage.addListener((request, sender) => {
         return {
           caption: tab.title,
           content: tab.title,
-          url: tab.url
+          url: tab.url,
+          icon: tab.favIconUrl
         }
       });
       return {
