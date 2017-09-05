@@ -99,7 +99,5 @@ browser.runtime.onMessage.addListener((request, sender) => {
         items: items
       };
     });
-    break;
   }
-  return Promise.resolve();
 });

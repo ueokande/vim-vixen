@@ -97,9 +97,9 @@ const doCompletion = (line) => {
       text: keyword
     }).then((completions) => {
       vvConsole.setCompletions([completions]);
-    }).catch((e) => {
+    }).catch((err) => {
       console.error("Vim Vixen:", err);
-      vvConsole.showError(e.message);
+      vvConsole.showError(err.message);
     });
   }
 };
@@ -115,9 +115,9 @@ messages.receive(window, (message) => {
     browser.runtime.sendMessage({
       type: 'event.cmd.enter',
       text: message.value
-    }).catch((e) => {
+    }).catch((err) => {
       console.error("Vim Vixen:", err);
-      vvConsole.showError(e.message);
+      vvConsole.showError(err.message);
     });
     break;
   case 'vimvixen.command.change':
