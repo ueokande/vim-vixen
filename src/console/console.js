@@ -1,10 +1,13 @@
 import './console.scss';
+import Completion from './completion';
 import * as messages from '../shared/messages';
 
 const parent = window.parent;
 
 // TODO consider object-oriented
 var prevValue = "";
+window.completion = null;
+var completionOrigin = "";
 
 const blurMessage = () => {
   return {
@@ -30,6 +33,32 @@ const handleBlur = () => {
   messages.send(parent, blurMessage());
 };
 
+const completeNext = () => {
+  if (!window.completion) {
+    return;
+  }
+  let item = window.completion.next();
+  if (!item) {
+    return;
+  }
+
+  let input = window.document.querySelector('#vimvixen-console-command-input');
+  input.value = completionOrigin + item.content;
+}
+
+const completePrev = () => {
+  if (!window.completion) {
+    return;
+  }
+  let item = window.completion.prev();
+  if (!item) {
+    return;
+  }
+
+  let input = window.document.querySelector('#vimvixen-console-command-input');
+  input.value = completionOrigin + item.content;
+}
+
 const handleKeydown = (e) => {
   switch(e.keyCode) {
   case KeyboardEvent.DOM_VK_ESCAPE:
@@ -37,6 +66,15 @@ const handleKeydown = (e) => {
     break;
   case KeyboardEvent.DOM_VK_RETURN:
     messages.send(parent, keydownMessage(e.target));
+    break;
+  case KeyboardEvent.DOM_VK_TAB:
+    if (e.shiftKey) {
+      completePrev();
+    } else {
+      completeNext();
+    }
+    e.stopPropagation();
+    e.preventDefault();
     break;
   }
 };
@@ -77,7 +115,7 @@ const showError = (text) => {
   command.style.display = 'none';
 
   let completion  = window.document.querySelector('#vimvixen-console-completion');
-  command.style.display = 'none';
+  completion.style.display = 'none';
 }
 
 const setCompletions = (completions) => {
@@ -111,6 +149,15 @@ const setCompletions = (completions) => {
       completion.append(li);
     }
   }
+
+  let flatten = [];
+  for (let group of completions) {
+    flatten = flatten.concat(group.items);
+  }
+  window.completion = new Completion(flatten);
+
+  let input = window.document.querySelector('#vimvixen-console-command-input');
+  completionOrigin = input.value;
 }
 
 messages.receive(window, (message) => {
