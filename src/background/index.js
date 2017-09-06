@@ -14,9 +14,9 @@ const keyPressHandle = (request, sender) => {
     return Promise.resolve();
   }
 
-  if (actions.isBackgroundAction(action[0])) {
+  if (actions.isBackgroundAction(action.type)) {
     return doBackgroundAction(sender, action);
-  } else if (actions.isContentAction(action[0])) {
+  } else if (actions.isContentAction(action.type)) {
     return Promise.resolve({
       type: 'response.action',
       action: action
@@ -26,17 +26,17 @@ const keyPressHandle = (request, sender) => {
 };
 
 const doBackgroundAction = (sender, action) => {
-  switch(action[0]) {
+  switch(action.type) {
   case actions.TABS_CLOSE:
     return tabs.closeTab(sender.tab.id);
   case actions.TABS_REOPEN:
     return tabs.reopenTab();
   case actions.TABS_PREV:
-    return tabs.selectPrevTab(sender.tab.index, actions[1] || 1);
+    return tabs.selectPrevTab(sender.tab.index, action.count);
   case actions.TABS_NEXT:
-    return tabs.selectNextTab(sender.tab.index, actions[1] || 1);
+    return tabs.selectNextTab(sender.tab.index, action.count);
   case actions.TABS_RELOAD:
-    return tabs.reload(sender.tab, actions[1] || false);
+    return tabs.reload(sender.tab, actions.cache);
   case actions.ZOOM_IN:
     return zooms.zoomIn();
   case actions.ZOOM_OUT:

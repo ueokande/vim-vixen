@@ -8,16 +8,12 @@ import Follow from './follow';
 let vvConsole = new ConsoleFrame(window);
 
 const doAction = (action) => {
-  if (typeof action === 'undefined' || action === null) {
-    return;
-  }
-
-  switch (action[0]) {
+  switch (action.type) {
   case actions.CMD_OPEN:
     vvConsole.showCommand('');
     break;
   case actions.CMD_TABS_OPEN:
-    if (action[1] || false) {
+    if (action.alter) {
       // alter url
       vvConsole.showCommand('open ' + window.location.href);
     } else {
@@ -28,10 +24,10 @@ const doAction = (action) => {
     vvConsole.showCommand('buffer ');
     break;
   case actions.SCROLL_LINES:
-    scrolls.scrollLines(window, action[1]);
+    scrolls.scrollLines(window, action.count);
     break;
   case actions.SCROLL_PAGES:
-    scrolls.scrollPages(window, action[1]);
+    scrolls.scrollPages(window, action.count);
     break;
   case actions.SCROLL_TOP:
     scrolls.scrollTop(window);
@@ -46,7 +42,7 @@ const doAction = (action) => {
     scrolls.scrollRight(window);
     break;
   case actions.FOLLOW_START:
-    new Follow(window.document, action[1] || false);
+    new Follow(window.document, action.newTab);
     break;
   case actions.HISTORY_PREV:
     histories.prev(window);
