@@ -11,19 +11,16 @@ let vvConsole = new ConsoleFrame(window);
 browser.runtime.onMessage.addListener((action) => {
   switch (action.type) {
   case actions.CMD_OPEN:
-    vvConsole.showCommand('');
-    break;
+    return vvConsole.showCommand('');
   case actions.CMD_TABS_OPEN:
     if (action.alter) {
       // alter url
-      vvConsole.showCommand('open ' + window.location.href);
+      return vvConsole.showCommand('open ' + window.location.href);
     } else {
-      vvConsole.showCommand('open ');
+      return vvConsole.showCommand('open ');
     }
-    break;
   case actions.CMD_BUFFER:
-    vvConsole.showCommand('buffer ');
-    break;
+    return vvConsole.showCommand('buffer ');
   case actions.SCROLL_LINES:
     scrolls.scrollLines(window, action.count);
     break;

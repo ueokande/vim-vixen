@@ -22,8 +22,8 @@ export default class ConsoleFrame {
       type: 'vimvixen.console.show.command',
       text: text
     };
-    messages.send(this.element.contentWindow, message);
     this.errorShown = false;
+    return browser.runtime.sendMessage(message);
   }
 
   showError(text) {

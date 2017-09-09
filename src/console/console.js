@@ -195,9 +195,6 @@ const selectCompletion = (target) => {
 
 messages.receive(window, (message) => {
   switch (message.type) {
-  case 'vimvixen.console.show.command':
-    showCommand(message.text);
-    break;
   case 'vimvixen.console.show.error':
     showError(message.text);
     break;
@@ -205,4 +202,12 @@ messages.receive(window, (message) => {
     setCompletions(message.completions);
     break;
   }
+});
+
+browser.runtime.onMessage.addListener((action) => {
+  switch (action.type) {
+  case 'vimvixen.console.show.command':
+    return showCommand(action.text);
+  }
+  return Promise.resolve();
 });

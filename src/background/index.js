@@ -96,5 +96,7 @@ browser.runtime.onMessage.addListener((request, sender) => {
         items: items
       };
     });
+  default:
+    return browser.tabs.sendMessage(sender.tab.id, request);
   }
 });
