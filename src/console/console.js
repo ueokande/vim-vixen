@@ -1,12 +1,12 @@
 import './console.scss';
 import Completion from './completion';
-import consoleReducer, { defaultState } from '../reducers/console';
+import consoleReducer from '../reducers/console';
 
 // TODO consider object-oriented
 var prevValue = "";
 var completion = null;
 var completionOrigin = "";
-let state = defaultState;
+let state = consoleReducer(undefined, {});
 
 const blurMessage = () => {
   return {

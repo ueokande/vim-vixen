@@ -1,10 +1,10 @@
 import actions from '../actions';
 
-export const defaultState = {
-  errorText: '',
+const defaultState = {
   errorShown: false,
-  commandText: '',
+  errorText: '',
   commandShown: false,
+  commandText: '',
   completions: [],
 };
 
@@ -14,7 +14,7 @@ export default function reducer(state = defaultState, action = {}) {
     return Object.assign({}, state, {
       commandShown: true, 
       commandText: action.text,
-      errorShow: false,
+      errorShown: false,
       completions: []
     });
   case actions.CONSOLE_SET_COMPLETIONS:
@@ -23,8 +23,8 @@ export default function reducer(state = defaultState, action = {}) {
     });
   case actions.CONSOLE_SHOW_ERROR:
     return Object.assign({}, state, {
-      errorText: action.message,
-      errorShow: true,
+      errorText: action.text,
+      errorShown: true,
       commandShown: false,
     });
   case actions.CONSOLE_HIDE:
