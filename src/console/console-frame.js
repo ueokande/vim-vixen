@@ -1,5 +1,4 @@
 import './console-frame.scss';
-import * as messages from '../shared/messages';
 
 export default class ConsoleFrame {
   constructor(win) {
@@ -33,9 +32,10 @@ export default class ConsoleFrame {
       type: 'vimvixen.console.show.error',
       text: text
     };
-    messages.send(this.element.contentWindow, message);
     this.errorShown = true;
     this.element.blur();
+
+    return browser.runtime.sendMessage(message);
   }
 
   showFrame() {
@@ -53,7 +53,7 @@ export default class ConsoleFrame {
   }
 
   setCompletions(completions) {
-    messages.send(this.element.contentWindow, {
+    return browser.runtime.sendMessage({
       type: 'vimvixen.console.set.completions',
       completions: completions
     });

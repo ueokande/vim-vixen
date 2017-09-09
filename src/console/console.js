@@ -116,6 +116,8 @@ const showCommand = (text) => {
   let container  = window.document.querySelector('#vimvixen-console-completion');
   container.innerHTML = '';
   messages.send(parent, keyupMessage(input));
+
+  return Promise.resolve();
 }
 
 const showError = (text) => {
@@ -128,6 +130,8 @@ const showError = (text) => {
 
   let completion  = window.document.querySelector('#vimvixen-console-completion');
   completion.style.display = 'none';
+
+  return Promise.resolve();
 }
 
 const createCompletionTitle = (text) => {
@@ -177,6 +181,8 @@ const setCompletions = (completions) => {
 
   let input = window.document.querySelector('#vimvixen-console-command-input');
   completionOrigin = input.value.split(' ')[0];
+
+  return Promise.resolve();
 }
 
 const selectCompletion = (target) => {
@@ -193,21 +199,15 @@ const selectCompletion = (target) => {
   });
 };
 
-messages.receive(window, (message) => {
-  switch (message.type) {
-  case 'vimvixen.console.show.error':
-    showError(message.text);
-    break;
-  case 'vimvixen.console.set.completions':
-    setCompletions(message.completions);
-    break;
-  }
-});
-
 browser.runtime.onMessage.addListener((action) => {
   switch (action.type) {
+  case 'vimvixen.console.show.error':
+    return showError(action.text);
+  case 'vimvixen.console.set.completions':
+    return setCompletions(action.completions);
   case 'vimvixen.console.show.command':
     return showCommand(action.text);
+  default:
+    return Promise.resolve();
   }
-  return Promise.resolve();
 });
