@@ -7,7 +7,8 @@ import Follow from './follow';
 
 let vvConsole = new ConsoleFrame(window);
 
-const doAction = (action) => {
+
+browser.runtime.onMessage.addListener((action) => {
   switch (action.type) {
   case actions.CMD_OPEN:
     vvConsole.showCommand('');
@@ -51,19 +52,8 @@ const doAction = (action) => {
     histories.next(window);
     break;
   }
-}
-
-const handleResponse = (response) => {
-  if (!response) {
-    return;
-  }
-
-  switch(response.type) {
-  case 'response.action':
-    doAction(response.action);
-    break;
-  }
-};
+  return Promise.resolve();
+});
 
 window.addEventListener("keypress", (e) => {
   if (e.target instanceof HTMLInputElement) {
@@ -77,7 +67,6 @@ window.addEventListener("keypress", (e) => {
   }
 
   browser.runtime.sendMessage(request)
-    .then(handleResponse)
     .catch((err) => {
       console.error("Vim Vixen:", err);
       vvConsole.showError(err.message);

@@ -17,10 +17,7 @@ const keyPressHandle = (request, sender) => {
   if (actions.isBackgroundAction(action.type)) {
     return doBackgroundAction(sender, action);
   } else if (actions.isContentAction(action.type)) {
-    return Promise.resolve({
-      type: 'response.action',
-      action: action
-    });
+    return browser.tabs.sendMessage(sender.tab.id, action);
   }
   return Promise.resolve();
 };
