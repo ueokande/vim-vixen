@@ -1,10 +1,12 @@
 import './console.scss';
 import Completion from './completion';
+import consoleReducer, { defaultState } from '../reducers/console';
 
 // TODO consider object-oriented
 var prevValue = "";
 var completion = null;
 var completionOrigin = "";
+let state = defaultState;
 
 const blurMessage = () => {
   return {
@@ -96,38 +98,6 @@ window.addEventListener('load', () => {
   input.addEventListener('keyup', handleKeyup);
 });
 
-const showCommand = (text) => {
-  let command = window.document.querySelector('#vimvixen-console-command');
-  command.style.display = 'block';
-
-  let error = window.document.querySelector('#vimvixen-console-error');
-  error.style.display = 'none';
-
-  let input = window.document.querySelector('#vimvixen-console-command-input');
-  input.value = text;
-  input.focus();
-
-  completion = null;
-  let container  = window.document.querySelector('#vimvixen-console-completion');
-  container.innerHTML = '';
-
-  return browser.runtime.sendMessage(keyupMessage(input));
-}
-
-const showError = (text) => {
-  let error = window.document.querySelector('#vimvixen-console-error');
-  error.textContent = text;
-  error.style.display = 'block';
-
-  let command = window.document.querySelector('#vimvixen-console-command');
-  command.style.display = 'none';
-
-  let completion  = window.document.querySelector('#vimvixen-console-completion');
-  completion.style.display = 'none';
-
-  return Promise.resolve();
-}
-
 const createCompletionTitle = (text) => {
   let li = document.createElement('li');
   li.className = 'vimvixen-console-completion-title';
@@ -152,33 +122,6 @@ const createCompletionItem = (icon, caption, url) => {
   return li;
 }
 
-const setCompletions = (completions) => {
-  let container  = window.document.querySelector('#vimvixen-console-completion');
-  container.style.display = 'block';
-  container.innerHTML = '';
-
-  let pairs = [];
-
-  for (let group of completions) {
-    let title = createCompletionTitle(group.name);
-    container.append(title);
-
-    for (let item of group.items) {
-      let li = createCompletionItem(item.icon, item.caption, item.url);
-      container.append(li);
-
-      pairs.push([item, li]);
-    }
-  }
-
-  completion = new Completion(pairs);
-
-  let input = window.document.querySelector('#vimvixen-console-command-input');
-  completionOrigin = input.value.split(' ')[0];
-
-  return Promise.resolve();
-}
-
 const selectCompletion = (target) => {
   let container  = window.document.querySelector('#vimvixen-console-completion');
   Array.prototype.forEach.call(container.children, (ele) => {
@@ -193,15 +136,54 @@ const selectCompletion = (target) => {
   });
 };
 
+const updateCompletions = (completions) => {
+  let completionsContainer  = window.document.querySelector('#vimvixen-console-completion');
+  let input = window.document.querySelector('#vimvixen-console-command-input');
+
+  completionsContainer.innerHTML = '';
+
+  let pairs = [];
+
+  for (let group of completions) {
+    let title = createCompletionTitle(group.name);
+    completionsContainer.append(title);
+
+    for (let item of group.items) {
+      let li = createCompletionItem(item.icon, item.caption, item.url);
+      completionsContainer.append(li);
+
+      pairs.push([item, li]);
+    }
+  }
+
+  completion = new Completion(pairs);
+  completionOrigin = input.value.split(' ')[0];
+}
+
+const update = (prevState, state) => {
+  let error = window.document.querySelector('#vimvixen-console-error');
+  let command = window.document.querySelector('#vimvixen-console-command');
+  let input = window.document.querySelector('#vimvixen-console-command-input');
+
+  error.style.display = state.errorShown ? 'block' : 'none';
+  error.textContent = state.errorText;
+
+  command.style.display = state.commandShown ? 'block' : 'none';
+  if (!prevState.commandShown && state.commandShown) {
+    // setup input on firstly shown
+    input.value = state.commandText;
+    input.focus();
+  }
+
+  if (JSON.stringify(state.completions) !== JSON.stringify(prevState.completions)) {
+    updateCompletions(state.completions);
+  }
+}
+
 browser.runtime.onMessage.addListener((action) => {
-  switch (action.type) {
-  case 'vimvixen.console.show.error':
-    return showError(action.text);
-  case 'vimvixen.console.set.completions':
-    return setCompletions(action.completions);
-  case 'vimvixen.console.show.command':
-    return showCommand(action.text);
-  default:
-    return Promise.resolve();
+  let nextState = consoleReducer(state, action);
+  if (JSON.stringify(nextState) !== JSON.stringify(state)) {
+    update(state, nextState);
+    state = nextState;
   }
 });

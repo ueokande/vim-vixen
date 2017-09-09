@@ -6,7 +6,6 @@ import Follow from './follow';
 
 let vvConsole = new ConsoleFrame(window);
 
-
 browser.runtime.onMessage.addListener((action) => {
   switch (action.type) {
   case actions.CMD_OPEN:

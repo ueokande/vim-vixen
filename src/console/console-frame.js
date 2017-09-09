@@ -1,4 +1,5 @@
 import './console-frame.scss';
+import * as consoleActions from '../actions/console';
 
 export default class ConsoleFrame {
   constructor(win) {
@@ -16,26 +17,17 @@ export default class ConsoleFrame {
 
   showCommand(text) {
     this.showFrame();
-
-    let message = {
-      type: 'vimvixen.console.show.command',
-      text: text
-    };
     this.errorShown = false;
-    return browser.runtime.sendMessage(message);
+    return browser.runtime.sendMessage(consoleActions.showCommand(text));
   }
 
   showError(text) {
     this.showFrame();
 
-    let message = {
-      type: 'vimvixen.console.show.error',
-      text: text
-    };
     this.errorShown = true;
     this.element.blur();
 
-    return browser.runtime.sendMessage(message);
+    return browser.runtime.sendMessage(consoleActions.showError(text));
   }
 
   showFrame() {
@@ -46,6 +38,8 @@ export default class ConsoleFrame {
     this.element.style.display = 'none';
     this.element.blur();
     this.errorShown = false;
+
+    return browser.runtime.sendMessage(consoleActions.hide());
   }
 
   isErrorShown() {
@@ -53,9 +47,6 @@ export default class ConsoleFrame {
   }
 
   setCompletions(completions) {
-    return browser.runtime.sendMessage({
-      type: 'vimvixen.console.set.completions',
-      completions: completions
-    });
+    return browser.runtime.sendMessage(consoleActions.setCompletions(completions));
   }
 }
