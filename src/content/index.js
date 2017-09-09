@@ -1,7 +1,6 @@
 import * as scrolls from './scrolls';
 import * as histories from './histories';
 import * as actions from '../shared/actions';
-import * as messages from '../shared/messages';
 import ConsoleFrame from '../console/console-frame';
 import Follow from './follow';
 
@@ -84,28 +83,27 @@ const doCompletion = (line) => {
       vvConsole.showError(err.message);
     });
   }
+  return Promise.resolve();
 };
 
-messages.receive(window, (message) => {
-  switch (message.type) {
+browser.runtime.onMessage.addListener((action) => {
+  switch (action.type) {
   case 'vimvixen.command.blur':
     if (!vvConsole.isErrorShown()) {
       vvConsole.hide();
     }
-    break;
+    return Promise.resolve();
   case 'vimvixen.command.enter':
-    browser.runtime.sendMessage({
+    return browser.runtime.sendMessage({
       type: 'event.cmd.enter',
-      text: message.value
+      text: action.value
     }).catch((err) => {
       console.error("Vim Vixen:", err);
       vvConsole.showError(err.message);
     });
-    break;
   case 'vimvixen.command.change':
-    doCompletion(message.value);
-    break;
+    return doCompletion(action.value);
   default:
-    return;
+    return Promise.resolve();
   }
 });

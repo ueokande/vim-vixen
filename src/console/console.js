@@ -1,8 +1,5 @@
 import './console.scss';
 import Completion from './completion';
-import * as messages from '../shared/messages';
-
-const parent = window.parent;
 
 // TODO consider object-oriented
 var prevValue = "";
@@ -30,7 +27,7 @@ const keyupMessage = (input) => {
 };
 
 const handleBlur = () => {
-  messages.send(parent, blurMessage());
+  return browser.runtime.sendMessage(blurMessage());
 };
 
 const completeNext = () => {
@@ -66,11 +63,9 @@ const completePrev = () => {
 const handleKeydown = (e) => {
   switch(e.keyCode) {
   case KeyboardEvent.DOM_VK_ESCAPE:
-    messages.send(parent, blurMessage());
-    break;
+    return browser.runtime.sendMessage(blurMessage());
   case KeyboardEvent.DOM_VK_RETURN:
-    messages.send(parent, keydownMessage(e.target));
-    break;
+    return browser.runtime.sendMessage(keydownMessage(e.target));
   case KeyboardEvent.DOM_VK_TAB:
     if (e.shiftKey) {
       completePrev();
@@ -90,8 +85,8 @@ const handleKeyup = (e) => {
   if (e.target.value === prevValue) {
     return;
   }
-  messages.send(parent, keyupMessage(e.target));
   prevValue = e.target.value;
+  return browser.runtime.sendMessage(keyupMessage(e.target));
 };
 
 window.addEventListener('load', () => {
@@ -115,9 +110,8 @@ const showCommand = (text) => {
   completion = null;
   let container  = window.document.querySelector('#vimvixen-console-completion');
   container.innerHTML = '';
-  messages.send(parent, keyupMessage(input));
 
-  return Promise.resolve();
+  return browser.runtime.sendMessage(keyupMessage(input));
 }
 
 const showError = (text) => {
