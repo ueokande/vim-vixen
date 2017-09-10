@@ -45,8 +45,4 @@ export default class ConsoleFrame {
   isErrorShown() {
     return this.element.style.display === 'block' && this.errorShown;
   }
-
-  setCompletions(completions) {
-    return browser.runtime.sendMessage(consoleActions.setCompletions(completions));
-  }
 }

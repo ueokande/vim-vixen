@@ -1,4 +1,5 @@
 import './console.scss';
+import * as backgroundActions from '../actions/background';
 import Completion from './completion';
 import consoleReducer from '../reducers/console';
 
@@ -17,13 +18,6 @@ const blurMessage = () => {
 const keydownMessage = (input) => {
   return {
     type: 'vimvixen.command.enter',
-    value: input.value
-  };
-};
-
-const keyupMessage = (input) => {
-  return {
-    type: 'vimvixen.command.change',
     value: input.value
   };
 };
@@ -88,7 +82,9 @@ const handleKeyup = (e) => {
     return;
   }
   prevValue = e.target.value;
-  return browser.runtime.sendMessage(keyupMessage(e.target));
+  return browser.runtime.sendMessage(
+    backgroundActions.requestCompletions(e.target.value)
+  );
 };
 
 window.addEventListener('load', () => {

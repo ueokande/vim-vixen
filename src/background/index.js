@@ -2,6 +2,7 @@ import * as actions from '../shared/actions';
 import * as tabs from './tabs';
 import * as zooms from './zooms';
 import KeyQueue from './key-queue';
+import backgroundReducers from '../reducers/background';
 
 const queue = new KeyQueue();
 
@@ -81,22 +82,11 @@ browser.runtime.onMessage.addListener((request, sender) => {
     return keyPressHandle(request, sender);
   case 'event.cmd.enter':
     return cmdEnterHandle(request, sender);
-  case 'event.cmd.tabs.completion':
-    return tabs.getCompletions(request.text).then((tabs) => {
-      let items = tabs.map((tab) => {
-        return {
-          caption: tab.title,
-          content: tab.title,
-          url: tab.url,
-          icon: tab.favIconUrl
-        }
-      });
-      return {
-        name: "Buffers",
-        items: items
-      };
-    });
   default:
     return browser.tabs.sendMessage(sender.tab.id, request);
   }
+});
+
+browser.runtime.onMessage.addListener((action, sender) => {
+  return backgroundReducers(undefined, action, sender.tab.id);
 });

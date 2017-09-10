@@ -68,23 +68,6 @@ window.addEventListener("keypress", (e) => {
     });
 });
 
-const doCompletion = (line) => {
-  if (line.startsWith('buffer ')) {
-    let keyword = line.replace('buffer ', '');
-
-    browser.runtime.sendMessage({
-      type: 'event.cmd.tabs.completion',
-      text: keyword
-    }).then((completions) => {
-      vvConsole.setCompletions([completions]);
-    }).catch((err) => {
-      console.error("Vim Vixen:", err);
-      vvConsole.showError(err.message);
-    });
-  }
-  return Promise.resolve();
-};
-
 browser.runtime.onMessage.addListener((action) => {
   switch (action.type) {
   case 'vimvixen.command.blur':
@@ -100,8 +83,6 @@ browser.runtime.onMessage.addListener((action) => {
       console.error("Vim Vixen:", err);
       vvConsole.showError(err.message);
     });
-  case 'vimvixen.command.change':
-    return doCompletion(action.value);
   default:
     return Promise.resolve();
   }
