@@ -1,6 +1,6 @@
 import actions from '../actions';
 
-const DEFAULT_KEYMAP = {
+const defaultKeymap = {
   ':': { type: actions.CMD_OPEN },
   'o': { type: actions.CMD_TABS_OPEN, alter: false },
   'O': { type: actions.CMD_TABS_OPEN, alter: true },
@@ -32,51 +32,26 @@ const DEFAULT_KEYMAP = {
   'L': { type: actions.HISTORY_NEXT },
 }
 
-export default class KeyQueue {
-
-  constructor(keymap = DEFAULT_KEYMAP) {
-    this.data = [];
-    this.keymap = keymap;
-  }
-
-  push(key) {
-    this.data.push(key);
-
-    let current = this.asKeymapChars();
-    let filtered = Object.keys(this.keymap).filter((keys) => {
-      return keys.startsWith(current);
-    });
-
-    if (filtered.length == 0) {
-      this.data = [];
-      return null;
-    } else if (filtered.length === 1 && current === filtered[0]) {
-      let action = this.keymap[filtered[0]];
-      this.data = [];
-      return action;
+const asKeymapChars = (keys) => {
+  return keys.map((k) => {
+    let c = String.fromCharCode(k.code);
+    if (k.ctrl) {
+      return '<C-' + c.toUpperCase() + '>';
+    } else {
+      return c
     }
-    return null;
-  }
-
-  asKeymapChars() {
-    return this.data.map((k) => {
-      let c = String.fromCharCode(k.code);
-      if (k.ctrl) {
-        return '<C-' + c.toUpperCase() + '>';
-      } else {
-        return c
-      }
-    }).join('');
-  }
-
-  asCaretChars() {
-    return this.data.map((k) => {
-      let c = String.fromCharCode(k.code);
-      if (k.ctrl) {
-        return '^' + c.toUpperCase();
-      } else {
-        return c;
-      }
-    }).join('');
-  }
+  }).join('');
 }
+
+const asCaretChars = (keys) => {
+  return keys.map((k) => {
+    let c = String.fromCharCode(k.code);
+    if (k.ctrl) {
+      return '^' + c.toUpperCase();
+    } else {
+      return c;
+    }
+  }).join('');
+}
+
+export { defaultKeymap, asKeymapChars, asCaretChars };

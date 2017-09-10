@@ -29,4 +29,8 @@ export default {
   FOLLOW_START: 'follow.start',
   HISTORY_PREV: 'history.prev',
   HISTORY_NEXT: 'history.next',
+
+  // User input
+  INPUT_KEY_PRESS: 'input.key,press',
+  INPUT_CLEAR_KEYS: 'input.clear.keys',
 };

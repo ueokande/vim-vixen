@@ -1,4 +1,5 @@
 import '../console/console-frame.scss';
+import * as inputActions from '../actions/input';
 import * as consoleFrames from '../console/frames';
 import actions from '../actions';
 import contentReducer from '../reducers/content';
@@ -14,14 +15,7 @@ window.addEventListener("keypress", (e) => {
   if (e.target instanceof HTMLInputElement) {
     return;
   }
-
-  let request = {
-    type: 'event.keypress',
-    code: e.which,
-    ctrl: e.ctrlKey,
-  }
-
-  browser.runtime.sendMessage(request)
+  browser.runtime.sendMessage(inputActions.keyPress(e.which, e.ctrlKey))
     .catch((err) => {
       console.error("Vim Vixen:", err);
       return consoleFrames.showError(err.message);
