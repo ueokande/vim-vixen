@@ -1,4 +1,3 @@
-import * as actions from '../shared/actions';
 import * as tabs from './tabs';
 import KeyQueue from './key-queue';
 import backgroundReducers from '../reducers/background';
@@ -14,11 +13,9 @@ const keyPressHandle = (request, sender) => {
     return Promise.resolve();
   }
 
-  if (actions.isContentAction(action.type)) {
+  return backgroundReducers(undefined, action, sender).then(() => {
     return browser.tabs.sendMessage(sender.tab.id, action);
-  } else {
-    return backgroundReducers(undefined, action, sender);
-  }
+  });
 };
 
 const normalizeUrl = (string) => {
