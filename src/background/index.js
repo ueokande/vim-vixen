@@ -1,6 +1,5 @@
 import * as actions from '../shared/actions';
 import * as tabs from './tabs';
-import * as zooms from './zooms';
 import KeyQueue from './key-queue';
 import backgroundReducers from '../reducers/background';
 
@@ -15,35 +14,12 @@ const keyPressHandle = (request, sender) => {
     return Promise.resolve();
   }
 
-  if (actions.isBackgroundAction(action.type)) {
-    return doBackgroundAction(sender, action);
-  } else if (actions.isContentAction(action.type)) {
+  if (actions.isContentAction(action.type)) {
     return browser.tabs.sendMessage(sender.tab.id, action);
+  } else {
+    return backgroundReducers(undefined, action, sender);
   }
-  return Promise.resolve();
 };
-
-const doBackgroundAction = (sender, action) => {
-  switch(action.type) {
-  case actions.TABS_CLOSE:
-    return tabs.closeTab(sender.tab.id);
-  case actions.TABS_REOPEN:
-    return tabs.reopenTab();
-  case actions.TABS_PREV:
-    return tabs.selectPrevTab(sender.tab.index, action.count);
-  case actions.TABS_NEXT:
-    return tabs.selectNextTab(sender.tab.index, action.count);
-  case actions.TABS_RELOAD:
-    return tabs.reload(sender.tab, actions.cache);
-  case actions.ZOOM_IN:
-    return zooms.zoomIn();
-  case actions.ZOOM_OUT:
-    return zooms.zoomOut();
-  case actions.ZOOM_NEUTRAL:
-    return zooms.neutral();
-  }
-  return Promise.resolve();
-}
 
 const normalizeUrl = (string) => {
   try {
@@ -88,5 +64,5 @@ browser.runtime.onMessage.addListener((request, sender) => {
 });
 
 browser.runtime.onMessage.addListener((action, sender) => {
-  return backgroundReducers(undefined, action, sender.tab.id);
+  return backgroundReducers(undefined, action, sender);
 });
