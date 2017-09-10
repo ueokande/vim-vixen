@@ -1,5 +1,6 @@
 import './console.scss';
 import * as backgroundActions from '../actions/background';
+import * as consoleActions from '../actions/console';
 import Completion from './completion';
 import consoleReducer from '../reducers/console';
 
@@ -9,12 +10,6 @@ var completion = null;
 var completionOrigin = "";
 let state = consoleReducer(undefined, {});
 
-const blurMessage = () => {
-  return {
-    type: 'vimvixen.command.blur'
-  };
-};
-
 const keydownMessage = (input) => {
   return {
     type: 'vimvixen.command.enter',
@@ -23,7 +18,7 @@ const keydownMessage = (input) => {
 };
 
 const handleBlur = () => {
-  return browser.runtime.sendMessage(blurMessage());
+  return browser.runtime.sendMessage(consoleActions.hide());
 };
 
 const completeNext = () => {
@@ -57,9 +52,11 @@ const completePrev = () => {
 }
 
 const handleKeydown = (e) => {
+  let input = window.document.querySelector('#vimvixen-console-command-input');
+
   switch(e.keyCode) {
   case KeyboardEvent.DOM_VK_ESCAPE:
-    return browser.runtime.sendMessage(blurMessage());
+    return input.blur();
   case KeyboardEvent.DOM_VK_RETURN:
     return browser.runtime.sendMessage(keydownMessage(e.target));
   case KeyboardEvent.DOM_VK_TAB:
@@ -182,4 +179,8 @@ browser.runtime.onMessage.addListener((action) => {
     update(state, nextState);
     state = nextState;
   }
+});
+
+window.addEventListener('load', () => {
+  update({}, state);
 });

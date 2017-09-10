@@ -1,24 +1,26 @@
+import '../console/console-frame.scss';
 import * as scrolls from './scrolls';
 import * as histories from './histories';
 import * as actions from '../shared/actions';
-import ConsoleFrame from '../console/console-frame';
+import * as consoleFrames from '../console/frames';
+import actionTypes from '../actions';
 import Follow from './follow';
 
-let vvConsole = new ConsoleFrame(window);
+consoleFrames.initialize(window.document);
 
 browser.runtime.onMessage.addListener((action) => {
   switch (action.type) {
   case actions.CMD_OPEN:
-    return vvConsole.showCommand('');
+    return consoleFrames.showCommand('');
   case actions.CMD_TABS_OPEN:
     if (action.alter) {
       // alter url
-      return vvConsole.showCommand('open ' + window.location.href);
+      return consoleFrames.showCommand('open ' + window.location.href);
     } else {
-      return vvConsole.showCommand('open ');
+      return consoleFrames.showCommand('open ');
     }
   case actions.CMD_BUFFER:
-    return vvConsole.showCommand('buffer ');
+    return consoleFrames.showCommand('buffer ');
   case actions.SCROLL_LINES:
     scrolls.scrollLines(window, action.count);
     break;
@@ -64,24 +66,22 @@ window.addEventListener("keypress", (e) => {
   browser.runtime.sendMessage(request)
     .catch((err) => {
       console.error("Vim Vixen:", err);
-      vvConsole.showError(err.message);
+      return consoleFrames.showError(err.message);
     });
 });
 
 browser.runtime.onMessage.addListener((action) => {
   switch (action.type) {
-  case 'vimvixen.command.blur':
-    if (!vvConsole.isErrorShown()) {
-      vvConsole.hide();
-    }
-    return Promise.resolve();
+  case actionTypes.CONSOLE_HIDE:
+    window.focus();
+    return consoleFrames.blur(window.document);
   case 'vimvixen.command.enter':
     return browser.runtime.sendMessage({
       type: 'event.cmd.enter',
       text: action.value
     }).catch((err) => {
       console.error("Vim Vixen:", err);
-      vvConsole.showError(err.message);
+      return consoleFrames.showError(err.message);
     });
   default:
     return Promise.resolve();
