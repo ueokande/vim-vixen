@@ -22,7 +22,7 @@ export function exec(line) {
   case 'tabopen':
     return {
       type: actions.COMMAND_TABOPEN_URL,
-      url: remaining
+      url: normalizeUrl(remaining)
     };
   case 'b':
   case 'buffer':
