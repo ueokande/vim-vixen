@@ -1,6 +1,7 @@
 import './console.scss';
 import * as backgroundActions from '../actions/background';
 import * as consoleActions from '../actions/console';
+import * as commandActions from '../actions/command';
 import Completion from './completion';
 import consoleReducer from '../reducers/console';
 
@@ -9,13 +10,6 @@ var prevValue = "";
 var completion = null;
 var completionOrigin = "";
 let state = consoleReducer(undefined, {});
-
-const keydownMessage = (input) => {
-  return {
-    type: 'vimvixen.command.enter',
-    value: input.value
-  };
-};
 
 const handleBlur = () => {
   return browser.runtime.sendMessage(consoleActions.hide());
@@ -58,7 +52,7 @@ const handleKeydown = (e) => {
   case KeyboardEvent.DOM_VK_ESCAPE:
     return input.blur();
   case KeyboardEvent.DOM_VK_RETURN:
-    return browser.runtime.sendMessage(keydownMessage(e.target));
+    return browser.runtime.sendMessage(commandActions.exec(e.target.value));
   case KeyboardEvent.DOM_VK_TAB:
     if (e.shiftKey) {
       completePrev();

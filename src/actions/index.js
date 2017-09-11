@@ -33,4 +33,8 @@ export default {
   // User input
   INPUT_KEY_PRESS: 'input.key,press',
   INPUT_CLEAR_KEYS: 'input.clear.keys',
+
+  COMMAND_OPEN_URL: 'command.open.url',
+  COMMAND_TABOPEN_URL: 'command.tabopen.url',
+  COMMAND_BUFFER: 'command.buffer',
 };
