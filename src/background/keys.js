@@ -1,28 +1,57 @@
-const identifyKey = (key1, key2) => {
-  return (key1.code === key2.code) &&
-    ((key1.shift || false) === (key2.shift || false)) &&
-    ((key1.ctrl || false) === (key2.ctrl || false)) &&
-    ((key1.alt || false) === (key2.alt || false)) &&
-    ((key1.meta || false) === (key2.meta || false));
-};
+import actions from '../actions';
 
-const hasPrefix = (keys, prefix) => {
-  if (keys.length < prefix.length) {
-    return false;
-  }
-  for (let i = 0; i < prefix.length; ++i) {
-    if (!identifyKey(keys[i], prefix[i])) {
-      return false;
+const defaultKeymap = {
+  ':': { type: actions.CMD_OPEN },
+  'o': { type: actions.CMD_TABS_OPEN, alter: false },
+  'O': { type: actions.CMD_TABS_OPEN, alter: true },
+  'b': { type: actions.CMD_BUFFER },
+  'k': { type: actions.SCROLL_LINES, count: -1 },
+  'j': { type: actions.SCROLL_LINES, count: 1 },
+  '<C-E>': { type: actions.SCROLL_LINES, count: -1 },
+  '<C-Y>': { type: actions.SCROLL_LINES, count: 1 },
+  '<C-U>': { type: actions.SCROLL_PAGES, count: -0.5 },
+  '<C-D>': { type: actions.SCROLL_PAGES, count: 0.5 },
+  '<C-B>': { type: actions.SCROLL_PAGES, count: -1 },
+  '<C-F>': { type: actions.SCROLL_PAGES, count: 1 },
+  'gg': { type: actions.SCROLL_TOP },
+  'G': { type: actions.SCROLL_BOTTOM },
+  '0': { type: actions.SCROLL_LEFT },
+  '$': { type: actions.SCROLL_RIGHT },
+  'd': { type: actions.TABS_CLOSE },
+  'u': { type: actions.TABS_REOPEN },
+  'h': { type: actions.TABS_PREV, count: 1 },
+  'l': { type: actions.TABS_NEXT, count: 1 },
+  'r': { type: actions.TABS_RELOAD, cache: false },
+  'R': { type: actions.TABS_RELOAD, cache: true },
+  'zi': { type: actions.ZOOM_IN },
+  'zo': { type: actions.ZOOM_OUT },
+  'zz': { type: actions.ZOOM_NEUTRAL },
+  'f': { type: actions.FOLLOW_START, newTab: false },
+  'F': { type: actions.FOLLOW_START, newTab: true },
+  'H': { type: actions.HISTORY_PREV },
+  'L': { type: actions.HISTORY_NEXT },
+}
+
+const asKeymapChars = (keys) => {
+  return keys.map((k) => {
+    let c = String.fromCharCode(k.code);
+    if (k.ctrl) {
+      return '<C-' + c.toUpperCase() + '>';
+    } else {
+      return c
     }
-  }
-  return true;
+  }).join('');
 }
 
-const identifyKeys = (keys1, keys2) => {
-  if (keys1.length !== keys2.length) {
-    return false;
-  }
-  return hasPrefix(keys1, keys2);
+const asCaretChars = (keys) => {
+  return keys.map((k) => {
+    let c = String.fromCharCode(k.code);
+    if (k.ctrl) {
+      return '^' + c.toUpperCase();
+    } else {
+      return c;
+    }
+  }).join('');
 }
 
-export { identifyKey, identifyKeys, hasPrefix };
+export { defaultKeymap, asKeymapChars, asCaretChars };

@@ -1,55 +1,31 @@
 import { expect } from "chai";
-import { identifyKey, identifyKeys, hasPrefix } from '../../src/background/keys';
+import * as keys from '../../src/background/keys';
 
-describe('keys', () => {
-  describe('#identifyKey', () => {
-    it('return true if key matched', () => {
-      expect(identifyKey(
-        { code: 100 },
-        { code: 100 })).to.be.true;
-      expect(identifyKey(
-        { code: 100, shift: true, ctrl: true },
-        { code: 100, shift: true, ctrl: true })).to.be.true;
-      expect(identifyKey(
-        { code: 100, shift: false, ctrl: false },
-        { code: 100 })).to.be.true;
-    });
+describe("keys", () => {
+  const KEYMAP = {
+    'g<C-X>GG': [],
+    'gg': { type: 'scroll.top' },
+  };
 
-    it('return false if key not matched', () => {
-      expect(identifyKey(
-        { code: 100 },
-        { code: 101 })).to.be.false;
-      expect(identifyKey(
-        { code: 100, shift: true, ctrl: true },
-        { code: 100, shift: true })).to.be.false;
-    });
+  const g = 'g'.charCodeAt(0);
+  const G = 'G'.charCodeAt(0);
+  const x = 'x'.charCodeAt(0);
+
+  describe('#asKeymapChars', () => {
+    let keySequence = [
+      { code: g },
+      { code: x, ctrl: true },
+      { code: G }
+    ];
+    expect(keys.asKeymapChars(keySequence)).to.equal('g<C-X>G');
   });
 
-  describe('#identifyKeys', () => {
-    it ('return true if keys matched', () => {
-      let keys = [{ code: 100 }, { code: 101, ctrl: false}];
-      let prefix = [{ code: 100, ctrl: false }, { code: 101 }];
-      expect(hasPrefix(keys, prefix)).to.be.true;
-    });
-
-    it ('return false if keys matched', () => {
-      let keys = [{ code: 100 }, { code: 101, ctrl: true }];
-      let prefix = [{ code: 100 }, { code: 101 }];
-      expect(hasPrefix(keys, prefix)).to.be.false;
-    });
-  });
-
-  describe('#hasPrefix', () => {
-    it ('return true if prefix matched', () => {
-      let keys = [{ code: 100 }, { code: 101 }, { code: 102 }];
-      let prefix = [{ code: 100 }, { code: 101 }];
-      expect(hasPrefix(keys, prefix)).to.be.true;
-    });
-
-    it ('return false if prefix not matched', () => {
-      let keys = [{ code: 100 }, { code: 101 }, { code: 102 }];
-      let prefix = [{ code: 102 }];
-      expect(hasPrefix(keys, prefix)).to.be.false;
-    });
+  describe('#asCaretChars', () => {
+    let keySequence = [
+      { code: g },
+      { code: x, ctrl: true },
+      { code: G }
+    ];
+    expect(keys.asCaretChars(keySequence)).to.equal('g^XG');
   });
 });

@@ -1,36 +1,18 @@
 import './console.scss';
+import * as backgroundActions from '../actions/background';
+import * as consoleActions from '../actions/console';
+import * as commandActions from '../actions/command';
 import Completion from './completion';
-import * as messages from '../shared/messages';
-
-const parent = window.parent;
+import consoleReducer from '../reducers/console';
 
 // TODO consider object-oriented
 var prevValue = "";
 var completion = null;
 var completionOrigin = "";
-
-const blurMessage = () => {
-  return {
-    type: 'vimvixen.command.blur'
-  };
-};
-
-const keydownMessage = (input) => {
-  return {
-    type: 'vimvixen.command.enter',
-    value: input.value
-  };
-};
-
-const keyupMessage = (input) => {
-  return {
-    type: 'vimvixen.command.change',
-    value: input.value
-  };
-};
+let state = consoleReducer(undefined, {});
 
 const handleBlur = () => {
-  messages.send(parent, blurMessage());
+  return browser.runtime.sendMessage(consoleActions.hide());
 };
 
 const completeNext = () => {
@@ -64,13 +46,13 @@ const completePrev = () => {
 }
 
 const handleKeydown = (e) => {
+  let input = window.document.querySelector('#vimvixen-console-command-input');
+
   switch(e.keyCode) {
   case KeyboardEvent.DOM_VK_ESCAPE:
-    messages.send(parent, blurMessage());
-    break;
+    return input.blur();
   case KeyboardEvent.DOM_VK_RETURN:
-    messages.send(parent, keydownMessage(e.target));
-    break;
+    return browser.runtime.sendMessage(commandActions.exec(e.target.value));
   case KeyboardEvent.DOM_VK_TAB:
     if (e.shiftKey) {
       completePrev();
@@ -90,8 +72,10 @@ const handleKeyup = (e) => {
   if (e.target.value === prevValue) {
     return;
   }
-  messages.send(parent, keyupMessage(e.target));
   prevValue = e.target.value;
+  return browser.runtime.sendMessage(
+    backgroundActions.requestCompletions(e.target.value)
+  );
 };
 
 window.addEventListener('load', () => {
@@ -100,35 +84,6 @@ window.addEventListener('load', () => {
   input.addEventListener('keydown', handleKeydown);
   input.addEventListener('keyup', handleKeyup);
 });
-
-const showCommand = (text) => {
-  let command = window.document.querySelector('#vimvixen-console-command');
-  command.style.display = 'block';
-
-  let error = window.document.querySelector('#vimvixen-console-error');
-  error.style.display = 'none';
-
-  let input = window.document.querySelector('#vimvixen-console-command-input');
-  input.value = text;
-  input.focus();
-
-  completion = null;
-  let container  = window.document.querySelector('#vimvixen-console-completion');
-  container.innerHTML = '';
-  messages.send(parent, keyupMessage(input));
-}
-
-const showError = (text) => {
-  let error = window.document.querySelector('#vimvixen-console-error');
-  error.textContent = text;
-  error.style.display = 'block';
-
-  let command = window.document.querySelector('#vimvixen-console-command');
-  command.style.display = 'none';
-
-  let completion  = window.document.querySelector('#vimvixen-console-completion');
-  completion.style.display = 'none';
-}
 
 const createCompletionTitle = (text) => {
   let li = document.createElement('li');
@@ -154,31 +109,6 @@ const createCompletionItem = (icon, caption, url) => {
   return li;
 }
 
-const setCompletions = (completions) => {
-  let container  = window.document.querySelector('#vimvixen-console-completion');
-  container.style.display = 'block';
-  container.innerHTML = '';
-
-  let pairs = [];
-
-  for (let group of completions) {
-    let title = createCompletionTitle(group.name);
-    container.append(title);
-
-    for (let item of group.items) {
-      let li = createCompletionItem(item.icon, item.caption, item.url);
-      container.append(li);
-
-      pairs.push([item, li]);
-    }
-  }
-
-  completion = new Completion(pairs);
-
-  let input = window.document.querySelector('#vimvixen-console-command-input');
-  completionOrigin = input.value.split(' ')[0];
-}
-
 const selectCompletion = (target) => {
   let container  = window.document.querySelector('#vimvixen-console-completion');
   Array.prototype.forEach.call(container.children, (ele) => {
@@ -193,16 +123,58 @@ const selectCompletion = (target) => {
   });
 };
 
-messages.receive(window, (message) => {
-  switch (message.type) {
-  case 'vimvixen.console.show.command':
-    showCommand(message.text);
-    break;
-  case 'vimvixen.console.show.error':
-    showError(message.text);
-    break;
-  case 'vimvixen.console.set.completions':
-    setCompletions(message.completions);
-    break;
+const updateCompletions = (completions) => {
+  let completionsContainer  = window.document.querySelector('#vimvixen-console-completion');
+  let input = window.document.querySelector('#vimvixen-console-command-input');
+
+  completionsContainer.innerHTML = '';
+
+  let pairs = [];
+
+  for (let group of completions) {
+    let title = createCompletionTitle(group.name);
+    completionsContainer.append(title);
+
+    for (let item of group.items) {
+      let li = createCompletionItem(item.icon, item.caption, item.url);
+      completionsContainer.append(li);
+
+      pairs.push([item, li]);
+    }
   }
+
+  completion = new Completion(pairs);
+  completionOrigin = input.value.split(' ')[0];
+}
+
+const update = (prevState, state) => {
+  let error = window.document.querySelector('#vimvixen-console-error');
+  let command = window.document.querySelector('#vimvixen-console-command');
+  let input = window.document.querySelector('#vimvixen-console-command-input');
+
+  error.style.display = state.errorShown ? 'block' : 'none';
+  error.textContent = state.errorText;
+
+  command.style.display = state.commandShown ? 'block' : 'none';
+  if (!prevState.commandShown && state.commandShown) {
+    // setup input on firstly shown
+    input.value = state.commandText;
+    input.focus();
+  }
+
+  if (JSON.stringify(state.completions) !== JSON.stringify(prevState.completions)) {
+    updateCompletions(state.completions);
+  }
+}
+
+browser.runtime.onMessage.addListener((action) => {
+  let nextState = consoleReducer(state, action);
+  if (JSON.stringify(nextState) !== JSON.stringify(state)) {
+    update(state, nextState);
+    state = nextState;
+  }
+});
+
+window.addEventListener('load', () => {
+  update({}, state);
 });

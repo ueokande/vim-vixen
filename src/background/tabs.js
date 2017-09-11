@@ -59,7 +59,7 @@ const getCompletions = (keyword) => {
 };
 
 const selectPrevTab = (current, count) => {
-  return browser.tabs.query({ currentWindow: true }, (tabs) => {
+  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
     if (tabs.length < 2) {
       return;
     }
@@ -70,7 +70,7 @@ const selectPrevTab = (current, count) => {
 };
 
 const selectNextTab = (current, count) => {
-  return browser.tabs.query({ currentWindow: true }, (tabs) => {
+  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
     if (tabs.length < 2) {
       return;
     }
