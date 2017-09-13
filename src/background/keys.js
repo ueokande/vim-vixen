@@ -1,4 +1,5 @@
 import actions from '../actions';
+import operations from '../operations';
 
 const defaultKeymap = {
   ':': { type: actions.CMD_OPEN },
@@ -17,15 +18,15 @@ const defaultKeymap = {
   'G': { type: actions.SCROLL_BOTTOM },
   '0': { type: actions.SCROLL_LEFT },
   '$': { type: actions.SCROLL_RIGHT },
-  'd': { type: actions.TABS_CLOSE },
-  'u': { type: actions.TABS_REOPEN },
-  'h': { type: actions.TABS_PREV, count: 1 },
-  'l': { type: actions.TABS_NEXT, count: 1 },
-  'r': { type: actions.TABS_RELOAD, cache: false },
-  'R': { type: actions.TABS_RELOAD, cache: true },
-  'zi': { type: actions.ZOOM_IN },
-  'zo': { type: actions.ZOOM_OUT },
-  'zz': { type: actions.ZOOM_NEUTRAL },
+  'd': { type: operations.TABS_CLOSE },
+  'u': { type: operations.TABS_REOPEN },
+  'h': { type: operations.TABS_PREV, count: 1 },
+  'l': { type: operations.TABS_NEXT, count: 1 },
+  'r': { type: operations.TABS_RELOAD, cache: false },
+  'R': { type: operations.TABS_RELOAD, cache: true },
+  'zi': { type: operations.ZOOM_IN },
+  'zo': { type: operations.ZOOM_OUT },
+  'zz': { type: operations.ZOOM_NEUTRAL },
   'f': { type: actions.FOLLOW_START, newTab: false },
   'F': { type: actions.FOLLOW_START, newTab: true },
   'H': { type: actions.HISTORY_PREV },
