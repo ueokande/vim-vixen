@@ -1,5 +1,4 @@
 import * as tabs from '../background/tabs';
-import * as zooms from '../background/zooms';
 import * as consoleActions from '../actions/console';
 import actions from '../actions';
 

@@ -6,7 +6,7 @@ import commandReducer from '../reducers/command';
 import inputReducers from '../reducers/input';
 import * as store from '../store'
 
-const emptyReducer = (state, action) => state;
+const emptyReducer = (state) => state;
 const emptyStore = store.createStore(emptyReducer, (e) => {
   console.error('Vim-Vixen:', e);
 });

@@ -21,7 +21,10 @@ export function exec(operation, sender) {
   case operations.ZOOM_NEUTRAL:
     return zooms.neutral();
   default:
-    return Promise.resolve();
+    return browser.tabs.sendMessage(sender.tab.id, {
+      type: 'require.content.operation',
+      operation
+    });
   }
 }
 

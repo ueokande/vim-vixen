@@ -12,15 +12,6 @@ export default {
   CMD_OPEN: 'cmd.open',
   CMD_TABS_OPEN: 'cmd.tabs.open',
   CMD_BUFFER: 'cmd.buffer',
-  SCROLL_LINES: 'scroll.lines',
-  SCROLL_PAGES: 'scroll.pages',
-  SCROLL_TOP: 'scroll.top',
-  SCROLL_BOTTOM: 'scroll.bottom',
-  SCROLL_LEFT: 'scroll.left',
-  SCROLL_RIGHT: 'scroll.right',
-  FOLLOW_START: 'follow.start',
-  HISTORY_PREV: 'history.prev',
-  HISTORY_NEXT: 'history.next',
 
   // User input
   INPUT_KEY_PRESS: 'input.key,press',

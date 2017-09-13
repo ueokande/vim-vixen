@@ -1,7 +1,4 @@
 import * as consoleFrames from '../console/frames';
-import * as histories from '../content/histories';
-import * as scrolls from '../content/scrolls';
-import Follow from '../content/follow';
 import actions from '../actions';
 
 export default function reducer(state, action = {}) {
@@ -17,32 +14,5 @@ export default function reducer(state, action = {}) {
     }
   case actions.CMD_BUFFER:
     return consoleFrames.showCommand('buffer ');
-  case actions.SCROLL_LINES:
-    scrolls.scrollLines(window, action.count);
-    break;
-  case actions.SCROLL_PAGES:
-    scrolls.scrollPages(window, action.count);
-    break;
-  case actions.SCROLL_TOP:
-    scrolls.scrollTop(window);
-    break;
-  case actions.SCROLL_BOTTOM:
-    scrolls.scrollBottom(window);
-    break;
-  case actions.SCROLL_LEFT:
-    scrolls.scrollLeft(window);
-    break;
-  case actions.SCROLL_RIGHT:
-    scrolls.scrollRight(window);
-    break;
-  case actions.FOLLOW_START:
-    new Follow(window.document, action.newTab);
-    break;
-  case actions.HISTORY_PREV:
-    histories.prev(window);
-    break;
-  case actions.HISTORY_NEXT:
-    histories.next(window);
-    break;
   }
 }
