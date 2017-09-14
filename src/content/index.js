@@ -57,14 +57,6 @@ browser.runtime.onMessage.addListener((action) => {
   case 'require.content.operation':
     execOperation(action.operation);
     return Promise.resolve();
-  case 'vimvixen.command.enter':
-    return browser.runtime.sendMessage({
-      type: 'event.cmd.enter',
-      text: action.value
-    }).catch((err) => {
-      console.error("Vim Vixen:", err);
-      return consoleFrames.showError(err.message);
-    });
   default:
     return Promise.resolve();
   }
