@@ -2,12 +2,12 @@ import * as keys from './keys';
 import * as inputActions from '../actions/input';
 import * as operationActions from '../actions/operation';
 import backgroundReducers from '../reducers/background';
+import reducers from '../reducers';
 import commandReducer from '../reducers/command';
 import inputReducers from '../reducers/input';
 import * as store from '../store'
 
-const emptyReducer = (state) => state;
-const emptyStore = store.createStore(emptyReducer, (e) => {
+const backgroundStore = store.createStore(reducers, (e) => {
   console.error('Vim-Vixen:', e);
 });
 let inputState = inputReducers(undefined, {});
@@ -27,9 +27,7 @@ const keyQueueChanged = (sender, prevState, state) => {
     return Promise.resolve();
   }
   let action = keys.defaultKeymap[matched];
-  emptyStore.dispatch(operationActions.exec(action, sender), (e) => {
-    console.error('Vim-Vixen:', e);
-  });
+  backgroundStore.dispatch(operationActions.exec(action, sender));
   return handleMessage(inputActions.clearKeys(), sender).then(() => {
     return backgroundReducers(undefined, action, sender).then(() => {
       return browser.tabs.sendMessage(sender.tab.id, action);

@@ -3,19 +3,36 @@ class Store {
     this.reducer = reducer;
     this.catcher = catcher;
     this.state = this.reducer(undefined, {});
+    this.subscribers = [];
   }
 
   dispatch(action) {
     if (action instanceof Promise) {
       action.then((a) => {
-        this.state = this.reducer(this.state, a);
+        this.transitNext(a);
       }).catch(this.catcher)
     } else {
       try {
-        this.state = this.reducer(this.state, action);
+        this.transitNext(action);
       } catch (e) {
         this.catcher(e);
       }
+    }
+  }
+
+  getState() {
+    return this.state;
+  }
+
+  subscribe(callback) {
+    this.subscribers.push(callback);
+  }
+
+  transitNext(action) {
+    let newState = this.reducer(this.state, action);
+    if (JSON.stringify(this.state) !== JSON.stringify(newState)) {
+      this.state = newState;
+      this.subscribers.forEach(f => f.call())
     }
   }
 }
