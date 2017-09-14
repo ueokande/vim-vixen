@@ -4,49 +4,52 @@ import * as operationActions from '../actions/operation';
 import backgroundReducers from '../reducers/background';
 import reducers from '../reducers';
 import commandReducer from '../reducers/command';
-import inputReducers from '../reducers/input';
 import * as store from '../store'
 
 const backgroundStore = store.createStore(reducers, (e) => {
   console.error('Vim-Vixen:', e);
 });
-let inputState = inputReducers(undefined, {});
+backgroundStore.subscribe(() => {
+  browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
+    if (tabs.length > 0) {
+      return keyQueueChanged(tabs[0], backgroundStore.getState());
+    }
+  });
+});
 
-const keyQueueChanged = (sender, prevState, state) => {
-  if (state.keys.length === 0) {
+const keyQueueChanged = (sendToTab, state) => {
+  if (state.input.keys.length === 0) {
     return Promise.resolve();
   }
 
-  let prefix = keys.asKeymapChars(state.keys);
+  let prefix = keys.asKeymapChars(state.input.keys);
   let matched = Object.keys(keys.defaultKeymap).filter((keys) => {
     return keys.startsWith(prefix);
   });
   if (matched.length == 0) {
-    return handleMessage(inputActions.clearKeys(), sender);
+    return handleMessage(inputActions.clearKeys(), sendToTab);
   } else if (matched.length > 1 || matched.length === 1 && prefix !== matched[0]) {
     return Promise.resolve();
   }
   let action = keys.defaultKeymap[matched];
-  backgroundStore.dispatch(operationActions.exec(action, sender));
-  return handleMessage(inputActions.clearKeys(), sender).then(() => {
-    return backgroundReducers(undefined, action, sender).then(() => {
-      return browser.tabs.sendMessage(sender.tab.id, action);
+  backgroundStore.dispatch(operationActions.exec(action, sendToTab));
+  return handleMessage(inputActions.clearKeys(), sendToTab).then(() => {
+    return backgroundReducers(undefined, action, sendToTab).then(() => {
+      return browser.tabs.sendMessage(sendToTab.id, action);
     });
   });
 };
 
-const handleMessage = (action, sender) => {
-  let nextInputState = inputReducers(inputState, action);
-  if (JSON.stringify(nextInputState) !== JSON.stringify(inputState)) {
-    let prevState = inputState;
-    inputState = nextInputState;
-    return keyQueueChanged(sender, prevState, inputState);
-  }
-  return backgroundReducers(undefined, action, sender).then(() => {
-    return commandReducer(undefined, action, sender).then(() => {
-      return browser.tabs.sendMessage(sender.tab.id, action);
+const handleMessage = (action, sendToTab) => {
+  backgroundStore.dispatch(action);
+
+  return backgroundReducers(undefined, action, sendToTab).then(() => {
+    return commandReducer(undefined, action, sendToTab).then(() => {
+      return browser.tabs.sendMessage(sendToTab.id, action);
     });
   });
 };
 
-browser.runtime.onMessage.addListener(handleMessage);
+browser.runtime.onMessage.addListener((action, sender) => {
+  handleMessage(action, sender.tab);
+});
