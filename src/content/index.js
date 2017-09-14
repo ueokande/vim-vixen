@@ -3,17 +3,10 @@ import * as inputActions from '../actions/input';
 import * as consoleFrames from '../console/frames';
 import * as scrolls from '../content/scrolls';
 import * as histories from '../content/histories';
-import actions from '../actions';
 import Follow from '../content/follow';
 import operations from '../operations';
-import contentReducer from '../reducers/content';
 
 consoleFrames.initialize(window.document);
-
-browser.runtime.onMessage.addListener((action) => {
-  contentReducer(undefined, action);
-  return Promise.resolve();
-});
 
 window.addEventListener("keypress", (e) => {
   if (e.target instanceof HTMLInputElement) {
@@ -49,11 +42,17 @@ const execOperation = (operation) => {
   }
 }
 
+const update = (state) => {
+  if (!state.console.commandShown) {
+    window.focus();
+    consoleFrames.blur(window.document);
+  }
+}
+
 browser.runtime.onMessage.addListener((action) => {
   switch (action.type) {
-  case actions.CONSOLE_HIDE:
-    window.focus();
-    return consoleFrames.blur(window.document);
+  case 'state.changed':
+    return update(action.state);
   case 'require.content.operation':
     execOperation(action.operation);
     return Promise.resolve();

@@ -1,4 +1,5 @@
 import operations from '../operations';
+import * as consoleActions from './console';
 import * as tabs from '../background/tabs';
 import * as zooms from '../background/zooms';
 
@@ -20,6 +21,17 @@ export function exec(operation, tab) {
     return zooms.zoomOut();
   case operations.ZOOM_NEUTRAL:
     return zooms.neutral();
+  case operations.COMMAND_OPEN:
+    return consoleActions.showCommand('');
+  case operations.COMMAND_TABS_OPEN:
+    if (operations.alter) {
+      // alter url
+      return consoleActions.showCommand('open ' + tab.url);
+    } else {
+      return consoleActions.showCommand('open ');
+    }
+  case operations.COMMAND_BUFFER:
+    return consoleActions.showCommand('buffer ');
   default:
     return browser.tabs.sendMessage(tab.id, {
       type: 'require.content.operation',

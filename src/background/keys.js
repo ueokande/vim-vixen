@@ -1,11 +1,10 @@
-import actions from '../actions';
 import operations from '../operations';
 
 const defaultKeymap = {
-  ':': { type: actions.CMD_OPEN },
-  'o': { type: actions.CMD_TABS_OPEN, alter: false },
-  'O': { type: actions.CMD_TABS_OPEN, alter: true },
-  'b': { type: actions.CMD_BUFFER },
+  ':': { type: operations.COMMAND_OPEN },
+  'o': { type: operations.COMMAND_TABS_OPEN, alter: false },
+  'O': { type: operations.COMMAND_TABS_OPEN, alter: true },
+  'b': { type: operations.COMMAND_BUFFER },
   'k': { type: operations.SCROLL_LINES, count: -1 },
   'j': { type: operations.SCROLL_LINES, count: 1 },
   '<C-E>': { type: operations.SCROLL_LINES, count: -1 },

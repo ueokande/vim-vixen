@@ -31,7 +31,6 @@ export default function reducer(state = defaultState, action = {}) {
     return Object.assign({}, state, {
       errorShown: false,
       commandShown: false
-      
     });
   default:
     return state;

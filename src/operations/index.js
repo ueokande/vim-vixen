@@ -1,4 +1,9 @@
 export default {
+  // command
+  COMMAND_OPEN: 'cmd.open',
+  COMMAND_TABS_OPEN: 'cmd.tabs.open',
+  COMMAND_BUFFER: 'cmd.buffer',
+
   SCROLL_LINES: 'scroll.lines',
   SCROLL_PAGES: 'scroll.pages',
   SCROLL_TOP: 'scroll.top',
