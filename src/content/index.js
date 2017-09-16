@@ -5,6 +5,7 @@ import * as scrolls from '../content/scrolls';
 import * as histories from '../content/histories';
 import Follow from '../content/follow';
 import operations from '../operations';
+import messages  from '../messages';
 
 consoleFrames.initialize(window.document);
 
@@ -51,9 +52,9 @@ const update = (state) => {
 
 browser.runtime.onMessage.addListener((action) => {
   switch (action.type) {
-  case 'state.changed':
+  case messages.STATE_UPDATE:
     return update(action.state);
-  case 'require.content.operation':
+  case messages.CONTENT_OPERATION:
     execOperation(action.operation);
     return Promise.resolve();
   default:

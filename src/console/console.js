@@ -171,7 +171,7 @@ const update = (state) => {
 }
 
 browser.runtime.onMessage.addListener((action) => {
-  if (action.type === 'state.changed') {
+  if (action.type === messages.STATE_UPDATE) {
     return update(action.state.console);
   }
 });

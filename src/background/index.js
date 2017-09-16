@@ -32,7 +32,7 @@ backgroundStore.subscribe(() => {
   browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
     if (tabs.length > 0) {
       return browser.tabs.sendMessage(tabs[0].id, {
-        type: 'state.changed',
+        type: messages.STATE_UPDATE,
         state: backgroundStore.getState()
       });
     }

@@ -1,4 +1,5 @@
 import operations from '../operations';
+import messages  from '../messages';
 import * as consoleActions from './console';
 import * as tabs from '../background/tabs';
 import * as zooms from '../background/zooms';
@@ -34,7 +35,7 @@ export function exec(operation, tab) {
     return consoleActions.showCommand('buffer ');
   default:
     return browser.tabs.sendMessage(tab.id, {
-      type: 'require.content.operation',
+      type: messages.CONTENT_OPERATION,
       operation
     });
   }
