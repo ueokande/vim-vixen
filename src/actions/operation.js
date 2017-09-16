@@ -1,10 +1,10 @@
 import operations from '../operations';
-import messages  from '../messages';
+import messages from '../messages';
 import * as consoleActions from './console';
 import * as tabs from '../background/tabs';
 import * as zooms from '../background/zooms';
 
-export function exec(operation, tab) {
+const exec = (operation, tab) => {
   switch (operation.type) {
   case operations.TABS_CLOSE:
     return tabs.closeTab(tab.id);
@@ -28,9 +28,8 @@ export function exec(operation, tab) {
     if (operations.alter) {
       // alter url
       return consoleActions.showCommand('open ' + tab.url);
-    } else {
-      return consoleActions.showCommand('open ');
     }
+    return consoleActions.showCommand('open ');
   case operations.COMMAND_BUFFER:
     return consoleActions.showCommand('buffer ');
   default:
@@ -39,5 +38,6 @@ export function exec(operation, tab) {
       operation
     });
   }
-}
+};
 
+export { exec };

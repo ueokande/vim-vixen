@@ -37,4 +37,6 @@ const scrollRight = (page) => {
   page.scrollTo(x, y);
 };
 
-export { scrollLines, scrollPages, scrollTop, scrollBottom, scrollLeft, scrollRight }
+export {
+  scrollLines, scrollPages, scrollTop, scrollBottom, scrollLeft, scrollRight
+};

@@ -5,9 +5,10 @@ import * as commandActions from '../actions/command';
 import * as consoleActions from '../actions/console';
 import reducers from '../reducers';
 import messages from '../messages';
-import * as store from '../store'
+import * as store from '../store';
 
 let prevInput = [];
+
 const backgroundStore = store.createStore(reducers, (e, sender) => {
   console.error('Vim-Vixen:', e);
   if (sender) {
@@ -15,9 +16,9 @@ const backgroundStore = store.createStore(reducers, (e, sender) => {
   }
 });
 backgroundStore.subscribe((sender) => {
-  let currentInput = backgroundStore.getState().input
+  let currentInput = backgroundStore.getState().input;
   if (JSON.stringify(prevInput) === JSON.stringify(currentInput)) {
-    return
+    return;
   }
   prevInput = currentInput;
 
@@ -39,13 +40,14 @@ backgroundStore.subscribe((sender) => {
 
 const keyQueueChanged = (state, sender) => {
   let prefix = keys.asKeymapChars(state.input.keys);
-  let matched = Object.keys(keys.defaultKeymap).filter((keys) => {
-    return keys.startsWith(prefix);
+  let matched = Object.keys(keys.defaultKeymap).filter((keyStr) => {
+    return keyStr.startsWith(prefix);
   });
-  if (matched.length == 0) {
+  if (matched.length === 0) {
     backgroundStore.dispatch(inputActions.clearKeys(), sender);
     return Promise.resolve();
-  } else if (matched.length > 1 || matched.length === 1 && prefix !== matched[0]) {
+  } else if (matched.length > 1 ||
+    matched.length === 1 && prefix !== matched[0]) {
     return Promise.resolve();
   }
   let action = keys.defaultKeymap[matched];
@@ -56,15 +58,19 @@ const keyQueueChanged = (state, sender) => {
 const handleMessage = (message, sender) => {
   switch (message.type) {
   case messages.KEYDOWN:
-    return backgroundStore.dispatch(inputActions.keyPress(message.code, message.ctrl), sender);
+    return backgroundStore.dispatch(
+      inputActions.keyPress(message.code, message.ctrl), sender);
   case messages.CONSOLE_BLURRED:
-    return backgroundStore.dispatch(consoleActions.hide(), sender);
+    return backgroundStore.dispatch(
+      consoleActions.hide(), sender);
   case messages.CONSOLE_ENTERED:
-    return backgroundStore.dispatch(commandActions.exec(message.text), sender);
+    return backgroundStore.dispatch(
+      commandActions.exec(message.text), sender);
   case messages.CONSOLE_CHANGEED:
-    return backgroundStore.dispatch(commandActions.complete(message.text), sender);
+    return backgroundStore.dispatch(
+      commandActions.complete(message.text), sender);
   }
-}
+};
 
 browser.runtime.onMessage.addListener((message, sender) => {
   try {

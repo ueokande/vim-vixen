@@ -1,5 +1,5 @@
 export default {
-  // command
+  // Command
   COMMAND_OPEN: 'cmd.open',
   COMMAND_TABS_OPEN: 'cmd.tabs.open',
   COMMAND_BUFFER: 'cmd.buffer',
@@ -14,7 +14,7 @@ export default {
   HISTORY_PREV: 'history.prev',
   HISTORY_NEXT: 'history.next',
 
-  // background
+  // Background
   TABS_CLOSE: 'tabs.close',
   TABS_REOPEN: 'tabs.reopen',
   TABS_PREV: 'tabs.prev',
@@ -23,4 +23,4 @@ export default {
   ZOOM_IN: 'zoom.in',
   ZOOM_OUT: 'zoom.out',
   ZOOM_NEUTRAL: 'zoom.neutral',
-}
+};
