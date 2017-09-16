@@ -6,16 +6,18 @@ class Store {
     this.subscribers = [];
   }
 
-  dispatch(action) {
+  dispatch(action, sender) {
     if (action instanceof Promise) {
       action.then((a) => {
-        this.transitNext(a);
-      }).catch(this.catcher)
+        this.transitNext(a, sender);
+      }).catch((e) => {
+        this.catcher(e, sender);
+      });
     } else {
       try {
-        this.transitNext(action);
+        this.transitNext(action, sender);
       } catch (e) {
-        this.catcher(e);
+        this.catcher(e, sender);
       }
     }
   }
@@ -28,11 +30,11 @@ class Store {
     this.subscribers.push(callback);
   }
 
-  transitNext(action) {
+  transitNext(action, sender) {
     let newState = this.reducer(this.state, action);
     if (JSON.stringify(this.state) !== JSON.stringify(newState)) {
       this.state = newState;
-      this.subscribers.forEach(f => f.call())
+      this.subscribers.forEach(f => f(sender));
     }
   }
 }

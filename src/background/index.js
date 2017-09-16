@@ -8,10 +8,13 @@ import messages from '../messages';
 import * as store from '../store'
 
 let prevInput = [];
-const backgroundStore = store.createStore(reducers, (e) => {
+const backgroundStore = store.createStore(reducers, (e, sender) => {
   console.error('Vim-Vixen:', e);
+  if (sender) {
+    backgroundStore.dispatch(consoleActions.showError(e.message), sender);
+  }
 });
-backgroundStore.subscribe(() => {
+backgroundStore.subscribe((sender) => {
   let currentInput = backgroundStore.getState().input
   if (JSON.stringify(prevInput) === JSON.stringify(currentInput)) {
     return
@@ -21,54 +24,52 @@ backgroundStore.subscribe(() => {
   if (currentInput.keys.length === 0) {
     return;
   }
-
-  browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
-    if (tabs.length > 0) {
-      return keyQueueChanged(tabs[0], backgroundStore.getState());
-    }
-  });
+  if (sender) {
+    return keyQueueChanged(backgroundStore.getState(), sender);
+  }
 });
-backgroundStore.subscribe(() => {
-  browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
-    if (tabs.length > 0) {
-      return browser.tabs.sendMessage(tabs[0].id, {
-        type: messages.STATE_UPDATE,
-        state: backgroundStore.getState()
-      });
-    }
-  });
+backgroundStore.subscribe((sender) => {
+  if (sender) {
+    return browser.tabs.sendMessage(sender.tab.id, {
+      type: messages.STATE_UPDATE,
+      state: backgroundStore.getState()
+    });
+  }
 });
 
-const keyQueueChanged = (sendToTab, state) => {
+const keyQueueChanged = (state, sender) => {
   let prefix = keys.asKeymapChars(state.input.keys);
   let matched = Object.keys(keys.defaultKeymap).filter((keys) => {
     return keys.startsWith(prefix);
   });
   if (matched.length == 0) {
-    backgroundStore.dispatch(inputActions.clearKeys());
+    backgroundStore.dispatch(inputActions.clearKeys(), sender);
     return Promise.resolve();
   } else if (matched.length > 1 || matched.length === 1 && prefix !== matched[0]) {
     return Promise.resolve();
   }
   let action = keys.defaultKeymap[matched];
-  backgroundStore.dispatch(operationActions.exec(action, sendToTab));
-  backgroundStore.dispatch(inputActions.clearKeys());
-  return browser.tabs.sendMessage(sendToTab.id, action);
+  backgroundStore.dispatch(operationActions.exec(action, sender.tab), sender);
+  backgroundStore.dispatch(inputActions.clearKeys(), sender);
 };
 
-browser.runtime.onMessage.addListener((message) => {
+const handleMessage = (message, sender) => {
   switch (message.type) {
   case messages.KEYDOWN:
-    backgroundStore.dispatch(inputActions.keyPress(message.code, message.ctrl));
-    break;
+    return backgroundStore.dispatch(inputActions.keyPress(message.code, message.ctrl), sender);
   case messages.CONSOLE_BLURRED:
-    backgroundStore.dispatch(consoleActions.hide());
-    break;
+    return backgroundStore.dispatch(consoleActions.hide(), sender);
   case messages.CONSOLE_ENTERED:
-    backgroundStore.dispatch(commandActions.exec(message.text));
-    break;
+    return backgroundStore.dispatch(commandActions.exec(message.text), sender);
   case messages.CONSOLE_CHANGEED:
-    backgroundStore.dispatch(commandActions.complete(message.text));
-    break;
+    return backgroundStore.dispatch(commandActions.complete(message.text), sender);
+  }
+}
+
+browser.runtime.onMessage.addListener((message, sender) => {
+  try {
+    handleMessage(message, sender);
+  } catch (e) {
+    backgroundStore.dispatch(consoleActions.showError(e.message), sender);
   }
 });
