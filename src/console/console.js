@@ -1,18 +1,17 @@
 import './console.scss';
-import * as backgroundActions from '../actions/background';
-import * as consoleActions from '../actions/console';
-import * as commandActions from '../actions/command';
 import Completion from './completion';
-import consoleReducer from '../reducers/console';
+import messages from '../messages';
 
 // TODO consider object-oriented
 var prevValue = "";
 var completion = null;
 var completionOrigin = "";
-let state = consoleReducer(undefined, {});
+var prevState = {};
 
 const handleBlur = () => {
-  return browser.runtime.sendMessage(consoleActions.hide());
+  return browser.runtime.sendMessage({
+    type: messages.CONSOLE_BLURRED,
+  });
 };
 
 const completeNext = () => {
@@ -52,7 +51,10 @@ const handleKeydown = (e) => {
   case KeyboardEvent.DOM_VK_ESCAPE:
     return input.blur();
   case KeyboardEvent.DOM_VK_RETURN:
-    return browser.runtime.sendMessage(commandActions.exec(e.target.value));
+    return browser.runtime.sendMessage({
+      type: messages.CONSOLE_ENTERED,
+      text: e.target.value
+    });
   case KeyboardEvent.DOM_VK_TAB:
     if (e.shiftKey) {
       completePrev();
@@ -73,9 +75,10 @@ const handleKeyup = (e) => {
     return;
   }
   prevValue = e.target.value;
-  return browser.runtime.sendMessage(
-    backgroundActions.requestCompletions(e.target.value)
-  );
+  return browser.runtime.sendMessage({
+    type: messages.CONSOLE_CHANGEED,
+    text: e.target.value
+  });
 };
 
 window.addEventListener('load', () => {
@@ -147,7 +150,7 @@ const updateCompletions = (completions) => {
   completionOrigin = input.value.split(' ')[0];
 }
 
-const update = (prevState, state) => {
+const update = (state) => {
   let error = window.document.querySelector('#vimvixen-console-error');
   let command = window.document.querySelector('#vimvixen-console-command');
   let input = window.document.querySelector('#vimvixen-console-command-input');
@@ -156,25 +159,26 @@ const update = (prevState, state) => {
   error.textContent = state.errorText;
 
   command.style.display = state.commandShown ? 'block' : 'none';
-  if (!prevState.commandShown && state.commandShown) {
-    // setup input on firstly shown
+  if (state.commandShown && !prevState.commandShown) {
     input.value = state.commandText;
     input.focus();
   }
-
   if (JSON.stringify(state.completions) !== JSON.stringify(prevState.completions)) {
     updateCompletions(state.completions);
   }
+
+  prevState = state;
 }
 
 browser.runtime.onMessage.addListener((action) => {
-  let nextState = consoleReducer(state, action);
-  if (JSON.stringify(nextState) !== JSON.stringify(state)) {
-    update(state, nextState);
-    state = nextState;
+  if (action.type === messages.STATE_UPDATE) {
+    return update(action.state.console);
   }
 });
 
 window.addEventListener('load', () => {
-  update({}, state);
+  let error = window.document.querySelector('#vimvixen-console-error');
+  let command = window.document.querySelector('#vimvixen-console-command');
+  error.style.display = 'none';
+  command.style.display = 'none';
 });
