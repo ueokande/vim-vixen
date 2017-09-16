@@ -2,8 +2,12 @@ class Store {
   constructor(reducer, catcher) {
     this.reducer = reducer;
     this.catcher = catcher;
-    this.state = this.reducer(undefined, {});
     this.subscribers = [];
+    try {
+      this.state = this.reducer(undefined, {});
+    } catch (e) {
+      catcher(e);
+    }
   }
 
   dispatch(action, sender) {
@@ -20,6 +24,7 @@ class Store {
         this.catcher(e, sender);
       }
     }
+    return action
   }
 
   getState() {
