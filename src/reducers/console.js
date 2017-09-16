@@ -28,6 +28,10 @@ export default function reducer(state = defaultState, action = {}) {
       commandShown: false,
     });
   case actions.CONSOLE_HIDE:
+    if (state.errorShown) {
+      // keep error message if shown
+      return state;
+    }
     return Object.assign({}, state, {
       errorShown: false,
       commandShown: false
