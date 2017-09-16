@@ -56,18 +56,11 @@ const keyQueueChanged = (sendToTab, state) => {
   return browser.tabs.sendMessage(sendToTab.id, action);
 };
 
-const handleMessage = (action, sendToTab) => {
-  backgroundStore.dispatch(action);
-
-  return browser.tabs.sendMessage(sendToTab.id, action);
-};
-
-browser.runtime.onMessage.addListener((action, sender) => {
-  handleMessage(action, sender.tab);
-});
-
 browser.runtime.onMessage.addListener((message) => {
   switch (message.type) {
+  case messages.KEYDOWN:
+    backgroundStore.dispatch(inputActions.keyPress(message.code, message.ctrl));
+    break;
   case messages.CONSOLE_BLURRED:
     backgroundStore.dispatch(consoleActions.hide());
     break;

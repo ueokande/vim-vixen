@@ -1,5 +1,4 @@
 import '../console/console-frame.scss';
-import * as inputActions from '../actions/input';
 import * as consoleFrames from '../console/frames';
 import * as scrolls from '../content/scrolls';
 import * as histories from '../content/histories';
@@ -13,11 +12,11 @@ window.addEventListener("keypress", (e) => {
   if (e.target instanceof HTMLInputElement) {
     return;
   }
-  browser.runtime.sendMessage(inputActions.keyPress(e.which, e.ctrlKey))
-    .catch((err) => {
-      console.error("Vim Vixen:", err);
-      return consoleFrames.showError(err.message);
-    });
+  browser.runtime.sendMessage({
+    type: messages.KEYDOWN,
+    code: e.which,
+    ctrl: e.ctrl
+  });
 });
 
 const execOperation = (operation) => {
