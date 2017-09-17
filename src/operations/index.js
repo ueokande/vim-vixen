@@ -13,6 +13,8 @@ export default {
   FOLLOW_START: 'follow.start',
   NAVIGATE_HISTORY_PREV: 'navigate.history.prev',
   NAVIGATE_HISTORY_NEXT: 'navigate.history.next',
+  NAVIGATE_LINK_PREV: 'navigate.link.prev',
+  NAVIGATE_LINK_NEXT: 'navigate.link.next',
 
   // Background
   TABS_CLOSE: 'tabs.close',

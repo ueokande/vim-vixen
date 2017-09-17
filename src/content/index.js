@@ -39,6 +39,10 @@ const execOperation = (operation) => {
     return navigates.historyPrev(window);
   case operations.NAVIGATE_HISTORY_NEXT:
     return navigates.historyNext(window);
+  case operations.NAVIGATE_LINK_PREV:
+    return navigates.linkPrev(window);
+  case operations.NAVIGATE_LINK_NEXT:
+    return navigates.linkNext(window);
   }
 };
 

@@ -30,6 +30,8 @@ const defaultKeymap = {
   'F': { type: operations.FOLLOW_START, newTab: true },
   'H': { type: operations.NAVIGATE_HISTORY_PREV },
   'L': { type: operations.NAVIGATE_HISTORY_NEXT },
+  '[[': { type: operations.NAVIGATE_LINK_PREV },
+  ']]': { type: operations.NAVIGATE_LINK_NEXT },
 };
 
 const asKeymapChars = (keys) => {
