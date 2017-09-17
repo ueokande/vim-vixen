@@ -50,7 +50,7 @@ const reduceByOrigin = (items, min) => {
 const getCompletions = (keyword) => {
   return browser.history.search({
     text: keyword,
-    startTime: '1970-01-01'
+    startTime: 0,
   }).then((historyItems) => {
     return [historyItems.map(item => [item, new URL(item.url)])]
       .map(filterEmptyTitle)
