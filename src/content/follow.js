@@ -45,6 +45,9 @@ export default class Follow {
       this.keys.pop();
     }
 
+    e.stopPropagation();
+    e.preventDefault();
+
     this.refreshKeys();
   }
 
