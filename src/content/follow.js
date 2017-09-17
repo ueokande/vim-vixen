@@ -8,6 +8,7 @@ export default class Follow {
     this.doc = doc;
     this.hintElements = {};
     this.keys = [];
+    this.onActivatedCallbacks = [];
 
     // TODO activate input elements and push button elements
     let links = Follow.getTargetElements(doc);
@@ -36,7 +37,7 @@ export default class Follow {
     } else if (keyCode === KeyboardEvent.DOM_VK_ENTER ||
                keyCode === KeyboardEvent.DOM_VK_RETURN) {
       let chars = Follow.codeChars(this.keys);
-      this.hintElements[chars].activate();
+      this.activate(this.hintElements[chars].target);
       return;
     } else if (Follow.availableKey(keyCode)) {
       this.keys.push(keyCode);
@@ -64,7 +65,7 @@ export default class Follow {
       return;
     } else if (shown.length === 1) {
       this.remove();
-      this.hintElements[chars].activate();
+      this.activate(this.hintElements[chars].target);
     }
 
     shown.forEach((key) => {
@@ -75,12 +76,19 @@ export default class Follow {
     });
   }
 
-
   remove() {
     this.doc.removeEventListener('keydown', this.boundKeydown);
     Object.keys(this.hintElements).forEach((key) => {
       this.hintElements[key].remove();
     });
+  }
+
+  activate(element) {
+    this.onActivatedCallbacks.forEach(f => f(element));
+  }
+
+  onActivated(f) {
+    this.onActivatedCallbacks.push(f);
   }
 
   static availableKey(keyCode) {

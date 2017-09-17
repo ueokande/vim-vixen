@@ -8,6 +8,13 @@ import messages from '../messages';
 
 consoleFrames.initialize(window.document);
 
+const startFollows = (newTab) => {
+  let follow = new Follow(window.document, newTab);
+  follow.onActivated((element) => {
+    element.click();
+  });
+};
+
 window.addEventListener('keypress', (e) => {
   if (e.target instanceof HTMLInputElement) {
     return;
@@ -34,7 +41,7 @@ const execOperation = (operation) => {
   case operations.SCROLL_RIGHT:
     return scrolls.scrollRight(window);
   case operations.FOLLOW_START:
-    return new Follow(window.document, operation.newTab);
+    return startFollows(operation.newTab);
   case operations.NAVIGATE_HISTORY_PREV:
     return navigates.historyPrev(window);
   case operations.NAVIGATE_HISTORY_NEXT:

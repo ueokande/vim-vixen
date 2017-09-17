@@ -33,10 +33,4 @@ export default class Hint {
   remove() {
     this.element.remove();
   }
-
-  activate() {
-    if (this.target.tagName.toLowerCase() === 'a') {
-      this.target.click();
-    }
-  }
 }
