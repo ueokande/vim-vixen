@@ -33,6 +33,7 @@ const defaultKeymap = {
   '[[': { type: operations.NAVIGATE_LINK_PREV },
   ']]': { type: operations.NAVIGATE_LINK_NEXT },
   'gu': { type: operations.NAVIGATE_PARENT },
+  'gU': { type: operations.NAVIGATE_ROOT },
 };
 
 const asKeymapChars = (keys) => {

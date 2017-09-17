@@ -63,4 +63,8 @@ const parent = (win) => {
   }
 };
 
-export { historyPrev, historyNext, linkPrev, linkNext, parent };
+const root = (win) => {
+  win.location = win.location.origin;
+};
+
+export { historyPrev, historyNext, linkPrev, linkNext, parent, root };

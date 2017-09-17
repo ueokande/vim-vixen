@@ -45,6 +45,8 @@ const execOperation = (operation) => {
     return navigates.linkNext(window);
   case operations.NAVIGATE_PARENT:
     return navigates.parent(window);
+  case operations.NAVIGATE_ROOT:
+    return navigates.root(window);
   }
 };
 
