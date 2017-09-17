@@ -18,7 +18,7 @@ const reduceByPathname = (items, min) => {
     let pathname = item[1].origin + item[1].pathname;
     if (!hash[pathname]) {
       hash[pathname] = item;
-    } else if (hash[pathname][1].visitCount < item[1].visitCount) {
+    } else if (hash[pathname][1].href.length > item[1].href.length) {
       hash[pathname] = item;
     }
   }
@@ -35,7 +35,7 @@ const reduceByOrigin = (items, min) => {
     let origin = item[1].origin;
     if (!hash[origin]) {
       hash[origin] = item;
-    } else if (hash[origin][1].visitCount < item[1].visitCount) {
+    } else if (hash[origin][1].href.length > item[1].href.length) {
       hash[origin] = item;
     }
   }
@@ -45,7 +45,6 @@ const reduceByOrigin = (items, min) => {
   }
   return filtered;
 };
-
 
 const getCompletions = (keyword) => {
   return browser.history.search({
