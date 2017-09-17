@@ -21,7 +21,7 @@ Firefox by WebExtensions API.
 - [ ] open command
   - [x] open a link
   - [ ] search by keywords with engined
-  - [ ] complete URLs from history
+  - [x] complete URLs from history
   - [ ] complete keywords for search
 - [x] tabs navigation
   - [x] select a tabs by keyboard

@@ -50,11 +50,16 @@ body {
       &-caption {
         display: inline-block;
         width: 40%;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
 
       &-url {
         display: inline-block;
         color: green;
+        width: 60%;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
     }
   }
