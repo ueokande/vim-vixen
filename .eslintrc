@@ -22,6 +22,7 @@
     "comma-dangle": "off",
     "consistent-return": "off",
     "default-case": "off",
+    "dot-location": ["error", "property"],
     "function-paren-newline": "off",
     "id-length": "off",
     "indent": ["error", 2],
