@@ -8,13 +8,57 @@ const filterHttp = (items) => {
   );
 };
 
+const filterEmptyTitle = (items) => {
+  return items.filter(item => item[0].title && item[0].title !== '');
+}
+
+const reduceByPathname = (items, min) => {
+  let hash = {};
+  for (let item of items) {
+    let pathname = item[1].origin + item[1].pathname;
+    if (!hash[pathname]) {
+      hash[pathname] = item;
+    } else if (hash[pathname][1].visitCount < item[1].visitCount) {
+      hash[pathname] = item;
+    }
+  }
+  let filtered = Object.values(hash);
+  if (filtered.length < min) {
+    return items;
+  }
+  return filtered;
+};
+
+const reduceByOrigin= (items, min) => {
+  let hash = {};
+  for (let item of items) {
+    let origin = item[1].origin;
+    if (!hash[origin]) {
+      hash[origin] = item;
+    } else if (hash[origin][1].visitCount < item[1].visitCount) {
+      hash[origin] = item;
+    }
+  }
+  let filtered = Object.values(hash);
+  if (filtered.length < min) {
+    return items;
+  }
+  return filtered;
+};
+
+
 const getCompletions = (keyword) => {
   return browser.history.search({
     text: keyword,
     startTime: '1970-01-01'
   }).then((items) => {
-    return filterHttp(items.map(item => [item, new URL(item.url)]))
-      .sort((x, y) => x[0].lastVisitTime < y[0].lastVisitTime)
+    items = items.map(item => [item, new URL(item.url)]);
+    items = filterEmptyTitle(items);
+    items = filterHttp(items);
+    items = reduceByPathname(items, 10);
+    items = reduceByOrigin(items, 10);
+    return items
+      .sort((x, y) => x[0].visitCount < y[0].visitCount)
       .slice(0, 10)
       .map(item => item[0]);
   });
