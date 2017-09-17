@@ -15,7 +15,7 @@ window.addEventListener('keypress', (e) => {
   browser.runtime.sendMessage({
     type: messages.KEYDOWN,
     code: e.which,
-    ctrl: e.ctrl
+    ctrl: e.ctrlKey
   });
 });
 
