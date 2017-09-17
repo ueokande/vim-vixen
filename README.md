@@ -39,7 +39,7 @@ Firefox by WebExtensions API.
 - [ ] navigations
   - [ ] yank/paste page
   - [x] pagenation
-  - [ ] open parent page
+  - [x] open parent page
 - [ ] hints
   - [x] open a link
   - [ ] open a link in new tab

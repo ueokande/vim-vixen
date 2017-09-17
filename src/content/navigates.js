@@ -44,4 +44,23 @@ const linkNext = (win) => {
   }
 };
 
-export { historyPrev, historyNext, linkPrev, linkNext };
+const parent = (win) => {
+  let loc = win.location;
+  if (loc.hash !== '') {
+    loc.hash = '';
+    return;
+  } else if (loc.search !== '') {
+    loc.search = '';
+    return;
+  }
+
+  const basenamePattern = /\/[^/]+$/;
+  const lastDirPattern = /\/[^/]+\/$/;
+  if (basenamePattern.test(loc.pathname)) {
+    loc.pathname = loc.pathname.replace(basenamePattern, '/');
+  } else if (lastDirPattern.test(loc.pathname)) {
+    loc.pathname = loc.pathname.replace(lastDirPattern, '/');
+  }
+};
+
+export { historyPrev, historyNext, linkPrev, linkNext, parent };

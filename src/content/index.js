@@ -43,6 +43,8 @@ const execOperation = (operation) => {
     return navigates.linkPrev(window);
   case operations.NAVIGATE_LINK_NEXT:
     return navigates.linkNext(window);
+  case operations.NAVIGATE_PARENT:
+    return navigates.parent(window);
   }
 };
 

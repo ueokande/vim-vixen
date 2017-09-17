@@ -2,9 +2,6 @@ import { expect } from "chai";
 import * as navigates from '../../src/content/navigates';
 
 describe('navigates module', () => {
-  beforeEach(() => {
-  });
-
   describe('#linkPrev', () => {
     it('clicks prev link by text content', (done) => {
       document.body.innerHTML = '<a href="#dummy">xprevx</a>  <a href="#prev">go to prev</a>';
@@ -43,6 +40,15 @@ describe('navigates module', () => {
         expect(document.location.hash).to.equal('#next');
         done();
       }, 0);
+    });
+  });
+
+  describe('#parent', () => {
+    // NOTE: not able to test location
+    it('removes hash', () => {
+      window.location.hash = "#section-1";
+      navigates.parent(window);
+      expect(document.location.hash).to.be.empty;
     });
   });
 });

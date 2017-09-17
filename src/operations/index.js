@@ -15,6 +15,7 @@ export default {
   NAVIGATE_HISTORY_NEXT: 'navigate.history.next',
   NAVIGATE_LINK_PREV: 'navigate.link.prev',
   NAVIGATE_LINK_NEXT: 'navigate.link.next',
+  NAVIGATE_PARENT: 'navigate.parent',
 
   // Background
   TABS_CLOSE: 'tabs.close',
