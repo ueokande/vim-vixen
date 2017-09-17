@@ -125,20 +125,13 @@ export default class Follow {
   }
 
   static getTargetElements(doc) {
-    let all = doc.querySelectorAll('a');
-    let filtered = Array.prototype.filter.call(all, (e) => {
-      return Follow.isVisibleElement(e);
+    let all = doc.querySelectorAll('a,button,input,textarea');
+    let filtered = Array.prototype.filter.call(all, (element) => {
+      let style = window.getComputedStyle(element);
+      return style.display !== 'none' &&
+        style.visibility !== 'hidden' &&
+        element.type !== 'hidden';
     });
     return filtered;
-  }
-
-  static isVisibleElement(element) {
-    let style = window.getComputedStyle(element);
-    if (style.display === 'none') {
-      return false;
-    } else if (style.visibility === 'hidden') {
-      return false;
-    }
-    return true;
   }
 }

@@ -11,11 +11,32 @@ consoleFrames.initialize(window.document);
 const startFollows = (newTab) => {
   let follow = new Follow(window.document, newTab);
   follow.onActivated((element) => {
-    browser.runtime.sendMessage({
-      type: messages.OPEN_URL,
-      url: element.href,
-      newTab
-    });
+    switch (element.tagName.toLowerCase()) {
+    case 'a':
+      return browser.runtime.sendMessage({
+        type: messages.OPEN_URL,
+        url: element.href,
+        newTab
+      });
+    case 'input':
+      switch (element.type) {
+      case 'file':
+      case 'checkbox':
+      case 'radio':
+      case 'submit':
+      case 'reset':
+      case 'button':
+      case 'image':
+      case 'color':
+        return element.click();
+      default:
+        return element.focus();
+      }
+    case 'textarea':
+      return element.focus();
+    case 'button':
+      return element.click();
+    }
   });
 };
 

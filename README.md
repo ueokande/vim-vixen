@@ -44,7 +44,7 @@ Firefox by WebExtensions API.
 - [ ] hints
   - [x] open a link
   - [x] open a link in new tab
-  - [ ] activate input form
+  - [x] activate input form
 - [ ] misc
   - [ ] configurable keymaps
   - [ ] .rc file
