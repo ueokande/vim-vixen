@@ -124,13 +124,25 @@ export default class Follow {
     return chars;
   }
 
+  static inWindow(window, element) {
+    let {
+      top, left, bottom, right
+    } = element.getBoundingClientRect();
+    return (
+      top >= 0 && left >= 0 &&
+      bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+      right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+  }
+
   static getTargetElements(doc) {
     let all = doc.querySelectorAll('a,button,input,textarea');
     let filtered = Array.prototype.filter.call(all, (element) => {
       let style = window.getComputedStyle(element);
       return style.display !== 'none' &&
         style.visibility !== 'hidden' &&
-        element.type !== 'hidden';
+        element.type !== 'hidden' &&
+        Follow.inWindow(window, element);
     });
     return filtered;
   }
