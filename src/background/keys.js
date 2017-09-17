@@ -28,8 +28,8 @@ const defaultKeymap = {
   'zz': { type: operations.ZOOM_NEUTRAL },
   'f': { type: operations.FOLLOW_START, newTab: false },
   'F': { type: operations.FOLLOW_START, newTab: true },
-  'H': { type: operations.HISTORY_PREV },
-  'L': { type: operations.HISTORY_NEXT },
+  'H': { type: operations.NAVIGATE_HISTORY_PREV },
+  'L': { type: operations.NAVIGATE_HISTORY_NEXT },
 };
 
 const asKeymapChars = (keys) => {

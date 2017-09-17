@@ -1,7 +1,7 @@
 import '../console/console-frame.scss';
 import * as consoleFrames from '../console/frames';
 import * as scrolls from '../content/scrolls';
-import * as histories from '../content/histories';
+import * as navigates from '../content/navigates';
 import Follow from '../content/follow';
 import operations from '../operations';
 import messages from '../messages';
@@ -35,10 +35,10 @@ const execOperation = (operation) => {
     return scrolls.scrollRight(window);
   case operations.FOLLOW_START:
     return new Follow(window.document, operation.newTab);
-  case operations.HISTORY_PREV:
-    return histories.prev(window);
-  case operations.HISTORY_NEXT:
-    return histories.next(window);
+  case operations.NAVIGATE_HISTORY_PREV:
+    return navigates.historyPrev(window);
+  case operations.NAVIGATE_HISTORY_NEXT:
+    return navigates.historyNext(window);
   }
 };
 
