@@ -11,8 +11,12 @@ export default {
   SCROLL_LEFT: 'scroll.left',
   SCROLL_RIGHT: 'scroll.right',
   FOLLOW_START: 'follow.start',
-  HISTORY_PREV: 'history.prev',
-  HISTORY_NEXT: 'history.next',
+  NAVIGATE_HISTORY_PREV: 'navigate.history.prev',
+  NAVIGATE_HISTORY_NEXT: 'navigate.history.next',
+  NAVIGATE_LINK_PREV: 'navigate.link.prev',
+  NAVIGATE_LINK_NEXT: 'navigate.link.next',
+  NAVIGATE_PARENT: 'navigate.parent',
+  NAVIGATE_ROOT: 'navigate.root',
 
   // Background
   TABS_CLOSE: 'tabs.close',

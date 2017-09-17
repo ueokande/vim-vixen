@@ -38,8 +38,9 @@ Firefox by WebExtensions API.
   - [ ] find a keyword in the page
 - [ ] navigations
   - [ ] yank/paste page
-  - [ ] pagenation
-  - [ ] open parent page
+  - [x] pagenation
+  - [x] open parent page
+  - [x] open root page
 - [ ] hints
   - [x] open a link
   - [ ] open a link in new tab
