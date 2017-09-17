@@ -11,7 +11,11 @@ consoleFrames.initialize(window.document);
 const startFollows = (newTab) => {
   let follow = new Follow(window.document, newTab);
   follow.onActivated((element) => {
-    element.click();
+    browser.runtime.sendMessage({
+      type: messages.OPEN_URL,
+      url: element.href,
+      newTab
+    });
   });
 };
 

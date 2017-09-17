@@ -3,6 +3,7 @@ import * as inputActions from '../actions/input';
 import * as operationActions from '../actions/operation';
 import * as commandActions from '../actions/command';
 import * as consoleActions from '../actions/console';
+import * as tabActions from '../actions/tab';
 import reducers from '../reducers';
 import messages from '../messages';
 import * as store from '../store';
@@ -60,6 +61,13 @@ const handleMessage = (message, sender) => {
   case messages.KEYDOWN:
     return backgroundStore.dispatch(
       inputActions.keyPress(message.code, message.ctrl), sender);
+  case messages.OPEN_URL:
+    if (message.newTab) {
+      return backgroundStore.dispatch(
+        tabActions.openNewTab(message.url), sender);
+    }
+    return backgroundStore.dispatch(
+      tabActions.openToTab(message.url, sender.tab), sender);
   case messages.CONSOLE_BLURRED:
     return backgroundStore.dispatch(
       consoleActions.hide(), sender);

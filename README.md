@@ -43,7 +43,7 @@ Firefox by WebExtensions API.
   - [x] open root page
 - [ ] hints
   - [x] open a link
-  - [ ] open a link in new tab
+  - [x] open a link in new tab
   - [ ] activate input form
 - [ ] misc
   - [ ] configurable keymaps
