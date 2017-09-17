@@ -30,28 +30,26 @@ const defaultKeymap = {
   'F': { type: operations.FOLLOW_START, newTab: true },
   'H': { type: operations.HISTORY_PREV },
   'L': { type: operations.HISTORY_NEXT },
-}
+};
 
 const asKeymapChars = (keys) => {
   return keys.map((k) => {
     let c = String.fromCharCode(k.code);
     if (k.ctrl) {
       return '<C-' + c.toUpperCase() + '>';
-    } else {
-      return c
     }
+    return c;
   }).join('');
-}
+};
 
 const asCaretChars = (keys) => {
   return keys.map((k) => {
     let c = String.fromCharCode(k.code);
     if (k.ctrl) {
       return '^' + c.toUpperCase();
-    } else {
-      return c;
     }
+    return c;
   }).join('');
-}
+};
 
 export { defaultKeymap, asKeymapChars, asCaretChars };

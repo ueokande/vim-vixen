@@ -4,11 +4,11 @@ import * as scrolls from '../content/scrolls';
 import * as histories from '../content/histories';
 import Follow from '../content/follow';
 import operations from '../operations';
-import messages  from '../messages';
+import messages from '../messages';
 
 consoleFrames.initialize(window.document);
 
-window.addEventListener("keypress", (e) => {
+window.addEventListener('keypress', (e) => {
   if (e.target instanceof HTMLInputElement) {
     return;
   }
@@ -40,14 +40,14 @@ const execOperation = (operation) => {
   case operations.HISTORY_NEXT:
     return histories.next(window);
   }
-}
+};
 
 const update = (state) => {
   if (!state.console.commandShown) {
     window.focus();
     consoleFrames.blur(window.document);
   }
-}
+};
 
 browser.runtime.onMessage.addListener((action) => {
   switch (action.type) {

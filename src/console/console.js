@@ -3,14 +3,28 @@ import Completion from './completion';
 import messages from '../messages';
 
 // TODO consider object-oriented
-var prevValue = "";
-var completion = null;
-var completionOrigin = "";
-var prevState = {};
+let prevValue = '';
+let completion = null;
+let completionOrigin = '';
+let prevState = {};
 
 const handleBlur = () => {
   return browser.runtime.sendMessage({
     type: messages.CONSOLE_BLURRED,
+  });
+};
+
+const selectCompletion = (target) => {
+  let container = window.document.querySelector('#vimvixen-console-completion');
+  Array.prototype.forEach.call(container.children, (ele) => {
+    if (!ele.classList.contains('vimvixen-console-completion-item')) {
+      return;
+    }
+    if (ele === target) {
+      ele.classList.add('vimvixen-completion-selected');
+    } else {
+      ele.classList.remove('vimvixen-completion-selected');
+    }
   });
 };
 
@@ -27,7 +41,7 @@ const completeNext = () => {
   input.value = completionOrigin + ' ' + item[0].content;
 
   selectCompletion(item[1]);
-}
+};
 
 const completePrev = () => {
   if (!completion) {
@@ -42,12 +56,12 @@ const completePrev = () => {
   input.value = completionOrigin + ' ' + item[0].content;
 
   selectCompletion(item[1]);
-}
+};
 
 const handleKeydown = (e) => {
   let input = window.document.querySelector('#vimvixen-console-command-input');
 
-  switch(e.keyCode) {
+  switch (e.keyCode) {
   case KeyboardEvent.DOM_VK_ESCAPE:
     return input.blur();
   case KeyboardEvent.DOM_VK_RETURN:
@@ -92,17 +106,17 @@ const createCompletionTitle = (text) => {
   let li = document.createElement('li');
   li.className = 'vimvixen-console-completion-title';
   li.textContent = text;
-  return li
-}
+  return li;
+};
 
 const createCompletionItem = (icon, caption, url) => {
   let captionEle = document.createElement('span');
   captionEle.className = 'vimvixen-console-completion-item-caption';
-  captionEle.textContent = caption
+  captionEle.textContent = caption;
 
   let urlEle = document.createElement('span');
   urlEle.className = 'vimvixen-console-completion-item-url';
-  urlEle.textContent = url
+  urlEle.textContent = url;
 
   let li = document.createElement('li');
   li.style.backgroundImage = 'url(' + icon + ')';
@@ -110,24 +124,11 @@ const createCompletionItem = (icon, caption, url) => {
   li.append(captionEle);
   li.append(urlEle);
   return li;
-}
-
-const selectCompletion = (target) => {
-  let container  = window.document.querySelector('#vimvixen-console-completion');
-  Array.prototype.forEach.call(container.children, (ele) => {
-    if (!ele.classList.contains('vimvixen-console-completion-item')) {
-      return;
-    }
-    if (ele === target) {
-      ele.classList.add('vimvixen-completion-selected');
-    } else {
-      ele.classList.remove('vimvixen-completion-selected');
-    }
-  });
 };
 
 const updateCompletions = (completions) => {
-  let completionsContainer  = window.document.querySelector('#vimvixen-console-completion');
+  let completionsContainer =
+    window.document.querySelector('#vimvixen-console-completion');
   let input = window.document.querySelector('#vimvixen-console-command-input');
 
   completionsContainer.innerHTML = '';
@@ -148,7 +149,7 @@ const updateCompletions = (completions) => {
 
   completion = new Completion(pairs);
   completionOrigin = input.value.split(' ')[0];
-}
+};
 
 const update = (state) => {
   let error = window.document.querySelector('#vimvixen-console-error');
@@ -163,12 +164,13 @@ const update = (state) => {
     input.value = state.commandText;
     input.focus();
   }
-  if (JSON.stringify(state.completions) !== JSON.stringify(prevState.completions)) {
+  if (JSON.stringify(state.completions) !==
+    JSON.stringify(prevState.completions)) {
     updateCompletions(state.completions);
   }
 
   prevState = state;
-}
+};
 
 browser.runtime.onMessage.addListener((action) => {
   if (action.type === messages.STATE_UPDATE) {

@@ -12,7 +12,7 @@ export default function reducer(state = defaultState, action = {}) {
   switch (action.type) {
   case actions.CONSOLE_SHOW_COMMAND:
     return Object.assign({}, state, {
-      commandShown: true, 
+      commandShown: true,
       commandText: action.text,
       errorShown: false,
       completions: []

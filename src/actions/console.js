@@ -1,28 +1,30 @@
 import actions from '../actions';
 
-export function showCommand(text) {
+const showCommand = (text) => {
   return {
     type: actions.CONSOLE_SHOW_COMMAND,
     text: text
   };
-}
+};
 
-export function setCompletions(completions) {
-  return { 
+const setCompletions = (completions) => {
+  return {
     type: actions.CONSOLE_SET_COMPLETIONS,
     completions: completions
   };
-}
+};
 
-export function showError(text) {
+const showError = (text) => {
   return {
     type: actions.CONSOLE_SHOW_ERROR,
     text: text
   };
-}
+};
 
-export function hide() {
-  return { 
+const hide = () => {
+  return {
     type: actions.CONSOLE_HIDE
   };
-}
+};
+
+export { showCommand, setCompletions, showError, hide };

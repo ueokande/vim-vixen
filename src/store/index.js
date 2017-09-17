@@ -24,7 +24,7 @@ class Store {
         this.catcher(e, sender);
       }
     }
-    return action
+    return action;
   }
 
   getState() {
@@ -46,6 +46,8 @@ class Store {
 
 const empty = () => {};
 
-export function createStore(reducer, catcher = empty) {
+const createStore = (reducer, catcher = empty) => {
   return new Store(reducer, catcher);
-}
+};
+
+export { createStore };
