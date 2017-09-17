@@ -23,6 +23,7 @@
     "default-case": "off",
     "id-length": "off",
     "indent": ["error", 2],
+    "function-paren-newline": "off",
     "max-statements": ["error", 15],
     "multiline-ternary": "off",
     "newline-after-var": "off",
