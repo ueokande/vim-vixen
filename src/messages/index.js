@@ -6,5 +6,7 @@ export default {
   CONSOLE_ENTERED: 'console.entered',
   CONSOLE_CHANGEED: 'console.changed',
 
-  KEYDOWN: 'keydown'
+  KEYDOWN: 'keydown',
+
+  OPEN_URL: 'open.url'
 };
