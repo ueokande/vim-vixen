@@ -1,4 +1,5 @@
 import * as tabs from '../background/tabs';
+import * as histories from '../background/histories';
 import * as consoleActions from './console';
 
 const normalizeUrl = (string) => {
@@ -39,9 +40,11 @@ const bufferCommand = (keywords) => {
 
 const doCommand = (name, remaining) => {
   switch (name) {
+  case 'o':
   case 'open':
     // TODO use search engined and pass keywords to them
     return openCommand(normalizeUrl(remaining));
+  case 't':
   case 'tabopen':
     return tabopenCommand(normalizeUrl(remaining));
   case 'b':
@@ -53,6 +56,26 @@ const doCommand = (name, remaining) => {
 
 const getCompletions = (command, keywords) => {
   switch (command) {
+  case 'o':
+  case 'open':
+  case 't':
+  case 'tabopen':
+    return histories.getCompletions(keywords).then((pages) => {
+      let items = pages.map((page) => {
+        return {
+          caption: page.title,
+          content: page.url,
+          url: page.url
+        };
+      });
+      return [
+        {
+          name: 'History',
+          items
+        }
+      ];
+    });
+  case 'b':
   case 'buffer':
     return tabs.getCompletions(keywords).then((gotTabs) => {
       let items = gotTabs.map((tab) => {
