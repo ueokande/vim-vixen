@@ -20,7 +20,7 @@ Firefox by WebExtensions API.
 
 - [ ] open command
   - [x] open a link
-  - [ ] search by keywords with engined
+  - [x] search by keywords with engined
   - [x] complete URLs from history
   - [ ] complete keywords for search
 - [x] tabs navigation
@@ -47,6 +47,7 @@ Firefox by WebExtensions API.
   - [x] activate input form
 - [ ] misc
   - [ ] configurable keymaps
+  - [ ] search engine settings
   - [ ] .rc file
   - [ ] other commands in Ex mode
 - [ ] supporting Google Chrome/Chromium

@@ -2,11 +2,36 @@ import * as tabs from '../background/tabs';
 import * as histories from '../background/histories';
 import * as consoleActions from './console';
 
-const normalizeUrl = (string) => {
+const DEFAULT_SEARCH_ENGINES = {
+  default: 'google',
+  engines: {
+    'google': 'https://google.com/search?q={}',
+    'yahoo': 'https://search.yahoo.com/search?p={}',
+    'bing': 'https://www.bing.com/search?q={}',
+    'duckduckgo': 'https://duckduckgo.com/?q={}',
+    'twitter': 'https://twitter.com/search?q={}',
+    'wikipedia': 'https://en.wikipedia.org/w/index.php?search={}'
+  }
+};
+
+const normalizeUrl = (string, searchConfig) => {
   try {
     return new URL(string).href;
   } catch (e) {
-    return 'http://' + string;
+    if (string.includes('.') && !string.includes(' ')) {
+      return 'http://' + string;
+    }
+    let query = encodeURI(string);
+    let template = searchConfig.engines[
+      searchConfig.default
+    ];
+    for (let key in searchConfig.engines) {
+      if (string.startsWith(key + ' ')) {
+        query = encodeURI(string.replace(key + ' ', ''));
+        template = searchConfig.engines[key];
+      }
+    }
+    return template.replace('{}', query);
   }
 };
 
@@ -38,15 +63,48 @@ const bufferCommand = (keywords) => {
   });
 };
 
+const getOpenCompletions = (keywords) => {
+  return histories.getCompletions(keywords).then((pages) => {
+    let historyItems = pages.map((page) => {
+      return {
+        caption: page.title,
+        content: page.url,
+        url: page.url
+      };
+    });
+    let engineNames = Object.keys(DEFAULT_SEARCH_ENGINES.engines);
+    let engineItems = engineNames.filter(name => name.startsWith(keywords))
+      .map(name => ({
+        caption: name,
+        content: name
+      }));
+
+    let completions = [];
+    if (engineItems.length > 0) {
+      completions.push({
+        name: 'Search Engines',
+        items: engineItems
+      });
+    }
+    if (historyItems.length > 0) {
+      completions.push({
+        name: 'History',
+        items: historyItems
+      });
+    }
+    return completions;
+  });
+};
+
 const doCommand = (name, remaining) => {
   switch (name) {
   case 'o':
   case 'open':
     // TODO use search engined and pass keywords to them
-    return openCommand(normalizeUrl(remaining));
+    return openCommand(normalizeUrl(remaining, DEFAULT_SEARCH_ENGINES));
   case 't':
   case 'tabopen':
-    return tabopenCommand(normalizeUrl(remaining));
+    return tabopenCommand(normalizeUrl(remaining, DEFAULT_SEARCH_ENGINES));
   case 'b':
   case 'buffer':
     return bufferCommand(remaining);
@@ -60,21 +118,7 @@ const getCompletions = (command, keywords) => {
   case 'open':
   case 't':
   case 'tabopen':
-    return histories.getCompletions(keywords).then((pages) => {
-      let items = pages.map((page) => {
-        return {
-          caption: page.title,
-          content: page.url,
-          url: page.url
-        };
-      });
-      return [
-        {
-          name: 'History',
-          items
-        }
-      ];
-    });
+    return getOpenCompletions(keywords);
   case 'b':
   case 'buffer':
     return tabs.getCompletions(keywords).then((gotTabs) => {
