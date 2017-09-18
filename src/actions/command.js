@@ -63,6 +63,39 @@ const bufferCommand = (keywords) => {
   });
 };
 
+const getOpenCompletions = (keywords) => {
+  return histories.getCompletions(keywords).then((pages) => {
+    let historyItems = pages.map((page) => {
+      return {
+        caption: page.title,
+        content: page.url,
+        url: page.url
+      };
+    });
+    let engineNames = Object.keys(DEFAULT_SEARCH_ENGINES.engines);
+    let engineItems = engineNames.filter(name => name.startsWith(keywords))
+      .map(name => ({
+        caption: name,
+        content: name
+      }));
+
+    let completions = [];
+    if (engineItems.length > 0) {
+      completions.push({
+        name: 'Search Engines',
+        items: engineItems
+      });
+    }
+    if (historyItems.length > 0) {
+      completions.push({
+        name: 'History',
+        items: historyItems
+      });
+    }
+    return completions;
+  });
+};
+
 const doCommand = (name, remaining) => {
   switch (name) {
   case 'o':
@@ -85,21 +118,7 @@ const getCompletions = (command, keywords) => {
   case 'open':
   case 't':
   case 'tabopen':
-    return histories.getCompletions(keywords).then((pages) => {
-      let items = pages.map((page) => {
-        return {
-          caption: page.title,
-          content: page.url,
-          url: page.url
-        };
-      });
-      return [
-        {
-          name: 'History',
-          items
-        }
-      ];
-    });
+    return getOpenCompletions(keywords);
   case 'b':
   case 'buffer':
     return tabs.getCompletions(keywords).then((gotTabs) => {
