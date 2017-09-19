@@ -9,15 +9,25 @@ import messages from '../messages';
 consoleFrames.initialize(window.document);
 
 const startFollows = (newTab) => {
-  let follow = new Follow(window.document, newTab);
+  let follow = new Follow(window.document);
   follow.onActivated((element) => {
     switch (element.tagName.toLowerCase()) {
     case 'a':
-      return browser.runtime.sendMessage({
-        type: messages.OPEN_URL,
-        url: element.href,
-        newTab
-      });
+      if (newTab) {
+        // getAttribute() to avoid to resolve absolute path
+        let href = element.getibute('href');
+
+        // eslint-disable-next-line no-script-url
+        if (!href || href === '#' || href.startsWith('javascript:')) {
+          return;
+        }
+        return browser.runtime.sendMessage({
+          type: messages.OPEN_URL,
+          url: element.href,
+          newTab
+        });
+      }
+      return element.click();
     case 'input':
       switch (element.type) {
       case 'file':
