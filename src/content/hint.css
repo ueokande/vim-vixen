@@ -4,4 +4,5 @@
   font-weight: bold;
   position: absolute;
   text-transform: uppercase;
+  z-index: 100000;
 }
