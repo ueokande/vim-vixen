@@ -142,6 +142,7 @@ export default class Follow {
       return style.display !== 'none' &&
         style.visibility !== 'hidden' &&
         element.type !== 'hidden' &&
+        element.offsetHeight > 0 &&
         Follow.inWindow(window, element);
     });
     return filtered;
