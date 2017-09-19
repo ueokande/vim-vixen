@@ -5,4 +5,6 @@
   position: absolute;
   text-transform: uppercase;
   z-index: 100000;
+  font-size: 12px;
+  color: black;
 }
