@@ -15,7 +15,7 @@ const startFollows = (newTab) => {
     case 'a':
       if (newTab) {
         // getAttribute() to avoid to resolve absolute path
-        let href = element.getibute('href');
+        let href = element.getAttribute('href');
 
         // eslint-disable-next-line no-script-url
         if (!href || href === '#' || href.startsWith('javascript:')) {
