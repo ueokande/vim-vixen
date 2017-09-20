@@ -10,7 +10,6 @@ export default class Follow {
     this.keys = [];
     this.onActivatedCallbacks = [];
 
-    // TODO activate input elements and push button elements
     let links = Follow.getTargetElements(doc);
 
     this.addHints(links);
