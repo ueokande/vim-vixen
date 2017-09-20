@@ -51,7 +51,9 @@ const startFollows = (newTab) => {
 };
 
 window.addEventListener('keypress', (e) => {
-  if (e.target instanceof HTMLInputElement) {
+  if (e.target instanceof HTMLInputElement ||
+    e.target instanceof HTMLTextAreaElement ||
+    e.target instanceof HTMLSelectElement) {
     return;
   }
   browser.runtime.sendMessage({
