@@ -27,6 +27,15 @@ const startFollows = (newTab) => {
           newTab
         });
       }
+      if (element.href.startsWith('http://') ||
+        element.href.startsWith('https://') ||
+        element.href.startsWith('ftp://')) {
+        return browser.runtime.sendMessage({
+          type: messages.OPEN_URL,
+          url: element.href,
+          newTab
+        });
+      }
       return element.click();
     case 'input':
       switch (element.type) {
