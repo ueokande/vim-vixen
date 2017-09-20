@@ -15,12 +15,21 @@ const startFollows = (newTab) => {
     case 'a':
       if (newTab) {
         // getAttribute() to avoid to resolve absolute path
-        let href = element.getibute('href');
+        let href = element.getAttribute('href');
 
         // eslint-disable-next-line no-script-url
         if (!href || href === '#' || href.startsWith('javascript:')) {
           return;
         }
+        return browser.runtime.sendMessage({
+          type: messages.OPEN_URL,
+          url: element.href,
+          newTab
+        });
+      }
+      if (element.href.startsWith('http://') ||
+        element.href.startsWith('https://') ||
+        element.href.startsWith('ftp://')) {
         return browser.runtime.sendMessage({
           type: messages.OPEN_URL,
           url: element.href,
@@ -51,7 +60,9 @@ const startFollows = (newTab) => {
 };
 
 window.addEventListener('keypress', (e) => {
-  if (e.target instanceof HTMLInputElement) {
+  if (e.target instanceof HTMLInputElement ||
+    e.target instanceof HTMLTextAreaElement ||
+    e.target instanceof HTMLSelectElement) {
     return;
   }
   browser.runtime.sendMessage({
