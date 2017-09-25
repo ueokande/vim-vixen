@@ -63,6 +63,9 @@ window.addEventListener('keypress', (e) => {
   if (e.target instanceof HTMLInputElement ||
     e.target instanceof HTMLTextAreaElement ||
     e.target instanceof HTMLSelectElement) {
+    if (e.key === 'Escape' && e.target.blur) {
+      e.target.blur();
+    }
     return;
   }
   browser.runtime.sendMessage({

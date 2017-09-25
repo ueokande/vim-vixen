@@ -25,11 +25,17 @@ const exec = (operation, tab) => {
   case operations.COMMAND_OPEN:
     return consoleActions.showCommand('');
   case operations.COMMAND_TABS_OPEN:
-    if (operations.alter) {
+    if (operation.alter) {
       // alter url
       return consoleActions.showCommand('open ' + tab.url);
     }
     return consoleActions.showCommand('open ');
+  case operations.COMMAND_TABS_NEW:
+    if (operation.alter) {
+      // alter url
+      return consoleActions.showCommand('tabopen ' + tab.url);
+    }
+    return consoleActions.showCommand('tabopen ');
   case operations.COMMAND_BUFFER:
     return consoleActions.showCommand('buffer ');
   default:

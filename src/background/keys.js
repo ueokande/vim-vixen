@@ -4,6 +4,8 @@ const defaultKeymap = {
   ':': { type: operations.COMMAND_OPEN },
   'o': { type: operations.COMMAND_TABS_OPEN, alter: false },
   'O': { type: operations.COMMAND_TABS_OPEN, alter: true },
+  't': { type: operations.COMMAND_TABS_NEW, alter: false },
+  'T': { type: operations.COMMAND_TABS_NEW, alter: true },
   'b': { type: operations.COMMAND_BUFFER },
   'k': { type: operations.SCROLL_LINES, count: -1 },
   'j': { type: operations.SCROLL_LINES, count: 1 },

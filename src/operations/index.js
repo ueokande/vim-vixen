@@ -2,6 +2,7 @@ export default {
   // Command
   COMMAND_OPEN: 'cmd.open',
   COMMAND_TABS_OPEN: 'cmd.tabs.open',
+  COMMAND_TABS_NEW: 'cmd.tabs.new',
   COMMAND_BUFFER: 'cmd.buffer',
 
   SCROLL_LINES: 'scroll.lines',
