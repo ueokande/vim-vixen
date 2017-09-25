@@ -15,11 +15,15 @@
     ]
   },
   "permissions": [
+    "history",
     "sessions",
-    "tabs",
-    "history"
+    "storage",
+    "tabs"
   ],
   "web_accessible_resources": [
     "build/console.html"
-  ]
+  ],
+  "options_ui": {
+    "page": "build/settings.html"
+  }
 }
