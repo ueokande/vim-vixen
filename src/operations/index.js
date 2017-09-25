@@ -1,17 +1,22 @@
 export default {
   // Command
-  COMMAND_OPEN: 'cmd.open',
-  COMMAND_TABS_OPEN: 'cmd.tabs.open',
-  COMMAND_TABS_NEW: 'cmd.tabs.new',
-  COMMAND_BUFFER: 'cmd.buffer',
+  COMMAND_SHOW: 'command.show',
+  COMMAND_SHOW_OPEN: 'command.show.open',
+  COMMAND_SHOW_TABOPEN: 'command.show.tabopen',
+  COMMAND_SHOW_BUFFER: 'command.show.buffer',
 
+  // Scrolls
   SCROLL_LINES: 'scroll.lines',
   SCROLL_PAGES: 'scroll.pages',
   SCROLL_TOP: 'scroll.top',
   SCROLL_BOTTOM: 'scroll.bottom',
-  SCROLL_LEFT: 'scroll.left',
-  SCROLL_RIGHT: 'scroll.right',
+  SCROLL_HOME: 'scroll.home',
+  SCROLL_END: 'scroll.end',
+
+  // Follows
   FOLLOW_START: 'follow.start',
+
+  // Navigations
   NAVIGATE_HISTORY_PREV: 'navigate.history.prev',
   NAVIGATE_HISTORY_NEXT: 'navigate.history.next',
   NAVIGATE_LINK_PREV: 'navigate.link.prev',
@@ -19,12 +24,14 @@ export default {
   NAVIGATE_PARENT: 'navigate.parent',
   NAVIGATE_ROOT: 'navigate.root',
 
-  // Background
-  TABS_CLOSE: 'tabs.close',
-  TABS_REOPEN: 'tabs.reopen',
-  TABS_PREV: 'tabs.prev',
-  TABS_NEXT: 'tabs.next',
-  TABS_RELOAD: 'tabs.reload',
+  // Tabs
+  TAB_CLOSE: 'tabs.close',
+  TAB_REOPEN: 'tabs.reopen',
+  TAB_PREV: 'tabs.prev',
+  TAB_NEXT: 'tabs.next',
+  TAB_RELOAD: 'tabs.reload',
+
+  // Zooms
   ZOOM_IN: 'zoom.in',
   ZOOM_OUT: 'zoom.out',
   ZOOM_NEUTRAL: 'zoom.neutral',

@@ -85,9 +85,9 @@ const execOperation = (operation) => {
     return scrolls.scrollTop(window);
   case operations.SCROLL_BOTTOM:
     return scrolls.scrollBottom(window);
-  case operations.SCROLL_LEFT:
+  case operations.SCROLL_HOME:
     return scrolls.scrollLeft(window);
-  case operations.SCROLL_RIGHT:
+  case operations.SCROLL_END:
     return scrolls.scrollRight(window);
   case operations.FOLLOW_START:
     return startFollows(operation.newTab);
