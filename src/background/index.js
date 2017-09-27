@@ -6,6 +6,7 @@ import * as consoleActions from '../actions/console';
 import * as tabActions from '../actions/tab';
 import reducers from '../reducers';
 import messages from '../messages';
+import DefaultSettings from '../settings/default-settings';
 import * as store from '../store';
 
 let prevInput = [];
@@ -41,7 +42,7 @@ backgroundStore.subscribe((sender) => {
 
 const keyQueueChanged = (state, sender) => {
   let prefix = keys.asKeymapChars(state.input.keys);
-  let matched = Object.keys(keys.defaultKeymap).filter((keyStr) => {
+  let matched = Object.keys(state.input.keymaps).filter((keyStr) => {
     return keyStr.startsWith(prefix);
   });
   if (matched.length === 0) {
@@ -51,7 +52,7 @@ const keyQueueChanged = (state, sender) => {
     matched.length === 1 && prefix !== matched[0]) {
     return Promise.resolve();
   }
-  let action = keys.defaultKeymap[matched];
+  let action = state.input.keymaps[matched];
   backgroundStore.dispatch(operationActions.exec(action, sender.tab), sender);
   backgroundStore.dispatch(inputActions.clearKeys(), sender);
 };
@@ -87,3 +88,18 @@ browser.runtime.onMessage.addListener((message, sender) => {
     backgroundStore.dispatch(consoleActions.showError(e.message), sender);
   }
 });
+
+const initializeSettings = () => {
+  browser.storage.local.get('settings').then((value) => {
+    let settings = {};
+    if (value.settings.json) {
+      settings = JSON.parse(value.settings.json);
+    } else {
+      settings = DefaultSettings;
+    }
+    let action = inputActions.setKeymaps(settings.keymaps);
+    backgroundStore.dispatch(action);
+  }, console.error);
+};
+
+initializeSettings();

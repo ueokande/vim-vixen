@@ -8,4 +8,5 @@ export default {
   // User input
   INPUT_KEY_PRESS: 'input.key,press',
   INPUT_CLEAR_KEYS: 'input.clear.keys',
+  INPUT_SET_KEYMAPS: 'input.set,keymaps',
 };
