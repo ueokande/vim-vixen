@@ -6,7 +6,7 @@ import * as consoleActions from '../actions/console';
 import * as tabActions from '../actions/tab';
 import reducers from '../reducers';
 import messages from '../messages';
-import DefaultSettings from '../settings/default-settings';
+import DefaultSettings from './default-settings';
 import * as store from '../store';
 
 let prevInput = [];
@@ -92,10 +92,15 @@ browser.runtime.onMessage.addListener((message, sender) => {
 const initializeSettings = () => {
   browser.storage.local.get('settings').then((value) => {
     let settings = {};
-    if (value.settings.json) {
+    if (value.settings && value.settings.json) {
       settings = JSON.parse(value.settings.json);
     } else {
       settings = DefaultSettings;
+      browser.storage.local.set({
+        settings: {
+          json: DefaultSettings
+        }
+      });
     }
     let action = inputActions.setKeymaps(settings.keymaps);
     backgroundStore.dispatch(action);
