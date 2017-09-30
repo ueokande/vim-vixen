@@ -26,9 +26,9 @@ completionStore.subscribe(() => {
 
   if (state.groupSelection >= 0) {
     let item = state.groups[state.groupSelection].items[state.itemSelection];
-    input.value = completionOrigin + ' ' + item.content;
+    input.value = item.content;
   } else if (state.groups.length > 0) {
-    input.value = completionOrigin + ' ';
+    input.value = completionOrigin;
   }
 });
 
@@ -68,6 +68,10 @@ const handleKeyup = (e) => {
   if (e.target.value === prevValue) {
     return;
   }
+
+  let input = window.document.querySelector('#vimvixen-console-command-input');
+  completionOrigin = input.value;
+
   prevValue = e.target.value;
   return browser.runtime.sendMessage({
     type: messages.CONSOLE_CHANGEED,
@@ -84,9 +88,6 @@ window.addEventListener('load', () => {
 
 const updateCompletions = (completions) => {
   completionStore.dispatch(completionActions.setItems(completions));
-
-  let input = window.document.querySelector('#vimvixen-console-command-input');
-  completionOrigin = input.value.split(' ')[0];
 };
 
 const update = (state) => {

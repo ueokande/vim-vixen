@@ -63,12 +63,12 @@ const bufferCommand = (keywords) => {
   });
 };
 
-const getOpenCompletions = (keywords) => {
+const getOpenCompletions = (command, keywords) => {
   return histories.getCompletions(keywords).then((pages) => {
     let historyItems = pages.map((page) => {
       return {
         caption: page.title,
-        content: page.url,
+        content: command + ' ' + page.url,
         url: page.url
       };
     });
@@ -76,7 +76,7 @@ const getOpenCompletions = (keywords) => {
     let engineItems = engineNames.filter(name => name.startsWith(keywords))
       .map(name => ({
         caption: name,
-        content: name
+        content: command + ' ' + name
       }));
 
     let completions = [];
@@ -118,14 +118,14 @@ const getCompletions = (command, keywords) => {
   case 'open':
   case 't':
   case 'tabopen':
-    return getOpenCompletions(keywords);
+    return getOpenCompletions(command, keywords);
   case 'b':
   case 'buffer':
     return tabs.getCompletions(keywords).then((gotTabs) => {
       let items = gotTabs.map((tab) => {
         return {
           caption: tab.title,
-          content: tab.title,
+          content: command + ' ' + tab.title,
           url: tab.url,
           icon: tab.favIconUrl
         };
