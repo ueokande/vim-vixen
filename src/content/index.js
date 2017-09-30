@@ -1,10 +1,10 @@
-import '../console/console-frame.scss';
-import * as consoleFrames from '../console/frames';
+import './console-frame.scss';
+import * as consoleFrames from './console-frames';
 import * as scrolls from '../content/scrolls';
 import * as navigates from '../content/navigates';
 import Follow from '../content/follow';
 import operations from '../operations';
-import messages from '../messages';
+import messages from './messages';
 
 consoleFrames.initialize(window.document);
 

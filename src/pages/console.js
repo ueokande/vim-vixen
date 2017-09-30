@@ -1,6 +1,6 @@
 import './console.scss';
 import Completion from './completion';
-import messages from '../messages';
+import messages from '../content/messages';
 
 // TODO consider object-oriented
 let prevValue = '';

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import Completion from '../../src/console/completion';
+import Completion from '../../src/pages/completion';
 
 describe('Completion class', () => {
   describe('#constructor', () => {

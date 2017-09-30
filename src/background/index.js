@@ -5,7 +5,7 @@ import * as commandActions from '../actions/command';
 import * as consoleActions from '../actions/console';
 import * as tabActions from '../actions/tab';
 import reducers from '../reducers';
-import messages from '../messages';
+import messages from '../content/messages';
 import * as store from '../store';
 
 let prevInput = [];

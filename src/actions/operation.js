@@ -1,5 +1,5 @@
 import operations from '../operations';
-import messages from '../messages';
+import messages from '../content/messages';
 import * as consoleActions from './console';
 import * as tabs from '../background/tabs';
 import * as zooms from '../background/zooms';

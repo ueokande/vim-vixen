@@ -1,5 +1,5 @@
 import './settings.scss';
-import messages from '../messages';
+import messages from '../content/messages';
 
 document.addEventListener('DOMContentLoaded', () => {
   let form = document.getElementById('vimvixen-settings-form');
