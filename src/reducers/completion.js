@@ -24,7 +24,10 @@ const nextSelection = (state) => {
 
 const prevSelection = (state) => {
   if (state.groupSelection < 0) {
-    return [0, 0];
+    return [
+      state.groups.length - 1,
+      state.groups[state.groups.length - 1].items.length - 1
+    ];
   }
   if (state.groupSelection === 0 && state.itemSelection === 0) {
     return [-1, -1];
@@ -41,7 +44,9 @@ export default function reducer(state = defaultState, action = {}) {
   switch (action.type) {
   case actions.COMPLETION_SET_ITEMS:
     return Object.assign({}, state, {
-      groups: action.groups
+      groups: action.groups,
+      groupSelection: -1,
+      itemSelection: -1,
     });
   case actions.COMPLETION_SELECT_NEXT: {
     let next = nextSelection(state);
@@ -57,5 +62,7 @@ export default function reducer(state = defaultState, action = {}) {
       itemSelection: next[1],
     });
   }
+  default:
+    return defaultState;
   }
 }
