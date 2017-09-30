@@ -8,5 +8,7 @@ export default {
 
   KEYDOWN: 'keydown',
 
-  OPEN_URL: 'open.url'
+  OPEN_URL: 'open.url',
+
+  SETTINGS_RELOAD: 'settings.reload',
 };

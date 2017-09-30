@@ -6,15 +6,15 @@ import * as zooms from '../background/zooms';
 
 const exec = (operation, tab) => {
   switch (operation.type) {
-  case operations.TABS_CLOSE:
+  case operations.TAB_CLOSE:
     return tabs.closeTab(tab.id);
-  case operations.TABS_REOPEN:
+  case operations.TAB_REOPEN:
     return tabs.reopenTab();
-  case operations.TABS_PREV:
+  case operations.TAB_PREV:
     return tabs.selectPrevTab(tab.index, operation.count);
-  case operations.TABS_NEXT:
+  case operations.TAB_NEXT:
     return tabs.selectNextTab(tab.index, operation.count);
-  case operations.TABS_RELOAD:
+  case operations.TAB_RELOAD:
     return tabs.reload(tab, operation.cache);
   case operations.ZOOM_IN:
     return zooms.zoomIn();
@@ -22,21 +22,21 @@ const exec = (operation, tab) => {
     return zooms.zoomOut();
   case operations.ZOOM_NEUTRAL:
     return zooms.neutral();
-  case operations.COMMAND_OPEN:
+  case operations.COMMAND_SHOW:
     return consoleActions.showCommand('');
-  case operations.COMMAND_TABS_OPEN:
+  case operations.COMMAND_SHOW_OPEN:
     if (operation.alter) {
       // alter url
       return consoleActions.showCommand('open ' + tab.url);
     }
     return consoleActions.showCommand('open ');
-  case operations.COMMAND_TABS_NEW:
+  case operations.COMMAND_SHOW_TABOPEN:
     if (operation.alter) {
       // alter url
       return consoleActions.showCommand('tabopen ' + tab.url);
     }
     return consoleActions.showCommand('tabopen ');
-  case operations.COMMAND_BUFFER:
+  case operations.COMMAND_SHOW_BUFFER:
     return consoleActions.showCommand('buffer ');
   default:
     return browser.tabs.sendMessage(tab.id, {

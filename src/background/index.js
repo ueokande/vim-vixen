@@ -41,7 +41,7 @@ backgroundStore.subscribe((sender) => {
 
 const keyQueueChanged = (state, sender) => {
   let prefix = keys.asKeymapChars(state.input.keys);
-  let matched = Object.keys(keys.defaultKeymap).filter((keyStr) => {
+  let matched = Object.keys(state.input.keymaps).filter((keyStr) => {
     return keyStr.startsWith(prefix);
   });
   if (matched.length === 0) {
@@ -51,9 +51,17 @@ const keyQueueChanged = (state, sender) => {
     matched.length === 1 && prefix !== matched[0]) {
     return Promise.resolve();
   }
-  let action = keys.defaultKeymap[matched];
+  let action = state.input.keymaps[matched];
   backgroundStore.dispatch(operationActions.exec(action, sender.tab), sender);
   backgroundStore.dispatch(inputActions.clearKeys(), sender);
+};
+
+const reloadSettings = () => {
+  browser.storage.local.get('settings').then((value) => {
+    let settings = JSON.parse(value.settings.json);
+    let action = inputActions.setKeymaps(settings.keymaps);
+    backgroundStore.dispatch(action);
+  }, console.error);
 };
 
 const handleMessage = (message, sender) => {
@@ -77,6 +85,8 @@ const handleMessage = (message, sender) => {
   case messages.CONSOLE_CHANGEED:
     return backgroundStore.dispatch(
       commandActions.complete(message.text), sender);
+  case messages.SETTINGS_RELOAD:
+    return reloadSettings();
   }
 };
 
@@ -87,3 +97,9 @@ browser.runtime.onMessage.addListener((message, sender) => {
     backgroundStore.dispatch(consoleActions.showError(e.message), sender);
   }
 });
+
+const initializeSettings = () => {
+  reloadSettings();
+};
+
+initializeSettings();
