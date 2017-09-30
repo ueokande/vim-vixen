@@ -1,61 +1,41 @@
 import './console.scss';
-import Completion from './completion';
 import messages from '../content/messages';
+import CompletionComponent from '../components/completion';
+import completionReducer from '../reducers/completion';
+import * as store from '../store';
+import * as completionActions from '../actions/completion';
+
+const completionStore = store.createStore(completionReducer);
+let completionComponent = null;
+
+window.addEventListener('load', () => {
+  let wrapper = document.querySelector('#vimvixen-console-completion');
+  completionComponent = new CompletionComponent(wrapper, completionStore);
+});
 
 // TODO consider object-oriented
 let prevValue = '';
-let completion = null;
 let completionOrigin = '';
 let prevState = {};
+
+completionStore.subscribe(() => {
+  completionComponent.update();
+
+  let state = completionStore.getState();
+  let input = window.document.querySelector('#vimvixen-console-command-input');
+
+  if (state.groupSelection >= 0) {
+    let item = state.groups[state.groupSelection].items[state.itemSelection];
+    input.value = completionOrigin + ' ' + item.content;
+  } else if (state.groups.length > 0) {
+    input.value = completionOrigin + ' ';
+  }
+});
 
 const handleBlur = () => {
   return browser.runtime.sendMessage({
     type: messages.CONSOLE_BLURRED,
   });
-};
-
-const selectCompletion = (target) => {
-  let container = window.document.querySelector('#vimvixen-console-completion');
-  Array.prototype.forEach.call(container.children, (ele) => {
-    if (!ele.classList.contains('vimvixen-console-completion-item')) {
-      return;
-    }
-    if (ele === target) {
-      ele.classList.add('vimvixen-completion-selected');
-    } else {
-      ele.classList.remove('vimvixen-completion-selected');
-    }
-  });
-};
-
-const completeNext = () => {
-  if (!completion) {
-    return;
-  }
-  let item = completion.next();
-  if (!item) {
-    return;
-  }
-
-  let input = window.document.querySelector('#vimvixen-console-command-input');
-  input.value = completionOrigin + ' ' + item[0].content;
-
-  selectCompletion(item[1]);
-};
-
-const completePrev = () => {
-  if (!completion) {
-    return;
-  }
-  let item = completion.prev();
-  if (!item) {
-    return;
-  }
-
-  let input = window.document.querySelector('#vimvixen-console-command-input');
-  input.value = completionOrigin + ' ' + item[0].content;
-
-  selectCompletion(item[1]);
 };
 
 const handleKeydown = (e) => {
@@ -71,9 +51,9 @@ const handleKeydown = (e) => {
     });
   case KeyboardEvent.DOM_VK_TAB:
     if (e.shiftKey) {
-      completePrev();
+      completionStore.dispatch(completionActions.selectPrev());
     } else {
-      completeNext();
+      completionStore.dispatch(completionActions.selectNext());
     }
     e.stopPropagation();
     e.preventDefault();
@@ -102,52 +82,10 @@ window.addEventListener('load', () => {
   input.addEventListener('keyup', handleKeyup);
 });
 
-const createCompletionTitle = (text) => {
-  let li = document.createElement('li');
-  li.className = 'vimvixen-console-completion-title';
-  li.textContent = text;
-  return li;
-};
-
-const createCompletionItem = (icon, caption, url) => {
-  let captionEle = document.createElement('span');
-  captionEle.className = 'vimvixen-console-completion-item-caption';
-  captionEle.textContent = caption;
-
-  let urlEle = document.createElement('span');
-  urlEle.className = 'vimvixen-console-completion-item-url';
-  urlEle.textContent = url;
-
-  let li = document.createElement('li');
-  li.style.backgroundImage = 'url(' + icon + ')';
-  li.className = 'vimvixen-console-completion-item';
-  li.append(captionEle);
-  li.append(urlEle);
-  return li;
-};
-
 const updateCompletions = (completions) => {
-  let completionsContainer =
-    window.document.querySelector('#vimvixen-console-completion');
+  completionStore.dispatch(completionActions.setItems(completions));
+
   let input = window.document.querySelector('#vimvixen-console-command-input');
-
-  completionsContainer.innerHTML = '';
-
-  let pairs = [];
-
-  for (let group of completions) {
-    let title = createCompletionTitle(group.name);
-    completionsContainer.append(title);
-
-    for (let item of group.items) {
-      let li = createCompletionItem(item.icon, item.caption, item.url);
-      completionsContainer.append(li);
-
-      pairs.push([item, li]);
-    }
-  }
-
-  completion = new Completion(pairs);
   completionOrigin = input.value.split(' ')[0];
 };
 
