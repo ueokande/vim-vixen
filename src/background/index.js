@@ -6,7 +6,6 @@ import * as consoleActions from '../actions/console';
 import * as tabActions from '../actions/tab';
 import reducers from '../reducers';
 import messages from '../messages';
-import DefaultSettings from './default-settings';
 import * as store from '../store';
 
 let prevInput = [];
@@ -57,6 +56,14 @@ const keyQueueChanged = (state, sender) => {
   backgroundStore.dispatch(inputActions.clearKeys(), sender);
 };
 
+const reloadSettings = () => {
+  browser.storage.local.get('settings').then((value) => {
+    let settings = JSON.parse(value.settings.json);
+    let action = inputActions.setKeymaps(settings.keymaps);
+    backgroundStore.dispatch(action);
+  }, console.error);
+};
+
 const handleMessage = (message, sender) => {
   switch (message.type) {
   case messages.KEYDOWN:
@@ -78,6 +85,8 @@ const handleMessage = (message, sender) => {
   case messages.CONSOLE_CHANGEED:
     return backgroundStore.dispatch(
       commandActions.complete(message.text), sender);
+  case messages.SETTINGS_RELOAD:
+    return reloadSettings();
   }
 };
 
@@ -90,21 +99,7 @@ browser.runtime.onMessage.addListener((message, sender) => {
 });
 
 const initializeSettings = () => {
-  browser.storage.local.get('settings').then((value) => {
-    let settings = {};
-    if (value.settings && value.settings.json) {
-      settings = JSON.parse(value.settings.json);
-    } else {
-      settings = DefaultSettings;
-      browser.storage.local.set({
-        settings: {
-          json: DefaultSettings
-        }
-      });
-    }
-    let action = inputActions.setKeymaps(settings.keymaps);
-    backgroundStore.dispatch(action);
-  }, console.error);
+  reloadSettings();
 };
 
 initializeSettings();

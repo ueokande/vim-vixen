@@ -1,4 +1,5 @@
 import './settings.scss';
+import messages from '../messages';
 
 document.addEventListener('DOMContentLoaded', () => {
   let form = document.getElementById('vimvixen-settings-form');
@@ -8,6 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
       settings: {
         json: e.target.elements['plain-json'].value
       }
+    }).then(() => {
+      return browser.runtime.sendMessage({
+        type: messages.SETTINGS_RELOAD
+      });
     });
   });
 
