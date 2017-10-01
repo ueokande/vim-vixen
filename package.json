@@ -5,6 +5,7 @@
     "start": "webpack -w -d",
     "lint": "eslint --ext .jsx,.js src",
     "build": "NODE_ENV=production webpack --progress --display-error-details",
+    "package": "npm run build && ./package.sh",
     "lint": "eslint src",
     "test": "karma start"
   },

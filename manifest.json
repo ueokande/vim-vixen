@@ -3,6 +3,15 @@
   "name": "Vim Vixen",
   "description": "Vim Vixen",
   "version": "0.0.1",
+  "icons": {
+    "48": "resources/icon_48x48.png",
+    "96": "resources/icon_96x96.png"
+  },
+  "applications": {
+    "gecko": {
+      "id": "vim-vixen@i-beam.org"
+    }
+  },
   "content_scripts": [
     {
       "matches": [ "http://*/*", "https://*/*" ],
@@ -21,7 +30,8 @@
     "tabs"
   ],
   "web_accessible_resources": [
-    "build/console.html"
+    "build/console.html",
+    "build/console.js"
   ],
   "options_ui": {
     "page": "build/settings.html"
