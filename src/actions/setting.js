@@ -1,9 +1,13 @@
 import actions from '../actions';
 import messages from '../content/messages';
+import DefaultSettings from '../shared/default-settings';
 
 const load = () => {
   return browser.storage.local.get('settings').then((value) => {
-    return set(value.settings);
+    if (value.settings) {
+      return set(value.settings);
+    }
+    return set(DefaultSettings);
   }, console.error);
 };
 

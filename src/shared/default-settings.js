@@ -1,4 +1,5 @@
-export default `{
+export default {
+  json: `{
   "keymaps": {
     "0": { "type": "scroll.home" },
     ":": { "type": "command.show" },
@@ -36,4 +37,5 @@ export default `{
     "gu": { "type": "navigate.parent" },
     "gU": { "type": "navigate.root" }
   }
-}`;
+}`
+};

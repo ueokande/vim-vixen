@@ -6,6 +6,7 @@ import * as consoleActions from '../actions/console';
 import * as tabActions from '../actions/tab';
 import reducers from '../reducers';
 import messages from '../content/messages';
+import DefaultSettings from '../shared/default-settings';
 import * as store from '../store';
 
 let prevInput = [];
@@ -58,7 +59,12 @@ const keyQueueChanged = (state, sender) => {
 
 const reloadSettings = () => {
   browser.storage.local.get('settings').then((value) => {
-    let settings = JSON.parse(value.settings.json);
+    let settings = null;
+    if (value.settings) {
+      settings = JSON.parse(value.settings.json);
+    } else {
+      settings = JSON.parse(DefaultSettings.json);
+    }
     let action = inputActions.setKeymaps(settings.keymaps);
     backgroundStore.dispatch(action);
   }, console.error);
