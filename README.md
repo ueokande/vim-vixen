@@ -46,9 +46,9 @@ Firefox by WebExtensions API.
   - [x] open a link in new tab
   - [x] activate input form
 - [ ] misc
-  - [ ] configurable keymaps
+  - [x] configurable keymaps
   - [ ] search engine settings
-  - [ ] .rc file
+  - [x] .rc file
   - [ ] other commands in Ex mode
 - [ ] supporting Google Chrome/Chromium
 
