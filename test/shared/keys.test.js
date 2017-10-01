@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import * as keys from '../../src/background/keys';
+import * as keys from '../../src/shared/keys';
 
 describe("keys", () => {
   const KEYMAP = {
