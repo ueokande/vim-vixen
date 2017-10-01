@@ -2,10 +2,14 @@ export default class Completion {
   constructor(wrapper, store) {
     this.wrapper = wrapper;
     this.store = store;
+    this.prevState = {};
   }
 
   update() {
     let state = this.store.getState();
+    if (JSON.stringify(this.prevState) === JSON.stringify(state)) {
+      return;
+    }
 
     this.wrapper.innerHTML = '';
 
@@ -24,6 +28,8 @@ export default class Completion {
         }
       }
     }
+
+    this.prevState = state;
   }
 
   createCompletionTitle(text) {
