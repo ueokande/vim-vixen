@@ -19,6 +19,7 @@
     "arrow-parens": ["error", "as-needed", { "requireForBlockBody": true }],
     "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
     "capitalized-comments": "off",
+    "class-methods-use-this": "off",
     "comma-dangle": "off",
     "consistent-return": "off",
     "default-case": "off",
