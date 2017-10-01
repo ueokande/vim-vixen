@@ -2,18 +2,6 @@ import * as tabs from '../background/tabs';
 import * as histories from '../background/histories';
 import * as consoleActions from './console';
 
-const DEFAULT_SEARCH_ENGINES = {
-  default: 'google',
-  engines: {
-    'google': 'https://google.com/search?q={}',
-    'yahoo': 'https://search.yahoo.com/search?p={}',
-    'bing': 'https://www.bing.com/search?q={}',
-    'duckduckgo': 'https://duckduckgo.com/?q={}',
-    'twitter': 'https://twitter.com/search?q={}',
-    'wikipedia': 'https://en.wikipedia.org/w/index.php?search={}'
-  }
-};
-
 const normalizeUrl = (string, searchConfig) => {
   try {
     return new URL(string).href;
@@ -63,7 +51,7 @@ const bufferCommand = (keywords) => {
   });
 };
 
-const getOpenCompletions = (command, keywords) => {
+const getOpenCompletions = (command, keywords, searchConfig) => {
   return histories.getCompletions(keywords).then((pages) => {
     let historyItems = pages.map((page) => {
       return {
@@ -72,7 +60,7 @@ const getOpenCompletions = (command, keywords) => {
         url: page.url
       };
     });
-    let engineNames = Object.keys(DEFAULT_SEARCH_ENGINES.engines);
+    let engineNames = Object.keys(searchConfig.engines);
     let engineItems = engineNames.filter(name => name.startsWith(keywords))
       .map(name => ({
         caption: name,
@@ -96,15 +84,15 @@ const getOpenCompletions = (command, keywords) => {
   });
 };
 
-const doCommand = (name, remaining) => {
+const doCommand = (name, remaining, settings) => {
   switch (name) {
   case 'o':
   case 'open':
     // TODO use search engined and pass keywords to them
-    return openCommand(normalizeUrl(remaining, DEFAULT_SEARCH_ENGINES));
+    return openCommand(normalizeUrl(remaining, settings.search));
   case 't':
   case 'tabopen':
-    return tabopenCommand(normalizeUrl(remaining, DEFAULT_SEARCH_ENGINES));
+    return tabopenCommand(normalizeUrl(remaining, settings.search));
   case 'b':
   case 'buffer':
     return bufferCommand(remaining);
@@ -112,13 +100,13 @@ const doCommand = (name, remaining) => {
   throw new Error(name + ' command is not defined');
 };
 
-const getCompletions = (command, keywords) => {
+const getCompletions = (command, keywords, settings) => {
   switch (command) {
   case 'o':
   case 'open':
   case 't':
   case 'tabopen':
-    return getOpenCompletions(command, keywords);
+    return getOpenCompletions(command, keywords, settings.search);
   case 'b':
   case 'buffer':
     return tabs.getCompletions(keywords).then((gotTabs) => {
@@ -141,18 +129,19 @@ const getCompletions = (command, keywords) => {
   return Promise.resolve([]);
 };
 
-const exec = (line) => {
+const exec = (line, settings) => {
   let name = line.split(' ')[0];
   let remaining = line.replace(name + ' ', '');
-  return doCommand(name, remaining).then(() => {
+  return doCommand(name, remaining, settings).then(() => {
     return consoleActions.hide();
   });
 };
 
-const complete = (line) => {
+const complete = (line, settings) => {
   let command = line.split(' ', 1)[0];
   let keywords = line.replace(command + ' ', '');
-  return getCompletions(command, keywords).then(consoleActions.setCompletions);
+  return getCompletions(command, keywords, settings)
+    .then(consoleActions.setCompletions);
 };
 
 export { exec, complete };

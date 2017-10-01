@@ -14,11 +14,4 @@ const clearKeys = () => {
   };
 };
 
-const setKeymaps = (keymaps) => {
-  return {
-    type: actions.INPUT_SET_KEYMAPS,
-    keymaps: keymaps
-  };
-};
-
-export { keyPress, clearKeys, setKeymaps };
+export { keyPress, clearKeys };

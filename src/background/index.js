@@ -3,13 +3,14 @@ import * as inputActions from '../actions/input';
 import * as operationActions from '../actions/operation';
 import * as commandActions from '../actions/command';
 import * as consoleActions from '../actions/console';
+import * as settingsActions from '../actions/setting';
 import * as tabActions from '../actions/tab';
 import reducers from '../reducers';
 import messages from '../content/messages';
-import DefaultSettings from '../shared/default-settings';
 import * as store from '../store';
 
 let prevInput = [];
+let settings = {};
 
 const backgroundStore = store.createStore(reducers, (e, sender) => {
   console.error('Vim-Vixen:', e);
@@ -39,10 +40,17 @@ backgroundStore.subscribe((sender) => {
     });
   }
 });
+backgroundStore.subscribe(() => {
+  let state = backgroundStore.getState().setting;
+  if (!state.settings.json) {
+    return;
+  }
+  settings = JSON.parse(backgroundStore.getState().setting.settings.json);
+});
 
 const keyQueueChanged = (state, sender) => {
   let prefix = keys.asKeymapChars(state.input.keys);
-  let matched = Object.keys(state.input.keymaps).filter((keyStr) => {
+  let matched = Object.keys(settings.keymaps).filter((keyStr) => {
     return keyStr.startsWith(prefix);
   });
   if (matched.length === 0) {
@@ -52,22 +60,10 @@ const keyQueueChanged = (state, sender) => {
     matched.length === 1 && prefix !== matched[0]) {
     return Promise.resolve();
   }
-  let action = state.input.keymaps[matched];
-  backgroundStore.dispatch(operationActions.exec(action, sender.tab), sender);
+  let action = settings.keymaps[matched];
+  backgroundStore.dispatch(
+    operationActions.exec(action, sender.tab, settings), sender);
   backgroundStore.dispatch(inputActions.clearKeys(), sender);
-};
-
-const reloadSettings = () => {
-  browser.storage.local.get('settings').then((value) => {
-    let settings = null;
-    if (value.settings) {
-      settings = JSON.parse(value.settings.json);
-    } else {
-      settings = JSON.parse(DefaultSettings.json);
-    }
-    let action = inputActions.setKeymaps(settings.keymaps);
-    backgroundStore.dispatch(action);
-  }, console.error);
 };
 
 const handleMessage = (message, sender) => {
@@ -87,12 +83,12 @@ const handleMessage = (message, sender) => {
       consoleActions.hide(), sender);
   case messages.CONSOLE_ENTERED:
     return backgroundStore.dispatch(
-      commandActions.exec(message.text), sender);
+      commandActions.exec(message.text, settings), sender);
   case messages.CONSOLE_CHANGEED:
     return backgroundStore.dispatch(
-      commandActions.complete(message.text), sender);
+      commandActions.complete(message.text, settings), sender);
   case messages.SETTINGS_RELOAD:
-    return reloadSettings();
+    backgroundStore.dispatch(settingsActions.load());
   }
 };
 
@@ -105,7 +101,7 @@ browser.runtime.onMessage.addListener((message, sender) => {
 });
 
 const initializeSettings = () => {
-  reloadSettings();
+  backgroundStore.dispatch(settingsActions.load());
 };
 
 initializeSettings();
