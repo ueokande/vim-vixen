@@ -30,21 +30,10 @@ completionStore.subscribe(() => {
   }
 });
 
-const update = (state) => {
-  consoleComponent.update(state);
-
-  completionStore.dispatch(completionActions.setItems(state.completions));
-};
-
 browser.runtime.onMessage.addListener((action) => {
   if (action.type === messages.STATE_UPDATE) {
-    return update(action.state.console);
+    let state = action.state.console;
+    consoleComponent.update(state);
+    completionStore.dispatch(completionActions.setItems(state.completions));
   }
-});
-
-window.addEventListener('load', () => {
-  let error = window.document.querySelector('#vimvixen-console-error');
-  let command = window.document.querySelector('#vimvixen-console-command');
-  error.style.display = 'none';
-  command.style.display = 'none';
 });

@@ -14,9 +14,12 @@ export default class ConsoleComponent {
     input.addEventListener('blur', this.onBlur.bind(this));
     input.addEventListener('keydown', this.onKeyDown.bind(this));
     input.addEventListener('keyup', this.onKeyUp.bind(this));
+
+    this.hideCommand();
+    this.hideError();
   }
 
-  static onBlur() {
+  onBlur() {
     return browser.runtime.sendMessage({
       type: messages.CONSOLE_BLURRED,
     });
