@@ -1,22 +1,15 @@
 import './settings.scss';
-import messages from '../content/messages';
+import SettingComponent from '../components/setting';
+import settingReducer from '../reducers/setting';
+import * as store from '../store';
+
+const settingStore = store.createStore(settingReducer);
+let settingComponent = null;
+
+settingStore.subscribe(() => {
+  settingComponent.update();
+});
 
 document.addEventListener('DOMContentLoaded', () => {
-  let form = document.getElementById('vimvixen-settings-form');
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    browser.storage.local.set({
-      settings: {
-        json: e.target.elements['plain-json'].value
-      }
-    }).then(() => {
-      return browser.runtime.sendMessage({
-        type: messages.SETTINGS_RELOAD
-      });
-    });
-  });
-
-  browser.storage.local.get('settings').then((value) => {
-    form.elements['plain-json'].value = value.settings.json;
-  }, console.error);
+  settingComponent = new SettingComponent(document.body, settingStore);
 });

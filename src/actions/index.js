@@ -13,5 +13,8 @@ export default {
   // Completion
   COMPLETION_SET_ITEMS: 'completion.set.items',
   COMPLETION_SELECT_NEXT: 'completions.select.next',
-  COMPLETION_SELECT_PREV: 'completions.select.prev'
+  COMPLETION_SELECT_PREV: 'completions.select.prev',
+
+  // Settings
+  SETTING_SET_SETTINGS: 'setting.set.settings',
 };
