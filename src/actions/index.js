@@ -17,4 +17,10 @@ export default {
 
   // Settings
   SETTING_SET_SETTINGS: 'setting.set.settings',
+
+  // Follow
+  FOLLOW_ENABLE: 'follow.enable',
+  FOLLOW_DISABLE: 'follow.disable',
+  FOLLOW_KEY_PRESS: 'follow.key.press',
+  FOLLOW_BACKSPACE: 'follow.backspace',
 };

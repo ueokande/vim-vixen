@@ -2,62 +2,24 @@ import './console-frame.scss';
 import * as consoleFrames from './console-frames';
 import * as scrolls from '../content/scrolls';
 import * as navigates from '../content/navigates';
-import Follow from '../content/follow';
+import * as followActions from '../actions/follow';
+import * as store from '../store';
+import FollowComponent from '../components/follow';
+import followReducer from '../reducers/follow';
 import operations from '../operations';
 import messages from './messages';
 
+const followStore = store.createStore(followReducer);
+const followComponent = new FollowComponent(window.document.body, followStore);
+followStore.subscribe(() => {
+  try {
+    followComponent.update();
+  } catch (e) {
+    console.error(e);
+  }
+});
+
 consoleFrames.initialize(window.document);
-
-const startFollows = (newTab) => {
-  let follow = new Follow(window.document);
-  follow.onActivated((element) => {
-    switch (element.tagName.toLowerCase()) {
-    case 'a':
-      if (newTab) {
-        // getAttribute() to avoid to resolve absolute path
-        let href = element.getAttribute('href');
-
-        // eslint-disable-next-line no-script-url
-        if (!href || href === '#' || href.startsWith('javascript:')) {
-          return;
-        }
-        return browser.runtime.sendMessage({
-          type: messages.OPEN_URL,
-          url: element.href,
-          newTab
-        });
-      }
-      if (element.href.startsWith('http://') ||
-        element.href.startsWith('https://') ||
-        element.href.startsWith('ftp://')) {
-        return browser.runtime.sendMessage({
-          type: messages.OPEN_URL,
-          url: element.href,
-          newTab
-        });
-      }
-      return element.click();
-    case 'input':
-      switch (element.type) {
-      case 'file':
-      case 'checkbox':
-      case 'radio':
-      case 'submit':
-      case 'reset':
-      case 'button':
-      case 'image':
-      case 'color':
-        return element.click();
-      default:
-        return element.focus();
-      }
-    case 'textarea':
-      return element.focus();
-    case 'button':
-      return element.click();
-    }
-  });
-};
 
 window.addEventListener('keypress', (e) => {
   if (e.target instanceof HTMLInputElement ||
@@ -90,7 +52,7 @@ const execOperation = (operation) => {
   case operations.SCROLL_END:
     return scrolls.scrollRight(window);
   case operations.FOLLOW_START:
-    return startFollows(operation.newTab);
+    return followStore.dispatch(followActions.enable(false));
   case operations.NAVIGATE_HISTORY_PREV:
     return navigates.historyPrev(window);
   case operations.NAVIGATE_HISTORY_NEXT:

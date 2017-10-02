@@ -1,24 +1,24 @@
 import { expect } from "chai";
-import Follow from '../../src/content/follow';
+import FollowComponent from '../../src/components/follow';
 
-describe('Follow class', () => {
+describe('FollowComponent', () => {
   describe('#codeChars', () => {
     it('returns a string for key codes', () => {
       let chars = [
         KeyboardEvent.DOM_VK_0, KeyboardEvent.DOM_VK_1,
         KeyboardEvent.DOM_VK_A, KeyboardEvent.DOM_VK_B];
-      expect(Follow.codeChars(chars)).to.equal('01ab');
-      expect(Follow.codeChars([])).to.be.equal('');
+      expect(FollowComponent.codeChars(chars)).to.equal('01ab');
+      expect(FollowComponent.codeChars([])).to.be.equal('');
     });
   });
 
   describe('#getTargetElements', () => {
     beforeEach(() => {
-      document.body.innerHTML = __html__['test/content/follow.html'];
+      document.body.innerHTML = __html__['test/components/follow.html'];
     });
 
     it('returns visible links', () => {
-      let links = Follow.getTargetElements(window.document);
+      let links = FollowComponent.getTargetElements(window.document);
       expect(links).to.have.lengthOf(1);
     });
   });
