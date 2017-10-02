@@ -9,6 +9,7 @@ import * as completionActions from '../actions/completion';
 const completionStore = store.createStore(completionReducer);
 let completionComponent = null;
 let consoleComponent = null;
+let prevState = {};
 
 window.addEventListener('load', () => {
   let wrapper = document.querySelector('#vimvixen-console-completion');
@@ -22,12 +23,17 @@ completionStore.subscribe(() => {
   completionComponent.update();
 
   let state = completionStore.getState();
+
   if (state.groupSelection >= 0) {
     let item = state.groups[state.groupSelection].items[state.itemSelection];
     consoleComponent.setCommandValue(item.content);
-  } else if (state.groups.length > 0) {
+  } else if (state.groups.length > 0 &&
+    JSON.stringify(prevState.groups) === JSON.stringify(state.groups)) {
+    // Reset input only completion groups not changed (unselected an item in
+    // completion) in order to avoid to override previous input
     consoleComponent.setCommandCompletionOrigin();
   }
+  prevState = state;
 });
 
 browser.runtime.onMessage.addListener((action) => {
