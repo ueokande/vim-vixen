@@ -1,5 +1,4 @@
 import * as inputActions from '../actions/input';
-import * as keys from '../shared/keys';
 import * as operationActions from '../actions/operation';
 
 export default class BackgroundInputComponent {
@@ -37,15 +36,14 @@ export default class BackgroundInputComponent {
   }
 
   handleKeysChanged(sender, input) {
-    let prefix = keys.asKeymapChars(input.keys);
     let matched = Object.keys(this.keymaps).filter((keyStr) => {
-      return keyStr.startsWith(prefix);
+      return keyStr.startsWith(input.keys);
     });
     if (matched.length === 0) {
       this.store.dispatch(inputActions.clearKeys(), sender);
       return Promise.resolve();
     } else if (matched.length > 1 ||
-      matched.length === 1 && prefix !== matched[0]) {
+      matched.length === 1 && input.keys !== matched[0]) {
       return Promise.resolve();
     }
     let operation = this.keymaps[matched];

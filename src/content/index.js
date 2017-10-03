@@ -19,6 +19,7 @@ followStore.subscribe(() => {
     console.error(e);
   }
 });
+// eslint-disable-next-line no-unused-vars
 const contentInputComponent = new ContentInputComponent(window);
 
 consoleFrames.initialize(window.document);

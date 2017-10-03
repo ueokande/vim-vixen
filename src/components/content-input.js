@@ -18,7 +18,7 @@ export default class ContentInputComponent {
     }
     browser.runtime.sendMessage({
       type: messages.KEYDOWN,
-      code: e.which,
+      key: e.key,
       ctrl: e.ctrlKey
     });
   }
