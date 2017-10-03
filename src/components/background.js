@@ -35,7 +35,7 @@ export default class BackgroundComponent {
     switch (message.type) {
     case messages.KEYDOWN:
       return this.store.dispatch(
-        inputActions.keyPress(message.code, message.ctrl), sender);
+        inputActions.keyPress(message.key, message.ctrl), sender);
     case messages.OPEN_URL:
       if (message.newTab) {
         return this.store.dispatch(
