@@ -4,6 +4,7 @@ import * as scrolls from '../content/scrolls';
 import * as navigates from '../content/navigates';
 import * as followActions from '../actions/follow';
 import * as store from '../store';
+import ContentInputComponent from '../components/content-input';
 import FollowComponent from '../components/follow';
 import followReducer from '../reducers/follow';
 import operations from '../operations';
@@ -18,24 +19,9 @@ followStore.subscribe(() => {
     console.error(e);
   }
 });
+const contentInputComponent = new ContentInputComponent(window);
 
 consoleFrames.initialize(window.document);
-
-window.addEventListener('keypress', (e) => {
-  if (e.target instanceof HTMLInputElement ||
-    e.target instanceof HTMLTextAreaElement ||
-    e.target instanceof HTMLSelectElement) {
-    if (e.key === 'Escape' && e.target.blur) {
-      e.target.blur();
-    }
-    return;
-  }
-  browser.runtime.sendMessage({
-    type: messages.KEYDOWN,
-    code: e.which,
-    ctrl: e.ctrlKey
-  });
-});
 
 const execOperation = (operation) => {
   switch (operation.type) {
