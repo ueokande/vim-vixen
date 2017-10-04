@@ -1,15 +1,15 @@
 import './settings.scss';
 import SettingComponent from '../components/setting';
 import settingReducer from '../reducers/setting';
-import * as store from '../store';
+import { createStore } from '../store';
 
-const settingStore = store.createStore(settingReducer);
+const store = createStore(settingReducer);
 let settingComponent = null;
 
-settingStore.subscribe(() => {
+store.subscribe(() => {
   settingComponent.update();
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  settingComponent = new SettingComponent(document.body, settingStore);
+  settingComponent = new SettingComponent(document.body, store);
 });
