@@ -10,23 +10,26 @@ export default class ContentInputComponent {
   }
 
   onKeyPress(e) {
+    if (this.pressed[e.key] && this.pressed[e.key] !== 'keypress') {
+      return;
+    }
+    this.pressed[e.key] = 'keypress';
     this.capture(e);
   }
 
   onKeyDown(e) {
+    if (this.pressed[e.key] && this.pressed[e.key] !== 'keydown') {
+      return;
+    }
+    this.pressed[e.key] = 'keydown';
     this.capture(e);
   }
 
   onKeyUp(e) {
-    this.pressed[e.key] = false;
+    delete this.pressed[e.key];
   }
 
   capture(e) {
-    if (this.pressed[e.key]) {
-      return;
-    }
-    this.pressed[e.key] = true;
-
     if (e.target instanceof HTMLInputElement ||
       e.target instanceof HTMLTextAreaElement ||
       e.target instanceof HTMLSelectElement) {
