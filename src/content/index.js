@@ -7,7 +7,7 @@ import { createStore } from '../store';
 import ContentInputComponent from '../components/content-input';
 import FollowComponent from '../components/follow';
 import reducers from '../reducers';
-import operations from '../operations';
+import operations from '../shared/operations';
 import messages from './messages';
 
 const store = createStore(reducers);

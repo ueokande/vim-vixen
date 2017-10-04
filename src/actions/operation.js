@@ -1,4 +1,4 @@
-import operations from '../operations';
+import operations from '../shared/operations';
 import messages from '../content/messages';
 import * as consoleActions from './console';
 import * as tabs from '../background/tabs';
