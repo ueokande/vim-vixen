@@ -2,11 +2,11 @@ import './console.scss';
 import messages from '../content/messages';
 import CompletionComponent from '../components/completion';
 import ConsoleComponent from '../components/console';
-import completionReducer from '../reducers/completion';
+import reducers from '../reducers';
 import { createStore } from '../store';
 import * as completionActions from '../actions/completion';
 
-const store = createStore(completionReducer);
+const store = createStore(reducers);
 let completionComponent = null;
 let consoleComponent = null;
 let prevState = {};
@@ -15,14 +15,13 @@ window.addEventListener('load', () => {
   let wrapper = document.querySelector('#vimvixen-console-completion');
   completionComponent = new CompletionComponent(wrapper, store);
 
-  // TODO use root root store instead of store
   consoleComponent = new ConsoleComponent(document.body, store);
 });
 
 store.subscribe(() => {
   completionComponent.update();
 
-  let state = store.getState();
+  let state = store.getState().completion;
 
   if (state.groupSelection >= 0) {
     let item = state.groups[state.groupSelection].items[state.itemSelection];

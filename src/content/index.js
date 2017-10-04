@@ -6,11 +6,11 @@ import * as followActions from '../actions/follow';
 import { createStore } from '../store';
 import ContentInputComponent from '../components/content-input';
 import FollowComponent from '../components/follow';
-import followReducer from '../reducers/follow';
+import reducers from '../reducers';
 import operations from '../operations';
 import messages from './messages';
 
-const store = createStore(followReducer);
+const store = createStore(reducers);
 const followComponent = new FollowComponent(window.document.body, store);
 store.subscribe(() => {
   try {

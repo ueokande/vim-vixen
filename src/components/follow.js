@@ -44,7 +44,7 @@ export default class FollowComponent {
 
   update() {
     let prevState = this.state;
-    this.state = this.store.getState();
+    this.state = this.store.getState().follow;
     if (!prevState.enabled && this.state.enabled) {
       this.create();
     } else if (prevState.enabled && !this.state.enabled) {
