@@ -1,8 +1,8 @@
-import operations from '../shared/operations';
-import messages from '../content/messages';
+import operations from 'shared/operations';
+import messages from 'content/messages';
 import * as consoleActions from './console';
-import * as tabs from '../background/tabs';
-import * as zooms from '../background/zooms';
+import * as tabs from 'background/tabs';
+import * as zooms from 'background/zooms';
 
 const exec = (operation, tab) => {
   switch (operation.type) {

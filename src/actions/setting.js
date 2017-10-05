@@ -1,6 +1,6 @@
-import actions from '../actions';
-import messages from '../content/messages';
-import DefaultSettings from '../shared/default-settings';
+import actions from 'actions';
+import messages from 'content/messages';
+import DefaultSettings from 'shared/default-settings';
 
 const load = () => {
   return browser.storage.local.get('settings').then((value) => {

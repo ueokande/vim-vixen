@@ -1,5 +1,5 @@
-import * as tabs from '../background/tabs';
-import * as histories from '../background/histories';
+import * as tabs from 'background/tabs';
+import * as histories from 'background/histories';
 import * as consoleActions from './console';
 
 const normalizeUrl = (string, searchConfig) => {

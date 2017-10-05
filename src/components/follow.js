@@ -1,7 +1,7 @@
-import * as followActions from '../actions/follow';
-import messages from '../content/messages';
-import Hint from '../content/hint';
-import HintKeyProducer from '../content/hint-key-producer';
+import * as followActions from 'actions/follow';
+import messages from 'content/messages';
+import Hint from 'content/hint';
+import HintKeyProducer from 'content/hint-key-producer';
 
 const DEFAULT_HINT_CHARSET = 'abcdefghijklmnopqrstuvwxyz';
 

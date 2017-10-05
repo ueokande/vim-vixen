@@ -1,10 +1,10 @@
-import * as consoleActions from '../actions/console';
-import * as settingsActions from '../actions/setting';
-import BackgroundComponent from '../components/background';
-import BackgroundInputComponent from '../components/background-input';
-import reducers from '../reducers';
-import messages from '../content/messages';
-import { createStore } from '../store';
+import * as consoleActions from 'actions/console';
+import * as settingsActions from 'actions/setting';
+import BackgroundComponent from 'components/background';
+import BackgroundInputComponent from 'components/background-input';
+import reducers from 'reducers';
+import messages from 'content/messages';
+import { createStore } from 'store';
 
 const store = createStore(reducers, (e, sender) => {
   console.error('Vim-Vixen:', e);

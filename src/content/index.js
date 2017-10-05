@@ -1,13 +1,13 @@
 import './console-frame.scss';
 import * as consoleFrames from './console-frames';
-import * as scrolls from '../content/scrolls';
-import * as navigates from '../content/navigates';
-import * as followActions from '../actions/follow';
-import { createStore } from '../store';
-import ContentInputComponent from '../components/content-input';
-import FollowComponent from '../components/follow';
-import reducers from '../reducers';
-import operations from '../shared/operations';
+import * as scrolls from 'content/scrolls';
+import * as navigates from 'content/navigates';
+import * as followActions from 'actions/follow';
+import { createStore } from 'store';
+import ContentInputComponent from 'components/content-input';
+import FollowComponent from 'components/follow';
+import reducers from 'reducers';
+import operations from 'shared/operations';
 import messages from './messages';
 
 const store = createStore(reducers);

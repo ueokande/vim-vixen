@@ -1,5 +1,5 @@
-import messages from '../content/messages';
-import * as completionActions from '../actions/completion';
+import messages from 'content/messages';
+import * as completionActions from 'actions/completion';
 
 export default class ConsoleComponent {
   constructor(wrapper, store) {

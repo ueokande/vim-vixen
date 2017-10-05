@@ -1,9 +1,9 @@
-import messages from '../content/messages';
-import * as commandActions from '../actions/command';
-import * as consoleActions from '../actions/console';
-import * as inputActions from '../actions/input';
-import * as settingsActions from '../actions/setting';
-import * as tabActions from '../actions/tab';
+import messages from 'content/messages';
+import * as commandActions from 'actions/command';
+import * as consoleActions from 'actions/console';
+import * as inputActions from 'actions/input';
+import * as settingsActions from 'actions/setting';
+import * as tabActions from 'actions/tab';
 
 export default class BackgroundComponent {
   constructor(store) {

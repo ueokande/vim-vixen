@@ -1,8 +1,8 @@
-import inputReducer from '../reducers/input';
-import consoleReducer from '../reducers/console';
-import settingReducer from '../reducers/setting';
-import followReducer from '../reducers/follow';
-import completionReducer from '../reducers/completion';
+import inputReducer from 'reducers/input';
+import consoleReducer from 'reducers/console';
+import settingReducer from 'reducers/setting';
+import followReducer from 'reducers/follow';
+import completionReducer from 'reducers/completion';
 
 const defaultState = {
   input: inputReducer(undefined, {}),

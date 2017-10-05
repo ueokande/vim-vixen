@@ -1,4 +1,4 @@
-import operations from '../operations';
+import operations from 'shared/operations';
 
 const VALID_TOP_KEYS = ['keymaps', 'search'];
 const VALID_OPERATION_VALUES = Object.keys(operations).map((key) => {
