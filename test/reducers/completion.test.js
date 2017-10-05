@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import actions from '../../src/actions';
-import completionReducer from '../../src/reducers/completion';
+import actions from 'actions';
+import completionReducer from 'reducers/completion';
 
 describe("completion reducer", () => {
   it ('return the initial state', () => {

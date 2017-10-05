@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import actions from '../../src/actions';
-import * as followActions from '../../src/actions/follow';
+import actions from 'actions';
+import * as followActions from 'actions/follow';
 
 describe('follow actions', () => {
   describe('enable', () => {

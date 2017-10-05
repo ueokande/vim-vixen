@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { createStore } from '../../src/store';
+import { createStore } from 'store';
 
 describe("Store class", () => {
   const reducer = (state, action) => {

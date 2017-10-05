@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import actions from '../../src/actions';
-import * as inputActions from '../../src/actions/input';
+import actions from 'actions';
+import * as inputActions from 'actions/input';
 
 describe("input actions", () => {
   describe("keyPress", () => {

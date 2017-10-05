@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import actions from '../../src/actions';
-import followReducer from '../../src/reducers/follow';
+import actions from 'actions';
+import followReducer from 'reducers/follow';
 
 describe('follow reducer', () => {
   it ('returns the initial state', () => {

@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import actions from '../../src/actions';
-import * as completionActions from '../../src/actions/completion';
+import actions from 'actions';
+import * as completionActions from 'actions/completion';
 
 describe("completion actions", () => {
   describe('setItems', () => {

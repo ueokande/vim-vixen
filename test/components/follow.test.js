@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import FollowComponent from '../../src/components/follow';
+import FollowComponent from 'components/follow';
 
 describe('FollowComponent', () => {
   describe('#codeChars', () => {

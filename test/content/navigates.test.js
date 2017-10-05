@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import * as navigates from '../../src/content/navigates';
+import * as navigates from 'content/navigates';
 
 describe('navigates module', () => {
   describe('#linkPrev', () => {

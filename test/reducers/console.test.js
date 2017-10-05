@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import actions from '../../src/actions';
-import consoleReducer from '../../src/reducers/console';
+import actions from 'actions';
+import consoleReducer from 'reducers/console';
 
 describe("console reducer", () => {
   it('return the initial state', () => {
