@@ -1,5 +1,5 @@
 import messages from 'content/messages';
-import * as completionActions from 'actions/completion';
+import * as consoleActions from 'actions/console';
 
 export default class ConsoleComponent {
   constructor(wrapper, store) {
@@ -39,9 +39,9 @@ export default class ConsoleComponent {
       }).then(this.onBlur);
     case KeyboardEvent.DOM_VK_TAB:
       if (e.shiftKey) {
-        this.store.dispatch(completionActions.selectPrev());
+        this.store.dispatch(consoleActions.completionPrev());
       } else {
-        this.store.dispatch(completionActions.selectNext());
+        this.store.dispatch(consoleActions.completionNext());
       }
       e.stopPropagation();
       e.preventDefault();
@@ -66,7 +66,7 @@ export default class ConsoleComponent {
       type: messages.CONSOLE_QUERY_COMPLETIONS,
       text: e.target.value
     }).then((completions) => {
-      this.store.dispatch(completionActions.setItems(completions));
+      this.store.dispatch(consoleActions.setCompletions(completions));
     });
   }
 
@@ -83,6 +83,18 @@ export default class ConsoleComponent {
       this.showError();
     } else {
       this.hideError();
+    }
+
+    if (state.groupSelection >= 0 && state.itemSelection >= 0) {
+      let group = state.completions[state.groupSelection];
+      let item = group.items[state.itemSelection];
+      this.setCommandValue(item.content);
+    } else if (state.completions.length > 0 &&
+      JSON.stringify(this.prevState.completions) ===
+        JSON.stringify(state.completions)) {
+      // Reset input only completion groups not changed (unselected an item in
+      // completion) in order to avoid to override previous input
+      this.setCommandCompletionOrigin();
     }
 
     this.prevState = state;
