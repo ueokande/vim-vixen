@@ -39,6 +39,5 @@ browser.runtime.onMessage.addListener((action) => {
   if (action.type === messages.STATE_UPDATE) {
     let state = action.state.console;
     consoleComponent.update(state);
-    store.dispatch(completionActions.setItems(state.completions));
   }
 });

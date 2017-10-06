@@ -36,7 +36,7 @@ export default class ConsoleComponent {
       return browser.runtime.sendMessage({
         type: messages.CONSOLE_ENTERED,
         text: e.target.value
-      });
+      }).then(this.onBlur);
     case KeyboardEvent.DOM_VK_TAB:
       if (e.shiftKey) {
         this.store.dispatch(completionActions.selectPrev());
@@ -63,8 +63,10 @@ export default class ConsoleComponent {
 
     this.prevValue = e.target.value;
     return browser.runtime.sendMessage({
-      type: messages.CONSOLE_CHANGEED,
+      type: messages.CONSOLE_QUERY_COMPLETIONS,
       text: e.target.value
+    }).then((completions) => {
+      this.store.dispatch(completionActions.setItems(completions));
     });
   }
 
