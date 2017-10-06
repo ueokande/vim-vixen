@@ -4,7 +4,7 @@ import CompletionComponent from 'components/completion';
 import ConsoleComponent from 'components/console';
 import reducers from 'reducers';
 import { createStore } from 'store';
-import * as completionActions from 'actions/completion';
+import * as consoleActions from 'actions/console';
 
 const store = createStore(reducers);
 let completionComponent = null;
@@ -20,6 +20,7 @@ window.addEventListener('load', () => {
 
 store.subscribe(() => {
   completionComponent.update();
+  consoleComponent.update();
 
   let state = store.getState().completion;
 
@@ -36,8 +37,12 @@ store.subscribe(() => {
 });
 
 browser.runtime.onMessage.addListener((action) => {
-  if (action.type === messages.STATE_UPDATE) {
-    let state = action.state.console;
-    consoleComponent.update(state);
+  switch (action.type) {
+  case messages.CONSOLE_SHOW_COMMAND:
+    return store.dispatch(consoleActions.showCommand(action.command));
+  case messages.CONSOLE_SHOW_ERROR:
+    return store.dispatch(consoleActions.showError(action.command));
+  case messages.CONSOLE_HIDE:
+    return store.dispatch(consoleActions.hide(action.command));
   }
 });

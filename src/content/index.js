@@ -55,17 +55,12 @@ const execOperation = (operation) => {
   }
 };
 
-const update = (state) => {
-  if (!state.console.commandShown) {
-    window.focus();
-    consoleFrames.blur(window.document);
-  }
-};
-
 browser.runtime.onMessage.addListener((action) => {
   switch (action.type) {
-  case messages.STATE_UPDATE:
-    return update(action.state);
+  case messages.CONSOLE_HIDE:
+    window.focus();
+    consoleFrames.blur(window.document);
+    return Promise.resolve();
   case messages.CONTENT_OPERATION:
     execOperation(action.operation);
     return Promise.resolve();

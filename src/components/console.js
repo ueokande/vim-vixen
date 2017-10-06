@@ -70,8 +70,8 @@ export default class ConsoleComponent {
     });
   }
 
-  // TODO use store/reducer to update state.  
-  update(state) {
+  update() {
+    let state = this.store.getState().console;
     if (!this.prevState.commandShown && state.commandShown) {
       this.showCommand(state.commandText);
     } else if (!state.commandShown) {
