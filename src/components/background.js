@@ -19,8 +19,6 @@ export default class BackgroundComponent {
         });
       }
     });
-    browser.tabs.onUpdated.addListener(this.onTabUpdated.bind(this));
-    browser.tabs.onActivated.addListener(this.onTabActivated.bind(this));
   }
 
   update() {
@@ -59,28 +57,23 @@ export default class BackgroundComponent {
           text: e.message,
         });
       });
+    case messages.SETTINGS_QUERY:
+      return Promise.resolve(this.store.getState().setting.settings);
     case messages.CONSOLE_QUERY_COMPLETIONS:
       return commands.complete(message.text, this.settings);
     case messages.SETTINGS_RELOAD:
       this.store.dispatch(settingsActions.load());
+      return this.broadcastSettingsChanged();
     }
   }
 
-  onTabActivated(info) {
-    this.syncSettings(info.tabId);
-  }
-
-  onTabUpdated(id, info) {
-    if (info.status === 'complete') {
-      this.syncSettings(id);
-    }
-  }
-
-  syncSettings(id) {
-    let { settings } = this.store.getState().setting;
-    return browser.tabs.sendMessage(id, {
-      type: messages.CONTENT_SET_SETTINGS,
-      settings,
+  broadcastSettingsChanged() {
+    return browser.tabs.query({}).then((tabs) => {
+      for (let tab of tabs) {
+        browser.tabs.sendMessage(tab.id, {
+          type: messages.SETTINGS_CHANGED,
+        });
+      }
     });
   }
 }

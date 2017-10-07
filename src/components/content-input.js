@@ -13,7 +13,7 @@ export default class ContentInputComponent {
 
   update() {
     let settings = this.store.getState().setting.settings;
-    if (!settings) {
+    if (!settings || !settings.json) {
       return;
     }
     let input = this.store.getState().input;

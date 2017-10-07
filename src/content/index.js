@@ -21,16 +21,25 @@ store.subscribe(() => {
 
 consoleFrames.initialize(window.document);
 
+const reloadSettings = () => {
+  return browser.runtime.sendMessage({
+    type: messages.SETTINGS_QUERY,
+  }).then((settings) => {
+    store.dispatch(settingActions.set(settings));
+  });
+};
+
 browser.runtime.onMessage.addListener((action) => {
   switch (action.type) {
   case messages.CONSOLE_HIDE:
     window.focus();
     consoleFrames.blur(window.document);
     return Promise.resolve();
-  case messages.CONTENT_SET_SETTINGS:
-    store.dispatch(settingActions.set(action.settings));
-    return Promise.resolve();
+  case messages.SETTINGS_CHANGED:
+    return reloadSettings();
   default:
     return Promise.resolve();
   }
 });
+
+reloadSettings();

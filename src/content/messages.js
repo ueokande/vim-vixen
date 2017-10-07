@@ -1,5 +1,6 @@
 export default {
-  CONTENT_SET_SETTINGS: 'content.set.settings',
+  SETTINGS_QUERY: 'settings.query',
+
   BACKGROUND_OPERATION: 'background.operation',
 
   CONSOLE_BLURRED: 'console.blured',
