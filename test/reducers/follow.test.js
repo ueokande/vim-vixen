@@ -7,7 +7,7 @@ describe('follow reducer', () => {
     let state = followReducer(undefined, {});
     expect(state).to.have.property('enabled', false);
     expect(state).to.have.property('newTab');
-    expect(state).to.have.deep.property('keys', []);
+    expect(state).to.have.deep.property('keys', '');
   });
 
   it ('returns next state for FOLLOW_ENABLE', () => {
@@ -24,24 +24,24 @@ describe('follow reducer', () => {
   });
 
   it ('returns next state for FOLLOW_KEY_PRESS', () => {
-    let action = { type: actions.FOLLOW_KEY_PRESS, key: 100};
-    let state = followReducer({ keys: [] }, action);
-    expect(state).to.have.deep.property('keys', [100]);
+    let action = { type: actions.FOLLOW_KEY_PRESS, key: 'a'};
+    let state = followReducer({ keys: '' }, action);
+    expect(state).to.have.deep.property('keys', 'a');
 
-    action = { type: actions.FOLLOW_KEY_PRESS, key: 200};
+    action = { type: actions.FOLLOW_KEY_PRESS, key: 'b'};
     state = followReducer(state, action);
-    expect(state).to.have.deep.property('keys', [100, 200]);
+    expect(state).to.have.deep.property('keys', 'ab');
   });
 
   it ('returns next state for FOLLOW_BACKSPACE', () => {
     let action = { type: actions.FOLLOW_BACKSPACE };
-    let state = followReducer({ keys: [100, 200] }, action);
-    expect(state).to.have.deep.property('keys', [100]);
+    let state = followReducer({ keys: 'ab' }, action);
+    expect(state).to.have.deep.property('keys', 'a');
 
     state = followReducer(state, action);
-    expect(state).to.have.deep.property('keys', []);
+    expect(state).to.have.deep.property('keys', '');
 
     state = followReducer(state, action);
-    expect(state).to.have.deep.property('keys', []);
+    expect(state).to.have.deep.property('keys', '');
   });
 });

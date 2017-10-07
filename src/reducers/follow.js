@@ -3,7 +3,7 @@ import actions from 'actions';
 const defaultState = {
   enabled: false,
   newTab: false,
-  keys: [],
+  keys: '',
 };
 
 export default function reducer(state = defaultState, action = {}) {
@@ -19,7 +19,7 @@ export default function reducer(state = defaultState, action = {}) {
     });
   case actions.FOLLOW_KEY_PRESS:
     return Object.assign({}, state, {
-      keys: state.keys.concat([action.key]),
+      keys: state.keys + action.key,
     });
   case actions.FOLLOW_BACKSPACE:
     return Object.assign({}, state, {

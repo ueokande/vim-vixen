@@ -5,21 +5,6 @@ import HintKeyProducer from 'content/hint-key-producer';
 
 const DEFAULT_HINT_CHARSET = 'abcdefghijklmnopqrstuvwxyz';
 
-const availableKey = (keyCode) => {
-  return (
-    KeyboardEvent.DOM_VK_0 <= keyCode && keyCode <= KeyboardEvent.DOM_VK_9 ||
-    KeyboardEvent.DOM_VK_A <= keyCode && keyCode <= KeyboardEvent.DOM_VK_Z
-  );
-};
-
-const isNumericKey = (code) => {
-  return KeyboardEvent.DOM_VK_0 <= code && code <= KeyboardEvent.DOM_VK_9;
-};
-
-const isAlphabeticKey = (code) => {
-  return KeyboardEvent.DOM_VK_A <= code && code <= KeyboardEvent.DOM_VK_Z;
-};
-
 const inWindow = (window, element) => {
   let {
     top, left, bottom, right
@@ -49,8 +34,7 @@ export default class FollowComponent {
       this.create();
     } else if (prevState.enabled && !this.state.enabled) {
       this.remove();
-    } else if (JSON.stringify(prevState.keys) !==
-      JSON.stringify(this.state.keys)) {
+    } else if (prevState.keys !== this.state.keys) {
       this.updateHints();
     }
   }
@@ -60,23 +44,21 @@ export default class FollowComponent {
       return;
     }
 
-    let { keyCode } = e;
-    switch (keyCode) {
-    case KeyboardEvent.DOM_VK_ENTER:
-    case KeyboardEvent.DOM_VK_RETURN:
-      this.activate(this.hintElements[
-        FollowComponent.codeChars(this.state.keys)].target);
+    let { key } = e;
+    switch (key) {
+    case 'Enter':
+      this.activate(this.hintElements[this.state.keys].target);
       return;
-    case KeyboardEvent.DOM_VK_ESCAPE:
+    case 'Escape':
       this.store.dispatch(followActions.disable());
       return;
-    case KeyboardEvent.DOM_VK_BACK_SPACE:
-    case KeyboardEvent.DOM_VK_DELETE:
+    case 'Backspace':
+    case 'Delete':
       this.store.dispatch(followActions.backspace());
       break;
     default:
-      if (availableKey(keyCode)) {
-        this.store.dispatch(followActions.keyPress(keyCode));
+      if (DEFAULT_HINT_CHARSET.includes(key)) {
+        this.store.dispatch(followActions.keyPress(key));
       }
       break;
     }
@@ -86,18 +68,18 @@ export default class FollowComponent {
   }
 
   updateHints() {
-    let chars = FollowComponent.codeChars(this.state.keys);
+    let keys = this.state.keys;
     let shown = Object.keys(this.hintElements).filter((key) => {
-      return key.startsWith(chars);
+      return key.startsWith(keys);
     });
     let hidden = Object.keys(this.hintElements).filter((key) => {
-      return !key.startsWith(chars);
+      return !key.startsWith(keys);
     });
     if (shown.length === 0) {
       this.remove();
       return;
     } else if (shown.length === 1) {
-      this.activate(this.hintElements[chars].target);
+      this.activate(this.hintElements[keys].target);
       this.remove();
     }
 
@@ -175,24 +157,6 @@ export default class FollowComponent {
     Object.keys(this.hintElements).forEach((key) => {
       hintElements[key].remove();
     });
-  }
-
-  static codeChars(codes) {
-    const CHARCODE_ZERO = '0'.charCodeAt(0);
-    const CHARCODE_A = 'a'.charCodeAt(0);
-
-    let chars = '';
-
-    for (let code of codes) {
-      if (isNumericKey(code)) {
-        chars += String.fromCharCode(
-          code - KeyboardEvent.DOM_VK_0 + CHARCODE_ZERO);
-      } else if (isAlphabeticKey(code)) {
-        chars += String.fromCharCode(
-          code - KeyboardEvent.DOM_VK_A + CHARCODE_A);
-      }
-    }
-    return chars;
   }
 
   static getTargetElements(doc) {
