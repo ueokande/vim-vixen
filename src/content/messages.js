@@ -1,6 +1,6 @@
 export default {
-  CONTENT_OPERATION: 'content.operation',
   CONTENT_SET_SETTINGS: 'content.set.settings',
+  BACKGROUND_OPERATION: 'background.operation',
 
   CONSOLE_BLURRED: 'console.blured',
   CONSOLE_ENTERED: 'console.entered',
@@ -8,8 +8,6 @@ export default {
   CONSOLE_SHOW_COMMAND: 'console.show.command',
   CONSOLE_SHOW_ERROR: 'console.show.error',
   CONSOLE_HIDE: 'console.hide',
-
-  KEYDOWN: 'keydown',
 
   OPEN_URL: 'open.url',
 

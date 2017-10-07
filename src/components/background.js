@@ -1,5 +1,5 @@
 import messages from 'content/messages';
-import * as inputActions from 'actions/input';
+import * as operationActions from 'actions/operation';
 import * as settingsActions from 'actions/setting';
 import * as tabActions from 'actions/tab';
 import * as commands from 'shared/commands';
@@ -37,9 +37,10 @@ export default class BackgroundComponent {
 
   onMessage(message, sender) {
     switch (message.type) {
-    case messages.KEYDOWN:
+    case messages.BACKGROUND_OPERATION:
       return this.store.dispatch(
-        inputActions.keyPress(message.key, message.ctrl), sender);
+        operationActions.execBackground(message.operation, sender.tab),
+        sender);
     case messages.OPEN_URL:
       if (message.newTab) {
         return this.store.dispatch(
@@ -70,7 +71,7 @@ export default class BackgroundComponent {
   }
 
   onTabUpdated(id, info) {
-    if (info.url) {
+    if (info.status === 'complete') {
       this.syncSettings(id);
     }
   }
