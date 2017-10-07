@@ -9,7 +9,8 @@ import messages from './messages';
 
 const store = createStore(reducers);
 const followComponent = new FollowComponent(window.document.body, store);
-const contentInputComponent = new ContentInputComponent(window, store);
+const contentInputComponent =
+  new ContentInputComponent(window.document.body, store);
 store.subscribe(() => {
   try {
     followComponent.update();

@@ -12,30 +12,6 @@ export default class ContentInputComponent {
   }
 
   update() {
-    let settings = this.store.getState().setting.settings;
-    if (!settings || !settings.json) {
-      return;
-    }
-    let input = this.store.getState().input;
-    let keymaps = JSON.parse(settings.json).keymaps;
-
-    let matched = Object.keys(keymaps).filter((keyStr) => {
-      return keyStr.startsWith(input.keys);
-    });
-    if (matched.length === 0) {
-      this.store.dispatch(inputActions.clearKeys());
-      return Promise.resolve();
-    } else if (matched.length > 1 ||
-      matched.length === 1 && input.keys !== matched[0]) {
-      return Promise.resolve();
-    }
-    let operation = keymaps[matched];
-    try {
-      this.store.dispatch(operationActions.exec(operation));
-    } catch (e) {
-      console.error(e);
-    }
-    this.store.dispatch(inputActions.clearKeys());
   }
 
   onKeyPress(e) {
@@ -68,12 +44,47 @@ export default class ContentInputComponent {
     if (e.key === 'OS') {
       return;
     }
+    let keymaps = this.keymaps();
+    if (!keymaps) {
+      return;
+    }
     this.store.dispatch(inputActions.keyPress(e.key, e.ctrlKey));
+
+    if (this.mapKeys(keymaps)) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+
+  mapKeys(keymaps) {
+    let input = this.store.getState().input;
+    let matched = Object.keys(keymaps).filter((keyStr) => {
+      return keyStr.startsWith(input.keys);
+    });
+    if (matched.length === 0) {
+      this.store.dispatch(inputActions.clearKeys());
+      return false;
+    } else if (matched.length > 1 ||
+      matched.length === 1 && input.keys !== matched[0]) {
+      return true;
+    }
+    let operation = keymaps[matched];
+    this.store.dispatch(operationActions.exec(operation));
+    this.store.dispatch(inputActions.clearKeys());
+    return true;
   }
 
   fromInput(e) {
     return e.target instanceof HTMLInputElement ||
       e.target instanceof HTMLTextAreaElement ||
       e.target instanceof HTMLSelectElement;
+  }
+
+  keymaps() {
+    let settings = this.store.getState().setting.settings;
+    if (!settings || !settings.json) {
+      return null;
+    }
+    return JSON.parse(settings.json).keymaps;
   }
 }
