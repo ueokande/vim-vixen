@@ -27,7 +27,7 @@ browser.runtime.onMessage.addListener((action) => {
   case messages.CONSOLE_SHOW_COMMAND:
     return store.dispatch(consoleActions.showCommand(action.command));
   case messages.CONSOLE_SHOW_ERROR:
-    return store.dispatch(consoleActions.showError(action.command));
+    return store.dispatch(consoleActions.showError(action.text));
   case messages.CONSOLE_HIDE:
     return store.dispatch(consoleActions.hide(action.command));
   }

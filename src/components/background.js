@@ -1,5 +1,4 @@
 import messages from 'content/messages';
-import * as consoleActions from 'actions/console';
 import * as inputActions from 'actions/input';
 import * as settingsActions from 'actions/setting';
 import * as tabActions from 'actions/tab';
@@ -14,7 +13,10 @@ export default class BackgroundComponent {
       try {
         return this.onMessage(message, sender);
       } catch (e) {
-        this.store.dispatch(consoleActions.showError(e.message), sender);
+        return browser.tabs.sendMessage(sender.tab.id, {
+          type: messages.CONSOLE_SHOW_ERROR,
+          text: e.message,
+        });
       }
     });
   }
@@ -44,10 +46,16 @@ export default class BackgroundComponent {
       return this.store.dispatch(
         tabActions.openToTab(message.url, sender.tab), sender);
     case messages.CONSOLE_BLURRED:
-      return this.store.dispatch(
-        consoleActions.hide(), sender);
+      return browser.tabs.sendMessage(sender.tab.id, {
+        type: messages.CONSOLE_HIDE,
+      });
     case messages.CONSOLE_ENTERED:
-      return commands.exec(message.text, this.settings);
+      return commands.exec(message.text, this.settings).catch((e) => {
+        return browser.tabs.sendMessage(sender.tab.id, {
+          type: messages.CONSOLE_SHOW_ERROR,
+          text: e.message,
+        });
+      });
     case messages.CONSOLE_QUERY_COMPLETIONS:
       return commands.complete(message.text, this.settings);
     case messages.SETTINGS_RELOAD:
