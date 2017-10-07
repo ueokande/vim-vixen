@@ -2,6 +2,7 @@ import './console-frame.scss';
 import * as consoleFrames from './console-frames';
 import * as scrolls from 'content/scrolls';
 import * as navigates from 'content/navigates';
+import * as settingActions from 'actions/setting';
 import * as followActions from 'actions/follow';
 import { createStore } from 'store';
 import ContentInputComponent from 'components/content-input';
@@ -63,6 +64,9 @@ browser.runtime.onMessage.addListener((action) => {
     return Promise.resolve();
   case messages.CONTENT_OPERATION:
     execOperation(action.operation);
+    return Promise.resolve();
+  case messages.CONTENT_SET_SETTINGS:
+    store.dispatch(settingActions.set(action.settings));
     return Promise.resolve();
   default:
     return Promise.resolve();

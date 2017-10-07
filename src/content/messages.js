@@ -1,5 +1,6 @@
 export default {
   CONTENT_OPERATION: 'content.operation',
+  CONTENT_SET_SETTINGS: 'content.set.settings',
 
   CONSOLE_BLURRED: 'console.blured',
   CONSOLE_ENTERED: 'console.entered',

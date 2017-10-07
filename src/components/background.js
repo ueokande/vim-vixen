@@ -19,6 +19,8 @@ export default class BackgroundComponent {
         });
       }
     });
+    browser.tabs.onUpdated.addListener(this.onTabUpdated.bind(this));
+    browser.tabs.onActivated.addListener(this.onTabActivated.bind(this));
   }
 
   update() {
@@ -61,5 +63,23 @@ export default class BackgroundComponent {
     case messages.SETTINGS_RELOAD:
       this.store.dispatch(settingsActions.load());
     }
+  }
+
+  onTabActivated(info) {
+    this.syncSettings(info.tabId);
+  }
+
+  onTabUpdated(id, info) {
+    if (info.url) {
+      this.syncSettings(id);
+    }
+  }
+
+  syncSettings(id) {
+    let { settings } = this.store.getState().setting;
+    return browser.tabs.sendMessage(id, {
+      type: messages.CONTENT_SET_SETTINGS,
+      settings,
+    });
   }
 }
