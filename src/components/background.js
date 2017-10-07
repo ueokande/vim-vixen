@@ -1,9 +1,8 @@
-import messages from '../content/messages';
-import * as commandActions from '../actions/command';
-import * as consoleActions from '../actions/console';
-import * as inputActions from '../actions/input';
-import * as settingsActions from '../actions/setting';
-import * as tabActions from '../actions/tab';
+import messages from 'content/messages';
+import * as inputActions from 'actions/input';
+import * as settingsActions from 'actions/setting';
+import * as tabActions from 'actions/tab';
+import * as commands from 'shared/commands';
 
 export default class BackgroundComponent {
   constructor(store) {
@@ -12,9 +11,12 @@ export default class BackgroundComponent {
 
     browser.runtime.onMessage.addListener((message, sender) => {
       try {
-        this.onMessage(message, sender);
+        return this.onMessage(message, sender);
       } catch (e) {
-        this.store.dispatch(consoleActions.showError(e.message), sender);
+        return browser.tabs.sendMessage(sender.tab.id, {
+          type: messages.CONSOLE_SHOW_ERROR,
+          text: e.message,
+        });
       }
     });
   }
@@ -44,14 +46,18 @@ export default class BackgroundComponent {
       return this.store.dispatch(
         tabActions.openToTab(message.url, sender.tab), sender);
     case messages.CONSOLE_BLURRED:
-      return this.store.dispatch(
-        consoleActions.hide(), sender);
+      return browser.tabs.sendMessage(sender.tab.id, {
+        type: messages.CONSOLE_HIDE,
+      });
     case messages.CONSOLE_ENTERED:
-      return this.store.dispatch(
-        commandActions.exec(message.text, this.settings), sender);
-    case messages.CONSOLE_CHANGEED:
-      return this.store.dispatch(
-        commandActions.complete(message.text, this.settings), sender);
+      return commands.exec(message.text, this.settings).catch((e) => {
+        return browser.tabs.sendMessage(sender.tab.id, {
+          type: messages.CONSOLE_SHOW_ERROR,
+          text: e.message,
+        });
+      });
+    case messages.CONSOLE_QUERY_COMPLETIONS:
+      return commands.complete(message.text, this.settings);
     case messages.SETTINGS_RELOAD:
       this.store.dispatch(settingsActions.load());
     }

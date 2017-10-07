@@ -1,18 +1,18 @@
 import './console-frame.scss';
 import * as consoleFrames from './console-frames';
-import * as scrolls from '../content/scrolls';
-import * as navigates from '../content/navigates';
-import * as followActions from '../actions/follow';
-import * as store from '../store';
-import ContentInputComponent from '../components/content-input';
-import FollowComponent from '../components/follow';
-import followReducer from '../reducers/follow';
-import operations from '../operations';
+import * as scrolls from 'content/scrolls';
+import * as navigates from 'content/navigates';
+import * as followActions from 'actions/follow';
+import { createStore } from 'store';
+import ContentInputComponent from 'components/content-input';
+import FollowComponent from 'components/follow';
+import reducers from 'reducers';
+import operations from 'shared/operations';
 import messages from './messages';
 
-const followStore = store.createStore(followReducer);
-const followComponent = new FollowComponent(window.document.body, followStore);
-followStore.subscribe(() => {
+const store = createStore(reducers);
+const followComponent = new FollowComponent(window.document.body, store);
+store.subscribe(() => {
   try {
     followComponent.update();
   } catch (e) {
@@ -39,7 +39,7 @@ const execOperation = (operation) => {
   case operations.SCROLL_END:
     return scrolls.scrollRight(window);
   case operations.FOLLOW_START:
-    return followStore.dispatch(followActions.enable(false));
+    return store.dispatch(followActions.enable(false));
   case operations.NAVIGATE_HISTORY_PREV:
     return navigates.historyPrev(window);
   case operations.NAVIGATE_HISTORY_NEXT:
@@ -55,17 +55,12 @@ const execOperation = (operation) => {
   }
 };
 
-const update = (state) => {
-  if (!state.console.commandShown) {
-    window.focus();
-    consoleFrames.blur(window.document);
-  }
-};
-
 browser.runtime.onMessage.addListener((action) => {
   switch (action.type) {
-  case messages.STATE_UPDATE:
-    return update(action.state);
+  case messages.CONSOLE_HIDE:
+    window.focus();
+    consoleFrames.blur(window.document);
+    return Promise.resolve();
   case messages.CONTENT_OPERATION:
     execOperation(action.operation);
     return Promise.resolve();

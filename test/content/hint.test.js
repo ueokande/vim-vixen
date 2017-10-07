@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import Hint from '../../src/content/hint';
+import Hint from 'content/hint';
 
 describe('Hint class', () => {
   beforeEach(() => {

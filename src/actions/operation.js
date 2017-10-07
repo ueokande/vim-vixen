@@ -1,8 +1,14 @@
-import operations from '../operations';
-import messages from '../content/messages';
-import * as consoleActions from './console';
-import * as tabs from '../background/tabs';
-import * as zooms from '../background/zooms';
+import operations from 'shared/operations';
+import messages from 'content/messages';
+import * as tabs from 'background/tabs';
+import * as zooms from 'background/zooms';
+
+const sendConsoleShowCommand = (tab, command) => {
+  return browser.tabs.sendMessage(tab.id, {
+    type: messages.CONSOLE_SHOW_COMMAND,
+    command,
+  });
+};
 
 const exec = (operation, tab) => {
   switch (operation.type) {
@@ -23,21 +29,21 @@ const exec = (operation, tab) => {
   case operations.ZOOM_NEUTRAL:
     return zooms.neutral();
   case operations.COMMAND_SHOW:
-    return consoleActions.showCommand('');
+    return sendConsoleShowCommand(tab, '');
   case operations.COMMAND_SHOW_OPEN:
     if (operation.alter) {
       // alter url
-      return consoleActions.showCommand('open ' + tab.url);
+      return sendConsoleShowCommand(tab, 'open ' + tab.url);
     }
-    return consoleActions.showCommand('open ');
+    return sendConsoleShowCommand(tab, 'open ');
   case operations.COMMAND_SHOW_TABOPEN:
     if (operation.alter) {
       // alter url
-      return consoleActions.showCommand('tabopen ' + tab.url);
+      return sendConsoleShowCommand(tab, 'tabopen ' + tab.url);
     }
-    return consoleActions.showCommand('tabopen ');
+    return sendConsoleShowCommand(tab, 'tabopen ');
   case operations.COMMAND_SHOW_BUFFER:
-    return consoleActions.showCommand('buffer ');
+    return sendConsoleShowCommand(tab, 'buffer ');
   default:
     return browser.tabs.sendMessage(tab.id, {
       type: messages.CONTENT_OPERATION,

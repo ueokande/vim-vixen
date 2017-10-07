@@ -1,7 +1,7 @@
-import * as followActions from '../actions/follow';
-import messages from '../content/messages';
-import Hint from '../content/hint';
-import HintKeyProducer from '../content/hint-key-producer';
+import * as followActions from 'actions/follow';
+import messages from 'content/messages';
+import Hint from 'content/hint';
+import HintKeyProducer from 'content/hint-key-producer';
 
 const DEFAULT_HINT_CHARSET = 'abcdefghijklmnopqrstuvwxyz';
 
@@ -44,7 +44,7 @@ export default class FollowComponent {
 
   update() {
     let prevState = this.state;
-    this.state = this.store.getState();
+    this.state = this.store.getState().follow;
     if (!prevState.enabled && this.state.enabled) {
       this.create();
     } else if (prevState.enabled && !this.state.enabled) {

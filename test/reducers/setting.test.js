@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import actions from '../../src/actions';
-import settingReducer from '../../src/reducers/setting';
+import actions from 'actions';
+import settingReducer from 'reducers/setting';
 
 describe("setting reducer", () => {
   it('return the initial state', () => {

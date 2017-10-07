@@ -1,5 +1,5 @@
-import * as settingActions from '../actions/setting';
-import { validate } from '../shared/validators/setting';
+import * as settingActions from 'actions/setting';
+import { validate } from 'shared/validators/setting';
 
 export default class SettingComponent {
   constructor(wrapper, store) {

@@ -1,6 +1,5 @@
-import * as tabs from '../background/tabs';
-import * as histories from '../background/histories';
-import * as consoleActions from './console';
+import * as tabs from 'background/tabs';
+import * as histories from 'background/histories';
 
 const normalizeUrl = (string, searchConfig) => {
   try {
@@ -132,16 +131,13 @@ const getCompletions = (command, keywords, settings) => {
 const exec = (line, settings) => {
   let name = line.split(' ')[0];
   let remaining = line.replace(name + ' ', '');
-  return doCommand(name, remaining, settings).then(() => {
-    return consoleActions.hide();
-  });
+  return doCommand(name, remaining, settings);
 };
 
 const complete = (line, settings) => {
   let command = line.split(' ', 1)[0];
   let keywords = line.replace(command + ' ', '');
-  return getCompletions(command, keywords, settings)
-    .then(consoleActions.setCompletions);
+  return getCompletions(command, keywords, settings);
 };
 
 export { exec, complete };

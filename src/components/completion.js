@@ -6,15 +6,15 @@ export default class Completion {
   }
 
   update() {
-    let state = this.store.getState();
+    let state = this.store.getState().console;
     if (JSON.stringify(this.prevState) === JSON.stringify(state)) {
       return;
     }
 
     this.wrapper.innerHTML = '';
 
-    for (let i = 0; i < state.groups.length; ++i) {
-      let group = state.groups[i];
+    for (let i = 0; i < state.completions.length; ++i) {
+      let group = state.completions[i];
       let title = this.createCompletionTitle(group.name);
       this.wrapper.append(title);
 

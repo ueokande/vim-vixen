@@ -1,45 +1,34 @@
 import './console.scss';
-import messages from '../content/messages';
-import CompletionComponent from '../components/completion';
-import ConsoleComponent from '../components/console';
-import completionReducer from '../reducers/completion';
-import * as store from '../store';
-import * as completionActions from '../actions/completion';
+import messages from 'content/messages';
+import CompletionComponent from 'components/completion';
+import ConsoleComponent from 'components/console';
+import reducers from 'reducers';
+import { createStore } from 'store';
+import * as consoleActions from 'actions/console';
 
-const completionStore = store.createStore(completionReducer);
+const store = createStore(reducers);
 let completionComponent = null;
 let consoleComponent = null;
-let prevState = {};
 
 window.addEventListener('load', () => {
   let wrapper = document.querySelector('#vimvixen-console-completion');
-  completionComponent = new CompletionComponent(wrapper, completionStore);
+  completionComponent = new CompletionComponent(wrapper, store);
 
-  // TODO use root root store instead of completionStore
-  consoleComponent = new ConsoleComponent(document.body, completionStore);
+  consoleComponent = new ConsoleComponent(document.body, store);
 });
 
-completionStore.subscribe(() => {
+store.subscribe(() => {
   completionComponent.update();
-
-  let state = completionStore.getState();
-
-  if (state.groupSelection >= 0) {
-    let item = state.groups[state.groupSelection].items[state.itemSelection];
-    consoleComponent.setCommandValue(item.content);
-  } else if (state.groups.length > 0 &&
-    JSON.stringify(prevState.groups) === JSON.stringify(state.groups)) {
-    // Reset input only completion groups not changed (unselected an item in
-    // completion) in order to avoid to override previous input
-    consoleComponent.setCommandCompletionOrigin();
-  }
-  prevState = state;
+  consoleComponent.update();
 });
 
 browser.runtime.onMessage.addListener((action) => {
-  if (action.type === messages.STATE_UPDATE) {
-    let state = action.state.console;
-    consoleComponent.update(state);
-    completionStore.dispatch(completionActions.setItems(state.completions));
+  switch (action.type) {
+  case messages.CONSOLE_SHOW_COMMAND:
+    return store.dispatch(consoleActions.showCommand(action.command));
+  case messages.CONSOLE_SHOW_ERROR:
+    return store.dispatch(consoleActions.showError(action.text));
+  case messages.CONSOLE_HIDE:
+    return store.dispatch(consoleActions.hide(action.command));
   }
 });

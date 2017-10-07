@@ -1,4 +1,4 @@
-import messages from '../content/messages';
+import messages from 'content/messages';
 
 export default class ContentInputComponent {
   constructor(target) {
