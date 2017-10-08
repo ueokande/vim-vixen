@@ -17,18 +17,25 @@ window.addEventListener('load', () => {
   consoleComponent = new ConsoleComponent(document.body, store);
 });
 
+const onMessage = (message) => {
+  switch (message.type) {
+  case messages.CONSOLE_SHOW_COMMAND:
+    return store.dispatch(consoleActions.showCommand(message.command));
+  case messages.CONSOLE_SHOW_ERROR:
+    return store.dispatch(consoleActions.showError(message.text));
+  case messages.CONSOLE_SHOW_INFO:
+    return store.dispatch(consoleActions.showInfo(message.text));
+  case messages.CONSOLE_HIDE_COMMAND:
+    return store.dispatch(consoleActions.hideCommand());
+  }
+};
+
 store.subscribe(() => {
   completionComponent.update();
   consoleComponent.update();
 });
 
-browser.runtime.onMessage.addListener((action) => {
-  switch (action.type) {
-  case messages.CONSOLE_SHOW_COMMAND:
-    return store.dispatch(consoleActions.showCommand(action.command));
-  case messages.CONSOLE_SHOW_ERROR:
-    return store.dispatch(consoleActions.showError(action.text));
-  case messages.CONSOLE_HIDE:
-    return store.dispatch(consoleActions.hide(action.command));
-  }
-});
+browser.runtime.onMessage.addListener(onMessage);
+window.addEventListener('message', (message) => {
+  onMessage(JSON.parse(message.data));
+}, false);

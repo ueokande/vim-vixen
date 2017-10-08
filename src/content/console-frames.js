@@ -15,4 +15,9 @@ const blur = (doc) => {
   iframe.blur();
 };
 
-export { initialize, blur };
+const postMessage = (doc, message) => {
+  let iframe = doc.getElementById('vimvixen-console-frame');
+  iframe.contentWindow.postMessage(JSON.stringify(message), '*');
+};
+
+export { initialize, blur, postMessage };

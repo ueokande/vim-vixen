@@ -64,12 +64,20 @@ body {
     }
   }
 
+  &-message {
+    @include consoole-font;
+  }
+
   &-error {
     background-color: red;
     font-weight: bold;
     color: white;
+  }
 
-    @include consoole-font;
+  &-info {
+    background-color: white;
+    font-weight: normal;
+    color: green;
   }
 
   &-command {

@@ -2,7 +2,9 @@ import operations from 'shared/operations';
 import messages from 'shared/messages';
 import * as scrolls from 'content/scrolls';
 import * as navigates from 'content/navigates';
+import * as urls from 'content/urls';
 import * as followActions from 'content/actions/follow';
+import * as consoleFrames from 'content/console-frames';
 
 const exec = (operation) => {
   switch (operation.type) {
@@ -32,6 +34,12 @@ const exec = (operation) => {
     return navigates.parent(window);
   case operations.NAVIGATE_ROOT:
     return navigates.root(window);
+  case operations.URLS_YANK:
+    urls.yank(window);
+    return consoleFrames.postMessage(window.document, {
+      type: messages.CONSOLE_SHOW_INFO,
+      text: 'Current url yanked',
+    });
   default:
     browser.runtime.sendMessage({
       type: messages.BACKGROUND_OPERATION,

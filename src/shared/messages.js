@@ -8,7 +8,8 @@ export default {
   CONSOLE_QUERY_COMPLETIONS: 'console.query.completions',
   CONSOLE_SHOW_COMMAND: 'console.show.command',
   CONSOLE_SHOW_ERROR: 'console.show.error',
-  CONSOLE_HIDE: 'console.hide',
+  CONSOLE_SHOW_INFO: 'console.show.info',
+  CONSOLE_HIDE_COMMAND: 'console.hide.command',
 
   OPEN_URL: 'open.url',
 

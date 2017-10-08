@@ -37,7 +37,8 @@ export default {
     "[[": { "type": "navigate.link.prev" },
     "]]": { "type": "navigate.link.next" },
     "gu": { "type": "navigate.parent" },
-    "gU": { "type": "navigate.root" }
+    "gU": { "type": "navigate.root" },
+    "y": { "type": "urls.yank" }
   },
   "search": {
     "default": "google",

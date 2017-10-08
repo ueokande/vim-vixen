@@ -14,9 +14,16 @@ const showError = (text) => {
   };
 };
 
-const hide = () => {
+const showInfo = (text) => {
   return {
-    type: actions.CONSOLE_HIDE
+    type: actions.CONSOLE_SHOW_INFO,
+    text: text
+  };
+};
+
+const hideCommand = () => {
+  return {
+    type: actions.CONSOLE_HIDE_COMMAND,
   };
 };
 
@@ -40,5 +47,6 @@ const completionPrev = () => {
 };
 
 export {
-  showCommand, showError, hide, setCompletions, completionNext, completionPrev
+  showCommand, showError, showInfo, hideCommand,
+  setCompletions, completionNext, completionPrev
 };

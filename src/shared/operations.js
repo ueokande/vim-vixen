@@ -36,4 +36,7 @@ export default {
   ZOOM_IN: 'zoom.in',
   ZOOM_OUT: 'zoom.out',
   ZOOM_NEUTRAL: 'zoom.neutral',
+
+  // Url yank
+  URLS_YANK: 'urls.yank',
 };
