@@ -1,4 +1,4 @@
-import actions from 'actions';
+import actions from 'settings/actions';
 import messages from 'shared/messages';
 import DefaultSettings from 'shared/default-settings';
 

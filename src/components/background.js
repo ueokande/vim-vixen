@@ -1,6 +1,6 @@
 import messages from 'shared/messages';
 import * as operationActions from 'actions/operation';
-import * as settingsActions from 'actions/setting';
+import * as settingsActions from 'settings/actions/setting';
 import * as tabActions from 'actions/tab';
 import * as commands from 'shared/commands';
 

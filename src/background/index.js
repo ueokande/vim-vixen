@@ -1,4 +1,4 @@
-import * as settingsActions from 'actions/setting';
+import * as settingsActions from 'settings/actions/setting';
 import messages from 'shared/messages';
 import BackgroundComponent from 'components/background';
 import reducers from 'reducers';

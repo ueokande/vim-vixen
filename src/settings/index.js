@@ -1,6 +1,6 @@
-import './settings.scss';
-import SettingComponent from 'components/setting';
-import settingReducer from 'reducers/setting';
+import './site.scss';
+import SettingComponent from 'settings/components/setting';
+import settingReducer from 'settings/reducers/setting';
 import { createStore } from 'store';
 
 const store = createStore(settingReducer);

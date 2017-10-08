@@ -7,7 +7,7 @@ const dist = path.resolve(__dirname, 'build');
 module.exports = {
   entry: {
     index: path.join(src, 'content'),
-    settings: path.join(src, 'pages/settings'),
+    settings: path.join(src, 'settings'),
     background: path.join(src, 'background'),
     console: path.join(src, 'console')
   },
@@ -50,7 +50,7 @@ module.exports = {
       inject: false
     }),
     new HtmlWebpackPlugin({
-      template: path.join(src, 'pages', 'settings.html'),
+      template: path.join(src, 'settings', 'index.html'),
       filename: path.join(dist, 'settings.html'),
       inject: false
     })

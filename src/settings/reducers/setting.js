@@ -1,4 +1,4 @@
-import actions from 'actions';
+import actions from 'settings/actions';
 
 const defaultState = {
   settings: {}

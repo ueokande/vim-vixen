@@ -1,4 +1,4 @@
-import * as settingActions from 'actions/setting';
+import * as settingActions from 'settings/actions/setting';
 import { validate } from 'shared/validators/setting';
 
 export default class SettingComponent {
