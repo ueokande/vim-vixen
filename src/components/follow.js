@@ -74,7 +74,7 @@ export default class FollowComponent {
       return;
     } else if (shown.length === 1) {
       this.activate(this.hintElements[keys].target);
-      this.remove();
+      this.store.dispatch(followActions.disable());
     }
 
     shown.forEach((key) => {
