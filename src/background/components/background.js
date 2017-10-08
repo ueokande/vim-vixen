@@ -48,7 +48,7 @@ export default class BackgroundComponent {
         tabActions.openToTab(message.url, sender.tab), sender);
     case messages.CONSOLE_BLURRED:
       return browser.tabs.sendMessage(sender.tab.id, {
-        type: messages.CONSOLE_HIDE,
+        type: messages.CONSOLE_HIDE_COMMAND,
       });
     case messages.CONSOLE_ENTERED:
       return commands.exec(message.text, this.settings).catch((e) => {

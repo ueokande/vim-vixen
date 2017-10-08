@@ -1,9 +1,8 @@
 import actions from 'console/actions';
 
 const defaultState = {
-  errorShown: false,
-  errorText: '',
-  commandShown: false,
+  mode: '',
+  messageText: '',
   commandText: '',
   completions: [],
   groupSelection: -1,
@@ -48,25 +47,19 @@ export default function reducer(state = defaultState, action = {}) {
   switch (action.type) {
   case actions.CONSOLE_SHOW_COMMAND:
     return Object.assign({}, state, {
-      commandShown: true,
+      mode: 'command',
       commandText: action.text,
       errorShown: false,
       completions: []
     });
   case actions.CONSOLE_SHOW_ERROR:
     return Object.assign({}, state, {
-      errorText: action.text,
-      errorShown: true,
-      commandShown: false,
+      mode: 'error',
+      messageText: action.text,
     });
-  case actions.CONSOLE_HIDE:
-    if (state.errorShown) {
-      // keep error message if shown
-      return state;
-    }
+  case actions.CONSOLE_HIDE_COMMAND:
     return Object.assign({}, state, {
-      errorShown: false,
-      commandShown: false
+      mode: state.mode === 'command' ? '' : state.mode,
     });
   case actions.CONSOLE_SET_COMPLETIONS:
     return Object.assign({}, state, {

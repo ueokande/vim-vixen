@@ -20,9 +20,9 @@ describe("console actions", () => {
   });
 
   describe("hide", () => {
-    it('create CONSOLE_HIDE action', () => {
-      let action = consoleActions.hide();
-      expect(action.type).to.equal(actions.CONSOLE_HIDE);
+    it('create CONSOLE_HIDE_COMMAND action', () => {
+      let action = consoleActions.hideCommand();
+      expect(action.type).to.equal(actions.CONSOLE_HIDE_COMMAND);
     });
   });
 

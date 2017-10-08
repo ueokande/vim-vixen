@@ -40,7 +40,7 @@ const reloadSettings = () => {
 
 browser.runtime.onMessage.addListener((action) => {
   switch (action.type) {
-  case messages.CONSOLE_HIDE:
+  case messages.CONSOLE_HIDE_COMMAND:
     window.focus();
     consoleFrames.blur(window.document);
     return Promise.resolve();
