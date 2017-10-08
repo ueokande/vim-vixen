@@ -6,7 +6,7 @@ const dist = path.resolve(__dirname, 'build');
 
 module.exports = {
   entry: {
-    index: path.join(src, 'content'),
+    content: path.join(src, 'content'),
     settings: path.join(src, 'settings'),
     background: path.join(src, 'background'),
     console: path.join(src, 'console')

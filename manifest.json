@@ -6,7 +6,7 @@
   "content_scripts": [
     {
       "matches": [ "http://*/*", "https://*/*" ],
-      "js": [ "build/index.js" ]
+      "js": [ "build/content.js" ]
     }
   ],
   "background": {
