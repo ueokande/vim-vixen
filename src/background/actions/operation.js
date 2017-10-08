@@ -42,6 +42,12 @@ const exec = (operation, tab) => {
       return sendConsoleShowCommand(tab, 'tabopen ' + tab.url);
     }
     return sendConsoleShowCommand(tab, 'tabopen ');
+  case operations.COMMAND_SHOW_WINOPEN:
+    if (operation.alter) {
+      // alter url
+      return sendConsoleShowCommand(tab, 'winopen ' + tab.url);
+    }
+    return sendConsoleShowCommand(tab, 'winopen ');
   case operations.COMMAND_SHOW_BUFFER:
     return sendConsoleShowCommand(tab, 'buffer ');
   default:

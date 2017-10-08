@@ -7,6 +7,8 @@ export default {
     "O": { "type": "command.show.open", "alter": true },
     "t": { "type": "command.show.tabopen", "alter": false },
     "T": { "type": "command.show.tabopen", "alter": true },
+    "w": { "type": "command.show.winopen", "alter": false },
+    "W": { "type": "command.show.winopen", "alter": true },
     "b": { "type": "command.show.buffer" },
     "k": { "type": "scroll.lines", "count": -1 },
     "j": { "type": "scroll.lines", "count": 1 },

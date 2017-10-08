@@ -36,6 +36,10 @@ const tabopenCommand = (url) => {
   return browser.tabs.create({ url: url });
 };
 
+const winopenCommand = (url) => {
+  return browser.windows.create({ url });
+};
+
 const bufferCommand = (keywords) => {
   return browser.tabs.query({
     active: true, currentWindow: true
@@ -87,11 +91,13 @@ const doCommand = (name, remaining, settings) => {
   switch (name) {
   case 'o':
   case 'open':
-    // TODO use search engined and pass keywords to them
     return openCommand(normalizeUrl(remaining, settings.search));
   case 't':
   case 'tabopen':
     return tabopenCommand(normalizeUrl(remaining, settings.search));
+  case 'w':
+  case 'winopen':
+    return winopenCommand(normalizeUrl(remaining, settings.search));
   case 'b':
   case 'buffer':
     return bufferCommand(remaining);
@@ -105,6 +111,8 @@ const getCompletions = (command, keywords, settings) => {
   case 'open':
   case 't':
   case 'tabopen':
+  case 'w':
+  case 'winopen':
     return getOpenCompletions(command, keywords, settings.search);
   case 'b':
   case 'buffer':
