@@ -1,7 +1,7 @@
 import messages from 'shared/messages';
-import * as operationActions from 'actions/operation';
+import * as operationActions from 'background/actions/operation';
 import * as settingsActions from 'settings/actions/setting';
-import * as tabActions from 'actions/tab';
+import * as tabActions from 'background/actions/tab';
 import * as commands from 'shared/commands';
 
 export default class BackgroundComponent {
@@ -23,7 +23,7 @@ export default class BackgroundComponent {
 
   update() {
     let state = this.store.getState();
-    this.updateSettings(state.setting);
+    this.updateSettings(state);
   }
 
   updateSettings(setting) {
@@ -37,7 +37,7 @@ export default class BackgroundComponent {
     switch (message.type) {
     case messages.BACKGROUND_OPERATION:
       return this.store.dispatch(
-        operationActions.execBackground(message.operation, sender.tab),
+        operationActions.exec(message.operation, sender.tab),
         sender);
     case messages.OPEN_URL:
       if (message.newTab) {
@@ -58,7 +58,7 @@ export default class BackgroundComponent {
         });
       });
     case messages.SETTINGS_QUERY:
-      return Promise.resolve(this.store.getState().setting.settings);
+      return Promise.resolve(this.store.getState().settings);
     case messages.CONSOLE_QUERY_COMPLETIONS:
       return commands.complete(message.text, this.settings);
     case messages.SETTINGS_RELOAD:

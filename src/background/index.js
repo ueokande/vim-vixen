@@ -1,7 +1,7 @@
 import * as settingsActions from 'settings/actions/setting';
 import messages from 'shared/messages';
-import BackgroundComponent from 'components/background';
-import reducers from 'reducers';
+import BackgroundComponent from 'background/components/background';
+import reducers from 'settings/reducers/setting';
 import { createStore } from 'store';
 
 const store = createStore(reducers, (e, sender) => {
