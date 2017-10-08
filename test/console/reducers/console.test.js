@@ -20,6 +20,13 @@ describe("console reducer", () => {
     expect(state).to.have.property('commandText', 'open ');
   });
 
+  it('return next state for CONSOLE_SHOW_INFO', () => {
+    let action = { type: actions.CONSOLE_SHOW_INFO, text: 'an info' };
+    let state = reducer({}, action);
+    expect(state).to.have.property('mode', 'info');
+    expect(state).to.have.property('messageText', 'an info');
+  });
+
   it('return next state for CONSOLE_SHOW_ERROR', () => {
     let action = { type: actions.CONSOLE_SHOW_ERROR, text: 'an error' };
     let state = reducer({}, action);

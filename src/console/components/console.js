@@ -16,7 +16,7 @@ export default class ConsoleComponent {
     input.addEventListener('keyup', this.onKeyUp.bind(this));
 
     this.hideCommand();
-    this.hideError();
+    this.hideMessage();
   }
 
   onBlur() {
@@ -78,11 +78,10 @@ export default class ConsoleComponent {
       this.hideCommand();
     }
 
-    if (state.mode === 'error') {
-      this.setErrorText(state.messageText);
-      this.showError();
+    if (state.mode === 'error' || state.mode === 'info') {
+      this.showMessage(state.mode, state.messageText);
     } else {
-      this.hideError();
+      this.hideMessage();
     }
 
     if (state.groupSelection >= 0 && state.itemSelection >= 0) {
@@ -128,21 +127,21 @@ export default class ConsoleComponent {
     input.value = this.completionOrigin;
   }
 
-  setErrorText(text) {
+  showMessage(mode, text) {
     let doc = this.wrapper.ownerDocument;
-    let error = doc.querySelector('#vimvixen-console-error');
+    let error = doc.querySelector('#vimvixen-console-message');
+    error.classList.remove(
+      'vimvixen-console-info',
+      'vimvixen-console-error'
+    );
+    error.classList.add('vimvixen-console-' + mode);
     error.textContent = text;
-  }
-
-  showError() {
-    let doc = this.wrapper.ownerDocument;
-    let error = doc.querySelector('#vimvixen-console-error');
     error.style.display = 'block';
   }
 
-  hideError() {
+  hideMessage() {
     let doc = this.wrapper.ownerDocument;
-    let error = doc.querySelector('#vimvixen-console-error');
+    let error = doc.querySelector('#vimvixen-console-message');
     error.style.display = 'none';
   }
 }

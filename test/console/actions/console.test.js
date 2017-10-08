@@ -11,6 +11,14 @@ describe("console actions", () => {
     });
   });
 
+  describe("showInfo", () => {
+    it('create CONSOLE_SHOW_INFO action', () => {
+      let action = consoleActions.showInfo('an info');
+      expect(action.type).to.equal(actions.CONSOLE_SHOW_INFO);
+      expect(action.text).to.equal('an info');
+    });
+  });
+
   describe("showError", () => {
     it('create CONSOLE_SHOW_ERROR action', () => {
       let action = consoleActions.showError('an error');

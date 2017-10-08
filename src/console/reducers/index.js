@@ -57,6 +57,11 @@ export default function reducer(state = defaultState, action = {}) {
       mode: 'error',
       messageText: action.text,
     });
+  case actions.CONSOLE_SHOW_INFO:
+    return Object.assign({}, state, {
+      mode: 'info',
+      messageText: action.text,
+    });
   case actions.CONSOLE_HIDE_COMMAND:
     return Object.assign({}, state, {
       mode: state.mode === 'command' ? '' : state.mode,
