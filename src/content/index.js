@@ -3,6 +3,7 @@ import * as consoleFrames from './console-frames';
 import * as settingActions from 'actions/setting';
 import { createStore } from 'store';
 import ContentInputComponent from 'components/content-input';
+import KeymapperComponent from 'components/keymapper';
 import FollowComponent from 'components/follow';
 import reducers from 'reducers';
 import messages from './messages';
@@ -11,6 +12,10 @@ const store = createStore(reducers);
 const followComponent = new FollowComponent(window.document.body, store);
 const contentInputComponent =
   new ContentInputComponent(window.document.body, store);
+const keymapperComponent = new KeymapperComponent(store);
+contentInputComponent.onKey((key, ctrl) => {
+  return keymapperComponent.key(key, ctrl);
+});
 store.subscribe(() => {
   try {
     followComponent.update();
