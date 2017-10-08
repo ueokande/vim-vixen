@@ -1,12 +1,12 @@
 import './console-frame.scss';
 import * as consoleFrames from './console-frames';
-import * as settingActions from 'actions/setting';
-import { createStore } from 'store';
-import ContentInputComponent from 'components/content-input';
-import KeymapperComponent from 'components/keymapper';
-import FollowComponent from 'components/follow';
-import reducers from 'reducers';
-import messages from './messages';
+import * as settingActions from 'settings/actions/setting';
+import { createStore } from 'shared/store';
+import ContentInputComponent from 'content/components/content-input';
+import KeymapperComponent from 'content/components/keymapper';
+import FollowComponent from 'content/components/follow';
+import reducers from 'content/reducers';
+import messages from 'shared/messages';
 
 const store = createStore(reducers);
 const followComponent = new FollowComponent(window.document.body, store);
