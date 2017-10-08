@@ -1,4 +1,4 @@
-import actions from 'actions';
+import actions from 'content/actions';
 
 const defaultState = {
   enabled: false,

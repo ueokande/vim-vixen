@@ -1,4 +1,4 @@
-import actions from 'actions';
+import actions from 'content/actions';
 
 const asKeymapChars = (key, ctrl) => {
   if (ctrl) {

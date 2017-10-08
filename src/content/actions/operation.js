@@ -2,7 +2,7 @@ import operations from 'shared/operations';
 import messages from 'shared/messages';
 import * as scrolls from 'content/scrolls';
 import * as navigates from 'content/navigates';
-import * as followActions from 'actions/follow';
+import * as followActions from 'content/actions/follow';
 
 const exec = (operation) => {
   switch (operation.type) {

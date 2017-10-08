@@ -1,6 +1,6 @@
-import inputReducer from 'reducers/input';
 import settingReducer from 'settings/reducers/setting';
-import followReducer from 'reducers/follow';
+import inputReducer from './input';
+import followReducer from './follow';
 
 // Make setting reducer instead of re-use
 const defaultState = {

@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import actions from 'actions';
-import inputReducer from 'reducers/input';
+import actions from 'content/actions';
+import inputReducer from 'content/reducers/input';
 
 describe("input reducer", () => {
   it('return the initial state', () => {

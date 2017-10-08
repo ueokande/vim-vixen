@@ -1,10 +1,10 @@
 import { expect } from "chai";
-import FollowComponent from 'components/follow';
+import FollowComponent from 'content/components/follow';
 
 describe('FollowComponent', () => {
   describe('#getTargetElements', () => {
     beforeEach(() => {
-      document.body.innerHTML = __html__['test/components/follow.html'];
+      document.body.innerHTML = __html__['test/content/components/follow.html'];
     });
 
     it('returns visible links', () => {

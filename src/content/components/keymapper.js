@@ -1,5 +1,5 @@
-import * as inputActions from 'actions/input';
-import * as operationActions from 'actions/operation';
+import * as inputActions from 'content/actions/input';
+import * as operationActions from 'content/actions/operation';
 
 export default class KeymapperComponent {
   constructor(store) {
