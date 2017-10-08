@@ -14,6 +14,9 @@ const contentInputComponent =
   new ContentInputComponent(window.document.body, store);
 const keymapperComponent = new KeymapperComponent(store);
 contentInputComponent.onKey((key, ctrl) => {
+  return followComponent.key(key, ctrl);
+});
+contentInputComponent.onKey((key, ctrl) => {
   return keymapperComponent.key(key, ctrl);
 });
 store.subscribe(() => {

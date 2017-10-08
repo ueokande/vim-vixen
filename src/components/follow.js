@@ -22,9 +22,6 @@ export default class FollowComponent {
     this.store = store;
     this.hintElements = {};
     this.state = {};
-
-    let doc = wrapper.ownerDocument;
-    doc.addEventListener('keydown', this.onKeyDown.bind(this));
   }
 
   update() {
@@ -39,12 +36,11 @@ export default class FollowComponent {
     }
   }
 
-  onKeyDown(e) {
+  key(key) {
     if (!this.state.enabled) {
-      return;
+      return false;
     }
 
-    let { key } = e;
     switch (key) {
     case 'Enter':
       this.activate(this.hintElements[this.state.keys].target);
@@ -62,9 +58,7 @@ export default class FollowComponent {
       }
       break;
     }
-
-    e.stopPropagation();
-    e.preventDefault();
+    return true;
   }
 
   updateHints() {

@@ -49,6 +49,9 @@ export default class ContentInputComponent {
     let stop = false;
     for (let listener of this.onKeyListeners) {
       stop = stop || listener(e.key, e.ctrlKey);
+      if (stop) {
+        break;
+      }
     }
     if (stop) {
       e.preventDefault();
