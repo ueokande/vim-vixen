@@ -12,6 +12,7 @@ export default function reducer(state = defaultState, action = {}) {
     return Object.assign({}, state, {
       enabled: true,
       newTab: action.newTab,
+      keys: '',
     });
   case actions.FOLLOW_DISABLE:
     return Object.assign({}, state, {

@@ -15,6 +15,7 @@ describe('follow reducer', () => {
     let state = followReducer({ enabled: false, newTab: false }, action);
     expect(state).to.have.property('enabled', true);
     expect(state).to.have.property('newTab', true);
+    expect(state).to.have.property('keys', '');
   });
 
   it ('returns next state for FOLLOW_DISABLE', () => {
