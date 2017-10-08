@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import actions from 'actions';
-import * as consoleActions from 'actions/console';
+import actions from 'console/actions';
+import * as consoleActions from 'console/actions/console';
 
 describe("console actions", () => {
   describe("showCommand", () => {

@@ -6,7 +6,7 @@ export default class Completion {
   }
 
   update() {
-    let state = this.store.getState().console;
+    let state = this.store.getState();
     if (JSON.stringify(this.prevState) === JSON.stringify(state)) {
       return;
     }

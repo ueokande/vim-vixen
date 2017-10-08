@@ -1,10 +1,10 @@
-import './console.scss';
+import './site.scss';
 import messages from 'shared/messages';
-import CompletionComponent from 'components/completion';
-import ConsoleComponent from 'components/console';
-import reducers from 'reducers';
+import CompletionComponent from 'console/components/completion';
+import ConsoleComponent from 'console/components/console';
+import reducers from 'console/reducers';
 import { createStore } from 'store';
-import * as consoleActions from 'actions/console';
+import * as consoleActions from 'console/actions/console';
 
 const store = createStore(reducers);
 let completionComponent = null;

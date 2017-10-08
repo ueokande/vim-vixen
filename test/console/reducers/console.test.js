@@ -1,10 +1,10 @@
 import { expect } from "chai";
-import actions from 'actions';
-import consoleReducer from 'reducers/console';
+import actions from 'console/actions';
+import reducer from 'console/reducers';
 
 describe("console reducer", () => {
   it('return the initial state', () => {
-    let state = consoleReducer(undefined, {});
+    let state = reducer(undefined, {});
     expect(state).to.have.property('errorShown', false);
     expect(state).to.have.property('errorText', '');
     expect(state).to.have.property('commandShown', false);
@@ -16,7 +16,7 @@ describe("console reducer", () => {
 
   it('return next state for CONSOLE_SHOW_COMMAND', () => {
     let action = { type: actions.CONSOLE_SHOW_COMMAND, text: 'open ' };
-    let state = consoleReducer({}, action);
+    let state = reducer({}, action);
     expect(state).to.have.property('commandShown', true);
     expect(state).to.have.property('commandText', 'open ');
     expect(state).to.have.property('errorShown', false);
@@ -24,7 +24,7 @@ describe("console reducer", () => {
 
   it('return next state for CONSOLE_SHOW_ERROR', () => {
     let action = { type: actions.CONSOLE_SHOW_ERROR, text: 'an error' };
-    let state = consoleReducer({}, action);
+    let state = reducer({}, action);
     expect(state).to.have.property('errorShown', true);
     expect(state).to.have.property('errorText', 'an error');
     expect(state).to.have.property('commandShown', false);
@@ -32,7 +32,7 @@ describe("console reducer", () => {
 
   it('return next state for CONSOLE_HIDE', () => {
     let action = { type: actions.CONSOLE_HIDE };
-    let state = consoleReducer({}, action);
+    let state = reducer({}, action);
     expect(state).to.have.property('errorShown', false);
     expect(state).to.have.property('commandShown', false);
   });
@@ -53,7 +53,7 @@ describe("console reducer", () => {
         items: [4, 5, 6]
       }]
     }
-    state = consoleReducer(state, action);
+    state = reducer(state, action);
     expect(state).to.have.property('completions', action.completions);
     expect(state).to.have.property('groupSelection', -1);
     expect(state).to.have.property('itemSelection', -1);
@@ -73,16 +73,16 @@ describe("console reducer", () => {
       }]
     };
 
-    state = consoleReducer(state, action);
+    state = reducer(state, action);
     expect(state).to.have.property('groupSelection', 0);
     expect(state).to.have.property('itemSelection', 0);
 
-    state = consoleReducer(state, action);
+    state = reducer(state, action);
     expect(state).to.have.property('groupSelection', 0);
     expect(state).to.have.property('itemSelection', 1);
 
-    state = consoleReducer(state, action);
-    state = consoleReducer(state, action);
+    state = reducer(state, action);
+    state = reducer(state, action);
     expect(state).to.have.property('groupSelection', -1);
     expect(state).to.have.property('itemSelection', -1);
   });
@@ -101,16 +101,16 @@ describe("console reducer", () => {
       }]
     };
 
-    state = consoleReducer(state, action);
+    state = reducer(state, action);
     expect(state).to.have.property('groupSelection', 1);
     expect(state).to.have.property('itemSelection', 0);
 
-    state = consoleReducer(state, action);
+    state = reducer(state, action);
     expect(state).to.have.property('groupSelection', 0);
     expect(state).to.have.property('itemSelection', 1);
 
-    state = consoleReducer(state, action);
-    state = consoleReducer(state, action);
+    state = reducer(state, action);
+    state = reducer(state, action);
     expect(state).to.have.property('groupSelection', -1);
     expect(state).to.have.property('itemSelection', -1);
   });

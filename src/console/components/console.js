@@ -1,5 +1,5 @@
 import messages from 'shared/messages';
-import * as consoleActions from 'actions/console';
+import * as consoleActions from 'console/actions/console';
 
 export default class ConsoleComponent {
   constructor(wrapper, store) {
@@ -71,7 +71,7 @@ export default class ConsoleComponent {
   }
 
   update() {
-    let state = this.store.getState().console;
+    let state = this.store.getState();
     if (!this.prevState.commandShown && state.commandShown) {
       this.showCommand(state.commandText);
     } else if (!state.commandShown) {

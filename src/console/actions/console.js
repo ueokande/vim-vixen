@@ -1,4 +1,4 @@
-import actions from 'actions';
+import actions from 'console/actions';
 
 const showCommand = (text) => {
   return {
