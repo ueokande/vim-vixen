@@ -1,12 +1,18 @@
-import messages from 'content/messages';
-
 export default class ContentInputComponent {
   constructor(target) {
     this.pressed = {};
+    this.onKeyListeners = [];
 
     target.addEventListener('keypress', this.onKeyPress.bind(this));
     target.addEventListener('keydown', this.onKeyDown.bind(this));
     target.addEventListener('keyup', this.onKeyUp.bind(this));
+  }
+
+  update() {
+  }
+
+  onKey(cb) {
+    this.onKeyListeners.push(cb);
   }
 
   onKeyPress(e) {
@@ -30,18 +36,32 @@ export default class ContentInputComponent {
   }
 
   capture(e) {
-    if (e.target instanceof HTMLInputElement ||
-      e.target instanceof HTMLTextAreaElement ||
-      e.target instanceof HTMLSelectElement) {
+    if (this.fromInput(e)) {
       if (e.key === 'Escape' && e.target.blur) {
         e.target.blur();
       }
       return;
     }
-    browser.runtime.sendMessage({
-      type: messages.KEYDOWN,
-      key: e.key,
-      ctrl: e.ctrlKey
-    });
+    if (e.key === 'OS') {
+      return;
+    }
+
+    let stop = false;
+    for (let listener of this.onKeyListeners) {
+      stop = stop || listener(e.key, e.ctrlKey);
+      if (stop) {
+        break;
+      }
+    }
+    if (stop) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+
+  fromInput(e) {
+    return e.target instanceof HTMLInputElement ||
+      e.target instanceof HTMLTextAreaElement ||
+      e.target instanceof HTMLSelectElement;
   }
 }

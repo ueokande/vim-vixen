@@ -1,5 +1,5 @@
 import messages from 'content/messages';
-import * as inputActions from 'actions/input';
+import * as operationActions from 'actions/operation';
 import * as settingsActions from 'actions/setting';
 import * as tabActions from 'actions/tab';
 import * as commands from 'shared/commands';
@@ -35,9 +35,10 @@ export default class BackgroundComponent {
 
   onMessage(message, sender) {
     switch (message.type) {
-    case messages.KEYDOWN:
+    case messages.BACKGROUND_OPERATION:
       return this.store.dispatch(
-        inputActions.keyPress(message.key, message.ctrl), sender);
+        operationActions.execBackground(message.operation, sender.tab),
+        sender);
     case messages.OPEN_URL:
       if (message.newTab) {
         return this.store.dispatch(
@@ -56,10 +57,23 @@ export default class BackgroundComponent {
           text: e.message,
         });
       });
+    case messages.SETTINGS_QUERY:
+      return Promise.resolve(this.store.getState().setting.settings);
     case messages.CONSOLE_QUERY_COMPLETIONS:
       return commands.complete(message.text, this.settings);
     case messages.SETTINGS_RELOAD:
       this.store.dispatch(settingsActions.load());
+      return this.broadcastSettingsChanged();
     }
+  }
+
+  broadcastSettingsChanged() {
+    return browser.tabs.query({}).then((tabs) => {
+      for (let tab of tabs) {
+        browser.tabs.sendMessage(tab.id, {
+          type: messages.SETTINGS_CHANGED,
+        });
+      }
+    });
   }
 }
