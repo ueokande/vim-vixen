@@ -1,7 +1,7 @@
 import './console-frame.scss';
 import * as consoleFrames from './console-frames';
 import * as settingActions from 'settings/actions/setting';
-import { createStore } from 'store';
+import { createStore } from 'shared/store';
 import ContentInputComponent from 'content/components/content-input';
 import KeymapperComponent from 'content/components/keymapper';
 import FollowComponent from 'content/components/follow';

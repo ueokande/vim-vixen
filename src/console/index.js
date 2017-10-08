@@ -3,7 +3,7 @@ import messages from 'shared/messages';
 import CompletionComponent from 'console/components/completion';
 import ConsoleComponent from 'console/components/console';
 import reducers from 'console/reducers';
-import { createStore } from 'store';
+import { createStore } from 'shared/store';
 import * as consoleActions from 'console/actions/console';
 
 const store = createStore(reducers);

@@ -2,7 +2,7 @@ import * as settingsActions from 'settings/actions/setting';
 import messages from 'shared/messages';
 import BackgroundComponent from 'background/components/background';
 import reducers from 'settings/reducers/setting';
-import { createStore } from 'store';
+import { createStore } from 'shared/store';
 
 const store = createStore(reducers, (e, sender) => {
   console.error('Vim-Vixen:', e);
