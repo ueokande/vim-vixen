@@ -6,7 +6,7 @@ import ContentInputComponent from 'components/content-input';
 import KeymapperComponent from 'components/keymapper';
 import FollowComponent from 'components/follow';
 import reducers from 'reducers';
-import messages from './messages';
+import messages from 'shared/messages';
 
 const store = createStore(reducers);
 const followComponent = new FollowComponent(window.document.body, store);

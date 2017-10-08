@@ -1,5 +1,5 @@
 import operations from 'shared/operations';
-import messages from 'content/messages';
+import messages from 'shared/messages';
 import * as tabs from 'background/tabs';
 import * as zooms from 'background/zooms';
 import * as scrolls from 'content/scrolls';

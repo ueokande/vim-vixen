@@ -1,5 +1,5 @@
 import * as followActions from 'actions/follow';
-import messages from 'content/messages';
+import messages from 'shared/messages';
 import Hint from 'content/hint';
 import HintKeyProducer from 'content/hint-key-producer';
 

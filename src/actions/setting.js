@@ -1,5 +1,5 @@
 import actions from 'actions';
-import messages from 'content/messages';
+import messages from 'shared/messages';
 import DefaultSettings from 'shared/default-settings';
 
 const load = () => {

@@ -1,4 +1,4 @@
-import messages from 'content/messages';
+import messages from 'shared/messages';
 import * as operationActions from 'actions/operation';
 import * as settingsActions from 'actions/setting';
 import * as tabActions from 'actions/tab';

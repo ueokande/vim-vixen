@@ -1,5 +1,5 @@
 import './console.scss';
-import messages from 'content/messages';
+import messages from 'shared/messages';
 import CompletionComponent from 'components/completion';
 import ConsoleComponent from 'components/console';
 import reducers from 'reducers';

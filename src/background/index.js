@@ -1,5 +1,5 @@
 import * as settingsActions from 'actions/setting';
-import messages from 'content/messages';
+import messages from 'shared/messages';
 import BackgroundComponent from 'components/background';
 import reducers from 'reducers';
 import { createStore } from 'store';

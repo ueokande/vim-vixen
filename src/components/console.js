@@ -1,4 +1,4 @@
-import messages from 'content/messages';
+import messages from 'shared/messages';
 import * as consoleActions from 'actions/console';
 
 export default class ConsoleComponent {
