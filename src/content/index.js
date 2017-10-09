@@ -1,6 +1,6 @@
 import './console-frame.scss';
 import * as consoleFrames from './console-frames';
-import * as settingActions from 'settings/actions/setting';
+import * as inputActions from './actions/input';
 import { createStore } from 'shared/store';
 import ContentInputComponent from 'content/components/content-input';
 import KeymapperComponent from 'content/components/keymapper';
@@ -34,7 +34,8 @@ const reloadSettings = () => {
   return browser.runtime.sendMessage({
     type: messages.SETTINGS_QUERY,
   }).then((settings) => {
-    store.dispatch(settingActions.set(settings));
+    let keymaps = JSON.parse(settings.json).keymaps;
+    store.dispatch(inputActions.setKeymaps(keymaps));
   });
 };
 
