@@ -2,7 +2,7 @@ import './site.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as settingActions from 'settings/actions/setting';
-import { validate } from 'shared/validators/setting';
+import * as validator from 'shared/validators/setting';
 
 class SettingsComponent extends React.Component {
   constructor(props, context) {
@@ -22,39 +22,42 @@ class SettingsComponent extends React.Component {
 
   stateChanged() {
     let settings = this.context.store.getState();
-    this.setState({ settings });
+    this.setState({
+      settings: {
+        source: settings.source,
+        json: settings.json,
+      }
+    });
   }
 
   render() {
     return (
       <div>
         <h1>Configure Vim-Vixen</h1>
+        <form className='vimvixen-settings-form'>
 
-        <form id='vimvixen-settings-form' className='vimvixen-settings-form'
-          onSubmit={this.saveSettings.bind(this)}>
-          <label htmlFor='load-from-json'>Load from JSON:</label>
-          <textarea name='plain-json' spellCheck='false'
-            onInput={this.onPlainJsonChanged.bind(this)}
+          <p>Load settings from:</p>
+          <input type='radio' id='setting-source-json'
+            name='source'
+            value='json'
+            onChange={this.bindAndSave.bind(this)}
+            checked={this.state.settings.source === 'json'} />
+          <label htmlFor='settings-source-json'>JSON</label>
+
+          <textarea name='json' spellCheck='false'
+            onInput={this.validate.bind(this)}
             onChange={this.bindValue.bind(this)}
+            onBlur={this.bindAndSave.bind(this)}
             value={this.state.settings.json} />
-          <button type='submit'>Save</button>
         </form>
       </div>
     );
   }
 
-  saveSettings(e) {
-    let settings = {
-      json: e.target.elements['plain-json'].value,
-    };
-    this.context.store.dispatch(settingActions.save(settings));
-    e.preventDefault();
-  }
-
-  onPlainJsonChanged(e) {
+  validate(e) {
     try {
       let settings = JSON.parse(e.target.value);
-      validate(settings);
+      validator.validate(settings);
       e.target.setCustomValidity('');
     } catch (err) {
       e.target.setCustomValidity(err.message);
@@ -62,12 +65,22 @@ class SettingsComponent extends React.Component {
   }
 
   bindValue(e) {
-    let next = Object.assign({}, this.state, {
-      settings: {
-        'json': e.target.value,
-      }
-    });
-    this.setState(next);
+    let nextSettings = Object.assign({}, this.state.settings);
+    nextSettings[e.target.name] = e.target.value;
+
+    this.setState({ settings: nextSettings });
+  }
+
+  bindAndSave(e) {
+    this.bindValue(e);
+
+    try {
+      let json = this.state.settings.json;
+      validator.validate(JSON.parse(json));
+      this.context.store.dispatch(settingActions.save(this.state.settings));
+    } catch (err) {
+      // error already shown
+    }
   }
 }
 

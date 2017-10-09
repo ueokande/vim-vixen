@@ -1,4 +1,5 @@
 export default {
+  source: 'json',
   json: `{
   "keymaps": {
     "0": { "type": "scroll.home" },
