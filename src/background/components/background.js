@@ -43,7 +43,7 @@ export default class BackgroundComponent {
         type: messages.CONSOLE_HIDE_COMMAND,
       });
     case messages.CONSOLE_ENTERED:
-      return commands.exec(message.text, this.settings).catch((e) => {
+      return commands.exec(message.text, this.settings.value).catch((e) => {
         return browser.tabs.sendMessage(sender.tab.id, {
           type: messages.CONSOLE_SHOW_ERROR,
           text: e.message,
@@ -52,7 +52,7 @@ export default class BackgroundComponent {
     case messages.SETTINGS_QUERY:
       return Promise.resolve(this.store.getState().value);
     case messages.CONSOLE_QUERY_COMPLETIONS:
-      return commands.complete(message.text, this.settings);
+      return commands.complete(message.text, this.settings.value);
     case messages.SETTINGS_RELOAD:
       this.store.dispatch(settingsActions.load());
       return this.broadcastSettingsChanged();
