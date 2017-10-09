@@ -7,7 +7,8 @@ export default {
   COMMAND_SHOW_BUFFER: 'command.show.buffer',
 
   // Scrolls
-  SCROLL_LINES: 'scroll.lines',
+  SCROLL_VERTICALLY: 'scroll.vertically',
+  SCROLL_HORIZONALLY: 'scroll.horizonally',
   SCROLL_PAGES: 'scroll.pages',
   SCROLL_TOP: 'scroll.top',
   SCROLL_BOTTOM: 'scroll.bottom',

@@ -1,8 +1,15 @@
-const SCROLL_DELTA = 48;
+const SCROLL_DELTA_X = 48;
+const SCROLL_DELTA_Y = 48;
 
-const scrollLines = (page, count) => {
+const scrollVertically = (page, count) => {
   let x = page.scrollX;
-  let y = page.scrollY + SCROLL_DELTA * count;
+  let y = page.scrollY + SCROLL_DELTA_X * count;
+  page.scrollTo(x, y);
+};
+
+const scrollHorizonally = (page, count) => {
+  let x = page.scrollX + SCROLL_DELTA_Y * count;
+  let y = page.scrollY;
   page.scrollTo(x, y);
 };
 
@@ -25,18 +32,19 @@ const scrollBottom = (page) => {
   page.scrollTo(x, y);
 };
 
-const scrollLeft = (page) => {
+const scrollHome = (page) => {
   let x = 0;
   let y = page.scrollY;
   page.scrollTo(x, y);
 };
 
-const scrollRight = (page) => {
+const scrollEnd = (page) => {
   let x = page.scrollMaxX;
   let y = page.scrollY;
   page.scrollTo(x, y);
 };
 
 export {
-  scrollLines, scrollPages, scrollTop, scrollBottom, scrollLeft, scrollRight
+  scrollVertically, scrollHorizonally, scrollPages,
+  scrollTop, scrollBottom, scrollHome, scrollEnd
 };
