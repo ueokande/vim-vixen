@@ -4,8 +4,9 @@ import DefaultSettings from 'shared/default-settings';
 
 const load = () => {
   return browser.storage.local.get('settings').then((value) => {
-    if (value.settings) {
-      return set(value.settings);
+    let settings = value.settings;
+    if (settings) {
+      return set(settings);
     }
     return set(DefaultSettings);
   }, console.error);
@@ -13,7 +14,7 @@ const load = () => {
 
 const save = (settings) => {
   return browser.storage.local.set({
-    settings
+    settings,
   }).then(() => {
     return browser.runtime.sendMessage({
       type: messages.SETTINGS_RELOAD
@@ -24,8 +25,9 @@ const save = (settings) => {
 const set = (settings) => {
   return {
     type: actions.SETTING_SET_SETTINGS,
-    settings,
+    json: settings.json,
+    value: JSON.parse(settings.json),
   };
 };
 
-export { load, save, set };
+export { load, save };

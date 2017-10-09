@@ -34,8 +34,7 @@ const reloadSettings = () => {
   return browser.runtime.sendMessage({
     type: messages.SETTINGS_QUERY,
   }).then((settings) => {
-    let keymaps = JSON.parse(settings.json).keymaps;
-    store.dispatch(inputActions.setKeymaps(keymaps));
+    store.dispatch(inputActions.setKeymaps(settings.keymaps));
   });
 };
 

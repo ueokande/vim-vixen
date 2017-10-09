@@ -35,11 +35,12 @@ export default class SettingComponent {
   }
 
   update() {
-    let { settings } = this.store.getState();
+    let settings = this.store.getState();
 
     let doc = this.wrapper.ownerDocument;
     let form = doc.getElementById('vimvixen-settings-form');
     let plainJsonInput = form.elements['plain-json'];
     plainJsonInput.value = settings.json;
+
   }
 }
