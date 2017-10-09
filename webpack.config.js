@@ -20,11 +20,11 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: [ /\.js$/,  /\.jsx$/ ],
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
-          presets: [ 'es2015' ]
+          presets: ['es2015', 'react']
         }
       },
       {
@@ -39,7 +39,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: [ '.js' ],
+    extensions: [ '.js', '.jsx' ],
     modules: [path.join(__dirname, 'src'), 'node_modules']
   },
 
