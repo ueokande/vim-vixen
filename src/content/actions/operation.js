@@ -19,9 +19,9 @@ const exec = (operation) => {
   case operations.SCROLL_BOTTOM:
     return scrolls.scrollBottom(window);
   case operations.SCROLL_HOME:
-    return scrolls.scrollLeft(window);
+    return scrolls.scrollHome(window);
   case operations.SCROLL_END:
-    return scrolls.scrollRight(window);
+    return scrolls.scrollEnd(window);
   case operations.FOLLOW_START:
     return followActions.enable(false);
   case operations.NAVIGATE_HISTORY_PREV:

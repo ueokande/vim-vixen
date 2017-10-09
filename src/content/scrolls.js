@@ -32,13 +32,13 @@ const scrollBottom = (page) => {
   page.scrollTo(x, y);
 };
 
-const scrollLeft = (page) => {
+const scrollHome = (page) => {
   let x = 0;
   let y = page.scrollY;
   page.scrollTo(x, y);
 };
 
-const scrollRight = (page) => {
+const scrollEnd = (page) => {
   let x = page.scrollMaxX;
   let y = page.scrollY;
   page.scrollTo(x, y);
@@ -46,5 +46,5 @@ const scrollRight = (page) => {
 
 export {
   scrollVertically, scrollHorizonally, scrollPages,
-  scrollTop, scrollBottom, scrollLeft, scrollRight
+  scrollTop, scrollBottom, scrollHome, scrollEnd
 };
