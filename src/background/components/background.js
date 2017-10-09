@@ -22,15 +22,7 @@ export default class BackgroundComponent {
   }
 
   update() {
-    let state = this.store.getState();
-    this.updateSettings(state);
-  }
-
-  updateSettings(setting) {
-    if (!setting.settings.json) {
-      return;
-    }
-    this.settings = JSON.parse(setting.settings.json);
+    this.settings = this.store.getState();
   }
 
   onMessage(message, sender) {
@@ -58,7 +50,7 @@ export default class BackgroundComponent {
         });
       });
     case messages.SETTINGS_QUERY:
-      return Promise.resolve(this.store.getState().settings);
+      return Promise.resolve(this.store.getState().value);
     case messages.CONSOLE_QUERY_COMPLETIONS:
       return commands.complete(message.text, this.settings);
     case messages.SETTINGS_RELOAD:

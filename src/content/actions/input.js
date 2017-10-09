@@ -20,4 +20,11 @@ const clearKeys = () => {
   };
 };
 
-export { keyPress, clearKeys };
+const setKeymaps = (keymaps) => {
+  return {
+    type: actions.INPUT_SET_KEYMAPS,
+    keymaps,
+  };
+};
+
+export { keyPress, clearKeys, setKeymaps };

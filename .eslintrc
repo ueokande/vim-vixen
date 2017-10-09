@@ -5,13 +5,14 @@
     "browser" : true,
     "webextensions": true
   },
+  "plugins": ["react"],
   "parser": "babel-eslint",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
     }
   },
-  "extends": [ "eslint:all" ],
+  "extends": [ "eslint:all", "plugin:react/recommended" ],
   "rules": {
     "array-bracket-newline": ["error", { "multiline": true }],
     "array-element-newline": "off",
@@ -27,6 +28,7 @@
     "function-paren-newline": "off",
     "id-length": "off",
     "indent": ["error", 2],
+    "jsx-quotes": ["error", "prefer-single"],
     "max-statements": ["error", 15],
     "multiline-ternary": "off",
     "newline-after-var": "off",
@@ -56,6 +58,9 @@
     "sort-imports": "off",
     "sort-keys": "off",
     "sort-vars": "off",
-    "space-before-function-paren": ["error", "never"]
+    "space-before-function-paren": ["error", "never"],
+
+    "react/jsx-indent": ["error", 2],
+    "react/prop-types": "off",
   }
 }

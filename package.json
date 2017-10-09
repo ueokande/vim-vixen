@@ -3,7 +3,7 @@
   "description": "Vim vixen",
   "scripts": {
     "start": "webpack -w --debug",
-    "lint": "eslint src",
+    "lint": "eslint --ext .jsx,.js src",
     "test": "karma start"
   },
   "repository": {
@@ -20,10 +20,13 @@
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.1",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
     "chai": "^4.1.1",
     "css-loader": "^0.28.4",
     "eslint": "^4.7.0",
+    "eslint-plugin-react": "^7.4.0",
     "html-webpack-plugin": "^2.30.1",
     "karma": "^1.7.0",
     "karma-firefox-launcher": "^1.0.1",
@@ -34,6 +37,8 @@
     "karma-webpack": "^2.0.4",
     "mocha": "^3.5.0",
     "node-sass": "^4.5.3",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "webpack": "^3.5.3"
