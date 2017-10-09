@@ -8,8 +8,10 @@ import * as consoleFrames from 'content/console-frames';
 
 const exec = (operation) => {
   switch (operation.type) {
-  case operations.SCROLL_LINES:
-    return scrolls.scrollLines(window, operation.count);
+  case operations.SCROLL_VERTICALLY:
+    return scrolls.scrollVertically(window, operation.count);
+  case operations.SCROLL_HORIZONALLY:
+    return scrolls.scrollHorizonally(window, operation.count);
   case operations.SCROLL_PAGES:
     return scrolls.scrollPages(window, operation.count);
   case operations.SCROLL_TOP:
