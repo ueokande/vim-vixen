@@ -1,29 +1,10 @@
-# Checklist for testing Vim Vixen
+### Checklist for testing Vim Vixen
 
-## Operations
+#### Operations
 
 Test operations with default key maps.
 
-### Scrolling
-
-- [ ] `k`,`j`,`<C-E>`,`<C-Y>`,`h`,`l`: scroll vertically and horizonally
-- [ ] `<C-U>`,`<C-D>`: scroll up and down by a half of page
-- [ ] `<C-B>`,`<C-F>`: scroll up and down by page
-- [ ] `0`,`$`: scroll leftmost and rightmost
-- [ ] `gg`:`G`: scroll to top and bottom
-
-### Console opening
-
-The behaviors of the console are tested in [Console section](#consoles).
-
-#### Console
-
-- [ ] `:`: open empty console
-- [ ] `o`,`t`,`w`: open a console with `open`,`tabopen`,`winopen`
-- [ ] `O`,`T`,`W`: open a console with `open`,`tabopen`,`winopen` and current URL
-- [ ] `b`: open a consolw with `buffer`
-
-#### Scrolling
+##### Scrolling
 
 - [ ] `k`/`<C-Y>`,`j`/`<C-E>`: scroll up and down
 - [ ] `h`,`l`: scroll left and right
@@ -32,14 +13,25 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `0`,`$`: scroll to leftmost and rightmost
 - [ ] `gg`,`G`: scroll to top and bottom
 
-#### Tabs
+##### Console
+
+The behaviors of the console are tested in [Console section](#consoles).
+
+- [ ] `:`: open empty console
+- [ ] `o`,`t`,`w`: open a console with `open`,`tabopen`,`winopen`
+- [ ] `O`,`T`,`W`: open a console with `open`,`tabopen`,`winopen` and current URL
+- [ ] `b`: open a consolw with `buffer`
+
+##### Tabs
+
 - [ ] `d`: delete current tab
 - [ ] `u`: reopen close tab
 - [ ] `K`,`J`: select prev and next tab
 - [ ] `r`: reload current tab
 - [ ] `R`: reload current tab without cache
 
-### Navigation
+#### Navigation
+
 - [ ] `f`: start following links
 - [ ] `F`: start following links and open in new tab
 - [ ] `H`,`L`: go back and forward in histories
@@ -47,14 +39,15 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `gu`: go to parent directory
 - [ ] `gU`: go to root directory
 
-#### Misc
+##### Misc
+
 - [ ] `zi`,`zo`: zoom-in and zoom-out
 - [ ] `zz`: set zoom level as default
 - [ ] `y`: yank current URL and show a message
 
-## Consoles
+#### Consoles
 
-### Exec a command
+##### Exec a command
 
 - [ ] `<EMPTY>`,`<SP>`: do nothing
 <br>
@@ -78,9 +71,9 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] select tab matched with a title
 - [ ] select tabs rotationally when more than two tabs are matched
 
-### Completions
+#### Completions
 
-#### History and search engines
+##### History and search engines
 
 - [ ] `open`: show no completions
 - [ ] `open<SP>`: show all engines and some history items
@@ -89,28 +82,28 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] also `tabopen` and `winopen`
 - [ ] shortening commands such as `o` are not test in this release
 
-#### Buffer command
+##### Buffer command
 
 - [ ] `buffer`: show no completions
 - [ ] `buffer<SP>`: show all opened tabs in completion
 - [ ] `buffer x`: show tabs which has title and URL matches with `x`
 
-## Settings
+#### Settings
 
-### Validations
+##### Validations
 
 - [ ] show error on invalid json
 - [ ] show error when top-level keys has keys other than `keymaps`, and `search`
 
-#### `"keymaps"` section
+##### `"keymaps"` section
 
 - [ ] show error on unknown operation name in `"keymaps"`
 
-#### `"search"` section
+##### `"search"` section
 
 - [ ] validations in `"search"` section are not tested in this release
 
-### Updating
+##### Updating
 
 - [ ] changes are updated on textarea blure when no errors
 - [ ] changes are not updated on textarea blure when errors occurs
