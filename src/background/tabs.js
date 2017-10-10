@@ -18,12 +18,12 @@ const reopenTab = () => {
 };
 
 const selectAt = (index) => {
-  return browser.tabs.query({ currentWindow: true }, (tabs) => {
+  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
     if (tabs.length < 2) {
       return;
     }
     if (index < 0 || tabs.length <= index) {
-      throw new RangeError(`tab ${index} does not exist`);
+      throw new RangeError(`tab ${index + 1} does not exist`);
     }
     let id = tabs[index].id;
     return browser.tabs.update(id, { active: true });
