@@ -1,20 +1,9 @@
 # Vim Vixen
 
-An Firefox add-ons works with WebExtensions, insipired by [Vimperator](https://github.com/vimperator).
-
-## Background
-
-### Firefox will stop supporting legacy add-ons
-
-Firefox will support only add-ons using WebExtensions API since version 57, and
-plugins based on legacy APIs will be unavailable.  Vim Vixen is new solution to
-create Vim-like Firefox.
-
-### Vimimum
-
-[Vimium](https://github.com/philc/vimium) is a Chrome extension which able to
-navigate pages in Google Chrome/Chromium.  Vimium also started to support on
-Firefox by WebExtensions API.
+Vim Vixen is a Firefox add-on which allows you to navigate with keyboard on the browser.
+Firefox started to support WebExtensions API and will stop supporting add-ons using legacy APIs from version 57.
+For this reason, many legacy add-ons do not work on Firefox 57.
+and Vim Vixen is a new choise for Vim users since Vim Vixen uses WebExtensions API
 
 ## Basic usage
 
