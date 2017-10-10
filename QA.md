@@ -40,12 +40,12 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `R`: reload current tab without cache
 
 ### Navigation
-- `f`: start following links
-- `F`: start following links and open in new tab
-- `H`,`L`: go back and forward in histories
-- `[[`,`]]`: find prev and next links and open it
-- `gu`: go to parent directory
-- `gU`: go to root directory
+- [ ] `f`: start following links
+- [ ] `F`: start following links and open in new tab
+- [ ] `H`,`L`: go back and forward in histories
+- [ ] `[[`,`]]`: find prev and next links and open it
+- [ ] `gu`: go to parent directory
+- [ ] `gU`: go to root directory
 
 #### Misc
 - [ ] `zi`,`zo`: zoom-in and zoom-out
@@ -57,7 +57,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 ### Exec a command
 
 - [ ] `<EMPTY>`,`<SP>`: do nothing
-
+<br>
 
 - [ ] `open an apple`: search with keywords "an apple" by default search engine (google)
 - [ ] `open github.com`: open github.com
@@ -65,11 +65,11 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `open yahoo an apple`: search with keywords "an apple" by yahoo.com
 - [ ] `open yahoo`,`open yahoo<SP>`: search with empty keywords; yahoo redirects to top page
 - [ ] `open`,`open<SP>`: open default search engine
-
+<br>
 
 - [ ] `tabopen`: do avobe tests replaced `open` with `tabopen`, and verify the page is opened in new tab
 - [ ] `winopen`: do avobe tests replaced `open` with `winopen`, and verify the page is opened in new window
-
+<br>
 
 - [ ] `buffer`,`buffer `: do nothing
 - [ ] `buffer <title>`, `buffer <url>`: select tab which has an title matched with
