@@ -1,10 +1,11 @@
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var path = require('path');
+const MinifyPlugin = require("babel-minify-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
 const src = path.resolve(__dirname, 'src');
 const dist = path.resolve(__dirname, 'build');
 
-module.exports = {
+config = {
   entry: {
     content: path.join(src, 'content'),
     settings: path.join(src, 'settings'),
@@ -56,3 +57,8 @@ module.exports = {
     })
   ]
 };
+if (process.env.NODE_ENV === 'production') {
+  config.plugins.push(new MinifyPlugin());
+}
+
+module.exports = config

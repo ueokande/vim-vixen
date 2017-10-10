@@ -2,8 +2,11 @@
   "name": "vim-vixen",
   "description": "Vim vixen",
   "scripts": {
-    "start": "webpack -w --debug",
+    "start": "webpack -w -d",
     "lint": "eslint --ext .jsx,.js src",
+    "build": "NODE_ENV=production webpack --progress --display-error-details",
+    "package": "npm run build && ./package.sh",
+    "lint": "eslint src",
     "test": "karma start"
   },
   "repository": {
@@ -20,6 +23,7 @@
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.1",
+    "babel-minify-webpack-plugin": "^0.2.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
