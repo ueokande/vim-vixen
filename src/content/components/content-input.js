@@ -42,7 +42,8 @@ export default class ContentInputComponent {
       }
       return;
     }
-    if (e.key === 'OS') {
+    if (['Shift', 'Control', 'Alt', 'OS'].includes(e.key)) {
+      // pressing only meta key is ignored
       return;
     }
 
