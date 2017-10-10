@@ -67,7 +67,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `buffer`,`buffer<SP>`: do nothing
 - [ ] `buffer <title>`, `buffer <url>`: select tab which has an title matched with
 - [ ] `buffer 1`: select leftmost tab
-- [ ] `buffer 99`: select rightmost tab
+- [ ] `buffer 0`, `buffer 99`: shows an error
 - [ ] select tabs rotationally when more than two tabs are matched
 
 #### Completions
