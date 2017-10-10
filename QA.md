@@ -72,9 +72,28 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 
 - [ ] `buffer`,`buffer `: do nothing
-- [ ] select tab matched with an URL
+- [ ] `buffer <title>`, `buffer <url>`: select tab which has an title matched with
+- [ ] `buffer 1`: select leftmost tab
+- [ ] `buffer 99`: select rightmost tab
 - [ ] select tab matched with a title
 - [ ] select tabs rotationally when more than two tabs are matched
+
+### Completions
+
+#### History and search engines
+
+- `open`: show no completions
+- `open<SP>`: show all engines and some history items
+- `open g`: complete search engines starts with `g` and matched with keywords `g`
+- `open foo bar`: complete history items matched with keywords `foo` and `bar`
+- also `tabopen` and `winopen`
+- shortening commands such as `o` are not test in this release
+
+#### Buffer command
+
+- `buffer`: show no completions
+- `buffer<SP>`: show all opened tabs in completion
+- `buffer x`: show tabs which has title and URL matches with `x`
 
 ## Settings
 
