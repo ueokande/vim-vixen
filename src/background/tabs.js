@@ -62,7 +62,7 @@ const selectPrevTab = (current, count) => {
     if (tabs.length < 2) {
       return;
     }
-    let select = (current - count) % tabs.length;
+    let select = (current - count + tabs.length) % tabs.length;
     let id = tabs[select].id;
     return browser.tabs.update(id, { active: true });
   });
@@ -73,7 +73,7 @@ const selectNextTab = (current, count) => {
     if (tabs.length < 2) {
       return;
     }
-    let select = (current + count + tabs.length) % tabs.length;
+    let select = (current + count) % tabs.length;
     let id = tabs[select].id;
     return browser.tabs.update(id, { active: true });
   });
