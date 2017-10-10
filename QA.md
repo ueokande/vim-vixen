@@ -64,11 +64,10 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `winopen`: do avobe tests replaced `open` with `winopen`, and verify the page is opened in new window
 <br>
 
-- [ ] `buffer`,`buffer `: do nothing
+- [ ] `buffer`,`buffer<SP>`: do nothing
 - [ ] `buffer <title>`, `buffer <url>`: select tab which has an title matched with
 - [ ] `buffer 1`: select leftmost tab
 - [ ] `buffer 99`: select rightmost tab
-- [ ] select tab matched with a title
 - [ ] select tabs rotationally when more than two tabs are matched
 
 #### Completions
@@ -80,7 +79,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `open g`: complete search engines starts with `g` and matched with keywords `g`
 - [ ] `open foo bar`: complete history items matched with keywords `foo` and `bar`
 - [ ] also `tabopen` and `winopen`
-- [ ] shortening commands such as `o` are not test in this release
+- shortening commands such as `o` are not test in this release
 
 ##### Buffer command
 
@@ -101,7 +100,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 ##### `"search"` section
 
-- [ ] validations in `"search"` section are not tested in this release
+- validations in `"search"` section are not tested in this release
 
 ##### Updating
 
