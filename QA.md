@@ -82,37 +82,37 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 #### History and search engines
 
-- `open`: show no completions
-- `open<SP>`: show all engines and some history items
-- `open g`: complete search engines starts with `g` and matched with keywords `g`
-- `open foo bar`: complete history items matched with keywords `foo` and `bar`
-- also `tabopen` and `winopen`
-- shortening commands such as `o` are not test in this release
+- [ ] `open`: show no completions
+- [ ] `open<SP>`: show all engines and some history items
+- [ ] `open g`: complete search engines starts with `g` and matched with keywords `g`
+- [ ] `open foo bar`: complete history items matched with keywords `foo` and `bar`
+- [ ] also `tabopen` and `winopen`
+- [ ] shortening commands such as `o` are not test in this release
 
 #### Buffer command
 
-- `buffer`: show no completions
-- `buffer<SP>`: show all opened tabs in completion
-- `buffer x`: show tabs which has title and URL matches with `x`
+- [ ] `buffer`: show no completions
+- [ ] `buffer<SP>`: show all opened tabs in completion
+- [ ] `buffer x`: show tabs which has title and URL matches with `x`
 
 ## Settings
 
 ### Validations
 
-- show error on invalid json
-- show error when top-level keys has keys other than `keymaps`, and `search`
+- [ ] show error on invalid json
+- [ ] show error when top-level keys has keys other than `keymaps`, and `search`
 
 #### `"keymaps"` section
 
-- show error on unknown operation name in `"keymaps"`
+- [ ] show error on unknown operation name in `"keymaps"`
 
 #### `"search"` section
 
-- validations in `"search"` section are not tested in this release
+- [ ] validations in `"search"` section are not tested in this release
 
 ### Updating
 
-- changes are updated on textarea blure when no errors
-- changes are not updated on textarea blure when errors occurs
-- keymap settings are applied to open tabs without reload
-- search settings are applied to open tabs without reload
+- [ ] changes are updated on textarea blure when no errors
+- [ ] changes are not updated on textarea blure when errors occurs
+- [ ] keymap settings are applied to open tabs without reload
+- [ ] search settings are applied to open tabs without reload
