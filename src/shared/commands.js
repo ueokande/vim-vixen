@@ -1,20 +1,21 @@
 import * as tabs from 'background/tabs';
 import * as histories from 'background/histories';
 
-const normalizeUrl = (string, searchConfig) => {
+const normalizeUrl = (args, searchConfig) => {
+  let concat = args.join(' ');
   try {
-    return new URL(string).href;
+    return new URL(concat).href;
   } catch (e) {
-    if (string.includes('.') && !string.includes(' ')) {
-      return 'http://' + string;
+    if (concat.includes('.') && !concat.includes(' ')) {
+      return 'http://' + concat;
     }
-    let query = encodeURI(string);
+    let query = encodeURI(concat);
     let template = searchConfig.engines[
       searchConfig.default
     ];
     for (let key in searchConfig.engines) {
-      if (string.startsWith(key + ' ')) {
-        query = encodeURI(string.replace(key + ' ', ''));
+      if (args[0] === key) {
+        query = args.slice(1).join(' ');
         template = searchConfig.engines[key];
       }
     }
@@ -87,40 +88,57 @@ const getOpenCompletions = (command, keywords, searchConfig) => {
   });
 };
 
-const doCommand = (name, remaining, settings) => {
+const doCommand = (line, settings) => {
+  let words = line.trim().split(/ +/);
+  let name = words.shift();
+
   switch (name) {
   case 'o':
   case 'open':
-    return openCommand(normalizeUrl(remaining, settings.search));
+    return openCommand(normalizeUrl(words, settings.search));
   case 't':
   case 'tabopen':
-    return tabopenCommand(normalizeUrl(remaining, settings.search));
+    return tabopenCommand(normalizeUrl(words, settings.search));
   case 'w':
   case 'winopen':
-    return winopenCommand(normalizeUrl(remaining, settings.search));
+    return winopenCommand(normalizeUrl(words, settings.search));
   case 'b':
   case 'buffer':
-    return bufferCommand(remaining);
+    return bufferCommand(words);
+  case '':
+    return Promise.resolve();
   }
   throw new Error(name + ' command is not defined');
 };
 
-const getCompletions = (command, keywords, settings) => {
-  switch (command) {
+const getCompletions = (line, settings) => {
+  let typedWords = line.trim().split(/ +/);
+  let typing = '';
+  if (!line.endsWith(' ')) {
+    typing = typedWords.pop();
+  }
+
+  if (typedWords.length === 0) {
+    return Promise.resolve([]);
+  }
+  let name = typedWords.shift();
+  let keywords = typedWords.concat(typing).join(' ');
+
+  switch (name) {
   case 'o':
   case 'open':
   case 't':
   case 'tabopen':
   case 'w':
   case 'winopen':
-    return getOpenCompletions(command, keywords, settings.search);
+    return getOpenCompletions(name, keywords, settings.search);
   case 'b':
   case 'buffer':
     return tabs.getCompletions(keywords).then((gotTabs) => {
       let items = gotTabs.map((tab) => {
         return {
           caption: tab.title,
-          content: command + ' ' + tab.title,
+          content: name + ' ' + tab.title,
           url: tab.url,
           icon: tab.favIconUrl
         };
@@ -137,15 +155,11 @@ const getCompletions = (command, keywords, settings) => {
 };
 
 const exec = (line, settings) => {
-  let name = line.split(' ')[0];
-  let remaining = line.replace(name + ' ', '');
-  return doCommand(name, remaining, settings);
+  return doCommand(line, settings);
 };
 
 const complete = (line, settings) => {
-  let command = line.split(' ', 1)[0];
-  let keywords = line.replace(command + ' ', '');
-  return getCompletions(command, keywords, settings);
+  return getCompletions(line, settings);
 };
 
 export { exec, complete };
