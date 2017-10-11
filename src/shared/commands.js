@@ -42,14 +42,18 @@ const winopenCommand = (url) => {
 };
 
 const bufferCommand = (keywords) => {
+  if (keywords.length === 0) {
+    return Promise.resolve([]);
+  }
+  let keywordsStr = keywords.join(' ');
   return browser.tabs.query({
     active: true, currentWindow: true
   }).then((gotTabs) => {
     if (gotTabs.length > 0) {
-      if (isNaN(keywords)) {
-        return tabs.selectByKeyword(gotTabs[0], keywords);
+      if (isNaN(keywordsStr)) {
+        return tabs.selectByKeyword(gotTabs[0], keywordsStr);
       }
-      let index = parseInt(keywords, 10) - 1;
+      let index = parseInt(keywordsStr, 10) - 1;
       return tabs.selectAt(index);
     }
   });
