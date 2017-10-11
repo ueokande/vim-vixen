@@ -111,22 +111,34 @@ const doCommand = (line, settings) => {
   throw new Error(name + ' command is not defined');
 };
 
-const getCompletions = (command, keywords, settings) => {
-  switch (command) {
+const getCompletions = (line, settings) => {
+  let typedWords = line.trim().split(/ +/);
+  let typing = '';
+  if (!line.endsWith(' ')) {
+    typing = typedWords.pop();
+  }
+
+  if (typedWords.length === 0) {
+    return Promise.resolve([]);
+  }
+  let name = typedWords.shift();
+  let keywords = typedWords.concat(typing).join(' ');
+
+  switch (name) {
   case 'o':
   case 'open':
   case 't':
   case 'tabopen':
   case 'w':
   case 'winopen':
-    return getOpenCompletions(command, keywords, settings.search);
+    return getOpenCompletions(name, keywords, settings.search);
   case 'b':
   case 'buffer':
     return tabs.getCompletions(keywords).then((gotTabs) => {
       let items = gotTabs.map((tab) => {
         return {
           caption: tab.title,
-          content: command + ' ' + tab.title,
+          content: name + ' ' + tab.title,
           url: tab.url,
           icon: tab.favIconUrl
         };
@@ -147,9 +159,7 @@ const exec = (line, settings) => {
 };
 
 const complete = (line, settings) => {
-  let command = line.split(' ', 1)[0];
-  let keywords = line.replace(command + ' ', '');
-  return getCompletions(command, keywords, settings);
+  return getCompletions(line, settings);
 };
 
 export { exec, complete };
