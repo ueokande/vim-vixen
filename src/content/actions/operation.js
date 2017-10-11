@@ -23,7 +23,7 @@ const exec = (operation) => {
   case operations.SCROLL_END:
     return scrolls.scrollEnd(window);
   case operations.FOLLOW_START:
-    return followActions.enable(false);
+    return followActions.enable(operation.newTab);
   case operations.NAVIGATE_HISTORY_PREV:
     return navigates.historyPrev(window);
   case operations.NAVIGATE_HISTORY_NEXT:
