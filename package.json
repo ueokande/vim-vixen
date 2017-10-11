@@ -2,7 +2,7 @@
   "name": "vim-vixen",
   "description": "Vim vixen",
   "scripts": {
-    "start": "webpack -w -d",
+    "start": "webpack -w --debug --devtool inline-source-map",
     "lint": "eslint --ext .jsx,.js src",
     "build": "NODE_ENV=production webpack --progress --display-error-details",
     "package": "npm run build && ./package.sh",
