@@ -21,7 +21,7 @@ The default mapping are shown in the following.
 
 #### Scrolling
 
-- `k`,`k`: scroll vertically
+- `j`,`k`: scroll vertically
 - `h`,`l`: scroll horizontally
 - `<C-U>`,`<C-D>`: scroll pages by half of screen
 - `<C-B>`,`<C-F>`: scroll pages by a screen
