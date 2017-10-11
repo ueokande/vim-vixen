@@ -30,7 +30,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `r`: reload current tab
 - [ ] `R`: reload current tab without cache
 
-#### Navigation
+##### Navigation
 
 - [ ] `f`: start following links
 - [ ] `F`: start following links and open in new tab
