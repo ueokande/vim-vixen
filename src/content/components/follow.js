@@ -4,6 +4,10 @@ import Hint from 'content/hint';
 import HintKeyProducer from 'content/hint-key-producer';
 
 const DEFAULT_HINT_CHARSET = 'abcdefghijklmnopqrstuvwxyz';
+const TARGET_SELECTOR = [
+  'a', 'button', 'input', 'textarea',
+  '[contenteditable=true]', '[contenteditable=""]'
+].join(',');
 
 const inWindow = (window, element) => {
   let {
@@ -130,6 +134,9 @@ export default class FollowComponent {
       return element.focus();
     case 'button':
       return element.click();
+    default:
+      // it may contenteditable
+      return element.focus();
     }
   }
 
@@ -154,7 +161,7 @@ export default class FollowComponent {
   }
 
   static getTargetElements(doc) {
-    let all = doc.querySelectorAll('a,button,input,textarea');
+    let all = doc.querySelectorAll(TARGET_SELECTOR);
     let filtered = Array.prototype.filter.call(all, (element) => {
       let style = window.getComputedStyle(element);
       return style.display !== 'none' &&

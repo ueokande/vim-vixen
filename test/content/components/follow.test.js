@@ -8,8 +8,11 @@ describe('FollowComponent', () => {
     });
 
     it('returns visible links', () => {
-      let links = FollowComponent.getTargetElements(window.document);
-      expect(links).to.have.lengthOf(1);
+      let targets = FollowComponent.getTargetElements(window.document);
+      expect(targets).to.have.lengthOf(3);
+
+      let ids = Array.prototype.map.call(targets, (e) => e.id);
+      expect(ids).to.include.members(['visible_a', 'editable_div_1', 'editable_div_2']);
     });
   });
 });
