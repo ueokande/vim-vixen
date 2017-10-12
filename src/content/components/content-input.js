@@ -63,6 +63,10 @@ export default class ContentInputComponent {
   fromInput(e) {
     return e.target instanceof HTMLInputElement ||
       e.target instanceof HTMLTextAreaElement ||
-      e.target instanceof HTMLSelectElement;
+      e.target instanceof HTMLSelectElement ||
+      e.target instanceof HTMLElement &&
+      e.target.hasAttribute('contenteditable') && (
+          e.target.getAttribute('contenteditable').toLowerCase() === 'true' ||
+          e.target.getAttribute('contenteditable').toLowerCase() === '');
   }
 }
