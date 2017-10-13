@@ -31,6 +31,9 @@ export default class FollowComponent {
   update() {
     let prevState = this.state;
     this.state = this.store.getState().follow;
+    if (!this.state.charset) {
+      this.state.charset = DEFAULT_HINT_CHARSET;
+    }
     if (!prevState.enabled && this.state.enabled) {
       this.create();
     } else if (prevState.enabled && !this.state.enabled) {
@@ -57,7 +60,7 @@ export default class FollowComponent {
       this.store.dispatch(followActions.backspace());
       break;
     default:
-      if (DEFAULT_HINT_CHARSET.includes(key)) {
+      if (this.state.charset.includes(key)) {
         this.store.dispatch(followActions.keyPress(key));
       }
       break;
@@ -143,7 +146,7 @@ export default class FollowComponent {
   create() {
     let doc = this.wrapper.ownerDocument;
     let elements = FollowComponent.getTargetElements(doc);
-    let producer = new HintKeyProducer(DEFAULT_HINT_CHARSET);
+    let producer = new HintKeyProducer(this.charset.keys);
     let hintElements = {};
     Array.prototype.forEach.call(elements, (ele) => {
       let keys = producer.produce();
