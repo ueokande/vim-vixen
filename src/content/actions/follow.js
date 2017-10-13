@@ -1,9 +1,10 @@
 import actions from 'content/actions';
 
-const enable = (newTab) => {
+const enable = (newTab, charset) => {
   return {
     type: actions.FOLLOW_ENABLE,
     newTab,
+    charset,
   };
 };
 
