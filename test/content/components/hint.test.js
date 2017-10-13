@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import Hint from 'content/hint';
+import Hint from 'content/components/hint';
 
 describe('Hint class', () => {
   beforeEach(() => {
-    document.body.innerHTML = __html__['test/content/hint.html'];
+    document.body.innerHTML = __html__['test/content/components/hint.html'];
   });
 
   describe('#constructor', () => {
