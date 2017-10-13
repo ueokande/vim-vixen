@@ -9,20 +9,21 @@ const TARGET_SELECTOR = [
   '[contenteditable=true]', '[contenteditable=""]'
 ].join(',');
 
-const inWindow = (window, element) => {
+const inWindow = (win, element) => {
   let {
     top, left, bottom, right
   } = element.getBoundingClientRect();
+  let doc = win.doc;
   return (
     top >= 0 && left >= 0 &&
-    bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-    right <= (window.innerWidth || document.documentElement.clientWidth)
+    bottom <= (win.innerHeight || doc.documentElement.clientHeight) &&
+    right <= (win.innerWidth || doc.documentElement.clientWidth)
   );
 };
 
 export default class FollowComponent {
-  constructor(wrapper, store) {
-    this.wrapper = wrapper;
+  constructor(win, store) {
+    this.win = win;
     this.store = store;
     this.hintElements = {};
     this.state = {};
@@ -141,8 +142,7 @@ export default class FollowComponent {
   }
 
   create() {
-    let doc = this.wrapper.ownerDocument;
-    let elements = FollowComponent.getTargetElements(doc);
+    let elements = FollowComponent.getTargetElements(this.win);
     let producer = new HintKeyProducer(DEFAULT_HINT_CHARSET);
     let hintElements = {};
     Array.prototype.forEach.call(elements, (ele) => {
@@ -160,15 +160,15 @@ export default class FollowComponent {
     });
   }
 
-  static getTargetElements(doc) {
-    let all = doc.querySelectorAll(TARGET_SELECTOR);
+  static getTargetElements(win) {
+    let all = win.document.querySelectorAll(TARGET_SELECTOR);
     let filtered = Array.prototype.filter.call(all, (element) => {
-      let style = window.getComputedStyle(element);
+      let style = win.getComputedStyle(element);
       return style.display !== 'none' &&
         style.visibility !== 'hidden' &&
         element.type !== 'hidden' &&
         element.offsetHeight > 0 &&
-        inWindow(window, element);
+        inWindow(win, element);
     });
     return filtered;
   }

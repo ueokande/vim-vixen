@@ -9,7 +9,7 @@ import reducers from 'content/reducers';
 import messages from 'shared/messages';
 
 const store = createStore(reducers);
-const followComponent = new FollowComponent(window.document.body, store);
+const followComponent = new FollowComponent(window, store);
 const contentInputComponent =
   new ContentInputComponent(window.document.body, store);
 const keymapperComponent = new KeymapperComponent(store);
