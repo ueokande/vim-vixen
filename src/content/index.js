@@ -28,8 +28,6 @@ store.subscribe(() => {
   }
 });
 
-consoleFrames.initialize(window.document);
-
 const reloadSettings = () => {
   return browser.runtime.sendMessage({
     type: messages.SETTINGS_QUERY,
@@ -38,17 +36,43 @@ const reloadSettings = () => {
   });
 };
 
-browser.runtime.onMessage.addListener((action) => {
-  switch (action.type) {
-  case messages.CONSOLE_HIDE_COMMAND:
-    window.focus();
-    consoleFrames.blur(window.document);
-    return Promise.resolve();
-  case messages.SETTINGS_CHANGED:
-    return reloadSettings();
-  default:
-    return Promise.resolve();
-  }
-});
+// TODO: the followin methods should be implemented in each top component and
+// frame component
+const initTopComponents = () => {
+  consoleFrames.initialize(window.document);
+
+  browser.runtime.onMessage.addListener((action) => {
+    switch (action.type) {
+    case messages.CONSOLE_HIDE_COMMAND:
+      window.focus();
+      consoleFrames.blur(window.document);
+      return Promise.resolve();
+    case messages.SETTINGS_CHANGED:
+      return reloadSettings();
+    default:
+      return Promise.resolve();
+    }
+  });
+};
+
+const initFrameConponents = () => {
+  browser.runtime.onMessage.addListener((action) => {
+    switch (action.type) {
+    case messages.CONSOLE_HIDE_COMMAND:
+      window.focus();
+      return Promise.resolve();
+    case messages.SETTINGS_CHANGED:
+      return reloadSettings();
+    default:
+      return Promise.resolve();
+    }
+  });
+};
+
+if (window.self === window.top) {
+  initTopComponents();
+} else {
+  initFrameConponents();
+}
 
 reloadSettings();
