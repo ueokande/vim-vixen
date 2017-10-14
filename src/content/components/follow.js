@@ -90,33 +90,29 @@ export default class FollowComponent {
     });
   }
 
+  openLink(element) {
+    if (!this.state.newTab) {
+      element.click();
+      return;
+    }
+
+    let href = element.getAttribute('href');
+
+    // eslint-disable-next-line no-script-url
+    if (!href || href === '#' || href.toLowerCase().startsWith('javascript:')) {
+      return;
+    }
+    return browser.runtime.sendMessage({
+      type: messages.OPEN_URL,
+      url: element.href,
+      newTab: this.state.newTab,
+    });
+  }
+
   activate(element) {
     switch (element.tagName.toLowerCase()) {
     case 'a':
-      if (this.state.newTab) {
-        // getAttribute() to avoid to resolve absolute path
-        let href = element.getAttribute('href');
-
-        // eslint-disable-next-line no-script-url
-        if (!href || href === '#' || href.startsWith('javascript:')) {
-          return;
-        }
-        return browser.runtime.sendMessage({
-          type: messages.OPEN_URL,
-          url: element.href,
-          newTab: this.state.newTab,
-        });
-      }
-      if (element.href.startsWith('http://') ||
-        element.href.startsWith('https://') ||
-        element.href.startsWith('ftp://')) {
-        return browser.runtime.sendMessage({
-          type: messages.OPEN_URL,
-          url: element.href,
-          newTab: this.state.newTab,
-        });
-      }
-      return element.click();
+      return this.openLink(element, this.state.newTab);
     case 'input':
       switch (element.type) {
       case 'file':
