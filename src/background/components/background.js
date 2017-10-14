@@ -7,7 +7,6 @@ import * as commands from 'shared/commands';
 export default class BackgroundComponent {
   constructor(store) {
     this.store = store;
-    this.setting = {};
 
     browser.runtime.onMessage.addListener((message, sender) => {
       try {
@@ -21,11 +20,8 @@ export default class BackgroundComponent {
     });
   }
 
-  update() {
-    this.settings = this.store.getState();
-  }
-
   onMessage(message, sender) {
+    let settings = this.store.getState().setting;
     switch (message.type) {
     case messages.BACKGROUND_OPERATION:
       return this.store.dispatch(
@@ -43,16 +39,16 @@ export default class BackgroundComponent {
         type: messages.CONSOLE_HIDE_COMMAND,
       });
     case messages.CONSOLE_ENTERED:
-      return commands.exec(message.text, this.settings.value).catch((e) => {
+      return commands.exec(message.text, settings.value).catch((e) => {
         return browser.tabs.sendMessage(sender.tab.id, {
           type: messages.CONSOLE_SHOW_ERROR,
           text: e.message,
         });
       });
     case messages.SETTINGS_QUERY:
-      return Promise.resolve(this.store.getState().value);
+      return Promise.resolve(this.store.getState().setting.value);
     case messages.CONSOLE_QUERY_COMPLETIONS:
-      return commands.complete(message.text, this.settings.value);
+      return commands.complete(message.text, settings.value);
     case messages.SETTINGS_RELOAD:
       this.store.dispatch(settingsActions.load());
       return this.broadcastSettingsChanged();
