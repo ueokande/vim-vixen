@@ -6,16 +6,25 @@ const TARGET_SELECTOR = [
   '[contenteditable=true]', '[contenteditable=""]'
 ].join(',');
 
-const inWindow = (win, element) => {
+const inViewport = (win, element, viewSize, framePosition) => {
   let {
     top, left, bottom, right
   } = element.getBoundingClientRect();
   let doc = win.doc;
-  return (
-    top >= 0 && left >= 0 &&
-    bottom <= (win.innerHeight || doc.documentElement.clientHeight) &&
-    right <= (win.innerWidth || doc.documentElement.clientWidth)
-  );
+  let frameWidth = win.innerWidth || doc.documentElement.clientWidth;
+  let frameHeight = win.innerHeight || doc.documentElement.clientHeight;
+
+  if (right < 0 || bottom < 0 || top > frameHeight || left > frameWidth) {
+    // out of frame
+    return false;
+  }
+  if (right + framePosition.x < 0 || bottom + framePosition.y < 0 ||
+      left + framePosition.x > viewSize.width ||
+      top + framePosition.y > viewSize.height) {
+    // out of viewport
+    return false;
+  }
+  return true;
 };
 
 export default class Follow {
@@ -60,8 +69,8 @@ export default class Follow {
     });
   }
 
-  countHints(sender) {
-    this.targets = Follow.getTargetElements(this.win);
+  countHints(sender, viewSize, framePosition) {
+    this.targets = Follow.getTargetElements(this.win, viewSize, framePosition);
     sender.postMessage(JSON.stringify({
       type: messages.FOLLOW_RESPONSE_COUNT_TARGETS,
       count: this.targets.length,
@@ -133,7 +142,7 @@ export default class Follow {
   onMessage(message, sender) {
     switch (message.type) {
     case messages.FOLLOW_REQUEST_COUNT_TARGETS:
-      return this.countHints(sender);
+      return this.countHints(sender, message.viewSize, message.framePosition);
     case messages.FOLLOW_CREATE_HINTS:
       return this.createHints(message.keysArray, message.newTab);
     case messages.FOLLOW_SHOW_HINTS:
@@ -145,7 +154,7 @@ export default class Follow {
     }
   }
 
-  static getTargetElements(win) {
+  static getTargetElements(win, viewSize, framePosition) {
     let all = win.document.querySelectorAll(TARGET_SELECTOR);
     let filtered = Array.prototype.filter.call(all, (element) => {
       let style = win.getComputedStyle(element);
@@ -153,7 +162,7 @@ export default class Follow {
         style.visibility !== 'hidden' &&
         element.type !== 'hidden' &&
         element.offsetHeight > 0 &&
-        inWindow(win, element);
+        inViewport(win, element, viewSize, framePosition);
     });
     return filtered;
   }

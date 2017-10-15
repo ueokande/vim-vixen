@@ -8,7 +8,10 @@ describe('FollowComponent', () => {
     });
 
     it('returns visible links', () => {
-      let targets = FollowComponent.getTargetElements(window);
+      let targets = FollowComponent.getTargetElements(
+        window,
+        { width: window.innerWidth, height: window.innerHeight },
+        { x: 0, y: 0 });
       expect(targets).to.have.lengthOf(3);
 
       let ids = Array.prototype.map.call(targets, (e) => e.id);

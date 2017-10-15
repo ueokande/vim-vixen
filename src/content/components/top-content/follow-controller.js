@@ -87,8 +87,24 @@ export default class FollowController {
 
   count() {
     this.producer = new HintKeyProducer(DEFAULT_HINT_CHARSET);
-    broadcastMessage(this.win, {
+    let doc = this.win.document;
+    let viewWidth = this.win.innerWidth || doc.documentElement.clientWidth;
+    let viewHeight = this.win.innerHeight || doc.documentElement.clientHeight;
+    let frameElements = this.win.document.querySelectorAll('frame,iframe');
+
+    this.win.postMessage(JSON.stringify({
       type: messages.FOLLOW_REQUEST_COUNT_TARGETS,
+      viewSize: { width: viewWidth, height: viewHeight },
+      framePosition: { x: 0, y: 0 },
+    }), '*');
+    frameElements.forEach((element) => {
+      let { left: frameX, top: frameY } = element.getBoundingClientRect();
+      let message = JSON.stringify({
+        type: messages.FOLLOW_REQUEST_COUNT_TARGETS,
+        viewSize: { width: viewWidth, height: viewHeight },
+        framePosition: { x: frameX, y: frameY },
+      });
+      element.contentWindow.postMessage(message, '*');
     });
   }
 
