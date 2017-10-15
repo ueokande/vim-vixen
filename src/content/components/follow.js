@@ -92,7 +92,7 @@ export default class FollowComponent {
   activate(element) {
     switch (element.tagName.toLowerCase()) {
     case 'a':
-      if (this.state.newTab) {
+      if (this.state.newTab || this.state.background) {
         // getAttribute() to avoid to resolve absolute path
         let href = element.getAttribute('href');
 
@@ -104,6 +104,7 @@ export default class FollowComponent {
           type: messages.OPEN_URL,
           url: element.href,
           newTab: this.state.newTab,
+          background: this.state.background
         });
       }
       if (element.href.startsWith('http://') ||

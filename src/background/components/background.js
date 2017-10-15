@@ -32,7 +32,10 @@ export default class BackgroundComponent {
         operationActions.exec(message.operation, sender.tab),
         sender);
     case messages.OPEN_URL:
-      if (message.newTab) {
+      if (message.background) {
+        return this.store.dispatch(
+          tabActions.openBackground(message.url), sender);
+      } else if (message.newTab) {
         return this.store.dispatch(
           tabActions.openNewTab(message.url), sender);
       }
