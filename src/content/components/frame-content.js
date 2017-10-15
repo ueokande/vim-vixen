@@ -10,7 +10,7 @@ export default class FrameContent {
     this.children.forEach(c => c.update());
   }
 
-  onMessage(message) {
-    this.children.forEach(c => c.onMessage(message));
+  onMessage(message, sender) {
+    this.children.forEach(c => c.onMessage(message, sender));
   }
 }

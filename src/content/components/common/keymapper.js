@@ -28,4 +28,7 @@ export default class KeymapperComponent {
     this.store.dispatch(inputActions.clearKeys());
     return true;
   }
+
+  onMessage() {
+  }
 }

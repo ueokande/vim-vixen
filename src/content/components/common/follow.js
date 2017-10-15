@@ -1,9 +1,6 @@
-import * as followActions from 'content/actions/follow';
 import messages from 'shared/messages';
 import Hint from './hint';
-import HintKeyProducer from 'content/hint-key-producer';
 
-const DEFAULT_HINT_CHARSET = 'abcdefghijklmnopqrstuvwxyz';
 const TARGET_SELECTOR = [
   'a', 'button', 'input', 'textarea',
   '[contenteditable=true]', '[contenteditable=""]'
@@ -21,77 +18,31 @@ const inWindow = (win, element) => {
   );
 };
 
-export default class FollowComponent {
+export default class Follow {
   constructor(win, store) {
     this.win = win;
     this.store = store;
-    this.hintElements = {};
-    this.state = {};
+    this.newTab = false;
+    this.hints = {};
+    this.targets = [];
   }
 
   update() {
-    let prevState = this.state;
-    this.state = this.store.getState().follow;
-    if (!prevState.enabled && this.state.enabled) {
-      this.create();
-    } else if (prevState.enabled && !this.state.enabled) {
-      this.remove();
-    } else if (prevState.keys !== this.state.keys) {
-      this.updateHints();
-    }
   }
 
   key(key) {
-    if (!this.state.enabled) {
+    if (Object.keys(this.hints).length === 0) {
       return false;
     }
-
-    switch (key) {
-    case 'Enter':
-      this.activate(this.hintElements[this.state.keys].target);
-      return;
-    case 'Escape':
-      this.store.dispatch(followActions.disable());
-      return;
-    case 'Backspace':
-    case 'Delete':
-      this.store.dispatch(followActions.backspace());
-      break;
-    default:
-      if (DEFAULT_HINT_CHARSET.includes(key)) {
-        this.store.dispatch(followActions.keyPress(key));
-      }
-      break;
-    }
+    this.win.parent.postMessage(JSON.stringify({
+      type: messages.FOLLOW_KEY_PRESS,
+      key,
+    }), '*');
     return true;
   }
 
-  updateHints() {
-    let keys = this.state.keys;
-    let shown = Object.keys(this.hintElements).filter((key) => {
-      return key.startsWith(keys);
-    });
-    let hidden = Object.keys(this.hintElements).filter((key) => {
-      return !key.startsWith(keys);
-    });
-    if (shown.length === 0) {
-      this.remove();
-      return;
-    } else if (shown.length === 1) {
-      this.activate(this.hintElements[keys].target);
-      this.store.dispatch(followActions.disable());
-    }
-
-    shown.forEach((key) => {
-      this.hintElements[key].show();
-    });
-    hidden.forEach((key) => {
-      this.hintElements[key].hide();
-    });
-  }
-
   openLink(element) {
-    if (!this.state.newTab) {
+    if (!this.newTab) {
       element.click();
       return;
     }
@@ -105,14 +56,56 @@ export default class FollowComponent {
     return browser.runtime.sendMessage({
       type: messages.OPEN_URL,
       url: element.href,
-      newTab: this.state.newTab,
+      newTab: this.newTab,
     });
   }
 
-  activate(element) {
+  countHints(sender) {
+    this.targets = Follow.getTargetElements(this.win);
+    sender.postMessage(JSON.stringify({
+      type: messages.FOLLOW_RESPONSE_COUNT_TARGETS,
+      count: this.targets.length,
+    }), '*');
+  }
+
+  createHints(keysArray, newTab) {
+    if (keysArray.length !== this.targets.length) {
+      throw new Error('illegal hint count');
+    }
+
+    this.newTab = newTab;
+    this.hints = {};
+    for (let i = 0; i < keysArray.length; ++i) {
+      let keys = keysArray[i];
+      let hint = new Hint(this.targets[i], keys);
+      this.hints[keys] = hint;
+    }
+  }
+
+  showHints(keys) {
+    Object.keys(this.hints).filter(key => key.startsWith(keys))
+      .forEach(key => this.hints[key].show());
+    Object.keys(this.hints).filter(key => !key.startsWith(keys))
+      .forEach(key => this.hints[key].hide());
+  }
+
+  removeHints() {
+    Object.keys(this.hints).forEach((key) => {
+      this.hints[key].remove();
+    });
+    this.hints = {};
+    this.targets = [];
+  }
+
+  activateHints(keys) {
+    let hint = this.hints[keys];
+    if (!hint) {
+      return;
+    }
+    let element = hint.target;
     switch (element.tagName.toLowerCase()) {
     case 'a':
-      return this.openLink(element, this.state.newTab);
+      return this.openLink(element, this.newTab);
     case 'input':
       switch (element.type) {
       case 'file':
@@ -137,23 +130,19 @@ export default class FollowComponent {
     }
   }
 
-  create() {
-    let elements = FollowComponent.getTargetElements(this.win);
-    let producer = new HintKeyProducer(DEFAULT_HINT_CHARSET);
-    let hintElements = {};
-    Array.prototype.forEach.call(elements, (ele) => {
-      let keys = producer.produce();
-      let hint = new Hint(ele, keys);
-      hintElements[keys] = hint;
-    });
-    this.hintElements = hintElements;
-  }
-
-  remove() {
-    let hintElements = this.hintElements;
-    Object.keys(this.hintElements).forEach((key) => {
-      hintElements[key].remove();
-    });
+  onMessage(message, sender) {
+    switch (message.type) {
+    case messages.FOLLOW_REQUEST_COUNT_TARGETS:
+      return this.countHints(sender);
+    case messages.FOLLOW_CREATE_HINTS:
+      return this.createHints(message.keysArray, message.newTab);
+    case messages.FOLLOW_SHOW_HINTS:
+      return this.showHints(message.keys);
+    case messages.FOLLOW_ACTIVATE:
+      return this.activateHints(message.keys);
+    case messages.FOLLOW_REMOVE_HINTS:
+      return this.removeHints(message.keys);
+    }
   }
 
   static getTargetElements(win) {

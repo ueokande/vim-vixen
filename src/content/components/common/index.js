@@ -10,10 +10,8 @@ export default class Common {
     const input = new InputComponent(win.document.body, store);
     const keymapper = new KeymapperComponent(store);
 
-    input.onKey((key, ctrl) => {
-      follow.key(key, ctrl);
-      keymapper.key(key, ctrl);
-    });
+    input.onKey((key, ctrl) => follow.key(key, ctrl));
+    input.onKey((key, ctrl) => keymapper.key(key, ctrl));
 
     this.store = store;
     this.children = [
@@ -29,11 +27,12 @@ export default class Common {
     this.children.forEach(c => c.update());
   }
 
-  onMessage(message) {
+  onMessage(message, sender) {
     switch (message) {
     case messages.SETTINGS_CHANGED:
       this.reloadSettings();
     }
+    this.children.forEach(c => c.onMessage(message, sender));
   }
 
   reloadSettings() {
