@@ -3,6 +3,7 @@ import actions from 'content/actions';
 const defaultState = {
   enabled: false,
   newTab: false,
+  background: false,
   keys: '',
 };
 
@@ -12,6 +13,7 @@ export default function reducer(state = defaultState, action = {}) {
     return Object.assign({}, state, {
       enabled: true,
       newTab: action.newTab,
+      background: action.background,
       keys: '',
     });
   case actions.FOLLOW_DISABLE:

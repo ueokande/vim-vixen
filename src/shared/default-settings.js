@@ -35,6 +35,7 @@ export default {
     "zz": { "type": "zoom.neutral" },
     "f": { "type": "follow.start", "newTab": false },
     "F": { "type": "follow.start", "newTab": true },
+    "<C-Z>": { "type": "follow.start", "background": true },
     "H": { "type": "navigate.history.prev" },
     "L": { "type": "navigate.history.next" },
     "[[": { "type": "navigate.link.prev" },
