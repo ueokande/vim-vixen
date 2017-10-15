@@ -31,6 +31,7 @@
     "jsx-quotes": ["error", "prefer-single"],
     "max-params": ["error", 5],
     "max-statements": ["error", 15],
+    "multiline-comment-style": "off",
     "multiline-ternary": "off",
     "newline-after-var": "off",
     "newline-before-return": "off",
