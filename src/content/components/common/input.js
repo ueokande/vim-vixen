@@ -1,4 +1,4 @@
-export default class ContentInputComponent {
+export default class InputComponent {
   constructor(target) {
     this.pressed = {};
     this.onKeyListeners = [];
