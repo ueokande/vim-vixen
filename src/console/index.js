@@ -36,6 +36,6 @@ store.subscribe(() => {
 });
 
 browser.runtime.onMessage.addListener(onMessage);
-window.addEventListener('message', (message) => {
-  onMessage(JSON.parse(message.data));
+window.addEventListener('message', (event) => {
+  onMessage(JSON.parse(event.data));
 }, false);

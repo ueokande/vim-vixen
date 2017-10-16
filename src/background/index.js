@@ -1,7 +1,7 @@
 import * as settingsActions from 'settings/actions/setting';
 import messages from 'shared/messages';
 import BackgroundComponent from 'background/components/background';
-import reducers from 'settings/reducers/setting';
+import reducers from 'background/reducers';
 import { createStore } from 'shared/store';
 
 const store = createStore(reducers, (e, sender) => {
@@ -13,9 +13,7 @@ const store = createStore(reducers, (e, sender) => {
     });
   }
 });
+// eslint-disable-next-line no-unused-vars
 const backgroundComponent = new BackgroundComponent(store);
-store.subscribe((sender) => {
-  backgroundComponent.update(sender);
-});
 
 store.dispatch(settingsActions.load());

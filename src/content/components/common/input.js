@@ -1,4 +1,4 @@
-export default class ContentInputComponent {
+export default class InputComponent {
   constructor(target) {
     this.pressed = {};
     this.onKeyListeners = [];
@@ -68,5 +68,8 @@ export default class ContentInputComponent {
       e.target.hasAttribute('contenteditable') && (
           e.target.getAttribute('contenteditable').toLowerCase() === 'true' ||
           e.target.getAttribute('contenteditable').toLowerCase() === '');
+  }
+
+  onMessage() {
   }
 }
