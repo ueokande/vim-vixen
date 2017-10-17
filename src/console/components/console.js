@@ -107,6 +107,7 @@ export default class ConsoleComponent {
     command.style.display = 'block';
     input.value = text;
     input.focus();
+    this.prevValue = '';
   }
 
   hideCommand() {
