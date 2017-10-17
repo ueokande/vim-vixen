@@ -1,6 +1,4 @@
 export default {
-  SETTINGS_QUERY: 'settings.query',
-
   BACKGROUND_OPERATION: 'background.operation',
 
   CONSOLE_BLURRED: 'console.blured',
@@ -23,4 +21,6 @@ export default {
   OPEN_URL: 'open.url',
 
   SETTINGS_RELOAD: 'settings.reload',
+  SETTINGS_CHANGED: 'settings.changed',
+  SETTINGS_QUERY: 'settings.query',
 };
