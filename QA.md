@@ -108,3 +108,20 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] changes are not updated on textarea blure when errors occurs
 - [ ] keymap settings are applied to open tabs without reload
 - [ ] search settings are applied to open tabs without reload
+
+#### Events are fired on Slack and Twitter (#54)
+
+- [ ] Fucus text box on Twitter or Slack, press `j`, then `j` is typed in the box
+- [ ] Focus the text box on Twitter or Slack on following mode
+
+#### Multi frame support (#61)
+
+- [ ] Show hints on following on a page containing `<frame>`/`<iframe>`
+- [ ] Show hints only inside viewport of the frame on following on a page containing `<frame>`/`<iframe>`
+- [ ] Show hints only inside top window on following on a page containing `<frame>`/`<iframe>`
+- [ ] Select link and open it in the frame in `<iframe>`/`<frame`> on following by `f`
+- [ ] Select link and open it in new tab in `<iframe>`/`<frame`> on following by `F`
+
+#### Empty suggestion (#65)
+
+- [ ] Show competions for `:open`/`:tabopen`/`:buffer` on console after closed
