@@ -28,7 +28,7 @@ export default class Common {
   }
 
   onMessage(message, sender) {
-    switch (message) {
+    switch (message.type) {
     case messages.SETTINGS_CHANGED:
       this.reloadSettings();
     }
