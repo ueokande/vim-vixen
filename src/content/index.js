@@ -14,16 +14,4 @@ store.subscribe(() => {
   rootComponent.update();
 });
 
-browser.runtime.onMessage.addListener(msg => rootComponent.onMessage(msg));
 rootComponent.update();
-
-window.addEventListener('message', (event) => {
-  let message = null;
-  try {
-    message = JSON.parse(event.data);
-  } catch (e) {
-    // ignore unexpected message
-    return;
-  }
-  rootComponent.onMessage(message, event.source);
-});

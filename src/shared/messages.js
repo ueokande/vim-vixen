@@ -1,3 +1,26 @@
+const onWebMessage = (listener) => {
+  window.addEventListener('message', (event) => {
+    let sender = event.source;
+    let message = null;
+    try {
+      message = JSON.parse(event.data);
+    } catch (e) {
+      // ignore unexpected message
+      return;
+    }
+    listener(message, sender);
+  });
+};
+
+const onBackgroundMessage = (listener) => {
+  browser.runtime.onMessage.addListener(listener);
+};
+
+const onMessage = (listener) => {
+  onWebMessage(listener);
+  onBackgroundMessage(listener);
+};
+
 export default {
   BACKGROUND_OPERATION: 'background.operation',
 
@@ -23,4 +46,8 @@ export default {
   SETTINGS_RELOAD: 'settings.reload',
   SETTINGS_CHANGED: 'settings.changed',
   SETTINGS_QUERY: 'settings.query',
+
+  onWebMessage,
+  onBackgroundMessage,
+  onMessage,
 };

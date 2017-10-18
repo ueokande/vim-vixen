@@ -14,19 +14,20 @@ export default class TopContent {
 
     // TODO make component
     consoleFrames.initialize(window.document);
+
+    messages.onMessage(this.onMessage.bind(this));
   }
 
   update() {
     this.children.forEach(c => c.update());
   }
 
-  onMessage(message, sender) {
+  onMessage(message) {
     switch (message.type) {
     case messages.CONSOLE_HIDE_COMMAND:
       this.win.focus();
       consoleFrames.blur(window.document);
       return Promise.resolve();
     }
-    this.children.forEach(c => c.onMessage(message, sender));
   }
 }

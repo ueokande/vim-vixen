@@ -69,7 +69,4 @@ export default class InputComponent {
           e.target.getAttribute('contenteditable').toLowerCase() === 'true' ||
           e.target.getAttribute('contenteditable').toLowerCase() === '');
   }
-
-  onMessage() {
-  }
 }

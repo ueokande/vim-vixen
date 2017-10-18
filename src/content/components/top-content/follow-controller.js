@@ -17,6 +17,8 @@ export default class FollowController {
     this.state = {};
     this.keys = [];
     this.producer = null;
+
+    messages.onMessage(this.onMessage.bind(this));
   }
 
   onMessage(message, sender) {
