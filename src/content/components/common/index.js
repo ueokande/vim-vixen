@@ -21,18 +21,19 @@ export default class Common {
     ];
 
     this.reloadSettings();
+
+    messages.onMessage(this.onMessage.bind(this));
   }
 
   update() {
     this.children.forEach(c => c.update());
   }
 
-  onMessage(message, sender) {
+  onMessage(message) {
     switch (message.type) {
     case messages.SETTINGS_CHANGED:
       this.reloadSettings();
     }
-    this.children.forEach(c => c.onMessage(message, sender));
   }
 
   reloadSettings() {

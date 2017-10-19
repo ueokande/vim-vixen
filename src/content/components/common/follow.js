@@ -34,6 +34,8 @@ export default class Follow {
     this.newTab = false;
     this.hints = {};
     this.targets = [];
+
+    messages.onMessage(this.onMessage.bind(this));
   }
 
   update() {
