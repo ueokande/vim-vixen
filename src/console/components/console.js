@@ -107,6 +107,8 @@ export default class ConsoleComponent {
     command.style.display = 'block';
     input.value = text;
     input.focus();
+
+    window.focus();
     this.prevValue = '';
   }
 
