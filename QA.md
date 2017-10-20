@@ -6,50 +6,50 @@ Test operations with default key maps.
 
 ##### Scrolling
 
-- [ ] `k`/`<C-Y>`,`j`/`<C-E>`: scroll up and down
-- [ ] `h`,`l`: scroll left and right
-- [ ] `<C-U>`,`<C-D>`: scroll up and down by half of screen
-- [ ] `<C-B>`,`<C-F>`: scroll up and down by a screen
-- [ ] `0`,`$`: scroll to leftmost and rightmost
-- [ ] `gg`,`G`: scroll to top and bottom
+- [ ] <kbd>k</kbd> or <kbd>Ctrl</kbd>+<kbd>Y</kbd>, <kbd>j</kbd> or <kbd>Ctrl</kbd>+<kbd>E</kbd>: scroll up and down
+- [ ] <kbd>h</kbd>, <kbd>l</kbd>: scroll left and right
+- [ ] <kbd>Ctrl</kbd>+<kbd>U</kbd>, <kbd>Ctrl</kbd>+<kbd>D</kbd>: scroll up and down by half of screen
+- [ ] <kbd>Ctrl</kbd>+<kbd>B</kbd>, <kbd>Ctrl</kbd>+<kbd>F</kbd>: scroll up and down by a screen
+- [ ] <kbd>0</kbd>, <kbd>$</kbd>: scroll to leftmost and rightmost
+- [ ] <kbd>g</kbd><kbd>g</kbd>, <kbd>G</kbd>: scroll to top and bottom
 
 ##### Console
 
 The behaviors of the console are tested in [Console section](#consoles).
 
-- [ ] `:`: open empty console
-- [ ] `o`,`t`,`w`: open a console with `open`,`tabopen`,`winopen`
-- [ ] `O`,`T`,`W`: open a console with `open`,`tabopen`,`winopen` and current URL
-- [ ] `b`: open a consolw with `buffer`
+- [ ] <kbd>:</kbd>: open empty console
+- [ ] <kbd>o</kbd>, <kbd>t</kbd>, <kbd>w</kbd>: open a console with `open`, `tabopen`, `winopen`
+- [ ] <kbd>O</kbd>, <kbd>T</kbd>, <kbd>W</kbd>: open a console with `open`, `tabopen`, `winopen` and current URL
+- [ ] <kbd>b</kbd>: open a consolw with `buffer`
 
 ##### Tabs
 
-- [ ] `d`: delete current tab
-- [ ] `u`: reopen close tab
-- [ ] `K`,`J`: select prev and next tab
-- [ ] `r`: reload current tab
-- [ ] `R`: reload current tab without cache
+- [ ] <kbd>d</kbd>: delete current tab
+- [ ] <kbd>u</kbd>: reopen close tab
+- [ ] <kbd>K</kbd>, <kbd>J</kbd>: select prev and next tab
+- [ ] <kbd>r</kbd>: reload current tab
+- [ ] <kbd>R</kbd>: reload current tab without cache
 
 ##### Navigation
 
-- [ ] `f`: start following links
-- [ ] `F`: start following links and open in new tab
-- [ ] `H`,`L`: go back and forward in histories
-- [ ] `[[`,`]]`: find prev and next links and open it
-- [ ] `gu`: go to parent directory
-- [ ] `gU`: go to root directory
+- [ ] <kbd>f</kbd>: start following links
+- [ ] <kbd>F</kbd>: start following links and open in new tab
+- [ ] <kbd>H</kbd>, <kbd>L</kbd>: go back and forward in histories
+- [ ] <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: find prev and next links and open it
+- [ ] <kbd>g</kbd><kbd>u</kbd>: go to parent directory
+- [ ] <kbd>g</kbd><kbd>U</kbd>: go to root directory
 
 ##### Misc
 
-- [ ] `zi`,`zo`: zoom-in and zoom-out
-- [ ] `zz`: set zoom level as default
-- [ ] `y`: yank current URL and show a message
+- [ ] <kbd>z</kbd><kbd>i</kbd>, <kbd>z</kbd><kbd>o</kbd>: zoom-in and zoom-out
+- [ ] <kbd>z</kbd><kbd>z</kbd>: set zoom level as default
+- [ ] <kbd>y</kbd>: yank current URL and show a message
 
 #### Consoles
 
 ##### Exec a command
 
-- [ ] `<EMPTY>`,`<SP>`: do nothing
+- [ ] `<EMPTY>`, `<SP>`: do nothing
 <br>
 
 - [ ] `open an apple`: search with keywords "an apple" by default search engine (google)
@@ -111,7 +111,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 #### Events are fired on Slack and Twitter (#54)
 
-- [ ] Fucus text box on Twitter or Slack, press `j`, then `j` is typed in the box
+- [ ] Fucus text box on Twitter or Slack, press <kbd>j</kbd>, then <kbd>j</kbd> is typed in the box
 - [ ] Focus the text box on Twitter or Slack on following mode
 
 #### Multi frame support (#61)
@@ -119,8 +119,8 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] Show hints on following on a page containing `<frame>`/`<iframe>`
 - [ ] Show hints only inside viewport of the frame on following on a page containing `<frame>`/`<iframe>`
 - [ ] Show hints only inside top window on following on a page containing `<frame>`/`<iframe>`
-- [ ] Select link and open it in the frame in `<iframe>`/`<frame`> on following by `f`
-- [ ] Select link and open it in new tab in `<iframe>`/`<frame`> on following by `F`
+- [ ] Select link and open it in the frame in `<iframe>`/`<frame`> on following by <kbd>f</kbd>
+- [ ] Select link and open it in new tab in `<iframe>`/`<frame`> on following by <kbd>F</kbd>
 
 #### Empty suggestion (#65)
 
