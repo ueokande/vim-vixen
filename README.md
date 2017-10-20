@@ -14,45 +14,45 @@ The default mapping are shown in the following.
 
 #### Console
 
-- `:`: open console
-- `o`,`t`,`w`: open a page in current tab, new tab, or new window
-- `O`,`T`,`W`: similar to `o`,`t`,`w`, but that contains current URL
-- `b`: Select tabs by URL or title
+- <kbd>:</kbd>: open console
+- <kbd>o</kbd>, <kbd>t</kbd>, <kbd>w</kbd>: open a page in current tab, new tab, or new window
+- <kbd>O</kbd>, <kbd>T</kbd>, <kbd>W</kbd>: similar to <kbd>o</kbd>, <kbd>t</kbd>, <kbd>w</kbd>, but that contains current URL
+- <kbd>b</kbd>: Select tabs by URL or title
 
 #### Scrolling
 
-- `j`,`k`: scroll vertically
-- `h`,`l`: scroll horizontally
-- `<C-U>`,`<C-D>`: scroll pages by half of screen
-- `<C-B>`,`<C-F>`: scroll pages by a screen
-- `0`,`$`: scroll a page to leftmost/rightmost
-- `gg`,`G`: scroll to top/bottom
+- <kbd>j</kbd>, <kbd>k</kbd>: scroll vertically
+- <kbd>h</kbd>, <kbd>l</kbd>: scroll horizontally
+- <kbd>Ctrl</kbd>+<kbd>U</kbd>, <kbd>Ctrl</kbd>+<kbd>D</kbd>: scroll pages by half of screen
+- <kbd>Ctrl</kbd>+<kbd>B</kbd>, <kbd>Ctrl</kbd>+<kbd>F</kbd>: scroll pages by a screen
+- <kbd>0</kbd>, <kbd>$</kbd>: scroll a page to leftmost/rightmost
+- <kbd>g</kbd><kbd>g</kbd>, <kbd>G</kbd>: scroll to top/bottom
 
 #### Tabs
-- `d`: delete current tab
-- `u`: reopen close tab
-- `K`/`J`: select prev/next tab
-- `r`: reload current tab
-- `R`: reload current tab without cache
+- <kbd>d</kbd>: delete current tab
+- <kbd>u</kbd>: reopen close tab
+- <kbd>K</kbd>, <kbd>J</kbd>: select prev or next tab
+- <kbd>r</kbd>: reload current tab
+- <kbd>R</kbd>: reload current tab without cache
 
 ### Navigation
-- `f`: start following links in the page
-- `H`: go back in histories
-- `L`: go forward in histories
-- `[[`,`]]`: find  prev/next links and open it
-- `gu`: go to parent directory
-- `gU`: go to root directory
+- <kbd>f</kbd>: start following links in the page
+- <kbd>H</kbd>: go back in histories
+- <kbd>L</kbd>: go forward in histories
+- <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: find  prev or next links and open it
+- <kbd>g</kbd><kbd>u</kbd>: go to parent directory
+- <kbd>g</kbd><kbd>U</kbd>: go to root directory
 
 #### Misc
-- `zi`,`zo`: zoom-in/zoom-out
-- `zz`: Set default zoom level
-- `y`: copy URL in current tab
+- <kbd>z</kbd><kbd>i</kbd>, <kbd>z</kbd><kbd>o</kbd>: zoom-in/zoom-out
+- <kbd>z</kbd><kbd>z</kbd>: Set default zoom level
+- <kbd>y</kbd>: copy URL in current tab
 
 ### Console commands
 
 Vim-Vixen provides a console likes Vimperator's one.
-The console is opened by `:` key or keys to open console with initial value
-likes `o`, `t`, or `w` keys.
+The console is opened by <kbd>:</kbd> key or keys to open console with initial value
+likes <kbd>o</kbd>, <kbd>t</kbd>, or <kbd>w</kbd> keys.
 
 #### `:open` command
 
