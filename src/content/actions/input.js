@@ -1,16 +1,9 @@
 import actions from 'content/actions';
 
-const asKeymapChars = (key, ctrl) => {
-  if (ctrl) {
-    return '<C-' + key.toUpperCase() + '>';
-  }
-  return key;
-};
-
-const keyPress = (key, ctrl) => {
+const keyPress = (key) => {
   return {
     type: actions.INPUT_KEY_PRESS,
-    key: asKeymapChars(key, ctrl),
+    key,
   };
 };
 

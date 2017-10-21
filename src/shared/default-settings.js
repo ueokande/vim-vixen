@@ -41,7 +41,8 @@ export default {
     "]]": { "type": "navigate.link.next" },
     "gu": { "type": "navigate.parent" },
     "gU": { "type": "navigate.root" },
-    "y": { "type": "urls.yank" }
+    "y": { "type": "urls.yank" },
+    "<S-Esc>": { "type": "addon.toggle.enabled" }
   },
   "search": {
     "default": "google",

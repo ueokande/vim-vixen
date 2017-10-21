@@ -4,9 +4,16 @@ import * as scrolls from 'content/scrolls';
 import * as navigates from 'content/navigates';
 import * as urls from 'content/urls';
 import * as consoleFrames from 'content/console-frames';
+import * as addonActions from './addon';
 
 const exec = (operation) => {
   switch (operation.type) {
+  case operations.ADDON_ENABLE:
+    return addonActions.enable();
+  case operations.ADDON_DISABLE:
+    return addonActions.disable();
+  case operations.ADDON_TOGGLE_ENABLED:
+    return addonActions.toggleEnabled();
   case operations.SCROLL_VERTICALLY:
     return scrolls.scrollVertically(window, operation.count);
   case operations.SCROLL_HORIZONALLY:

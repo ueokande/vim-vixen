@@ -1,3 +1,21 @@
+const modifierdKeyName = (name) => {
+  if (name.length === 1) {
+    return name.toUpperCase();
+  } else if (name === 'Escape') {
+    return 'Esc';
+  }
+  return name;
+};
+
+const mapKey = (e) => {
+  if (e.ctrlKey) {
+    return '<C-' + modifierdKeyName(e.key) + '>';
+  } else if (e.shiftKey && e.key.length !== 1) {
+    return '<S-' + modifierdKeyName(e.key) + '>';
+  }
+  return e.key;
+};
+
 export default class InputComponent {
   constructor(target) {
     this.pressed = {};
@@ -47,16 +65,15 @@ export default class InputComponent {
       return;
     }
 
-    let stop = false;
+    let key = mapKey(e);
+
     for (let listener of this.onKeyListeners) {
-      stop = stop || listener(e.key, e.ctrlKey);
+      let stop = listener(key);
       if (stop) {
+        e.preventDefault();
+        e.stopPropagation();
         break;
       }
-    }
-    if (stop) {
-      e.preventDefault();
-      e.stopPropagation();
     }
   }
 

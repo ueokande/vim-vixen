@@ -10,8 +10,8 @@ export default class Common {
     const input = new InputComponent(win.document.body, store);
     const keymapper = new KeymapperComponent(store);
 
-    input.onKey((key, ctrl) => follow.key(key, ctrl));
-    input.onKey((key, ctrl) => keymapper.key(key, ctrl));
+    input.onKey(key => follow.key(key));
+    input.onKey(key => keymapper.key(key));
 
     this.store = store;
     this.children = [

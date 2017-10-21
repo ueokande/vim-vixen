@@ -47,6 +47,7 @@ The default mapping are shown in the following.
 - <kbd>z</kbd><kbd>i</kbd>, <kbd>z</kbd><kbd>o</kbd>: zoom-in/zoom-out
 - <kbd>z</kbd><kbd>z</kbd>: Set default zoom level
 - <kbd>y</kbd>: copy URL in current tab
+- <kbd>Shift</kbd>+<kbd>Esc</kbd>: enable of disable the add-on in current tab.
 
 ### Console commands
 

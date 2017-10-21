@@ -1,5 +1,9 @@
 export default {
   // User input
+  ADDON_ENABLE: 'addon.enable',
+  ADDON_DISABLE: 'addon.disable',
+  ADDON_TOGGLE_ENABLED: 'addon.toggle.enabled',
+
   INPUT_KEY_PRESS: 'input.key,press',
   INPUT_CLEAR_KEYS: 'input.clear.keys',
   INPUT_SET_KEYMAPS: 'input.set.keymaps',
