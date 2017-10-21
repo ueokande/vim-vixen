@@ -1,4 +1,9 @@
 export default {
+  // Addons
+  ADDON_ENABLE: 'addon.enable',
+  ADDON_DISABLE: 'addon.disable',
+  ADDON_TOGGLE_ENABLED: 'addon.toggle.enabled',
+
   // Command
   COMMAND_SHOW: 'command.show',
   COMMAND_SHOW_OPEN: 'command.show.open',
