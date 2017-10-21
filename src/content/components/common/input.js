@@ -1,3 +1,10 @@
+const mapKey = (e) => {
+  if (e.ctrlKey) {
+    return '<C-' + e.key.toUpperCase() + '>';
+  }
+  return e.key;
+};
+
 export default class InputComponent {
   constructor(target) {
     this.pressed = {};
@@ -47,8 +54,10 @@ export default class InputComponent {
       return;
     }
 
+    let key = mapKey(e);
+
     for (let listener of this.onKeyListeners) {
-      let stop = listener(e.key, e.ctrlKey);
+      let stop = listener(key);
       if (stop) {
         e.preventDefault();
         e.stopPropagation();

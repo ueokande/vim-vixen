@@ -9,8 +9,8 @@ export default class KeymapperComponent {
   update() {
   }
 
-  key(key, ctrl) {
-    this.store.dispatch(inputActions.keyPress(key, ctrl));
+  key(key) {
+    this.store.dispatch(inputActions.keyPress(key));
 
     let input = this.store.getState().input;
     let matched = Object.keys(input.keymaps).filter((keyStr) => {

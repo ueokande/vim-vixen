@@ -5,15 +5,9 @@ import * as inputActions from 'content/actions/input';
 describe("input actions", () => {
   describe("keyPress", () => {
     it('create INPUT_KEY_PRESS action', () => {
-      let action = inputActions.keyPress('a', false);
+      let action = inputActions.keyPress('a');
       expect(action.type).to.equal(actions.INPUT_KEY_PRESS);
       expect(action.key).to.equal('a');
-    });
-
-    it('create INPUT_KEY_PRESS action from key with ctrl', () => {
-      let action = inputActions.keyPress('b', true);
-      expect(action.type).to.equal(actions.INPUT_KEY_PRESS);
-      expect(action.key).to.equal('<C-B>');
     });
   });
 
