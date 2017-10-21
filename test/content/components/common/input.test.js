@@ -40,6 +40,30 @@ describe('InputComponent', () => {
     component.onKeyDown({ key: 'a', ctrlKey: true });
   })
 
+  it('press X', () => {
+    let component = new InputComponent(window.document);
+    component.onKey((key) => {
+      expect(key).is.equals('X');
+    });
+    component.onKeyDown({ key: 'X', shiftKey: true });
+  })
+
+  it('press <Shift> + <Esc>', () => {
+    let component = new InputComponent(window.document);
+    component.onKey((key) => {
+      expect(key).is.equals('<S-Esc>');
+    });
+    component.onKeyDown({ key: 'Escape', shiftKey: true });
+  })
+
+  it('press <Ctrl> + <Esc>', () => {
+    let component = new InputComponent(window.document);
+    component.onKey((key) => {
+      expect(key).is.equals('<C-Esc>');
+    });
+    component.onKeyDown({ key: 'Escape', ctrlKey: true });
+  })
+
   it('does not invoke only meta keys', () => {
     let component = new InputComponent(window.document);
     component.onKey((key) => {

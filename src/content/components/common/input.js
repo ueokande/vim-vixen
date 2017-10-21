@@ -1,6 +1,17 @@
+const modifierdKeyName = (name) => {
+  if (name.length === 1) {
+    return name.toUpperCase();
+  } else if (name === 'Escape') {
+    return 'Esc';
+  }
+  return name;
+};
+
 const mapKey = (e) => {
   if (e.ctrlKey) {
-    return '<C-' + e.key.toUpperCase() + '>';
+    return '<C-' + modifierdKeyName(e.key) + '>';
+  } else if (e.shiftKey && e.key.length !== 1) {
+    return '<S-' + modifierdKeyName(e.key) + '>';
   }
   return e.key;
 };
