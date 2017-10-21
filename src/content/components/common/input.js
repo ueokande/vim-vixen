@@ -47,16 +47,13 @@ export default class InputComponent {
       return;
     }
 
-    let stop = false;
     for (let listener of this.onKeyListeners) {
-      stop = stop || listener(e.key, e.ctrlKey);
+      let stop = listener(e.key, e.ctrlKey);
       if (stop) {
+        e.preventDefault();
+        e.stopPropagation();
         break;
       }
-    }
-    if (stop) {
-      e.preventDefault();
-      e.stopPropagation();
     }
   }
 
