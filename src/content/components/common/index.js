@@ -1,7 +1,7 @@
 import InputComponent from './input';
 import KeymapperComponent from './keymapper';
 import FollowComponent from './follow';
-import * as inputActions from 'content/actions/input';
+import * as settingActions from 'content/actions/setting';
 import messages from 'shared/messages';
 
 export default class Common {
@@ -40,7 +40,7 @@ export default class Common {
     browser.runtime.sendMessage({
       type: messages.SETTINGS_QUERY,
     }).then((settings) => {
-      this.store.dispatch(inputActions.setKeymaps(settings.keymaps));
+      this.store.dispatch(settingActions.set(settings));
     });
   }
 }
