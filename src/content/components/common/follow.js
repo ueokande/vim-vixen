@@ -1,5 +1,6 @@
 import messages from 'shared/messages';
 import Hint from './hint';
+import * as dom from 'shared/utils/dom';
 
 const TARGET_SELECTOR = [
   'a', 'button', 'input', 'textarea',
@@ -136,8 +137,9 @@ export default class Follow {
     case 'button':
       return element.click();
     default:
-      // it may contenteditable
-      return element.focus();
+      if (dom.isContentEditable(element)) {
+        return element.focus();
+      }
     }
   }
 
