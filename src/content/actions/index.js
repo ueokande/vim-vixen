@@ -1,12 +1,15 @@
 export default {
-  // User input
+  // Enable/disable
   ADDON_ENABLE: 'addon.enable',
   ADDON_DISABLE: 'addon.disable',
   ADDON_TOGGLE_ENABLED: 'addon.toggle.enabled',
 
+  // Settings
+  SETTING_SET: 'setting.set',
+
+  // User input
   INPUT_KEY_PRESS: 'input.key,press',
   INPUT_CLEAR_KEYS: 'input.clear.keys',
-  INPUT_SET_KEYMAPS: 'input.set.keymaps',
 
   // Completion
   COMPLETION_SET_ITEMS: 'completion.set.items',
