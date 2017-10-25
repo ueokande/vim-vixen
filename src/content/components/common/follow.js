@@ -54,7 +54,8 @@ export default class Follow {
   }
 
   openLink(element) {
-    if (!this.newTab) {
+    // Browser prevent new tab by link with target='_blank'
+    if (!this.newTab && element.getAttribute('target') !== '_blank') {
       element.click();
       return;
     }
@@ -68,7 +69,7 @@ export default class Follow {
     return browser.runtime.sendMessage({
       type: messages.OPEN_URL,
       url: element.href,
-      newTab: this.newTab,
+      newTab: true,
     });
   }
 
@@ -117,7 +118,7 @@ export default class Follow {
     let element = hint.target;
     switch (element.tagName.toLowerCase()) {
     case 'a':
-      return this.openLink(element, this.newTab);
+      return this.openLink(element);
     case 'input':
       switch (element.type) {
       case 'file':
