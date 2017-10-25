@@ -1,9 +1,10 @@
 import messages from 'shared/messages';
 import Hint from './hint';
+import * as dom from 'shared/utils/dom';
 
 const TARGET_SELECTOR = [
   'a', 'button', 'input', 'textarea',
-  '[contenteditable=true]', '[contenteditable=""]'
+  '[contenteditable=true]', '[contenteditable=""]', '[tabindex]'
 ].join(',');
 
 const inViewport = (win, element, viewSize, framePosition) => {
@@ -136,8 +137,11 @@ export default class Follow {
     case 'button':
       return element.click();
     default:
-      // it may contenteditable
-      return element.focus();
+      if (dom.isContentEditable(element)) {
+        return element.focus();
+      } else if (element.hasAttribute('tabindex')) {
+        return element.click();
+      }
     }
   }
 

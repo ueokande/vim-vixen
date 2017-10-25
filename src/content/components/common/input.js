@@ -1,3 +1,5 @@
+import * as dom from 'shared/utils/dom';
+
 const modifierdKeyName = (name) => {
   if (name.length === 1) {
     return name.toUpperCase();
@@ -78,12 +80,12 @@ export default class InputComponent {
   }
 
   fromInput(e) {
+    if (!e.target) {
+      return false;
+    }
     return e.target instanceof HTMLInputElement ||
       e.target instanceof HTMLTextAreaElement ||
       e.target instanceof HTMLSelectElement ||
-      e.target instanceof HTMLElement &&
-      e.target.hasAttribute('contenteditable') && (
-          e.target.getAttribute('contenteditable').toLowerCase() === 'true' ||
-          e.target.getAttribute('contenteditable').toLowerCase() === '');
+      dom.isContentEditable(e.target);
   }
 }
