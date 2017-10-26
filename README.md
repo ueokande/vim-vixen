@@ -102,9 +102,6 @@ replaced with keywords in parameters of the command.
 
 ```json
 {
-  "keymaps": {
-    "...": "..."
-  },
   "search": {
     "default": "google",
     "engines": {
@@ -116,6 +113,22 @@ replaced with keywords in parameters of the command.
       "wikipedia": "https://en.wikipedia.org/w/index.php?search={}"
     }
   }
+}
+```
+
+### Blacklist
+
+Blacklist allows to disable he plugin for certain pages by URL patterns.
+For instance, when you describe `"*.slack.com"`, the plugin are disabled on any Slack rooms.
+In addition, you can also specify path patterns, such as `"example.com/mail/*"`.
+Disabled plugin can be made re-enabled by Shift+Esc (in default).
+
+```json
+{
+  "blacklist": [
+    "*.slack.com",
+    "example.com/mail/*"
+  ]
 }
 ```
 
