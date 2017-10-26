@@ -75,9 +75,9 @@ const scrollHorizonally = (win, count) => {
 
 const scrollPages = (win, count) => {
   let target = scrollTarget(win);
-  let height = target.innerHeight;
+  let height = target.clientHeight;
   let x = target.scrollLeft;
-  let y = target.scrollLeft + height * count;
+  let y = target.scrollTop + height * count;
   target.scrollTo(x, y);
 };
 

@@ -92,7 +92,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 ##### Validations
 
 - [ ] show error on invalid json
-- [ ] show error when top-level keys has keys other than `keymaps`, and `search`
+- [ ] show error when top-level keys has keys other than `keymaps`, `search`, and `blacklist`
 
 ##### `"keymaps"` section
 
@@ -125,3 +125,24 @@ The behaviors of the console are tested in [Console section](#consoles).
 #### Empty suggestion (#65)
 
 - [ ] Show competions for `:open`/`:tabopen`/`:buffer` on console after closed
+
+#### Disable add-on temporary (#86)
+
+- [ ] Toggle enabled/disabled of plugin bu <kbd>Shift</kbd>+<kbd>Esc</kbd>
+
+#### URL blacklist (#90)
+
+- [ ] `github.com/a` blocks `github.com/a`, and not blocks `github.com/aa`
+- [ ] `github.com/a*` blocks both `github.com/a` and `github.com/aa`
+- [ ] `github.com/` blocks `github.com/`, and not blocks `github.com/a`
+- [ ] `github.com` blocks both `github.com/` and `github.com/a`
+- [ ] `*.github.com` blocks `gist.github.com/`, and not `github.com`
+
+#### Improve for aberration pages (#93)
+
+- [ ] able to scroll on Gmail and Slack
+
+#### Link with target='_blank' link (#94)
+
+- [ ] open link with target='_blank' in new tab by <kbd>f</kbd>
+- [ ] open link with target='_blank' in new tab by <kbd>F</kbd>
