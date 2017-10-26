@@ -92,7 +92,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 ##### Validations
 
 - [ ] show error on invalid json
-- [ ] show error when top-level keys has keys other than `keymaps`, and `search`
+- [ ] show error when top-level keys has keys other than `keymaps`, `search`, and `blacklist`
 
 ##### `"keymaps"` section
 
