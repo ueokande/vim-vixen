@@ -15,8 +15,9 @@
   "content_scripts": [
     {
       "all_frames": true,
-      "matches": [ "http://*/*", "https://*/*" ],
-      "js": [ "build/content.js" ]
+      "matches": [ "<all_urls>" ],
+      "js": [ "build/content.js" ],
+      "run_at": "document_end"
     }
   ],
   "background": {
