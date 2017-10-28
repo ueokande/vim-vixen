@@ -7,9 +7,6 @@ export default class KeymapperComponent {
     this.store = store;
   }
 
-  update() {
-  }
-
   key(key) {
     this.store.dispatch(inputActions.keyPress(key));
 

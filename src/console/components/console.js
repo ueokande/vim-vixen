@@ -17,6 +17,10 @@ export default class ConsoleComponent {
 
     this.hideCommand();
     this.hideMessage();
+
+    store.subscribe(() => {
+      this.update();
+    });
   }
 
   onBlur() {

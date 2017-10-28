@@ -19,6 +19,10 @@ export default class FollowController {
     this.producer = null;
 
     messages.onMessage(this.onMessage.bind(this));
+
+    store.subscribe(() => {
+      this.update();
+    });
   }
 
   onMessage(message, sender) {

@@ -39,9 +39,6 @@ export default class Follow {
     messages.onMessage(this.onMessage.bind(this));
   }
 
-  update() {
-  }
-
   key(key) {
     if (Object.keys(this.hints).length === 0) {
       return false;

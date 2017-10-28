@@ -9,12 +9,11 @@ export default class TopContent {
 
   constructor(win, store) {
     this.win = win;
-    this.children = [
-      new CommonComponent(win, store),
-      new FollowController(win, store),
-    ];
     this.store = store;
     this.prevBlacklist = undefined;
+
+    new CommonComponent(win, store); // eslint-disable-line no-new
+    new FollowController(win, store); // eslint-disable-line no-new
 
     // TODO make component
     consoleFrames.initialize(this.win.document);
@@ -28,8 +27,6 @@ export default class TopContent {
       this.disableIfBlack(blacklist);
       this.prevBlacklist = blacklist;
     }
-
-    this.children.forEach(c => c.update());
   }
 
   disableIfBlack(blacklist) {
