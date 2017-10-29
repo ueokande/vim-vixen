@@ -17,8 +17,8 @@ export default {
   COMPLETION_SELECT_PREV: 'completions.select.prev',
 
   // Follow
-  FOLLOW_ENABLE: 'follow.enable',
-  FOLLOW_DISABLE: 'follow.disable',
-  FOLLOW_KEY_PRESS: 'follow.key.press',
-  FOLLOW_BACKSPACE: 'follow.backspace',
+  FOLLOW_CONTROLLER_ENABLE: 'follow.controller.enable',
+  FOLLOW_CONTROLLER_DISABLE: 'follow.controller.disable',
+  FOLLOW_CONTROLLER_KEY_PRESS: 'follow.controller.key.press',
+  FOLLOW_CONTROLLER_BACKSPACE: 'follow.controller.backspace',
 };
