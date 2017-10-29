@@ -118,8 +118,8 @@ replaced with keywords in parameters of the command.
 
 ### Blacklist
 
-Blacklist allows to disable he plugin for certain pages by URL patterns.
-For instance, when you describe `"*.slack.com"`, the plugin are disabled on any Slack rooms.
+Blacklist allows to disable the plugin for certain pages by URL patterns.
+For instance, when you describe `"*.slack.com"`, the plugin is disabled on any Slack rooms.
 In addition, you can also specify path patterns, such as `"example.com/mail/*"`.
 Disabled plugin can be made re-enabled by Shift+Esc (in default).
 
