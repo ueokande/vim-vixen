@@ -52,8 +52,9 @@ The default mapping are shown in the following.
 ### Console commands
 
 Vim-Vixen provides a console like the Vimperator's one.
-The console is opened by <kbd>:</kbd> key or keys to open console with initial value
-like <kbd>o</kbd>, <kbd>t</kbd>, or <kbd>w</kbd> keys.
+
+Open the console with <kbd>:</kbd>. Or start it with initial values using
+<kbd>o</kbd>, <kbd>t</kbd>, or <kbd>w</kbd>.
 
 #### `:open` command
 
