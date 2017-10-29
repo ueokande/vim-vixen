@@ -20,13 +20,13 @@ const isVisible = (win, element) => {
   return true;
 };
 
-const isScrollable = (win, element) => {
+const isScrollableStyle = (win, element) => {
   let { overflowX, overflowY } = win.getComputedStyle(element);
-  if (element.tagName !== 'HTML' &&
-    overflowX !== 'scroll' && overflowX !== 'auto' &&
-    overflowY !== 'scroll' && overflowY !== 'auto') {
-    return false;
-  }
+  return !(overflowX !== 'scroll' && overflowX !== 'auto' &&
+    overflowY !== 'scroll' && overflowY !== 'auto');
+};
+
+const isOverflowed = (element) => {
   return element.scrollWidth > element.clientWidth ||
     element.scrollHeight > element.clientHeight;
 };
@@ -36,7 +36,7 @@ const isScrollable = (win, element) => {
 // method is not cached.  That does not cause performance issue because in the
 // most pages, the window is root element i,e, documentElement.
 const findScrollable = (win, element) => {
-  if (isScrollable(win, element)) {
+  if (isScrollableStyle(win, element) && isOverflowed(element)) {
     return element;
   }
 
@@ -52,6 +52,12 @@ const findScrollable = (win, element) => {
 };
 
 const scrollTarget = (win) => {
+  if (isOverflowed(win.document.documentElement)) {
+    return win.document.documentElement;
+  }
+  if (isOverflowed(win.document.body)) {
+    return win.document.body;
+  }
   let target = findScrollable(win, win.document.documentElement);
   if (target) {
     return target;
