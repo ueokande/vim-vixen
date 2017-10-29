@@ -47,13 +47,14 @@ The default mapping are shown in the following.
 - <kbd>z</kbd><kbd>i</kbd>, <kbd>z</kbd><kbd>o</kbd>: zoom-in/zoom-out
 - <kbd>z</kbd><kbd>z</kbd>: Set default zoom level
 - <kbd>y</kbd>: copy URL in current tab
-- <kbd>Shift</kbd>+<kbd>Esc</kbd>: enable of disable the add-on in current tab.
+- <kbd>Shift</kbd>+<kbd>Esc</kbd>: enable or disable the add-on in current tab.
 
 ### Console commands
 
-Vim-Vixen provides a console likes Vimperator's one.
-The console is opened by <kbd>:</kbd> key or keys to open console with initial value
-likes <kbd>o</kbd>, <kbd>t</kbd>, or <kbd>w</kbd> keys.
+Vim-Vixen provides a console like the Vimperator's one.
+
+Open the console with <kbd>:</kbd>. Or start it with initial values using
+<kbd>o</kbd>, <kbd>t</kbd>, or <kbd>w</kbd>.
 
 #### `:open` command
 
@@ -118,8 +119,8 @@ replaced with keywords in parameters of the command.
 
 ### Blacklist
 
-Blacklist allows to disable he plugin for certain pages by URL patterns.
-For instance, when you describe `"*.slack.com"`, the plugin are disabled on any Slack rooms.
+Blacklist allows to disable the plugin for certain pages by URL patterns.
+For instance, when you describe `"*.slack.com"`, the plugin is disabled on any Slack rooms.
 In addition, you can also specify path patterns, such as `"example.com/mail/*"`.
 Disabled plugin can be made re-enabled by Shift+Esc (in default).
 
