@@ -86,13 +86,12 @@ const selectFirstTab = () => {
   });
 };
 
-// const selectLastTab = (current, count) => {
-//   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
-//     let select = tabs.length;
-//     let id = tabs[select].id;
-//     return browser.tabs.update(id, { active: true });
-//   });
-// };
+const selectLastTab = () => {
+  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
+    let id = tabs[tabs.length - 1].id;
+    return browser.tabs.update(id, { active: true });
+  });
+};
 
 const reload = (current, cache) => {
   return browser.tabs.reload(
@@ -103,5 +102,5 @@ const reload = (current, cache) => {
 
 export {
   closeTab, reopenTab, selectAt, selectByKeyword, getCompletions,
-  selectPrevTab, selectNextTab, selectFirstTab, reload
+  selectPrevTab, selectNextTab, selectFirstTab, selectLastTab, reload
 };
