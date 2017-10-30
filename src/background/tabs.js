@@ -80,8 +80,10 @@ const selectNextTab = (current, count) => {
 };
 
 const selectFirstTab = (current, count) => {
-  let id = tabs[0].id;
-  return browser.tabs.update(id, { active: true });
+  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
+    let id = tabs[0].id;
+    return browser.tabs.update(id, { active: true });
+  });
 };
 
 // const selectFirstTab = (current, count) => {
