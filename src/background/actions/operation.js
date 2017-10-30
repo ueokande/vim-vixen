@@ -21,7 +21,7 @@ const exec = (operation, tab) => {
   case operations.TAB_NEXT:
     return tabs.selectNextTab(tab.index, operation.count);
   case operations.TAB_FIRST:
-    return tabs.selectFirstTab(tab.index, operation.count);
+    return tabs.selectFirstTab();
   case operations.TAB_RELOAD:
     return tabs.reload(tab, operation.cache);
   case operations.ZOOM_IN:

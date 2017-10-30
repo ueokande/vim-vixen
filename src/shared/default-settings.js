@@ -28,7 +28,7 @@ export default {
     "u": { "type": "tabs.reopen" },
     "K": { "type": "tabs.prev", "count": 1 },
     "J": { "type": "tabs.next", "count": 1 },
-    "g0": { "type": "tabs.first", "count": 1 },
+    "g0": { "type": "tabs.first"},
     "r": { "type": "tabs.reload", "cache": false },
     "R": { "type": "tabs.reload", "cache": true },
     "zi": { "type": "zoom.in" },

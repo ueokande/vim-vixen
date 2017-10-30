@@ -79,14 +79,14 @@ const selectNextTab = (current, count) => {
   });
 };
 
-const selectFirstTab = (current, count) => {
+const selectFirstTab = () => {
   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
     let id = tabs[0].id;
     return browser.tabs.update(id, { active: true });
   });
 };
 
-// const selectFirstTab = (current, count) => {
+// const selectLastTab = (current, count) => {
 //   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
 //     let select = tabs.length;
 //     let id = tabs[select].id;
