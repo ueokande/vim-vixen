@@ -32,6 +32,7 @@ The default mapping are shown in the following.
 - <kbd>d</kbd>: delete current tab
 - <kbd>u</kbd>: reopen close tab
 - <kbd>K</kbd>, <kbd>J</kbd>: select prev or next tab
+- <kbd>g0</kbd>, <kbd>g$</kbd>: select first or last tab
 - <kbd>r</kbd>: reload current tab
 - <kbd>R</kbd>: reload current tab without cache
 
