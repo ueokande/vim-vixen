@@ -101,5 +101,5 @@ const reload = (current, cache) => {
 
 export {
   closeTab, reopenTab, selectAt, selectByKeyword, getCompletions,
-  selectPrevTab, selectNextTab, reload
+  selectPrevTab, selectNextTab, selectFirstTab, reload
 };
