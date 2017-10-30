@@ -3,14 +3,14 @@
 Vim Vixen is a Firefox add-on which allows you to navigate with keyboard on the browser.
 Firefox started to support WebExtensions API and will stop supporting add-ons using legacy APIs from version 57.
 For this reason, many legacy add-ons do not work on Firefox 57.
-and Vim Vixen is a new choise for Vim users since Vim Vixen uses WebExtensions API
+Vim Vixen is a new choice for Vim users since Vim Vixen uses the WebExtensions API.
 
 ## Basic usage
 
 ### Key-maps
 
-The key-maps are configurable in preferences of the add-ons.
-The default mapping are shown in the following.
+The key-maps are configurable in the add-ons preferences by navigating to `about:addons` and selecting "Extensions".
+The default mappings are as follows:
 
 #### Console
 
@@ -51,34 +51,33 @@ The default mapping are shown in the following.
 
 ### Console commands
 
-Vim-Vixen provides a console like the Vimperator's one.
+Vim Vixen provides a console for `ex`-style commands similar to Vimperator.
 
 Open the console with <kbd>:</kbd>. Or start it with initial values using
 <kbd>o</kbd>, <kbd>t</kbd>, or <kbd>w</kbd>.
 
 #### `:open` command
 
-Open a URL or search keywords by search engine in current tab, 
-When specified parameter is formatted in URL as following, URL is opened to current tab.
+The `:open` command operates two different ways, depending on the parameter.
+When the parameter is a URL, that URL is opened in the current tab.
 
 ```
 :open http://github.com/ueokande
 ```
 
-If specified parameters are keywords as following, open new tab searched by the
-keywords with search engines (default to Google).
+Otherwise, the current tab will open a search page with the supplied string (defaults to Google).
 
 ```
 :open How to contribute to Vim-Vixen
 ```
 
-You can specify search engines in first parameter.
-For the default of search engines, see [search engines](#search-engines) section.
+To use a search engine other than the default, specify which search engine to use as the first parameter.
 
 ```
 :open yahoo How to contribute to Vim-Vixen
 ```
 
+To adjust the search engine default and add/remove search engines, see the [search engines](#search-engines) section.
 
 #### `:tabopen` command
 
@@ -94,12 +93,11 @@ Select tabs by URL or title matched by keywords.
 
 ### Search engines
 
-Vim-Vixen support to search by search engines such as google or yahoo.
-But the engines are independent on browsers' because of there is a limitation of WebExtensions.
+Vim Vixen supports search by search engines like Google and Yahoo.
 
-You can configure search engines and default search engine in preferences of the add-ons.
-The URLs specified in `"engines"` must contain a {}-placeholder, which will
-replaced with keywords in parameters of the command.
+You can configure search engines, including the default search engine, in the add-ons preferences.
+The URLs specified in `"engines"` must contain a {}-placeholder, which will be
+replaced with the search keyword parameters of the command.
 
 ```json
 {
@@ -119,10 +117,9 @@ replaced with keywords in parameters of the command.
 
 ### Blacklist
 
-Blacklist allows to disable the plugin for certain pages by URL patterns.
+The blacklist allows you to disable the plugin for certain pages by URL patterns.
 For instance, when you describe `"*.slack.com"`, the plugin is disabled on any Slack rooms.
 In addition, you can also specify path patterns, such as `"example.com/mail/*"`.
-Disabled plugin can be made re-enabled by Shift+Esc (in default).
 
 ```json
 {
@@ -132,6 +129,8 @@ Disabled plugin can be made re-enabled by Shift+Esc (in default).
   ]
 }
 ```
+
+You can toggle Vim Vixen between disabled and enabled with `shift + Esc`.
 
 ## Licence
 
