@@ -79,6 +79,19 @@ const selectNextTab = (current, count) => {
   });
 };
 
+const selectFirstTab = (current, count) => {
+  let id = tabs[0].id;
+  return browser.tabs.update(id, { active: true });
+};
+
+// const selectFirstTab = (current, count) => {
+//   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
+//     let select = tabs.length;
+//     let id = tabs[select].id;
+//     return browser.tabs.update(id, { active: true });
+//   });
+// };
+
 const reload = (current, cache) => {
   return browser.tabs.reload(
     current.id,
