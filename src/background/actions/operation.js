@@ -26,6 +26,12 @@ const exec = (operation, tab) => {
     return tabs.selectLastTab();
   case operations.TAB_RELOAD:
     return tabs.reload(tab, operation.cache);
+  case operations.TAB_PIN:
+    return tabs.updateTabPinned(tab, true);
+  case operations.TAB_UNPIN:
+    return tabs.updateTabPinned(tab, false);
+  case operations.TAB_TOGGLE_PINNED:
+    return tabs.updateTabPinned(tab);
   case operations.ZOOM_IN:
     return zooms.zoomIn();
   case operations.ZOOM_OUT:
