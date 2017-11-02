@@ -4,7 +4,6 @@ import * as consoleActions from 'console/actions/console';
 export default class ConsoleComponent {
   constructor(wrapper, store) {
     this.wrapper = wrapper;
-    this.prevValue = '';
     this.prevState = {};
     this.completionOrigin = '';
     this.store = store;
@@ -13,7 +12,7 @@ export default class ConsoleComponent {
     let input = doc.querySelector('#vimvixen-console-command-input');
     input.addEventListener('blur', this.onBlur.bind(this));
     input.addEventListener('keydown', this.onKeyDown.bind(this));
-    input.addEventListener('keyup', this.onKeyUp.bind(this));
+    input.addEventListener('input', this.onInput.bind(this));
 
     this.hideCommand();
     this.hideMessage();
@@ -53,22 +52,14 @@ export default class ConsoleComponent {
     }
   }
 
-  onKeyUp(e) {
-    if (e.keyCode === KeyboardEvent.DOM_VK_TAB) {
-      return;
-    }
-    if (e.target.value === this.prevValue) {
-      return;
-    }
-
+  onInput(e) {
     let doc = this.wrapper.ownerDocument;
     let input = doc.querySelector('#vimvixen-console-command-input');
     this.completionOrigin = input.value;
 
-    this.prevValue = e.target.value;
     return browser.runtime.sendMessage({
       type: messages.CONSOLE_QUERY_COMPLETIONS,
-      text: e.target.value
+      text: e.target.value,
     }).then((completions) => {
       this.store.dispatch(consoleActions.setCompletions(completions));
     });
@@ -113,7 +104,7 @@ export default class ConsoleComponent {
     input.focus();
 
     window.focus();
-    this.prevValue = '';
+    this.onInput({ target: input });
   }
 
   hideCommand() {
