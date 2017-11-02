@@ -7,14 +7,11 @@ import { createStore } from 'shared/store';
 import * as consoleActions from 'console/actions/console';
 
 const store = createStore(reducers);
-let completionComponent = null;
-let consoleComponent = null;
 
 window.addEventListener('load', () => {
   let wrapper = document.querySelector('#vimvixen-console-completion');
-  completionComponent = new CompletionComponent(wrapper, store);
-
-  consoleComponent = new ConsoleComponent(document.body, store);
+  new CompletionComponent(wrapper, store); // eslint-disable-line no-new
+  new ConsoleComponent(document.body, store); // eslint-disable-line no-new
 });
 
 const onMessage = (message) => {
@@ -29,11 +26,6 @@ const onMessage = (message) => {
     return store.dispatch(consoleActions.hideCommand());
   }
 };
-
-store.subscribe(() => {
-  completionComponent.update();
-  consoleComponent.update();
-});
 
 browser.runtime.onMessage.addListener(onMessage);
 window.addEventListener('message', (event) => {

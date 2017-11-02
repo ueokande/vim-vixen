@@ -28,9 +28,6 @@ export default class InputComponent {
     target.addEventListener('keyup', this.onKeyUp.bind(this));
   }
 
-  update() {
-  }
-
   onKey(cb) {
     this.onKeyListeners.push(cb);
   }

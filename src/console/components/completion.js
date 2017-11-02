@@ -3,6 +3,10 @@ export default class Completion {
     this.wrapper = wrapper;
     this.store = store;
     this.prevState = {};
+
+    store.subscribe(() => {
+      this.update();
+    });
   }
 
   update() {

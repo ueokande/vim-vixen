@@ -14,19 +14,10 @@ export default class Common {
     input.onKey(key => keymapper.key(key));
 
     this.store = store;
-    this.children = [
-      follow,
-      input,
-      keymapper,
-    ];
 
     this.reloadSettings();
 
     messages.onMessage(this.onMessage.bind(this));
-  }
-
-  update() {
-    this.children.forEach(c => c.update());
   }
 
   onMessage(message) {

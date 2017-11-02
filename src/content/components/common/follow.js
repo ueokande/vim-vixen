@@ -3,17 +3,18 @@ import Hint from './hint';
 import * as dom from 'shared/utils/dom';
 
 const TARGET_SELECTOR = [
-  'a', 'button', 'input', 'textarea',
+  'a', 'button', 'input', 'textarea', 'area',
   '[contenteditable=true]', '[contenteditable=""]', '[tabindex]'
 ].join(',');
+
 
 const inViewport = (win, element, viewSize, framePosition) => {
   let {
     top, left, bottom, right
-  } = element.getBoundingClientRect();
-  let doc = win.doc;
-  let frameWidth = win.innerWidth || doc.documentElement.clientWidth;
-  let frameHeight = win.innerHeight || doc.documentElement.clientHeight;
+  } = dom.viewportRect(element);
+  let doc = win.document;
+  let frameWidth = doc.documentElement.clientWidth;
+  let frameHeight = doc.documentElement.clientHeight;
 
   if (right < 0 || bottom < 0 || top > frameHeight || left > frameWidth) {
     // out of frame
@@ -37,9 +38,6 @@ export default class Follow {
     this.targets = [];
 
     messages.onMessage(this.onMessage.bind(this));
-  }
-
-  update() {
   }
 
   key(key) {
@@ -118,6 +116,7 @@ export default class Follow {
     let element = hint.target;
     switch (element.tagName.toLowerCase()) {
     case 'a':
+    case 'area':
       return this.openLink(element);
     case 'input':
       switch (element.type) {
@@ -165,7 +164,9 @@ export default class Follow {
     let all = win.document.querySelectorAll(TARGET_SELECTOR);
     let filtered = Array.prototype.filter.call(all, (element) => {
       let style = win.getComputedStyle(element);
-      return style.display !== 'none' &&
+
+      // AREA's 'display' in Browser style is 'none'
+      return (element.tagName === 'AREA' || style.display !== 'none') &&
         style.visibility !== 'hidden' &&
         element.type !== 'hidden' &&
         element.offsetHeight > 0 &&

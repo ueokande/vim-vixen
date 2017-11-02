@@ -6,12 +6,8 @@ import FrameContentComponent from './components/frame-content';
 
 const store = createStore(reducers);
 
-let rootComponent = window.self === window.top
-  ? new TopContentComponent(window, store)
-  : new FrameContentComponent(window, store);
-
-store.subscribe(() => {
-  rootComponent.update();
-});
-
-rootComponent.update();
+if (window.self === window.top) {
+  new TopContentComponent(window, store); // eslint-disable-line no-new
+} else {
+  new FrameContentComponent(window, store); // eslint-disable-line no-new
+}

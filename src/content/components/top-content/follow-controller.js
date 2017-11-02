@@ -1,4 +1,4 @@
-import * as followActions from 'content/actions/follow';
+import * as followControllerActions from 'content/actions/follow-controller';
 import messages from 'shared/messages';
 import HintKeyProducer from 'content/hint-key-producer';
 
@@ -19,12 +19,17 @@ export default class FollowController {
     this.producer = null;
 
     messages.onMessage(this.onMessage.bind(this));
+
+    store.subscribe(() => {
+      this.update();
+    });
   }
 
   onMessage(message, sender) {
     switch (message.type) {
     case messages.FOLLOW_START:
-      return this.store.dispatch(followActions.enable(message.newTab));
+      return this.store.dispatch(
+        followControllerActions.enable(message.newTab));
     case messages.FOLLOW_RESPONSE_COUNT_TARGETS:
       return this.create(message.count, sender);
     case messages.FOLLOW_KEY_PRESS:
@@ -34,7 +39,7 @@ export default class FollowController {
 
   update() {
     let prevState = this.state;
-    this.state = this.store.getState().follow;
+    this.state = this.store.getState().followController;
 
     if (!prevState.enabled && this.state.enabled) {
       this.count();
@@ -49,7 +54,7 @@ export default class FollowController {
     let shown = this.keys.filter(key => key.startsWith(this.state.keys));
     if (shown.length === 1) {
       this.activate();
-      this.store.dispatch(followActions.disable());
+      this.store.dispatch(followControllerActions.disable());
     }
 
     broadcastMessage(this.win, {
@@ -69,18 +74,18 @@ export default class FollowController {
     switch (key) {
     case 'Enter':
       this.activate();
-      this.store.dispatch(followActions.disable());
+      this.store.dispatch(followControllerActions.disable());
       break;
     case 'Escape':
-      this.store.dispatch(followActions.disable());
+      this.store.dispatch(followControllerActions.disable());
       break;
     case 'Backspace':
     case 'Delete':
-      this.store.dispatch(followActions.backspace());
+      this.store.dispatch(followControllerActions.backspace());
       break;
     default:
       if (DEFAULT_HINT_CHARSET.includes(key)) {
-        this.store.dispatch(followActions.keyPress(key));
+        this.store.dispatch(followControllerActions.keyPress(key));
       }
       break;
     }
