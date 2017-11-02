@@ -4,7 +4,6 @@ import * as consoleActions from 'console/actions/console';
 export default class ConsoleComponent {
   constructor(wrapper, store) {
     this.wrapper = wrapper;
-    this.prevValue = '';
     this.prevState = {};
     this.completionOrigin = '';
     this.store = store;
@@ -50,19 +49,13 @@ export default class ConsoleComponent {
   }
 
   onInput(e) {
-    let targetValue = e.target.value;
-    if (targetValue === this.prevValue) {
-      return;
-    }
-
     let doc = this.wrapper.ownerDocument;
     let input = doc.querySelector('#vimvixen-console-command-input');
     this.completionOrigin = input.value;
 
-    this.prevValue = targetValue;
     return browser.runtime.sendMessage({
       type: messages.CONSOLE_QUERY_COMPLETIONS,
-      text: targetValue
+      text: e.target.value,
     }).then((completions) => {
       this.store.dispatch(consoleActions.setCompletions(completions));
     });
@@ -107,7 +100,6 @@ export default class ConsoleComponent {
     input.focus();
 
     window.focus();
-    this.prevValue = '';
     this.onInput({ target: input });
   }
 
