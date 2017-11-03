@@ -1,6 +1,8 @@
 import actions from 'content/actions';
 
-const defaultState = {};
+const defaultState = {
+  keymaps: {},
+};
 
 export default function reducer(state = defaultState, action = {}) {
   switch (action.type) {

@@ -32,6 +32,10 @@ export default class Common {
       type: messages.SETTINGS_QUERY,
     }).then((settings) => {
       this.store.dispatch(settingActions.set(settings));
+    }).catch((e) => {
+      // Sometime sendMessage fails when background script is not ready.
+      console.warn(e);
+      setTimeout(() => this.reloadSettings(), 500);
     });
   }
 }
