@@ -36,6 +36,7 @@ The default mappings are as follows:
 - <kbd>r</kbd>: reload current tab
 - <kbd>R</kbd>: reload current tab without cache
 - <kbd>zp</kbd>: toggle pin/unpin current tab
+- <kbd>zd</kbd>: duplicate current tab
 
 ### Navigation
 - <kbd>f</kbd>: start following links in the page
