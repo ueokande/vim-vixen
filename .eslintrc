@@ -35,6 +35,7 @@
     "multiline-ternary": "off",
     "newline-after-var": "off",
     "newline-before-return": "off",
+    "newline-per-chained-call": "off",
     "no-bitwise": "off",
     "no-console": ["error", { "allow": ["warn", "error"] }],
     "no-empty-function": "off",
