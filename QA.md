@@ -1,10 +1,10 @@
-### Checklist for testing Vim Vixen
+## Checklist for testing Vim Vixen
 
-#### Operations
+### Operations
 
 Test operations with default key maps.
 
-##### Scrolling
+#### Scrolling
 
 - [ ] <kbd>k</kbd> or <kbd>Ctrl</kbd>+<kbd>Y</kbd>, <kbd>j</kbd> or <kbd>Ctrl</kbd>+<kbd>E</kbd>: scroll up and down
 - [ ] <kbd>h</kbd>, <kbd>l</kbd>: scroll left and right
@@ -13,7 +13,7 @@ Test operations with default key maps.
 - [ ] <kbd>0</kbd>, <kbd>$</kbd>: scroll to leftmost and rightmost
 - [ ] <kbd>g</kbd><kbd>g</kbd>, <kbd>G</kbd>: scroll to top and bottom
 
-##### Console
+#### Console
 
 The behaviors of the console are tested in [Console section](#consoles).
 
@@ -22,7 +22,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] <kbd>O</kbd>, <kbd>T</kbd>, <kbd>W</kbd>: open a console with `open`, `tabopen`, `winopen` and current URL
 - [ ] <kbd>b</kbd>: open a consolw with `buffer`
 
-##### Tabs
+#### Tabs
 
 - [ ] <kbd>d</kbd>: delete current tab
 - [ ] <kbd>u</kbd>: reopen close tab
@@ -30,21 +30,21 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] <kbd>r</kbd>: reload current tab
 - [ ] <kbd>R</kbd>: reload current tab without cache
 
-##### Navigation
+#### Navigation
 
 - [ ] <kbd>H</kbd>, <kbd>L</kbd>: go back and forward in histories
 - [ ] <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: find prev and next links and open it
 - [ ] <kbd>g</kbd><kbd>u</kbd>: go to parent directory
 - [ ] <kbd>g</kbd><kbd>U</kbd>: go to root directory
 
-##### Misc
+#### Misc
 
 - [ ] <kbd>z</kbd><kbd>i</kbd>, <kbd>z</kbd><kbd>o</kbd>: zoom-in and zoom-out
 - [ ] <kbd>z</kbd><kbd>z</kbd>: set zoom level as default
 - [ ] <kbd>y</kbd>: yank current URL and show a message
 - [ ] Toggle enabled/disabled of plugin bu <kbd>Shift</kbd>+<kbd>Esc</kbd>
 
-#### Following links
+### Following links
 
 - [ ] <kbd>f</kbd>: start following links
 - [ ] <kbd>F</kbd>: start following links and open in new tab
@@ -55,10 +55,11 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] Show hints only inside top window on following on a page containing `<frame>`/`<iframe>`
 - [ ] Select link and open it in the frame in `<iframe>`/`<frame`> on following by <kbd>f</kbd>
 - [ ] Select link and open it in new tab in `<iframe>`/`<frame`> on following by <kbd>F</kbd>
+- [ ] Select link and open it in `<area>` tags, for <kbd>f</kbd> and <kbd>F</kbd>
 
-#### Consoles
+### Consoles
 
-##### Exec a command
+#### Exec a command
 
 - [ ] `<EMPTY>`, `<SP>`: do nothing
 <br>
@@ -81,10 +82,9 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `buffer 0`, `buffer 99`: shows an error
 - [ ] select tabs rotationally when more than two tabs are matched
 
-#### Completions
+### Completions
 
-
-##### History and search engines
+#### History and search engines
 
 - [ ] `open`: show no completions
 - [ ] `open<SP>`: show all engines and some history items
@@ -94,28 +94,32 @@ The behaviors of the console are tested in [Console section](#consoles).
 - shortening commands such as `o` are not test in this release
 - [ ] Show competions for `:open`/`:tabopen`/`:buffer` on opning just after closed
 
-##### Buffer command
+#### Buffer command
 
 - [ ] `buffer`: show no completions
 - [ ] `buffer<SP>`: show all opened tabs in completion
 - [ ] `buffer x`: show tabs which has title and URL matches with `x`
 
-#### Settings
+#### Misc
 
-##### Validations
+- [ ] Select next item by <kbd>Tab</kbd> and previous item by <kbd>Shift</kbd>+<kbd>Tab</kbd>
+
+### Settings
+
+#### Validations
 
 - [ ] show error on invalid json
 - [ ] show error when top-level keys has keys other than `keymaps`, `search`, and `blacklist`
 
-###### `"keymaps"` section
+##### `"keymaps"` section
 
 - [ ] show error on unknown operation name in `"keymaps"`
 
-###### `"search"` section
+##### `"search"` section
 
 - validations in `"search"` section are not tested in this release
 
-##### `"blacklist"` section
+#### `"blacklist"` section
 
 - [ ] `github.com/a` blocks `github.com/a`, and not blocks `github.com/aa`
 - [ ] `github.com/a*` blocks both `github.com/a` and `github.com/aa`
@@ -123,15 +127,20 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `github.com` blocks both `github.com/` and `github.com/a`
 - [ ] `*.github.com` blocks `gist.github.com/`, and not `github.com`
 
-##### Updating
+#### Updating
 
 - [ ] changes are updated on textarea blure when no errors
 - [ ] changes are not updated on textarea blure when errors occurs
 - [ ] keymap settings are applied to open tabs without reload
 - [ ] search settings are applied to open tabs without reload
 
-#### For certain sites
+### For certain sites
 
+- [ ] scoll on Hacker News
 - [ ] able to scroll on Gmail and Slack
 - [ ] Fucus text box on Twitter or Slack, press <kbd>j</kbd>, then <kbd>j</kbd> is typed in the box
 - [ ] Focus the text box on Twitter or Slack on following mode
+
+## Misc
+
+- [ ] Work after plugin reload
