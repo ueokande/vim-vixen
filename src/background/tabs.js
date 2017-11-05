@@ -1,3 +1,6 @@
+// var prevSelTab = null;
+var prevSelTab = 0;
+
 const closeTab = (id) => {
   return browser.tabs.remove(id);
 };
@@ -93,6 +96,17 @@ const selectLastTab = () => {
   });
 };
 
+const selectPrevSelTab = () => {
+  if (prevSelTab != null) {
+    return browser.tabs.query({ currentWindow: true }).then((tabs) => {
+      let id = tabs[prevSelTab].id;
+      return browser.tabs.update(id, { active: true });
+    });
+  } else {
+    // some error message
+  }
+};
+
 const reload = (current, cache) => {
   return browser.tabs.reload(
     current.id,
@@ -117,6 +131,6 @@ const duplicate = (id) => {
 
 export {
   closeTab, reopenTab, selectAt, selectByKeyword, getCompletions,
-  selectPrevTab, selectNextTab, selectFirstTab, selectLastTab, reload,
-  updateTabPinned, toggleTabPinned, duplicate
+  selectPrevTab, selectNextTab, selectFirstTab, selectLastTab, selectPrevSelTab,
+  reload, updateTabPinned, toggleTabPinned, duplicate
 };
