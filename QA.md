@@ -32,8 +32,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 ##### Navigation
 
-- [ ] <kbd>f</kbd>: start following links
-- [ ] <kbd>F</kbd>: start following links and open in new tab
 - [ ] <kbd>H</kbd>, <kbd>L</kbd>: go back and forward in histories
 - [ ] <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: find prev and next links and open it
 - [ ] <kbd>g</kbd><kbd>u</kbd>: go to parent directory
@@ -44,6 +42,19 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] <kbd>z</kbd><kbd>i</kbd>, <kbd>z</kbd><kbd>o</kbd>: zoom-in and zoom-out
 - [ ] <kbd>z</kbd><kbd>z</kbd>: set zoom level as default
 - [ ] <kbd>y</kbd>: yank current URL and show a message
+- [ ] Toggle enabled/disabled of plugin bu <kbd>Shift</kbd>+<kbd>Esc</kbd>
+
+#### Following links
+
+- [ ] <kbd>f</kbd>: start following links
+- [ ] <kbd>F</kbd>: start following links and open in new tab
+- [ ] open link with target='_blank' in new tab by <kbd>f</kbd>
+- [ ] open link with target='_blank' in new tab by <kbd>F</kbd>
+- [ ] Show hints on following on a page containing `<frame>`/`<iframe>`
+- [ ] Show hints only inside viewport of the frame on following on a page containing `<frame>`/`<iframe>`
+- [ ] Show hints only inside top window on following on a page containing `<frame>`/`<iframe>`
+- [ ] Select link and open it in the frame in `<iframe>`/`<frame`> on following by <kbd>f</kbd>
+- [ ] Select link and open it in new tab in `<iframe>`/`<frame`> on following by <kbd>F</kbd>
 
 #### Consoles
 
@@ -72,6 +83,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 #### Completions
 
+
 ##### History and search engines
 
 - [ ] `open`: show no completions
@@ -80,6 +92,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `open foo bar`: complete history items matched with keywords `foo` and `bar`
 - [ ] also `tabopen` and `winopen`
 - shortening commands such as `o` are not test in this release
+- [ ] Show competions for `:open`/`:tabopen`/`:buffer` on opning just after closed
 
 ##### Buffer command
 
@@ -94,13 +107,21 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] show error on invalid json
 - [ ] show error when top-level keys has keys other than `keymaps`, `search`, and `blacklist`
 
-##### `"keymaps"` section
+###### `"keymaps"` section
 
 - [ ] show error on unknown operation name in `"keymaps"`
 
-##### `"search"` section
+###### `"search"` section
 
 - validations in `"search"` section are not tested in this release
+
+##### `"blacklist"` section
+
+- [ ] `github.com/a` blocks `github.com/a`, and not blocks `github.com/aa`
+- [ ] `github.com/a*` blocks both `github.com/a` and `github.com/aa`
+- [ ] `github.com/` blocks `github.com/`, and not blocks `github.com/a`
+- [ ] `github.com` blocks both `github.com/` and `github.com/a`
+- [ ] `*.github.com` blocks `gist.github.com/`, and not `github.com`
 
 ##### Updating
 
@@ -109,40 +130,8 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] keymap settings are applied to open tabs without reload
 - [ ] search settings are applied to open tabs without reload
 
-#### Events are fired on Slack and Twitter (#54)
-
-- [ ] Fucus text box on Twitter or Slack, press <kbd>j</kbd>, then <kbd>j</kbd> is typed in the box
-- [ ] Focus the text box on Twitter or Slack on following mode
-
-#### Multi frame support (#61)
-
-- [ ] Show hints on following on a page containing `<frame>`/`<iframe>`
-- [ ] Show hints only inside viewport of the frame on following on a page containing `<frame>`/`<iframe>`
-- [ ] Show hints only inside top window on following on a page containing `<frame>`/`<iframe>`
-- [ ] Select link and open it in the frame in `<iframe>`/`<frame`> on following by <kbd>f</kbd>
-- [ ] Select link and open it in new tab in `<iframe>`/`<frame`> on following by <kbd>F</kbd>
-
-#### Empty suggestion (#65)
-
-- [ ] Show competions for `:open`/`:tabopen`/`:buffer` on console after closed
-
-#### Disable add-on temporary (#86)
-
-- [ ] Toggle enabled/disabled of plugin bu <kbd>Shift</kbd>+<kbd>Esc</kbd>
-
-#### URL blacklist (#90)
-
-- [ ] `github.com/a` blocks `github.com/a`, and not blocks `github.com/aa`
-- [ ] `github.com/a*` blocks both `github.com/a` and `github.com/aa`
-- [ ] `github.com/` blocks `github.com/`, and not blocks `github.com/a`
-- [ ] `github.com` blocks both `github.com/` and `github.com/a`
-- [ ] `*.github.com` blocks `gist.github.com/`, and not `github.com`
-
-#### Improve for aberration pages (#93)
+#### For certain sites
 
 - [ ] able to scroll on Gmail and Slack
-
-#### Link with target='_blank' link (#94)
-
-- [ ] open link with target='_blank' in new tab by <kbd>f</kbd>
-- [ ] open link with target='_blank' in new tab by <kbd>F</kbd>
+- [ ] Fucus text box on Twitter or Slack, press <kbd>j</kbd>, then <kbd>j</kbd> is typed in the box
+- [ ] Focus the text box on Twitter or Slack on following mode
