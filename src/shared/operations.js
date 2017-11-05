@@ -36,6 +36,8 @@ export default {
   TAB_REOPEN: 'tabs.reopen',
   TAB_PREV: 'tabs.prev',
   TAB_NEXT: 'tabs.next',
+  TAB_FIRST: 'tabs.first',
+  TAB_LAST: 'tabs.last',
   TAB_RELOAD: 'tabs.reload',
 
   // Zooms
