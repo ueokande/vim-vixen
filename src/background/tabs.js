@@ -1,4 +1,3 @@
-// var prevSelTab = null;
 var prevSelTab = 0;
 
 const closeTab = (id) => {
@@ -61,6 +60,10 @@ const getCompletions = (keyword) => {
 };
 
 const selectPrevTab = (current, count) => {
+  browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => {
+    prevSelTab = tabs[0].id;
+  });
+
   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
     if (tabs.length < 2) {
       return;
@@ -72,6 +75,10 @@ const selectPrevTab = (current, count) => {
 };
 
 const selectNextTab = (current, count) => {
+  browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => {
+    prevSelTab = tabs[0].id;
+  });
+
   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
     if (tabs.length < 2) {
       return;
@@ -83,6 +90,10 @@ const selectNextTab = (current, count) => {
 };
 
 const selectFirstTab = () => {
+  browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => {
+    prevSelTab = tabs[0].id;
+  });
+
   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
     let id = tabs[0].id;
     return browser.tabs.update(id, { active: true });
@@ -90,6 +101,10 @@ const selectFirstTab = () => {
 };
 
 const selectLastTab = () => {
+  browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => {
+    prevSelTab = tabs[0].id;
+  });
+
   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
     let id = tabs[tabs.length - 1].id;
     return browser.tabs.update(id, { active: true });
@@ -97,14 +112,15 @@ const selectLastTab = () => {
 };
 
 const selectPrevSelTab = () => {
-  if (prevSelTab != null) {
-    return browser.tabs.query({ currentWindow: true }).then((tabs) => {
-      let id = tabs[prevSelTab].id;
-      return browser.tabs.update(id, { active: true });
-    });
-  } else {
-    // some error message
-  }
+  var tmpPrevSelTab = null;
+  browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => {
+    tmpPrevSelTab = tabs[0].id;
+  });
+
+  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
+    browser.tabs.update(prevSelTab, { active: true });
+    prevSelTab = tmpPrevSelTab;
+  });
 };
 
 const reload = (current, cache) => {
