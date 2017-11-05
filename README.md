@@ -36,6 +36,7 @@ The default mappings are as follows:
 - <kbd>u</kbd>: reopen close tab
 - <kbd>K</kbd>, <kbd>J</kbd>: select prev or next tab
 - <kbd>g0</kbd>, <kbd>g$</kbd>: select first or last tab
+- <kbd>Ctrl</kbd>+<kbd>^</kbd>: select previous selected tab
 - <kbd>r</kbd>: reload current tab
 - <kbd>R</kbd>: reload current tab without cache
 - <kbd>zp</kbd>: toggle pin/unpin current tab
