@@ -5,7 +5,7 @@ import settingReducer from 'content/reducers/setting';
 describe("content setting reducer", () => {
   it('return the initial state', () => {
     let state = settingReducer(undefined, {});
-    expect(state).to.deep.equal({ keymaps: {} });
+    expect(state.keymaps).to.be.empty;
   });
 
   it('return next state for SETTING_SET', () => {
