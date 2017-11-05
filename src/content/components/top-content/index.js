@@ -19,6 +19,8 @@ export default class TopContent {
     consoleFrames.initialize(this.win.document);
 
     messages.onMessage(this.onMessage.bind(this));
+
+    this.store.subscribe(() => this.update());
   }
 
   update() {
