@@ -35,7 +35,7 @@ The default mappings are as follows:
 - <kbd>g0</kbd>, <kbd>g$</kbd>: select first or last tab
 - <kbd>r</kbd>: reload current tab
 - <kbd>R</kbd>: reload current tab without cache
-- <kbd>p</kbd>: toggle pin/unpin current tab
+- <kbd>zp</kbd>: toggle pin/unpin current tab
 
 ### Navigation
 - <kbd>f</kbd>: start following links in the page

@@ -103,16 +103,16 @@ const reload = (current, cache) => {
 const updateTabPinned = (current, pinned) => {
   return browser.tabs.query({ currentWindow: true, active: true })
     .then(() => {
-      let newPinned = pinned;
-      if (newPinned !== true && newPinned !== false) {
-        newPinned = !current.pinned;
-      }
-      return browser.tabs.update(current.id, { pinned: newPinned });
+      return browser.tabs.update(current.id, { pinned: pinned });
     });
+};
+
+const toggleTabPinned = (current) => {
+  updateTabPinned(current, !current.pinned);
 };
 
 export {
   closeTab, reopenTab, selectAt, selectByKeyword, getCompletions,
   selectPrevTab, selectNextTab, selectFirstTab, selectLastTab, reload,
-  updateTabPinned
+  updateTabPinned, toggleTabPinned
 };

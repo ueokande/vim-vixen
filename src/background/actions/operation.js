@@ -10,6 +10,9 @@ const sendConsoleShowCommand = (tab, command) => {
   });
 };
 
+// This switch statement is only gonna get longer as more
+// features are added, so disable complexity check
+/* eslint-disable complexity */
 const exec = (operation, tab) => {
   switch (operation.type) {
   case operations.TAB_CLOSE:
@@ -31,7 +34,7 @@ const exec = (operation, tab) => {
   case operations.TAB_UNPIN:
     return tabs.updateTabPinned(tab, false);
   case operations.TAB_TOGGLE_PINNED:
-    return tabs.updateTabPinned(tab);
+    return tabs.toggleTabPinned(tab);
   case operations.ZOOM_IN:
     return zooms.zoomIn();
   case operations.ZOOM_OUT:
@@ -64,5 +67,6 @@ const exec = (operation, tab) => {
     return Promise.resolve();
   }
 };
+/* eslint-enable complexity */
 
 export { exec };
