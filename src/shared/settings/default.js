@@ -30,7 +30,7 @@ export default {
     "J": { "type": "tabs.next", "count": 1 },
     "g0": { "type": "tabs.first" },
     "g$": { "type": "tabs.last" },
-    "gl": { "type": "tabs.prevsel" },
+    "<C-6>": { "type": "tabs.prevsel" },
     "r": { "type": "tabs.reload", "cache": false },
     "R": { "type": "tabs.reload", "cache": true },
     "zp": { "type": "tabs.pin.toggle" },
