@@ -33,6 +33,7 @@ export default {
     "r": { "type": "tabs.reload", "cache": false },
     "R": { "type": "tabs.reload", "cache": true },
     "zp": { "type": "tabs.pin.toggle" },
+    "zd": { "type": "tabs.duplicate" },
     "zi": { "type": "zoom.in" },
     "zo": { "type": "zoom.out" },
     "zz": { "type": "zoom.neutral" },

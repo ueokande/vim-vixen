@@ -111,8 +111,12 @@ const toggleTabPinned = (current) => {
   updateTabPinned(current, !current.pinned);
 };
 
+const duplicate = (id) => {
+  return browser.tabs.duplicate(id);
+};
+
 export {
   closeTab, reopenTab, selectAt, selectByKeyword, getCompletions,
   selectPrevTab, selectNextTab, selectFirstTab, selectLastTab, reload,
-  updateTabPinned, toggleTabPinned
+  updateTabPinned, toggleTabPinned, duplicate
 };

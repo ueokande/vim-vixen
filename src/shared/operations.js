@@ -42,6 +42,7 @@ export default {
   TAB_PIN: 'tabs.pin',
   TAB_UNPIN: 'tabs.unpin',
   TAB_TOGGLE_PINNED: 'tabs.pin.toggle',
+  TAB_DUPLICATE: 'tabs.duplicate',
 
   // Zooms
   ZOOM_IN: 'zoom.in',

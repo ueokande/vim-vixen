@@ -35,6 +35,8 @@ const exec = (operation, tab) => {
     return tabs.updateTabPinned(tab, false);
   case operations.TAB_TOGGLE_PINNED:
     return tabs.toggleTabPinned(tab);
+  case operations.TAB_DUPLICATE:
+    return tabs.duplicate(tab.id);
   case operations.ZOOM_IN:
     return zooms.zoomIn();
   case operations.ZOOM_OUT:
