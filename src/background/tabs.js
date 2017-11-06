@@ -113,11 +113,12 @@ const selectLastTab = () => {
 
 const selectPrevSelTab = () => {
   let tmpPrevSelTab = null;
-  return browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => {
-    tmpPrevSelTab = tabs[0].id;
-    browser.tabs.update(prevSelTab, { active: true });
-    prevSelTab = tmpPrevSelTab;
-  });
+  return browser.tabs.query({ currentWindow: true, active: true }).then(
+    (tabs) => {
+      tmpPrevSelTab = tabs[0].id;
+      browser.tabs.update(prevSelTab, { active: true });
+      prevSelTab = tmpPrevSelTab;
+    });
 };
 
 const reload = (current, cache) => {
