@@ -21,4 +21,9 @@ export default {
   FOLLOW_CONTROLLER_DISABLE: 'follow.controller.disable',
   FOLLOW_CONTROLLER_KEY_PRESS: 'follow.controller.key.press',
   FOLLOW_CONTROLLER_BACKSPACE: 'follow.controller.backspace',
+
+  // Find
+  FIND_SHOW: 'find.show',
+  FIND_HIDE: 'find.hide',
+  FIND_SET_KEYWORD: 'find.set.keyword',
 };
