@@ -95,13 +95,23 @@ export default class ConsoleComponent {
   }
 
   showCommand(text) {
+    this.showConsole('command', text);
+  }
+
+  showFind() {
+    this.showConsole('find', '');
+  }
+
+  showConsole(mode, initial) {
     let doc = this.wrapper.ownerDocument;
     let command = doc.querySelector('#vimvixen-console-command');
     let input = doc.querySelector('#vimvixen-console-command-input');
+    let promptEle = doc.querySelector('.vimvixen-console-command-prompt');
 
     command.style.display = 'block';
-    input.value = text;
+    input.value = initial;
     input.focus();
+    promptEle.className = `vimvixen-console-command-prompt prompt-${mode}`;
 
     window.focus();
     this.onInput({ target: input });

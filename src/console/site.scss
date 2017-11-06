@@ -85,9 +85,15 @@ body {
     display: flex;
 
     &-prompt:before {
-      content: ':';
-
       @include consoole-font;
+    }
+
+    &-prompt.prompt-command:before {
+      content: ':';
+    }
+
+    &-prompt.prompt-find:before {
+      content: '/';
     }
 
     &-input {
