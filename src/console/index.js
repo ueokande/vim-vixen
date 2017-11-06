@@ -18,6 +18,8 @@ const onMessage = (message) => {
   switch (message.type) {
   case messages.CONSOLE_SHOW_COMMAND:
     return store.dispatch(consoleActions.showCommand(message.command));
+  case messages.CONSOLE_SHOW_FIND:
+    return store.dispatch(consoleActions.showFind());
   case messages.CONSOLE_SHOW_ERROR:
     return store.dispatch(consoleActions.showError(message.text));
   case messages.CONSOLE_SHOW_INFO:

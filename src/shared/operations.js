@@ -51,4 +51,9 @@ export default {
 
   // Url yank
   URLS_YANK: 'urls.yank',
+
+  // Find
+  FIND_START: 'find.start',
+  FIND_NEXT: 'find.next',
+  FIND_PREV: 'find.prev',
 };

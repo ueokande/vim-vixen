@@ -11,6 +11,13 @@ describe("console actions", () => {
     });
   });
 
+  describe("showFind", () => {
+    it('create CONSOLE_SHOW_FIND action', () => {
+      let action = consoleActions.showFind();
+      expect(action.type).to.equal(actions.CONSOLE_SHOW_FIND);
+    });
+  });
+
   describe("showInfo", () => {
     it('create CONSOLE_SHOW_INFO action', () => {
       let action = consoleActions.showInfo('an info');

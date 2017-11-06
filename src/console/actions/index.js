@@ -7,4 +7,5 @@ export default {
   CONSOLE_SET_COMPLETIONS: 'console.set.completions',
   CONSOLE_COMPLETION_NEXT: 'console.completion.next',
   CONSOLE_COMPLETION_PREV: 'console.completion.prev',
+  CONSOLE_SHOW_FIND: 'console.show.find',
 };

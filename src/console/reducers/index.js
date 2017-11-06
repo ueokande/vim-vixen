@@ -3,7 +3,7 @@ import actions from 'console/actions';
 const defaultState = {
   mode: '',
   messageText: '',
-  commandText: '',
+  consoleText: '',
   completions: [],
   groupSelection: -1,
   itemSelection: -1,
@@ -48,8 +48,13 @@ export default function reducer(state = defaultState, action = {}) {
   case actions.CONSOLE_SHOW_COMMAND:
     return Object.assign({}, state, {
       mode: 'command',
-      commandText: action.text,
-      errorShown: false,
+      consoleText: action.text,
+      completions: []
+    });
+  case actions.CONSOLE_SHOW_FIND:
+    return Object.assign({}, state, {
+      mode: 'find',
+      consoleText: '',
       completions: []
     });
   case actions.CONSOLE_SHOW_ERROR:
@@ -64,7 +69,7 @@ export default function reducer(state = defaultState, action = {}) {
     });
   case actions.CONSOLE_HIDE_COMMAND:
     return Object.assign({}, state, {
-      mode: state.mode === 'command' ? '' : state.mode,
+      mode: state.mode === 'command' || state.mode === 'find' ? '' : state.mode,
     });
   case actions.CONSOLE_SET_COMPLETIONS:
     return Object.assign({}, state, {

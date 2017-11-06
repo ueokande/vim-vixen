@@ -7,6 +7,12 @@ const showCommand = (text) => {
   };
 };
 
+const showFind = () => {
+  return {
+    type: actions.CONSOLE_SHOW_FIND,
+  };
+};
+
 const showError = (text) => {
   return {
     type: actions.CONSOLE_SHOW_ERROR,
@@ -47,6 +53,6 @@ const completionPrev = () => {
 };
 
 export {
-  showCommand, showError, showInfo, hideCommand,
+  showCommand, showFind, showError, showInfo, hideCommand,
   setCompletions, completionNext, completionPrev
 };

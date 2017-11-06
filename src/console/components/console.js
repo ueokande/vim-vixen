@@ -68,8 +68,10 @@ export default class ConsoleComponent {
   update() {
     let state = this.store.getState();
     if (this.prevState.mode !== 'command' && state.mode === 'command') {
-      this.showCommand(state.commandText);
-    } else if (state.mode !== 'command') {
+      this.showCommand(state.consoleText);
+    } else if (this.prevState.mode !== 'find' && state.mode === 'find') {
+      this.showFind();
+    } else if (state.mode !== 'command' && state.mode !== 'find') {
       this.hideCommand();
     }
 
