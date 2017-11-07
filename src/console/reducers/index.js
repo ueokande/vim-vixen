@@ -4,6 +4,7 @@ const defaultState = {
   mode: '',
   messageText: '',
   consoleText: '',
+  completionSource: '',
   completions: [],
   groupSelection: -1,
   itemSelection: -1,
@@ -43,6 +44,13 @@ const prevSelection = (state) => {
   return [state.groupSelection, state.itemSelection - 1];
 };
 
+const nextConsoleText = (completions, group, item, defaults) => {
+  if (group < 0 || item < 0) {
+    return defaults;
+  }
+  return completions[group].items[item].content;
+};
+
 export default function reducer(state = defaultState, action = {}) {
   switch (action.type) {
   case actions.CONSOLE_SHOW_COMMAND:
@@ -71,9 +79,14 @@ export default function reducer(state = defaultState, action = {}) {
     return Object.assign({}, state, {
       mode: state.mode === 'command' || state.mode === 'find' ? '' : state.mode,
     });
+  case actions.CONSOLE_SET_CONSOLE_TEXT:
+    return Object.assign({}, state, {
+      consoleText: action.consoleText,
+    });
   case actions.CONSOLE_SET_COMPLETIONS:
     return Object.assign({}, state, {
       completions: action.completions,
+      completionSource: action.completionSource,
       groupSelection: -1,
       itemSelection: -1,
     });
@@ -82,6 +95,9 @@ export default function reducer(state = defaultState, action = {}) {
     return Object.assign({}, state, {
       groupSelection: next[0],
       itemSelection: next[1],
+      consoleText: nextConsoleText(
+        state.completions, next[0], next[1],
+        state.completionSource),
     });
   }
   case actions.CONSOLE_COMPLETION_PREV: {
@@ -89,6 +105,9 @@ export default function reducer(state = defaultState, action = {}) {
     return Object.assign({}, state, {
       groupSelection: next[0],
       itemSelection: next[1],
+      consoleText: nextConsoleText(
+        state.completions, next[0], next[1],
+        state.completionSource),
     });
   }
   default:

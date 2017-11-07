@@ -33,10 +33,18 @@ const hideCommand = () => {
   };
 };
 
-const setCompletions = (completions) => {
+const setConsoleText = (consoleText) => {
+  return {
+    type: actions.CONSOLE_SET_CONSOLE_TEXT,
+    consoleText,
+  };
+};
+
+const setCompletions = (completionSource, completions) => {
   return {
     type: actions.CONSOLE_SET_COMPLETIONS,
-    completions: completions
+    completionSource,
+    completions,
   };
 };
 
@@ -53,6 +61,6 @@ const completionPrev = () => {
 };
 
 export {
-  showCommand, showFind, showError, showInfo, hideCommand,
+  showCommand, showFind, showError, showInfo, hideCommand, setConsoleText,
   setCompletions, completionNext, completionPrev
 };

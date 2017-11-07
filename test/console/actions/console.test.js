@@ -34,17 +34,26 @@ describe("console actions", () => {
     });
   });
 
-  describe("hide", () => {
+  describe("hideCommand", () => {
     it('create CONSOLE_HIDE_COMMAND action', () => {
       let action = consoleActions.hideCommand();
       expect(action.type).to.equal(actions.CONSOLE_HIDE_COMMAND);
     });
   });
 
+  describe('setConsoleText', () => {
+    it('create CONSOLE_SET_CONSOLE_TEXT action', () => {
+      let action = consoleActions.setConsoleText('hello world');
+      expect(action.type).to.equal(actions.CONSOLE_SET_CONSOLE_TEXT);
+      expect(action.consoleText).to.equal('hello world');
+    });
+  });
+
   describe("setCompletions", () => {
     it('create CONSOLE_SET_COMPLETIONS action', () => {
-      let action = consoleActions.setCompletions([1,2,3]);
+      let action = consoleActions.setCompletions('query', [1, 2, 3]);
       expect(action.type).to.equal(actions.CONSOLE_SET_COMPLETIONS);
+      expect(action.completionSource).to.deep.equal('query');
       expect(action.completions).to.deep.equal([1, 2, 3]);
     });
   });
@@ -63,4 +72,3 @@ describe("console actions", () => {
     });
   });
 });
-

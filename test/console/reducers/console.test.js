@@ -43,6 +43,16 @@ describe("console reducer", () => {
     expect(state).to.have.property('mode', 'error');
   });
 
+  it('return next state for CONSOLE_SET_CONSOLE_TEXT', () => {
+    let action = {
+      type: actions.CONSOLE_SET_CONSOLE_TEXT,
+      consoleText: 'hello world'
+    }
+    let state = reducer({}, action)
+
+    expect(state).to.have.property('consoleText', 'hello world');
+  });
+
   it ('return next state for CONSOLE_SET_COMPLETIONS', () => {
     let state = {
       groupSelection: 0,
