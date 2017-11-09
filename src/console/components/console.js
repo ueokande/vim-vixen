@@ -25,23 +25,18 @@ export default class ConsoleComponent {
   }
 
   onBlur() {
-    return browser.runtime.sendMessage({
-      type: messages.CONSOLE_BLURRED,
-    });
+    let state = this.store.getState();
+    if (state.mode === 'command') {
+      this.hideCommand();
+    }
   }
 
   onKeyDown(e) {
-    let doc = this.wrapper.ownerDocument;
-    let input = doc.querySelector('#vimvixen-console-command-input');
-
     switch (e.keyCode) {
     case KeyboardEvent.DOM_VK_ESCAPE:
-      return input.blur();
+      return this.hideCommand();
     case KeyboardEvent.DOM_VK_RETURN:
-      return browser.runtime.sendMessage({
-        type: messages.CONSOLE_ENTERED,
-        text: e.target.value
-      }).then(this.onBlur);
+      return this.onEntered(e.target.value);
     case KeyboardEvent.DOM_VK_TAB:
       if (e.shiftKey) {
         this.store.dispatch(consoleActions.completionPrev());
@@ -51,6 +46,22 @@ export default class ConsoleComponent {
       e.stopPropagation();
       e.preventDefault();
       break;
+    }
+  }
+
+  onEntered(value) {
+    let state = this.store.getState();
+    if (state.mode === 'command') {
+      browser.runtime.sendMessage({
+        type: messages.CONSOLE_ENTER_COMMAND,
+        text: value,
+      }).then(this.hideCommand);
+    } else if (state.mode === 'find') {
+      this.hideCommand();
+      window.top.postMessage(JSON.stringify({
+        type: messages.CONSOLE_ENTER_FIND,
+        text: value,
+      }), '*');
     }
   }
 
@@ -76,6 +87,13 @@ export default class ConsoleComponent {
     if (state.mode === 'command') {
       this.onInput({ target: input });
     }
+  }
+
+  hideCommand() {
+    this.store.dispatch(consoleActions.hideCommand());
+    window.top.postMessage(JSON.stringify({
+      type: messages.CONSOLE_UNFOCUS,
+    }), '*');
   }
 
   update() {

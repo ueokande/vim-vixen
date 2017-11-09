@@ -6,6 +6,7 @@ import * as urls from 'content/urls';
 import * as consoleFrames from 'content/console-frames';
 import * as addonActions from './addon';
 
+// eslint-disable-next-line complexity
 const exec = (operation) => {
   switch (operation.type) {
   case operations.ADDON_ENABLE:
@@ -14,6 +15,14 @@ const exec = (operation) => {
     return addonActions.disable();
   case operations.ADDON_TOGGLE_ENABLED:
     return addonActions.toggleEnabled();
+  case operations.FIND_NEXT:
+    return window.top.postMessage(JSON.stringify({
+      type: messages.FIND_NEXT,
+    }), '*');
+  case operations.FIND_PREV:
+    return window.top.postMessage(JSON.stringify({
+      type: messages.FIND_PREV,
+    }), '*');
   case operations.SCROLL_VERTICALLY:
     return scrolls.scrollVertically(window, operation.count);
   case operations.SCROLL_HORIZONALLY:

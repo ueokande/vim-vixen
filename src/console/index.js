@@ -24,8 +24,6 @@ const onMessage = (message) => {
     return store.dispatch(consoleActions.showError(message.text));
   case messages.CONSOLE_SHOW_INFO:
     return store.dispatch(consoleActions.showInfo(message.text));
-  case messages.CONSOLE_HIDE_COMMAND:
-    return store.dispatch(consoleActions.hideCommand());
   }
 };
 

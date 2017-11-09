@@ -34,11 +34,7 @@ export default class BackgroundComponent {
       }
       return this.store.dispatch(
         tabActions.openToTab(message.url, sender.tab), sender);
-    case messages.CONSOLE_BLURRED:
-      return browser.tabs.sendMessage(sender.tab.id, {
-        type: messages.CONSOLE_HIDE_COMMAND,
-      });
-    case messages.CONSOLE_ENTERED:
+    case messages.CONSOLE_ENTER_COMMAND:
       return commands.exec(message.text, settings.value).catch((e) => {
         return browser.tabs.sendMessage(sender.tab.id, {
           type: messages.CONSOLE_SHOW_ERROR,
