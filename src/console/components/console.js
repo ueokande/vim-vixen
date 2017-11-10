@@ -36,6 +36,8 @@ export default class ConsoleComponent {
     case KeyboardEvent.DOM_VK_ESCAPE:
       return this.hideCommand();
     case KeyboardEvent.DOM_VK_RETURN:
+      e.stopPropagation();
+      e.preventDefault();
       return this.onEntered(e.target.value);
     case KeyboardEvent.DOM_VK_TAB:
       if (e.shiftKey) {
