@@ -6,6 +6,13 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/find
 
 import actions from 'content/actions';
+import * as consoleFrames from '../console-frames';
+
+const postPatternNotFound = (pattern) => {
+  return consoleFrames.postError(
+    window.document,
+    'Pattern not found: ' + pattern);
+};
 
 const show = () => {
   return { type: actions.FIND_SHOW };
@@ -15,22 +22,42 @@ const hide = () => {
   return { type: actions.FIND_HIDE };
 };
 
-const next = (keyword) => {
-  // TODO Error on no matched
-  window.find(keyword, false, false, true, false, true);
+const find = (string, backwards) => {
+  let caseSensitive = false;
+  let wrapScan = true;
+
+
+  // NOTE: aWholeWord dows not implemented, and aSearchInFrames does not work
+  // because of same origin policy
+  return window.find(string, caseSensitive, backwards, wrapScan);
+};
+
+const findNext = (keyword, reset, backwards) => {
+  if (reset) {
+    window.getSelection().removeAllRanges();
+  }
+
+  let found = find(keyword, backwards);
+  if (!found) {
+    window.getSelection().removeAllRanges();
+    found = find(keyword, backwards);
+  }
+  if (!found) {
+    postPatternNotFound(keyword);
+  }
   return {
     type: actions.FIND_SET_KEYWORD,
     keyword,
+    found,
   };
 };
 
-const prev = (keyword) => {
-  // TODO Error on no matched
-  window.find(keyword, false, true, true, false, true);
-  return {
-    type: actions.FIND_SET_KEYWORD,
-    keyword,
-  };
+const next = (keyword, reset) => {
+  return findNext(keyword, reset, false);
+};
+
+const prev = (keyword, reset) => {
+  return findNext(keyword, reset, true);
 };
 
 export { show, hide, next, prev };

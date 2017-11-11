@@ -1,4 +1,5 @@
 import './console-frame.scss';
+import messages from 'shared/messages';
 
 const initialize = (doc) => {
   let iframe = doc.createElement('iframe');
@@ -20,4 +21,11 @@ const postMessage = (doc, message) => {
   iframe.contentWindow.postMessage(JSON.stringify(message), '*');
 };
 
-export { initialize, blur, postMessage };
+const postError = (doc, message) => {
+  return postMessage(doc, {
+    type: messages.CONSOLE_SHOW_ERROR,
+    text: message,
+  });
+};
+
+export { initialize, blur, postMessage, postError };
