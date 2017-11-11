@@ -5,32 +5,19 @@ import findReducer from 'content/reducers/find';
 describe("find reducer", () => {
   it('return the initial state', () => {
     let state = findReducer(undefined, {});
-    expect(state).to.have.property('enabled', false);
     expect(state).to.have.property('keyword', '');
-  });
-
-  it('return next state for FIND_SHOW', () => {
-    let action = { type: actions.FIND_SHOW };
-    let prev = { enabled: false };
-    let state = findReducer(prev, action);
-
-    expect(state.enabled).is.equal(true);
-  });
-
-  it('return next state for FIND_HIDE', () => {
-    let action = { type: actions.FIND_HIDE };
-    let prev = { enabled: true };
-    let state = findReducer(prev, action);
-
-    expect(state.enabled).is.equal(false);
+    expect(state).to.have.property('found', false);
   });
 
   it('return next state for FIND_SET_KEYWORD', () => {
-    let action = { type: actions.FIND_SET_KEYWORD, keyword: 'my-search' };
-    let state = { enabled: true, keyword: '' };
+    let action = {
+      type: actions.FIND_SET_KEYWORD,
+      keyword: 'xyz',
+      found: true,
+    };
+    let state = findReducer({}, action);
 
-    state = findReducer(state, action);
-
-    expect(state.keyword).is.equal('my-search');
+    expect(state.keyword).is.equal('xyz');
+    expect(state.found).to.be.true;
   });
 });

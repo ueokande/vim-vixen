@@ -14,14 +14,6 @@ const postPatternNotFound = (pattern) => {
     'Pattern not found: ' + pattern);
 };
 
-const show = () => {
-  return { type: actions.FIND_SHOW };
-};
-
-const hide = () => {
-  return { type: actions.FIND_HIDE };
-};
-
 const find = (string, backwards) => {
   let caseSensitive = false;
   let wrapScan = true;
@@ -60,4 +52,4 @@ const prev = (keyword, reset) => {
   return findNext(keyword, reset, true);
 };
 
-export { show, hide, next, prev };
+export { next, prev };

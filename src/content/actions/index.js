@@ -23,7 +23,5 @@ export default {
   FOLLOW_CONTROLLER_BACKSPACE: 'follow.controller.backspace',
 
   // Find
-  FIND_SHOW: 'find.show',
-  FIND_HIDE: 'find.hide',
   FIND_SET_KEYWORD: 'find.set.keyword',
 };
