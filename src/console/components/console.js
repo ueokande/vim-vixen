@@ -57,7 +57,8 @@ export default class ConsoleComponent {
       browser.runtime.sendMessage({
         type: messages.CONSOLE_ENTER_COMMAND,
         text: value,
-      }).then(this.hideCommand);
+      });
+      this.hideCommand();
     } else if (state.mode === 'find') {
       this.hideCommand();
       window.top.postMessage(JSON.stringify({
