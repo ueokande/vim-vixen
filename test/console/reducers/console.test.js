@@ -7,7 +7,7 @@ describe("console reducer", () => {
     let state = reducer(undefined, {});
     expect(state).to.have.property('mode', '');
     expect(state).to.have.property('messageText', '');
-    expect(state).to.have.property('commandText', '');
+    expect(state).to.have.property('consoleText', '');
     expect(state).to.have.deep.property('completions', []);
     expect(state).to.have.property('groupSelection', -1);
     expect(state).to.have.property('itemSelection', -1);
@@ -17,7 +17,7 @@ describe("console reducer", () => {
     let action = { type: actions.CONSOLE_SHOW_COMMAND, text: 'open ' };
     let state = reducer({}, action);
     expect(state).to.have.property('mode', 'command');
-    expect(state).to.have.property('commandText', 'open ');
+    expect(state).to.have.property('consoleText', 'open ');
   });
 
   it('return next state for CONSOLE_SHOW_INFO', () => {
@@ -41,6 +41,16 @@ describe("console reducer", () => {
 
     state = reducer({ mode: 'error' }, action);
     expect(state).to.have.property('mode', 'error');
+  });
+
+  it('return next state for CONSOLE_SET_CONSOLE_TEXT', () => {
+    let action = {
+      type: actions.CONSOLE_SET_CONSOLE_TEXT,
+      consoleText: 'hello world'
+    }
+    let state = reducer({}, action)
+
+    expect(state).to.have.property('consoleText', 'hello world');
   });
 
   it ('return next state for CONSOLE_SET_COMPLETIONS', () => {

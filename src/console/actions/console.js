@@ -7,6 +7,12 @@ const showCommand = (text) => {
   };
 };
 
+const showFind = () => {
+  return {
+    type: actions.CONSOLE_SHOW_FIND,
+  };
+};
+
 const showError = (text) => {
   return {
     type: actions.CONSOLE_SHOW_ERROR,
@@ -27,10 +33,18 @@ const hideCommand = () => {
   };
 };
 
-const setCompletions = (completions) => {
+const setConsoleText = (consoleText) => {
+  return {
+    type: actions.CONSOLE_SET_CONSOLE_TEXT,
+    consoleText,
+  };
+};
+
+const setCompletions = (completionSource, completions) => {
   return {
     type: actions.CONSOLE_SET_COMPLETIONS,
-    completions: completions
+    completionSource,
+    completions,
   };
 };
 
@@ -47,6 +61,6 @@ const completionPrev = () => {
 };
 
 export {
-  showCommand, showError, showInfo, hideCommand,
+  showCommand, showFind, showError, showInfo, hideCommand, setConsoleText,
   setCompletions, completionNext, completionPrev
 };

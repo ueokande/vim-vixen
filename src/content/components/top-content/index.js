@@ -1,5 +1,6 @@
 import CommonComponent from '../common';
 import FollowController from './follow-controller';
+import FindComponent from './find';
 import * as consoleFrames from '../../console-frames';
 import * as addonActions from '../../actions/addon';
 import messages from 'shared/messages';
@@ -14,6 +15,7 @@ export default class TopContent {
 
     new CommonComponent(win, store); // eslint-disable-line no-new
     new FollowController(win, store); // eslint-disable-line no-new
+    new FindComponent(win, store); // eslint-disable-line no-new
 
     // TODO make component
     consoleFrames.initialize(this.win.document);
@@ -47,7 +49,7 @@ export default class TopContent {
 
   onMessage(message) {
     switch (message.type) {
-    case messages.CONSOLE_HIDE_COMMAND:
+    case messages.CONSOLE_UNFOCUS:
       this.win.focus();
       consoleFrames.blur(window.document);
       return Promise.resolve();

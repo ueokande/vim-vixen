@@ -65,6 +65,10 @@ const exec = (operation, tab) => {
     return sendConsoleShowCommand(tab, 'winopen ');
   case operations.COMMAND_SHOW_BUFFER:
     return sendConsoleShowCommand(tab, 'buffer ');
+  case operations.FIND_START:
+    return browser.tabs.sendMessage(tab.id, {
+      type: messages.CONSOLE_SHOW_FIND
+    });
   default:
     return Promise.resolve();
   }
