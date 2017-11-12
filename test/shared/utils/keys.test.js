@@ -24,6 +24,18 @@ describe("keys util", () => {
       expect(k.altKey).to.be.false;
       expect(k.metaKey).to.be.true;
     });
+
+    it('returns from keyboard input Ctrl+$', () => {
+      // $ required shift pressing on most keyboards
+      let k = keys.fromKeyboardEvent({
+        key: '$', shiftKey: true, ctrlKey: true, altKey: false, metaKey: false
+      });
+      expect(k.key).to.equal('$');
+      expect(k.shiftKey).to.be.false;
+      expect(k.ctrlKey).to.be.true;
+      expect(k.altKey).to.be.false;
+      expect(k.metaKey).to.be.false;
+    });
   });
 
   describe('fromMapKey', () => {

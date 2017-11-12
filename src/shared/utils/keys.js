@@ -8,9 +8,17 @@ const modifierdKeyName = (name) => {
 };
 
 const fromKeyboardEvent = (e) => {
+  let key = modifierdKeyName(e.key);
+  let shift = e.shiftKey;
+  if (key.length === 1 && key.toUpperCase() === key.toLowerCase()) {
+    // make shift false for symbols to enable key bindings by symbold keys.
+    // But this limits key bindings by symbol keys with Shift (such as Shift+$>.
+    shift = false;
+  }
+
   return {
     key: modifierdKeyName(e.key),
-    shiftKey: e.shiftKey,
+    shiftKey: shift,
     ctrlKey: e.ctrlKey,
     altKey: e.altKey,
     metaKey: e.metaKey,
