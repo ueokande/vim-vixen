@@ -1,7 +1,7 @@
 import actions from 'content/actions';
 
 const defaultState = {
-  keymaps: {},
+  keymaps: new Map(),
 };
 
 export default function reducer(state = defaultState, action = {}) {

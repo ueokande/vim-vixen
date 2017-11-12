@@ -4,20 +4,21 @@ import { expect } from "chai";
 describe('InputComponent', () => {
   it('register callbacks', () => {
     let component = new InputComponent(window.document);
+    let key = { key: 'a', ctrlKey: true, shiftKey: false, altKey: false, metaKey: false };
     component.onKey((key) => {
-      expect(key).is.equals('a');
+      expect(key).to.deep.equal(key);
     });
-    component.onKeyDown({ key: 'a' });
+    component.onKeyDown(key);
   });
 
   it('invoke callback once', () => {
     let component = new InputComponent(window.document);
     let a = 0, b = 0;
     component.onKey((key) => {
-      if (key == 'a') {
+      if (key.key == 'a') {
         ++a;
       } else {
-        key == 'b'
+        key.key == 'b'
         ++b;
       }
     });
@@ -30,38 +31,6 @@ describe('InputComponent', () => {
 
     expect(a).is.equals(1);
     expect(b).is.equals(1);
-  })
-
-  it('add prefix when ctrl pressed', () => {
-    let component = new InputComponent(window.document);
-    component.onKey((key) => {
-      expect(key).is.equals('<C-A>');
-    });
-    component.onKeyDown({ key: 'a', ctrlKey: true });
-  })
-
-  it('press X', () => {
-    let component = new InputComponent(window.document);
-    component.onKey((key) => {
-      expect(key).is.equals('X');
-    });
-    component.onKeyDown({ key: 'X', shiftKey: true });
-  })
-
-  it('press <Shift> + <Esc>', () => {
-    let component = new InputComponent(window.document);
-    component.onKey((key) => {
-      expect(key).is.equals('<S-Esc>');
-    });
-    component.onKeyDown({ key: 'Escape', shiftKey: true });
-  })
-
-  it('press <Ctrl> + <Esc>', () => {
-    let component = new InputComponent(window.document);
-    component.onKey((key) => {
-      expect(key).is.equals('<C-Esc>');
-    });
-    component.onKeyDown({ key: 'Escape', ctrlKey: true });
   })
 
   it('does not invoke only meta keys', () => {

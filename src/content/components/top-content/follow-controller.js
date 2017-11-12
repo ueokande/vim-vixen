@@ -76,7 +76,7 @@ export default class FollowController {
       this.activate();
       this.store.dispatch(followControllerActions.disable());
       break;
-    case 'Escape':
+    case 'Esc':
       this.store.dispatch(followControllerActions.disable());
       break;
     case 'Backspace':

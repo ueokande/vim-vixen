@@ -7,7 +7,28 @@ describe("setting actions", () => {
     it('create SETTING_SET action', () => {
       let action = settingActions.set({ red: 'apple', yellow: 'banana' });
       expect(action.type).to.equal(actions.SETTING_SET);
-      expect(action.value).to.deep.equal({ red: 'apple', yellow: 'banana' });
+      expect(action.value.red).to.equal('apple');
+      expect(action.value.yellow).to.equal('banana');
+      expect(action.value.keymaps).to.be.empty;
+    });
+
+    it('converts keymaps', () => {
+      let action = settingActions.set({
+        keymaps: {
+          'dd': 'remove current tab',
+          'z<C-A>': 'increment',
+        }
+      });
+      let keymaps = action.value.keymaps;
+
+      expect(action.value.keymaps).to.have.deep.all.keys(
+        [
+          [{ key: 'd', shiftKey: false, ctrlKey: false, altKey: false, metaKey: false },
+           { key: 'd', shiftKey: false, ctrlKey: false, altKey: false, metaKey: false }],
+          [{ key: 'z', shiftKey: false, ctrlKey: false, altKey: false, metaKey: false },
+           { key: 'a', shiftKey: false, ctrlKey: true, altKey: false, metaKey: false }],
+        ]
+      );
     });
   });
 });

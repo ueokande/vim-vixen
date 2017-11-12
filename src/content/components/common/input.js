@@ -1,22 +1,5 @@
 import * as dom from 'shared/utils/dom';
-
-const modifierdKeyName = (name) => {
-  if (name.length === 1) {
-    return name.toUpperCase();
-  } else if (name === 'Escape') {
-    return 'Esc';
-  }
-  return name;
-};
-
-const mapKey = (e) => {
-  if (e.ctrlKey) {
-    return '<C-' + modifierdKeyName(e.key) + '>';
-  } else if (e.shiftKey && e.key.length !== 1) {
-    return '<S-' + modifierdKeyName(e.key) + '>';
-  }
-  return e.key;
-};
+import * as keys from 'shared/utils/keys';
 
 export default class InputComponent {
   constructor(target) {
@@ -64,7 +47,7 @@ export default class InputComponent {
       return;
     }
 
-    let key = mapKey(e);
+    let key = keys.fromKeyboardEvent(e);
 
     for (let listener of this.onKeyListeners) {
       let stop = listener(key);
