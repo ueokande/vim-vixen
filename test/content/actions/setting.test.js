@@ -20,8 +20,8 @@ describe("setting actions", () => {
         }
       });
       let keymaps = action.value.keymaps;
-
-      expect(action.value.keymaps).to.have.deep.all.keys(
+      let map = new Map(keymaps);
+      expect(map).to.have.deep.all.keys(
         [
           [{ key: 'd', shiftKey: false, ctrlKey: false, altKey: false, metaKey: false },
            { key: 'd', shiftKey: false, ctrlKey: false, altKey: false, metaKey: false }],

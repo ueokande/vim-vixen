@@ -25,7 +25,7 @@ export default class KeymapperComponent {
 
     let state = this.store.getState();
     let input = state.input;
-    let keymaps = state.setting.keymaps;
+    let keymaps = new Map(state.setting.keymaps);
 
     let matched = Array.from(keymaps.keys()).filter((mapping) => {
       return mapStartsWith(mapping, input.keys);

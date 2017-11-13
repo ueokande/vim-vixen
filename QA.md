@@ -27,8 +27,11 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] <kbd>d</kbd>: delete current tab
 - [ ] <kbd>u</kbd>: reopen close tab
 - [ ] <kbd>K</kbd>, <kbd>J</kbd>: select prev and next tab
+- [ ] <kbd>g0</kbd>, <kbd>g$</kbd>: select first and last tab
 - [ ] <kbd>r</kbd>: reload current tab
 - [ ] <kbd>R</kbd>: reload current tab without cache
+- [ ] <kbd>zd</kbd>: duplicate current tab
+- [ ] <kbd>zp</kbd>: toggle pin/unpin state on current tab
 
 #### Navigation
 
@@ -141,6 +144,17 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] Fucus text box on Twitter or Slack, press <kbd>j</kbd>, then <kbd>j</kbd> is typed in the box
 - [ ] Focus the text box on Twitter or Slack on following mode
 
+## Find mode
+
+- [ ] open console with <kbd>/</kbd>
+- [ ] highlight a word on <kbd>Enter</kb> pressed in find console
+- [ ] Search next/prev by <kbd>n</kbd>/<kbd>N</kbd>
+- [ ] Wrap search by <kbd>n</kbd>/<kbd>N</kbd>
+- [ ] Find with last keyword if keyword is empty
+
 ## Misc
 
 - [ ] Work after plugin reload
+- [ ] Work on `about:blank`
+- [ ] Able to map `<A-Z>` key.
+- [ ] Open file menu by <kbd>Alt</kbd>+<kbd>F</kbd> (Other than Mac OS)

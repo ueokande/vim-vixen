@@ -104,14 +104,14 @@ const scrollBottom = (win) => {
 const scrollHome = (win) => {
   let target = scrollTarget(win);
   let x = 0;
-  let y = target.scrollLeft;
+  let y = target.scrollTop;
   target.scrollTo(x, y);
 };
 
 const scrollEnd = (win) => {
   let target = scrollTarget(win);
   let x = target.scrollWidth;
-  let y = target.scrollLeft;
+  let y = target.scrollTop;
   target.scrollTo(x, y);
 };
 
