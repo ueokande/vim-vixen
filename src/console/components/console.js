@@ -48,6 +48,34 @@ export default class ConsoleComponent {
       e.stopPropagation();
       e.preventDefault();
       break;
+    case KeyboardEvent.DOM_VK_OPEN_BRACKET:
+      if (e.ctrlKey) {
+        return this.hideCommand();
+      }
+      break;
+    case KeyboardEvent.DOM_VK_M:
+      if (e.ctrlKey) {
+        e.stopPropagation();
+        e.preventDefault();
+        return this.onEntered(e.target.value);
+      }
+      break;
+    case KeyboardEvent.DOM_VK_N:
+    case KeyboardEvent.DOM_VK_J:
+      if (e.ctrlKey) {
+        this.store.dispatch(consoleActions.completionNext());
+        e.stopPropagation();
+        e.preventDefault();
+      }
+      break;
+    case KeyboardEvent.DOM_VK_P:
+    case KeyboardEvent.DOM_VK_K:
+      if (e.ctrlKey) {
+        this.store.dispatch(consoleActions.completionPrev());
+        e.stopPropagation();
+        e.preventDefault();
+      }
+      break;
     }
   }
 
