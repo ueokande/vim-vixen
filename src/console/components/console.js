@@ -71,7 +71,7 @@ export default class ConsoleComponent {
       break;
     case KeyboardEvent.DOM_VK_M:
       if (e.ctrlKey) {
-        this.doEnter(e);
+        return this.doEnter(e);
       }
       break;
     case KeyboardEvent.DOM_VK_DOWN:
