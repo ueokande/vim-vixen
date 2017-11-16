@@ -31,14 +31,30 @@ export default class ConsoleComponent {
     }
   }
 
+  doEnter(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    return this.onEntered(e.target.value);
+  }
+
+  selectNext(e) {
+    this.store.dispatch(consoleActions.completionNext());
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
+  selectPrev(e) {
+    this.store.dispatch(consoleActions.completionPrev());
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
   onKeyDown(e) {
     switch (e.keyCode) {
     case KeyboardEvent.DOM_VK_ESCAPE:
       return this.hideCommand();
     case KeyboardEvent.DOM_VK_RETURN:
-      e.stopPropagation();
-      e.preventDefault();
-      return this.onEntered(e.target.value);
+      return this.doEnter(e);
     case KeyboardEvent.DOM_VK_TAB:
       if (e.shiftKey) {
         this.store.dispatch(consoleActions.completionPrev());
@@ -55,25 +71,25 @@ export default class ConsoleComponent {
       break;
     case KeyboardEvent.DOM_VK_M:
       if (e.ctrlKey) {
-        e.stopPropagation();
-        e.preventDefault();
-        return this.onEntered(e.target.value);
+        this.doEnter(e);
       }
+      break;
+    case KeyboardEvent.DOM_VK_DOWN:
+      this.selectNext(e);
       break;
     case KeyboardEvent.DOM_VK_N:
     case KeyboardEvent.DOM_VK_J:
       if (e.ctrlKey) {
-        this.store.dispatch(consoleActions.completionNext());
-        e.stopPropagation();
-        e.preventDefault();
+        this.selectNext(e);
       }
+      break;
+    case KeyboardEvent.DOM_VK_UP:
+      this.selectPrev(e);
       break;
     case KeyboardEvent.DOM_VK_P:
     case KeyboardEvent.DOM_VK_K:
       if (e.ctrlKey) {
-        this.store.dispatch(consoleActions.completionPrev());
-        e.stopPropagation();
-        e.preventDefault();
+        this.selectPrev(e);
       }
       break;
     }
