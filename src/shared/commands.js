@@ -33,8 +33,19 @@ const openCommand = (url) => {
   });
 };
 
-const tabopenCommand = (url) => {
-  return browser.tabs.create({ url: url });
+const tabopenCommand = (url, background = false, adjacent = false) => {
+  if (adjacent) {
+    return browser.tabs.query({
+      active: true, currentWindow: true
+    }).then((gotTabs) => {
+      return browser.tabs.create({
+        url: url,
+        active: !background,
+        index: gotTabs[0].index + 1
+      });
+    });
+  }
+  return browser.tabs.create({ url: url, active: !background });
 };
 
 const winopenCommand = (url) => {
@@ -102,7 +113,8 @@ const doCommand = (line, settings) => {
     return openCommand(normalizeUrl(words, settings.search));
   case 't':
   case 'tabopen':
-    return tabopenCommand(normalizeUrl(words, settings.search));
+    return tabopenCommand(
+      normalizeUrl(words, settings.search), false, settings.openAdjacentTabs);
   case 'w':
   case 'winopen':
     return winopenCommand(normalizeUrl(words, settings.search));
@@ -166,4 +178,4 @@ const complete = (line, settings) => {
   return getCompletions(line, settings);
 };
 
-export { exec, complete };
+export { exec, complete, tabopenCommand };

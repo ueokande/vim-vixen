@@ -40,7 +40,8 @@ const exec = (operation) => {
   case operations.FOLLOW_START:
     return window.top.postMessage(JSON.stringify({
       type: messages.FOLLOW_START,
-      newTab: operation.newTab
+      newTab: operation.newTab,
+      background: operation.background,
     }), '*');
   case operations.NAVIGATE_HISTORY_PREV:
     return navigates.historyPrev(window);

@@ -1,6 +1,6 @@
 import operations from 'shared/operations';
 
-const VALID_TOP_KEYS = ['keymaps', 'search', 'blacklist'];
+const VALID_TOP_KEYS = ['keymaps', 'search', 'blacklist', 'openAdjacentTabs'];
 const VALID_OPERATION_VALUES = Object.keys(operations).map((key) => {
   return operations[key];
 });

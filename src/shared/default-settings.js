@@ -37,8 +37,8 @@ export default {
     "zi": { "type": "zoom.in" },
     "zo": { "type": "zoom.out" },
     "zz": { "type": "zoom.neutral" },
-    "f": { "type": "follow.start", "newTab": false },
-    "F": { "type": "follow.start", "newTab": true },
+    "f": { "type": "follow.start", "newTab": false, "background": false },
+    "F": { "type": "follow.start", "newTab": true, "background": false },
     "H": { "type": "navigate.history.prev" },
     "L": { "type": "navigate.history.next" },
     "[[": { "type": "navigate.link.prev" },
@@ -61,6 +61,7 @@ export default {
       "twitter": "https://twitter.com/search?q={}",
       "wikipedia": "https://en.wikipedia.org/w/index.php?search={}"
     }
-  }
+  },
+  "openAdjacentTabs": false
 }`
 };
