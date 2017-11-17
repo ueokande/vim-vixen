@@ -28,6 +28,8 @@ export default {
     "u": { "type": "tabs.reopen" },
     "K": { "type": "tabs.prev", "count": 1 },
     "J": { "type": "tabs.next", "count": 1 },
+    "gT": { "type": "tabs.prev", "count": 1 },
+    "gt": { "type": "tabs.next", "count": 1 },
     "g0": { "type": "tabs.first" },
     "g$": { "type": "tabs.last" },
     "r": { "type": "tabs.reload", "cache": false },
