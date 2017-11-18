@@ -1,10 +1,9 @@
 import './site.scss';
-import React from 'react';
-import PropTypes from 'prop-types';
+import { h, Component } from 'preact';
 import * as settingActions from 'settings/actions/setting';
 import * as validator from 'shared/validators/setting';
 
-class SettingsComponent extends React.Component {
+class SettingsComponent extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -83,9 +82,5 @@ class SettingsComponent extends React.Component {
     }
   }
 }
-
-SettingsComponent.contextTypes = {
-  store: PropTypes.any,
-};
 
 export default SettingsComponent;
