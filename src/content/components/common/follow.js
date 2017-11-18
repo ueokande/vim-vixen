@@ -4,7 +4,8 @@ import * as dom from 'shared/utils/dom';
 
 const TARGET_SELECTOR = [
   'a', 'button', 'input', 'textarea', 'area',
-  '[contenteditable=true]', '[contenteditable=""]', '[tabindex]'
+  '[contenteditable=true]', '[contenteditable=""]', '[tabindex]',
+  '[role="button"]'
 ].join(',');
 
 
