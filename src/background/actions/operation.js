@@ -29,6 +29,8 @@ const exec = (operation, tab) => {
     return tabs.selectLastTab();
   case operations.TAB_RELOAD:
     return tabs.reload(tab, operation.cache);
+  case operations.TAB_RELOAD_ALL:
+    return tabs.reloadAll(tab, operation.cache);
   case operations.TAB_PIN:
     return tabs.updateTabPinned(tab, true);
   case operations.TAB_UNPIN:

@@ -39,6 +39,7 @@ export default {
   TAB_FIRST: 'tabs.first',
   TAB_LAST: 'tabs.last',
   TAB_RELOAD: 'tabs.reload',
+  TAB_RELOAD_ALL: 'tabs.reloadAll',
   TAB_PIN: 'tabs.pin',
   TAB_UNPIN: 'tabs.unpin',
   TAB_TOGGLE_PINNED: 'tabs.pin.toggle',
