@@ -78,7 +78,6 @@ export default class ConsoleComponent {
       this.selectNext(e);
       break;
     case KeyboardEvent.DOM_VK_N:
-    case KeyboardEvent.DOM_VK_J:
       if (e.ctrlKey) {
         this.selectNext(e);
       }
@@ -87,7 +86,6 @@ export default class ConsoleComponent {
       this.selectPrev(e);
       break;
     case KeyboardEvent.DOM_VK_P:
-    case KeyboardEvent.DOM_VK_K:
       if (e.ctrlKey) {
         this.selectPrev(e);
       }
