@@ -1,0 +1,17 @@
+.form-field-label {
+  font-weight: bold
+}
+
+.form-field-error {
+  font-weight: bold;
+  color: red;
+  min-height: 1.5em;
+}
+
+.form-field-input {
+  padding: 4px;
+}
+
+.form-field-input.input-error {
+  box-shadow: 0 0 2px red;
+}

@@ -1,5 +1,6 @@
 import './site.scss';
 import { h, Component } from 'preact';
+import Input from './ui/input';
 import * as settingActions from 'settings/actions/setting';
 import * as validator from 'shared/validators/setting';
 
@@ -9,6 +10,9 @@ class SettingsComponent extends Component {
 
     this.state = {
       settings: {
+        json: '',
+      },
+      errors: {
         json: '',
       }
     };
@@ -35,39 +39,47 @@ class SettingsComponent extends Component {
         <h1>Configure Vim-Vixen</h1>
         <form className='vimvixen-settings-form'>
 
-          <p>Load settings from:</p>
-          <input type='radio' id='setting-source-json'
+          <Input
+            type='radio'
             name='source'
-            value='json'
-            onChange={this.bindAndSave.bind(this)}
-            checked={this.state.settings.source === 'json'} />
-          <label htmlFor='settings-source-json'>JSON</label>
+            label='Use plain JSON'
+            checked={this.state.settings.source === 'json'}
+            value='json' />
 
-          <textarea name='json' spellCheck='false'
-            onInput={this.validate.bind(this)}
+          <Input
+            type='textarea'
+            name='json'
+            label='Plane JSON'
+            spellCheck='false'
+            error={this.state.errors.json}
             onChange={this.bindValue.bind(this)}
             onBlur={this.bindAndSave.bind(this)}
-            value={this.state.settings.json} />
+            value={this.state.settings.json}
+          />
         </form>
       </div>
     );
   }
 
-  validate(e) {
-    try {
-      let settings = JSON.parse(e.target.value);
+  validate(target) {
+    if (target.name === 'json') {
+      let settings = JSON.parse(target.value);
       validator.validate(settings);
-      e.target.setCustomValidity('');
-    } catch (err) {
-      e.target.setCustomValidity(err.message);
     }
   }
 
   bindValue(e) {
-    let nextSettings = Object.assign({}, this.state.settings);
-    nextSettings[e.target.name] = e.target.value;
+    let next = Object.assign({}, this.state);
 
-    this.setState({ settings: nextSettings });
+    next.errors.json = '';
+    try {
+      this.validate(e.target);
+    } catch (err) {
+      next.errors.json = err.message;
+    }
+    next.settings[e.target.name] = e.target.value;
+
+    this.setState(next);
   }
 
   bindAndSave(e) {
