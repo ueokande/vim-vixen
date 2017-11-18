@@ -31,14 +31,30 @@ export default class ConsoleComponent {
     }
   }
 
+  doEnter(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    return this.onEntered(e.target.value);
+  }
+
+  selectNext(e) {
+    this.store.dispatch(consoleActions.completionNext());
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
+  selectPrev(e) {
+    this.store.dispatch(consoleActions.completionPrev());
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
   onKeyDown(e) {
     switch (e.keyCode) {
     case KeyboardEvent.DOM_VK_ESCAPE:
       return this.hideCommand();
     case KeyboardEvent.DOM_VK_RETURN:
-      e.stopPropagation();
-      e.preventDefault();
-      return this.onEntered(e.target.value);
+      return this.doEnter(e);
     case KeyboardEvent.DOM_VK_TAB:
       if (e.shiftKey) {
         this.store.dispatch(consoleActions.completionPrev());
@@ -47,6 +63,26 @@ export default class ConsoleComponent {
       }
       e.stopPropagation();
       e.preventDefault();
+      break;
+    case KeyboardEvent.DOM_VK_OPEN_BRACKET:
+      if (e.ctrlKey) {
+        return this.hideCommand();
+      }
+      break;
+    case KeyboardEvent.DOM_VK_M:
+      if (e.ctrlKey) {
+        return this.doEnter(e);
+      }
+      break;
+    case KeyboardEvent.DOM_VK_N:
+      if (e.ctrlKey) {
+        this.selectNext(e);
+      }
+      break;
+    case KeyboardEvent.DOM_VK_P:
+      if (e.ctrlKey) {
+        this.selectPrev(e);
+      }
       break;
     }
   }
