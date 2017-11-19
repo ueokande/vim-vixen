@@ -36,6 +36,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 #### Navigation
 
 - [ ] <kbd>H</kbd>, <kbd>L</kbd>: go back and forward in histories
+- [ ] <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: Open next/prev link in `<link>` tags.
 - [ ] <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: find prev and next links and open it
 - [ ] <kbd>g</kbd><kbd>u</kbd>: go to parent directory
 - [ ] <kbd>g</kbd><kbd>U</kbd>: go to root directory
@@ -143,11 +144,13 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] able to scroll on Gmail and Slack
 - [ ] Fucus text box on Twitter or Slack, press <kbd>j</kbd>, then <kbd>j</kbd> is typed in the box
 - [ ] Focus the text box on Twitter or Slack on following mode
+- [ ] Tha pages is shown in https://pitchify.com/
+- [ ] Open console in http://www.espncricinfo.com/
 
 ## Find mode
 
 - [ ] open console with <kbd>/</kbd>
-- [ ] highlight a word on <kbd>Enter</kb> pressed in find console
+- [ ] highlight a word on <kbd>Enter</kbd> pressed in find console
 - [ ] Search next/prev by <kbd>n</kbd>/<kbd>N</kbd>
 - [ ] Wrap search by <kbd>n</kbd>/<kbd>N</kbd>
 - [ ] Find with last keyword if keyword is empty

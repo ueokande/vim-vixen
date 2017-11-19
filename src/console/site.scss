@@ -69,6 +69,8 @@ body {
 
   &-message {
     @include consoole-font;
+
+    border-top: 1px solid gray;
   }
 
   &-error {
