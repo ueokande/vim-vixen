@@ -150,7 +150,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 ## Find mode
 
 - [ ] open console with <kbd>/</kbd>
-- [ ] highlight a word on <kbd>Enter</kb> pressed in find console
+- [ ] highlight a word on <kbd>Enter</kbd> pressed in find console
 - [ ] Search next/prev by <kbd>n</kbd>/<kbd>N</kbd>
 - [ ] Wrap search by <kbd>n</kbd>/<kbd>N</kbd>
 - [ ] Find with last keyword if keyword is empty
