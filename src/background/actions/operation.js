@@ -17,15 +17,15 @@ const sendConsoleShowCommand = (tab, command) => {
 const exec = (operation, tab) => {
   switch (operation.type) {
   case operations.WINDOW_OPEN:
-   return windows.openWindow();
+    return windows.openWindow();
   case operations.WINDOW_OPEN_INCOGNITO:
-   return windows.openWindowIncognito();
+    return windows.openWindowIncognito();
   case operations.TAB_OPEN:
-   return tabs.openTab();
+    return tabs.openTab();
   case operations.TAB_OPEN_BACKGROUND:
-   return tabs.openTabInBackground();
+    return tabs.openTabInBackground();
   case operations.TAB_OPEN_PINNED:
-   return tabs.openTabPinned();
+    return tabs.openTabPinned();
   case operations.TAB_CLOSE:
     return tabs.closeTab(tab.id);
   case operations.TAB_REOPEN:

@@ -10,14 +10,15 @@ browser.tabs.onActivated.addListener((activeInfo) => {
 
 const openTab = () => {
   return browser.tabs.create({});
-}
+};
+
 const openTabInBackground = () => {
-  return browser.tabs.create({ "active": false });
-}
+  return browser.tabs.create({ 'active': false });
+};
 
 const openTabPinned = () => {
-  return browser.tabs.create({ "pinned": true })
-}
+  return browser.tabs.create({ 'pinned': true });
+};
 
 const closeTab = (id) => {
   return browser.tabs.remove(id);
