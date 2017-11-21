@@ -31,7 +31,14 @@ export default {
   NAVIGATE_PARENT: 'navigate.parent',
   NAVIGATE_ROOT: 'navigate.root',
 
+  // Windows
+  WINDOW_OPEN: 'windows.open',
+  WINDOW_OPEN_INCOGNITO: 'windows.open.incognito',
+
   // Tabs
+  TAB_OPEN: 'tabs.open',
+  TAB_OPEN_BACKGROUND: 'tabs.open.background',
+  TAB_OPEN_PINNED: 'tabs.open.pinned',
   TAB_CLOSE: 'tabs.close',
   TAB_REOPEN: 'tabs.reopen',
   TAB_PREV: 'tabs.prev',
