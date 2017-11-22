@@ -32,6 +32,8 @@ export default {
   NAVIGATE_ROOT: 'navigate.root',
 
   // Tabs
+  TAB_OPEN_LEFT: 'tabs.open.left',
+  TAB_OPEN_RIGHT: 'tabs.open.right',
   TAB_CLOSE: 'tabs.close',
   TAB_REOPEN: 'tabs.reopen',
   TAB_PREV: 'tabs.prev',
