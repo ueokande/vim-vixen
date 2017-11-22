@@ -4,10 +4,10 @@ import DefaultSettings from 'shared/default-settings';
 
 const load = () => {
   return browser.storage.local.get('settings').then(({ settings }) => {
-    if (settings) {
-      return set(settings);
+    if (!settings) {
+      return set(DefaultSettings);
     }
-    return set(DefaultSettings);
+    return set(Object.assign({}, DefaultSettings, settings));
   }, console.error);
 };
 
@@ -28,6 +28,7 @@ const set = (settings) => {
     type: actions.SETTING_SET_SETTINGS,
     source: settings.source,
     json: settings.json,
+    form: settings.form,
     value: JSON.parse(settings.json),
   };
 };

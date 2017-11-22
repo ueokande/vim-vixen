@@ -1,17 +1,28 @@
-.form-field-label {
-  font-weight: bold
-}
+.settings-ui-input {
+  page-break-inside: avoid;
 
-.form-field-error {
-  font-weight: bold;
-  color: red;
-  min-height: 1.5em;
-}
+  * {
+    page-break-inside: avoid;
+  }
 
-.form-field-input {
-  padding: 4px;
-}
+  label {
+    font-weight: bold;
+    min-width: 14rem;
+    display: inline-block;
+  }
 
-.form-field-input.input-error {
-  box-shadow: 0 0 2px red;
+  input {
+    padding: 4px;
+  }
+
+  input.input-crror,
+  textarea.input-error {
+    box-shadow: 0 0 2px red;
+  }
+
+  &-error {
+    font-weight: bold;
+    color: red;
+    min-height: 1.5em;
+  }
 }

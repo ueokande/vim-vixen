@@ -3,32 +3,35 @@ import './input.scss';
 
 class Input extends Component {
 
+  renderText(props) {
+    let inputClassName = props.error ? 'input-error' : '';
+    return <div className='settings-ui-input'>
+      <label
+        type='text'
+        htmlFor={props.id}
+      >{ props.label }</label>
+      <input type='text' className={inputClassName} {...props} />
+    </div>;
+  }
+
   renderRadio(props) {
-    let inputClasses = 'form-field-input';
-    if (props.error) {
-      inputClasses += ' input-error';
-    }
-    return <div>
+    let inputClassName = props.error ? 'input-error' : '';
+    return <div className='settings-ui-input'>
       <label>
-        <input className={ inputClasses } type='radio' {...props} />
+        <input type='radio' className={inputClassName} {...props} />
         { props.label }
       </label>
     </div>;
   }
 
   renderTextArea(props) {
-    let inputClasses = 'form-field-input';
-    if (props.error) {
-      inputClasses += ' input-error';
-    }
-    return <div>
+    let inputClassName = props.error ? 'input-error' : '';
+    return <div className='settings-ui-input'>
       <label
-        className='form-field-label'
         htmlFor={props.id}
       >{ props.label }</label>
-      <textarea className={inputClasses} {...props} />
-
-      <p className='form-field-error'>{ this.props.error }</p>
+      <textarea className={inputClassName} {...props} />
+      <p className='settings-ui-input-error'>{ this.props.error }</p>
     </div>;
   }
 
@@ -36,6 +39,8 @@ class Input extends Component {
     let { type } = this.props;
 
     switch (this.props.type) {
+    case 'text':
+      return this.renderText(this.props);
     case 'radio':
       return this.renderRadio(this.props);
     case 'textarea':

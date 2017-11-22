@@ -7,4 +7,31 @@
     min-height: 64ex;
     resize: vertical;
   }
+
+  fieldset {
+    margin: 0;
+    padding: 0;
+    border: none;
+    margin-top: 1rem;
+
+    fieldset:first-of-type {
+      margin-top: 1rem;
+    }
+
+    legend {
+      font-size: 1.5rem;
+      line-height: 1.5rem;
+      font-weight: bold;
+    }
+  }
+
+  .keymap-fields{
+    column-count: 2;
+    .keymap-fields-group {
+      margin-top: 24px;
+    }
+    .keymap-fields-group:first-of-type {
+      margin-top: 0;
+    }
+  }
 }
