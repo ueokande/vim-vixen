@@ -10,10 +10,10 @@ browser.tabs.onActivated.addListener((activeInfo) => {
 
 const closeTab = (id) => {
   return browser.tabs.get(id).then((tab) => {
-    if(!tab.pinned) {
+    if (!tab.pinned) {
       return browser.tabs.remove(id);
     }
-  })
+  });
 };
 
 const closeTabForce = (id) => {
