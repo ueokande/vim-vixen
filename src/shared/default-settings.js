@@ -117,14 +117,14 @@ export default {
     },
     'search': {
       'default': 'google',
-      'engines': {
-        'google': 'https://google.com/search?q={}',
-        'yahoo': 'https://search.yahoo.com/search?p={}',
-        'bing': 'https://www.bing.com/search?q={}',
-        'duckduckgo': 'https://duckduckgo.com/?q={}',
-        'twitter': 'https://twitter.com/search?q={}',
-        'wikipedia': 'https://en.wikipedia.org/w/index.php?search={}'
-      }
+      'engines': [
+        ['google', 'https,//google.com/search?q={}'],
+        ['yahoo', 'https,//search.yahoo.com/search?p={}'],
+        ['bing', 'https,//www.bing.com/search?q={}'],
+        ['duckduckgo', 'https,//duckduckgo.com/?q={}'],
+        ['twitter', 'https,//twitter.com/search?q={}'],
+        ['wikipedia', 'https,//en.wikipedia.org/w/index.php?search={}'],
+      ]
     }
   }
 };

@@ -1,0 +1,38 @@
+.form-search-engine-form {
+  @mixin row-base {
+    display: flex;
+
+    .column-name {
+      flex: 1;
+    }
+    .column-url {
+      flex: 5;
+    }
+    .column-option {
+      text-align: right;
+      flex-basis: 5rem;
+    }
+  }
+
+  &-header {
+    @include row-base;
+
+    font-weight: bold;
+  }
+
+  &-row {
+    @include row-base;
+
+    .column-option input[type='button'] {
+      border: none;
+      padding: 4;
+      display: inline;
+      background: none;
+      color: red;
+
+      &:hover {
+        color: darkred;
+      }
+    }
+  }
+}

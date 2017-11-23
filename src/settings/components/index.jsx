@@ -1,6 +1,7 @@
 import './site.scss';
 import { h, Component } from 'preact';
 import Input from './ui/input';
+import SearchEngineForm from './form/search-engine-form';
 import * as settingActions from 'settings/actions/setting';
 import * as validator from 'shared/validators/setting';
 
@@ -116,6 +117,13 @@ class SettingsComponent extends Component {
           { keymapFields }
         </div>
       </fieldset>
+      <fieldset>
+        <legend>Search Engines</legend>
+        <SearchEngineForm
+          value={this.state.settings.form.search}
+          onChange={this.bindSearchForm.bind(this)}
+        />
+      </fieldset>
     </div>;
   }
 
@@ -128,7 +136,6 @@ class SettingsComponent extends Component {
         spellCheck='false'
         error={this.state.errors.json}
         onChange={this.bindValue.bind(this)}
-        onBlur={this.save.bind(this)}
         value={this.state.settings.json}
       />
     </div>;
@@ -175,6 +182,13 @@ class SettingsComponent extends Component {
     }
   }
 
+  bindSearchForm(value) {
+    let next = Object.assign({}, this.state);
+    next.settings.form.search = value;
+    this.setState(next);
+    this.context.store.dispatch(settingActions.save(next.settings));
+  }
+
   bindValue(e) {
     let next = Object.assign({}, this.state);
 
@@ -187,6 +201,7 @@ class SettingsComponent extends Component {
     next.settings[e.target.name] = e.target.value;
 
     this.setState(next);
+    this.context.store.dispatch(settingActions.save(next.settings));
   }
 
   bindFormKeymapsValue(e) {
@@ -195,16 +210,6 @@ class SettingsComponent extends Component {
     next.settings.form.keymaps[e.target.name] = e.target.value;
 
     this.context.store.dispatch(settingActions.save(next.settings));
-  }
-
-  save() {
-    try {
-      let json = this.state.settings.json;
-      validator.validate(JSON.parse(json));
-      this.context.store.dispatch(settingActions.save(this.state.settings));
-    } catch (err) {
-      // error already shown
-    }
   }
 }
 
