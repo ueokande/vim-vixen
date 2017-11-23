@@ -53,7 +53,7 @@ describe('navigates module', () => {
     ));
 
     it('navigates to <a> elements whose text matches "previous"', testPrev(
-      '<a href="#dummy">preview</a><a href="#prev">go to previous</a>'
+      '<a href="#dummy">previously</a><a href="#prev">previous page</a>'
     ));
 
     it('navigates to <a> elements whose decoded text matches "<<"', testPrev(
@@ -119,11 +119,11 @@ describe('navigates module', () => {
     ));
 
     it('prefers link[rel~=next] to a[rel~=next]', testNext(
-      '<a rel="next" href="#dummy">click me<><link rel="next" href="#next" />'
+      '<a rel="next" href="#dummy">click me</a><link rel="next" href="#next" />'
     ));
 
     it('prefers a[rel~=next] to a::text(pattern)', testNext(
-      '<a href="#dummy">go to next</a><a rel="next" href="#next">click me</a>'
+      '<a href="#dummy">next page</a><a rel="next" href="#next">click me</a>'
     ));
   });
 
