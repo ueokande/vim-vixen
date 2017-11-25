@@ -22,17 +22,5 @@
 
   &-row {
     @include row-base;
-
-    .column-option input[type='button'] {
-      border: none;
-      padding: 4;
-      display: inline;
-      background: none;
-      color: red;
-
-      &:hover {
-        color: darkred;
-      }
-    }
   }
 }

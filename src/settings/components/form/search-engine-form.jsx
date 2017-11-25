@@ -1,5 +1,6 @@
-import { h, Component } from 'preact';
 import './search-engine-form.scss';
+import { h, Component } from 'preact';
+import DeleteButton from '../ui/delete-button';
 
 class SearchEngineForm extends Component {
 
@@ -33,8 +34,7 @@ class SearchEngineForm extends Component {
               <input data-index={index} type='radio' name='default'
                 checked={defaultEngine === engine[0]}
                 onChange={this.bindValue.bind(this)} />
-              <input data-index={index} type='button' name='delete'
-                value='&#x2716;'
+              <DeleteButton data-index={index} name='delete'
                 onClick={this.bindValue.bind(this)} />
             </div>
           </div>;
