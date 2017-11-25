@@ -3,6 +3,7 @@ import { h, Component } from 'preact';
 import Input from './ui/input';
 import SearchEngineForm from './form/search-engine-form';
 import KeymapsForm from './form/keymaps-form';
+import BlacklistForm from './form/blacklist-form';
 import * as settingActions from 'settings/actions/setting';
 import * as validator from 'shared/validators/setting';
 
@@ -42,14 +43,21 @@ class SettingsComponent extends Component {
         <legend>Keybindings</legend>
         <KeymapsForm
           value={this.state.settings.form.keymaps}
-          onChange={this.bindKeymapsForm.bind(this)}
+          onChange={value => this.bindForm('keymaps', value)}
         />
       </fieldset>
       <fieldset>
         <legend>Search Engines</legend>
         <SearchEngineForm
           value={this.state.settings.form.search}
-          onChange={this.bindSearchForm.bind(this)}
+          onChange={value => this.bindForm('search', value)}
+        />
+      </fieldset>
+      <fieldset>
+        <legend>Blacklist</legend>
+        <BlacklistForm
+          value={this.state.settings.form.blacklist}
+          onChange={value => this.bindForm('blacklist', value)}
         />
       </fieldset>
     </div>;
@@ -110,16 +118,13 @@ class SettingsComponent extends Component {
     }
   }
 
-  bindSearchForm(value) {
-    let next = Object.assign({}, this.state);
-    next.settings.form.search = value;
-    this.setState(next);
-    this.context.store.dispatch(settingActions.save(next.settings));
-  }
-
-  bindKeymapsForm(value) {
-    let next = Object.assign({}, this.state);
-    next.settings.form.keymaps = value;
+  bindForm(name, value) {
+    let next = Object.assign({}, this.state, {
+      settings: Object.assign({}, this.state.settings, {
+        form: Object.assign({}, this.state.settings.form)
+      })
+    });
+    next.settings.form[name] = value;
     this.setState(next);
     this.context.store.dispatch(settingActions.save(next.settings));
   }

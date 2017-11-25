@@ -125,6 +125,7 @@ export default {
         ['twitter', 'https,//twitter.com/search?q={}'],
         ['wikipedia', 'https,//en.wikipedia.org/w/index.php?search={}'],
       ]
-    }
+    },
+    'blacklist': [],
   }
 };
