@@ -44,6 +44,7 @@
     "no-plusplus": "off",
     "no-ternary": "off",
     "no-undefined": "off",
+    "no-undef-init": "off",
     "no-unused-vars": ["error", { "varsIgnorePattern": "h" }],
     "no-use-before-define": "off",
     "no-warning-comments": "off",

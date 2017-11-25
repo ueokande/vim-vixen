@@ -27,9 +27,9 @@ const save = (settings) => {
 const set = (settings) => {
   let value = JSON.parse(DefaultSettings.json);
   if (settings.source === 'json') {
-    value = settingsValues.fromJson(settings.json);
+    value = settingsValues.valueFromJson(settings.json);
   } else if (settings.source === 'form') {
-    value = settingsValues.fromForm(settings.form);
+    value = settingsValues.valueFromForm(settings.form);
   }
 
   return {
