@@ -89,8 +89,8 @@ export default {
 
       'follow.start?{"newTab":false}': 'f',
       'follow.start?{"newTab":true}': 'F',
-      'navigate.histories.prev': 'H',
-      'navigate.histories.next': 'L',
+      'navigate.history.prev': 'H',
+      'navigate.history.next': 'L',
       'navigate.link.next': ']]',
       'navigate.link.prev': '[[',
       'navigate.parent': 'gu',

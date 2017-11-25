@@ -27,8 +27,8 @@ const KeyMapFields = [
   ], [
     ['follow.start?{"newTab":false}', 'Follow a link'],
     ['follow.start?{"newTab":true}', 'Follow a link in new tab'],
-    ['navigate.histories.prev', 'Go back in histories'],
-    ['navigate.histories.next', 'Go forward in histories'],
+    ['navigate.history.prev', 'Go back in histories'],
+    ['navigate.history.next', 'Go forward in histories'],
     ['navigate.link.next', 'Open next link'],
     ['navigate.link.prev', 'Open previous link'],
     ['navigate.parent', 'Go to parent directory'],
