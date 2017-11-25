@@ -6,6 +6,7 @@ import KeymapsForm from './form/keymaps-form';
 import BlacklistForm from './form/blacklist-form';
 import * as settingActions from 'settings/actions/setting';
 import * as validator from 'shared/validators/setting';
+import * as settingsValues from 'shared/settings/values';
 
 class SettingsComponent extends Component {
   constructor(props, context) {
@@ -95,7 +96,7 @@ class SettingsComponent extends Component {
             label='Use form'
             checked={this.state.settings.source === 'form'}
             value='form'
-            onChange={this.bindValue.bind(this)} />
+            onChange={this.bindSource.bind(this)} />
 
           <Input
             type='radio'
@@ -103,7 +104,7 @@ class SettingsComponent extends Component {
             label='Use plain JSON'
             checked={this.state.settings.source === 'json'}
             value='json'
-            onChange={this.bindValue.bind(this)} />
+            onChange={this.bindSource.bind(this)} />
 
           { fields }
         </form>
@@ -139,6 +140,24 @@ class SettingsComponent extends Component {
       next.errors.json = err.message;
     }
     next.settings[e.target.name] = e.target.value;
+
+    this.setState(next);
+    this.context.store.dispatch(settingActions.save(next.settings));
+  }
+
+  bindSource(e) {
+    let from = this.state.settings.source;
+    let to = e.target.value;
+
+    let next = Object.assign({}, this.state);
+    if (from === 'form' && to === 'json') {
+      next.settings.json =
+        settingsValues.jsonFromForm(this.state.settings.form);
+    } else if (from === 'json' && to === 'form') {
+      next.settings.form =
+        settingsValues.formFromJson(this.state.settings.json);
+    }
+    next.settings.source = to;
 
     this.setState(next);
     this.context.store.dispatch(settingActions.save(next.settings));

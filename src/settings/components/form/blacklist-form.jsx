@@ -34,7 +34,7 @@ class BlacklistForm extends Component {
 
     let name = e.target.name;
     let index = e.target.getAttribute('data-index');
-    let next = this.props.value.slice();
+    let next = this.props.value ? this.props.value.slice() : [];
 
     if (name === 'url') {
       next[index] = e.target.value;
