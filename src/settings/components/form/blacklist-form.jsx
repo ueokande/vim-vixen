@@ -1,4 +1,5 @@
 import './blacklist-form.scss';
+import AddButton from '../ui/add-button';
 import DeleteButton from '../ui/delete-button';
 import { h, Component } from 'preact';
 
@@ -22,6 +23,7 @@ class BlacklistForm extends Component {
           </div>;
         })
       }
+      <AddButton name='add' onClick={this.bindValue.bind(this)} />
     </div>;
   }
 
@@ -36,6 +38,8 @@ class BlacklistForm extends Component {
 
     if (name === 'url') {
       next[index] = e.target.value;
+    } else if (name === 'add') {
+      next.push('');
     } else if (name === 'delete') {
       next.splice(index, 1);
     }

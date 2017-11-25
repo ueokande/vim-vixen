@@ -1,5 +1,6 @@
 import './search-engine-form.scss';
 import { h, Component } from 'preact';
+import AddButton from '../ui/add-button';
 import DeleteButton from '../ui/delete-button';
 
 class SearchEngineForm extends Component {
@@ -40,6 +41,7 @@ class SearchEngineForm extends Component {
           </div>;
         })
       }
+      <AddButton name='add' onClick={this.bindValue.bind(this)} />
     </div>;
   }
 
@@ -58,6 +60,8 @@ class SearchEngineForm extends Component {
       next.engines[index][1] = e.target.value;
     } else if (name === 'default') {
       next.default = this.props.value.engines[index][0];
+    } else if (name === 'add') {
+      next.engines.push(['', '']);
     } else if (name === 'delete') {
       next.engines.splice(index, 1);
     }
