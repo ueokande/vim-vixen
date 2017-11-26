@@ -40,7 +40,8 @@ class SearchForm extends Component {
           </div>;
         })
       }
-      <AddButton name='add' onClick={this.bindValue.bind(this)} />
+      <AddButton name='add' style='float:right'
+        onClick={this.bindValue.bind(this)} />
     </div>;
   }
 

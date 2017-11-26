@@ -4,9 +4,11 @@
 
     .column-name {
       flex: 1;
+      min-width: 0;
     }
     .column-url {
       flex: 5;
+      min-width: 0;
     }
     .column-option {
       text-align: right;

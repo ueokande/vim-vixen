@@ -11,8 +11,9 @@
     display: inline-block;
   }
 
-  input {
+  input[type='text'] {
     padding: 4px;
+    width: 8rem;
   }
 
   input.input-crror,
