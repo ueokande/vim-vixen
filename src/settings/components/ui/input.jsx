@@ -6,10 +6,7 @@ class Input extends Component {
   renderText(props) {
     let inputClassName = props.error ? 'input-error' : '';
     return <div className='settings-ui-input'>
-      <label
-        type='text'
-        htmlFor={props.id}
-      >{ props.label }</label>
+      <label htmlFor={props.id}>{ props.label }</label>
       <input type='text' className={inputClassName} {...props} />
     </div>;
   }
