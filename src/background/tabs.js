@@ -1,12 +1,10 @@
 let prevSelTab = 1;
 let currSelTab = 1;
 
-browser.tabs.onActivated.addListener(tabChangeHandler);
-
-function tabChangeHandler(activeInfo) {
+browser.tabs.onActivated.addListener((activeInfo) => {
   prevSelTab = currSelTab;
   currSelTab = activeInfo.tabId;
-}
+});
 
 const closeTab = (id) => {
   return browser.tabs.remove(id);
