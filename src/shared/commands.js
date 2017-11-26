@@ -9,7 +9,7 @@ const normalizeUrl = (args, searchConfig) => {
     if (concat.includes('.') && !concat.includes(' ')) {
       return 'http://' + concat;
     }
-    let query = encodeURI(concat);
+    let query = concat;
     let template = searchConfig.engines[
       searchConfig.default
     ];
@@ -19,7 +19,7 @@ const normalizeUrl = (args, searchConfig) => {
         template = searchConfig.engines[key];
       }
     }
-    return template.replace('{}', query);
+    return template.replace('{}', encodeURIComponent(query));
   }
 };
 
