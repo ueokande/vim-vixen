@@ -10,10 +10,9 @@ class SearchForm extends Component {
     if (!value) {
       value = { default: '', engines: []};
     }
-    let {
-      default: defaultEngine,
-      engines
-    } = value;
+    if (!value.engines) {
+      value.engines = [];
+    }
 
     return <div className='form-search-form'>
       <div className='form-search-form-header'>
@@ -22,7 +21,7 @@ class SearchForm extends Component {
         <div className='column-option'>Default</div>
       </div>
       {
-        engines.map((engine, index) => {
+        value.engines.map((engine, index) => {
           return <div key={index} className='form-search-form-row'>
             <input data-index={index} type='text' name='name'
               className='column-name' value={engine[0]}
@@ -33,7 +32,7 @@ class SearchForm extends Component {
               onChange={this.bindValue.bind(this)} />
             <div className='column-option'>
               <input data-index={index} type='radio' name='default'
-                checked={defaultEngine === engine[0]}
+                checked={value.default === engine[0]}
                 onChange={this.bindValue.bind(this)} />
               <DeleteButton data-index={index} name='delete'
                 onClick={this.bindValue.bind(this)} />
@@ -50,12 +49,17 @@ class SearchForm extends Component {
       return;
     }
 
+    let value = this.props.value;
     let name = e.target.name;
     let index = e.target.getAttribute('data-index');
-    let next = Object.assign({}, this.props.value);
+    let next = Object.assign({}, {
+      default: value.default,
+      engines: value.engines ? value.engines.slice() : [],
+    });
 
     if (name === 'name') {
       next.engines[index][0] = e.target.value;
+      next.default = this.props.value.engines[index][0];
     } else if (name === 'url') {
       next.engines[index][1] = e.target.value;
     } else if (name === 'default') {
