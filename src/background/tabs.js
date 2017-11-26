@@ -1,4 +1,5 @@
 let prevSelTab = 0;
+let currSelTab = 2;
 
 const closeTab = (id) => {
   return browser.tabs.remove(id);
@@ -111,14 +112,21 @@ const selectLastTab = () => {
   });
 };
 
+// const selectPrevSelTab = () => {
+//   let tmpPrevSelTab = null;
+//   return browser.tabs.query({ currentWindow: true, active: true }).then(
+//     (tabs) => {
+//       tmpPrevSelTab = tabs[0].id;
+//       browser.tabs.update(prevSelTab, { active: true });
+//       prevSelTab = tmpPrevSelTab;
+//     });
+// };
+
 const selectPrevSelTab = () => {
-  let tmpPrevSelTab = null;
-  return browser.tabs.query({ currentWindow: true, active: true }).then(
-    (tabs) => {
-      tmpPrevSelTab = tabs[0].id;
-      browser.tabs.update(prevSelTab, { active: true });
-      prevSelTab = tmpPrevSelTab;
-    });
+  let tmpPrevSelTab = prevSelTab;
+  prevSelTab = currSelTab;
+  currSelTab = tmpPrevSelTab;
+  return browser.tabs.update(currSelTab, { active: true });
 };
 
 const reload = (current, cache) => {
