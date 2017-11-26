@@ -2,8 +2,10 @@ let prevSelTab = 1;
 let currSelTab = 1;
 
 browser.tabs.onActivated.addListener((activeInfo) => {
-  prevSelTab = currSelTab;
-  currSelTab = activeInfo.tabId;
+  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
+    prevSelTab = currSelTab;
+    currSelTab = activeInfo.tabId;
+  });
 });
 
 const closeTab = (id) => {
