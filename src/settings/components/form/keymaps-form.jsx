@@ -23,7 +23,8 @@ const KeyMapFields = [
     ['tabs.prev?{"count":1}', 'Select prev Tab'],
     ['tabs.first', 'Select first tab'],
     ['tabs.last', 'Select last tab'],
-    ['tabs.reload?{"cache":true}', 'Reload current tab'],
+    ['tabs.reload?{"cache":false}', 'Reload current tab'],
+    ['tabs.reload?{"cache":true}', 'Reload with no caches'],
     ['tabs.pin.toggle', 'Toggle pinned state'],
     ['tabs.duplicate', 'Dupplicate a tab'],
   ], [

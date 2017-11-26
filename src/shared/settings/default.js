@@ -83,7 +83,8 @@ export default {
       'tabs.prev?{"count":1}': 'K',
       'tabs.first': 'g0',
       'tabs.last': 'g$',
-      'tabs.reload?{"cache":true}': 'r',
+      'tabs.reload?{"cache":false}': 'r',
+      'tabs.reload?{"cache":true}': 'R',
       'tabs.pin.toggle': 'zp',
       'tabs.duplicate': 'zd',
 
