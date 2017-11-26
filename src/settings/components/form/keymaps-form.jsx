@@ -58,6 +58,10 @@ const KeyMapFields = [
 class KeymapsForm extends Component {
 
   render() {
+    let values = this.props.value;
+    if (!values) {
+      values = {};
+    }
     return <div className='keymap-fields'>
       {
         KeyMapFields.map((group, index) => {
@@ -66,7 +70,7 @@ class KeymapsForm extends Component {
               group.map((field) => {
                 let name = field[0];
                 let label = field[1];
-                let value = this.props.value[name];
+                let value = values[name];
                 return <Input
                   type='text' id={name} name={name} key={name}
                   label={label} value={value}
