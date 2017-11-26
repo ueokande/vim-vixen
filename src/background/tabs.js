@@ -2,7 +2,7 @@ let prevSelTab = 1;
 let currSelTab = 1;
 
 browser.tabs.onActivated.addListener((activeInfo) => {
-  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
+  return browser.tabs.query({ currentWindow: true }).then(() => {
     prevSelTab = currSelTab;
     currSelTab = activeInfo.tabId;
   });
