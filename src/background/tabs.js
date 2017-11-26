@@ -6,7 +6,6 @@ browser.tabs.onActivated.addListener(tabChangeHandler);
 function tabChangeHandler(activeInfo) {
   prevSelTab = currSelTab;
   currSelTab = activeInfo.tabId;
-  console.log("prev tab: " + prevSelTab + " - curr tab: " + currSelTab);
 }
 
 const closeTab = (id) => {
@@ -69,76 +68,43 @@ const getCompletions = (keyword) => {
 };
 
 const selectPrevTab = (current, count) => {
-  browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => {
-    prevSelTab = tabs[0].id;
-  });
-
   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
     if (tabs.length < 2) {
       return;
     }
     let select = (current - count + tabs.length) % tabs.length;
     let id = tabs[select].id;
-    currSelTab = id;
     return browser.tabs.update(id, { active: true });
   });
 };
 
 const selectNextTab = (current, count) => {
-  browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => {
-    prevSelTab = tabs[0].id;
-  });
-
   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
     if (tabs.length < 2) {
       return;
     }
     let select = (current + count) % tabs.length;
     let id = tabs[select].id;
-    currSelTab = id;
     return browser.tabs.update(id, { active: true });
   });
 };
 
 const selectFirstTab = () => {
-  browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => {
-    prevSelTab = tabs[0].id;
-  });
-
   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
     let id = tabs[0].id;
-    currSelTab = id;
     return browser.tabs.update(id, { active: true });
   });
 };
 
 const selectLastTab = () => {
-  browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => {
-    prevSelTab = tabs[0].id;
-  });
-
   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
     let id = tabs[tabs.length - 1].id;
-    currSelTab = id;
     return browser.tabs.update(id, { active: true });
   });
 };
 
-// const selectPrevSelTab = () => {
-//   let tmpPrevSelTab = null;
-//   return browser.tabs.query({ currentWindow: true, active: true }).then(
-//     (tabs) => {
-//       tmpPrevSelTab = tabs[0].id;
-//       browser.tabs.update(prevSelTab, { active: true });
-//       prevSelTab = tmpPrevSelTab;
-//     });
-// };
-
 const selectPrevSelTab = () => {
-  let tmpPrevSelTab = prevSelTab;
-  prevSelTab = currSelTab;
-  currSelTab = tmpPrevSelTab;
-  return browser.tabs.update(currSelTab, { active: true });
+  return browser.tabs.update(prevSelTab, { active: true });
 };
 
 const reload = (current, cache) => {
