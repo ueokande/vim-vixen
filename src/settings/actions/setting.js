@@ -1,13 +1,14 @@
 import actions from 'settings/actions';
 import messages from 'shared/messages';
-import DefaultSettings from 'shared/default-settings';
+import DefaultSettings from 'shared/settings/default';
+import * as settingsValues from 'shared/settings/values';
 
 const load = () => {
   return browser.storage.local.get('settings').then(({ settings }) => {
-    if (settings) {
-      return set(settings);
+    if (!settings) {
+      return set(DefaultSettings);
     }
-    return set(DefaultSettings);
+    return set(Object.assign({}, DefaultSettings, settings));
   }, console.error);
 };
 
@@ -24,11 +25,19 @@ const save = (settings) => {
 };
 
 const set = (settings) => {
+  let value = JSON.parse(DefaultSettings.json);
+  if (settings.source === 'json') {
+    value = settingsValues.valueFromJson(settings.json);
+  } else if (settings.source === 'form') {
+    value = settingsValues.valueFromForm(settings.form);
+  }
+
   return {
     type: actions.SETTING_SET_SETTINGS,
     source: settings.source,
     json: settings.json,
-    value: JSON.parse(settings.json),
+    form: settings.form,
+    value,
   };
 };
 

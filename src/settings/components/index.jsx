@@ -1,15 +1,26 @@
 import './site.scss';
-import React from 'react';
-import PropTypes from 'prop-types';
+import { h, Component } from 'preact';
+import Input from './ui/input';
+import SearchForm from './form/search-form';
+import KeymapsForm from './form/keymaps-form';
+import BlacklistForm from './form/blacklist-form';
 import * as settingActions from 'settings/actions/setting';
 import * as validator from 'shared/validators/setting';
+import * as settingsValues from 'shared/settings/values';
 
-class SettingsComponent extends React.Component {
+const DO_YOU_WANT_TO_CONTINUE =
+  'Some settings in JSON can be lose on migrating.  ' +
+  'Do you want to continue ?';
+
+class SettingsComponent extends Component {
   constructor(props, context) {
     super(props, context);
 
     this.state = {
       settings: {
+        json: '',
+      },
+      errors: {
         json: '',
       }
     };
@@ -26,66 +37,140 @@ class SettingsComponent extends React.Component {
       settings: {
         source: settings.source,
         json: settings.json,
+        form: settings.form,
       }
     });
   }
 
+  renderFormFields() {
+    return <div>
+      <fieldset>
+        <legend>Keybindings</legend>
+        <KeymapsForm
+          value={this.state.settings.form.keymaps}
+          onChange={value => this.bindForm('keymaps', value)}
+        />
+      </fieldset>
+      <fieldset>
+        <legend>Search Engines</legend>
+        <SearchForm
+          value={this.state.settings.form.search}
+          onChange={value => this.bindForm('search', value)}
+        />
+      </fieldset>
+      <fieldset>
+        <legend>Blacklist</legend>
+        <BlacklistForm
+          value={this.state.settings.form.blacklist}
+          onChange={value => this.bindForm('blacklist', value)}
+        />
+      </fieldset>
+    </div>;
+  }
+
+  renderJsonFields() {
+    return <div>
+      <Input
+        type='textarea'
+        name='json'
+        label='Plane JSON'
+        spellCheck='false'
+        error={this.state.errors.json}
+        onChange={this.bindValue.bind(this)}
+        value={this.state.settings.json}
+      />
+    </div>;
+  }
+
   render() {
+    let fields = null;
+    if (this.state.settings.source === 'form') {
+      fields = this.renderFormFields();
+    } else if (this.state.settings.source === 'json') {
+      fields = this.renderJsonFields();
+    }
     return (
       <div>
         <h1>Configure Vim-Vixen</h1>
         <form className='vimvixen-settings-form'>
-
-          <p>Load settings from:</p>
-          <input type='radio' id='setting-source-json'
+          <Input
+            type='radio'
+            id='setting-source-form'
             name='source'
-            value='json'
-            onChange={this.bindAndSave.bind(this)}
-            checked={this.state.settings.source === 'json'} />
-          <label htmlFor='settings-source-json'>JSON</label>
+            label='Use form'
+            checked={this.state.settings.source === 'form'}
+            value='form'
+            onChange={this.bindSource.bind(this)} />
 
-          <textarea name='json' spellCheck='false'
-            onInput={this.validate.bind(this)}
-            onChange={this.bindValue.bind(this)}
-            onBlur={this.bindAndSave.bind(this)}
-            value={this.state.settings.json} />
+          <Input
+            type='radio'
+            name='source'
+            label='Use plain JSON'
+            checked={this.state.settings.source === 'json'}
+            value='json'
+            onChange={this.bindSource.bind(this)} />
+
+          { fields }
         </form>
       </div>
     );
   }
 
-  validate(e) {
-    try {
-      let settings = JSON.parse(e.target.value);
+  validate(target) {
+    if (target.name === 'json') {
+      let settings = JSON.parse(target.value);
       validator.validate(settings);
-      e.target.setCustomValidity('');
-    } catch (err) {
-      e.target.setCustomValidity(err.message);
     }
+  }
+
+  bindForm(name, value) {
+    let next = Object.assign({}, this.state, {
+      settings: Object.assign({}, this.state.settings, {
+        form: Object.assign({}, this.state.settings.form)
+      })
+    });
+    next.settings.form[name] = value;
+    this.setState(next);
+    this.context.store.dispatch(settingActions.save(next.settings));
   }
 
   bindValue(e) {
-    let nextSettings = Object.assign({}, this.state.settings);
-    nextSettings[e.target.name] = e.target.value;
+    let next = Object.assign({}, this.state);
 
-    this.setState({ settings: nextSettings });
+    next.errors.json = '';
+    try {
+      this.validate(e.target);
+    } catch (err) {
+      next.errors.json = err.message;
+    }
+    next.settings[e.target.name] = e.target.value;
+
+    this.setState(next);
+    this.context.store.dispatch(settingActions.save(next.settings));
   }
 
-  bindAndSave(e) {
-    this.bindValue(e);
+  bindSource(e) {
+    let from = this.state.settings.source;
+    let to = e.target.value;
 
-    try {
-      let json = this.state.settings.json;
-      validator.validate(JSON.parse(json));
-      this.context.store.dispatch(settingActions.save(this.state.settings));
-    } catch (err) {
-      // error already shown
+    let next = Object.assign({}, this.state);
+    if (from === 'form' && to === 'json') {
+      next.settings.json =
+        settingsValues.jsonFromForm(this.state.settings.form);
+    } else if (from === 'json' && to === 'form') {
+      let b = window.confirm(DO_YOU_WANT_TO_CONTINUE);
+      if (!b) {
+        this.setState(this.state);
+        return;
+      }
+      next.settings.form =
+        settingsValues.formFromJson(this.state.settings.json);
     }
+    next.settings.source = to;
+
+    this.setState(next);
+    this.context.store.dispatch(settingActions.save(next.settings));
   }
 }
-
-SettingsComponent.contextTypes = {
-  store: PropTypes.any,
-};
 
 export default SettingsComponent;

@@ -1,0 +1,13 @@
+
+.ui-delete-button {
+  border: none;
+  padding: 4;
+  display: inline;
+  background: none;
+  color: red;
+  cursor: pointer;
+
+  &:hover {
+    color: darkred;
+  }
+}
