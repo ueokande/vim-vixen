@@ -1,9 +1,9 @@
-import './search-engine-form.scss';
+import './search-form.scss';
 import { h, Component } from 'preact';
 import AddButton from '../ui/add-button';
 import DeleteButton from '../ui/delete-button';
 
-class SearchEngineForm extends Component {
+class SearchForm extends Component {
 
   render() {
     let value = this.props.value;
@@ -15,15 +15,15 @@ class SearchEngineForm extends Component {
       engines
     } = value;
 
-    return <div className='form-search-engine-form'>
-      <div className='form-search-engine-form-header'>
+    return <div className='form-search-form'>
+      <div className='form-search-form-header'>
         <div className='column-name'>Name</div>
         <div className='column-url'>URL</div>
         <div className='column-option'>Default</div>
       </div>
       {
         engines.map((engine, index) => {
-          return <div key={index} className='form-search-engine-form-row'>
+          return <div key={index} className='form-search-form-row'>
             <input data-index={index} type='text' name='name'
               className='column-name' value={engine[0]}
               onChange={this.bindValue.bind(this)} />
@@ -70,4 +70,4 @@ class SearchEngineForm extends Component {
   }
 }
 
-export default SearchEngineForm;
+export default SearchForm;

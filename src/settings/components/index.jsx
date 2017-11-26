@@ -1,7 +1,7 @@
 import './site.scss';
 import { h, Component } from 'preact';
 import Input from './ui/input';
-import SearchEngineForm from './form/search-engine-form';
+import SearchForm from './form/search-form';
 import KeymapsForm from './form/keymaps-form';
 import BlacklistForm from './form/blacklist-form';
 import * as settingActions from 'settings/actions/setting';
@@ -49,7 +49,7 @@ class SettingsComponent extends Component {
       </fieldset>
       <fieldset>
         <legend>Search Engines</legend>
-        <SearchEngineForm
+        <SearchForm
           value={this.state.settings.form.search}
           onChange={value => this.bindForm('search', value)}
         />
