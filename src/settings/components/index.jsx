@@ -8,6 +8,10 @@ import * as settingActions from 'settings/actions/setting';
 import * as validator from 'shared/validators/setting';
 import * as settingsValues from 'shared/settings/values';
 
+const DO_YOU_WANT_TO_CONTINUE =
+  'Some settings in JSON can be lose on migrating.  ' +
+  'Do you want to continue ?';
+
 class SettingsComponent extends Component {
   constructor(props, context) {
     super(props, context);
@@ -154,6 +158,11 @@ class SettingsComponent extends Component {
       next.settings.json =
         settingsValues.jsonFromForm(this.state.settings.form);
     } else if (from === 'json' && to === 'form') {
+      let b = window.confirm(DO_YOU_WANT_TO_CONTINUE);
+      if (!b) {
+        this.setState(this.state);
+        return;
+      }
       next.settings.form =
         settingsValues.formFromJson(this.state.settings.json);
     }
