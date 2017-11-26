@@ -62,10 +62,10 @@ class KeymapsForm extends Component {
     if (!values) {
       values = {};
     }
-    return <div className='keymap-fields'>
+    return <div className='form-keymaps-form'>
       {
         KeyMapFields.map((group, index) => {
-          return <div key={index} className='form-keymaps-form'>
+          return <div key={index} className='form-keymaps-form-field-group'>
             {
               group.map((field) => {
                 let name = field[0];
