@@ -70,6 +70,8 @@ export default {
       'scroll.horizonally?{"count":1}': 'l',
       'scroll.home': '0',
       'scroll.end': '$',
+      'scroll.top': 'gg',
+      'scroll.bottom': 'G',
       'scroll.pages?{"count":-0.5}': '<C-U>',
       'scroll.pages?{"count":0.5}': '<C-D>',
       'scroll.pages?{"count":-1}': '<C-B>',
