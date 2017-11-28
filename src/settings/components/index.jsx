@@ -123,6 +123,18 @@ class SettingsComponent extends Component {
     }
   }
 
+  validateValue(e) {
+    let next = Object.assign({}, this.state);
+
+    next.errors.json = '';
+    try {
+      this.validate(e.target);
+    } catch (err) {
+      next.errors.json = err.message;
+    }
+    next.settings[e.target.name] = e.target.value;
+  }
+
   bindForm(name, value) {
     let next = Object.assign({}, this.state, {
       settings: Object.assign({}, this.state.settings, {
@@ -136,14 +148,53 @@ class SettingsComponent extends Component {
 
   bindValue(e) {
     let next = Object.assign({}, this.state);
+    let error = false;
 
     next.errors.json = '';
     try {
       this.validate(e.target);
     } catch (err) {
       next.errors.json = err.message;
+      error = true;
     }
     next.settings[e.target.name] = e.target.value;
+
+    this.setState(this.state);
+    if (!error) {
+      this.context.store.dispatch(settingActions.save(next.settings));
+    }
+  }
+
+  migrateToForm() {
+    let b = window.confirm(DO_YOU_WANT_TO_CONTINUE);
+    if (!b) {
+      this.setState(this.state);
+      return;
+    }
+    try {
+      validator.validate(JSON.parse(this.state.settings.json));
+    } catch (err) {
+      this.setState(this.state);
+      return;
+    }
+
+    let form = settingsValues.formFromJson(
+      this.state.settings.json, KeymapsForm.AllowdOps);
+    let next = Object.assign({}, this.state);
+    next.settings.form = form;
+    next.settings.source = 'form';
+    next.errors.json = '';
+
+    this.setState(next);
+    this.context.store.dispatch(settingActions.save(next.settings));
+  }
+
+  migrateToJson() {
+    let json = settingsValues.jsonFromForm(this.state.settings.form);
+    let next = Object.assign({}, this.state);
+    next.settings.json = json;
+    next.settings.source = 'json';
+    next.errors.json = '';
 
     this.setState(next);
     this.context.store.dispatch(settingActions.save(next.settings));
@@ -153,23 +204,11 @@ class SettingsComponent extends Component {
     let from = this.state.settings.source;
     let to = e.target.value;
 
-    let next = Object.assign({}, this.state);
     if (from === 'form' && to === 'json') {
-      next.settings.json =
-        settingsValues.jsonFromForm(this.state.settings.form);
+      this.migrateToJson();
     } else if (from === 'json' && to === 'form') {
-      let b = window.confirm(DO_YOU_WANT_TO_CONTINUE);
-      if (!b) {
-        this.setState(this.state);
-        return;
-      }
-      next.settings.form =
-        settingsValues.formFromJson(this.state.settings.json);
+      this.migrateToForm();
     }
-    next.settings.source = to;
-
-    this.setState(next);
-    this.context.store.dispatch(settingActions.save(next.settings));
   }
 }
 

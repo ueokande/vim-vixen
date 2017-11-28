@@ -8,8 +8,10 @@ const KeyMapFields = [
     ['scroll.vertically?{"count":-1}', 'Scroll up'],
     ['scroll.horizonally?{"count":-1}', 'Scroll left'],
     ['scroll.horizonally?{"count":1}', 'Scroll right'],
-    ['scroll.home', 'Scroll leftmost'],
-    ['scroll.end', 'Scroll last'],
+    ['scroll.home', 'Scroll to leftmost'],
+    ['scroll.end', 'Scroll to rightmost'],
+    ['scroll.top', 'Scroll to top'],
+    ['scroll.bottom', 'Scroll to bottom'],
     ['scroll.pages?{"count":-0.5}', 'Scroll up by half of screen'],
     ['scroll.pages?{"count":0.5}', 'Scroll up by half of screen'],
     ['scroll.pages?{"count":-1}', 'Scroll up by a screen'],
@@ -21,7 +23,8 @@ const KeyMapFields = [
     ['tabs.prev?{"count":1}', 'Select prev Tab'],
     ['tabs.first', 'Select first tab'],
     ['tabs.last', 'Select last tab'],
-    ['tabs.reload?{"cache":true}', 'Reload current tab'],
+    ['tabs.reload?{"cache":false}', 'Reload current tab'],
+    ['tabs.reload?{"cache":true}', 'Reload with no caches'],
     ['tabs.pin.toggle', 'Toggle pinned state'],
     ['tabs.duplicate', 'Dupplicate a tab'],
   ], [
@@ -55,6 +58,8 @@ const KeyMapFields = [
   ]
 ];
 
+const AllowdOps = [].concat(...KeyMapFields.map(group => group.map(e => e[0])));
+
 class KeymapsForm extends Component {
 
   render() {
@@ -62,10 +67,10 @@ class KeymapsForm extends Component {
     if (!values) {
       values = {};
     }
-    return <div className='keymap-fields'>
+    return <div className='form-keymaps-form'>
       {
         KeyMapFields.map((group, index) => {
-          return <div key={index} className='form-keymaps-form'>
+          return <div key={index} className='form-keymaps-form-field-group'>
             {
               group.map((field) => {
                 let name = field[0];
@@ -95,5 +100,7 @@ class KeymapsForm extends Component {
     this.props.onChange(next);
   }
 }
+
+KeymapsForm.AllowdOps = AllowdOps;
 
 export default KeymapsForm;

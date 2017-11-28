@@ -1,5 +1,3 @@
-import DefaultSettings from './default';
-
 const operationFromFormName = (name) => {
   let [type, argStr] = name.split('?');
   let args = {};
@@ -55,16 +53,16 @@ const jsonFromValue = (value) => {
   return JSON.stringify(value, undefined, 2);
 };
 
-const formFromValue = (value) => {
-
+const formFromValue = (value, allowedOps) => {
   let keymaps = undefined;
+
   if (value.keymaps) {
-    let allowedOps = new Set(Object.keys(DefaultSettings.form.keymaps));
+    let allowedSet = new Set(allowedOps);
 
     keymaps = {};
     for (let keys of Object.keys(value.keymaps)) {
       let op = operationToFormName(value.keymaps[keys]);
-      if (allowedOps.has(op)) {
+      if (allowedSet.has(op)) {
         keymaps[op] = keys;
       }
     }
@@ -89,9 +87,9 @@ const jsonFromForm = (form) => {
   return jsonFromValue(valueFromForm(form));
 };
 
-const formFromJson = (json) => {
+const formFromJson = (json, allowedOps) => {
   let value = valueFromJson(json);
-  return formFromValue(value);
+  return formFromValue(value, allowedOps);
 };
 
 export {
