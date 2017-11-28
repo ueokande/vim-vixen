@@ -58,6 +58,8 @@ const KeyMapFields = [
   ]
 ];
 
+const AllowdOps = [].concat(...KeyMapFields.map(group => group.map(e => e[0])));
+
 class KeymapsForm extends Component {
 
   render() {
@@ -98,5 +100,7 @@ class KeymapsForm extends Component {
     this.props.onChange(next);
   }
 }
+
+KeymapsForm.AllowdOps = AllowdOps;
 
 export default KeymapsForm;

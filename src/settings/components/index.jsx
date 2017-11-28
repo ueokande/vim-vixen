@@ -123,6 +123,18 @@ class SettingsComponent extends Component {
     }
   }
 
+  validateValue(e) {
+    let next = Object.assign({}, this.state);
+
+    next.errors.json = '';
+    try {
+      this.validate(e.target);
+    } catch (err) {
+      next.errors.json = err.message;
+    }
+    next.settings[e.target.name] = e.target.value;
+  }
+
   bindForm(name, value) {
     let next = Object.assign({}, this.state, {
       settings: Object.assign({}, this.state.settings, {
@@ -164,7 +176,8 @@ class SettingsComponent extends Component {
         return;
       }
       next.settings.form =
-        settingsValues.formFromJson(this.state.settings.json);
+        settingsValues.formFromJson(
+          this.state.settings.json, KeymapsForm.AllowdOps);
     }
     next.settings.source = to;
 

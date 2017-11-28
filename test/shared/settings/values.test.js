@@ -98,9 +98,11 @@ describe("settings values", () => {
         search: { default: 'google', engines: { google: 'https://google.com/search?q={}' }},
         blacklist: [ '*.slack.com']
       };
-      let form = values.formFromValue(value);
+      let allowed = ['scroll.vertically?{"count":1}', 'scroll.home' ];
+      let form = values.formFromValue(value, allowed);
 
       expect(form.keymaps).to.have.property('scroll.vertically?{"count":1}', 'j');
+      expect(form.keymaps).to.not.have.property('scroll.vertically?{"count":100}');
       expect(form.keymaps).to.have.property('scroll.home', '0');
       expect(Object.keys(form.keymaps)).to.have.lengthOf(2);
       expect(form.search).to.have.property('default', 'google');
