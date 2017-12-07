@@ -44,8 +44,8 @@ The default mappings are as follows:
 
 ### Navigation
 - <kbd>f</kbd>: start following links in the page
-- <kbd>H</kbd>: go back in histories
-- <kbd>L</kbd>: go forward in histories
+- <kbd>H</kbd>: go back in history
+- <kbd>L</kbd>: go forward in history
 - <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: find  prev or next links and open it
 - <kbd>g</kbd><kbd>u</kbd>: go to parent directory
 - <kbd>g</kbd><kbd>U</kbd>: go to root directory
