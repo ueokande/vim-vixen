@@ -222,9 +222,9 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 ### For certain sites
 
-- [ ] scoll on Hacker News
+- [ ] scroll on Hacker News
 - [ ] able to scroll on Gmail and Slack
-- [ ] Fucus text box on Twitter or Slack, press <kbd>j</kbd>, then <kbd>j</kbd> is typed in the box
+- [ ] Focus text box on Twitter or Slack, press <kbd>j</kbd>, then <kbd>j</kbd> is typed in the box
 - [ ] Focus the text box on Twitter or Slack on following mode
 - [ ] Tha pages is shown in https://pitchify.com/
 - [ ] Open console in http://www.espncricinfo.com/
