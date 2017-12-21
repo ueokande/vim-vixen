@@ -76,7 +76,6 @@ const getCompletions = (keyword) => {
         .sort((x, y) => x[0].visitCount < y[0].visitCount)
         .slice(0, 10)
         .map(item => item[0])
-        .sort((x, y) => x.url > y.url)
       )[0];
   });
 };
