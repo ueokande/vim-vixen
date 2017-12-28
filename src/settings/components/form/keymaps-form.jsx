@@ -13,9 +13,9 @@ const KeyMapFields = [
     ['scroll.top', 'Scroll to top'],
     ['scroll.bottom', 'Scroll to bottom'],
     ['scroll.pages?{"count":-0.5}', 'Scroll up by half of screen'],
-    ['scroll.pages?{"count":0.5}', 'Scroll up by half of screen'],
+    ['scroll.pages?{"count":0.5}', 'Scroll down by half of screen'],
     ['scroll.pages?{"count":-1}', 'Scroll up by a screen'],
-    ['scroll.pages?{"count":1}', 'Scroll up by a screen'],
+    ['scroll.pages?{"count":1}', 'Scroll down by a screen'],
   ], [
     ['tabs.close', 'Close a tab'],
     ['tabs.reopen', 'Reopen closed tab'],
