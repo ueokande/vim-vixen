@@ -30,6 +30,21 @@ const inViewport = (win, element, viewSize, framePosition) => {
   return true;
 };
 
+const isAriaHiddenOrAriaDisabled = (win, element) => {
+  if (!element || win.document.documentElement === element) {
+    return false;
+  }
+  for (let attr of ['aria-hidden', 'aria-disabled']) {
+    if (element.hasAttribute(attr)) {
+      let hidden = element.getAttribute(attr).toLowerCase();
+      if (hidden === '' || hidden === 'true') {
+        return true;
+      }
+    }
+  }
+  return isAriaHiddenOrAriaDisabled(win, element.parentNode);
+};
+
 export default class Follow {
   constructor(win, store) {
     this.win = win;
@@ -171,6 +186,7 @@ export default class Follow {
         style.visibility !== 'hidden' &&
         element.type !== 'hidden' &&
         element.offsetHeight > 0 &&
+        !isAriaHiddenOrAriaDisabled(win, element) &&
         inViewport(win, element, viewSize, framePosition);
     });
     return filtered;
