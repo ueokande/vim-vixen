@@ -2,7 +2,9 @@ import actions from 'content/actions';
 
 const defaultState = {
   enabled: false,
+  operation: '',
   newTab: false,
+  format: '',
   keys: '',
 };
 
@@ -11,7 +13,9 @@ export default function reducer(state = defaultState, action = {}) {
   case actions.FOLLOW_CONTROLLER_ENABLE:
     return Object.assign({}, state, {
       enabled: true,
+      operation: action.operation,
       newTab: action.newTab,
+      format: action.format,
       keys: '',
     });
   case actions.FOLLOW_CONTROLLER_DISABLE:

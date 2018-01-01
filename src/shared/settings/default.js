@@ -37,6 +37,8 @@ export default {
     "zz": { "type": "zoom.neutral" },
     "f": { "type": "follow.start", "newTab": false },
     "F": { "type": "follow.start", "newTab": true },
+    "cc": { "type": "follow.copy", "format": "|url|" },
+    "cC": { "type": "follow.copy", "format": "|text|" },
     "H": { "type": "navigate.history.prev" },
     "L": { "type": "navigate.history.next" },
     "[[": { "type": "navigate.link.prev" },

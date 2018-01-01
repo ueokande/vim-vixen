@@ -22,6 +22,7 @@ export default {
 
   // Follows
   FOLLOW_START: 'follow.start',
+  FOLLOW_COPY: 'follow.copy',
 
   // Navigations
   NAVIGATE_HISTORY_PREV: 'navigate.history.prev',

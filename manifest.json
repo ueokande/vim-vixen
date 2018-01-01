@@ -30,7 +30,8 @@
     "history",
     "sessions",
     "storage",
-    "tabs"
+    "tabs",
+    "clipboardWrite"
   ],
   "web_accessible_resources": [
     "build/console.html",
