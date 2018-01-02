@@ -54,6 +54,8 @@ The default mappings are as follows:
 - <kbd>z</kbd><kbd>i</kbd>, <kbd>z</kbd><kbd>o</kbd>: zoom-in/zoom-out
 - <kbd>z</kbd><kbd>z</kbd>: Set default zoom level
 - <kbd>y</kbd>: copy URL in current tab
+- <kbd>p</kbd>: open clipbord's URL in current tab
+- <kbd>P</kbd>: open clipbord's URL in new tab
 - <kbd>Shift</kbd>+<kbd>Esc</kbd>: enable or disable the add-on in current tab.
 
 ### Console commands

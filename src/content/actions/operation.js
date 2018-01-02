@@ -60,6 +60,8 @@ const exec = (operation) => {
       type: messages.CONSOLE_SHOW_INFO,
       text: 'Current url yanked',
     });
+  case operations.URLS_PASTE:
+    return urls.paste(window, operation.newTab ? operation.newTab : false);
   default:
     browser.runtime.sendMessage({
       type: messages.BACKGROUND_OPERATION,
