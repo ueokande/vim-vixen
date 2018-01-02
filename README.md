@@ -44,6 +44,8 @@ The default mappings are as follows:
 
 ### Navigation
 - <kbd>f</kbd>: start following links in the page
+- <kbd>cc</kbd>: copy link URL in the page by Follow interface
+- <kbd>cC</kbd>: copy link text in the page by Follow interface
 - <kbd>H</kbd>: go back in history
 - <kbd>L</kbd>: go forward in history
 - <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: find  prev or next links and open it

@@ -60,6 +60,8 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] Select link and open it in the frame in `<iframe>`/`<frame`> on following by <kbd>f</kbd>
 - [ ] Select link and open it in new tab in `<iframe>`/`<frame`> on following by <kbd>F</kbd>
 - [ ] Select link and open it in `<area>` tags, for <kbd>f</kbd> and <kbd>F</kbd>
+- [ ] <kbd>cc</kbd>: copy link URL in the page by Follow interface
+- [ ] <kbd>cC</kbd>: copy link text in the page by Follow interface
 
 ### Consoles
 
