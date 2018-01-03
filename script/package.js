@@ -4,7 +4,7 @@ let AdmZip = require('adm-zip');
 let manifest = require('../manifest');
 
 manifest.iconFiles = function() {
-  return Object.values(this.icons);
+  return Object.keys(this.icons).map(key => this.icons[key]);
 };
 
 manifest.contentScriptFiles = function() {
