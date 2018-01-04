@@ -44,9 +44,12 @@ const valueFromForm = (form) => {
     }
   }
 
-  let blacklist = form.blacklist;
-
-  return { keymaps, search, blacklist };
+  return {
+    keymaps,
+    search,
+    blacklist: form.blacklist,
+    properties: form.properties
+  };
 };
 
 const jsonFromValue = (value) => {
@@ -78,9 +81,12 @@ const formFromValue = (value, allowedOps) => {
     }
   }
 
-  let blacklist = value.blacklist;
-
-  return { keymaps, search, blacklist };
+  return {
+    keymaps,
+    search,
+    blacklist: value.blacklist,
+    properties: value.properties,
+  };
 };
 
 const jsonFromForm = (form) => {
