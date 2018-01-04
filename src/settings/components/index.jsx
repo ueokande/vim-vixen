@@ -5,7 +5,7 @@ import SearchForm from './form/search-form';
 import KeymapsForm from './form/keymaps-form';
 import BlacklistForm from './form/blacklist-form';
 import * as settingActions from 'settings/actions/setting';
-import * as validator from 'shared/validators/setting';
+import * as validator from 'shared/settings/validator';
 import * as settingsValues from 'shared/settings/values';
 
 const DO_YOU_WANT_TO_CONTINUE =
