@@ -4,7 +4,7 @@
   "scripts": {
     "start": "webpack -w --debug --devtool inline-source-map",
     "build": "NODE_ENV=production webpack --progress --display-error-details",
-    "package": "npm run build && ./package.sh",
+    "package": "npm run build && node script/package.js",
     "lint": "eslint --ext .jsx,.js src",
     "test": "karma start"
   },
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/ueokande/vim-vixen",
   "devDependencies": {
+    "adm-zip": "^0.4.7",
     "babel-cli": "^6.24.1",
     "babel-eslint": "^8.0.2",
     "babel-loader": "^7.1.1",
