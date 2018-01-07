@@ -33,12 +33,17 @@ const openCommand = (url) => {
   });
 };
 
-const tabopenCommand = (url) => {
-  return browser.tabs.create({ url: url });
+const tabopenCommand = (url, flags) => {
+  let args = { url };
+  args.pinned = flags.includes('-p');
+  args.active = !flags.includes('-b');
+  return browser.tabs.create(args);
 };
 
-const winopenCommand = (url) => {
-  return browser.windows.create({ url });
+const winopenCommand = (url, flags) => {
+  let args = { url };
+  args.incognito = flags.includes('-i');
+  return browser.windows.create(args);
 };
 
 const bufferCommand = (keywords) => {
@@ -93,22 +98,36 @@ const getOpenCompletions = (command, keywords, searchConfig) => {
 };
 
 const doCommand = (line, settings) => {
-  let words = line.trim().split(/ +/);
-  let name = words.shift();
+  let words = [].concat(...line.split('"').map((v, i) => {
+    return i % 2 ? v : v.split(' ');
+  })).filter(Boolean);
+  let command = words.shift();
+  let flags = words.filter((elem) => {
+    if (elem.match(/^-.$/)) {
+      return elem;
+    }
+    return '';
+  });
+  let args = words.filter((elem) => {
+    if (elem.match(/^(?!-)/)) {
+      return elem;
+    }
+    return '';
+  });
 
-  switch (name) {
+  switch (command) {
   case 'o':
   case 'open':
-    return openCommand(normalizeUrl(words, settings.search));
+    return openCommand(normalizeUrl(args, settings.search));
   case 't':
   case 'tabopen':
-    return tabopenCommand(normalizeUrl(words, settings.search));
+    return tabopenCommand(normalizeUrl(args, settings.search), flags);
   case 'w':
   case 'winopen':
-    return winopenCommand(normalizeUrl(words, settings.search));
+    return winopenCommand(normalizeUrl(args, settings.search), flags);
   case 'b':
   case 'buffer':
-    return bufferCommand(words);
+    return bufferCommand(args);
   case '':
     return Promise.resolve();
   }
