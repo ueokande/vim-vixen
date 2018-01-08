@@ -1,3 +1,5 @@
+import * as properties from './properties';
+
 const operationFromFormName = (name) => {
   let [type, argStr] = name.split('?');
   let args = {};
@@ -81,11 +83,13 @@ const formFromValue = (value, allowedOps) => {
     }
   }
 
+  let formProperties = Object.assign({}, properties.defaults, value.properties);
+
   return {
     keymaps,
     search,
     blacklist: value.blacklist,
-    properties: value.properties,
+    properties: formProperties,
   };
 };
 

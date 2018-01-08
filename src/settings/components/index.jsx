@@ -5,7 +5,7 @@ import SearchForm from './form/search-form';
 import KeymapsForm from './form/keymaps-form';
 import BlacklistForm from './form/blacklist-form';
 import PropertiesForm from './form/properties-form';
-import PropertyTypes from 'shared/settings/property-types';
+import * as properties from 'shared/settings/properties';
 import * as settingActions from 'settings/actions/setting';
 import * as validator from 'shared/settings/validator';
 import * as settingsValues from 'shared/settings/values';
@@ -70,7 +70,7 @@ class SettingsComponent extends Component {
       <fieldset>
         <legend>Properties</legend>
         <PropertiesForm
-          types={PropertyTypes}
+          types={properties.types}
           value={this.state.settings.form.properties}
           onChange={value => this.bindForm('properties', value)}
         />
