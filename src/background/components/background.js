@@ -1,6 +1,6 @@
 import messages from 'shared/messages';
 import * as operationActions from 'background/actions/operation';
-import * as settingsActions from 'settings/actions/setting';
+import * as settingActions from 'background/actions/setting';
 import * as tabActions from 'background/actions/tab';
 import * as commands from 'shared/commands';
 
@@ -46,7 +46,7 @@ export default class BackgroundComponent {
     case messages.CONSOLE_QUERY_COMPLETIONS:
       return commands.complete(message.text, settings.value);
     case messages.SETTINGS_RELOAD:
-      this.store.dispatch(settingsActions.load());
+      this.store.dispatch(settingActions.load());
       return this.broadcastSettingsChanged();
     }
   }
