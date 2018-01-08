@@ -1,4 +1,5 @@
 import operations from 'shared/operations';
+import * as properties from './properties';
 
 const VALID_TOP_KEYS = ['keymaps', 'search', 'blacklist', 'properties'];
 const VALID_OPERATION_VALUES = Object.keys(operations).map((key) => {
@@ -48,12 +49,12 @@ const validateSearch = (search) => {
   }
 };
 
-const validateProperties = (properties) => {
-  for (let name of Object.keys(properties)) {
+const validateProperties = (props) => {
+  for (let name of Object.keys(props)) {
     if (!properties.types[name]) {
       throw new Error(`Unknown property name: "${name}"`);
     }
-    if (typeof properties[name] !== properties.types[name]) {
+    if (typeof props[name] !== properties.types[name]) {
       throw new Error(`Invalid type for property: "${name}"`);
     }
   }
