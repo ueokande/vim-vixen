@@ -10,4 +10,12 @@ const load = () => {
   });
 };
 
-export { load };
+const setProperty = (name, value) => {
+  return {
+    type: actions.SETTING_SET_PROPERTY,
+    name,
+    value,
+  };
+};
+
+export { load, setProperty };
