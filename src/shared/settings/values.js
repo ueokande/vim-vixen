@@ -1,3 +1,5 @@
+import * as properties from './properties';
+
 const operationFromFormName = (name) => {
   let [type, argStr] = name.split('?');
   let args = {};
@@ -44,9 +46,12 @@ const valueFromForm = (form) => {
     }
   }
 
-  let blacklist = form.blacklist;
-
-  return { keymaps, search, blacklist };
+  return {
+    keymaps,
+    search,
+    blacklist: form.blacklist,
+    properties: form.properties
+  };
 };
 
 const jsonFromValue = (value) => {
@@ -78,9 +83,14 @@ const formFromValue = (value, allowedOps) => {
     }
   }
 
-  let blacklist = value.blacklist;
+  let formProperties = Object.assign({}, properties.defaults, value.properties);
 
-  return { keymaps, search, blacklist };
+  return {
+    keymaps,
+    search,
+    blacklist: value.blacklist,
+    properties: formProperties,
+  };
 };
 
 const jsonFromForm = (form) => {

@@ -1,4 +1,4 @@
-import settingReducer from 'settings/reducers/setting';
+import settingReducer from './setting';
 
 // Make setting reducer instead of re-use
 const defaultState = {

@@ -1,4 +1,4 @@
-import * as settingsActions from 'settings/actions/setting';
+import * as settingActions from 'background/actions/setting';
 import messages from 'shared/messages';
 import BackgroundComponent from 'background/components/background';
 import reducers from 'background/reducers';
@@ -16,4 +16,4 @@ const store = createStore(reducers, (e, sender) => {
 // eslint-disable-next-line no-unused-vars
 const backgroundComponent = new BackgroundComponent(store);
 
-store.dispatch(settingsActions.load());
+store.dispatch(settingActions.load());

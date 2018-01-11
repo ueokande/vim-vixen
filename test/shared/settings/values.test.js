@@ -7,13 +7,21 @@ describe("settings values", () => {
       let json = `{
         "keymaps": { "0": {"type": "scroll.home"}},
         "search": { "default": "google", "engines": { "google": "https://google.com/search?q={}" }},
-        "blacklist": [ "*.slack.com"]
+        "blacklist": [ "*.slack.com"],
+        "properties": {
+          "mystr": "value",
+          "mynum": 123,
+          "mybool": true
+        }
       }`;
       let value = values.valueFromJson(json);
 
       expect(value.keymaps).to.deep.equal({ 0: {type: "scroll.home"}});
       expect(value.search).to.deep.equal({ default: "google", engines: { google: "https://google.com/search?q={}"} });
       expect(value.blacklist).to.deep.equal(["*.slack.com"]);
+      expect(value.properties).to.have.property('mystr', 'value');
+      expect(value.properties).to.have.property('mynum', 123);
+      expect(value.properties).to.have.property('mybool', true);
     });
   });
 
@@ -29,6 +37,11 @@ describe("settings values", () => {
           engines: [['google', 'https://google.com/search?q={}']],
         },
         blacklist: ['*.slack.com'],
+        "properties": {
+          "mystr": "value",
+          "mynum": 123,
+          "mybool": true,
+        }
       };
       let value = values.valueFromForm(form);
 
@@ -37,6 +50,9 @@ describe("settings values", () => {
       expect(JSON.stringify(value.search)).to.deep.equal(JSON.stringify({ default: "google", engines: { google: "https://google.com/search?q={}"} }));
       expect(value.search).to.deep.equal({ default: "google", engines: { google: "https://google.com/search?q={}"} });
       expect(value.blacklist).to.deep.equal(["*.slack.com"]);
+      expect(value.properties).to.have.property('mystr', 'value');
+      expect(value.properties).to.have.property('mynum', 123);
+      expect(value.properties).to.have.property('mybool', true);
     });
 
     it('convert from empty form', () => {
@@ -45,6 +61,7 @@ describe("settings values", () => {
       expect(value).to.not.have.key('keymaps');
       expect(value).to.not.have.key('search');
       expect(value).to.not.have.key('blacklist');
+      expect(value).to.not.have.key('properties');
     });
 
     it('override keymaps', () => {
@@ -96,7 +113,12 @@ describe("settings values", () => {
           0: { type: 'scroll.home' },
         },
         search: { default: 'google', engines: { google: 'https://google.com/search?q={}' }},
-        blacklist: [ '*.slack.com']
+        blacklist: [ '*.slack.com'],
+        properties: {
+          "mystr": "value",
+          "mynum": 123,
+          "mybool": true,
+        }
       };
       let allowed = ['scroll.vertically?{"count":1}', 'scroll.home' ];
       let form = values.formFromValue(value, allowed);
@@ -109,6 +131,9 @@ describe("settings values", () => {
       expect(form.search).to.have.deep.property('engines', [['google', 'https://google.com/search?q={}']]);
       expect(form.blacklist).to.have.lengthOf(1);
       expect(form.blacklist).to.include('*.slack.com');
+      expect(form.properties).to.have.property('mystr', 'value');
+      expect(form.properties).to.have.property('mynum', 123);
+      expect(form.properties).to.have.property('mybool', true);
     });
   });
 });

@@ -4,8 +4,10 @@ import Input from './ui/input';
 import SearchForm from './form/search-form';
 import KeymapsForm from './form/keymaps-form';
 import BlacklistForm from './form/blacklist-form';
+import PropertiesForm from './form/properties-form';
+import * as properties from 'shared/settings/properties';
 import * as settingActions from 'settings/actions/setting';
-import * as validator from 'shared/validators/setting';
+import * as validator from 'shared/settings/validator';
 import * as settingsValues from 'shared/settings/values';
 
 const DO_YOU_WANT_TO_CONTINUE =
@@ -63,6 +65,14 @@ class SettingsComponent extends Component {
         <BlacklistForm
           value={this.state.settings.form.blacklist}
           onChange={value => this.bindForm('blacklist', value)}
+        />
+      </fieldset>
+      <fieldset>
+        <legend>Properties</legend>
+        <PropertiesForm
+          types={properties.types}
+          value={this.state.settings.form.properties}
+          onChange={value => this.bindForm('properties', value)}
         />
       </fieldset>
     </div>;

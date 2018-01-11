@@ -1,6 +1,7 @@
 import messages from 'shared/messages';
 import * as operationActions from 'background/actions/operation';
-import * as settingsActions from 'settings/actions/setting';
+import * as commandActions from 'background/actions/command';
+import * as settingActions from 'background/actions/setting';
 import * as tabActions from 'background/actions/tab';
 import * as commands from 'shared/commands';
 
@@ -35,18 +36,17 @@ export default class BackgroundComponent {
       return this.store.dispatch(
         tabActions.openToTab(message.url, sender.tab), sender);
     case messages.CONSOLE_ENTER_COMMAND:
-      return commands.exec(message.text, settings.value).catch((e) => {
-        return browser.tabs.sendMessage(sender.tab.id, {
-          type: messages.CONSOLE_SHOW_ERROR,
-          text: e.message,
-        });
-      });
+      this.store.dispatch(
+        commandActions.exec(message.text, settings.value),
+        sender
+      );
+      return this.broadcastSettingsChanged();
     case messages.SETTINGS_QUERY:
       return Promise.resolve(this.store.getState().setting.value);
     case messages.CONSOLE_QUERY_COMPLETIONS:
       return commands.complete(message.text, settings.value);
     case messages.SETTINGS_RELOAD:
-      this.store.dispatch(settingsActions.load());
+      this.store.dispatch(settingActions.load());
       return this.broadcastSettingsChanged();
     }
   }
