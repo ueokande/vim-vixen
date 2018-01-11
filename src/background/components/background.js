@@ -1,5 +1,6 @@
 import messages from 'shared/messages';
 import * as operationActions from 'background/actions/operation';
+import * as commandActions from 'background/actions/command';
 import * as settingActions from 'background/actions/setting';
 import * as tabActions from 'background/actions/tab';
 import * as commands from 'shared/commands';
@@ -35,7 +36,7 @@ export default class BackgroundComponent {
       return this.store.dispatch(
         tabActions.openToTab(message.url, sender.tab), sender);
     case messages.CONSOLE_ENTER_COMMAND:
-      return commands.exec(message.text, settings.value).catch((e) => {
+      return commandActions.exec(message.text, settings.value).catch((e) => {
         return browser.tabs.sendMessage(sender.tab.id, {
           type: messages.CONSOLE_SHOW_ERROR,
           text: e.message,

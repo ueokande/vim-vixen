@@ -1,27 +1,5 @@
 import * as tabs from 'background/tabs';
-import * as histories from 'background/histories';
-
-const normalizeUrl = (args, searchConfig) => {
-  let concat = args.join(' ');
-  try {
-    return new URL(concat).href;
-  } catch (e) {
-    if (concat.includes('.') && !concat.includes(' ')) {
-      return 'http://' + concat;
-    }
-    let query = concat;
-    let template = searchConfig.engines[
-      searchConfig.default
-    ];
-    for (let key in searchConfig.engines) {
-      if (args[0] === key) {
-        query = args.slice(1).join(' ');
-        template = searchConfig.engines[key];
-      }
-    }
-    return template.replace('{}', encodeURIComponent(query));
-  }
-};
+import * as parsers from 'shared/commands/parsers';
 
 const openCommand = (url) => {
   return browser.tabs.query({
@@ -60,26 +38,25 @@ const bufferCommand = (keywords) => {
 };
 
 const exec = (line, settings) => {
-  let words = line.trim().split(/ +/);
-  let name = words.shift();
+  let [name, args] = parsers.parseCommandLine(line);
 
   switch (name) {
   case 'o':
   case 'open':
-    return openCommand(normalizeUrl(words, settings.search));
+    return openCommand(parsers.normalizeUrl(args, settings.search));
   case 't':
   case 'tabopen':
-    return tabopenCommand(normalizeUrl(words, settings.search));
+    return tabopenCommand(parsers.normalizeUrl(args, settings.search));
   case 'w':
   case 'winopen':
-    return winopenCommand(normalizeUrl(words, settings.search));
+    return winopenCommand(parsers.normalizeUrl(args, settings.search));
   case 'b':
   case 'buffer':
-    return bufferCommand(words);
+    return bufferCommand(args);
   case '':
     return Promise.resolve();
   }
   throw new Error(name + ' command is not defined');
 };
 
-export default exec;
+export { exec };
