@@ -9,6 +9,12 @@ describe("shared/commands/parsers", () => {
       expect(value).to.equal('utf-8');
     });
 
+    it('parse set empty string', () => {
+      let [key, value] = parsers.parseSetOption('encoding=', { encoding: 'string' });
+      expect(key).to.equal('encoding');
+      expect(value).to.equal('');
+    });
+
     it('parse set string', () => {
       let [key, value] = parsers.parseSetOption('history=50', { history: 'number' });
       expect(key).to.equal('history');
@@ -34,6 +40,7 @@ describe("shared/commands/parsers", () => {
     it('throws error on invalid property', () => {
       expect(() => parsers.parseSetOption('charset=utf-8', { charset: 'number' })).to.throw(Error, 'Not number');
       expect(() => parsers.parseSetOption('charset=utf-8', { charset: 'boolean' })).to.throw(Error, 'Invalid');
+      expect(() => parsers.parseSetOption('charset=', { charset: 'boolean' })).to.throw(Error, 'Invalid');
       expect(() => parsers.parseSetOption('smoothscroll', { smoothscroll: 'string' })).to.throw(Error, 'Invalid');
       expect(() => parsers.parseSetOption('smoothscroll', { smoothscroll: 'number' })).to.throw(Error, 'Invalid');
     })

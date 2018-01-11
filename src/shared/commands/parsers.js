@@ -30,7 +30,7 @@ const mustNumber = (v) => {
 
 const parseSetOption = (word, types) => {
   let [key, value] = word.split('=');
-  if (!value) {
+  if (value === undefined) {
     value = !key.startsWith('no');
     key = value ? key : key.slice(2);
   }
