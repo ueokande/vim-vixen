@@ -36,12 +36,11 @@ export default class BackgroundComponent {
       return this.store.dispatch(
         tabActions.openToTab(message.url, sender.tab), sender);
     case messages.CONSOLE_ENTER_COMMAND:
-      return commandActions.exec(message.text, settings.value).catch((e) => {
-        return browser.tabs.sendMessage(sender.tab.id, {
-          type: messages.CONSOLE_SHOW_ERROR,
-          text: e.message,
-        });
-      });
+      this.store.dispatch(
+        commandActions.exec(message.text, settings.value),
+        sender
+      );
+      return this.broadcastSettingsChanged();
     case messages.SETTINGS_QUERY:
       return Promise.resolve(this.store.getState().setting.value);
     case messages.CONSOLE_QUERY_COMPLETIONS:

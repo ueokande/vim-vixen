@@ -1,5 +1,7 @@
+import actions from '../actions';
 import * as tabs from 'background/tabs';
 import * as parsers from 'shared/commands/parsers';
+import * as properties from 'shared/settings/properties';
 
 const openCommand = (url) => {
   return browser.tabs.query({
@@ -37,6 +39,19 @@ const bufferCommand = (keywords) => {
   });
 };
 
+const setCommand = (args) => {
+  if (!args[0]) {
+    return Promise.resolve();
+  }
+
+  let [name, value] = parsers.parseSetOption(args[0], properties.types);
+  return {
+    type: actions.SETTING_SET_PROPERTY,
+    name,
+    value
+  };
+};
+
 const exec = (line, settings) => {
   let [name, args] = parsers.parseCommandLine(line);
 
@@ -53,6 +68,8 @@ const exec = (line, settings) => {
   case 'b':
   case 'buffer':
     return bufferCommand(args);
+  case 'set':
+    return setCommand(args);
   case '':
     return Promise.resolve();
   }
