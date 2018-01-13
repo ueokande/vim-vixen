@@ -39,6 +39,8 @@ The default mappings are as follows:
 - <kbd>g0</kbd>, <kbd>g$</kbd>: select first or last tab
 - <kbd>r</kbd>: reload current tab
 - <kbd>R</kbd>: reload current tab without cache
+- <kbd>ar</kbd>: reload all tabs
+- <kbd>aR</kbd>: reload all tabs without cache
 - <kbd>zp</kbd>: toggle pin/unpin current tab
 - <kbd>zd</kbd>: duplicate current tab
 

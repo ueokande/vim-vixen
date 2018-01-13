@@ -100,6 +100,14 @@ const reload = (current, cache) => {
   );
 };
 
+const reloadAll = (current, cache) => {
+  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
+    for (let tab of tabs) {
+      browser.tabs.reload(tab.id, { bypassCache: cache });
+    }
+  });
+};
+
 const updateTabPinned = (current, pinned) => {
   return browser.tabs.query({ currentWindow: true, active: true })
     .then(() => {
@@ -118,5 +126,5 @@ const duplicate = (id) => {
 export {
   closeTab, reopenTab, selectAt, selectByKeyword, getCompletions,
   selectPrevTab, selectNextTab, selectFirstTab, selectLastTab, reload,
-  updateTabPinned, toggleTabPinned, duplicate
+  reloadAll, updateTabPinned, toggleTabPinned, duplicate
 };

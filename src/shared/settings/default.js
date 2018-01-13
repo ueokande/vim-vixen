@@ -30,6 +30,8 @@ export default {
     "g$": { "type": "tabs.last" },
     "r": { "type": "tabs.reload", "cache": false },
     "R": { "type": "tabs.reload", "cache": true },
+    "ar": { "type": "tabs.reloadAll", "cache": false },
+    "aR": { "type": "tabs.reloadAll", "cache": true },
     "zp": { "type": "tabs.pin.toggle" },
     "zd": { "type": "tabs.duplicate" },
     "zi": { "type": "zoom.in" },
