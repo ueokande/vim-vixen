@@ -52,6 +52,8 @@ const KeyMapFields = [
   ], [
     ['addon.toggle.enabled', 'Enable or disable'],
     ['urls.yank', 'Copy current URL'],
+    ['urls.paste?{"newTab":false}', 'Open clipboard\'s URL in current tab'],
+    ['urls.paste?{"newTab":true}', 'Open clipboard\'s URL in new tab'],
     ['zoom.in', 'Zoom-in'],
     ['zoom.out', 'Zoom-out'],
     ['zoom.neutral', 'Reset zoom level'],

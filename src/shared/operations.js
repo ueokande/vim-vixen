@@ -49,8 +49,9 @@ export default {
   ZOOM_OUT: 'zoom.out',
   ZOOM_NEUTRAL: 'zoom.neutral',
 
-  // Url yank
+  // Url yank/paste
   URLS_YANK: 'urls.yank',
+  URLS_PASTE: 'urls.paste',
 
   // Find
   FIND_START: 'find.start',
