@@ -11,11 +11,24 @@ describe('FollowComponent', () => {
       let targets = FollowComponent.getTargetElements(
         window,
         { width: window.innerWidth, height: window.innerHeight },
-        { x: 0, y: 0 });
+        { x: 0, y: 0 },
+        FollowComponent.TARGET_SELECTOR);
       expect(targets).to.have.lengthOf(3);
 
       let ids = Array.prototype.map.call(targets, (e) => e.id);
       expect(ids).to.include.members(['visible_a', 'editable_div_1', 'editable_div_2']);
+    });
+
+    it('returns visible genuine links', () => {
+      let targets = FollowComponent.getTargetElements(
+        window,
+        { width: window.innerWidth, height: window.innerHeight },
+        { x: 0, y: 0 },
+        FollowComponent.LINK_SELECTOR);
+      expect(targets).to.have.lengthOf(1);
+
+      let ids = Array.prototype.map.call(targets, (e) => e.id);
+      expect(ids).to.include.members(['visible_a']);
     });
   });
 });

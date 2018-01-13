@@ -5,9 +5,11 @@ import * as followControllerActions from 'content/actions/follow-controller';
 describe('follow-controller actions', () => {
   describe('enable', () => {
     it('creates FOLLOW_CONTROLLER_ENABLE action', () => {
-      let action = followControllerActions.enable(true);
+      let action = followControllerActions.enable('operation', true, 'format');
       expect(action.type).to.equal(actions.FOLLOW_CONTROLLER_ENABLE);
+      expect(action.operation).to.equal('operation');
       expect(action.newTab).to.equal(true);
+      expect(action.format).to.equal('format');
     });
   });
 

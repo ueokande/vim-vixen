@@ -30,6 +30,8 @@ const KeyMapFields = [
   ], [
     ['follow.start?{"newTab":false}', 'Follow a link'],
     ['follow.start?{"newTab":true}', 'Follow a link in new tab'],
+    ['follow.copy?{"format":"|url|"}', 'Copy a link URL'],
+    ['follow.copy?{"format":"|text|"}', 'Copy a link text'],
     ['navigate.history.prev', 'Go back in histories'],
     ['navigate.history.next', 'Go forward in histories'],
     ['navigate.link.next', 'Open next link'],

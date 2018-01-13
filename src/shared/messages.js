@@ -34,6 +34,7 @@ export default {
   CONSOLE_SHOW_FIND: 'console.show.find',
 
   FOLLOW_START: 'follow.start',
+  FOLLOW_COPY: 'follow.copy',
   FOLLOW_REQUEST_COUNT_TARGETS: 'follow.request.count.targets',
   FOLLOW_RESPONSE_COUNT_TARGETS: 'follow.response.count.targets',
   FOLLOW_CREATE_HINTS: 'follow.create.hints',

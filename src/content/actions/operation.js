@@ -45,6 +45,11 @@ const exec = (operation, repeat, settings) => {
       type: messages.FOLLOW_START,
       newTab: operation.newTab
     }), '*');
+  case operations.FOLLOW_COPY:
+    return window.top.postMessage(JSON.stringify({
+      type: messages.FOLLOW_COPY,
+      format: operation.format,
+    }), '*');
   case operations.NAVIGATE_HISTORY_PREV:
     return navigates.historyPrev(window);
   case operations.NAVIGATE_HISTORY_NEXT:
@@ -58,7 +63,7 @@ const exec = (operation, repeat, settings) => {
   case operations.NAVIGATE_ROOT:
     return navigates.root(window);
   case operations.URLS_YANK:
-    urls.yank(window);
+    urls.yank(window, window.location.href);
     return consoleFrames.postMessage(window.document, {
       type: messages.CONSOLE_SHOW_INFO,
       text: 'Current url yanked',

@@ -27,8 +27,12 @@ export default class FollowController {
   onMessage(message, sender) {
     switch (message.type) {
     case messages.FOLLOW_START:
-      return this.store.dispatch(
-        followControllerActions.enable(message.newTab));
+    case messages.FOLLOW_COPY:
+      return this.store.dispatch(followControllerActions.enable(
+        message.type,
+        message.newTab ? message.newTab : false,
+        message.format ? message.format : '',
+      ));
     case messages.FOLLOW_RESPONSE_COUNT_TARGETS:
       return this.create(message.count, sender);
     case messages.FOLLOW_KEY_PRESS:
