@@ -1,15 +1,14 @@
+// describe types of a propety as:
+//    mystr: 'string',
+//    mynum: 'number',
+//    mybool: 'boolean',
 const types = {
-  // TODO describe property types here
-  // mystr: 'string',
-  // mynum: 'number',
-  // mybool: 'boolean',
+  hintchars: 'string',
 };
 
+// describe default values of a property
 const defaults = {
-  // TODO describe property defaults values
-  // mystr: 'hello',
-  // mynum: 123,
-  // mybool: true,
+  hintchars: 'abcdefghijklmnopqrstuvwxyz',
 };
 
 export { types, defaults };
