@@ -108,54 +108,62 @@ const roughScroll = (element, x, y) => {
   element.scrollTo(x, y);
 };
 
-const scrollVertically = (count) => {
+const scroll = (element, x, y, smooth) => {
+  if (smooth) {
+    smoothScroll(element, x, y);
+  } else {
+    roughScroll(element, x, y);
+  }
+};
+
+const scrollVertically = (count, smooth) => {
   let target = scrollTarget();
   let x = target.scrollLeft;
   let y = target.scrollTop + SCROLL_DELTA_Y * count;
-  roughScroll(target, x, y);
+  scroll(target, x, y, smooth);
 };
 
-const scrollHorizonally = (count) => {
+const scrollHorizonally = (count, smooth) => {
   let target = scrollTarget();
   let x = target.scrollLeft + SCROLL_DELTA_X * count;
   let y = target.scrollTop;
-  roughScroll(target, x, y);
+  scroll(target, x, y, smooth);
 };
 
-const scrollPages = (count) => {
+const scrollPages = (count, smooth) => {
   let target = scrollTarget();
   let height = target.clientHeight;
   let x = target.scrollLeft;
   let y = target.scrollTop + height * count;
-  roughScroll(target, x, y);
+  scroll(target, x, y, smooth);
 };
 
-const scrollTop = () => {
+const scrollTop = (smooth) => {
   let target = scrollTarget();
   let x = target.scrollLeft;
   let y = 0;
-  roughScroll(target, x, y);
+  scroll(target, x, y, smooth);
 };
 
-const scrollBottom = () => {
+const scrollBottom = (smooth) => {
   let target = scrollTarget();
   let x = target.scrollLeft;
   let y = target.scrollHeight;
-  roughScroll(target, x, y);
+  scroll(target, x, y, smooth);
 };
 
-const scrollHome = () => {
+const scrollHome = (smooth) => {
   let target = scrollTarget();
   let x = 0;
   let y = target.scrollTop;
-  roughScroll(target, x, y);
+  scroll(target, x, y, smooth);
 };
 
-const scrollEnd = () => {
+const scrollEnd = (smooth) => {
   let target = scrollTarget();
   let x = target.scrollWidth;
   let y = target.scrollTop;
-  roughScroll(target, x, y);
+  scroll(target, x, y, smooth);
 };
 
 export {
