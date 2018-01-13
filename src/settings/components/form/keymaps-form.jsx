@@ -36,6 +36,7 @@ const KeyMapFields = [
     ['navigate.link.prev', 'Open previous link'],
     ['navigate.parent', 'Go to parent directory'],
     ['navigate.root', 'Go to root directory'],
+    ['focus.input', 'Focus input'],
   ], [
     ['find.start', 'Start find mode'],
     ['find.next', 'Find next word'],
