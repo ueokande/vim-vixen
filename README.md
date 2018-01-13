@@ -49,6 +49,7 @@ The default mappings are as follows:
 - <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: find  prev or next links and open it
 - <kbd>g</kbd><kbd>u</kbd>: go to parent directory
 - <kbd>g</kbd><kbd>U</kbd>: go to root directory
+- <kbd>g</kbd><kbd>i</kbd>, <kbd>G</kbd>: focus first input
 
 #### Misc
 - <kbd>z</kbd><kbd>i</kbd>, <kbd>z</kbd><kbd>o</kbd>: zoom-in/zoom-out
