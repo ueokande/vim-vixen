@@ -8,7 +8,7 @@ import * as addonActions from './addon';
 import * as properties from 'shared/settings/properties';
 
 // eslint-disable-next-line complexity
-const exec = (operation, settings) => {
+const exec = (operation, repeat, settings) => {
   let smoothscroll = settings.properties.smoothscroll ||
     properties.defaults.smoothscroll;
   switch (operation.type) {
@@ -27,19 +27,19 @@ const exec = (operation, settings) => {
       type: messages.FIND_PREV,
     }), '*');
   case operations.SCROLL_VERTICALLY:
-    return scrolls.scrollVertically(operation.count, smoothscroll);
+    return scrolls.scrollVertically(operation.count, smoothscroll, repeat);
   case operations.SCROLL_HORIZONALLY:
-    return scrolls.scrollHorizonally(operation.count, smoothscroll);
+    return scrolls.scrollHorizonally(operation.count, smoothscroll, repeat);
   case operations.SCROLL_PAGES:
-    return scrolls.scrollPages(operation.count, smoothscroll);
+    return scrolls.scrollPages(operation.count, smoothscroll, repeat);
   case operations.SCROLL_TOP:
-    return scrolls.scrollTop(smoothscroll);
+    return scrolls.scrollTop(smoothscroll, repeat);
   case operations.SCROLL_BOTTOM:
-    return scrolls.scrollBottom(smoothscroll);
+    return scrolls.scrollBottom(smoothscroll, repeat);
   case operations.SCROLL_HOME:
-    return scrolls.scrollHome(smoothscroll);
+    return scrolls.scrollHome(smoothscroll, repeat);
   case operations.SCROLL_END:
-    return scrolls.scrollEnd(smoothscroll);
+    return scrolls.scrollEnd(smoothscroll, repeat);
   case operations.FOLLOW_START:
     return window.top.postMessage(JSON.stringify({
       type: messages.FOLLOW_START,
