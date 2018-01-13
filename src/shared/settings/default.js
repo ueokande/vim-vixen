@@ -23,7 +23,7 @@ export default {
     "G": { "type": "scroll.bottom" },
     "$": { "type": "scroll.end" },
     "d": { "type": "tabs.close" },
-    "DD": { "type": "tabs.close.force" },
+    "!d": { "type": "tabs.close.force" },
     "u": { "type": "tabs.reopen" },
     "K": { "type": "tabs.prev", "count": 1 },
     "J": { "type": "tabs.next", "count": 1 },
