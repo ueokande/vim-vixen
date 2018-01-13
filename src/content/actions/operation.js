@@ -24,19 +24,19 @@ const exec = (operation) => {
       type: messages.FIND_PREV,
     }), '*');
   case operations.SCROLL_VERTICALLY:
-    return scrolls.scrollVertically(window, operation.count);
+    return scrolls.scrollVertically(operation.count);
   case operations.SCROLL_HORIZONALLY:
-    return scrolls.scrollHorizonally(window, operation.count);
+    return scrolls.scrollHorizonally(operation.count);
   case operations.SCROLL_PAGES:
-    return scrolls.scrollPages(window, operation.count);
+    return scrolls.scrollPages(operation.count);
   case operations.SCROLL_TOP:
-    return scrolls.scrollTop(window);
+    return scrolls.scrollTop();
   case operations.SCROLL_BOTTOM:
-    return scrolls.scrollBottom(window);
+    return scrolls.scrollBottom();
   case operations.SCROLL_HOME:
-    return scrolls.scrollHome(window);
+    return scrolls.scrollHome();
   case operations.SCROLL_END:
-    return scrolls.scrollEnd(window);
+    return scrolls.scrollEnd();
   case operations.FOLLOW_START:
     return window.top.postMessage(JSON.stringify({
       type: messages.FOLLOW_START,
