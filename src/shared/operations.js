@@ -31,6 +31,9 @@ export default {
   NAVIGATE_PARENT: 'navigate.parent',
   NAVIGATE_ROOT: 'navigate.root',
 
+  // Focus
+  FOCUS_INPUT: 'focus.input',
+
   // Tabs
   TAB_CLOSE: 'tabs.close',
   TAB_REOPEN: 'tabs.reopen',
