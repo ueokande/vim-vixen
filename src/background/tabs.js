@@ -1,3 +1,29 @@
+const openTabLeft = () => {
+  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
+    let index = 0;
+    for (let tab of tabs) {
+      if (tab.active) {
+        index = tab.index;
+        break;
+      }
+    }
+    return browser.tabs.create({ 'index': index });
+  });
+};
+
+const openTabRight = () => {
+  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
+    let index = 0;
+    for (let tab of tabs) {
+      if (tab.active) {
+        index = tab.index;
+        break;
+      }
+    }
+    return browser.tabs.create({ 'index': index + 1 });
+  });
+};
+
 const closeTab = (id) => {
   return browser.tabs.remove(id);
 };
@@ -118,5 +144,5 @@ const duplicate = (id) => {
 export {
   closeTab, reopenTab, selectAt, selectByKeyword, getCompletions,
   selectPrevTab, selectNextTab, selectFirstTab, selectLastTab, reload,
-  updateTabPinned, toggleTabPinned, duplicate
+  updateTabPinned, toggleTabPinned, duplicate, openTabLeft, openTabRight
 };

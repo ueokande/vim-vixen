@@ -15,6 +15,10 @@ const sendConsoleShowCommand = (tab, command) => {
 /* eslint-disable complexity */
 const exec = (operation, tab) => {
   switch (operation.type) {
+  case operations.TAB_OPEN_LEFT:
+    return tabs.openTabLeft();
+  case operations.TAB_OPEN_RIGHT:
+    return tabs.openTabRight();
   case operations.TAB_CLOSE:
     return tabs.closeTab(tab.id);
   case operations.TAB_REOPEN:
