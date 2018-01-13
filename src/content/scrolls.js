@@ -1,5 +1,6 @@
 const SCROLL_DELTA_X = 48;
 const SCROLL_DELTA_Y = 48;
+const SMOOTH_SCROLL_DURATION = 150;
 
 const isVisible = (element) => {
   let rect = element.getBoundingClientRect();
@@ -65,18 +66,60 @@ const scrollTarget = () => {
   return window.document.documentElement;
 };
 
+const easing = (t) => {
+  if (t < 1) {
+    return t * t;
+  }
+  return -(t - 1) * (t - 1) + 1;
+};
+
+const smoothScroll = (element, x, y) => {
+
+  let startX = element.scrollTop;
+  let startY = element.scrollTop;
+
+  let distanceX = x - startX;
+  let distanceY = y - startY;
+  let timeStart = 0;
+
+  const loop = (timeCurrent) => {
+    if (!timeStart) {
+      timeStart = timeCurrent;
+    }
+
+    let timeElapsed = timeCurrent - timeStart;
+    let t = timeElapsed / SMOOTH_SCROLL_DURATION;
+    let nextX = startX + distanceX * easing(t);
+    let nextY = startY + distanceY * easing(t);
+
+    window.scrollTo(nextX, nextY);
+
+    if (timeElapsed < SMOOTH_SCROLL_DURATION) {
+      window.requestAnimationFrame(loop);
+    } else {
+      element.scrollTo(x, y);
+    }
+  };
+
+  window.requestAnimationFrame(loop);
+};
+
+const roughScroll = (element, x, y) => {
+  element.scrollTo(x, y);
+};
+
 const scrollVertically = (count) => {
   let target = scrollTarget();
   let x = target.scrollLeft;
   let y = target.scrollTop + SCROLL_DELTA_Y * count;
-  target.scrollTo(x, y);
+  roughScroll(target, x, y);
 };
 
 const scrollHorizonally = (count) => {
   let target = scrollTarget();
   let x = target.scrollLeft + SCROLL_DELTA_X * count;
   let y = target.scrollTop;
-  target.scrollTo(x, y);
+  roughScroll(target, x, y);
 };
 
 const scrollPages = (count) => {
@@ -84,35 +127,35 @@ const scrollPages = (count) => {
   let height = target.clientHeight;
   let x = target.scrollLeft;
   let y = target.scrollTop + height * count;
-  target.scrollTo(x, y);
+  roughScroll(target, x, y);
 };
 
 const scrollTop = () => {
   let target = scrollTarget();
   let x = target.scrollLeft;
   let y = 0;
-  target.scrollTo(x, y);
+  roughScroll(target, x, y);
 };
 
 const scrollBottom = () => {
   let target = scrollTarget();
   let x = target.scrollLeft;
   let y = target.scrollHeight;
-  target.scrollTo(x, y);
+  roughScroll(target, x, y);
 };
 
 const scrollHome = () => {
   let target = scrollTarget();
   let x = 0;
   let y = target.scrollTop;
-  target.scrollTo(x, y);
+  roughScroll(target, x, y);
 };
 
 const scrollEnd = () => {
   let target = scrollTarget();
   let x = target.scrollWidth;
   let y = target.scrollTop;
-  target.scrollTo(x, y);
+  roughScroll(target, x, y);
 };
 
 export {
