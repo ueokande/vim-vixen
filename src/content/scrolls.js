@@ -66,68 +66,81 @@ const scrollTarget = () => {
   return window.document.documentElement;
 };
 
-const easing = (t) => {
-  if (t < 1) {
-    return t * t;
+class SmoothScroller {
+  constructor(element) {
+    this.element = element;
   }
-  return -(t - 1) * (t - 1) + 1;
-};
 
-const smoothScroll = (element, x, y) => {
+  scroll(x, y) {
+    this.startX = this.element.scrollLeft;
+    this.startY = this.element.scrollTop;
 
-  let startX = element.scrollTop;
-  let startY = element.scrollTop;
+    this.targetX = x;
+    this.targetY = y;
+    this.distanceX = x - this.startX;
+    this.distanceY = y - this.startY;
+    this.timeStart = 0;
 
-  let distanceX = x - startX;
-  let distanceY = y - startY;
-  let timeStart = 0;
+    window.requestAnimationFrame(this.loop.bind(this));
+  }
 
-  const loop = (timeCurrent) => {
-    if (!timeStart) {
-      timeStart = timeCurrent;
+  loop(time) {
+    if (!this.timeStart) {
+      this.timeStart = time;
     }
 
-    let timeElapsed = timeCurrent - timeStart;
-    let t = timeElapsed / SMOOTH_SCROLL_DURATION;
-    let nextX = startX + distanceX * easing(t);
-    let nextY = startY + distanceY * easing(t);
+    let elapsed = time - this.timeStart;
+    let v = this.easing(elapsed / SMOOTH_SCROLL_DURATION);
+    let nextX = this.startX + this.distanceX * v;
+    let nextY = this.startY + this.distanceY * v;
 
     window.scrollTo(nextX, nextY);
 
-    if (timeElapsed < SMOOTH_SCROLL_DURATION) {
-      window.requestAnimationFrame(loop);
+    if (elapsed < SMOOTH_SCROLL_DURATION) {
+      window.requestAnimationFrame(this.loop.bind(this));
     } else {
-      element.scrollTo(x, y);
+      this.element.scrollTo(this.targetX, this.targetY);
     }
-  };
-
-  window.requestAnimationFrame(loop);
-};
-
-const roughScroll = (element, x, y) => {
-  element.scrollTo(x, y);
-};
-
-const scroll = (element, x, y, smooth) => {
-  if (smooth) {
-    smoothScroll(element, x, y);
-  } else {
-    roughScroll(element, x, y);
   }
+
+  // in-out quad easing
+  easing(t) {
+    if (t < 1) {
+      return t * t;
+    }
+    return -(t - 1) * (t - 1) + 1;
+  }
+}
+
+class RoughtScroller {
+  constructor(element) {
+    this.element = element;
+  }
+
+  scroll(x, y) {
+    this.element.scrollTo(x, y);
+  }
+}
+
+const scroller = (element, smooth) => {
+  if (smooth) {
+    return new SmoothScroller(element);
+  }
+  return new RoughtScroller(element);
 };
 
 const scrollVertically = (count, smooth) => {
   let target = scrollTarget();
   let x = target.scrollLeft;
   let y = target.scrollTop + SCROLL_DELTA_Y * count;
-  scroll(target, x, y, smooth);
+  scroller(target, smooth).scroll(x, y);
 };
 
 const scrollHorizonally = (count, smooth) => {
   let target = scrollTarget();
   let x = target.scrollLeft + SCROLL_DELTA_X * count;
   let y = target.scrollTop;
-  scroll(target, x, y, smooth);
+  scroller(target, smooth).scroll(x, y);
 };
 
 const scrollPages = (count, smooth) => {
@@ -135,35 +148,35 @@ const scrollPages = (count, smooth) => {
   let height = target.clientHeight;
   let x = target.scrollLeft;
   let y = target.scrollTop + height * count;
-  scroll(target, x, y, smooth);
+  scroller(target, smooth).scroll(x, y);
 };
 
 const scrollTop = (smooth) => {
   let target = scrollTarget();
   let x = target.scrollLeft;
   let y = 0;
-  scroll(target, x, y, smooth);
+  scroller(target, smooth).scroll(x, y);
 };
 
 const scrollBottom = (smooth) => {
   let target = scrollTarget();
   let x = target.scrollLeft;
   let y = target.scrollHeight;
-  scroll(target, x, y, smooth);
+  scroller(target, smooth).scroll(x, y);
 };
 
 const scrollHome = (smooth) => {
   let target = scrollTarget();
   let x = 0;
   let y = target.scrollTop;
-  scroll(target, x, y, smooth);
+  scroller(target, smooth).scroll(x, y);
 };
 
 const scrollEnd = (smooth) => {
   let target = scrollTarget();
   let x = target.scrollWidth;
   let y = target.scrollTop;
-  scroll(target, x, y, smooth);
+  scroller(target, smooth).scroll(x, y);
 };
 
 export {
