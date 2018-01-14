@@ -8,6 +8,18 @@ browser.tabs.onActivated.addListener((activeInfo) => {
   });
 });
 
+const openTab = () => {
+  return browser.tabs.create({});
+};
+
+const openTabInBackground = () => {
+  return browser.tabs.create({ 'active': false });
+};
+
+const openTabPinned = () => {
+  return browser.tabs.create({ 'pinned': true });
+};
+
 const closeTab = (id) => {
   return browser.tabs.remove(id);
 };
@@ -132,5 +144,6 @@ const duplicate = (id) => {
 export {
   closeTab, reopenTab, selectAt, selectByKeyword, getCompletions,
   selectPrevTab, selectNextTab, selectFirstTab, selectLastTab, selectPrevSelTab,
-  reload, updateTabPinned, toggleTabPinned, duplicate
+  reload, updateTabPinned, toggleTabPinned, duplicate, openTabInBackground,
+  openTab, openTabPinned
 };

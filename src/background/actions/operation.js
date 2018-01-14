@@ -1,5 +1,6 @@
 import operations from 'shared/operations';
 import messages from 'shared/messages';
+import * as windows from 'background/windows';
 import * as tabs from 'background/tabs';
 import * as zooms from 'background/zooms';
 
@@ -15,6 +16,16 @@ const sendConsoleShowCommand = (tab, command) => {
 /* eslint-disable complexity */
 const exec = (operation, tab) => {
   switch (operation.type) {
+  case operations.WINDOW_OPEN:
+    return windows.openWindow();
+  case operations.WINDOW_OPEN_INCOGNITO:
+    return windows.openWindowIncognito();
+  case operations.TAB_OPEN:
+    return tabs.openTab();
+  case operations.TAB_OPEN_BACKGROUND:
+    return tabs.openTabInBackground();
+  case operations.TAB_OPEN_PINNED:
+    return tabs.openTabPinned();
   case operations.TAB_CLOSE:
     return tabs.closeTab(tab.id);
   case operations.TAB_REOPEN:
