@@ -60,9 +60,9 @@ export default {
       "duckduckgo": "https://duckduckgo.com/?q={}",
       "twitter": "https://twitter.com/search?q={}",
       "wikipedia": "https://en.wikipedia.org/w/index.php?search={}"
-    },
-    "properties": {
     }
+  },
+  "properties": {
   }
 }`,
 };
