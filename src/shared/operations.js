@@ -38,6 +38,7 @@ export default {
   TAB_NEXT: 'tabs.next',
   TAB_FIRST: 'tabs.first',
   TAB_LAST: 'tabs.last',
+  TAB_PREV_SEL: 'tabs.prevsel',
   TAB_RELOAD: 'tabs.reload',
   TAB_PIN: 'tabs.pin',
   TAB_UNPIN: 'tabs.unpin',

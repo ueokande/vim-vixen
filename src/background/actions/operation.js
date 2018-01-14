@@ -27,6 +27,8 @@ const exec = (operation, tab) => {
     return tabs.selectFirstTab();
   case operations.TAB_LAST:
     return tabs.selectLastTab();
+  case operations.TAB_PREV_SEL:
+    return tabs.selectPrevSelTab();
   case operations.TAB_RELOAD:
     return tabs.reload(tab, operation.cache);
   case operations.TAB_PIN:
