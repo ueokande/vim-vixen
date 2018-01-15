@@ -33,6 +33,7 @@ export default {
 
   // Tabs
   TAB_CLOSE: 'tabs.close',
+  TAB_CLOSE_FORCE: 'tabs.close.force',
   TAB_REOPEN: 'tabs.reopen',
   TAB_PREV: 'tabs.prev',
   TAB_NEXT: 'tabs.next',

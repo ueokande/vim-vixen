@@ -17,6 +17,8 @@ const exec = (operation, tab) => {
   switch (operation.type) {
   case operations.TAB_CLOSE:
     return tabs.closeTab(tab.id);
+  case operations.TAB_CLOSE_FORCE:
+    return tabs.closeTabForce(tab.id);
   case operations.TAB_REOPEN:
     return tabs.reopenTab();
   case operations.TAB_PREV:

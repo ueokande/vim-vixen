@@ -9,6 +9,14 @@ browser.tabs.onActivated.addListener((activeInfo) => {
 });
 
 const closeTab = (id) => {
+  return browser.tabs.get(id).then((tab) => {
+    if (!tab.pinned) {
+      return browser.tabs.remove(id);
+    }
+  });
+};
+
+const closeTabForce = (id) => {
   return browser.tabs.remove(id);
 };
 
@@ -130,7 +138,8 @@ const duplicate = (id) => {
 };
 
 export {
-  closeTab, reopenTab, selectAt, selectByKeyword, getCompletions,
-  selectPrevTab, selectNextTab, selectFirstTab, selectLastTab, selectPrevSelTab,
-  reload, updateTabPinned, toggleTabPinned, duplicate
+  closeTab, closeTabForce, reopenTab, selectAt, selectByKeyword,
+  getCompletions, selectPrevTab, selectNextTab, selectFirstTab,
+  selectLastTab, selectPrevSelTab, reload, updateTabPinned,
+  toggleTabPinned, duplicate
 };
