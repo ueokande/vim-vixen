@@ -1,28 +1,11 @@
+import * as doms from 'shared/utils/dom';
+
 const SCROLL_DELTA_X = 48;
 const SCROLL_DELTA_Y = 48;
 const SMOOTH_SCROLL_DURATION = 150;
 
 // dirty way to store scrolling state on globally
 let scrolling = [false];
-
-const isVisible = (element) => {
-  let rect = element.getBoundingClientRect();
-  if (rect.width === 0 || rect.height === 0) {
-    return false;
-  }
-  if (rect.right < 0 && rect.bottom < 0) {
-    return false;
-  }
-  if (window.innerWidth < rect.left && window.innerHeight < rect.top) {
-    return false;
-  }
-
-  let { display, visibility } = window.getComputedStyle(element);
-  if (display === 'none' || visibility === 'hidden') {
-    return false;
-  }
-  return true;
-};
 
 const isScrollableStyle = (element) => {
   let { overflowX, overflowY } = window.getComputedStyle(element);
@@ -44,8 +27,7 @@ const findScrollable = (element) => {
     return element;
   }
 
-  let children = Array.prototype
-    .filter.call(element.children, e => isVisible(e));
+  let children = Array.from(element.children).filter(doms.isVisible);
   for (let child of children) {
     let scrollable = findScrollable(child);
     if (scrollable) {
