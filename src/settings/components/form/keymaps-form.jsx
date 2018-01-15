@@ -26,7 +26,7 @@ const KeyMapFields = [
     ['tabs.reload?{"cache":false}', 'Reload current tab'],
     ['tabs.reload?{"cache":true}', 'Reload with no caches'],
     ['tabs.pin.toggle', 'Toggle pinned state'],
-    ['tabs.duplicate', 'Dupplicate a tab'],
+    ['tabs.duplicate', 'Duplicate a tab'],
   ], [
     ['follow.start?{"newTab":false}', 'Follow a link'],
     ['follow.start?{"newTab":true}', 'Follow a link in new tab'],
