@@ -81,4 +81,26 @@ const viewportRect = (e) => {
   };
 };
 
-export { isContentEditable, viewportRect };
+const isVisible = (element) => {
+  let rect = element.getBoundingClientRect();
+  if (rect.width === 0 || rect.height === 0) {
+    return false;
+  }
+  if (rect.right < 0 && rect.bottom < 0) {
+    return false;
+  }
+  if (window.innerWidth < rect.left && window.innerHeight < rect.top) {
+    return false;
+  }
+  if (element.nodeName === 'INPUT' && element.type.toLowerCase() === 'hidden') {
+    return false;
+  }
+
+  let { display, visibility } = window.getComputedStyle(element);
+  if (display === 'none' || visibility === 'hidden') {
+    return false;
+  }
+  return true;
+};
+
+export { isContentEditable, viewportRect, isVisible };

@@ -2,6 +2,7 @@ import operations from 'shared/operations';
 import messages from 'shared/messages';
 import * as scrolls from 'content/scrolls';
 import * as navigates from 'content/navigates';
+import * as focuses from 'content/focuses';
 import * as urls from 'content/urls';
 import * as consoleFrames from 'content/console-frames';
 import * as addonActions from './addon';
@@ -57,6 +58,8 @@ const exec = (operation, repeat, settings) => {
     return navigates.parent(window);
   case operations.NAVIGATE_ROOT:
     return navigates.root(window);
+  case operations.FOCUS_INPUT:
+    return focuses.focusInput();
   case operations.URLS_YANK:
     urls.yank(window);
     return consoleFrames.postMessage(window.document, {
