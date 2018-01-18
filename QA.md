@@ -14,7 +14,7 @@ Test operations with default key maps.
 - [ ] <kbd>g</kbd><kbd>g</kbd>, <kbd>G</kbd>: scroll to top and bottom
 - [ ] Smooth scroll by `:set smoothscroll`
 - [ ] Non-smooth scroll by `:set nosmoothscroll`
-- [ ] Configure custom hint character by settings `smoothscroll`
+- [ ] Configure custom hint character by settings `"smoothscroll": true`, `"smoothscroll": false`
 
 #### Console
 
@@ -67,8 +67,8 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] Select link and open it in the frame in `<iframe>`/`<frame`> on following by <kbd>f</kbd>
 - [ ] Select link and open it in new tab in `<iframe>`/`<frame`> on following by <kbd>F</kbd>
 - [ ] Select link and open it in `<area>` tags, for <kbd>f</kbd> and <kbd>F</kbd>
-- [ ] Configure custom hint character by `:set hintchars`
-- [ ] Configure custom hint character by settings `hintchars`
+- [ ] Configure custom hint character by `:set hintchars=012345678`
+- [ ] Configure custom hint character by settings `"hintchars": "012345678"`
 
 ### Consoles
 
@@ -124,7 +124,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 ##### Validations
 
 - [ ] show error on invalid json
-- [ ] show error when top-level keys has keys other than `keymaps`, `search`, and `blacklist`
+- [ ] show error when top-level keys has keys other than `keymaps`, `search`, `blacklist`, and `properties`
 
 ###### `"keymaps"` section
 
