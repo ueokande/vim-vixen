@@ -12,6 +12,9 @@ Test operations with default key maps.
 - [ ] <kbd>Ctrl</kbd>+<kbd>B</kbd>, <kbd>Ctrl</kbd>+<kbd>F</kbd>: scroll up and down by a screen
 - [ ] <kbd>0</kbd>, <kbd>$</kbd>: scroll to leftmost and rightmost
 - [ ] <kbd>g</kbd><kbd>g</kbd>, <kbd>G</kbd>: scroll to top and bottom
+- [ ] Smooth scroll by `:set smoothscroll`
+- [ ] Non-smooth scroll by `:set nosmoothscroll`
+- [ ] Configure custom hint character by settings `smoothscroll`
 
 #### Console
 
@@ -24,7 +27,8 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 #### Tabs
 
-- [ ] <kbd>d</kbd>: delete current tab
+- [ ] <kbd>d</kbd>: delete current tab, unable to remove pinnned tab
+- [ ] <kbd>!d</kbd>: delete current tab and pinned tab
 - [ ] <kbd>u</kbd>: reopen close tab
 - [ ] <kbd>K</kbd>, <kbd>J</kbd>: select prev and next tab
 - [ ] <kbd>g0</kbd>, <kbd>g$</kbd>: select first and last tab
@@ -32,6 +36,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] <kbd>R</kbd>: reload current tab without cache
 - [ ] <kbd>zd</kbd>: duplicate current tab
 - [ ] <kbd>zp</kbd>: toggle pin/unpin state on current tab
+- [ ] <kbd>Ctrl</kbd>+<kbd>6</kbd>: select previous selected tab
 
 #### Navigation
 
@@ -62,6 +67,8 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] Select link and open it in the frame in `<iframe>`/`<frame`> on following by <kbd>f</kbd>
 - [ ] Select link and open it in new tab in `<iframe>`/`<frame`> on following by <kbd>F</kbd>
 - [ ] Select link and open it in `<area>` tags, for <kbd>f</kbd> and <kbd>F</kbd>
+- [ ] Configure custom hint character by `:set hintchars`
+- [ ] Configure custom hint character by settings `hintchars`
 
 ### Consoles
 
@@ -141,6 +148,11 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] changes are not updated on textarea blure when errors occurs
 - [ ] keymap settings are applied to open tabs without reload
 - [ ] search settings are applied to open tabs without reload
+
+##### Properties
+
+- [ ] show errors when invalid property name
+- [ ] show errors when invalid property type
 
 #### Form Settings
 
