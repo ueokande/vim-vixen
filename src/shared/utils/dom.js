@@ -83,7 +83,9 @@ const viewportRect = (e) => {
 
 const isVisible = (element) => {
   let rect = element.getBoundingClientRect();
-  if (rect.width === 0 || rect.height === 0) {
+  let style = window.getComputedStyle(element);
+
+  if (style.overflow !== 'visible' && (rect.width === 0 || rect.height === 0)) {
     return false;
   }
   if (rect.right < 0 && rect.bottom < 0) {

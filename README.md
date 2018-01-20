@@ -34,6 +34,7 @@ The default mappings are as follows:
 
 #### Tabs
 - <kbd>d</kbd>: delete current tab
+- <kbd>!</kbd><kbd>d</kbd>: delete pinned tab
 - <kbd>u</kbd>: reopen close tab
 - <kbd>K</kbd>, <kbd>J</kbd>: select prev or next tab
 - <kbd>g0</kbd>, <kbd>g$</kbd>: select first or last tab
@@ -50,7 +51,7 @@ The default mappings are as follows:
 - <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: find  prev or next links and open it
 - <kbd>g</kbd><kbd>u</kbd>: go to parent directory
 - <kbd>g</kbd><kbd>U</kbd>: go to root directory
-- <kbd>g</kbd><kbd>i</kbd>, <kbd>G</kbd>: focus first input
+- <kbd>g</kbd><kbd>i</kbd>: focus first input
 
 #### Misc
 - <kbd>z</kbd><kbd>i</kbd>, <kbd>z</kbd><kbd>o</kbd>: zoom-in/zoom-out
@@ -101,6 +102,26 @@ Open a URL or search keywords by search engine in new window.
 #### `:buffer` command
 
 Select tabs by URL or title matched by keywords.
+
+#### `:set` command
+
+`:set` command can set properties on console.
+
+##### `smoothscroll` property
+
+Enable/disable smooth scroll.
+```
+:set smoothscroll   " enable smooth scroll
+:set nosmoothscroll " disable smooth scroll
+```
+
+##### `hintchars` property
+
+Set hint characters
+
+```
+:set hintchars=0123456789
+```
 
 ### Search engines
 
