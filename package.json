@@ -4,7 +4,7 @@
   "scripts": {
     "start": "webpack -w --debug --devtool inline-source-map",
     "build": "NODE_ENV=production webpack --progress --display-error-details",
-    "package": "npm run build && node script/package.js",
+    "package": "npm run build && script/package.sh",
     "lint": "eslint --ext .jsx,.js src",
     "test": "karma start"
   },
