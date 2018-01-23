@@ -18,6 +18,9 @@ const loadValue = () => {
     } else if (settings.source === 'form') {
       value = settingsValues.valueFromForm(settings.form);
     }
+    if (!value.properties) {
+      value.properties = {};
+    }
     return Object.assign({},
       settingsValues.valueFromJson(DefaultSettings.json),
       value);
