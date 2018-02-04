@@ -7,6 +7,7 @@
     "package": "npm run build && script/package.sh",
     "lint": "eslint --ext .jsx,.js src",
     "test": "karma start",
+    "test:e2e": "karma start e2e/karma.conf.js",
     "ambassador:start": "webpack -w --debug  --context e2e/ambassador --devtool inline-source-map",
     "ambassador:build": "webpack --context e2e/ambassador"
   },
