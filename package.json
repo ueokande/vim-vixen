@@ -6,7 +6,9 @@
     "build": "NODE_ENV=production webpack --progress --display-error-details",
     "package": "npm run build && script/package.sh",
     "lint": "eslint --ext .jsx,.js src",
-    "test": "karma start"
+    "test": "karma start",
+    "ambassador:start": "webpack -w --debug  --context --devtool inline-source-map",
+    "ambassador:build": "webpack --context e2e/ambassador"
   },
   "repository": {
     "type": "git",
