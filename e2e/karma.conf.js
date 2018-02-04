@@ -4,6 +4,7 @@ module.exports = function (config) {
     basePath: '',
     frameworks: ['mocha'],
     files: [
+      'karma-delay.js',
       '**/*.test.js'
     ],
 
