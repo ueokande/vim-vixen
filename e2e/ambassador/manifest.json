@@ -8,7 +8,7 @@
       "all_frames": true,
       "matches": [ "<all_urls>" ],
       "js": [ "build/content.js" ],
-      "run_at": "document_end",
+      "run_at": "document_start",
       "match_about_blank": true
     }
   ],
