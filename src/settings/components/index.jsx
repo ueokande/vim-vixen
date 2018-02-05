@@ -11,8 +11,8 @@ import * as validator from 'shared/settings/validator';
 import * as settingsValues from 'shared/settings/values';
 
 const DO_YOU_WANT_TO_CONTINUE =
-  'Some settings in JSON can be lose on migrating.  ' +
-  'Do you want to continue ?';
+  'Some settings in JSON can be lost when migrating.  ' +
+  'Do you want to continue?';
 
 class SettingsComponent extends Component {
   constructor(props, context) {
