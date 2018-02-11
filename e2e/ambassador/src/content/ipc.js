@@ -1,7 +1,13 @@
 import { METHOD_REQUEST, METHOD_RESPONSE } from '../shared/messages';
 
-const send = (message) => {
+const sendToBackground = (message) => {
   return browser.runtime.sendMessage(message);
+};
+
+const receiveBackgroundMesssage = (func) => {
+  return browser.runtime.onMessage.addListener((message) => {
+    return Promise.resolve(func(message));
+  });
 };
 
 const receivePageMessage = (func) => {
@@ -28,4 +34,7 @@ const receivePageMessage = (func) => {
   });
 };
 
-export { send, receivePageMessage };
+export {
+  sendToBackground, receiveBackgroundMesssage,
+  receivePageMessage,
+};

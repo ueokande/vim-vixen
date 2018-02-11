@@ -5,6 +5,6 @@ return function(){
   var args = arguments
   setTimeout(() => {
     start(args)
-  }, 1000);
+  }, 3000);
 };
 }(window.__karma__.start));

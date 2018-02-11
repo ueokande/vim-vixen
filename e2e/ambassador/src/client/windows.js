@@ -1,9 +1,10 @@
 import { WINDOWS_CREATE, WINDOWS_REMOVE } from '../shared/messages';
 import * as ipc from './ipc';
 
-const create = () => {
+const create = (url) => {
   return ipc.send({
-    type: WINDOWS_CREATE
+    type: WINDOWS_CREATE,
+    url,
   });
 };
 
