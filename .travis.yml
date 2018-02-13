@@ -10,3 +10,6 @@ script:
   - npm run lint
   - npm test
   - npm run package
+  - npm run build && \
+    npm run ambassador:build && \
+    npm run test:e2e || npm run test:e2e || npm run test:e2e
