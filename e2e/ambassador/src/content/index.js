@@ -1,5 +1,6 @@
 import {
-  WINDOWS_CREATE, WINDOWS_REMOVE, TABS_CREATE,
+  WINDOWS_CREATE, WINDOWS_REMOVE, WINDOWS_GET,
+  TABS_CREATE,
   EVENT_KEYPRESS, EVENT_KEYDOWN, EVENT_KEYUP,
 } from '../shared/messages';
 import * as ipc from './ipc';
@@ -8,6 +9,7 @@ ipc.receivePageMessage((message) => {
   switch (message.type) {
   case WINDOWS_CREATE:
   case WINDOWS_REMOVE:
+  case WINDOWS_GET:
   case TABS_CREATE:
   case EVENT_KEYPRESS:
   case EVENT_KEYDOWN:

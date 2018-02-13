@@ -1,4 +1,6 @@
-import { WINDOWS_CREATE, WINDOWS_REMOVE } from '../shared/messages';
+import {
+  WINDOWS_CREATE, WINDOWS_REMOVE, WINDOWS_GET
+} from '../shared/messages';
 import * as ipc from './ipc';
 
 const create = (url) => {
@@ -15,4 +17,11 @@ const remove = (windowId) => {
   });
 };
 
-export { create, remove };
+const get = (windowId) => {
+  return ipc.send({
+    type: WINDOWS_GET,
+    windowId,
+  });
+};
+
+export { create, remove, get };

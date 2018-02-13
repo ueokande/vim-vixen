@@ -5,7 +5,7 @@ import * as keys from "../ambassador/src/client/keys";
 
 const SERVER_URL = "localhost:11111";
 
-describe("tab test", function() {
+describe("tab test", () => {
   let targetWindow;
   let targetTab;
 
@@ -22,14 +22,13 @@ describe("tab test", function() {
     return windows.remove(targetWindow.id);
   });
 
-  it('delete tab', (done) => {
-    let before = window.document.documentElement.scrollTop;
-    keys.press(targetTab.id, 'j').then((r) => {
+  it('delete tab', () => {
+    return Promise.resolve().then(() => {
+      return keys.press(targetTab.id, 'd');
+    }).then(() => {
+      return windows.get(targetWindow.id);
+    }).then((after) => {
+      expect(after.tabs).to.have.lengthOf(1);
     });
-    keys.press(targetTab.id, 'j').then((r) => {
-    });
-    keys.press(targetTab.id, 'G').then((r) => {
-    });
-    let after = window.document.documentElement.scrollTop;
   });
 });

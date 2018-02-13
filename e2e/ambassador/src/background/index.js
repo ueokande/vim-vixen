@@ -1,5 +1,6 @@
 import {
-  WINDOWS_CREATE, WINDOWS_REMOVE, TABS_CREATE,
+  WINDOWS_CREATE, WINDOWS_REMOVE, WINDOWS_GET,
+  TABS_CREATE,
   EVENT_KEYPRESS, EVENT_KEYDOWN, EVENT_KEYUP,
 } from '../shared/messages';
 import * as tabs from './tabs';
@@ -11,6 +12,8 @@ receiveContentMessage((message) => {
     return browser.windows.create({ url: message.url });
   case WINDOWS_REMOVE:
     return browser.windows.remove(message.windowId);
+  case WINDOWS_GET:
+    return browser.windows.get(message.windowId, { populate: true });
   case TABS_CREATE:
     return tabs.create({
       url: message.url,
