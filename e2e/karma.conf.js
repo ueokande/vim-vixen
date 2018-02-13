@@ -33,10 +33,13 @@ module.exports = function (config) {
       noInfo: true
     },
 
+    reporters: ['mocha'],
+
     plugins: [
       require('./karma-webext-launcher'),
       'karma-mocha',
       'karma-webpack',
+      'karma-mocha-reporter',
     ],
   })
 }
