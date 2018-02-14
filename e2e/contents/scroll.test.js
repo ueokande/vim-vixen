@@ -100,4 +100,52 @@ describe("scroll test", () => {
       expect(actual.x).to.be.equals(actual.xMax);
     });
   });
+
+  it('scrolls bottom by <C-U>', () => {
+    let before
+    return scrolls.set(targetTab.id, 5000, 5000).then((scroll) => {
+      before = scroll;
+      return keys.press(targetTab.id, 'u', { ctrlKey: true });
+    }).then(() => {
+      return scrolls.get(targetTab.id);
+    }).then((actual) => {
+      expect(actual.y).to.closeTo(before.y - before.frameHeight / 2, 1);
+    });
+  });
+
+  it('scrolls bottom by <C-D>', () => {
+    let before
+    return scrolls.set(targetTab.id, 5000, 5000).then((scroll) => {
+      before = scroll;
+      return keys.press(targetTab.id, 'd', { ctrlKey: true });
+    }).then(() => {
+      return scrolls.get(targetTab.id);
+    }).then((actual) => {
+      expect(actual.y).to.closeTo(before.y + before.frameHeight / 2, 1);
+    });
+  });
+
+  it('scrolls bottom by <C-B>', () => {
+    let before
+    return scrolls.set(targetTab.id, 5000, 5000).then((scroll) => {
+      before = scroll;
+      return keys.press(targetTab.id, 'b', { ctrlKey: true });
+    }).then(() => {
+      return scrolls.get(targetTab.id);
+    }).then((actual) => {
+      expect(actual.y).to.equals(before.y - before.frameHeight);
+    });
+  });
+
+  it('scrolls bottom by <C-F>', () => {
+    let before
+    return scrolls.set(targetTab.id, 5000, 5000).then((scroll) => {
+      before = scroll;
+      return keys.press(targetTab.id, 'f', { ctrlKey: true });
+    }).then(() => {
+      return scrolls.get(targetTab.id);
+    }).then((actual) => {
+      expect(actual.y).to.equals(before.y + before.frameHeight);
+    });
+  });
 });

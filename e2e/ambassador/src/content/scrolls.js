@@ -5,6 +5,8 @@ const get = () => {
     yMax: element.scrollHeight - element.clientHeight,
     x: element.scrollLeft,
     y: element.scrollTop,
+    frameWidth: element.clientWidth,
+    frameHeight: element.clientHeight,
   };
 };
 
