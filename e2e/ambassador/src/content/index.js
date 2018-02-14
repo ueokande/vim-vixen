@@ -1,21 +1,12 @@
 import {
-  WINDOWS_CREATE, WINDOWS_REMOVE, WINDOWS_GET,
-  TABS_CREATE,
   EVENT_KEYPRESS, EVENT_KEYDOWN, EVENT_KEYUP,
+  SCROLL_GET, SCROLL_SET,
 } from '../shared/messages';
 import * as ipc from './ipc';
+import * as scrolls from './scrolls';
 
 ipc.receivePageMessage((message) => {
-  switch (message.type) {
-  case WINDOWS_CREATE:
-  case WINDOWS_REMOVE:
-  case WINDOWS_GET:
-  case TABS_CREATE:
-  case EVENT_KEYPRESS:
-  case EVENT_KEYDOWN:
-  case EVENT_KEYUP:
-    return ipc.sendToBackground(message);
-  }
+  return ipc.sendToBackground(message);
 });
 
 ipc.receiveBackgroundMesssage((message) => {
@@ -32,6 +23,10 @@ ipc.receiveBackgroundMesssage((message) => {
     document.body.dispatchEvent(
       new KeyboardEvent('keyup', { 'key': message.key }));
     break;
+  case SCROLL_GET:
+    return Promise.resolve(scrolls.get());
+  case SCROLL_SET:
+    return Promise.resolve(scrolls.set(message.x, message.y));
   }
   return Promise.resolve({});
 });
