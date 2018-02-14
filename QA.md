@@ -6,12 +6,6 @@ Test operations with default key maps.
 
 #### Scrolling
 
-- [ ] <kbd>k</kbd>, <kbd>j</kbd>: scroll up and down
-- [ ] <kbd>h</kbd>, <kbd>l</kbd>: scroll left and right
-- [ ] <kbd>Ctrl</kbd>+<kbd>U</kbd>, <kbd>Ctrl</kbd>+<kbd>D</kbd>: scroll up and down by half of screen
-- [ ] <kbd>Ctrl</kbd>+<kbd>B</kbd>, <kbd>Ctrl</kbd>+<kbd>F</kbd>: scroll up and down by a screen
-- [ ] <kbd>0</kbd>, <kbd>$</kbd>: scroll to leftmost and rightmost
-- [ ] <kbd>g</kbd><kbd>g</kbd>, <kbd>G</kbd>: scroll to top and bottom
 - [ ] Smooth scroll by `:set smoothscroll`
 - [ ] Non-smooth scroll by `:set nosmoothscroll`
 - [ ] Configure custom hint character by settings `"smoothscroll": true`, `"smoothscroll": false`
