@@ -23,59 +23,81 @@ describe("scroll test", () => {
     return windows.remove(targetWindow.id);
   });
 
-  describe('press k', () => {
-    it('scrolls up', () => {
-      let before
-      return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
-        before = scroll;
-        return keys.press(targetTab.id, 'k');
-      }).then(() => {
-        return scrolls.get(targetTab.id);
-      }).then((actual) => {
-        expect(actual.y).to.be.lessThan(before.y);
-      });
+  it('scrolls up by k', () => {
+    let before
+    return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
+      before = scroll;
+      return keys.press(targetTab.id, 'k');
+    }).then(() => {
+      return scrolls.get(targetTab.id);
+    }).then((actual) => {
+      expect(actual.y).to.be.lessThan(before.y);
     });
   });
 
-  describe('press j', () => {
-    it('scrolls down', () => {
-      let before
-      return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
-        before = scroll;
-        return keys.press(targetTab.id, 'j');
-      }).then(() => {
-        return scrolls.get(targetTab.id);
-      }).then((actual) => {
-        expect(actual.y).to.be.greaterThan(before.y);
-      });
+  it('scrolls down by j', () => {
+    let before
+    return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
+      before = scroll;
+      return keys.press(targetTab.id, 'j');
+    }).then(() => {
+      return scrolls.get(targetTab.id);
+    }).then((actual) => {
+      expect(actual.y).to.be.greaterThan(before.y);
     });
   });
 
-  describe('press h', () => {
-    it('scrolls left', () => {
-      let before
-      return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
-        before = scroll;
-        return keys.press(targetTab.id, 'h');
-      }).then(() => {
-        return scrolls.get(targetTab.id);
-      }).then((actual) => {
-        expect(actual.x).to.be.lessThan(before.x);
-      });
+  it('scrolls left by h', () => {
+    let before
+    return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
+      before = scroll;
+      return keys.press(targetTab.id, 'h');
+    }).then(() => {
+      return scrolls.get(targetTab.id);
+    }).then((actual) => {
+      expect(actual.x).to.be.lessThan(before.x);
     });
   });
 
-  describe('press l', () => {
-    it('scrolls right', () => {
-      let before
-      return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
-        before = scroll;
-        return keys.press(targetTab.id, 'l');
-      }).then(() => {
-        return scrolls.get(targetTab.id);
-      }).then((actual) => {
-        expect(actual.x).to.be.greaterThan(before.x);
-      });
+  it('scrolls top by gg', () => {
+    return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
+      return keys.press(targetTab.id, 'g');
+    }).then(() => {
+      return keys.press(targetTab.id, 'g');
+    }).then(() => {
+      return scrolls.get(targetTab.id);
+    }).then((actual) => {
+      expect(actual.y).to.be.equals(0);
+    });
+  });
+
+  it('scrolls bottom by G', () => {
+    return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
+      return keys.press(targetTab.id, 'G', { shiftKey: true });
+    }).then(() => {
+      return scrolls.get(targetTab.id);
+    }).then((actual) => {
+      expect(actual.y).to.be.equals(actual.yMax);
+    });
+  });
+
+  it('scrolls bottom by 0', () => {
+    return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
+      return keys.press(targetTab.id, '0');
+    }).then(() => {
+      return scrolls.get(targetTab.id);
+    }).then((actual) => {
+      expect(actual.x).to.be.equals(0);
+    });
+  });
+
+  it('scrolls bottom by $', () => {
+    return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
+      return keys.press(targetTab.id, '$');
+    }).then(() => {
+      return scrolls.get(targetTab.id);
+    }).then((actual) => {
+      expect(actual.x).to.be.equals(actual.xMax);
     });
   });
 });
