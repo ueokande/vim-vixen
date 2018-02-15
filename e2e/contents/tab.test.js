@@ -18,31 +18,37 @@ describe("tab test", () => {
     return windows.remove(targetWindow.id);
   });
 
-  describe('press d', () => {
-    it('deletes tab', () => {
-      return tabs.create(targetWindow.id, SERVER_URL).then((tab) => {
-        return keys.press(tab.id, 'd');
-      }).then(() => {
-        return windows.get(targetWindow.id);
-      }).then((after) => {
-        expect(after.tabs).to.have.lengthOf(1);
-      });
+  it('deletes tab by d', () => {
+    let before;
+    let targetTab;
+    return tabs.create(targetWindow.id, SERVER_URL).then((tab) => {
+      targetTab = tab;
+      return windows.get(targetWindow.id);
+    }).then((win) => {
+      before = win;
+      return keys.press(targetTab.id, 'd');
+    }).then(() => {
+      return windows.get(targetWindow.id);
+    }).then((actual) => {
+      expect(actual.tabs).to.have.lengthOf(before.tabs.length - 1);
     });
   });
 
-  describe('press zd', () => {
-    it('duplicates tab', () => {
-      let targetTab = 0;
-      return tabs.create(targetWindow.id, SERVER_URL).then((tab) => {
-        targetTab = tab;
-        return keys.press(targetTab.id, 'z');
-      }).then(() => {
-        return keys.press(targetTab.id, 'd');
-      }).then(() => {
-        return windows.get(targetWindow.id);
-      }).then((after) => {
-        expect(after.tabs).to.have.lengthOf(3);
-      });
+  it('duplicates tab by zd', () => {
+    let before;
+    let targetTab;
+    return tabs.create(targetWindow.id, SERVER_URL).then((tab) => {
+      targetTab = tab;
+      return windows.get(targetWindow.id)
+    }).then((win) => {;
+      before = win;
+      return keys.press(targetTab.id, 'z');
+    }).then(() => {
+      return keys.press(targetTab.id, 'd');
+    }).then(() => {
+      return windows.get(targetWindow.id);
+    }).then((actual) => {
+      expect(actual.tabs).to.have.lengthOf(before.tabs.length + 1);
     });
   })
 });

@@ -2,6 +2,7 @@ import {
   WINDOWS_CREATE, WINDOWS_REMOVE, WINDOWS_GET,
   TABS_CREATE,
   EVENT_KEYPRESS, EVENT_KEYDOWN, EVENT_KEYUP,
+  SCROLL_GET, SCROLL_SET,
 } from '../shared/messages';
 import * as tabs from './tabs';
 import { receiveContentMessage } from './ipc';
@@ -19,15 +20,11 @@ receiveContentMessage((message) => {
       url: message.url,
       windowId: message.windowId,
     });
-  }
-});
-
-
-receiveContentMessage((message) => {
-  switch (message.type) {
   case EVENT_KEYPRESS:
   case EVENT_KEYDOWN:
   case EVENT_KEYUP:
+  case SCROLL_GET:
+  case SCROLL_SET:
     return browser.tabs.sendMessage(
       message.tabId,
       message
