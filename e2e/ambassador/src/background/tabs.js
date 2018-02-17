@@ -13,6 +13,14 @@ const create = (props = {}) => {
   });
 };
 
+const selectAt = (props = {}) => {
+  return browser.tabs.query({ windowId: props.windowId }).then((tabs) => {
+    let target = tabs[props.index];
+    return browser.tabs.update(target.id, { active: true });
+  });
+};
+
+
 export {
-  create,
+  create, selectAt
 };
