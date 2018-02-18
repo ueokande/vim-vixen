@@ -1,6 +1,6 @@
 import {
   WINDOWS_CREATE, WINDOWS_REMOVE, WINDOWS_GET,
-  TABS_CREATE,
+  TABS_CREATE, TABS_SELECT_AT,
   EVENT_KEYPRESS, EVENT_KEYDOWN, EVENT_KEYUP,
   SCROLL_GET, SCROLL_SET,
 } from '../shared/messages';
@@ -19,6 +19,11 @@ receiveContentMessage((message) => {
     return tabs.create({
       url: message.url,
       windowId: message.windowId,
+    });
+  case TABS_SELECT_AT:
+    return tabs.selectAt({
+      windowId: message.windowId,
+      index: message.index,
     });
   case EVENT_KEYPRESS:
   case EVENT_KEYDOWN:

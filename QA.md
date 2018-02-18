@@ -21,16 +21,10 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 #### Tabs
 
-- [ ] <kbd>d</kbd>: delete current tab, unable to remove pinnned tab
 - [ ] <kbd>!d</kbd>: delete current tab and pinned tab
 - [ ] <kbd>u</kbd>: reopen close tab
-- [ ] <kbd>K</kbd>, <kbd>J</kbd>: select prev and next tab
-- [ ] <kbd>g0</kbd>, <kbd>g$</kbd>: select first and last tab
 - [ ] <kbd>r</kbd>: reload current tab
 - [ ] <kbd>R</kbd>: reload current tab without cache
-- [ ] <kbd>zd</kbd>: duplicate current tab
-- [ ] <kbd>zp</kbd>: toggle pin/unpin state on current tab
-- [ ] <kbd>Ctrl</kbd>+<kbd>6</kbd>: select previous selected tab
 
 #### Navigation
 

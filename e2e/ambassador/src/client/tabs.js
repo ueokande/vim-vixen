@@ -1,4 +1,6 @@
-import { TABS_CREATE } from '../shared/messages';
+import {
+  TABS_CREATE, TABS_SELECT_AT,
+} from '../shared/messages';
 import * as ipc from './ipc';
 
 const create = (windowId, url) => {
@@ -9,4 +11,12 @@ const create = (windowId, url) => {
   });
 };
 
-export { create };
+const selectAt = (windowId, index) => {
+  return ipc.send({
+    type: TABS_SELECT_AT,
+    windowId,
+    index,
+  });
+};
+
+export { create, selectAt };
