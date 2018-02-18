@@ -52,6 +52,24 @@ describe("tab test", () => {
     });
   })
 
+  it('makes pinned by zd', () => {
+    let before;
+    let targetTab;
+    return tabs.create(targetWindow.id, SERVER_URL).then((tab) => {
+      targetTab = tab;
+      return windows.get(targetWindow.id)
+    }).then((win) => {;
+      before = win;
+      return keys.press(targetTab.id, 'z');
+    }).then(() => {
+      return keys.press(targetTab.id, 'p');
+    }).then(() => {
+      return windows.get(targetWindow.id);
+    }).then((actual) => {
+      expect(actual.tabs[0].pinned).to.be.true;
+    });
+  })
+
   it('selects previous tab by K', () => {
     return Promise.resolve().then(() => {
       return tabs.create(targetWindow.id, SERVER_URL + '#1')
