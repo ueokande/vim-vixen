@@ -182,6 +182,26 @@ describe("tab test", () => {
     });
   });
 
+  it('selects last selected tab by <C-6>', () => {
+    return Promise.resolve().then(() => {
+      return tabs.create(targetWindow.id, SERVER_URL + '#1')
+    }).then(() => {
+      return tabs.create(targetWindow.id, SERVER_URL + '#2')
+    }).then(() => {
+      return tabs.create(targetWindow.id, SERVER_URL + '#3');
+    }).then(() => {
+      return tabs.selectAt(targetWindow.id, 1);
+    }).then(() => {
+      return tabs.selectAt(targetWindow.id, 3);
+    }).then((tab) => {
+      return keys.press(tab.id, '6', { ctrlKey: true });
+    }).then(() => {
+      return windows.get(targetWindow.id);
+    }).then((win) => {
+      expect(win.tabs[1].active).to.be.true;
+    });
+  });
+
   it('deletes tab by d', () => {
     return Promise.resolve().then(() => {
       return tabs.create(targetWindow.id, SERVER_URL + '#1');
