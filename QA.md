@@ -36,8 +36,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 #### Misc
 
-- [ ] <kbd>z</kbd><kbd>i</kbd>, <kbd>z</kbd><kbd>o</kbd>: zoom-in and zoom-out
-- [ ] <kbd>z</kbd><kbd>z</kbd>: set zoom level as default
 - [ ] <kbd>y</kbd>: yank current URL and show a message
 - [ ] <kbd>p</kbd>: open clipbord's URL in current tab
 - [ ] <kbd>P</kbd>: open clipbord's URL in new tab
