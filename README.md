@@ -95,6 +95,10 @@ To adjust the search engine default and add/remove search engines, see the [sear
 
 Open a URL or search keywords by search engine in new tab.
 
+#### `:q` command
+
+Close the current tab.
+
 #### `:winopen` command
 
 Open a URL or search keywords by search engine in new window.
