@@ -5,7 +5,7 @@ import * as keys from "../ambassador/src/client/keys";
 
 const SERVER_URL = "localhost:11111/";
 
-describe("tab test", () => {
+describe("zoom test", () => {
   let targetWindow;
   let targetTab;
 

@@ -1,5 +1,5 @@
-const openNewTab = (url) => {
-  return browser.tabs.create({ url: url });
+const openNewTab = (url, openerTabId) => {
+  return browser.tabs.create({ url, openerTabId });
 };
 
 const openToTab = (url, tab) => {
