@@ -63,6 +63,7 @@ export default class Follow {
     this.win.parent.postMessage(JSON.stringify({
       type: messages.FOLLOW_KEY_PRESS,
       key: key.key,
+      ctrlKey: key.ctrlKey,
     }), '*');
     return true;
   }
