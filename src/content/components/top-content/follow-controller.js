@@ -32,7 +32,7 @@ export default class FollowController {
     case messages.FOLLOW_RESPONSE_COUNT_TARGETS:
       return this.create(message.count, sender);
     case messages.FOLLOW_KEY_PRESS:
-      return this.keyPress(message.key);
+      return this.keyPress(message.key, message.ctrlKey);
     }
   }
 
@@ -69,7 +69,11 @@ export default class FollowController {
     });
   }
 
-  keyPress(key) {
+  keyPress(key, ctrlKey) {
+    if (key === '[' && ctrlKey) {
+      this.store.dispatch(followControllerActions.disable());
+      return true;
+    }
     switch (key) {
     case 'Enter':
       this.activate();
