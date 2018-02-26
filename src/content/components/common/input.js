@@ -1,6 +1,10 @@
 import * as dom from 'shared/utils/dom';
 import * as keys from 'shared/utils/keys';
 
+const cancelKey = (e) => {
+  return e.key === 'Escape' || e.key === '[' && e.ctrlKey;
+};
+
 export default class InputComponent {
   constructor(target) {
     this.pressed = {};
@@ -37,7 +41,7 @@ export default class InputComponent {
 
   capture(e) {
     if (this.fromInput(e)) {
-      if (e.key === 'Escape' && e.target.blur) {
+      if (cancelKey(e) && e.target.blur) {
         e.target.blur();
       }
       return;
