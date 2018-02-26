@@ -50,6 +50,9 @@ export default class ConsoleComponent {
   }
 
   onKeyDown(e) {
+    if (e.keyCode === KeyboardEvent.DOM_VK_ESCAPE && e.ctrlKey) {
+      return this.hideCommand();
+    }
     switch (e.keyCode) {
     case KeyboardEvent.DOM_VK_ESCAPE:
       return this.hideCommand();
