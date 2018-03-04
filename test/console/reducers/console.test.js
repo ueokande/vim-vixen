@@ -13,6 +13,12 @@ describe("console reducer", () => {
     expect(state).to.have.property('itemSelection', -1);
   });
 
+  it('return next state for CONSOLE_HIDE', () => {
+    let action = { type: actions.CONSOLE_HIDE };
+    let state = reducer({ mode: 'error' }, action);
+    expect(state).to.have.property('mode', '');
+  })
+
   it('return next state for CONSOLE_SHOW_COMMAND', () => {
     let action = { type: actions.CONSOLE_SHOW_COMMAND, text: 'open ' };
     let state = reducer({}, action);

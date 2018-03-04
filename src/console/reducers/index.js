@@ -53,6 +53,10 @@ const nextConsoleText = (completions, group, item, defaults) => {
 
 export default function reducer(state = defaultState, action = {}) {
   switch (action.type) {
+  case actions.CONSOLE_HIDE:
+    return Object.assign({}, state, {
+      mode: '',
+    });
   case actions.CONSOLE_SHOW_COMMAND:
     return Object.assign({}, state, {
       mode: 'command',
