@@ -1,4 +1,7 @@
 export default {
+  // Hide console, or cancel some user actions
+  CANCEL: 'cancel',
+
   // Addons
   ADDON_ENABLE: 'addon.enable',
   ADDON_DISABLE: 'addon.disable',

@@ -30,7 +30,6 @@ describe("setting reducer", () => {
     };
     state = settingReducer(state, action);
 
-    console.log(state);
     expect(state.value.properties).to.have.property('smoothscroll', true);
     expect(state.value.properties).to.have.property('encoding', 'utf-8');
   });
