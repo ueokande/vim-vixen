@@ -3,6 +3,12 @@ import actions from 'console/actions';
 import * as consoleActions from 'console/actions/console';
 
 describe("console actions", () => {
+  describe('hide', () => {
+    it('create CONSOLE_HIDE action', () => {
+      let action = consoleActions.hide();
+      expect(action.type).to.equal(actions.CONSOLE_HIDE);
+    });
+  });
   describe("showCommand", () => {
     it('create CONSOLE_SHOW_COMMAND action', () => {
       let action = consoleActions.showCommand('hello');

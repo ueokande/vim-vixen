@@ -73,6 +73,10 @@ const exec = (operation, tab) => {
     return browser.tabs.sendMessage(tab.id, {
       type: messages.CONSOLE_SHOW_FIND
     });
+  case operations.CANCEL:
+    return browser.tabs.sendMessage(tab.id, {
+      type: messages.CONSOLE_HIDE,
+    });
   default:
     return Promise.resolve();
   }
