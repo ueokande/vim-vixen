@@ -28,4 +28,11 @@ const postError = (doc, message) => {
   });
 };
 
-export { initialize, blur, postMessage, postError };
+const postInfo = (doc, message) => {
+  return postMessage(doc, {
+    type: messages.CONSOLE_SHOW_INFO,
+    text: message,
+  });
+};
+
+export { initialize, blur, postError, postInfo };

@@ -62,10 +62,7 @@ const exec = (operation, repeat, settings) => {
     return focuses.focusInput();
   case operations.URLS_YANK:
     urls.yank(window);
-    return consoleFrames.postMessage(window.document, {
-      type: messages.CONSOLE_SHOW_INFO,
-      text: 'Current url yanked',
-    });
+    return consoleFrames.postInfo(window.document, 'Current url yanked');
   case operations.URLS_PASTE:
     return urls.paste(window, operation.newTab ? operation.newTab : false);
   default:

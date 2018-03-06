@@ -38,6 +38,10 @@ export default class FindComponent {
         window.document,
         'Pattern not found: ' + state.keyword);
     }
+    consoleFrames.postInfo(
+      window.document,
+      'Pattern found: ' + state.keyword,
+    );
     return this.store.dispatch(findActions.next(state.keyword, false));
   }
 
@@ -49,6 +53,10 @@ export default class FindComponent {
         window.document,
         'Pattern not found: ' + state.keyword);
     }
+    consoleFrames.postInfo(
+      window.document,
+      'Pattern found: ' + state.keyword,
+    );
     return this.store.dispatch(findActions.prev(state.keyword, false));
   }
 }

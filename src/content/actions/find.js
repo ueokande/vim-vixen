@@ -14,6 +14,13 @@ const postPatternNotFound = (pattern) => {
     'Pattern not found: ' + pattern);
 };
 
+const postPatternFound = (pattern) => {
+  return consoleFrames.postInfo(
+    window.document,
+    'Pattern found: ' + pattern,
+  );
+};
+
 const find = (string, backwards) => {
   let caseSensitive = false;
   let wrapScan = true;
@@ -34,9 +41,12 @@ const findNext = (keyword, reset, backwards) => {
     window.getSelection().removeAllRanges();
     found = find(keyword, backwards);
   }
-  if (!found) {
+  if (found) {
+    postPatternFound(keyword);
+  } else {
     postPatternNotFound(keyword);
   }
+
   return {
     type: actions.FIND_SET_KEYWORD,
     keyword,
