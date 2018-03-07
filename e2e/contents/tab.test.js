@@ -52,7 +52,7 @@ describe("tab test", () => {
     });
   })
 
-  it('makes pinned by zd', () => {
+  it('makes pinned by zp', () => {
     let before;
     let targetTab;
     return tabs.create(targetWindow.id, SERVER_URL).then((tab) => {
