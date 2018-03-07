@@ -5,7 +5,7 @@ import findReducer from 'content/reducers/find';
 describe("find reducer", () => {
   it('return the initial state', () => {
     let state = findReducer(undefined, {});
-    expect(state).to.have.property('keyword', '');
+    expect(state).to.have.property('keyword', null);
     expect(state).to.have.property('found', false);
   });
 

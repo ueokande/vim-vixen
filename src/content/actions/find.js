@@ -5,6 +5,7 @@
 // NOTE: window.find is not standard API
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/find
 
+import messages from 'shared/messages';
 import actions from 'content/actions';
 import * as consoleFrames from '../console-frames';
 
@@ -31,35 +32,49 @@ const find = (string, backwards) => {
   return window.find(string, caseSensitive, backwards, wrapScan);
 };
 
-const findNext = (keyword, reset, backwards) => {
+const findNext = (currentKeyword, reset, backwards) => {
   if (reset) {
     window.getSelection().removeAllRanges();
   }
 
-  let found = find(keyword, backwards);
-  if (!found) {
-    window.getSelection().removeAllRanges();
-    found = find(keyword, backwards);
-  }
-  if (found) {
-    postPatternFound(keyword);
+  let promise = Promise.resolve(currentKeyword);
+  if (currentKeyword) {
+    browser.runtime.sendMessage({
+      type: messages.FIND_SET_KEYWORD,
+      keyword: currentKeyword,
+    });
   } else {
-    postPatternNotFound(keyword);
+    promise = browser.runtime.sendMessage({
+      type: messages.FIND_GET_KEYWORD,
+    });
   }
 
-  return {
-    type: actions.FIND_SET_KEYWORD,
-    keyword,
-    found,
-  };
+  return promise.then((keyword) => {
+    let found = find(keyword, backwards);
+    if (!found) {
+      window.getSelection().removeAllRanges();
+      found = find(keyword, backwards);
+    }
+    if (found) {
+      postPatternFound(keyword);
+    } else {
+      postPatternNotFound(keyword);
+    }
+
+    return {
+      type: actions.FIND_SET_KEYWORD,
+      keyword,
+      found,
+    };
+  });
 };
 
-const next = (keyword, reset) => {
-  return findNext(keyword, reset, false);
+const next = (currentKeyword, reset) => {
+  return findNext(currentKeyword, reset, false);
 };
 
-const prev = (keyword, reset) => {
-  return findNext(keyword, reset, true);
+const prev = (currentKeyword, reset) => {
+  return findNext(currentKeyword, reset, true);
 };
 
 export { next, prev };
