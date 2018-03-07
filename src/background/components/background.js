@@ -2,6 +2,7 @@ import messages from 'shared/messages';
 import * as operationActions from 'background/actions/operation';
 import * as commandActions from 'background/actions/command';
 import * as settingActions from 'background/actions/setting';
+import * as findActions from 'background/actions/find';
 import * as tabActions from 'background/actions/tab';
 import * as commands from 'shared/commands';
 
@@ -23,6 +24,8 @@ export default class BackgroundComponent {
 
   onMessage(message, sender) {
     let settings = this.store.getState().setting;
+    let find = this.store.getState().find;
+
     switch (message.type) {
     case messages.BACKGROUND_OPERATION:
       return this.store.dispatch(
@@ -48,6 +51,11 @@ export default class BackgroundComponent {
     case messages.SETTINGS_RELOAD:
       this.store.dispatch(settingActions.load());
       return this.broadcastSettingsChanged();
+    case messages.FIND_GET_KEYWORD:
+      return Promise.resolve(find.keyword);
+    case messages.FIND_SET_KEYWORD:
+      this.store.dispatch(findActions.setKeyword(message.keyword));
+      return Promise.resolve({});
     }
   }
 

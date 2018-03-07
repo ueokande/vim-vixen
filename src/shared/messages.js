@@ -45,6 +45,8 @@ export default {
 
   FIND_NEXT: 'find.next',
   FIND_PREV: 'find.prev',
+  FIND_GET_KEYWORD: 'find.get.keyword',
+  FIND_SET_KEYWORD: 'find.set.keyword',
 
   OPEN_URL: 'open.url',
 
