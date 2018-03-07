@@ -39,10 +39,14 @@ The default mappings are as follows:
 - <kbd>g</kbd><kbd>i</kbd>: focus first input
 
 #### Misc
+
 - <kbd>y</kbd>: copy URL in current tab
 - <kbd>p</kbd>: open clipbord's URL in current tab
 - <kbd>P</kbd>: open clipbord's URL in new tab
 - <kbd>Shift</kbd>+<kbd>Esc</kbd>: enable or disable the add-on in current tab.
+- <kbd>/</kbd>: start to find a keyword in the page
+- <kbd>n</kbd>: find next keyword in the page
+- <kbd>N</kbd>: find prev keyword in the page
 
 ### Console commands
 
