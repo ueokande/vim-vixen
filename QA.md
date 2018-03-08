@@ -40,6 +40,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] <kbd>p</kbd>: open clipbord's URL in current tab
 - [ ] <kbd>P</kbd>: open clipbord's URL in new tab
 - [ ] Toggle enabled/disabled of plugin bu <kbd>Shift</kbd>+<kbd>Esc</kbd>
+- [ ] Hide error and info console by <kbd>Esc</kbd>
 
 ### Following links
 
@@ -55,6 +56,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] Select link and open it in `<area>` tags, for <kbd>f</kbd> and <kbd>F</kbd>
 - [ ] Configure custom hint character by `:set hintchars=012345678`
 - [ ] Configure custom hint character by settings `"hintchars": "012345678"`
+- [ ] Opened tabs is in child on Tree Style Tab
 
 ### Consoles
 
@@ -187,6 +189,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] Search next/prev by <kbd>n</kbd>/<kbd>N</kbd>
 - [ ] Wrap search by <kbd>n</kbd>/<kbd>N</kbd>
 - [ ] Find with last keyword if keyword is empty
+- [ ] Find keyword last used on new tab opened
 
 ## Misc
 
