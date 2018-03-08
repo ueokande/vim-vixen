@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Vim Vixen",
   "description": "Vim Vixen",
-  "version": "0.11",
+  "version": "0.12",
   "icons": {
     "48": "resources/icon_48x48.png",
     "96": "resources/icon_96x96.png"
