@@ -18,7 +18,7 @@ config = {
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: [ /\.js$/,  /\.jsx$/ ],
         exclude: /node_modules/,
