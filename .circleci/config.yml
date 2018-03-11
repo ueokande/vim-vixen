@@ -1,8 +1,8 @@
 version: 2
 jobs:
-  install_firefox:
+  build:
     docker:
-      - image: circleci/node:9-stretch
+      - image: circleci/node:9-stretch-browsers
     environment:
       - FIREFOX_VERSION: "59.0b9"
     working_directory: ~
@@ -23,10 +23,8 @@ jobs:
           key: firefox-bin
           paths:
             - ~/firefox
-  npm_install:
-    docker:
-      - image: circleci/node:9-stretch-browsers
-    steps:
+      - run: sudo apt-get update && sudo apt-get install -y libgtk-3-0 libdbus-glib-1-2
+
       - checkout
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
@@ -37,14 +35,7 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - node_modules
-  build:
-    docker:
-      - image: circleci/node:9-stretch-browsers
-    environment:
-      - FIREFOX_VERSION: "59.0b9"
-    steps:
-      - run: sudo apt-get update && sudo apt-get install -y libgtk-3-0 libdbus-glib-1-2
-      - checkout
+
       - restore_cache:
           key: firefox-bin
       - restore_cache:
@@ -56,14 +47,3 @@ jobs:
       - run: npm run build
       - run: npm run ambassador:build
       - run: node e2e/web-server & npm run test:e2e
-
-workflows:
-  version: 2
-  build_and_test:
-    jobs:
-      - install_firefox
-      - npm_install
-      - build:
-          requires:
-            - install_firefox
-            - npm_install
