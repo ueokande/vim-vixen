@@ -1,4 +1,3 @@
-const MinifyPlugin = require("babel-minify-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
@@ -57,8 +56,5 @@ config = {
     })
   ]
 };
-if (process.env.NODE_ENV === 'production') {
-  config.plugins.push(new MinifyPlugin());
-}
 
 module.exports = config
