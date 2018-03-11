@@ -34,7 +34,6 @@ module.exports = function (config) {
     },
 
     reporters: ['mocha'],
-    browserDisconnectTimeout: 5000,
 
     plugins: [
       require('./karma-webext-launcher'),
@@ -42,5 +41,11 @@ module.exports = function (config) {
       'karma-webpack',
       'karma-mocha-reporter',
     ],
+
+    client: {
+      mocha: {
+        timeout: 5000
+      }
+    }
   })
 }
