@@ -77,6 +77,16 @@ export default class ConsoleComponent {
         return this.doEnter(e);
       }
       break;
+    case KeyboardEvent.DOM_VK_J:
+      if (e.ctrlKey) {
+        this.selectNext(e);
+      }
+      break;
+    case KeyboardEvent.DOM_VK_K:
+      if (e.ctrlKey) {
+        this.selectPrev(e);
+      }
+      break;
     case KeyboardEvent.DOM_VK_N:
       if (e.ctrlKey) {
         this.selectNext(e);
