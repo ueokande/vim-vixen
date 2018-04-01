@@ -77,6 +77,11 @@ const exec = (operation, tab) => {
     return browser.tabs.sendMessage(tab.id, {
       type: messages.CONSOLE_HIDE,
     });
+  case operations.PAGE_SOURCE:
+    return browser.tabs.create({
+      url: 'view-source:' + tab.url,
+      index: tab.index + 1
+    });
   default:
     return Promise.resolve();
   }

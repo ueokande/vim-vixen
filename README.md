@@ -47,6 +47,7 @@ The default mappings are as follows:
 - <kbd>/</kbd>: start to find a keyword in the page
 - <kbd>n</kbd>: find next keyword in the page
 - <kbd>N</kbd>: find prev keyword in the page
+- <kbd>g</kbd><kbd>f</kbd>: view page source
 
 ### Console commands
 

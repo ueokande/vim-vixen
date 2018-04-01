@@ -46,6 +46,7 @@ export default {
     "gu": { "type": "navigate.parent" },
     "gU": { "type": "navigate.root" },
     "gi": { "type": "focus.input" },
+    "gf": { "type": "page.source" },
     "y": { "type": "urls.yank" },
     "p": { "type": "urls.paste", "newTab": false },
     "P": { "type": "urls.paste", "newTab": true },
