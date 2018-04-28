@@ -1,7 +1,5 @@
 import * as doms from 'shared/utils/dom';
 
-const SCROLL_DELTA_X = 48;
-const SCROLL_DELTA_Y = 48;
 const SMOOTH_SCROLL_DURATION = 150;
 
 // dirty way to store scrolling state on globally
@@ -130,22 +128,22 @@ const scroller = (element, smooth, repeat) => {
   return new RoughtScroller(element);
 };
 
-const scrollVertically = (count, smooth, repeat) => {
+const scrollVertically = (count, smooth, repeat, scrollDistY) => {
   let target = scrollTarget();
   let x = target.scrollLeft;
-  let y = target.scrollTop + SCROLL_DELTA_Y * count;
+  let y = target.scrollTop + scrollDistY * count;
   if (repeat && smooth) {
-    y = target.scrollTop + SCROLL_DELTA_Y * count * 4;
+    y = target.scrollTop + scrollDistY * count * 4;
   }
   scroller(target, smooth, repeat).scroll(x, y);
 };
 
-const scrollHorizonally = (count, smooth, repeat) => {
+const scrollHorizonally = (count, smooth, repeat, scrollDistX, scrollDistY) => {
   let target = scrollTarget();
-  let x = target.scrollLeft + SCROLL_DELTA_X * count;
+  let x = target.scrollLeft + scrollDistX * count;
   let y = target.scrollTop;
   if (repeat && smooth) {
-    y = target.scrollTop + SCROLL_DELTA_Y * count * 4;
+    y = target.scrollTop + scrollDistY * count * 4;
   }
   scroller(target, smooth, repeat).scroll(x, y);
 };

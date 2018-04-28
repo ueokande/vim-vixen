@@ -12,6 +12,11 @@ import * as properties from 'shared/settings/properties';
 const exec = (operation, repeat, settings) => {
   let smoothscroll = settings.properties.smoothscroll ||
     properties.defaults.smoothscroll;
+  let scrolldistx = settings.properties.scrolldistx ||
+    properties.defaults.scrolldistx;
+  let scrolldisty = settings.properties.scrolldisty ||
+    properties.defaults.scrolldisty;
+
   switch (operation.type) {
   case operations.ADDON_ENABLE:
     return addonActions.enable();
@@ -28,9 +33,13 @@ const exec = (operation, repeat, settings) => {
       type: messages.FIND_PREV,
     }), '*');
   case operations.SCROLL_VERTICALLY:
-    return scrolls.scrollVertically(operation.count, smoothscroll, repeat);
+    return scrolls.scrollVertically(
+      operation.count, smoothscroll, repeat, scrolldisty
+    );
   case operations.SCROLL_HORIZONALLY:
-    return scrolls.scrollHorizonally(operation.count, smoothscroll, repeat);
+    return scrolls.scrollHorizonally(
+      operation.count, smoothscroll, repeat, scrolldistx, scrolldisty
+    );
   case operations.SCROLL_PAGES:
     return scrolls.scrollPages(operation.count, smoothscroll, repeat);
   case operations.SCROLL_TOP:

@@ -110,6 +110,15 @@ Set hint characters
 :set hintchars=0123456789
 ```
 
+##### `scrolldisty` and `scrolldistx` properties
+
+Set the distance (in pixels) to scroll horizontally/vertically
+
+```
+:set scrolldisty=300
+:set scrolldistx=100
+```
+
 ### Search engines
 
 Vim Vixen supports search by search engines like Google and Yahoo.
