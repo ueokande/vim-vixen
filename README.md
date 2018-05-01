@@ -1,5 +1,7 @@
 # Vim Vixen
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ueokande/vim-vixen.svg)](https://greenkeeper.io/)
+
 [![Join the chat room on Gitter for vim-vixen/vim-vixen](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/vim-vixen/vim-vixen)
 [![CircleCI](https://circleci.com/gh/ueokande/vim-vixen.svg?style=svg)](https://circleci.com/gh/ueokande/vim-vixen)
 [![devDependencies Status](https://david-dm.org/ueokande/vim-vixen/dev-status.svg)](https://david-dm.org/ueokande/vim-vixen?type=dev)
