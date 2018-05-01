@@ -4,7 +4,8 @@ import * as dom from 'shared/utils/dom';
 
 const TARGET_SELECTOR = [
   'a', 'button', 'input', 'textarea', 'area',
-  '[contenteditable=true]', '[contenteditable=""]', '[tabindex]'
+  '[contenteditable=true]', '[contenteditable=""]', '[tabindex]',
+  '[role="button"]'
 ].join(',');
 
 
@@ -29,11 +30,27 @@ const inViewport = (win, element, viewSize, framePosition) => {
   return true;
 };
 
+const isAriaHiddenOrAriaDisabled = (win, element) => {
+  if (!element || win.document.documentElement === element) {
+    return false;
+  }
+  for (let attr of ['aria-hidden', 'aria-disabled']) {
+    if (element.hasAttribute(attr)) {
+      let hidden = element.getAttribute(attr).toLowerCase();
+      if (hidden === '' || hidden === 'true') {
+        return true;
+      }
+    }
+  }
+  return isAriaHiddenOrAriaDisabled(win, element.parentNode);
+};
+
 export default class Follow {
   constructor(win, store) {
     this.win = win;
     this.store = store;
     this.newTab = false;
+    this.background = false;
     this.hints = {};
     this.targets = [];
 
@@ -47,6 +64,7 @@ export default class Follow {
     this.win.parent.postMessage(JSON.stringify({
       type: messages.FOLLOW_KEY_PRESS,
       key: key.key,
+      ctrlKey: key.ctrlKey,
     }), '*');
     return true;
   }
@@ -68,6 +86,7 @@ export default class Follow {
       type: messages.OPEN_URL,
       url: element.href,
       newTab: true,
+      background: this.background,
     });
   }
 
@@ -79,12 +98,13 @@ export default class Follow {
     }), '*');
   }
 
-  createHints(keysArray, newTab) {
+  createHints(keysArray, newTab, background) {
     if (keysArray.length !== this.targets.length) {
       throw new Error('illegal hint count');
     }
 
     this.newTab = newTab;
+    this.background = background;
     this.hints = {};
     for (let i = 0; i < keysArray.length; ++i) {
       let keys = keysArray[i];
@@ -150,7 +170,8 @@ export default class Follow {
     case messages.FOLLOW_REQUEST_COUNT_TARGETS:
       return this.countHints(sender, message.viewSize, message.framePosition);
     case messages.FOLLOW_CREATE_HINTS:
-      return this.createHints(message.keysArray, message.newTab);
+      return this.createHints(
+        message.keysArray, message.newTab, message.background);
     case messages.FOLLOW_SHOW_HINTS:
       return this.showHints(message.keys);
     case messages.FOLLOW_ACTIVATE:
@@ -170,6 +191,7 @@ export default class Follow {
         style.visibility !== 'hidden' &&
         element.type !== 'hidden' &&
         element.offsetHeight > 0 &&
+        !isAriaHiddenOrAriaDisabled(win, element) &&
         inViewport(win, element, viewSize, framePosition);
     });
     return filtered;

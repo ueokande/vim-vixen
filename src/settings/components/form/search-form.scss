@@ -1,0 +1,28 @@
+.form-search-form {
+  @mixin row-base {
+    display: flex;
+
+    .column-name {
+      flex: 1;
+      min-width: 0;
+    }
+    .column-url {
+      flex: 5;
+      min-width: 0;
+    }
+    .column-option {
+      text-align: right;
+      flex-basis: 5rem;
+    }
+  }
+
+  &-header {
+    @include row-base;
+
+    font-weight: bold;
+  }
+
+  &-row {
+    @include row-base;
+  }
+}

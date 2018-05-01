@@ -1,0 +1,12 @@
+.form-properties-form {
+  &-row {
+    .column-name {
+      display: inline-block;
+      min-width: 5rem;
+      font-weight: bold;
+    }
+    .column-input {
+      line-height: 2.2rem;
+    }
+  }
+}

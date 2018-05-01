@@ -17,6 +17,8 @@ const exec = (operation, tab) => {
   switch (operation.type) {
   case operations.TAB_CLOSE:
     return tabs.closeTab(tab.id);
+  case operations.TAB_CLOSE_FORCE:
+    return tabs.closeTabForce(tab.id);
   case operations.TAB_REOPEN:
     return tabs.reopenTab();
   case operations.TAB_PREV:
@@ -27,6 +29,8 @@ const exec = (operation, tab) => {
     return tabs.selectFirstTab();
   case operations.TAB_LAST:
     return tabs.selectLastTab();
+  case operations.TAB_PREV_SEL:
+    return tabs.selectPrevSelTab();
   case operations.TAB_RELOAD:
     return tabs.reload(tab, operation.cache);
   case operations.TAB_PIN:
@@ -68,6 +72,10 @@ const exec = (operation, tab) => {
   case operations.FIND_START:
     return browser.tabs.sendMessage(tab.id, {
       type: messages.CONSOLE_SHOW_FIND
+    });
+  case operations.CANCEL:
+    return browser.tabs.sendMessage(tab.id, {
+      type: messages.CONSOLE_HIDE,
     });
   default:
     return Promise.resolve();

@@ -1,0 +1,45 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:9-stretch-browsers
+    environment:
+      - FIREFOX_VERSION: "59.0b9"
+    working_directory: ~
+    steps:
+      - restore_cache:
+          key: firefox-bin
+          paths:
+            - ~/firefox
+      - run:
+          name: Install Firefox
+          command: |
+            test -d ~/firefox/${FIREFOX_VERSION} && exit 0
+            url=https://ftp.mozilla.org/pub/firefox/releases/${FIREFOX_VERSION}/linux-x86_64/en-US/firefox-${FIREFOX_VERSION}.tar.bz2
+            curl -sSL -o- "$url" | tar xvfj -
+            mkdir -p ~/firefox
+            mv firefox ~/firefox/${FIREFOX_VERSION}
+      - save_cache:
+          key: firefox-bin
+          paths:
+            - ~/firefox
+      - run: sudo apt-get update && sudo apt-get install -y libgtk-3-0 libdbus-glib-1-2
+
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install npm wee
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+
+      - run: echo 'export PATH=~/firefox/$FIREFOX_VERSION:$PATH' >> $BASH_ENV
+      - run: npm run lint
+      - run: npm test
+      - run: npm run package
+      - run: npm run build
+      - run: npm run ambassador:build
+      - run: node e2e/web-server & npm run test:e2e

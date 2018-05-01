@@ -32,6 +32,7 @@ export default {
   CONSOLE_SHOW_ERROR: 'console.show.error',
   CONSOLE_SHOW_INFO: 'console.show.info',
   CONSOLE_SHOW_FIND: 'console.show.find',
+  CONSOLE_HIDE: 'console.hide',
 
   FOLLOW_START: 'follow.start',
   FOLLOW_REQUEST_COUNT_TARGETS: 'follow.request.count.targets',
@@ -44,6 +45,8 @@ export default {
 
   FIND_NEXT: 'find.next',
   FIND_PREV: 'find.prev',
+  FIND_GET_KEYWORD: 'find.get.keyword',
+  FIND_SET_KEYWORD: 'find.set.keyword',
 
   OPEN_URL: 'open.url',
 

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { validate } from 'shared/validators/setting';
+import { validate } from 'shared/settings/validator';
 
 describe("setting validator", () => {
   describe("unknown top keys", () => {

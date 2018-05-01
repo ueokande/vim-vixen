@@ -1,17 +1,14 @@
 ## Checklist for testing Vim Vixen
 
-### Operations
+### Keybindings in JSON settings
 
 Test operations with default key maps.
 
 #### Scrolling
 
-- [ ] <kbd>k</kbd> or <kbd>Ctrl</kbd>+<kbd>Y</kbd>, <kbd>j</kbd> or <kbd>Ctrl</kbd>+<kbd>E</kbd>: scroll up and down
-- [ ] <kbd>h</kbd>, <kbd>l</kbd>: scroll left and right
-- [ ] <kbd>Ctrl</kbd>+<kbd>U</kbd>, <kbd>Ctrl</kbd>+<kbd>D</kbd>: scroll up and down by half of screen
-- [ ] <kbd>Ctrl</kbd>+<kbd>B</kbd>, <kbd>Ctrl</kbd>+<kbd>F</kbd>: scroll up and down by a screen
-- [ ] <kbd>0</kbd>, <kbd>$</kbd>: scroll to leftmost and rightmost
-- [ ] <kbd>g</kbd><kbd>g</kbd>, <kbd>G</kbd>: scroll to top and bottom
+- [ ] Smooth scroll by `:set smoothscroll`
+- [ ] Non-smooth scroll by `:set nosmoothscroll`
+- [ ] Configure custom hint character by settings `"smoothscroll": true`, `"smoothscroll": false`
 
 #### Console
 
@@ -24,28 +21,26 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 #### Tabs
 
-- [ ] <kbd>d</kbd>: delete current tab
+- [ ] <kbd>!d</kbd>: delete current tab and pinned tab
 - [ ] <kbd>u</kbd>: reopen close tab
-- [ ] <kbd>K</kbd>, <kbd>J</kbd>: select prev and next tab
-- [ ] <kbd>g0</kbd>, <kbd>g$</kbd>: select first and last tab
 - [ ] <kbd>r</kbd>: reload current tab
 - [ ] <kbd>R</kbd>: reload current tab without cache
-- [ ] <kbd>zd</kbd>: duplicate current tab
-- [ ] <kbd>zp</kbd>: toggle pin/unpin state on current tab
 
 #### Navigation
 
-- [ ] <kbd>H</kbd>, <kbd>L</kbd>: go back and forward in histories
+- [ ] <kbd>H</kbd>, <kbd>L</kbd>: go back and forward in history
+- [ ] <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: Open next/prev link in `<link>` tags.
 - [ ] <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: find prev and next links and open it
 - [ ] <kbd>g</kbd><kbd>u</kbd>: go to parent directory
 - [ ] <kbd>g</kbd><kbd>U</kbd>: go to root directory
 
 #### Misc
 
-- [ ] <kbd>z</kbd><kbd>i</kbd>, <kbd>z</kbd><kbd>o</kbd>: zoom-in and zoom-out
-- [ ] <kbd>z</kbd><kbd>z</kbd>: set zoom level as default
 - [ ] <kbd>y</kbd>: yank current URL and show a message
+- [ ] <kbd>p</kbd>: open clipbord's URL in current tab
+- [ ] <kbd>P</kbd>: open clipbord's URL in new tab
 - [ ] Toggle enabled/disabled of plugin bu <kbd>Shift</kbd>+<kbd>Esc</kbd>
+- [ ] Hide error and info console by <kbd>Esc</kbd>
 
 ### Following links
 
@@ -59,6 +54,9 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] Select link and open it in the frame in `<iframe>`/`<frame`> on following by <kbd>f</kbd>
 - [ ] Select link and open it in new tab in `<iframe>`/`<frame`> on following by <kbd>F</kbd>
 - [ ] Select link and open it in `<area>` tags, for <kbd>f</kbd> and <kbd>F</kbd>
+- [ ] Configure custom hint character by `:set hintchars=012345678`
+- [ ] Configure custom hint character by settings `"hintchars": "012345678"`
+- [ ] Opened tabs is in child on Tree Style Tab
 
 ### Consoles
 
@@ -82,7 +80,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `buffer`,`buffer<SP>`: do nothing
 - [ ] `buffer <title>`, `buffer <url>`: select tab which has an title matched with
 - [ ] `buffer 1`: select leftmost tab
-- [ ] `buffer 0`, `buffer 99`: shows an error
+- [ ] `buffer 0`, `buffer <a number more than count of tabs>`: shows an error
 - [ ] select tabs rotationally when more than two tabs are matched
 
 ### Completions
@@ -109,20 +107,22 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 ### Settings
 
-#### Validations
+#### JSON Settings
+
+##### Validations
 
 - [ ] show error on invalid json
-- [ ] show error when top-level keys has keys other than `keymaps`, `search`, and `blacklist`
+- [ ] show error when top-level keys has keys other than `keymaps`, `search`, `blacklist`, and `properties`
 
-##### `"keymaps"` section
+###### `"keymaps"` section
 
 - [ ] show error on unknown operation name in `"keymaps"`
 
-##### `"search"` section
+###### `"search"` section
 
 - validations in `"search"` section are not tested in this release
 
-#### `"blacklist"` section
+##### `"blacklist"` section
 
 - [ ] `github.com/a` blocks `github.com/a`, and not blocks `github.com/aa`
 - [ ] `github.com/a*` blocks both `github.com/a` and `github.com/aa`
@@ -130,27 +130,66 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `github.com` blocks both `github.com/` and `github.com/a`
 - [ ] `*.github.com` blocks `gist.github.com/`, and not `github.com`
 
-#### Updating
+##### Updating
 
 - [ ] changes are updated on textarea blure when no errors
 - [ ] changes are not updated on textarea blure when errors occurs
 - [ ] keymap settings are applied to open tabs without reload
 - [ ] search settings are applied to open tabs without reload
 
+##### Properties
+
+- [ ] show errors when invalid property name
+- [ ] show errors when invalid property type
+
+#### Form Settings
+
+<!-- validation on form settings does not implement in 0.7 -->
+
+##### Search Engines
+
+- [ ] able to change default
+- [ ] able to remove item
+- [ ] able to add item
+
+##### `"blacklist"` section
+
+- [ ] able to add item
+- [ ] able to remove item
+- [ ] `github.com/a` blocks `github.com/a`, and not blocks `github.com/aa`
+- [ ] `github.com/a*` blocks both `github.com/a` and `github.com/aa`
+- [ ] `github.com/` blocks `github.com/`, and not blocks `github.com/a`
+- [ ] `github.com` blocks both `github.com/` and `github.com/a`
+- [ ] `*.github.com` blocks `gist.github.com/`, and not `github.com`
+
+##### Updating
+
+- [ ] keymap settings are applied to open tabs without reload
+- [ ] search settings are applied to open tabs without reload
+
+### Settings source
+
+- [ ] show confirmation dialog on switched from json to form
+- [ ] state is saved on source changed
+- [ ] on switching form -> json -> form, first and last form setting is equivalent to first one
+
 ### For certain sites
 
-- [ ] scoll on Hacker News
+- [ ] scroll on Hacker News
 - [ ] able to scroll on Gmail and Slack
-- [ ] Fucus text box on Twitter or Slack, press <kbd>j</kbd>, then <kbd>j</kbd> is typed in the box
+- [ ] Focus text box on Twitter or Slack, press <kbd>j</kbd>, then <kbd>j</kbd> is typed in the box
 - [ ] Focus the text box on Twitter or Slack on following mode
+- [ ] Tha pages is shown in https://pitchify.com/
+- [ ] Open console in http://www.espncricinfo.com/
 
 ## Find mode
 
 - [ ] open console with <kbd>/</kbd>
-- [ ] highlight a word on <kbd>Enter</kb> pressed in find console
+- [ ] highlight a word on <kbd>Enter</kbd> pressed in find console
 - [ ] Search next/prev by <kbd>n</kbd>/<kbd>N</kbd>
 - [ ] Wrap search by <kbd>n</kbd>/<kbd>N</kbd>
 - [ ] Find with last keyword if keyword is empty
+- [ ] Find keyword last used on new tab opened
 
 ## Misc
 

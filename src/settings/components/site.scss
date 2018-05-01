@@ -1,8 +1,27 @@
 .vimvixen-settings-form {
+  padding: 2px;
+
   textarea[name=json] {
     font-family: monospace;
     width: 100%;
     min-height: 64ex;
     resize: vertical;
+  }
+
+  fieldset {
+    margin: 0;
+    padding: 0;
+    border: none;
+    margin-top: 1rem;
+
+    fieldset:first-of-type {
+      margin-top: 1rem;
+    }
+
+    legend {
+      font-size: 1.5rem;
+      padding: .5rem 0;
+      font-weight: bold;
+    }
   }
 }

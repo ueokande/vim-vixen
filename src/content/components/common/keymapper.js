@@ -47,7 +47,8 @@ export default class KeymapperComponent {
       return true;
     }
     let operation = keymaps.get(matched[0]);
-    this.store.dispatch(operationActions.exec(operation));
+    this.store.dispatch(operationActions.exec(
+      operation, key.repeat, state.setting));
     this.store.dispatch(inputActions.clearKeys());
     return true;
   }

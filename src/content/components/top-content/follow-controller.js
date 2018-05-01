@@ -1,8 +1,7 @@
 import * as followControllerActions from 'content/actions/follow-controller';
 import messages from 'shared/messages';
 import HintKeyProducer from 'content/hint-key-producer';
-
-const DEFAULT_HINT_CHARSET = 'abcdefghijklmnopqrstuvwxyz';
+import * as properties from 'shared/settings/properties';
 
 const broadcastMessage = (win, message) => {
   let json = JSON.stringify(message);
@@ -29,11 +28,11 @@ export default class FollowController {
     switch (message.type) {
     case messages.FOLLOW_START:
       return this.store.dispatch(
-        followControllerActions.enable(message.newTab));
+        followControllerActions.enable(message.newTab, message.background));
     case messages.FOLLOW_RESPONSE_COUNT_TARGETS:
       return this.create(message.count, sender);
     case messages.FOLLOW_KEY_PRESS:
-      return this.keyPress(message.key);
+      return this.keyPress(message.key, message.ctrlKey);
     }
   }
 
@@ -70,7 +69,11 @@ export default class FollowController {
     });
   }
 
-  keyPress(key) {
+  keyPress(key, ctrlKey) {
+    if (key === '[' && ctrlKey) {
+      this.store.dispatch(followControllerActions.disable());
+      return true;
+    }
     switch (key) {
     case 'Enter':
       this.activate();
@@ -84,7 +87,7 @@ export default class FollowController {
       this.store.dispatch(followControllerActions.backspace());
       break;
     default:
-      if (DEFAULT_HINT_CHARSET.includes(key)) {
+      if (this.hintchars().includes(key)) {
         this.store.dispatch(followControllerActions.keyPress(key));
       }
       break;
@@ -93,7 +96,7 @@ export default class FollowController {
   }
 
   count() {
-    this.producer = new HintKeyProducer(DEFAULT_HINT_CHARSET);
+    this.producer = new HintKeyProducer(this.hintchars());
     let doc = this.win.document;
     let viewWidth = this.win.innerWidth || doc.documentElement.clientWidth;
     let viewHeight = this.win.innerHeight || doc.documentElement.clientHeight;
@@ -126,6 +129,7 @@ export default class FollowController {
       type: messages.FOLLOW_CREATE_HINTS,
       keysArray: produced,
       newTab: this.state.newTab,
+      background: this.state.background,
     }), '*');
   }
 
@@ -134,5 +138,10 @@ export default class FollowController {
     broadcastMessage(this.win, {
       type: messages.FOLLOW_REMOVE_HINTS,
     });
+  }
+
+  hintchars() {
+    return this.store.getState().setting.properties.hintchars ||
+      properties.defaults.hintchars;
   }
 }

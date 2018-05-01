@@ -1,0 +1,28 @@
+{
+  "manifest_version": 2,
+  "name": "ambassador",
+  "description": "WebExtension test helper",
+  "version": "0.1",
+  "content_scripts": [
+    {
+      "all_frames": true,
+      "matches": [ "<all_urls>" ],
+      "js": [ "build/content.js" ],
+      "run_at": "document_start",
+      "match_about_blank": true
+    }
+  ],
+  "background": {
+    "scripts": [
+      "build/background.js"
+    ]
+  },
+  "permissions": [
+    "history",
+    "sessions",
+    "storage",
+    "tabs",
+    "clipboardRead",
+    "activeTab"
+  ]
+}

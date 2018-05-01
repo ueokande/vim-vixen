@@ -1,0 +1,11 @@
+.form-keymaps-form {
+  column-count: 3;
+
+  &-field-group {
+    margin-top: 24px;
+  }
+
+  &-field-group:first-of-type {
+    margin-top: 24px;
+  }
+}

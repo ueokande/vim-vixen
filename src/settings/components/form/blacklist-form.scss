@@ -1,0 +1,9 @@
+.form-blacklist-form {
+  &-row {
+    display: flex;
+
+    .column-url {
+      flex: 1;
+    }
+  }
+}

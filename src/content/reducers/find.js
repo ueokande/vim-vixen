@@ -1,7 +1,7 @@
 import actions from 'content/actions';
 
 const defaultState = {
-  keyword: '',
+  keyword: null,
   found: false,
 };
 

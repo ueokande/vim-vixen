@@ -1,5 +1,11 @@
 import actions from 'console/actions';
 
+const hide = () => {
+  return {
+    type: actions.CONSOLE_HIDE,
+  };
+};
+
 const showCommand = (text) => {
   return {
     type: actions.CONSOLE_SHOW_COMMAND,
@@ -61,6 +67,6 @@ const completionPrev = () => {
 };
 
 export {
-  showCommand, showFind, showError, showInfo, hideCommand, setConsoleText,
+  hide, showCommand, showFind, showError, showInfo, hideCommand, setConsoleText,
   setCompletions, completionNext, completionPrev
 };

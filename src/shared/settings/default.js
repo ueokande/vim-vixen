@@ -15,8 +15,6 @@ export default {
     "j": { "type": "scroll.vertically", "count": 1 },
     "h": { "type": "scroll.horizonally", "count": -1 },
     "l": { "type": "scroll.horizonally", "count": 1 },
-    "<C-Y>": { "type": "scroll.vertically", "count": -1 },
-    "<C-E>": { "type": "scroll.vertically", "count": 1 },
     "<C-U>": { "type": "scroll.pages", "count": -0.5 },
     "<C-D>": { "type": "scroll.pages", "count": 0.5 },
     "<C-B>": { "type": "scroll.pages", "count": -1 },
@@ -25,6 +23,7 @@ export default {
     "G": { "type": "scroll.bottom" },
     "$": { "type": "scroll.end" },
     "d": { "type": "tabs.close" },
+    "!d": { "type": "tabs.close.force" },
     "u": { "type": "tabs.reopen" },
     "K": { "type": "tabs.prev", "count": 1 },
     "J": { "type": "tabs.next", "count": 1 },
@@ -32,6 +31,7 @@ export default {
     "gt": { "type": "tabs.next", "count": 1 },
     "g0": { "type": "tabs.first" },
     "g$": { "type": "tabs.last" },
+    "<C-6>": { "type": "tabs.prevsel" },
     "r": { "type": "tabs.reload", "cache": false },
     "R": { "type": "tabs.reload", "cache": true },
     "zp": { "type": "tabs.pin.toggle" },
@@ -39,15 +39,18 @@ export default {
     "zi": { "type": "zoom.in" },
     "zo": { "type": "zoom.out" },
     "zz": { "type": "zoom.neutral" },
-    "f": { "type": "follow.start", "newTab": false },
-    "F": { "type": "follow.start", "newTab": true },
+    "f": { "type": "follow.start", "newTab": false, "background": false },
+    "F": { "type": "follow.start", "newTab": true, "background": false },
     "H": { "type": "navigate.history.prev" },
     "L": { "type": "navigate.history.next" },
     "[[": { "type": "navigate.link.prev" },
     "]]": { "type": "navigate.link.next" },
     "gu": { "type": "navigate.parent" },
     "gU": { "type": "navigate.root" },
+    "gi": { "type": "focus.input" },
     "y": { "type": "urls.yank" },
+    "p": { "type": "urls.paste", "newTab": false },
+    "P": { "type": "urls.paste", "newTab": true },
     "/": { "type": "find.start" },
     "n": { "type": "find.next" },
     "N": { "type": "find.prev" },
@@ -63,6 +66,8 @@ export default {
       "twitter": "https://twitter.com/search?q={}",
       "wikipedia": "https://en.wikipedia.org/w/index.php?search={}"
     }
+  },
+  "properties": {
   }
-}`
+}`,
 };

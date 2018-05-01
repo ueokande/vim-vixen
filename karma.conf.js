@@ -7,11 +7,13 @@ module.exports = function (config) {
     frameworks: ['mocha'],
     files: [
       'test/**/*.test.js',
+      'test/**/*.test.jsx',
       'test/**/*.html'
     ],
 
     preprocessors: {
       'test/**/*.test.js': [ 'webpack' ],
+      'test/**/*.test.jsx': [ 'webpack' ],
       'test/**/*.html': ['html2js']
     },
 

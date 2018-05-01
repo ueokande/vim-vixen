@@ -1,17 +1,18 @@
-const PREV_LINK_PATTERNS = [
-  /\bprev\b/i, /\bprevious\b/i, /\bback\b/i,
-  /</, /\u2039/, /\u2190/, /\xab/, /\u226a/, /<</
-];
-const NEXT_LINK_PATTERNS = [
-  /\bnext\b/i,
-  />/, /\u203a/, /\u2192/, /\xbb/, /\u226b/, />>/
-];
+const REL_PATTERN = {
+  prev: /^(?:prev(?:ious)?|older)\b|\u2039|\u2190|\xab|\u226a|<</i,
+  next: /^(?:next|newer)\b|\u203a|\u2192|\xbb|\u226b|>>/i,
+};
 
-const findLinkByPatterns = (win, patterns) => {
-  let links = win.document.getElementsByTagName('a');
-  return Array.prototype.find.call(links, (link) => {
-    return patterns.some(ptn => ptn.test(link.textContent));
-  });
+// Return the last element in the document matching the supplied selector
+// and the optional filter, or null if there are no matches.
+const selectLast = (win, selector, filter) => {
+  let nodes = win.document.querySelectorAll(selector);
+
+  if (filter) {
+    nodes = Array.from(nodes).filter(filter);
+  }
+
+  return nodes.length ? nodes[nodes.length - 1] : null;
 };
 
 const historyPrev = (win) => {
@@ -22,30 +23,37 @@ const historyNext = (win) => {
   win.history.forward();
 };
 
-const linkPrev = (win) => {
-  let link = win.document.querySelector('a[rel=prev]');
+// Code common to linkPrev and linkNext which navigates to the specified page.
+const linkRel = (win, rel) => {
+  let link = selectLast(win, `link[rel~=${rel}][href]`);
+
   if (link) {
-    return link.click();
+    win.location = link.href;
+    return;
   }
-  link = findLinkByPatterns(win, PREV_LINK_PATTERNS);
+
+  const pattern = REL_PATTERN[rel];
+
+  link = selectLast(win, `a[rel~=${rel}][href]`) ||
+    // `innerText` is much slower than `textContent`, but produces much better
+    // (i.e. less unexpected) results
+    selectLast(win, 'a[href]', lnk => pattern.test(lnk.innerText));
+
   if (link) {
     link.click();
   }
+};
+
+const linkPrev = (win) => {
+  linkRel(win, 'prev');
 };
 
 const linkNext = (win) => {
-  let link = win.document.querySelector('a[rel=next]');
-  if (link) {
-    return link.click();
-  }
-  link = findLinkByPatterns(win, NEXT_LINK_PATTERNS);
-  if (link) {
-    link.click();
-  }
+  linkRel(win, 'next');
 };
 
 const parent = (win) => {
-  let loc = win.location;
+  const loc = win.location;
   if (loc.hash !== '') {
     loc.hash = '';
     return;

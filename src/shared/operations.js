@@ -1,4 +1,7 @@
 export default {
+  // Hide console, or cancel some user actions
+  CANCEL: 'cancel',
+
   // Addons
   ADDON_ENABLE: 'addon.enable',
   ADDON_DISABLE: 'addon.disable',
@@ -31,13 +34,18 @@ export default {
   NAVIGATE_PARENT: 'navigate.parent',
   NAVIGATE_ROOT: 'navigate.root',
 
+  // Focus
+  FOCUS_INPUT: 'focus.input',
+
   // Tabs
   TAB_CLOSE: 'tabs.close',
+  TAB_CLOSE_FORCE: 'tabs.close.force',
   TAB_REOPEN: 'tabs.reopen',
   TAB_PREV: 'tabs.prev',
   TAB_NEXT: 'tabs.next',
   TAB_FIRST: 'tabs.first',
   TAB_LAST: 'tabs.last',
+  TAB_PREV_SEL: 'tabs.prevsel',
   TAB_RELOAD: 'tabs.reload',
   TAB_PIN: 'tabs.pin',
   TAB_UNPIN: 'tabs.unpin',
@@ -49,8 +57,9 @@ export default {
   ZOOM_OUT: 'zoom.out',
   ZOOM_NEUTRAL: 'zoom.neutral',
 
-  // Url yank
+  // Url yank/paste
   URLS_YANK: 'urls.yank',
+  URLS_PASTE: 'urls.paste',
 
   // Find
   FIND_START: 'find.start',

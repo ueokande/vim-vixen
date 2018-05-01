@@ -1,5 +1,6 @@
 export default {
   // console commands
+  CONSOLE_HIDE: 'console.hide',
   CONSOLE_SHOW_COMMAND: 'console.show.command',
   CONSOLE_SHOW_ERROR: 'console.show.error',
   CONSOLE_SHOW_INFO: 'console.show.info',
