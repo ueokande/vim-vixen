@@ -1,10 +1,17 @@
 import actions from 'content/actions';
 import * as keyUtils from 'shared/utils/keys';
+import operations from 'shared/operations';
+
+const reservedKeymaps = {
+  '<Esc>': { type: operations.CANCEL },
+  '<C-[>': { type: operations.CANCEL },
+};
 
 const set = (value) => {
   let entries = [];
   if (value.keymaps) {
-    entries = Object.entries(value.keymaps).map((entry) => {
+    let keymaps = Object.assign({}, value.keymaps, reservedKeymaps);
+    entries = Object.entries(keymaps).map((entry) => {
       return [
         keyUtils.fromMapKeys(entry[0]),
         entry[1],

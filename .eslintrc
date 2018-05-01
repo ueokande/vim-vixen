@@ -36,6 +36,7 @@
     "newline-after-var": "off",
     "newline-before-return": "off",
     "newline-per-chained-call": "off",
+    "no-alert": "off",
     "no-bitwise": "off",
     "no-console": ["error", { "allow": ["warn", "error"] }],
     "no-empty-function": "off",
@@ -44,6 +45,8 @@
     "no-plusplus": "off",
     "no-ternary": "off",
     "no-undefined": "off",
+    "no-undef-init": "off",
+    "no-unused-vars": ["error", { "varsIgnorePattern": "h" }],
     "no-use-before-define": "off",
     "no-warning-comments": "off",
     "object-curly-newline": ["error", { "consistent": true }],
@@ -65,5 +68,6 @@
 
     "react/jsx-indent": ["error", 2],
     "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off"
   }
 }

@@ -1,4 +1,22 @@
+let prevSelTab = 1;
+let currSelTab = 1;
+
+browser.tabs.onActivated.addListener((activeInfo) => {
+  return browser.tabs.query({ currentWindow: true }).then(() => {
+    prevSelTab = currSelTab;
+    currSelTab = activeInfo.tabId;
+  });
+});
+
 const closeTab = (id) => {
+  return browser.tabs.get(id).then((tab) => {
+    if (!tab.pinned) {
+      return browser.tabs.remove(id);
+    }
+  });
+};
+
+const closeTabForce = (id) => {
   return browser.tabs.remove(id);
 };
 
@@ -51,7 +69,7 @@ const selectByKeyword = (current, keyword) => {
 const getCompletions = (keyword) => {
   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
     let matched = tabs.filter((t) => {
-      return t.url.includes(keyword) || t.title.includes(keyword);
+      return t.url.includes(keyword) || t.title && t.title.includes(keyword);
     });
     return matched;
   });
@@ -93,6 +111,10 @@ const selectLastTab = () => {
   });
 };
 
+const selectPrevSelTab = () => {
+  return browser.tabs.update(prevSelTab, { active: true });
+};
+
 const reload = (current, cache) => {
   return browser.tabs.reload(
     current.id,
@@ -116,7 +138,8 @@ const duplicate = (id) => {
 };
 
 export {
-  closeTab, reopenTab, selectAt, selectByKeyword, getCompletions,
-  selectPrevTab, selectNextTab, selectFirstTab, selectLastTab, reload,
-  updateTabPinned, toggleTabPinned, duplicate
+  closeTab, closeTabForce, reopenTab, selectAt, selectByKeyword,
+  getCompletions, selectPrevTab, selectNextTab, selectFirstTab,
+  selectLastTab, selectPrevSelTab, reload, updateTabPinned,
+  toggleTabPinned, duplicate
 };

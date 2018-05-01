@@ -12,7 +12,6 @@ body {
 }
 
 .vimvixen-console {
-  border-top: 1px solid gray;
   bottom: 0;
   margin: 0;
   padding: 0;
@@ -22,6 +21,10 @@ body {
     font-family: monospace;
     font-size: 12px;
     line-height: 16px;
+  }
+
+  &-command-wrapper {
+    border-top: 1px solid gray;
   }
 
   &-completion {
@@ -66,6 +69,8 @@ body {
 
   &-message {
     @include consoole-font;
+
+    border-top: 1px solid gray;
   }
 
   &-error {

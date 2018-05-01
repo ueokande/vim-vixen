@@ -1,0 +1,29 @@
+.settings-ui-input {
+  page-break-inside: avoid;
+
+  * {
+    page-break-inside: avoid;
+  }
+
+  label {
+    font-weight: bold;
+    min-width: 14rem;
+    display: inline-block;
+  }
+
+  input[type='text'] {
+    padding: 4px;
+    width: 8rem;
+  }
+
+  input.input-crror,
+  textarea.input-error {
+    box-shadow: 0 0 2px red;
+  }
+
+  &-error {
+    font-weight: bold;
+    color: red;
+    min-height: 1.5em;
+  }
+}

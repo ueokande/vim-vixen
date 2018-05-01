@@ -1,34 +1,39 @@
 import actions from 'settings/actions';
 import messages from 'shared/messages';
-import DefaultSettings from 'shared/default-settings';
+import DefaultSettings from 'shared/settings/default';
+import * as settingsStorage from 'shared/settings/storage';
+import * as settingsValues from 'shared/settings/values';
 
 const load = () => {
-  return browser.storage.local.get('settings').then(({ settings }) => {
-    if (settings) {
-      return set(settings);
-    }
-    return set(DefaultSettings);
-  }, console.error);
+  return settingsStorage.loadRaw().then((settings) => {
+    return set(settings);
+  });
 };
 
 const save = (settings) => {
-  return browser.storage.local.set({
-    settings,
-  }).then(() => {
+  return settingsStorage.save(settings).then(() => {
     return browser.runtime.sendMessage({
       type: messages.SETTINGS_RELOAD
-    }).then(() => {
-      return set(settings);
     });
+  }).then(() => {
+    return set(settings);
   });
 };
 
 const set = (settings) => {
+  let value = JSON.parse(DefaultSettings.json);
+  if (settings.source === 'json') {
+    value = settingsValues.valueFromJson(settings.json);
+  } else if (settings.source === 'form') {
+    value = settingsValues.valueFromForm(settings.form);
+  }
+
   return {
     type: actions.SETTING_SET_SETTINGS,
     source: settings.source,
     json: settings.json,
-    value: JSON.parse(settings.json),
+    form: settings.form,
+    value,
   };
 };
 

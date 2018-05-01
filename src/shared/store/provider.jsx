@@ -1,18 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import { h, Component } from 'preact';
 
-class Provider extends React.PureComponent {
+class Provider extends Component {
   getChildContext() {
     return { store: this.props.store };
   }
 
   render() {
-    return React.Children.only(this.props.children);
+    return <div>
+      { this.props.children }
+    </div>;
   }
 }
-
-Provider.childContextTypes = {
-  store: PropTypes.any,
-};
 
 export default Provider;
