@@ -112,6 +112,15 @@ Set hint characters
 :set hintchars=0123456789
 ```
 
+##### 'adjacenttab' property
+
+Open a new tab on adjacent of the current tab.
+
+```
+:set noadjacenttab  " open a tab at last
+:set adjacenttab    " open a tab adjacently
+```
+
 ### Search engines
 
 Vim Vixen supports search by search engines like Google and Yahoo.

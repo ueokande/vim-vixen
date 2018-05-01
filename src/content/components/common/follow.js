@@ -50,6 +50,7 @@ export default class Follow {
     this.win = win;
     this.store = store;
     this.newTab = false;
+    this.background = false;
     this.hints = {};
     this.targets = [];
 
@@ -85,6 +86,7 @@ export default class Follow {
       type: messages.OPEN_URL,
       url: element.href,
       newTab: true,
+      background: this.background,
     });
   }
 
@@ -96,12 +98,13 @@ export default class Follow {
     }), '*');
   }
 
-  createHints(keysArray, newTab) {
+  createHints(keysArray, newTab, background) {
     if (keysArray.length !== this.targets.length) {
       throw new Error('illegal hint count');
     }
 
     this.newTab = newTab;
+    this.background = background;
     this.hints = {};
     for (let i = 0; i < keysArray.length; ++i) {
       let keys = keysArray[i];
@@ -167,7 +170,8 @@ export default class Follow {
     case messages.FOLLOW_REQUEST_COUNT_TARGETS:
       return this.countHints(sender, message.viewSize, message.framePosition);
     case messages.FOLLOW_CREATE_HINTS:
-      return this.createHints(message.keysArray, message.newTab);
+      return this.createHints(
+        message.keysArray, message.newTab, message.background);
     case messages.FOLLOW_SHOW_HINTS:
       return this.showHints(message.keys);
     case messages.FOLLOW_ACTIVATE:

@@ -28,7 +28,7 @@ export default class FollowController {
     switch (message.type) {
     case messages.FOLLOW_START:
       return this.store.dispatch(
-        followControllerActions.enable(message.newTab));
+        followControllerActions.enable(message.newTab, message.background));
     case messages.FOLLOW_RESPONSE_COUNT_TARGETS:
       return this.create(message.count, sender);
     case messages.FOLLOW_KEY_PRESS:
@@ -129,6 +129,7 @@ export default class FollowController {
       type: messages.FOLLOW_CREATE_HINTS,
       keysArray: produced,
       newTab: this.state.newTab,
+      background: this.state.background,
     }), '*');
   }
 
