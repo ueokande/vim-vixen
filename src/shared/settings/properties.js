@@ -12,7 +12,7 @@ const types = {
 const defaults = {
   hintchars: 'abcdefghijklmnopqrstuvwxyz',
   smoothscroll: false,
-  adjacenttab: false,
+  adjacenttab: true,
 };
 
 export { types, defaults };
