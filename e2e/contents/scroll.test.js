@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as windows from "../ambassador/src/client/windows";
 import * as tabs from "../ambassador/src/client/tabs";
 import * as keys from "../ambassador/src/client/keys";

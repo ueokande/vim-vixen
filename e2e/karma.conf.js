@@ -4,11 +4,13 @@ module.exports = function (config) {
     basePath: '',
     frameworks: ['mocha'],
     files: [
+      'main.js',
       'karma-delay.js',
       '**/*.test.js'
     ],
 
     preprocessors: {
+      '**/main.js': ['webpack'],
       '**/*.test.js': ['webpack']
     },
 
