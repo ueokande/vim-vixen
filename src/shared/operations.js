@@ -37,6 +37,9 @@ export default {
   // Focus
   FOCUS_INPUT: 'focus.input',
 
+  // Page
+  PAGE_SOURCE: 'page.source',
+
   // Tabs
   TAB_CLOSE: 'tabs.close',
   TAB_CLOSE_FORCE: 'tabs.close.force',
