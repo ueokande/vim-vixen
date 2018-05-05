@@ -3,6 +3,7 @@ import messages from 'shared/messages';
 import BackgroundComponent from 'background/components/background';
 import reducers from 'background/reducers';
 import { createStore } from 'shared/store';
+import * as versions from 'shared/versions';
 
 const store = createStore(reducers, (e, sender) => {
   console.error('Vim-Vixen:', e);
@@ -17,3 +18,12 @@ const store = createStore(reducers, (e, sender) => {
 const backgroundComponent = new BackgroundComponent(store);
 
 store.dispatch(settingActions.load());
+
+versions.checkUpdated().then((updated) => {
+  if (!updated) {
+    return;
+  }
+  return versions.notify();
+}).then(() => {
+  return versions.commit();
+});

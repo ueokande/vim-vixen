@@ -31,7 +31,8 @@
     "sessions",
     "storage",
     "tabs",
-    "clipboardRead"
+    "clipboardRead",
+    "notifications"
   ],
   "web_accessible_resources": [
     "build/console.html",
