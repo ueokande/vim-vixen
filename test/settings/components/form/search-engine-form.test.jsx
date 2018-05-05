@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { h, render } from 'preact';
 import SearchForm from 'settings/components/form/search-form'
 

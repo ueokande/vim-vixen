@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import { createStore } from 'shared/store';
 
 describe("Store class", () => {

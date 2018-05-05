@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import FollowComponent from 'content/components/common/follow';
 
 describe('FollowComponent', () => {

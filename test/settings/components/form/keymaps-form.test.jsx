@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { h, render } from 'preact';
 import KeymapsForm from 'settings/components/form/keymaps-form'
 

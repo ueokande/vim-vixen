@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import actions from 'console/actions';
 import * as consoleActions from 'console/actions/console';
 

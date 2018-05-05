@@ -1,5 +1,4 @@
 import InputComponent from 'content/components/common/input';
-import { expect } from "chai";
 
 describe('InputComponent', () => {
   it('register callbacks', () => {

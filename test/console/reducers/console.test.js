@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import actions from 'console/actions';
 import reducer from 'console/reducers';
 

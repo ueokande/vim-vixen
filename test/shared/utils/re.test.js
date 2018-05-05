@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import * as re from 'shared/utils/re';
 
 describe("re util", () => {

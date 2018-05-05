@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import actions from 'settings/actions';
 import settingReducer from 'settings/reducers/setting';
 

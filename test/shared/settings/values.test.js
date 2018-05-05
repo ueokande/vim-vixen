@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import * as values from 'shared/settings/values';
 
 describe("settings values", () => {

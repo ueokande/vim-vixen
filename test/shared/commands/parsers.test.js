@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as parsers from 'shared/commands/parsers';
 
 describe("shared/commands/parsers", () => {

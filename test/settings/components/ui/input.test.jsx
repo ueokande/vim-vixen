@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { h, render } from 'preact';
 import Input from 'settings/components/ui/input'
 

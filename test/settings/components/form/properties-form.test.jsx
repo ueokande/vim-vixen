@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { h, render } from 'preact';
 import PropertiesForm from 'settings/components/form/properties-form'
 

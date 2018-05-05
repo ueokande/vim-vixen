@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { h, render } from 'preact';
 import BlacklistForm from 'settings/components/form/blacklist-form'
 

@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import { validate } from 'shared/settings/validator';
 
 describe("setting validator", () => {

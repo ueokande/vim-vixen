@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import Hint from 'content/components/common/hint';
 
 describe('Hint class', () => {

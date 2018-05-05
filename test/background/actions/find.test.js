@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import actions from 'background/actions';
 import * as findActions from 'background/actions/find';
 

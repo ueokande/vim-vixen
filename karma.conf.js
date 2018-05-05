@@ -6,12 +6,14 @@ module.exports = function (config) {
     basePath: '',
     frameworks: ['mocha'],
     files: [
+      'test/main.js',
       'test/**/*.test.js',
       'test/**/*.test.jsx',
       'test/**/*.html'
     ],
 
     preprocessors: {
+      'test/main.js': [ 'webpack' ],
       'test/**/*.test.js': [ 'webpack' ],
       'test/**/*.test.jsx': [ 'webpack' ],
       'test/**/*.html': ['html2js']

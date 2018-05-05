@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import * as navigates from 'content/navigates';
 
 const testRel = (done, rel, html) => {

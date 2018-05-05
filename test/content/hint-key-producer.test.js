@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import HintKeyProducer from 'content/hint-key-producer';
 
 describe('HintKeyProducer class', () => {
