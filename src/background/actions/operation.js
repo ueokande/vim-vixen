@@ -80,7 +80,8 @@ const exec = (operation, tab) => {
   case operations.PAGE_SOURCE:
     return browser.tabs.create({
       url: 'view-source:' + tab.url,
-      index: tab.index + 1
+      index: tab.index + 1,
+      openerTabId: tab.id,
     });
   default:
     return Promise.resolve();
