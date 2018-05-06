@@ -50,6 +50,7 @@ export default {
 
   ADDON_ENABLED_QUERY: 'addon.enabled.query',
   ADDON_ENABLED_RESPONSE: 'addon.enabled.response',
+  ADDON_TOGGLE_ENABLED: 'addon.toggle.enabled',
 
   OPEN_URL: 'open.url',
 

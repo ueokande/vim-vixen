@@ -3,6 +3,7 @@ import KeymapperComponent from './keymapper';
 import FollowComponent from './follow';
 import * as settingActions from 'content/actions/setting';
 import messages from 'shared/messages';
+import * as addonActions from '../../actions/addon';
 
 export default class Common {
   constructor(win, store) {
@@ -25,7 +26,9 @@ export default class Common {
   onMessage(message) {
     switch (message.type) {
     case messages.SETTINGS_CHANGED:
-      this.reloadSettings();
+      return this.reloadSettings();
+    case messages.ADDON_TOGGLE_ENABLED:
+      return this.store.dispatch(addonActions.toggleEnabled());
     }
   }
 

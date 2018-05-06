@@ -7,6 +7,7 @@ export default class IndicatorComponent {
 
     messages.onMessage(this.onMessage.bind(this));
 
+    browser.browserAction.onClicked.addListener(this.onClicked);
     browser.tabs.onActivated.addListener((info) => {
       return browser.tabs.query({ currentWindow: true }).then(() => {
         return this.onTabActivated(info);
@@ -19,6 +20,12 @@ export default class IndicatorComponent {
       type: messages.ADDON_ENABLED_QUERY,
     }).then((resp) => {
       return this.updateIndicator(resp.enabled);
+    });
+  }
+
+  onClicked(tab) {
+    browser.tabs.sendMessage(tab.id, {
+      type: messages.ADDON_TOGGLE_ENABLED,
     });
   }
 
