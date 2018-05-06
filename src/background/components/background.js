@@ -1,5 +1,4 @@
 import messages from 'shared/messages';
-import * as operationActions from 'background/actions/operation';
 import * as commandActions from 'background/actions/command';
 import * as settingActions from 'background/actions/setting';
 import * as findActions from 'background/actions/find';
@@ -27,10 +26,6 @@ export default class BackgroundComponent {
     let find = this.store.getState().find;
 
     switch (message.type) {
-    case messages.BACKGROUND_OPERATION:
-      return this.store.dispatch(
-        operationActions.exec(message.operation, sender.tab),
-        sender);
     case messages.OPEN_URL:
       if (message.newTab) {
         let action = tabActions.openNewTab(
