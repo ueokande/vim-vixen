@@ -48,6 +48,10 @@ export default {
   FIND_GET_KEYWORD: 'find.get.keyword',
   FIND_SET_KEYWORD: 'find.set.keyword',
 
+  ADDON_ENABLED_QUERY: 'addon.enabled.query',
+  ADDON_ENABLED_RESPONSE: 'addon.enabled.response',
+  ADDON_TOGGLE_ENABLED: 'addon.toggle.enabled',
+
   OPEN_URL: 'open.url',
 
   SETTINGS_RELOAD: 'settings.reload',

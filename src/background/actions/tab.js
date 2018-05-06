@@ -1,3 +1,5 @@
+import actions from './index';
+
 const openNewTab = (url, openerTabId, background = false, adjacent = false) => {
   if (adjacent) {
     return browser.tabs.query({
@@ -18,4 +20,11 @@ const openToTab = (url, tab) => {
   return browser.tabs.update(tab.id, { url: url });
 };
 
-export { openNewTab, openToTab };
+const selected = (tabId) => {
+  return {
+    type: actions.TAB_SELECTED,
+    tabId,
+  };
+};
+
+export { openNewTab, openToTab, selected };

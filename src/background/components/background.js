@@ -1,10 +1,9 @@
 import messages from 'shared/messages';
-import * as operationActions from 'background/actions/operation';
 import * as commandActions from 'background/actions/command';
 import * as settingActions from 'background/actions/setting';
 import * as findActions from 'background/actions/find';
 import * as tabActions from 'background/actions/tab';
-import * as commands from 'shared/commands';
+import * as completions from '../shared/completions';
 
 export default class BackgroundComponent {
   constructor(store) {
@@ -27,10 +26,6 @@ export default class BackgroundComponent {
     let find = this.store.getState().find;
 
     switch (message.type) {
-    case messages.BACKGROUND_OPERATION:
-      return this.store.dispatch(
-        operationActions.exec(message.operation, sender.tab),
-        sender);
     case messages.OPEN_URL:
       if (message.newTab) {
         let action = tabActions.openNewTab(
@@ -49,7 +44,7 @@ export default class BackgroundComponent {
     case messages.SETTINGS_QUERY:
       return Promise.resolve(this.store.getState().setting.value);
     case messages.CONSOLE_QUERY_COMPLETIONS:
-      return commands.complete(message.text, settings.value);
+      return completions.complete(message.text, settings.value);
     case messages.SETTINGS_RELOAD:
       this.store.dispatch(settingActions.load());
       return this.broadcastSettingsChanged();

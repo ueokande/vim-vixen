@@ -1,5 +1,5 @@
 import actions from '../actions';
-import * as tabs from 'background/tabs';
+import * as tabs from '../shared/tabs';
 import * as parsers from 'shared/commands/parsers';
 import * as properties from 'shared/settings/properties';
 

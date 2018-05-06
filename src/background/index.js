@@ -1,6 +1,9 @@
 import * as settingActions from 'background/actions/setting';
 import messages from 'shared/messages';
 import BackgroundComponent from 'background/components/background';
+import OperationComponent from 'background/components/operation';
+import TabComponent from 'background/components/tab';
+import IndicatorComponent from 'background/components/indicator';
 import reducers from 'background/reducers';
 import { createStore } from 'shared/store';
 import * as versions from 'shared/versions';
@@ -14,8 +17,13 @@ const store = createStore(reducers, (e, sender) => {
     });
   }
 });
-// eslint-disable-next-line no-unused-vars
+
+/* eslint-disable no-unused-vars */
 const backgroundComponent = new BackgroundComponent(store);
+const operationComponent = new OperationComponent(store);
+const tabComponent = new TabComponent(store);
+const indicatorComponent = new IndicatorComponent(store);
+/* eslint-enable no-unused-vars */
 
 store.dispatch(settingActions.load());
 
