@@ -44,6 +44,8 @@ export default class TopContent {
       .some(regex => regex.test(partial));
     if (matched) {
       this.store.dispatch(addonActions.disable());
+    } else {
+      this.store.dispatch(addonActions.enable());
     }
   }
 

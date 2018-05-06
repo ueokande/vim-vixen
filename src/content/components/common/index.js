@@ -15,7 +15,7 @@ export default class Common {
     input.onKey(key => keymapper.key(key));
 
     this.store = store;
-    this.prevEnabled = this.store.getState().addon.enabled;
+    this.prevEnabled = undefined;
 
     this.reloadSettings();
 
