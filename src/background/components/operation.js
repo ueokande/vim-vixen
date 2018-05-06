@@ -30,6 +30,8 @@ export default class BackgroundComponent {
 
   // eslint-disable-next-line complexity
   exec(operation, tab) {
+    let tabState = this.store.getState().tab;
+
     switch (operation.type) {
     case operations.TAB_CLOSE:
       return tabs.closeTab(tab.id);
@@ -46,7 +48,10 @@ export default class BackgroundComponent {
     case operations.TAB_LAST:
       return tabs.selectLastTab();
     case operations.TAB_PREV_SEL:
-      return tabs.selectPrevSelTab();
+      if (tabState.previousSelected > 0) {
+        return tabs.selectTab(tabState.previousSelected);
+      }
+      break;
     case operations.TAB_RELOAD:
       return tabs.reload(tab, operation.cache);
     case operations.TAB_PIN:

@@ -5,4 +5,7 @@ export default {
 
   // Find
   FIND_SET_KEYWORD: 'find.set.keyword',
+
+  // Tab
+  TAB_SELECTED: 'tab.selected',
 };

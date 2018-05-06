@@ -2,6 +2,7 @@ import * as settingActions from 'background/actions/setting';
 import messages from 'shared/messages';
 import BackgroundComponent from 'background/components/background';
 import OperationComponent from 'background/components/operation';
+import TabComponent from 'background/components/tab';
 import reducers from 'background/reducers';
 import { createStore } from 'shared/store';
 import * as versions from 'shared/versions';
@@ -19,6 +20,8 @@ const store = createStore(reducers, (e, sender) => {
 const backgroundComponent = new BackgroundComponent(store);
 // eslint-disable-next-line no-unused-vars
 const operationComponent = new OperationComponent(store);
+// eslint-disable-next-line no-unused-vars
+const tabComponent = new TabComponent(store);
 
 store.dispatch(settingActions.load());
 
