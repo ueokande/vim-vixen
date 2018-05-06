@@ -66,15 +66,6 @@ const selectByKeyword = (current, keyword) => {
   });
 };
 
-const getCompletions = (keyword) => {
-  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
-    let matched = tabs.filter((t) => {
-      return t.url.includes(keyword) || t.title && t.title.includes(keyword);
-    });
-    return matched;
-  });
-};
-
 const selectPrevTab = (current, count) => {
   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
     if (tabs.length < 2) {
@@ -139,7 +130,7 @@ const duplicate = (id) => {
 
 export {
   closeTab, closeTabForce, reopenTab, selectAt, selectByKeyword,
-  getCompletions, selectPrevTab, selectNextTab, selectFirstTab,
+  selectPrevTab, selectNextTab, selectFirstTab,
   selectLastTab, selectPrevSelTab, reload, updateTabPinned,
   toggleTabPinned, duplicate
 };

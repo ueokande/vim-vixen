@@ -1,7 +1,7 @@
 import messages from 'shared/messages';
 import operations from 'shared/operations';
-import * as tabs from 'background/tabs';
-import * as zooms from 'background/zooms';
+import * as tabs from '../shared//tabs';
+import * as zooms from '../shared/zooms';
 
 export default class BackgroundComponent {
   constructor(store) {

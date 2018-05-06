@@ -1,5 +1,5 @@
-import * as tabs from 'background/tabs';
-import * as histories from 'background/histories';
+import * as tabs from './tabs';
+import * as histories from './histories';
 
 const getOpenCompletions = (command, keywords, searchConfig) => {
   return histories.getCompletions(keywords).then((pages) => {
@@ -81,4 +81,4 @@ const complete = (line, settings) => {
   return getCompletions(line, settings);
 };
 
-export default complete;
+export { complete };
