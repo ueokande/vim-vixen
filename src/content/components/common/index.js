@@ -14,16 +14,30 @@ export default class Common {
     input.onKey(key => keymapper.key(key));
 
     this.store = store;
+    this.prevEnabled = this.store.getState().addon.enabled;
 
     this.reloadSettings();
 
     messages.onMessage(this.onMessage.bind(this));
+    store.subscribe(() => this.update());
   }
 
   onMessage(message) {
     switch (message.type) {
     case messages.SETTINGS_CHANGED:
       this.reloadSettings();
+    }
+  }
+
+  update() {
+    let enabled = this.store.getState().addon.enabled;
+    if (enabled !== this.prevEnabled) {
+      this.prevEnabled = enabled;
+
+      browser.runtime.sendMessage({
+        type: messages.ADDON_ENABLED_RESPONSE,
+        enabled,
+      });
     }
   }
 

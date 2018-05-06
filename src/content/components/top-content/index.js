@@ -48,11 +48,18 @@ export default class TopContent {
   }
 
   onMessage(message) {
+    let addonState = this.store.getState().addon;
+
     switch (message.type) {
     case messages.CONSOLE_UNFOCUS:
       this.win.focus();
       consoleFrames.blur(window.document);
       return Promise.resolve();
+    case messages.ADDON_ENABLED_QUERY:
+      return Promise.resolve({
+        type: messages.ADDON_ENABLED_RESPONSE,
+        enabled: addonState.enabled,
+      });
     }
   }
 }

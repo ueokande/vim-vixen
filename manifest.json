@@ -40,5 +40,11 @@
   ],
   "options_ui": {
     "page": "build/settings.html"
+  },
+  "browser_action": {
+    "default_icon": {
+      "32": "resources/enabled_32x32.png"
+    },
+    "default_title": "Vim Vixen"
   }
 }
