@@ -32,7 +32,8 @@
     "storage",
     "tabs",
     "clipboardRead",
-    "notifications"
+    "notifications",
+    "bookmarks"
   ],
   "web_accessible_resources": [
     "build/console.html",
