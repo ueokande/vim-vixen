@@ -37,7 +37,7 @@ export default class BackgroundComponent {
         tabActions.openToTab(message.url, sender.tab), sender);
     case messages.CONSOLE_ENTER_COMMAND:
       this.store.dispatch(
-        commandActions.exec(message.text, settings.value),
+        commandActions.exec(sender.tab, message.text, settings.value),
         sender
       );
       return this.broadcastSettingsChanged();

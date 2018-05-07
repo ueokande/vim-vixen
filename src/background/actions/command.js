@@ -1,5 +1,6 @@
 import actions from '../actions';
 import * as tabs from '../shared/tabs';
+import * as bookmarks from '../shared/bookmarks';
 import * as parsers from 'shared/commands/parsers';
 import * as properties from 'shared/settings/properties';
 
@@ -39,6 +40,14 @@ const bufferCommand = (keywords) => {
   });
 };
 
+const addBookmarkCommand = (tab, args) => {
+  if (!args[0]) {
+    return Promise.resolve();
+  }
+
+  return bookmarks.create(args[0], tab.url);
+};
+
 const setCommand = (args) => {
   if (!args[0]) {
     return Promise.resolve();
@@ -52,7 +61,7 @@ const setCommand = (args) => {
   };
 };
 
-const exec = (line, settings) => {
+const exec = (tab, line, settings) => {
   let [name, args] = parsers.parseCommandLine(line);
 
   switch (name) {
@@ -68,6 +77,8 @@ const exec = (line, settings) => {
   case 'b':
   case 'buffer':
     return bufferCommand(args);
+  case 'addbookmark':
+    return addBookmarkCommand(tab, args);
   case 'set':
     return setCommand(args);
   case '':
