@@ -90,6 +90,11 @@ export default class BackgroundComponent {
       return this.sendConsoleShowCommand(tab, 'winopen ');
     case operations.COMMAND_SHOW_BUFFER:
       return this.sendConsoleShowCommand(tab, 'buffer ');
+    case operations.COMMAND_SHOW_ADDBOOKMARK:
+      if (operation.alter) {
+        return this.sendConsoleShowCommand(tab, 'addbookmark ' + tab.title);
+      }
+      return this.sendConsoleShowCommand(tab, 'addbookmark ');
     case operations.FIND_START:
       return browser.tabs.sendMessage(tab.id, {
         type: messages.CONSOLE_SHOW_FIND
