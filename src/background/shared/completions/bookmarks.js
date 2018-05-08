@@ -8,7 +8,7 @@ const getCompletions = (keywords) => {
         return false;
       }
       return item.type === 'bookmark' && url.protocol !== 'place:';
-    });
+    }).slice(0, 10);
   });
 };
 
