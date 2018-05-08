@@ -1,22 +1,47 @@
 import * as tabs from './tabs';
 import * as histories from './histories';
+import * as bookmarks from './bookmarks';
 
-const getOpenCompletions = (command, keywords, searchConfig) => {
+const getSearchCompletions = (command, keywords, searchConfig) => {
+  let engineNames = Object.keys(searchConfig.engines);
+  let engineItems = engineNames.filter(name => name.startsWith(keywords))
+    .map(name => ({
+      caption: name,
+      content: command + ' ' + name
+    }));
+  return Promise.resolve(engineItems);
+};
+
+const getHistoryCompletions = (command, keywords) => {
   return histories.getCompletions(keywords).then((pages) => {
-    let historyItems = pages.map((page) => {
+    return pages.map((page) => {
       return {
         caption: page.title,
         content: command + ' ' + page.url,
         url: page.url
       };
     });
-    let engineNames = Object.keys(searchConfig.engines);
-    let engineItems = engineNames.filter(name => name.startsWith(keywords))
-      .map(name => ({
-        caption: name,
-        content: command + ' ' + name
-      }));
+  });
+};
 
+const getBookmarksCompletions = (command, keywords) => {
+  return bookmarks.getCompletions(keywords).then((items) => {
+    return items.map((item) => {
+      return {
+        caption: item.title,
+        content: command + ' ' + item.url,
+        url: item.url,
+      };
+    });
+  });
+};
+
+const getOpenCompletions = (command, keywords, searchConfig) => {
+  return Promise.all([
+    getSearchCompletions(command, keywords, searchConfig),
+    getHistoryCompletions(command, keywords),
+    getBookmarksCompletions(command, keywords),
+  ]).then(([engineItems, historyItems, bookmarkItems]) => {
     let completions = [];
     if (engineItems.length > 0) {
       completions.push({
@@ -28,6 +53,12 @@ const getOpenCompletions = (command, keywords, searchConfig) => {
       completions.push({
         name: 'History',
         items: historyItems
+      });
+    }
+    if (bookmarkItems.length > 0) {
+      completions.push({
+        name: 'Bookmarks',
+        items: bookmarkItems
       });
     }
     return completions;
