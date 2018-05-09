@@ -83,7 +83,7 @@ class SettingsComponent extends Component {
       <Input
         type='textarea'
         name='json'
-        label='Plane JSON'
+        label='Plain JSON'
         spellCheck='false'
         error={this.state.errors.json}
         onChange={this.bindValue.bind(this)}
