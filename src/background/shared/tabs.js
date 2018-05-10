@@ -14,6 +14,13 @@ const closeTabForce = (id) => {
 
 const closeTabsByKeywords = (keyword) => {
   tabCompletions.getCompletions(keyword).then((tabs) => {
+    let tabs2 = tabs.filter(tab => !tab.pinned);
+    browser.tabs.remove(tabs2.map(tab => tab.id));
+  });
+};
+
+const closeTabsByKeywordsForce = (keyword) => {
+  tabCompletions.getCompletions(keyword).then((tabs) => {
     browser.tabs.remove(tabs.map(tab => tab.id));
   });
 };
@@ -127,7 +134,8 @@ const duplicate = (id) => {
 };
 
 export {
-  closeTab, closeTabForce, closeTabsByKeywords, reopenTab, selectAt, selectByKeyword,
+  closeTab, closeTabForce, closeTabsByKeywords, closeTabsByKeywordsForce,
+  reopenTab, selectAt, selectByKeyword,
   selectPrevTab, selectNextTab, selectFirstTab,
   selectLastTab, selectTab, reload, updateTabPinned,
   toggleTabPinned, duplicate

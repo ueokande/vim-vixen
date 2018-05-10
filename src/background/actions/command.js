@@ -86,6 +86,8 @@ const exec = (tab, line, settings) => {
     return bufferCommand(args);
   case 'bdeletes':
     return tabs.closeTabsByKeywords(args.join(' '));
+  case 'bdeletes!':
+    return tabs.closeTabsByKeywordsForce(args.join(' '));
   case 'addbookmark':
     return addBookmarkCommand(tab, args).then((item) => {
       if (!item) {
