@@ -13,6 +13,7 @@ export default {
   COMMAND_SHOW_TABOPEN: 'command.show.tabopen',
   COMMAND_SHOW_WINOPEN: 'command.show.winopen',
   COMMAND_SHOW_BUFFER: 'command.show.buffer',
+  COMMAND_SHOW_ADDBOOKMARK: 'command.show.addbookmark',
 
   // Scrolls
   SCROLL_VERTICALLY: 'scroll.vertically',

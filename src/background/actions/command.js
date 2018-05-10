@@ -1,5 +1,7 @@
+import messages from 'shared/messages';
 import actions from '../actions';
 import * as tabs from '../shared/tabs';
+import * as bookmarks from '../shared/bookmarks';
 import * as parsers from 'shared/commands/parsers';
 import * as properties from 'shared/settings/properties';
 
@@ -39,6 +41,14 @@ const bufferCommand = (keywords) => {
   });
 };
 
+const addBookmarkCommand = (tab, args) => {
+  if (!args[0]) {
+    return Promise.resolve();
+  }
+
+  return bookmarks.create(args.join(' '), tab.url);
+};
+
 const setCommand = (args) => {
   if (!args[0]) {
     return Promise.resolve();
@@ -52,7 +62,7 @@ const setCommand = (args) => {
   };
 };
 
-const exec = (line, settings) => {
+const exec = (tab, line, settings) => {
   let [name, args] = parsers.parseCommandLine(line);
 
   switch (name) {
@@ -68,6 +78,19 @@ const exec = (line, settings) => {
   case 'b':
   case 'buffer':
     return bufferCommand(args);
+  case 'addbookmark':
+    return addBookmarkCommand(tab, args).then((item) => {
+      if (!item) {
+        return browser.tabs.sendMessage(tab.id, {
+          type: messages.CONSOLE_SHOW_ERROR,
+          text: 'Could not create a bookmark',
+        });
+      }
+      return browser.tabs.sendMessage(tab.id, {
+        type: messages.CONSOLE_SHOW_INFO,
+        text: 'Saved current page: ' + item.url,
+      });
+    });
   case 'set':
     return setCommand(args);
   case '':
