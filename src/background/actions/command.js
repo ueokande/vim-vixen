@@ -19,6 +19,12 @@ const tabopenCommand = (url) => {
   return browser.tabs.create({ url: url });
 };
 
+const tabcloseCommand = () => {
+  return browser.tabs.query({ active: true }).then((tabList) => {
+    return browser.tabs.remove(tabList.map(tab => tab.id));
+  });
+};
+
 const winopenCommand = (url) => {
   return browser.windows.create({ url });
 };
@@ -93,6 +99,9 @@ const exec = (tab, line, settings) => {
     });
   case 'set':
     return setCommand(args);
+  case 'q':
+  case 'quit':
+    return tabcloseCommand();
   case '':
     return Promise.resolve();
   }
