@@ -12,6 +12,40 @@ const closeTabForce = (id) => {
   return browser.tabs.remove(id);
 };
 
+const closeTabByKeywords = (keyword) => {
+  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
+    let matched = tabs.filter((t) => {
+      return t.url.includes(keyword) || t.title.includes(keyword);
+    });
+
+    if (matched.length === 0) {
+      throw new Error('No matching buffer for ' + keyword);
+    } else if (matched.length > 1) {
+      throw new Error('More than one match for ' + keyword);
+    }
+    if (matched[0].pinned) {
+      throw new Error('Cannot close a pinned tab (add ! to override)');
+    }
+    browser.tabs.remove(matched[0].id);
+  });
+};
+
+const closeTabByKeywordsForce = (keyword) => {
+  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
+    let matched = tabs.filter((t) => {
+      return t.url.includes(keyword) || t.title.includes(keyword);
+    });
+
+    if (matched.length === 0) {
+      throw new Error('No matching buffer for ' + keyword);
+    } else if (matched.length > 1) {
+      throw new Error('More than one match for ' + keyword);
+    }
+    browser.tabs.remove(matched[0].id);
+  });
+};
+
+
 const closeTabsByKeywords = (keyword) => {
   tabCompletions.getCompletions(keyword).then((tabs) => {
     let tabs2 = tabs.filter(tab => !tab.pinned);
@@ -134,7 +168,8 @@ const duplicate = (id) => {
 };
 
 export {
-  closeTab, closeTabForce, closeTabsByKeywords, closeTabsByKeywordsForce,
+  closeTab, closeTabForce, closeTabByKeywords, closeTabByKeywordsForce,
+  closeTabsByKeywords, closeTabsByKeywordsForce,
   reopenTab, selectAt, selectByKeyword,
   selectPrevTab, selectNextTab, selectFirstTab,
   selectLastTab, selectTab, reload, updateTabPinned,

@@ -84,6 +84,14 @@ const exec = (tab, line, settings) => {
   case 'b':
   case 'buffer':
     return bufferCommand(args);
+  case 'bd':
+  case 'bdel':
+  case 'bdelete':
+    return tabs.closeTabByKeywords(args.join(' '));
+  case 'bd!':
+  case 'bdel!':
+  case 'bdelete!':
+    return tabs.closeTabByKeywordsForce(args.join(' '));
   case 'bdeletes':
     return tabs.closeTabsByKeywords(args.join(' '));
   case 'bdeletes!':
