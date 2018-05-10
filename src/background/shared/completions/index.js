@@ -88,6 +88,7 @@ const getCompletions = (line, settings) => {
     return getOpenCompletions(name, keywords, settings.search);
   case 'b':
   case 'buffer':
+  case 'bdeletes':
     return tabs.getCompletions(keywords).then((gotTabs) => {
       let items = gotTabs.map((tab) => {
         return {

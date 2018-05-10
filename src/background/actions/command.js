@@ -84,6 +84,8 @@ const exec = (tab, line, settings) => {
   case 'b':
   case 'buffer':
     return bufferCommand(args);
+  case 'bdeletes':
+    return tabs.closeTabsByKeywords(args.join(' '));
   case 'addbookmark':
     return addBookmarkCommand(tab, args).then((item) => {
       if (!item) {
