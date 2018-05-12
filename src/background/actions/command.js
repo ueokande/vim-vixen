@@ -68,6 +68,7 @@ const setCommand = (args) => {
   };
 };
 
+// eslint-disable-next-line complexity
 const exec = (tab, line, settings) => {
   let [name, args] = parsers.parseCommandLine(line);
 

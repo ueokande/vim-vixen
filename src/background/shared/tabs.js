@@ -16,15 +16,12 @@ const closeTabByKeywords = (keyword) => {
   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
     let matched = tabs.filter((t) => {
       return t.url.includes(keyword) || t.title.includes(keyword);
-    });
+    }).filter(t => !t.pinned);
 
     if (matched.length === 0) {
       throw new Error('No matching buffer for ' + keyword);
     } else if (matched.length > 1) {
       throw new Error('More than one match for ' + keyword);
-    }
-    if (matched[0].pinned) {
-      throw new Error('Cannot close a pinned tab (add ! to override)');
     }
     browser.tabs.remove(matched[0].id);
   });
