@@ -65,6 +65,25 @@ const getOpenCompletions = (command, keywords, searchConfig) => {
   });
 };
 
+const getBufferCompletions = (command, keywords, excludePinned) => {
+  return tabs.getCompletions(keywords, excludePinned).then((got) => {
+    let items = got.map((tab) => {
+      return {
+        caption: tab.title,
+        content: command + ' ' + tab.title,
+        url: tab.url,
+        icon: tab.favIconUrl
+      };
+    });
+    return [
+      {
+        name: 'Buffers',
+        items: items
+      }
+    ];
+  });
+};
+
 const getCompletions = (line, settings) => {
   let typedWords = line.trim().split(/ +/);
   let typing = '';
@@ -88,22 +107,17 @@ const getCompletions = (line, settings) => {
     return getOpenCompletions(name, keywords, settings.search);
   case 'b':
   case 'buffer':
-    return tabs.getCompletions(keywords).then((gotTabs) => {
-      let items = gotTabs.map((tab) => {
-        return {
-          caption: tab.title,
-          content: name + ' ' + tab.title,
-          url: tab.url,
-          icon: tab.favIconUrl
-        };
-      });
-      return [
-        {
-          name: 'Buffers',
-          items: items
-        }
-      ];
-    });
+    return getBufferCompletions(name, keywords, false);
+  case 'bd!':
+  case 'bdel!':
+  case 'bdelete!':
+  case 'bdeletes!':
+    return getBufferCompletions(name, keywords, false);
+  case 'bd':
+  case 'bdel':
+  case 'bdelete':
+  case 'bdeletes':
+    return getBufferCompletions(name, keywords, true);
   }
   return Promise.resolve([]);
 };

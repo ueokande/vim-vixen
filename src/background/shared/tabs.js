@@ -1,3 +1,5 @@
+import * as tabCompletions from './completions/tabs';
+
 const closeTab = (id) => {
   return browser.tabs.get(id).then((tab) => {
     if (!tab.pinned) {
@@ -8,6 +10,50 @@ const closeTab = (id) => {
 
 const closeTabForce = (id) => {
   return browser.tabs.remove(id);
+};
+
+const closeTabByKeywords = (keyword) => {
+  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
+    let matched = tabs.filter((t) => {
+      return t.url.includes(keyword) || t.title.includes(keyword);
+    }).filter(t => !t.pinned);
+
+    if (matched.length === 0) {
+      throw new Error('No matching buffer for ' + keyword);
+    } else if (matched.length > 1) {
+      throw new Error('More than one match for ' + keyword);
+    }
+    browser.tabs.remove(matched[0].id);
+  });
+};
+
+const closeTabByKeywordsForce = (keyword) => {
+  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
+    let matched = tabs.filter((t) => {
+      return t.url.includes(keyword) || t.title.includes(keyword);
+    });
+
+    if (matched.length === 0) {
+      throw new Error('No matching buffer for ' + keyword);
+    } else if (matched.length > 1) {
+      throw new Error('More than one match for ' + keyword);
+    }
+    browser.tabs.remove(matched[0].id);
+  });
+};
+
+
+const closeTabsByKeywords = (keyword) => {
+  tabCompletions.getCompletions(keyword).then((tabs) => {
+    let tabs2 = tabs.filter(tab => !tab.pinned);
+    browser.tabs.remove(tabs2.map(tab => tab.id));
+  });
+};
+
+const closeTabsByKeywordsForce = (keyword) => {
+  tabCompletions.getCompletions(keyword).then((tabs) => {
+    browser.tabs.remove(tabs.map(tab => tab.id));
+  });
 };
 
 const reopenTab = () => {
@@ -119,7 +165,9 @@ const duplicate = (id) => {
 };
 
 export {
-  closeTab, closeTabForce, reopenTab, selectAt, selectByKeyword,
+  closeTab, closeTabForce, closeTabByKeywords, closeTabByKeywordsForce,
+  closeTabsByKeywords, closeTabsByKeywordsForce,
+  reopenTab, selectAt, selectByKeyword,
   selectPrevTab, selectNextTab, selectFirstTab,
   selectLastTab, selectTab, reload, updateTabPinned,
   toggleTabPinned, duplicate
