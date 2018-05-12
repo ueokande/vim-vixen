@@ -1,5 +1,6 @@
 import {
-  TABS_CREATE, TABS_SELECT_AT, TABS_GET, TABS_GET_ZOOM, TABS_SET_ZOOM,
+  TABS_CREATE, TABS_SELECT_AT, TABS_GET, TABS_UPDATE,
+  TABS_GET_ZOOM, TABS_SET_ZOOM,
 } from '../shared/messages';
 import * as ipc from './ipc';
 
@@ -26,6 +27,14 @@ const get = (tabId) => {
   });
 };
 
+const update = (tabId, properties) => {
+  return ipc.send({
+    type: TABS_UPDATE,
+    tabId,
+    properties,
+  });
+};
+
 const getZoom = (tabId) => {
   return ipc.send({
     tabId,
@@ -41,4 +50,4 @@ const setZoom = (tabId, factor) => {
   });
 };
 
-export { create, selectAt, get, getZoom, setZoom };
+export { create, selectAt, get, update, getZoom, setZoom };

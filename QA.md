@@ -21,7 +21,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 #### Tabs
 
-- [ ] <kbd>!d</kbd>: delete current tab and pinned tab
 - [ ] <kbd>u</kbd>: reopen close tab
 - [ ] <kbd>r</kbd>: reload current tab
 - [ ] <kbd>R</kbd>: reload current tab without cache

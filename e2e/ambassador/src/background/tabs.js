@@ -5,7 +5,9 @@ const create = (props = {}) => {
         if (tab.url !== 'about:blank' && tabId === createdTab.id &&
             changeInfo.status === 'complete') {
           browser.tabs.onUpdated.removeListener(callback);
-          setTimeout(() => resolve(tab), 50) // wait for 50 milliseconds to ensure plugin loaded;
+
+          // wait for 50 milliseconds to ensure plugin loaded;
+          setTimeout(() => resolve(tab), 50);
         }
       };
       browser.tabs.onUpdated.addListener(callback);
