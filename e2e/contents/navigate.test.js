@@ -60,4 +60,30 @@ describe("navigate test", () => {
       expect(tab.url).to.be.equal(SERVER_URL + '/');
     });
   });
+
+  it('goes back and forward in history', () => {
+    let targetTab;
+    return tabs.create(targetWindow.id, SERVER_URL + '/#navigate').then((tab) => {
+      targetTab = tab;
+      return keys.press(targetTab.id, 'g');
+    }).then(() => {
+      return keys.press(targetTab.id, 'u');
+    }).then(() => {
+      return keys.press(targetTab.id, 'H', { shiftKey: true });
+    }).then(() => {
+      return new Promise(resolve => { setTimeout(() => resolve(), 2000) });
+    }).then(() => {
+      return tabs.get(targetTab.id);
+    }).then((tab) => {
+      expect(tab.url, 'go back in history').to.be.equal(SERVER_URL + '/#navigate');
+    }).then(() => {
+      return new Promise(resolve => { setTimeout(() => resolve(), 2000) });
+    }).then(() => {
+      return keys.press(targetTab.id, 'L', { shiftKey: true });
+    }).then(() => {
+      return tabs.get(targetTab.id);
+    }).then((tab) => {
+      expect(tab.url, 'go next in history').to.be.equal(SERVER_URL + '/#');
+    });
+  });
 });
