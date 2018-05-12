@@ -31,8 +31,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] <kbd>H</kbd>, <kbd>L</kbd>: go back and forward in history
 - [ ] <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: Open next/prev link in `<link>` tags.
 - [ ] <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: find prev and next links and open it
-- [ ] <kbd>g</kbd><kbd>u</kbd>: go to parent directory
-- [ ] <kbd>g</kbd><kbd>U</kbd>: go to root directory
 
 #### Misc
 

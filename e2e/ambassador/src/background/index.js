@@ -1,6 +1,6 @@
 import {
   WINDOWS_CREATE, WINDOWS_REMOVE, WINDOWS_GET,
-  TABS_CREATE, TABS_SELECT_AT, TABS_GET_ZOOM, TABS_SET_ZOOM,
+  TABS_CREATE, TABS_SELECT_AT, TABS_GET, TABS_GET_ZOOM, TABS_SET_ZOOM,
   EVENT_KEYPRESS, EVENT_KEYDOWN, EVENT_KEYUP,
   SCROLL_GET, SCROLL_SET,
 } from '../shared/messages';
@@ -25,6 +25,8 @@ receiveContentMessage((message) => {
       windowId: message.windowId,
       index: message.index,
     });
+  case TABS_GET:
+    return browser.tabs.get(message.tabId);
   case TABS_GET_ZOOM:
     return browser.tabs.getZoom(message.tabId);
   case TABS_SET_ZOOM:
