@@ -25,11 +25,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] <kbd>r</kbd>: reload current tab
 - [ ] <kbd>R</kbd>: reload current tab without cache
 
-#### Navigation
-
-- [ ] <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: Open next/prev link in `<link>` tags.
-- [ ] <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: find prev and next links and open it
-
 #### Misc
 
 - [ ] <kbd>y</kbd>: yank current URL and show a message

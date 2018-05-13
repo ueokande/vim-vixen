@@ -70,13 +70,13 @@ describe("navigate test", () => {
     }).then(() => {
       return keys.press(targetTab.id, 'H', { shiftKey: true });
     }).then(() => {
-      return new Promise(resolve => { setTimeout(() => resolve(), 2000) });
+      return new Promise(resolve => { setTimeout(() => resolve(), 10) });
     }).then(() => {
       return tabs.get(targetTab.id);
     }).then((tab) => {
       expect(tab.url, 'go back in history').to.be.equal(CLIENT_URL + '/#navigate');
     }).then(() => {
-      return new Promise(resolve => { setTimeout(() => resolve(), 2000) });
+      return new Promise(resolve => { setTimeout(() => resolve(), 10) });
     }).then(() => {
       return keys.press(targetTab.id, 'L', { shiftKey: true });
     }).then(() => {
@@ -85,4 +85,68 @@ describe("navigate test", () => {
       expect(tab.url, 'go next in history').to.be.equal(CLIENT_URL + '/#');
     });
   });
+
+  it('goes previous page by <a>', () => {
+    let targetTab;
+    return tabs.create(targetWindow.id, CLIENT_URL + '/a-pagenation?page=10').then((tab) => {
+      targetTab = tab;
+      return keys.press(targetTab.id, '[');
+    }).then(() => {
+      return keys.press(targetTab.id, '[');
+    }).then(() => {
+      return new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    }).then(() => {
+      return tabs.get(targetTab.id);
+    }).then((tab) => {
+      expect(tab.url).to.be.equal(CLIENT_URL + '/a-pagenation?page=9');
+    });
+  })
+
+  it('goes next page by <a>', () => {
+    let targetTab;
+    return tabs.create(targetWindow.id, CLIENT_URL + '/a-pagenation?page=10').then((tab) => {
+      targetTab = tab;
+      return keys.press(targetTab.id, ']');
+    }).then(() => {
+      return keys.press(targetTab.id, ']');
+    }).then(() => {
+      return new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    }).then(() => {
+      return tabs.get(targetTab.id);
+    }).then((tab) => {
+      expect(tab.url).to.be.equal(CLIENT_URL + '/a-pagenation?page=11');
+    });
+  })
+
+  it('goes previous page by <link>', () => {
+    let targetTab;
+    return tabs.create(targetWindow.id, CLIENT_URL + '/link-pagenation?page=10').then((tab) => {
+      targetTab = tab;
+      return keys.press(targetTab.id, '[');
+    }).then(() => {
+      return keys.press(targetTab.id, '[');
+    }).then(() => {
+      return new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    }).then(() => {
+      return tabs.get(targetTab.id);
+    }).then((tab) => {
+      expect(tab.url).to.be.equal(CLIENT_URL + '/link-pagenation?page=9');
+    });
+  })
+
+  it('goes next page by <link>', () => {
+    let targetTab;
+    return tabs.create(targetWindow.id, CLIENT_URL + '/link-pagenation?page=10').then((tab) => {
+      targetTab = tab;
+      return keys.press(targetTab.id, ']');
+    }).then(() => {
+      return keys.press(targetTab.id, ']');
+    }).then(() => {
+      return new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    }).then(() => {
+      return tabs.get(targetTab.id);
+    }).then((tab) => {
+      expect(tab.url).to.be.equal(CLIENT_URL + '/link-pagenation?page=11');
+    });
+  })
 });
