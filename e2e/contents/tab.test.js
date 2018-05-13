@@ -212,6 +212,23 @@ describe("tab test", () => {
     });
   });
 
+  it('reopen tab by u', () => {
+    return Promise.resolve().then(() => {
+      return tabs.create(targetWindow.id, CLIENT_URL + '#1');
+    }).then((tab) => {
+      return keys.press(tab.id, 'd');
+    }).then(() => {
+      return windows.get(targetWindow.id);
+    }).then((win) => {
+      expect(win.tabs).to.have.lengthOf(1);
+      return keys.press(win.tabs[0].id, 'u');
+    }).then(() => {
+      return windows.get(targetWindow.id);
+    }).then((win) => {
+      expect(win.tabs).to.have.lengthOf(2);
+    });
+  });
+
   it('does not delete pinned tab by d', () => {
     return Promise.resolve().then(() => {
       return tabs.create(targetWindow.id, CLIENT_URL + '#1');
