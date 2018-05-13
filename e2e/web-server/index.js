@@ -51,6 +51,15 @@ const handleLinkPagenation = (req, res) => {
   res.end('<!DOCTYPEhtml><html lang="en"><head>' + head + '</head><body"></body></html">');
 };
 
+const handleFollow = (req, res) => {
+  let body = '';
+  body += '<a href="#a">a</a>';
+  body += '<a href="#external" target="_blank">external</a>';
+  body += '<img width="320" height="240"  src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" usemap="#map"><map name="map"><area href="#area" shape="rect" coords="15,19,126,104"></map>'
+
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.end('<!DOCTYPEhtml><html lang="en"><body">' + body + '</body></html">');
+}
 
 const handle404 = (req, res) => {
   res.writeHead(404, {'Content-Type': 'text/plain'});
@@ -69,6 +78,8 @@ http.createServer(function (req, res) {
     handleAPagenation(req, res);
   } else if (u.pathname === '/link-pagenation') {
     handleLinkPagenation(req, res);
+  } else if (u.pathname === '/follow') {
+    handleFollow(req, res);
   } else {
     handle404(req, res);
   }

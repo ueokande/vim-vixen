@@ -34,10 +34,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 ### Following links
 
-- [ ] <kbd>f</kbd>: start following links
-- [ ] <kbd>F</kbd>: start following links and open in new tab
-- [ ] open link with target='_blank' in new tab by <kbd>f</kbd>
-- [ ] open link with target='_blank' in new tab by <kbd>F</kbd>
 - [ ] Show hints on following on a page containing `<frame>`/`<iframe>`
 - [ ] Show hints only inside viewport of the frame on following on a page containing `<frame>`/`<iframe>`
 - [ ] Show hints only inside top window on following on a page containing `<frame>`/`<iframe>`
