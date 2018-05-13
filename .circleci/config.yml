@@ -42,4 +42,4 @@ jobs:
       - run: npm run package
       - run: npm run build
       - run: npm run ambassador:build
-      - run: node e2e/web-server & npm run test:e2e
+      - run: node >/dev/null e2e/web-server & npm run test:e2e
