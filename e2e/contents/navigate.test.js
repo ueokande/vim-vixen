@@ -26,6 +26,8 @@ describe("navigate test", () => {
     }).then(() => {
       return keys.press(targetTab.id, 'u');
     }).then(() => {
+      return new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    }).then(() => {
       return tabs.get(targetTab.id);
     }).then((tab) => {
       expect(tab.url).to.be.equal(CLIENT_URL + '/a/b/');
