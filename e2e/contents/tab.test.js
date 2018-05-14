@@ -1,14 +1,13 @@
 import * as windows from "../ambassador/src/client/windows";
 import * as tabs from "../ambassador/src/client/tabs";
 import * as keys from "../ambassador/src/client/keys";
-
-const SERVER_URL = "localhost:11111/";
+import { CLIENT_URL } from '../web-server/url';
 
 describe("tab test", () => {
   let targetWindow;
 
   beforeEach(() => {
-    return windows.create(SERVER_URL).then((win) => {
+    return windows.create(CLIENT_URL).then((win) => {
       targetWindow = win;
     });
   });
@@ -20,7 +19,7 @@ describe("tab test", () => {
   it('deletes tab by d', () => {
     let before;
     let targetTab;
-    return tabs.create(targetWindow.id, SERVER_URL).then((tab) => {
+    return tabs.create(targetWindow.id, CLIENT_URL).then((tab) => {
       targetTab = tab;
       return windows.get(targetWindow.id);
     }).then((win) => {
@@ -36,7 +35,7 @@ describe("tab test", () => {
   it('duplicates tab by zd', () => {
     let before;
     let targetTab;
-    return tabs.create(targetWindow.id, SERVER_URL).then((tab) => {
+    return tabs.create(targetWindow.id, CLIENT_URL).then((tab) => {
       targetTab = tab;
       return windows.get(targetWindow.id)
     }).then((win) => {;
@@ -54,7 +53,7 @@ describe("tab test", () => {
   it('makes pinned by zp', () => {
     let before;
     let targetTab;
-    return tabs.create(targetWindow.id, SERVER_URL).then((tab) => {
+    return tabs.create(targetWindow.id, CLIENT_URL).then((tab) => {
       targetTab = tab;
       return windows.get(targetWindow.id)
     }).then((win) => {;
@@ -71,11 +70,11 @@ describe("tab test", () => {
 
   it('selects previous tab by K', () => {
     return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#1')
+      return tabs.create(targetWindow.id, CLIENT_URL + '#1')
     }).then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#2')
+      return tabs.create(targetWindow.id, CLIENT_URL + '#2')
     }).then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#3');
+      return tabs.create(targetWindow.id, CLIENT_URL + '#3');
     }).then(() => {
       return tabs.selectAt(targetWindow.id, 2);
     }).then((tab) => {
@@ -89,11 +88,11 @@ describe("tab test", () => {
 
   it('selects previous tab by K rotatory', () => {
     return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#1')
+      return tabs.create(targetWindow.id, CLIENT_URL + '#1')
     }).then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#2')
+      return tabs.create(targetWindow.id, CLIENT_URL + '#2')
     }).then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#3');
+      return tabs.create(targetWindow.id, CLIENT_URL + '#3');
     }).then(() => {
       return tabs.selectAt(targetWindow.id, 0);
     }).then((tab) => {
@@ -107,11 +106,11 @@ describe("tab test", () => {
 
   it('selects next tab by J', () => {
     return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#1')
+      return tabs.create(targetWindow.id, CLIENT_URL + '#1')
     }).then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#2')
+      return tabs.create(targetWindow.id, CLIENT_URL + '#2')
     }).then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#3');
+      return tabs.create(targetWindow.id, CLIENT_URL + '#3');
     }).then(() => {
       return tabs.selectAt(targetWindow.id, 2);
     }).then((tab) => {
@@ -125,11 +124,11 @@ describe("tab test", () => {
 
   it('selects previous tab by J rotatory', () => {
     return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#1')
+      return tabs.create(targetWindow.id, CLIENT_URL + '#1')
     }).then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#2')
+      return tabs.create(targetWindow.id, CLIENT_URL + '#2')
     }).then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#3');
+      return tabs.create(targetWindow.id, CLIENT_URL + '#3');
     }).then(() => {
       return tabs.selectAt(targetWindow.id, 3);
     }).then((tab) => {
@@ -143,11 +142,11 @@ describe("tab test", () => {
 
   it('selects first tab by g0', () => {
     return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#1')
+      return tabs.create(targetWindow.id, CLIENT_URL + '#1')
     }).then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#2')
+      return tabs.create(targetWindow.id, CLIENT_URL + '#2')
     }).then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#3');
+      return tabs.create(targetWindow.id, CLIENT_URL + '#3');
     }).then(() => {
       return tabs.selectAt(targetWindow.id, 2);
     }).then((tab) => {
@@ -163,11 +162,11 @@ describe("tab test", () => {
 
   it('selects last tab by g$', () => {
     return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#1')
+      return tabs.create(targetWindow.id, CLIENT_URL + '#1')
     }).then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#2')
+      return tabs.create(targetWindow.id, CLIENT_URL + '#2')
     }).then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#3');
+      return tabs.create(targetWindow.id, CLIENT_URL + '#3');
     }).then(() => {
       return tabs.selectAt(targetWindow.id, 2);
     }).then((tab) => {
@@ -183,11 +182,11 @@ describe("tab test", () => {
 
   it('selects last selected tab by <C-6>', () => {
     return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#1')
+      return tabs.create(targetWindow.id, CLIENT_URL + '#1')
     }).then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#2')
+      return tabs.create(targetWindow.id, CLIENT_URL + '#2')
     }).then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#3');
+      return tabs.create(targetWindow.id, CLIENT_URL + '#3');
     }).then(() => {
       return tabs.selectAt(targetWindow.id, 1);
     }).then(() => {
@@ -203,9 +202,58 @@ describe("tab test", () => {
 
   it('deletes tab by d', () => {
     return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, SERVER_URL + '#1');
+      return tabs.create(targetWindow.id, CLIENT_URL + '#1');
     }).then((tab) => {
       return keys.press(tab.id, 'd');
+    }).then(() => {
+      return windows.get(targetWindow.id);
+    }).then((win) => {
+      expect(win.tabs).to.have.lengthOf(1);
+    });
+  });
+
+  it('reopen tab by u', () => {
+    return Promise.resolve().then(() => {
+      return tabs.create(targetWindow.id, CLIENT_URL + '#1');
+    }).then((tab) => {
+      return keys.press(tab.id, 'd');
+    }).then(() => {
+      return windows.get(targetWindow.id);
+    }).then((win) => {
+      expect(win.tabs).to.have.lengthOf(1);
+      return keys.press(win.tabs[0].id, 'u');
+    }).then(() => {
+      return windows.get(targetWindow.id);
+    }).then((win) => {
+      expect(win.tabs).to.have.lengthOf(2);
+    });
+  });
+
+  it('does not delete pinned tab by d', () => {
+    return Promise.resolve().then(() => {
+      return tabs.create(targetWindow.id, CLIENT_URL + '#1');
+    }).then((tab) => {
+      return tabs.update(tab.id, { pinned: true });
+    }).then((tab) => {
+      return keys.press(tab.id, 'd');
+    }).then(() => {
+      return windows.get(targetWindow.id);
+    }).then((win) => {
+      expect(win.tabs).to.have.lengthOf(2);
+    });
+  });
+
+  it('deletes pinned tab by !d', () => {
+    let target;
+    return Promise.resolve().then(() => {
+      return tabs.create(targetWindow.id, CLIENT_URL + '#1');
+    }).then((tab) => {
+      return tabs.update(tab.id, { pinned: true });
+    }).then((tab) => {
+      target = tab;
+      return keys.press(target.id, '!');
+    }).then(() => {
+      return keys.press(target.id, 'd');
     }).then(() => {
       return windows.get(targetWindow.id);
     }).then((win) => {

@@ -21,18 +21,8 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 #### Tabs
 
-- [ ] <kbd>!d</kbd>: delete current tab and pinned tab
-- [ ] <kbd>u</kbd>: reopen close tab
 - [ ] <kbd>r</kbd>: reload current tab
 - [ ] <kbd>R</kbd>: reload current tab without cache
-
-#### Navigation
-
-- [ ] <kbd>H</kbd>, <kbd>L</kbd>: go back and forward in history
-- [ ] <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: Open next/prev link in `<link>` tags.
-- [ ] <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: find prev and next links and open it
-- [ ] <kbd>g</kbd><kbd>u</kbd>: go to parent directory
-- [ ] <kbd>g</kbd><kbd>U</kbd>: go to root directory
 
 #### Misc
 
@@ -44,10 +34,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 ### Following links
 
-- [ ] <kbd>f</kbd>: start following links
-- [ ] <kbd>F</kbd>: start following links and open in new tab
-- [ ] open link with target='_blank' in new tab by <kbd>f</kbd>
-- [ ] open link with target='_blank' in new tab by <kbd>F</kbd>
 - [ ] Show hints on following on a page containing `<frame>`/`<iframe>`
 - [ ] Show hints only inside viewport of the frame on following on a page containing `<frame>`/`<iframe>`
 - [ ] Show hints only inside top window on following on a page containing `<frame>`/`<iframe>`

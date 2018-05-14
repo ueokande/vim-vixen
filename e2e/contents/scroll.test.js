@@ -2,8 +2,7 @@ import * as windows from "../ambassador/src/client/windows";
 import * as tabs from "../ambassador/src/client/tabs";
 import * as keys from "../ambassador/src/client/keys";
 import * as scrolls from "../ambassador/src/client/scrolls";
-
-const SERVER_URL = "localhost:11111";
+import { CLIENT_URL } from '../web-server/url';
 
 describe("scroll test", () => {
   let targetWindow;
@@ -12,7 +11,7 @@ describe("scroll test", () => {
   before(() => {
     return windows.create().then((win) => {
       targetWindow = win;
-      return tabs.create(targetWindow.id, SERVER_URL);
+      return tabs.create(targetWindow.id, CLIENT_URL + '/scroll');
     }).then((tab) => {
       targetTab = tab;
     });

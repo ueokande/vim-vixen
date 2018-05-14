@@ -1,15 +1,14 @@
 import * as windows from "../ambassador/src/client/windows";
 import * as tabs from "../ambassador/src/client/tabs";
 import * as keys from "../ambassador/src/client/keys";
-
-const SERVER_URL = "localhost:11111/";
+import { CLIENT_URL } from '../web-server/url';
 
 describe("zoom test", () => {
   let targetWindow;
   let targetTab;
 
   before(() => {
-    return windows.create(SERVER_URL).then((win) => {
+    return windows.create(CLIENT_URL).then((win) => {
       targetWindow = win;
     });
   });
@@ -19,7 +18,7 @@ describe("zoom test", () => {
   });
 
   beforeEach(() => {
-    return tabs.create(targetWindow.id, SERVER_URL).then((tab) => {
+    return tabs.create(targetWindow.id, CLIENT_URL).then((tab) => {
       targetTab = tab;
     });
   });

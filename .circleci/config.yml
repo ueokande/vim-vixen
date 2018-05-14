@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: circleci/node:9-stretch-browsers
     environment:
-      - FIREFOX_VERSION: "59.0b9"
+      - FIREFOX_VERSION: "59.0.3"
     working_directory: ~
     steps:
       - restore_cache:
@@ -42,4 +42,4 @@ jobs:
       - run: npm run package
       - run: npm run build
       - run: npm run ambassador:build
-      - run: node e2e/web-server & npm run test:e2e
+      - run: node >/dev/null e2e/web-server & npm run test:e2e
