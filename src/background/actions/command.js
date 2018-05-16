@@ -20,7 +20,9 @@ const tabopenCommand = (url) => {
 };
 
 const tabcloseCommand = () => {
-  return browser.tabs.query({ active: true }).then((tabList) => {
+  return browser.tabs.query({
+    active: true, currentWindow: true
+  }).then((tabList) => {
     return browser.tabs.remove(tabList.map(tab => tab.id));
   });
 };
