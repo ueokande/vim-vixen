@@ -24,6 +24,7 @@ The default mappings are as follows:
 - <kbd>o</kbd>, <kbd>t</kbd>, <kbd>w</kbd>: open a page in current tab, new tab, or new window
 - <kbd>O</kbd>, <kbd>T</kbd>, <kbd>W</kbd>: similar to <kbd>o</kbd>, <kbd>t</kbd>, <kbd>w</kbd>, but that contains current URL
 - <kbd>b</kbd>: Select tabs by URL or title
+- <kbd>a</kbd>: add current page to the bookmarks
 
 #### Tabs
 - <kbd>!</kbd><kbd>d</kbd>: delete pinned tab

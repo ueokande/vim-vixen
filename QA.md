@@ -17,7 +17,8 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] <kbd>:</kbd>: open empty console
 - [ ] <kbd>o</kbd>, <kbd>t</kbd>, <kbd>w</kbd>: open a console with `open`, `tabopen`, `winopen`
 - [ ] <kbd>O</kbd>, <kbd>T</kbd>, <kbd>W</kbd>: open a console with `open`, `tabopen`, `winopen` and current URL
-- [ ] <kbd>b</kbd>: open a consolw with `buffer`
+- [ ] <kbd>b</kbd>: open a console with `buffer`
+- [ ] <kbd>a</kbd>: open a console with `addbookmark` and the current page's title
 
 #### Tabs
 
@@ -26,11 +27,16 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 #### Misc
 
+- [ ] <kbd>g</kbd><kbd>f</kbd>: open page source in the new tab.
 - [ ] <kbd>y</kbd>: yank current URL and show a message
-- [ ] <kbd>p</kbd>: open clipbord's URL in current tab
-- [ ] <kbd>P</kbd>: open clipbord's URL in new tab
+- [ ] <kbd>p</kbd>: open clipboard's URL in current tab
+- [ ] <kbd>P</kbd>: open clipboard's URL in new tab
 - [ ] Toggle enabled/disabled of plugin bu <kbd>Shift</kbd>+<kbd>Esc</kbd>
 - [ ] Hide error and info console by <kbd>Esc</kbd>
+- [ ] Vim-Vixen icons changes on <kbd>Shift</kbd>+<kbd>Esc</kbd>
+- [ ] Add-on is enabled and disabled by clicking the indicator on the tool bar.
+- [ ] The indicator changed on selected tab changed (changes add-on enabled)
+- [ ] Notify to users on add-on updated at first time.
 
 ### Following links
 
@@ -40,8 +46,11 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] Select link and open it in the frame in `<iframe>`/`<frame`> on following by <kbd>f</kbd>
 - [ ] Select link and open it in new tab in `<iframe>`/`<frame`> on following by <kbd>F</kbd>
 - [ ] Select link and open it in `<area>` tags, for <kbd>f</kbd> and <kbd>F</kbd>
+- [ ] Open new tab in background by `"background": true`
 - [ ] Configure custom hint character by `:set hintchars=012345678`
-- [ ] Configure custom hint character by settings `"hintchars": "012345678"`
+- [ ] Configure custom hint character by settings `"hintchars": "012345678"` in add-on preferences
+- [ ] Configure adjacent tab by `:set adjacenttab`
+- [ ] Configure adjacent tab by settings `adjacenttab: true` in add-on preferences
 - [ ] Opened tabs is in child on Tree Style Tab
 
 ### Consoles
@@ -59,8 +68,8 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `open`,`open<SP>`: open default search engine
 <br>
 
-- [ ] `tabopen`: do avobe tests replaced `open` with `tabopen`, and verify the page is opened in new tab
-- [ ] `winopen`: do avobe tests replaced `open` with `winopen`, and verify the page is opened in new window
+- [ ] `tabopen`: do above tests replaced `open` with `tabopen`, and verify the page is opened in new tab
+- [ ] `winopen`: do above tests replaced `open` with `winopen`, and verify the page is opened in new window
 <br>
 
 - [ ] `buffer`,`buffer<SP>`: do nothing
@@ -68,6 +77,19 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `buffer 1`: select leftmost tab
 - [ ] `buffer 0`, `buffer <a number more than count of tabs>`: shows an error
 - [ ] select tabs rotationally when more than two tabs are matched
+<br>
+
+- [ ] `addbookmark` creates a bookmark
+<br>
+
+- [ ] `q`, `quit`: close current tab
+- [ ] `bdelete`: delete a not-pinned tab matches with keywords
+- [ ] `bdelete`: show errors no-tabs or more than 1 tabs matched
+- [ ] `bdelete`: can not delete pinned tab
+- [ ] `bdelete!`: delete a tab matches with keywords
+- [ ] `bdelete!`: delete a pinned tab matches with keywords
+- [ ] `bdeletes`: delete tabs with matched with keywords excluding pinned
+- [ ] `bdeletes!`: delete tabs with matched with keywords including pinned
 
 ### Completions
 
@@ -77,15 +99,21 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `open<SP>`: show all engines and some history items
 - [ ] `open g`: complete search engines starts with `g` and matched with keywords `g`
 - [ ] `open foo bar`: complete history items matched with keywords `foo` and `bar`
+- [ ] The completions shows histories, search engines, and bookmarks.
 - [ ] also `tabopen` and `winopen`
 - shortening commands such as `o` are not test in this release
-- [ ] Show competions for `:open`/`:tabopen`/`:buffer` on opning just after closed
+- [ ] Show completions for `:open`/`:tabopen`/`:buffer` on opening just after closed
 
 #### Buffer command
 
 - [ ] `buffer`: show no completions
 - [ ] `buffer<SP>`: show all opened tabs in completion
 - [ ] `buffer x`: show tabs which has title and URL matches with `x`
+
+#### Buffer command
+
+- [ ] `bdelete`, `bdeletes`: show tabs excluding pinned tabs
+- [ ] `bdelete!`, `bdeletes!`: show tabs including pinned tabs
 
 #### Misc
 
@@ -165,7 +193,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] able to scroll on Gmail and Slack
 - [ ] Focus text box on Twitter or Slack, press <kbd>j</kbd>, then <kbd>j</kbd> is typed in the box
 - [ ] Focus the text box on Twitter or Slack on following mode
-- [ ] Tha pages is shown in https://pitchify.com/
+- [ ] The pages is shown in https://pitchify.com/
 - [ ] Open console in http://www.espncricinfo.com/
 
 ## Find mode
