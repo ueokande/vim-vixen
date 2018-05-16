@@ -51,6 +51,7 @@ const KeyMapFields = [
     ['command.show.winopen?{"alter":false}', 'Open URL in new window'],
     ['command.show.winopen?{"alter":true}', 'Alter URL in new window'],
     ['command.show.buffer', 'Open buffer command'],
+    ['command.show.addbookmark?{"alter":true}', 'Open addbookmark command'],
   ], [
     ['addon.toggle.enabled', 'Enable or disable'],
     ['urls.yank', 'Copy current URL'],
@@ -59,6 +60,7 @@ const KeyMapFields = [
     ['zoom.in', 'Zoom-in'],
     ['zoom.out', 'Zoom-out'],
     ['zoom.neutral', 'Reset zoom level'],
+    ['page.source', 'Open a page source'],
   ]
 ];
 
