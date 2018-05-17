@@ -5,6 +5,7 @@ MANIFEST="manifest.json"
 version=$(jq -r '.version' $MANIFEST)
 
 icons=$(jq -r '.icons[]' $MANIFEST)
+toolbar_icons="resources/disabled_32x32.png resources/enabled_32x32.png"
 content_scripts=$(jq -r '.content_scripts[].js[]' $MANIFEST)
 background_scripts=$(jq -r '.background.scripts[]' $MANIFEST)
 web_accessible_resources=$(jq -r '.web_accessible_resources[]' $MANIFEST)
@@ -17,4 +18,4 @@ for html in $options_ui; do
   done
 done
 
-zip ${version}.zip $MANIFEST $icons $content_scripts $background_scripts $web_accessible_resources $options_ui $options_scripts
+zip ${version}.zip $MANIFEST $icons $toolbar_icons $content_scripts $background_scripts $web_accessible_resources $options_ui $options_scripts
