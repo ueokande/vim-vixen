@@ -27,6 +27,14 @@ const tabcloseCommand = () => {
   });
 };
 
+const tabcloseAllCommand = () => {
+  return browser.tabs.query({
+    currentWindow: true
+  }).then((tabList) => {
+    return browser.tabs.remove(tabList.map(tab => tab.id));
+  });
+};
+
 const winopenCommand = (url) => {
   return browser.windows.create({ url });
 };
@@ -117,6 +125,9 @@ const exec = (tab, line, settings) => {
   case 'q':
   case 'quit':
     return tabcloseCommand();
+  case 'qa':
+  case 'quitall':
+    return tabcloseAllCommand()
   case '':
     return Promise.resolve();
   }
