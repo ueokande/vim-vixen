@@ -34,6 +34,7 @@ The default mappings are as follows:
 
 ### Navigation
 - <kbd>f</kbd>: start following links in the page
+- <kbd>F</kbd>: similar to <kbd>f</kbd>, but opens link in new tab
 - <kbd>H</kbd>: go back in history
 - <kbd>L</kbd>: go forward in history
 - <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: find  prev or next links and open it
