@@ -15,7 +15,8 @@ const closeTabForce = (id) => {
 const queryByKeyword = (keyword, excludePinned = false) => {
   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
     return tabs.filter((t) => {
-      return t.url.includes(keyword) || t.title && t.title.includes(keyword);
+      return t.url.toLowerCase().includes(keyword.toLowerCase()) ||
+        t.title && t.title.toLowerCase().includes(keyword.toLowerCase());
     }).filter((t) => {
       return !(excludePinned && t.pinned);
     });
