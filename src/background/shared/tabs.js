@@ -12,36 +12,37 @@ const closeTabForce = (id) => {
   return browser.tabs.remove(id);
 };
 
-const closeTabByKeywords = (keyword) => {
+const queryByKeyword = (keyword, excludePinned = false) => {
   return browser.tabs.query({ currentWindow: true }).then((tabs) => {
-    let matched = tabs.filter((t) => {
-      return t.url.includes(keyword) || t.title.includes(keyword);
-    }).filter(t => !t.pinned);
+    return tabs.filter((t) => {
+      return t.url.includes(keyword) || t.title && t.title.includes(keyword);
+    }).filter((t) => {
+      return !(excludePinned && t.pinned);
+    });
+  });
+};
 
-    if (matched.length === 0) {
+const closeTabByKeywords = (keyword) => {
+  return queryByKeyword(keyword, false).then((tabs) => {
+    if (tabs.length === 0) {
       throw new Error('No matching buffer for ' + keyword);
-    } else if (matched.length > 1) {
+    } else if (tabs.length > 1) {
       throw new Error('More than one match for ' + keyword);
     }
-    browser.tabs.remove(matched[0].id);
+    browser.tabs.remove(tabs[0].id);
   });
 };
 
 const closeTabByKeywordsForce = (keyword) => {
-  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
-    let matched = tabs.filter((t) => {
-      return t.url.includes(keyword) || t.title.includes(keyword);
-    });
-
-    if (matched.length === 0) {
+  return queryByKeyword(keyword, true).then((tabs) => {
+    if (tabs.length === 0) {
       throw new Error('No matching buffer for ' + keyword);
-    } else if (matched.length > 1) {
+    } else if (tabs.length > 1) {
       throw new Error('More than one match for ' + keyword);
     }
-    browser.tabs.remove(matched[0].id);
+    browser.tabs.remove(tabs[0].id);
   });
 };
-
 
 const closeTabsByKeywords = (keyword) => {
   tabCompletions.getCompletions(keyword).then((tabs) => {
@@ -85,20 +86,16 @@ const selectAt = (index) => {
 };
 
 const selectByKeyword = (current, keyword) => {
-  return browser.tabs.query({ currentWindow: true }).then((tabs) => {
-    let matched = tabs.filter((t) => {
-      return t.url.includes(keyword) || t.title && t.title.includes(keyword);
-    });
-
-    if (matched.length === 0) {
+  return queryByKeyword(keyword).then((tabs) => {
+    if (tabs.length === 0) {
       throw new RangeError('No matching buffer for ' + keyword);
     }
-    for (let tab of matched) {
+    for (let tab of tabs) {
       if (tab.index > current.index) {
         return browser.tabs.update(tab.id, { active: true });
       }
     }
-    return browser.tabs.update(matched[0].id, { active: true });
+    return browser.tabs.update(tabs[0].id, { active: true });
   });
 };
 
@@ -165,7 +162,8 @@ const duplicate = (id) => {
 };
 
 export {
-  closeTab, closeTabForce, closeTabByKeywords, closeTabByKeywordsForce,
+  closeTab, closeTabForce,
+  queryByKeyword, closeTabByKeywords, closeTabByKeywordsForce,
   closeTabsByKeywords, closeTabsByKeywordsForce,
   reopenTab, selectAt, selectByKeyword,
   selectPrevTab, selectNextTab, selectFirstTab,
