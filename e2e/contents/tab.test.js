@@ -223,6 +223,8 @@ describe("tab test", () => {
       expect(win.tabs).to.have.lengthOf(1);
       return keys.press(win.tabs[0].id, 'u');
     }).then(() => {
+      return new Promise((resolve) => setTimeout(resolve, 100));
+    }).then(() => {
       return windows.get(targetWindow.id);
     }).then((win) => {
       expect(win.tabs).to.have.lengthOf(2);
