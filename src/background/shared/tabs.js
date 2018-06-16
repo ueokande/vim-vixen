@@ -59,13 +59,17 @@ const closeTabsByKeywordsForce = (keyword) => {
 };
 
 const reopenTab = () => {
-  return browser.sessions.getRecentlyClosed({
-    maxResults: 1
+  let window = null;
+  return browser.windows.getCurrent().then().then((w) => {
+    window = w;
+    return browser.sessions.getRecentlyClosed();
   }).then((sessions) => {
-    if (sessions.length === 0) {
+    let session = sessions.find((s) => {
+      return s.tab && s.tab.windowId === window.id;
+    });
+    if (!session) {
       return;
     }
-    let session = sessions[0];
     if (session.tab) {
       return browser.sessions.restore(session.tab.sessionId);
     }
