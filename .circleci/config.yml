@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:9-stretch-browsers
+      - image: circleci/node:10-stretch-browsers
     environment:
       - FIREFOX_VERSION: "60.0.2"
     working_directory: ~
