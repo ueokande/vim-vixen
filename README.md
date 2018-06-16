@@ -33,7 +33,8 @@ The default mappings are as follows:
 - <kbd>R</kbd>: reload current tab without cache
 
 ### Navigation
-- <kbd>f</kbd>: start following links in the page
+- <kbd>f</kbd>: start following links in the page in the current tab
+- <kbd>F</kbd>: start following links in the page in new tabs
 - <kbd>H</kbd>: go back in history
 - <kbd>L</kbd>: go forward in history
 - <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: find  prev or next links and open it
