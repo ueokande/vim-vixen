@@ -92,7 +92,7 @@ describe("tab test", () => {
     await tabs.create(targetWindow.id, CLIENT_URL + '#2');
     await tabs.create(targetWindow.id, CLIENT_URL + '#3');
     let tab = await tabs.selectAt(targetWindow.id, 2);
-    await keys.press(tab.id, 'g').then(() => tab);
+    await keys.press(tab.id, 'g');
     await keys.press(tab.id, '0');
 
     let win = await windows.get(targetWindow.id);
