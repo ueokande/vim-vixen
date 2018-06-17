@@ -1,5 +1,6 @@
 import * as findActions from 'content/actions/find';
 import messages from 'shared/messages';
+import * as consoleFrames from '../../console-frames';
 
 export default class FindComponent {
   constructor(win, store) {
@@ -31,11 +32,23 @@ export default class FindComponent {
 
   next() {
     let state = this.store.getState().find;
+    if (!state.keyword) {
+      return this.postNoPrevious();
+    }
     return this.store.dispatch(findActions.next(state.keyword, false));
   }
 
   prev() {
     let state = this.store.getState().find;
+    if (!state.keyword) {
+      return this.postNoPrevious();
+    }
     return this.store.dispatch(findActions.prev(state.keyword, false));
+  }
+
+  postNoPrevious() {
+    return consoleFrames.postError(
+      window.document,
+      'No previous search keypards');
   }
 }
