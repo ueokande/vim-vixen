@@ -22,6 +22,12 @@ const postPatternFound = (pattern) => {
   );
 };
 
+const postNoPrevious = () => {
+  return consoleFrames.postError(
+    window.document,
+    'No previous search keywords');
+};
+
 const find = (string, backwards) => {
   let caseSensitive = false;
   let wrapScan = true;
@@ -50,6 +56,9 @@ const findNext = (currentKeyword, reset, backwards) => {
   }
 
   return promise.then((keyword) => {
+    if (!keyword) {
+      return postNoPrevious();
+    }
     let found = find(keyword, backwards);
     if (!found) {
       window.getSelection().removeAllRanges();
