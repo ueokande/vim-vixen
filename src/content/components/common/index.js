@@ -44,15 +44,16 @@ export default class Common {
     }
   }
 
-  reloadSettings() {
-    browser.runtime.sendMessage({
-      type: messages.SETTINGS_QUERY,
-    }).then((settings) => {
+  async reloadSettings() {
+    try {
+      let settings = await browser.runtime.sendMessage({
+        type: messages.SETTINGS_QUERY,
+      });
       this.store.dispatch(settingActions.set(settings));
-    }).catch((e) => {
+    } catch (e) {
       // Sometime sendMessage fails when background script is not ready.
       console.warn(e);
       setTimeout(() => this.reloadSettings(), 500);
-    });
+    }
   }
 }
