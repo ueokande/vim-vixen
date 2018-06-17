@@ -27,7 +27,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 #### Misc
 
-- [ ] <kbd>g</kbd><kbd>f</kbd>: open page source in the new tab.
 - [ ] <kbd>y</kbd>: yank current URL and show a message
 - [ ] <kbd>p</kbd>: open clipboard's URL in current tab
 - [ ] <kbd>P</kbd>: open clipboard's URL in new tab

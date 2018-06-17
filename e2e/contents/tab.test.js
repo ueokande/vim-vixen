@@ -163,4 +163,22 @@ describe("tab test", () => {
     let win = await windows.get(targetWindow.id);
     expect(win.tabs).to.have.lengthOf(1);
   });
+
+  it('opens view-source by gf', () => {
+    let target;
+    return Promise.resolve().then(() => {
+      return windows.get(targetWindow.id);
+    }).then((win) => {
+      target = win.tabs[0];
+      return keys.press(target.id, 'g');
+    }).then(() => {
+      return keys.press(target.id, 'f');
+    }).then(() => {
+      return new Promise((resolve) => setTimeout(resolve, 300));
+    }).then(() => {
+      return windows.get(targetWindow.id);
+    }).then((win) => {
+      expect(win.tabs.map((t) => t.url)).to.include.members([CLIENT_URL + '/', 'view-source:' + CLIENT_URL + '/']);
+    });
+  });
 });
