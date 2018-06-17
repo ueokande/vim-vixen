@@ -13,13 +13,12 @@ const notificationClickListener = (id) => {
   browser.notifications.onClicked.removeListener(notificationClickListener);
 };
 
-const checkUpdated = () => {
-  return storage.load().then((prev) => {
-    if (!prev) {
-      return true;
-    }
-    return manifest.version !== prev;
-  });
+const checkUpdated = async() => {
+  let prev = await storage.load();
+  if (!prev) {
+    return true;
+  }
+  return manifest.version !== prev;
 };
 
 const notify = () => {
