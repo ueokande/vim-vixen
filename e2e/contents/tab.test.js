@@ -174,7 +174,7 @@ describe("tab test", () => {
     }).then(() => {
       return keys.press(target.id, 'f');
     }).then(() => {
-      return new Promise((resolve) => setTimeout(resolve, 300));
+      return new Promise((resolve) => setTimeout(resolve, 500));
     }).then(() => {
       return windows.get(targetWindow.id);
     }).then((win) => {
