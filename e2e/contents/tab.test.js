@@ -6,260 +6,161 @@ import { CLIENT_URL } from '../web-server/url';
 describe("tab test", () => {
   let targetWindow;
 
-  beforeEach(() => {
-    return windows.create(CLIENT_URL).then((win) => {
-      targetWindow = win;
-    });
+  beforeEach(async () => {
+    targetWindow = await windows.create(CLIENT_URL);
   });
 
-  afterEach(() => {
-    return windows.remove(targetWindow.id);
+  afterEach(async () => {
+    await windows.remove(targetWindow.id);
   });
 
-  it('deletes tab by d', () => {
-    let before;
-    let targetTab;
-    return tabs.create(targetWindow.id, CLIENT_URL).then((tab) => {
-      targetTab = tab;
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      before = win;
-      return keys.press(targetTab.id, 'd');
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((actual) => {
-      expect(actual.tabs).to.have.lengthOf(before.tabs.length - 1);
-    });
+  it('deletes tab by d', async () => {
+    let tab = await tabs.create(targetWindow.id, CLIENT_URL);
+    let before = await windows.get(targetWindow.id);
+    await keys.press(tab.id, 'd');
+
+    let actual = await windows.get(targetWindow.id);
+    expect(actual.tabs).to.have.lengthOf(before.tabs.length - 1);
   });
 
-  it('duplicates tab by zd', () => {
-    let before;
-    let targetTab;
-    return tabs.create(targetWindow.id, CLIENT_URL).then((tab) => {
-      targetTab = tab;
-      return windows.get(targetWindow.id)
-    }).then((win) => {;
-      before = win;
-      return keys.press(targetTab.id, 'z');
-    }).then(() => {
-      return keys.press(targetTab.id, 'd');
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((actual) => {
-      expect(actual.tabs).to.have.lengthOf(before.tabs.length + 1);
-    });
-  })
+  it('duplicates tab by zd', async () => {
+    let tab = await tabs.create(targetWindow.id, CLIENT_URL);
+    let before = await windows.get(targetWindow.id)
+    await keys.press(tab.id, 'z');
+    await keys.press(tab.id, 'd');
 
-  it('makes pinned by zp', () => {
-    let before;
-    let targetTab;
-    return tabs.create(targetWindow.id, CLIENT_URL).then((tab) => {
-      targetTab = tab;
-      return windows.get(targetWindow.id)
-    }).then((win) => {;
-      before = win;
-      return keys.press(targetTab.id, 'z');
-    }).then(() => {
-      return keys.press(targetTab.id, 'p');
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((actual) => {
-      expect(actual.tabs[0].pinned).to.be.true;
-    });
-  })
-
-  it('selects previous tab by K', () => {
-    return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#1')
-    }).then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#2')
-    }).then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#3');
-    }).then(() => {
-      return tabs.selectAt(targetWindow.id, 2);
-    }).then((tab) => {
-      return keys.press(tab.id, 'K', { shiftKey: true });
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      expect(win.tabs[1].active).to.be.true;
-    });
+    let actual = await windows.get(targetWindow.id);
+    expect(actual.tabs).to.have.lengthOf(before.tabs.length + 1);
   });
 
-  it('selects previous tab by K rotatory', () => {
-    return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#1')
-    }).then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#2')
-    }).then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#3');
-    }).then(() => {
-      return tabs.selectAt(targetWindow.id, 0);
-    }).then((tab) => {
-      return keys.press(tab.id, 'K', { shiftKey: true });
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      expect(win.tabs[3].active).to.be.true;
-    });
+  it('makes pinned by zp', async () => {
+    let tab = await tabs.create(targetWindow.id, CLIENT_URL);
+    let before = await windows.get(targetWindow.id);
+    await keys.press(tab.id, 'z');
+    await keys.press(tab.id, 'p');
+
+    let actual = await windows.get(targetWindow.id);
+    expect(actual.tabs[0].pinned).to.be.true;
   });
 
-  it('selects next tab by J', () => {
-    return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#1')
-    }).then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#2')
-    }).then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#3');
-    }).then(() => {
-      return tabs.selectAt(targetWindow.id, 2);
-    }).then((tab) => {
-      return keys.press(tab.id, 'J', { shiftKey: true });
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      expect(win.tabs[3].active).to.be.true;
-    });
+  it('selects previous tab by K', async () => {
+    await tabs.create(targetWindow.id, CLIENT_URL + '#1');
+    await tabs.create(targetWindow.id, CLIENT_URL + '#2');
+    await tabs.create(targetWindow.id, CLIENT_URL + '#3');
+    let tab = await tabs.selectAt(targetWindow.id, 2);
+    await keys.press(tab.id, 'K', { shiftKey: true });
+
+    let win = await windows.get(targetWindow.id);
+    expect(win.tabs[1].active).to.be.true;
   });
 
-  it('selects previous tab by J rotatory', () => {
-    return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#1')
-    }).then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#2')
-    }).then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#3');
-    }).then(() => {
-      return tabs.selectAt(targetWindow.id, 3);
-    }).then((tab) => {
-      return keys.press(tab.id, 'J', { shiftKey: true });
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      expect(win.tabs[0].active).to.be.true;
-    });
+  it('selects previous tab by K rotatory', async () => {
+    await tabs.create(targetWindow.id, CLIENT_URL + '#1');
+    await tabs.create(targetWindow.id, CLIENT_URL + '#2');
+    await tabs.create(targetWindow.id, CLIENT_URL + '#3');
+    let tab = await tabs.selectAt(targetWindow.id, 0);
+    await keys.press(tab.id, 'K', { shiftKey: true });
+
+    let win = await windows.get(targetWindow.id);
+    expect(win.tabs[3].active).to.be.true;
   });
 
-  it('selects first tab by g0', () => {
-    return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#1')
-    }).then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#2')
-    }).then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#3');
-    }).then(() => {
-      return tabs.selectAt(targetWindow.id, 2);
-    }).then((tab) => {
-      return keys.press(tab.id, 'g').then(() => tab);
-    }).then((tab) => {
-      return keys.press(tab.id, '0');
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      expect(win.tabs[0].active).to.be.true;
-    });
+  it('selects next tab by J', async () => {
+    await tabs.create(targetWindow.id, CLIENT_URL + '#1');
+    await tabs.create(targetWindow.id, CLIENT_URL + '#2');
+    await tabs.create(targetWindow.id, CLIENT_URL + '#3');
+    let tab = await tabs.selectAt(targetWindow.id, 2);
+    await keys.press(tab.id, 'J', { shiftKey: true });
+
+    let win = await windows.get(targetWindow.id);
+    expect(win.tabs[3].active).to.be.true;
   });
 
-  it('selects last tab by g$', () => {
-    return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#1')
-    }).then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#2')
-    }).then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#3');
-    }).then(() => {
-      return tabs.selectAt(targetWindow.id, 2);
-    }).then((tab) => {
-      return keys.press(tab.id, 'g').then(() => tab);
-    }).then((tab) => {
-      return keys.press(tab.id, '$');
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      expect(win.tabs[3].active).to.be.true;
-    });
+  it('selects previous tab by J rotatory', async () => {
+    await tabs.create(targetWindow.id, CLIENT_URL + '#1');
+    await tabs.create(targetWindow.id, CLIENT_URL + '#2');
+    await tabs.create(targetWindow.id, CLIENT_URL + '#3');
+    let tab = await tabs.selectAt(targetWindow.id, 3);
+    await keys.press(tab.id, 'J', { shiftKey: true });
+
+    let win = await windows.get(targetWindow.id);
+    expect(win.tabs[0].active).to.be.true;
   });
 
-  it('selects last selected tab by <C-6>', () => {
-    return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#1')
-    }).then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#2')
-    }).then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#3');
-    }).then(() => {
-      return tabs.selectAt(targetWindow.id, 1);
-    }).then(() => {
-      return tabs.selectAt(targetWindow.id, 3);
-    }).then((tab) => {
-      return keys.press(tab.id, '6', { ctrlKey: true });
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      expect(win.tabs[1].active).to.be.true;
-    });
+  it('selects first tab by g0', async () => {
+    await tabs.create(targetWindow.id, CLIENT_URL + '#1');
+    await tabs.create(targetWindow.id, CLIENT_URL + '#2');
+    await tabs.create(targetWindow.id, CLIENT_URL + '#3');
+    let tab = await tabs.selectAt(targetWindow.id, 2);
+    await keys.press(tab.id, 'g').then(() => tab);
+    await keys.press(tab.id, '0');
+
+    let win = await windows.get(targetWindow.id);
+    expect(win.tabs[0].active).to.be.true;
   });
 
-  it('deletes tab by d', () => {
-    return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#1');
-    }).then((tab) => {
-      return keys.press(tab.id, 'd');
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      expect(win.tabs).to.have.lengthOf(1);
-    });
+  it('selects last tab by g$', async () => {
+    await tabs.create(targetWindow.id, CLIENT_URL + '#1');
+    await tabs.create(targetWindow.id, CLIENT_URL + '#2');
+    await tabs.create(targetWindow.id, CLIENT_URL + '#3');
+    let tab = await tabs.selectAt(targetWindow.id, 2);
+    await keys.press(tab.id, 'g');
+    await keys.press(tab.id, '$');
+
+    let win = await windows.get(targetWindow.id);
+    expect(win.tabs[3].active).to.be.true;
   });
 
-  it('reopen tab by u', () => {
-    return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#1');
-    }).then((tab) => {
-      return keys.press(tab.id, 'd');
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      expect(win.tabs).to.have.lengthOf(1);
-      return keys.press(win.tabs[0].id, 'u');
-    }).then(() => {
-      return new Promise((resolve) => setTimeout(resolve, 100));
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      expect(win.tabs).to.have.lengthOf(2);
-    });
+  it('selects last selected tab by <C-6>', async () => {
+    await tabs.create(targetWindow.id, CLIENT_URL + '#1');
+    await tabs.create(targetWindow.id, CLIENT_URL + '#2');
+    await tabs.create(targetWindow.id, CLIENT_URL + '#3');
+    await tabs.selectAt(targetWindow.id, 1);
+    let tab = await tabs.selectAt(targetWindow.id, 3);
+    await keys.press(tab.id, '6', { ctrlKey: true });
+
+    let win = await windows.get(targetWindow.id);
+    expect(win.tabs[1].active).to.be.true;
   });
 
-  it('does not delete pinned tab by d', () => {
-    return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#1');
-    }).then((tab) => {
-      return tabs.update(tab.id, { pinned: true });
-    }).then((tab) => {
-      return keys.press(tab.id, 'd');
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      expect(win.tabs).to.have.lengthOf(2);
-    });
+  it('deletes tab by d', async () => {
+    let tab = await tabs.create(targetWindow.id, CLIENT_URL + '#1');
+    await keys.press(tab.id, 'd');
+
+    let win = await windows.get(targetWindow.id);
+    expect(win.tabs).to.have.lengthOf(1);
   });
 
-  it('deletes pinned tab by !d', () => {
-    let target;
-    return Promise.resolve().then(() => {
-      return tabs.create(targetWindow.id, CLIENT_URL + '#1');
-    }).then((tab) => {
-      return tabs.update(tab.id, { pinned: true });
-    }).then((tab) => {
-      target = tab;
-      return keys.press(target.id, '!');
-    }).then(() => {
-      return keys.press(target.id, 'd');
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      expect(win.tabs).to.have.lengthOf(1);
-    });
+  it('reopen tab by u', async () => {
+    let tab = await tabs.create(targetWindow.id, CLIENT_URL + '#1');
+    await keys.press(tab.id, 'd');
+
+    let win = await windows.get(targetWindow.id);
+    expect(win.tabs).to.have.lengthOf(1);
+
+    await keys.press(win.tabs[0].id, 'u');
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    win = await windows.get(targetWindow.id);
+    expect(win.tabs).to.have.lengthOf(2);
+  });
+
+  it('does not delete pinned tab by d', async () => {
+    let tab = await tabs.create(targetWindow.id, CLIENT_URL + '#1');
+    tab = await tabs.update(tab.id, { pinned: true });
+    await keys.press(tab.id, 'd');
+
+    let win = await windows.get(targetWindow.id);
+    expect(win.tabs).to.have.lengthOf(2);
+  });
+
+  it('deletes pinned tab by !d', async () => {
+    let tab = await tabs.create(targetWindow.id, CLIENT_URL + '#1');
+    tab = await tabs.update(tab.id, { pinned: true });
+    await keys.press(tab.id, '!');
+    await keys.press(tab.id, 'd');
+
+    let win = await windows.get(targetWindow.id);
+    expect(win.tabs).to.have.lengthOf(1);
   });
 });
