@@ -18,6 +18,15 @@ const store = createStore(reducers, (e, sender) => {
   }
 });
 
+const checkAndNotifyUpdated = async() => {
+  let updated = await versions.checkUpdated();
+  if (!updated) {
+    return;
+  }
+  await versions.notify();
+  await versions.commit();
+};
+
 /* eslint-disable no-unused-vars */
 const backgroundComponent = new BackgroundComponent(store);
 const operationComponent = new OperationComponent(store);
@@ -27,11 +36,4 @@ const indicatorComponent = new IndicatorComponent(store);
 
 store.dispatch(settingActions.load());
 
-versions.checkUpdated().then((updated) => {
-  if (!updated) {
-    return;
-  }
-  return versions.notify();
-}).then(() => {
-  return versions.commit();
-});
+checkAndNotifyUpdated();

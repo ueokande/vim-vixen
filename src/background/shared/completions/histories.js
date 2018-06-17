@@ -61,23 +61,22 @@ const reduceByOrigin = (items, min) => {
   return filtered;
 };
 
-const getCompletions = (keyword) => {
-  return browser.history.search({
+const getCompletions = async(keyword) => {
+  let historyItems = await browser.history.search({
     text: keyword,
     startTime: 0,
-  }).then((historyItems) => {
-    return [historyItems.map(item => [item, new URL(item.url)])]
-      .map(filterEmptyTitle)
-      .map(filterHttp)
-      .map(filterClosedPath)
-      .map(items => reduceByPathname(items, 10))
-      .map(items => reduceByOrigin(items, 10))
-      .map(items => items
-        .sort((x, y) => x[0].visitCount < y[0].visitCount)
-        .slice(0, 10)
-        .map(item => item[0])
-      )[0];
   });
+  return [historyItems.map(item => [item, new URL(item.url)])]
+    .map(filterEmptyTitle)
+    .map(filterHttp)
+    .map(filterClosedPath)
+    .map(items => reduceByPathname(items, 10))
+    .map(items => reduceByOrigin(items, 10))
+    .map(items => items
+      .sort((x, y) => x[0].visitCount < y[0].visitCount)
+      .slice(0, 10)
+      .map(item => item[0])
+    )[0];
 };
 
 export { getCompletions };

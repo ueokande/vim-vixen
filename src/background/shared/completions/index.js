@@ -12,76 +12,66 @@ const getSearchCompletions = (command, keywords, searchConfig) => {
   return Promise.resolve(engineItems);
 };
 
-const getHistoryCompletions = (command, keywords) => {
-  return histories.getCompletions(keywords).then((pages) => {
-    return pages.map((page) => {
-      return {
-        caption: page.title,
-        content: command + ' ' + page.url,
-        url: page.url
-      };
-    });
+const getHistoryCompletions = async(command, keywords) => {
+  let items = await histories.getCompletions(keywords);
+  return items.map((page) => {
+    return {
+      caption: page.title,
+      content: command + ' ' + page.url,
+      url: page.url
+    };
   });
 };
 
-const getBookmarksCompletions = (command, keywords) => {
-  return bookmarks.getCompletions(keywords).then((items) => {
-    return items.map((item) => {
-      return {
-        caption: item.title,
-        content: command + ' ' + item.url,
-        url: item.url,
-      };
-    });
-  });
+const getBookmarksCompletions = async(command, keywords) => {
+  let items = await bookmarks.getCompletions(keywords);
+  return items.map(item => ({
+    caption: item.title,
+    content: command + ' ' + item.url,
+    url: item.url,
+  }));
 };
 
-const getOpenCompletions = (command, keywords, searchConfig) => {
-  return Promise.all([
-    getSearchCompletions(command, keywords, searchConfig),
-    getHistoryCompletions(command, keywords),
-    getBookmarksCompletions(command, keywords),
-  ]).then(([engineItems, historyItems, bookmarkItems]) => {
-    let completions = [];
-    if (engineItems.length > 0) {
-      completions.push({
-        name: 'Search Engines',
-        items: engineItems
-      });
-    }
-    if (historyItems.length > 0) {
-      completions.push({
-        name: 'History',
-        items: historyItems
-      });
-    }
-    if (bookmarkItems.length > 0) {
-      completions.push({
-        name: 'Bookmarks',
-        items: bookmarkItems
-      });
-    }
-    return completions;
-  });
+const getOpenCompletions = async(command, keywords, searchConfig) => {
+  let engineItems = await getSearchCompletions(command, keywords, searchConfig);
+  let historyItems = await getHistoryCompletions(command, keywords);
+  let bookmarkItems = await getBookmarksCompletions(command, keywords);
+  let completions = [];
+  if (engineItems.length > 0) {
+    completions.push({
+      name: 'Search Engines',
+      items: engineItems
+    });
+  }
+  if (historyItems.length > 0) {
+    completions.push({
+      name: 'History',
+      items: historyItems
+    });
+  }
+  if (bookmarkItems.length > 0) {
+    completions.push({
+      name: 'Bookmarks',
+      items: bookmarkItems
+    });
+  }
+  return completions;
 };
 
-const getBufferCompletions = (command, keywords, excludePinned) => {
-  return tabs.getCompletions(keywords, excludePinned).then((got) => {
-    let items = got.map((tab) => {
-      return {
-        caption: tab.title,
-        content: command + ' ' + tab.title,
-        url: tab.url,
-        icon: tab.favIconUrl
-      };
-    });
-    return [
-      {
-        name: 'Buffers',
-        items: items
-      }
-    ];
-  });
+const getBufferCompletions = async(command, keywords, excludePinned) => {
+  let items = await tabs.getCompletions(keywords, excludePinned);
+  items = items.map(tab => ({
+    caption: tab.title,
+    content: command + ' ' + tab.title,
+    url: tab.url,
+    icon: tab.favIconUrl
+  }));
+  return [
+    {
+      name: 'Buffers',
+      items: items
+    }
+  ];
 };
 
 const getCompletions = (line, settings) => {

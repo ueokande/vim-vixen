@@ -56,13 +56,12 @@ export default class BackgroundComponent {
     }
   }
 
-  broadcastSettingsChanged() {
-    return browser.tabs.query({}).then((tabs) => {
-      for (let tab of tabs) {
-        browser.tabs.sendMessage(tab.id, {
-          type: messages.SETTINGS_CHANGED,
-        });
-      }
-    });
+  async broadcastSettingsChanged() {
+    let tabs = await browser.tabs.query({});
+    for (let tab of tabs) {
+      browser.tabs.sendMessage(tab.id, {
+        type: messages.SETTINGS_CHANGED,
+      });
+    }
   }
 }
