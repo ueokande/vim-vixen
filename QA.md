@@ -118,6 +118,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 #### Misc
 
 - [ ] Select next item by <kbd>Tab</kbd> and previous item by <kbd>Shift</kbd>+<kbd>Tab</kbd>
+- [ ] Reopen tab on *only current window* by <kbd>u</kbd>
 
 ### Settings
 
