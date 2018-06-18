@@ -4,20 +4,17 @@ import DefaultSettings from 'shared/settings/default';
 import * as settingsStorage from 'shared/settings/storage';
 import * as settingsValues from 'shared/settings/values';
 
-const load = () => {
-  return settingsStorage.loadRaw().then((settings) => {
-    return set(settings);
-  });
+const load = async() => {
+  let settings = await settingsStorage.loadRaw();
+  return set(settings);
 };
 
-const save = (settings) => {
-  return settingsStorage.save(settings).then(() => {
-    return browser.runtime.sendMessage({
-      type: messages.SETTINGS_RELOAD
-    });
-  }).then(() => {
-    return set(settings);
+const save = async(settings) => {
+  await settingsStorage.save(settings);
+  await browser.runtime.sendMessage({
+    type: messages.SETTINGS_RELOAD
   });
+  return set(settings);
 };
 
 const set = (settings) => {

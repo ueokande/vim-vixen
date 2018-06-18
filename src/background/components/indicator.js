@@ -8,19 +8,17 @@ export default class IndicatorComponent {
     messages.onMessage(this.onMessage.bind(this));
 
     browser.browserAction.onClicked.addListener(this.onClicked);
-    browser.tabs.onActivated.addListener((info) => {
-      return browser.tabs.query({ currentWindow: true }).then(() => {
-        return this.onTabActivated(info);
-      });
+    browser.tabs.onActivated.addListener(async(info) => {
+      await browser.tabs.query({ currentWindow: true });
+      return this.onTabActivated(info);
     });
   }
 
-  onTabActivated(info) {
-    return browser.tabs.sendMessage(info.tabId, {
+  async onTabActivated(info) {
+    let { enabled } = await browser.tabs.sendMessage(info.tabId, {
       type: messages.ADDON_ENABLED_QUERY,
-    }).then((resp) => {
-      return this.updateIndicator(resp.enabled);
     });
+    return this.updateIndicator(enabled);
   }
 
   onClicked(tab) {

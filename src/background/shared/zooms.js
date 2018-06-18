@@ -9,26 +9,20 @@ const ZOOM_SETTINGS = [
   1.10, 1.25, 1.50, 1.75, 2.00, 2.50, 3.00
 ];
 
-const zoomIn = (tabId = undefined) => {
-  return browser.tabs.getZoom(tabId).then((factor) => {
-    for (let f of ZOOM_SETTINGS) {
-      if (f > factor) {
-        browser.tabs.setZoom(tabId, f);
-        break;
-      }
-    }
-  });
+const zoomIn = async(tabId = undefined) => {
+  let current = await browser.tabs.getZoom(tabId);
+  let factor = ZOOM_SETTINGS.find(f => f > current);
+  if (factor) {
+    return browser.tabs.setZoom(tabId, factor);
+  }
 };
 
-const zoomOut = (tabId = undefined) => {
-  return browser.tabs.getZoom(tabId).then((factor) => {
-    for (let f of [].concat(ZOOM_SETTINGS).reverse()) {
-      if (f < factor) {
-        browser.tabs.setZoom(tabId, f);
-        break;
-      }
-    }
-  });
+const zoomOut = async(tabId = undefined) => {
+  let current = await browser.tabs.getZoom(tabId);
+  let factor = [].concat(ZOOM_SETTINGS).reverse().find(f => f < current);
+  if (factor) {
+    return browser.tabs.setZoom(tabId, factor);
+  }
 };
 
 const neutral = (tabId = undefined) => {

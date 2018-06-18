@@ -1,7 +1,6 @@
-const load = () => {
-  return browser.storage.local.get('version').then(({ version }) => {
-    return version;
-  });
+const load = async() => {
+  let { version } = await browser.storage.local.get('version');
+  return version;
 };
 
 const save = (version) => {

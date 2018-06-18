@@ -8,142 +8,99 @@ describe("scroll test", () => {
   let targetWindow;
   let targetTab;
 
-  before(() => {
-    return windows.create().then((win) => {
-      targetWindow = win;
-      return tabs.create(targetWindow.id, CLIENT_URL + '/scroll');
-    }).then((tab) => {
-      targetTab = tab;
-    });
+  before(async () => {
+    targetWindow = await windows.create();
+    targetTab = await tabs.create(targetWindow.id, CLIENT_URL + '/scroll');
   });
 
-  after(() => {
-    return windows.remove(targetWindow.id);
+  after(async () => {
+    await windows.remove(targetWindow.id);
   });
 
-  it('scrolls up by k', () => {
-    let before
-    return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
-      before = scroll;
-      return keys.press(targetTab.id, 'k');
-    }).then(() => {
-      return scrolls.get(targetTab.id);
-    }).then((actual) => {
-      expect(actual.y).to.be.lessThan(before.y);
-    });
+  it('scrolls up by k', async () => {
+    let before = await scrolls.set(targetTab.id, 100, 100);
+    await keys.press(targetTab.id, 'k');
+
+    let actual = await scrolls.get(targetTab.id);
+    expect(actual.y).to.be.lessThan(before.y);
   });
 
-  it('scrolls down by j', () => {
-    let before
-    return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
-      before = scroll;
-      return keys.press(targetTab.id, 'j');
-    }).then(() => {
-      return scrolls.get(targetTab.id);
-    }).then((actual) => {
-      expect(actual.y).to.be.greaterThan(before.y);
-    });
+  it('scrolls down by j', async () => {
+    let before = await scrolls.set(targetTab.id, 100, 100);
+    await keys.press(targetTab.id, 'j');
+
+    let actual = await scrolls.get(targetTab.id);
+    expect(actual.y).to.be.greaterThan(before.y);
   });
 
-  it('scrolls left by h', () => {
-    let before
-    return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
-      before = scroll;
-      return keys.press(targetTab.id, 'h');
-    }).then(() => {
-      return scrolls.get(targetTab.id);
-    }).then((actual) => {
-      expect(actual.x).to.be.lessThan(before.x);
-    });
+  it('scrolls left by h', async () => {
+    let before = await scrolls.set(targetTab.id, 100, 100)
+    await keys.press(targetTab.id, 'h');
+
+    let actual = await scrolls.get(targetTab.id);
+    expect(actual.x).to.be.lessThan(before.x);
   });
 
-  it('scrolls top by gg', () => {
-    return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
-      return keys.press(targetTab.id, 'g');
-    }).then(() => {
-      return keys.press(targetTab.id, 'g');
-    }).then(() => {
-      return scrolls.get(targetTab.id);
-    }).then((actual) => {
-      expect(actual.y).to.be.equals(0);
-    });
+  it('scrolls top by gg', async () => {
+    await scrolls.set(targetTab.id, 100, 100);
+    await keys.press(targetTab.id, 'g');
+    await keys.press(targetTab.id, 'g');
+    let actual = await scrolls.get(targetTab.id);
+    expect(actual.y).to.be.equals(0);
   });
 
-  it('scrolls bottom by G', () => {
-    return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
-      return keys.press(targetTab.id, 'G', { shiftKey: true });
-    }).then(() => {
-      return scrolls.get(targetTab.id);
-    }).then((actual) => {
-      expect(actual.y).to.be.equals(actual.yMax);
-    });
+  it('scrolls bottom by G', async () => {
+    await scrolls.set(targetTab.id, 100, 100);
+    await keys.press(targetTab.id, 'G', { shiftKey: true });
+
+    let actual = await scrolls.get(targetTab.id);
+    expect(actual.y).to.be.equals(actual.yMax);
   });
 
-  it('scrolls bottom by 0', () => {
-    return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
-      return keys.press(targetTab.id, '0');
-    }).then(() => {
-      return scrolls.get(targetTab.id);
-    }).then((actual) => {
-      expect(actual.x).to.be.equals(0);
-    });
+  it('scrolls bottom by 0', async () => {
+    await scrolls.set(targetTab.id, 100, 100);
+    await keys.press(targetTab.id, '0');
+
+    let actual = await scrolls.get(targetTab.id);
+    expect(actual.x).to.be.equals(0);
   });
 
-  it('scrolls bottom by $', () => {
-    return scrolls.set(targetTab.id, 100, 100).then((scroll) => {
-      return keys.press(targetTab.id, '$');
-    }).then(() => {
-      return scrolls.get(targetTab.id);
-    }).then((actual) => {
-      expect(actual.x).to.be.equals(actual.xMax);
-    });
+  it('scrolls bottom by $', async () => {
+    await scrolls.set(targetTab.id, 100, 100);
+    await keys.press(targetTab.id, '$');
+
+    let actual = await scrolls.get(targetTab.id);
+    expect(actual.x).to.be.equals(actual.xMax);
   });
 
-  it('scrolls bottom by <C-U>', () => {
-    let before
-    return scrolls.set(targetTab.id, 5000, 5000).then((scroll) => {
-      before = scroll;
-      return keys.press(targetTab.id, 'u', { ctrlKey: true });
-    }).then(() => {
-      return scrolls.get(targetTab.id);
-    }).then((actual) => {
-      expect(actual.y).to.closeTo(before.y - before.frameHeight / 2, 1);
-    });
+  it('scrolls bottom by <C-U>', async () => {
+    let before = await scrolls.set(targetTab.id, 5000, 5000);
+    await keys.press(targetTab.id, 'u', { ctrlKey: true });
+
+    let actual = await scrolls.get(targetTab.id);
+    expect(actual.y).to.closeTo(before.y - before.frameHeight / 2, 1);
   });
 
-  it('scrolls bottom by <C-D>', () => {
-    let before
-    return scrolls.set(targetTab.id, 5000, 5000).then((scroll) => {
-      before = scroll;
-      return keys.press(targetTab.id, 'd', { ctrlKey: true });
-    }).then(() => {
-      return scrolls.get(targetTab.id);
-    }).then((actual) => {
-      expect(actual.y).to.closeTo(before.y + before.frameHeight / 2, 1);
-    });
+  it('scrolls bottom by <C-D>', async () => {
+    let before = await scrolls.set(targetTab.id, 5000, 5000);
+    await keys.press(targetTab.id, 'd', { ctrlKey: true });
+
+    let actual = await scrolls.get(targetTab.id);
+    expect(actual.y).to.closeTo(before.y + before.frameHeight / 2, 1);
   });
 
-  it('scrolls bottom by <C-B>', () => {
-    let before
-    return scrolls.set(targetTab.id, 5000, 5000).then((scroll) => {
-      before = scroll;
-      return keys.press(targetTab.id, 'b', { ctrlKey: true });
-    }).then(() => {
-      return scrolls.get(targetTab.id);
-    }).then((actual) => {
-      expect(actual.y).to.equals(before.y - before.frameHeight);
-    });
+  it('scrolls bottom by <C-B>', async () => {
+    let before = await scrolls.set(targetTab.id, 5000, 5000);
+    await keys.press(targetTab.id, 'b', { ctrlKey: true });
+
+    let actual = await await scrolls.get(targetTab.id);
+    expect(actual.y).to.equals(before.y - before.frameHeight);
   });
 
-  it('scrolls bottom by <C-F>', () => {
-    let before
-    return scrolls.set(targetTab.id, 5000, 5000).then((scroll) => {
-      before = scroll;
-      return keys.press(targetTab.id, 'f', { ctrlKey: true });
-    }).then(() => {
-      return scrolls.get(targetTab.id);
-    }).then((actual) => {
-      expect(actual.y).to.equals(before.y + before.frameHeight);
-    });
+  it('scrolls bottom by <C-F>', async () => {
+    let before = await scrolls.set(targetTab.id, 5000, 5000);
+    await keys.press(targetTab.id, 'f', { ctrlKey: true });
+    let actual = await scrolls.get(targetTab.id);
+    expect(actual.y).to.equals(before.y + before.frameHeight);
   });
 });

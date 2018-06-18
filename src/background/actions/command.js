@@ -5,56 +5,63 @@ import * as bookmarks from '../shared/bookmarks';
 import * as parsers from 'shared/commands/parsers';
 import * as properties from 'shared/settings/properties';
 
-const openCommand = (url) => {
-  return browser.tabs.query({
+const openCommand = async(url) => {
+  let got = await browser.tabs.query({
     active: true, currentWindow: true
-  }).then((gotTabs) => {
-    if (gotTabs.length > 0) {
-      return browser.tabs.update(gotTabs[0].id, { url: url });
-    }
   });
+  if (got.length > 0) {
+    return browser.tabs.update(got[0].id, { url: url });
+  }
 };
 
 const tabopenCommand = (url) => {
   return browser.tabs.create({ url: url });
 };
 
-const tabcloseCommand = () => {
-  return browser.tabs.query({
+const tabcloseCommand = async() => {
+  let got = await browser.tabs.query({
     active: true, currentWindow: true
-  }).then((tabList) => {
-    return browser.tabs.remove(tabList.map(tab => tab.id));
   });
+  return browser.tabs.remove(got.map(tab => tab.id));
 };
 
 const winopenCommand = (url) => {
   return browser.windows.create({ url });
 };
 
-const bufferCommand = (keywords) => {
+const bufferCommand = async(keywords) => {
   if (keywords.length === 0) {
     return Promise.resolve([]);
   }
   let keywordsStr = keywords.join(' ');
-  return browser.tabs.query({
+  let got = await browser.tabs.query({
     active: true, currentWindow: true
-  }).then((gotTabs) => {
-    if (gotTabs.length > 0) {
-      if (isNaN(keywordsStr)) {
-        return tabs.selectByKeyword(gotTabs[0], keywordsStr);
-      }
-      let index = parseInt(keywordsStr, 10) - 1;
-      return tabs.selectAt(index);
-    }
   });
+  if (got.length === 0) {
+    return;
+  }
+  if (isNaN(keywordsStr)) {
+    return tabs.selectByKeyword(got[0], keywordsStr);
+  }
+  let index = parseInt(keywordsStr, 10) - 1;
+  return tabs.selectAt(index);
 };
 
-const addBookmarkCommand = (tab, args) => {
+const addbookmarkCommand = async(tab, args) => {
   if (!args[0]) {
-    return Promise.resolve();
+    return;
   }
-
-  return bookmarks.create(args.join(' '), tab.url);
+  let item = await bookmarks.create(args.join(' '), tab.url);
+  if (!item) {
+    return browser.tabs.sendMessage(tab.id, {
+      type: messages.CONSOLE_SHOW_ERROR,
+      text: 'Could not create a bookmark',
+    });
+  }
+  return browser.tabs.sendMessage(tab.id, {
+    type: messages.CONSOLE_SHOW_INFO,
+    text: 'Saved current page: ' + item.url,
+  });
 };
 
 const setCommand = (args) => {
@@ -100,18 +107,7 @@ const exec = (tab, line, settings) => {
   case 'bdeletes!':
     return tabs.closeTabsByKeywordsForce(args.join(' '));
   case 'addbookmark':
-    return addBookmarkCommand(tab, args).then((item) => {
-      if (!item) {
-        return browser.tabs.sendMessage(tab.id, {
-          type: messages.CONSOLE_SHOW_ERROR,
-          text: 'Could not create a bookmark',
-        });
-      }
-      return browser.tabs.sendMessage(tab.id, {
-        type: messages.CONSOLE_SHOW_INFO,
-        text: 'Saved current page: ' + item.url,
-      });
-    });
+    return addbookmarkCommand(tab, args);
   case 'set':
     return setCommand(args);
   case 'q':

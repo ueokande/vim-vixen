@@ -35,47 +35,45 @@ const find = (string, backwards) => {
 
   // NOTE: aWholeWord dows not implemented, and aSearchInFrames does not work
   // because of same origin policy
+  let found = window.find(string, caseSensitive, backwards, wrapScan);
+  if (found) {
+    return found;
+  }
+  window.getSelection().removeAllRanges();
   return window.find(string, caseSensitive, backwards, wrapScan);
 };
 
-const findNext = (currentKeyword, reset, backwards) => {
+const findNext = async(currentKeyword, reset, backwards) => {
   if (reset) {
     window.getSelection().removeAllRanges();
   }
 
-  let promise = Promise.resolve(currentKeyword);
+  let keyword = currentKeyword;
   if (currentKeyword) {
     browser.runtime.sendMessage({
       type: messages.FIND_SET_KEYWORD,
       keyword: currentKeyword,
     });
   } else {
-    promise = browser.runtime.sendMessage({
+    keyword = await browser.runtime.sendMessage({
       type: messages.FIND_GET_KEYWORD,
     });
   }
+  if (!keyword) {
+    return postNoPrevious();
+  }
+  let found = find(keyword, backwards);
+  if (found) {
+    postPatternFound(keyword);
+  } else {
+    postPatternNotFound(keyword);
+  }
 
-  return promise.then((keyword) => {
-    if (!keyword) {
-      return postNoPrevious();
-    }
-    let found = find(keyword, backwards);
-    if (!found) {
-      window.getSelection().removeAllRanges();
-      found = find(keyword, backwards);
-    }
-    if (found) {
-      postPatternFound(keyword);
-    } else {
-      postPatternNotFound(keyword);
-    }
-
-    return {
-      type: actions.FIND_SET_KEYWORD,
-      keyword,
-      found,
-    };
-  });
+  return {
+    type: actions.FIND_SET_KEYWORD,
+    keyword,
+    found,
+  };
 };
 
 const next = (currentKeyword, reset) => {

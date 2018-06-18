@@ -1,19 +1,20 @@
 import actions from './index';
 
-const openNewTab = (url, openerTabId, background = false, adjacent = false) => {
-  if (adjacent) {
-    return browser.tabs.query({
-      active: true, currentWindow: true
-    }).then((tabs) => {
-      return browser.tabs.create({
-        url,
-        openerTabId,
-        active: !background,
-        index: tabs[0].index + 1
-      });
-    });
+const openNewTab = async(
+  url, openerTabId, background = false, adjacent = false
+) => {
+  if (!adjacent) {
+    return browser.tabs.create({ url, active: !background });
   }
-  return browser.tabs.create({ url, active: !background });
+  let tabs = await browser.tabs.query({
+    active: true, currentWindow: true
+  });
+  return browser.tabs.create({
+    url,
+    openerTabId,
+    active: !background,
+    index: tabs[0].index + 1
+  });
 };
 
 const openToTab = (url, tab) => {

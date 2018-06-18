@@ -6,116 +6,78 @@ import { CLIENT_URL } from '../web-server/url';
 describe("tab test", () => {
   let targetWindow;
 
-  beforeEach(() => {
-    return windows.create(CLIENT_URL).then((win) => {
-      targetWindow = win;
-    });
+  beforeEach(async () => {
+    targetWindow = await windows.create(CLIENT_URL);
   });
 
-  afterEach(() => {
-    return windows.remove(targetWindow.id);
+  afterEach(async () => {
+    await windows.remove(targetWindow.id);
+  });return
+
+  it('follows link by `f`', async() => {
+    let tab = await tabs.create(targetWindow.id, CLIENT_URL + '/follow');
+    await keys.press(tab.id, 'f');
+    await new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    await keys.press(tab.id, 'a');
+    await new Promise(resolve => { setTimeout(() => resolve(), 10) });
+
+    tab =  tabs.get(tab.id);
+    expect(tab.url).to.be.equal(CLIENT_URL + '/follow#a');
   });
 
-  it('follows link by `f`', () => {
-    let targetTab;
-    return tabs.create(targetWindow.id, CLIENT_URL + '/follow').then((tab) => {
-      targetTab = tab;
-      return keys.press(targetTab.id, 'f');
-    }).then(() => {
-      return new Promise(resolve => { setTimeout(() => resolve(), 10) });
-    }).then(() => {
-      return keys.press(targetTab.id, 'a');
-    }).then(() => {
-      return new Promise(resolve => { setTimeout(() => resolve(), 10) });
-    }).then(() => {
-      return tabs.get(targetTab.id);
-    }).then((tab) => {
-      expect(tab.url).to.be.equal(CLIENT_URL + '/follow#a');
-    });
+  it('follows link into new tab by `F`', async () => {
+    let tab = await tabs.create(targetWindow.id, CLIENT_URL + '/follow');
+    await keys.press(tab.id, 'F', { shiftKey: true });
+    await new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    await keys.press(tab.id, 'a');
+    await new Promise(resolve => { setTimeout(() => resolve(), 500) });
+
+    let win = await windows.get(targetWindow.id);
+    let urls = win.tabs.map(t => t.url);
+    expect(urls).to.have.lengthOf(3);
+    expect(urls).to.include(CLIENT_URL + '/');
+    expect(urls).to.include(CLIENT_URL + '/follow');
+    expect(urls).to.include(CLIENT_URL + '/follow#a');
   });
 
-  it('follows link into new tab by `F`', () => {
-    let targetTab;
-    return tabs.create(targetWindow.id, CLIENT_URL + '/follow').then((tab) => {
-      targetTab = tab;
-      return keys.press(targetTab.id, 'F', { shiftKey: true });
-    }).then(() => {
-      return new Promise(resolve => { setTimeout(() => resolve(), 10) });
-    }).then(() => {
-      return keys.press(targetTab.id, 'a');
-    }).then(() => {
-      return new Promise(resolve => { setTimeout(() => resolve(), 500) });
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      let urls = win.tabs.map(t => t.url);
-      expect(urls).to.have.lengthOf(3);
-      expect(urls).to.include(CLIENT_URL + '/');
-      expect(urls).to.include(CLIENT_URL + '/follow');
-      expect(urls).to.include(CLIENT_URL + '/follow#a');
-    });
+  it('follows link with target=_blank into new tab by `f`', async () => {
+    let tab = await tabs.create(targetWindow.id, CLIENT_URL + '/follow');
+    await keys.press(tab.id, 'f');
+    await new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    await keys.press(tab.id, 'b');
+    await new Promise(resolve => { setTimeout(() => resolve(), 500) });
+
+    let win = await windows.get(targetWindow.id);
+    let urls = win.tabs.map(t => t.url);
+    expect(urls).to.have.lengthOf(3);
+    expect(urls).to.include(CLIENT_URL + '/');
+    expect(urls).to.include(CLIENT_URL + '/follow');
+    expect(urls).to.include(CLIENT_URL + '/follow#external');
   });
 
-  it('follows link with target=_blank into new tab by `f`', () => {
-    let targetTab;
-    return tabs.create(targetWindow.id, CLIENT_URL + '/follow').then((tab) => {
-      targetTab = tab;
-      return keys.press(targetTab.id, 'f');
-    }).then(() => {
-      return new Promise(resolve => { setTimeout(() => resolve(), 10) });
-    }).then(() => {
-      return keys.press(targetTab.id, 'b');
-    }).then(() => {
-      return new Promise(resolve => { setTimeout(() => resolve(), 500) });
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      let urls = win.tabs.map(t => t.url);
-      expect(urls).to.have.lengthOf(3);
-      expect(urls).to.include(CLIENT_URL + '/');
-      expect(urls).to.include(CLIENT_URL + '/follow');
-      expect(urls).to.include(CLIENT_URL + '/follow#external');
-    });
+  it('follows link with target=_blank into new tab by `F`', async () => {
+    let tab = await tabs.create(targetWindow.id, CLIENT_URL + '/follow');
+    await keys.press(tab.id, 'F', { shiftKey: true });
+    await new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    await keys.press(tab.id, 'b');
+    await new Promise(resolve => { setTimeout(() => resolve(), 500) });
+
+    let win = await windows.get(targetWindow.id);
+    let urls = win.tabs.map(t => t.url);
+    expect(urls).to.have.lengthOf(3);
+    expect(urls).to.include(CLIENT_URL + '/');
+    expect(urls).to.include(CLIENT_URL + '/follow');
+    expect(urls).to.include(CLIENT_URL + '/follow#external');
   });
 
-  it('follows link with target=_blank into new tab by `F`', () => {
-    let targetTab;
-    return tabs.create(targetWindow.id, CLIENT_URL + '/follow').then((tab) => {
-      targetTab = tab;
-      return keys.press(targetTab.id, 'F', { shiftKey: true });
-    }).then(() => {
-    }).then(() => {
-      return new Promise(resolve => { setTimeout(() => resolve(), 10) });
-    }).then(() => {
-      return keys.press(targetTab.id, 'b');
-    }).then(() => {
-      return new Promise(resolve => { setTimeout(() => resolve(), 500) });
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      let urls = win.tabs.map(t => t.url);
-      expect(urls).to.have.lengthOf(3);
-      expect(urls).to.include(CLIENT_URL + '/');
-      expect(urls).to.include(CLIENT_URL + '/follow');
-      expect(urls).to.include(CLIENT_URL + '/follow#external');
-    });
-  });
+  it('follows area by `F`', async () => {
+    let tab = await tabs.create(targetWindow.id, CLIENT_URL + '/follow');
+    await keys.press(tab.id, 'f');
+    await new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    await keys.press(tab.id, 'c');
+    await new Promise(resolve => { setTimeout(() => resolve(), 10) });
 
-  it('follows area by `F`', () => {
-    let targetTab;
-    return tabs.create(targetWindow.id, CLIENT_URL + '/follow').then((tab) => {
-      targetTab = tab;
-      return keys.press(targetTab.id, 'f');
-    }).then(() => {
-      return new Promise(resolve => { setTimeout(() => resolve(), 10) });
-    }).then(() => {
-      return keys.press(targetTab.id, 'c');
-    }).then(() => {
-      return new Promise(resolve => { setTimeout(() => resolve(), 10) });
-    }).then(() => {
-      return tabs.get(targetTab.id);
-    }).then((tab) => {
-      expect(tab.url).to.be.equal(CLIENT_URL + '/follow#area');
-    });
+    tab = await tabs.get(tab.id);
+    expect(tab.url).to.be.equal(CLIENT_URL + '/follow#area');
   });
 });

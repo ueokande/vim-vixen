@@ -107,16 +107,15 @@ export default class ConsoleComponent {
     }
   }
 
-  onInput(e) {
+  async onInput(e) {
     this.store.dispatch(consoleActions.setConsoleText(e.target.value));
 
     let source = e.target.value;
-    return browser.runtime.sendMessage({
+    let completions = await browser.runtime.sendMessage({
       type: messages.CONSOLE_QUERY_COMPLETIONS,
       text: source,
-    }).then((completions) => {
-      this.store.dispatch(consoleActions.setCompletions(source, completions));
     });
+    this.store.dispatch(consoleActions.setCompletions(source, completions));
   }
 
   onInputShown(state) {
