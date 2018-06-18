@@ -139,7 +139,7 @@ describe("tab test", () => {
     expect(win.tabs).to.have.lengthOf(1);
 
     await keys.press(win.tabs[0].id, 'u');
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     win = await windows.get(targetWindow.id);
     expect(win.tabs).to.have.lengthOf(2);
@@ -164,21 +164,15 @@ describe("tab test", () => {
     expect(win.tabs).to.have.lengthOf(1);
   });
 
-  it('opens view-source by gf', () => {
-    let target;
-    return Promise.resolve().then(() => {
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      target = win.tabs[0];
-      return keys.press(target.id, 'g');
-    }).then(() => {
-      return keys.press(target.id, 'f');
-    }).then(() => {
-      return new Promise((resolve) => setTimeout(resolve, 500));
-    }).then(() => {
-      return windows.get(targetWindow.id);
-    }).then((win) => {
-      expect(win.tabs.map((t) => t.url)).to.include.members([CLIENT_URL + '/', 'view-source:' + CLIENT_URL + '/']);
-    });
+  it('opens view-source by gf', async () => {
+    let win = await windows.get(targetWindow.id);
+    let tab = win.tabs[0];
+    await keys.press(tab.id, 'g');
+    await keys.press(tab.id, 'f');
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    win = await windows.get(targetWindow.id);
+    let urls = win.tabs.map((t) => t.url)
+    expect(urls).to.include.members([CLIENT_URL + '/', 'view-source:' + CLIENT_URL + '/']);
   });
 });
