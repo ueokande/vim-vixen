@@ -11,6 +11,7 @@ export default {
   COMMAND_SHOW: 'command.show',
   COMMAND_SHOW_OPEN: 'command.show.open',
   COMMAND_SHOW_TABOPEN: 'command.show.tabopen',
+  COMMAND_SHOW_TABONLY: 'command.show.tabonly',
   COMMAND_SHOW_WINOPEN: 'command.show.winopen',
   COMMAND_SHOW_BUFFER: 'command.show.buffer',
   COMMAND_SHOW_ADDBOOKMARK: 'command.show.addbookmark',

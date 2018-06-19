@@ -18,6 +18,14 @@ const tabopenCommand = (url) => {
   return browser.tabs.create({ url: url });
 };
 
+const tabonlyCommand = () => {
+  return browser.tabs.query({
+    active: false,
+    currentWindow: true
+  })
+    .then(butCurrent => browser.tabs.remove(butCurrent.map(tab => tab.id)));
+};
+
 const tabcloseCommand = async() => {
   let got = await browser.tabs.query({
     active: true, currentWindow: true
@@ -88,6 +96,8 @@ const exec = (tab, line, settings) => {
   case 't':
   case 'tabopen':
     return tabopenCommand(parsers.normalizeUrl(args, settings.search));
+  case 'tabonly':
+    return tabonlyCommand();
   case 'w':
   case 'winopen':
     return winopenCommand(parsers.normalizeUrl(args, settings.search));
