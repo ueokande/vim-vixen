@@ -22,7 +22,7 @@ const queryByKeyword = async(keyword, excludePinned = false) => {
 };
 
 const closeTabByKeywords = async(keyword) => {
-  let tabs = await queryByKeyword(keyword, false);
+  let tabs = await queryByKeyword(keyword, true);
   if (tabs.length === 0) {
     throw new Error('No matching buffer for ' + keyword);
   } else if (tabs.length > 1) {
@@ -32,7 +32,7 @@ const closeTabByKeywords = async(keyword) => {
 };
 
 const closeTabByKeywordsForce = async(keyword) => {
-  let tabs = await queryByKeyword(keyword, true);
+  let tabs = await queryByKeyword(keyword, false);
   if (tabs.length === 0) {
     throw new Error('No matching buffer for ' + keyword);
   } else if (tabs.length > 1) {

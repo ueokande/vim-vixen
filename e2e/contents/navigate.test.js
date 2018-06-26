@@ -20,7 +20,7 @@ describe("navigate test", () => {
     let tab = await tabs.create(targetWindow.id, CLIENT_URL + '/a/b/c');
     await keys.press(tab.id, 'g');
     await keys.press(tab.id, 'u');
-    await new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    await new Promise((resolve) => setTimeout(resolve, 10));
 
     tab = await tabs.get(tab.id);
     expect(tab.url).to.be.equal(CLIENT_URL + '/a/b/');
@@ -38,7 +38,7 @@ describe("navigate test", () => {
     let tab = await tabs.create(targetWindow.id, CLIENT_URL + '/a/b/c');
     await keys.press(tab.id, 'g');
     await keys.press(tab.id, 'U', { shiftKey: true });
-    await new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    await new Promise((resolve) => setTimeout(resolve, 10));
 
     tab = await tabs.get(tab.id);
     expect(tab.url).to.be.equal(CLIENT_URL + '/');
@@ -49,11 +49,11 @@ describe("navigate test", () => {
     await keys.press(tab.id, 'g');
     await keys.press(tab.id, 'u');
     await keys.press(tab.id, 'H', { shiftKey: true });
-    await new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    await new Promise((resolve) => setTimeout(resolve, 10));
 
     tab = await tabs.get(tab.id);
     expect(tab.url, 'go back in history').to.be.equal(CLIENT_URL + '/#navigate');
-    await new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    await new Promise((resolve) => setTimeout(resolve, 10));
     await keys.press(tab.id, 'L', { shiftKey: true });
 
     tab = await tabs.get(tab.id);
@@ -64,7 +64,7 @@ describe("navigate test", () => {
     let tab = await tabs.create(targetWindow.id, CLIENT_URL + '/a-pagenation?page=10');
     await keys.press(tab.id, '[');
     await keys.press(tab.id, '[');
-    await new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    await new Promise((resolve) => setTimeout(resolve, 10));
 
     tab = await tabs.get(tab.id);
     expect(tab.url).to.be.equal(CLIENT_URL + '/a-pagenation?page=9');
@@ -74,7 +74,7 @@ describe("navigate test", () => {
     let tab = await tabs.create(targetWindow.id, CLIENT_URL + '/a-pagenation?page=10');
     await keys.press(tab.id, ']');
     await keys.press(tab.id, ']');
-    await new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     tab = await tabs.get(tab.id);
     expect(tab.url).to.be.equal(CLIENT_URL + '/a-pagenation?page=11');
@@ -84,7 +84,7 @@ describe("navigate test", () => {
     let tab = await tabs.create(targetWindow.id, CLIENT_URL + '/link-pagenation?page=10');
     await keys.press(tab.id, '[');
     await keys.press(tab.id, '[');
-    await new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    await new Promise((resolve) => setTimeout(resolve, 10));
 
     tab = await tabs.get(tab.id);
     expect(tab.url).to.be.equal(CLIENT_URL + '/link-pagenation?page=9');
@@ -94,7 +94,7 @@ describe("navigate test", () => {
     let tab = await tabs.create(targetWindow.id, CLIENT_URL + '/link-pagenation?page=10');
     await keys.press(tab.id, ']');
     await keys.press(tab.id, ']');
-    await new Promise(resolve => { setTimeout(() => resolve(), 10) });
+    await new Promise((resolve) => setTimeout(resolve, 10));
 
     tab = await tabs.get(tab.id);
     expect(tab.url).to.be.equal(CLIENT_URL + '/link-pagenation?page=11');
