@@ -134,7 +134,7 @@ class SettingsComponent extends Component {
   }
 
   validateValue(e) {
-    let next = Object.assign({}, this.state);
+    let next = { ...this.state };
 
     next.errors.json = '';
     try {
@@ -146,18 +146,16 @@ class SettingsComponent extends Component {
   }
 
   bindForm(name, value) {
-    let next = Object.assign({}, this.state, {
-      settings: Object.assign({}, this.state.settings, {
-        form: Object.assign({}, this.state.settings.form)
-      })
-    });
+    let next = { ...this.state,
+      settings: { ...this.state.settings,
+        form: { ...this.state.settings.form }}};
     next.settings.form[name] = value;
     this.setState(next);
     this.context.store.dispatch(settingActions.save(next.settings));
   }
 
   bindValue(e) {
-    let next = Object.assign({}, this.state);
+    let next = { ...this.state };
     let error = false;
 
     next.errors.json = '';
@@ -190,7 +188,7 @@ class SettingsComponent extends Component {
 
     let form = settingsValues.formFromJson(
       this.state.settings.json, KeymapsForm.AllowdOps);
-    let next = Object.assign({}, this.state);
+    let next = { ...this.state };
     next.settings.form = form;
     next.settings.source = 'form';
     next.errors.json = '';
@@ -201,7 +199,7 @@ class SettingsComponent extends Component {
 
   migrateToJson() {
     let json = settingsValues.jsonFromForm(this.state.settings.form);
-    let next = Object.assign({}, this.state);
+    let next = { ...this.state };
     next.settings.json = json;
     next.settings.source = 'json';
     next.errors.json = '';

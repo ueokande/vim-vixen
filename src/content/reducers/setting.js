@@ -8,7 +8,7 @@ const defaultState = {
 export default function reducer(state = defaultState, action = {}) {
   switch (action.type) {
   case actions.SETTING_SET:
-    return Object.assign({}, action.value);
+    return { ...action.value };
   default:
     return state;
   }

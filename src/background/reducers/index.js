@@ -10,9 +10,8 @@ const defaultState = {
 };
 
 export default function reducer(state = defaultState, action = {}) {
-  return Object.assign({}, state, {
+  return { ...state,
     setting: settingReducer(state.setting, action),
     find: findReducer(state.find, action),
-    tab: tabReducer(state.tab, action),
-  });
+    tab: tabReducer(state.tab, action), };
 }
