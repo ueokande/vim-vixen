@@ -26,6 +26,7 @@
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",
     "babel-preset-preact": "^1.1.0",
+    "babel-preset-stage-2": "^6.24.1",
     "chai": "^4.1.2",
     "css-loader": "^0.28.11",
     "eslint": "^5.0.1",
