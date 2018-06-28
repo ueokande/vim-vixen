@@ -6,7 +6,7 @@ const loadRaw = async() => {
   if (!settings) {
     return DefaultSettings;
   }
-  return Object.assign({}, DefaultSettings, settings);
+  return { ...DefaultSettings, ...settings };
 };
 
 const loadValue = async() => {
@@ -20,9 +20,7 @@ const loadValue = async() => {
   if (!value.properties) {
     value.properties = {};
   }
-  return Object.assign({},
-    settingsValues.valueFromJson(DefaultSettings.json),
-    value);
+  return { ...settingsValues.valueFromJson(DefaultSettings.json), ...value };
 };
 
 const save = (settings) => {

@@ -44,7 +44,7 @@ class PropertiesForm extends Component {
     }
 
     let name = e.target.name;
-    let next = Object.assign({}, this.props.value);
+    let next = { ...this.props.value };
     if (e.target.type.toLowerCase() === 'checkbox') {
       next[name] = e.target.checked;
     } else if (e.target.type.toLowerCase() === 'number') {

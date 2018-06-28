@@ -12,10 +12,8 @@ export default function reducer(state = defaultState, action = {}) {
     };
   case actions.SETTING_SET_PROPERTY:
     return {
-      value: Object.assign({}, state.value, {
-        properties: Object.assign({}, state.value.properties,
-          { [action.name]: action.value })
-      })
+      value: { ...state.value,
+        properties: { ...state.value.properties, [action.name]: action.value }}
     };
   default:
     return state;

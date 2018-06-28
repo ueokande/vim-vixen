@@ -53,10 +53,10 @@ class SearchForm extends Component {
     let value = this.props.value;
     let name = e.target.name;
     let index = e.target.getAttribute('data-index');
-    let next = Object.assign({}, {
+    let next = {
       default: value.default,
       engines: value.engines ? value.engines.slice() : [],
-    });
+    };
 
     if (name === 'name') {
       next.engines[index][0] = e.target.value;

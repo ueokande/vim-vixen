@@ -100,7 +100,7 @@ class KeymapsForm extends Component {
       return;
     }
 
-    let next = Object.assign({}, this.props.value);
+    let next = { ...this.props.value };
     next[e.target.name] = e.target.value;
 
     this.props.onChange(next);

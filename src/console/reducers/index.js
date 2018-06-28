@@ -51,68 +51,61 @@ const nextConsoleText = (completions, group, item, defaults) => {
   return completions[group].items[item].content;
 };
 
+// eslint-disable-next-line max-lines-per-function
 export default function reducer(state = defaultState, action = {}) {
   switch (action.type) {
   case actions.CONSOLE_HIDE:
-    return Object.assign({}, state, {
-      mode: '',
-    });
+    return { ...state,
+      mode: '', };
   case actions.CONSOLE_SHOW_COMMAND:
-    return Object.assign({}, state, {
+    return { ...state,
       mode: 'command',
       consoleText: action.text,
-      completions: []
-    });
+      completions: []};
   case actions.CONSOLE_SHOW_FIND:
-    return Object.assign({}, state, {
+    return { ...state,
       mode: 'find',
       consoleText: '',
-      completions: []
-    });
+      completions: []};
   case actions.CONSOLE_SHOW_ERROR:
-    return Object.assign({}, state, {
+    return { ...state,
       mode: 'error',
-      messageText: action.text,
-    });
+      messageText: action.text, };
   case actions.CONSOLE_SHOW_INFO:
-    return Object.assign({}, state, {
+    return { ...state,
       mode: 'info',
-      messageText: action.text,
-    });
+      messageText: action.text, };
   case actions.CONSOLE_HIDE_COMMAND:
-    return Object.assign({}, state, {
+    return {
+      ...state,
       mode: state.mode === 'command' || state.mode === 'find' ? '' : state.mode,
-    });
+    };
   case actions.CONSOLE_SET_CONSOLE_TEXT:
-    return Object.assign({}, state, {
-      consoleText: action.consoleText,
-    });
+    return { ...state,
+      consoleText: action.consoleText, };
   case actions.CONSOLE_SET_COMPLETIONS:
-    return Object.assign({}, state, {
+    return { ...state,
       completions: action.completions,
       completionSource: action.completionSource,
       groupSelection: -1,
-      itemSelection: -1,
-    });
+      itemSelection: -1, };
   case actions.CONSOLE_COMPLETION_NEXT: {
     let next = nextSelection(state);
-    return Object.assign({}, state, {
+    return { ...state,
       groupSelection: next[0],
       itemSelection: next[1],
       consoleText: nextConsoleText(
         state.completions, next[0], next[1],
-        state.completionSource),
-    });
+        state.completionSource), };
   }
   case actions.CONSOLE_COMPLETION_PREV: {
     let next = prevSelection(state);
-    return Object.assign({}, state, {
+    return { ...state,
       groupSelection: next[0],
       itemSelection: next[1],
       consoleText: nextConsoleText(
         state.completions, next[0], next[1],
-        state.completionSource),
-    });
+        state.completionSource), };
   }
   default:
     return state;

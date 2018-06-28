@@ -10,7 +10,7 @@ const reservedKeymaps = {
 const set = (value) => {
   let entries = [];
   if (value.keymaps) {
-    let keymaps = Object.assign({}, value.keymaps, reservedKeymaps);
+    let keymaps = { ...value.keymaps, ...reservedKeymaps };
     entries = Object.entries(keymaps).map((entry) => {
       return [
         keyUtils.fromMapKeys(entry[0]),
@@ -21,9 +21,8 @@ const set = (value) => {
 
   return {
     type: actions.SETTING_SET,
-    value: Object.assign({}, value, {
-      keymaps: entries,
-    })
+    value: { ...value,
+      keymaps: entries, }
   };
 };
 

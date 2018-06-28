@@ -6,12 +6,12 @@ const operationFromFormName = (name) => {
   if (argStr) {
     args = JSON.parse(argStr);
   }
-  return Object.assign({ type }, args);
+  return { type, ...args };
 };
 
 const operationToFormName = (op) => {
   let type = op.type;
-  let args = Object.assign({}, op);
+  let args = { ...op };
   delete args.type;
 
   if (Object.keys(args).length === 0) {
@@ -83,7 +83,7 @@ const formFromValue = (value, allowedOps) => {
     }
   }
 
-  let formProperties = Object.assign({}, properties.defaults, value.properties);
+  let formProperties = { ...properties.defaults, ...value.properties };
 
   return {
     keymaps,

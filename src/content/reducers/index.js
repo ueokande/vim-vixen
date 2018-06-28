@@ -14,11 +14,12 @@ const defaultState = {
 };
 
 export default function reducer(state = defaultState, action = {}) {
-  return Object.assign({}, state, {
+  return {
+    ...state,
     addon: addonReducer(state.addon, action),
     find: findReducer(state.find, action),
     setting: settingReducer(state.setting, action),
     input: inputReducer(state.input, action),
     followController: followControllerReducer(state.followController, action),
-  });
+  };
 }

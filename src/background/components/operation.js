@@ -28,7 +28,7 @@ export default class BackgroundComponent {
     }
   }
 
-  // eslint-disable-next-line complexity
+  // eslint-disable-next-line complexity, max-lines-per-function
   exec(operation, tab) {
     let tabState = this.store.getState().tab;
 
