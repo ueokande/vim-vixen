@@ -131,9 +131,13 @@ To adjust the search engine default and add/remove search engines, see the [sear
 
 Open a URL or search keywords by search engine in new tab.
 
-#### `:quit` command
+#### `:quit` or `:q` command
 
 Close the current tab.
+
+#### `:quitall` or `:qa` command
+
+Close all tabs.
 
 #### `:bdelete` command
 
