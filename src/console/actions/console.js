@@ -1,3 +1,4 @@
+import messages from 'shared/messages';
 import actions from 'console/actions';
 
 const hide = () => {
@@ -34,9 +35,28 @@ const showInfo = (text) => {
 };
 
 const hideCommand = () => {
+  window.top.postMessage(JSON.stringify({
+    type: messages.CONSOLE_UNFOCUS,
+  }), '*');
   return {
     type: actions.CONSOLE_HIDE_COMMAND,
   };
+};
+
+const enterCommand = async(text) => {
+  await browser.runtime.sendMessage({
+    type: messages.CONSOLE_ENTER_COMMAND,
+    text,
+  });
+  return hideCommand(text);
+};
+
+const enterFind = (text) => {
+  window.top.postMessage(JSON.stringify({
+    type: messages.CONSOLE_ENTER_FIND,
+    text,
+  }), '*');
+  return hideCommand();
 };
 
 const setConsoleText = (consoleText) => {
@@ -46,11 +66,15 @@ const setConsoleText = (consoleText) => {
   };
 };
 
-const setCompletions = (completionSource, completions) => {
+const getCompletions = async(text) => {
+  let completions = await browser.runtime.sendMessage({
+    type: messages.CONSOLE_QUERY_COMPLETIONS,
+    text,
+  });
   return {
     type: actions.CONSOLE_SET_COMPLETIONS,
-    completionSource,
     completions,
+    completionSource: text,
   };
 };
 
@@ -68,5 +92,5 @@ const completionPrev = () => {
 
 export {
   hide, showCommand, showFind, showError, showInfo, hideCommand, setConsoleText,
-  setCompletions, completionNext, completionPrev
+  enterCommand, enterFind, getCompletions, completionNext, completionPrev
 };
