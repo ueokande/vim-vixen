@@ -123,7 +123,7 @@ const exec = (tab, line, settings) => {
     return tabcloseCommand();
   case 'qa':
   case 'quitall':
-    return tabcloseAllCommand()
+    return tabcloseAllCommand();
   case '':
     return Promise.resolve();
   }
