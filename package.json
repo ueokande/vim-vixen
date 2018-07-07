@@ -45,6 +45,7 @@
     "node-sass": "^4.9.0",
     "preact": "^8.2.9",
     "redux": "^4.0.0",
+    "redux-promise": "^0.6.0",
     "sass-loader": "^7.0.1",
     "sinon-chrome": "^2.3.2",
     "style-loader": "^0.21.0",
