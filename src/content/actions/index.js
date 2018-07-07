@@ -1,8 +1,6 @@
 export default {
   // Enable/disable
-  ADDON_ENABLE: 'addon.enable',
-  ADDON_DISABLE: 'addon.disable',
-  ADDON_TOGGLE_ENABLED: 'addon.toggle.enabled',
+  ADDON_SET_ENABLED: 'addon.set.enabled',
 
   // Settings
   SETTING_SET: 'setting.set',

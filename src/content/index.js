@@ -10,7 +10,6 @@ const store = createStore(
   applyMiddleware(promise),
 );
 
-
 if (window.self === window.top) {
   new TopContentComponent(window, store); // eslint-disable-line no-new
 } else {

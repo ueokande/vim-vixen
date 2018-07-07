@@ -9,7 +9,7 @@ import * as addonActions from './addon';
 import * as properties from 'shared/settings/properties';
 
 // eslint-disable-next-line complexity, max-lines-per-function
-const exec = (operation, repeat, settings) => {
+const exec = (operation, repeat, settings, addonEnabled) => {
   let smoothscroll = settings.properties.smoothscroll ||
     properties.defaults.smoothscroll;
   switch (operation.type) {
@@ -18,7 +18,7 @@ const exec = (operation, repeat, settings) => {
   case operations.ADDON_DISABLE:
     return addonActions.disable();
   case operations.ADDON_TOGGLE_ENABLED:
-    return addonActions.toggleEnabled();
+    return addonActions.setEnabled(!addonEnabled);
   case operations.FIND_NEXT:
     window.top.postMessage(JSON.stringify({
       type: messages.FIND_NEXT,

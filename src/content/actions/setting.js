@@ -34,4 +34,4 @@ const load = async() => {
   return set(settings);
 };
 
-export { load };
+export { set, load };
