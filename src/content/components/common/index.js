@@ -5,6 +5,7 @@ import * as settingActions from 'content/actions/setting';
 import messages from 'shared/messages';
 import * as addonActions from '../../actions/addon';
 import * as re from 'shared/utils/re';
+import * as blacklists from 'shared/blacklists';
 
 export default class Common {
   constructor(win, store) {
@@ -46,27 +47,15 @@ export default class Common {
       });
     }
 
-    let blacklist = JSON.stringify(this.store.getState().setting.blacklist);
-    if (blacklist !== this.prevBlacklist) {
-      this.prevBlacklist = blacklist;
-
-      this.disableIfBlack(this.store.getState().setting.blacklist);
-    }
-  }
-
-  disableIfBlack(blacklist) {
-    let loc = this.win.location;
-    let partial = loc.host + loc.pathname;
-    let matched = blacklist
-      .map((item) => {
-        let pattern = item.includes('/') ? item : item + '/*';
-        return re.fromWildcard(pattern);
-      })
-      .some(regex => regex.test(partial));
-    if (matched) {
-      this.store.dispatch(addonActions.disable());
-    } else {
-      this.store.dispatch(addonActions.enable());
+    let blacklist = this.store.getState().setting.blacklist;
+    let str = JSON.stringify(blacklist)
+    if (blacklist !== str) {
+      this.prevBlacklist = str;
+      if (blacklists.includes(blacklist, this.win.location)) {
+        this.store.dispatch(addonActions.disable());
+      } else {
+        this.store.dispatch(addonActions.enable());
+      }
     }
   }
 
