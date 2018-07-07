@@ -1,6 +1,7 @@
 import actions from 'content/actions';
 import * as keyUtils from 'shared/utils/keys';
 import operations from 'shared/operations';
+import messages from 'shared/messages';
 
 const reservedKeymaps = {
   '<Esc>': { type: operations.CANCEL },
@@ -26,4 +27,11 @@ const set = (value) => {
   };
 };
 
-export { set };
+const load = async() => {
+  let settings = await browser.runtime.sendMessage({
+    type: messages.SETTINGS_QUERY,
+  });
+  return set(settings);
+};
+
+export { load };

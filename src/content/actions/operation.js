@@ -20,58 +20,78 @@ const exec = (operation, repeat, settings) => {
   case operations.ADDON_TOGGLE_ENABLED:
     return addonActions.toggleEnabled();
   case operations.FIND_NEXT:
-    return window.top.postMessage(JSON.stringify({
+    window.top.postMessage(JSON.stringify({
       type: messages.FIND_NEXT,
     }), '*');
+    break;
   case operations.FIND_PREV:
-    return window.top.postMessage(JSON.stringify({
+    window.top.postMessage(JSON.stringify({
       type: messages.FIND_PREV,
     }), '*');
+    break;
   case operations.SCROLL_VERTICALLY:
-    return scrolls.scrollVertically(operation.count, smoothscroll, repeat);
+    scrolls.scrollVertically(operation.count, smoothscroll, repeat);
+    break;
   case operations.SCROLL_HORIZONALLY:
-    return scrolls.scrollHorizonally(operation.count, smoothscroll, repeat);
+    scrolls.scrollHorizonally(operation.count, smoothscroll, repeat);
+    break;
   case operations.SCROLL_PAGES:
-    return scrolls.scrollPages(operation.count, smoothscroll, repeat);
+    scrolls.scrollPages(operation.count, smoothscroll, repeat);
+    break;
   case operations.SCROLL_TOP:
-    return scrolls.scrollTop(smoothscroll, repeat);
+    scrolls.scrollTop(smoothscroll, repeat);
+    break;
   case operations.SCROLL_BOTTOM:
-    return scrolls.scrollBottom(smoothscroll, repeat);
+    scrolls.scrollBottom(smoothscroll, repeat);
+    break;
   case operations.SCROLL_HOME:
-    return scrolls.scrollHome(smoothscroll, repeat);
+    scrolls.scrollHome(smoothscroll, repeat);
+    break;
   case operations.SCROLL_END:
-    return scrolls.scrollEnd(smoothscroll, repeat);
+    scrolls.scrollEnd(smoothscroll, repeat);
+    break;
   case operations.FOLLOW_START:
-    return window.top.postMessage(JSON.stringify({
+    window.top.postMessage(JSON.stringify({
       type: messages.FOLLOW_START,
       newTab: operation.newTab,
       background: operation.background,
     }), '*');
+    break;
   case operations.NAVIGATE_HISTORY_PREV:
-    return navigates.historyPrev(window);
+    navigates.historyPrev(window);
+    break;
   case operations.NAVIGATE_HISTORY_NEXT:
-    return navigates.historyNext(window);
+    navigates.historyNext(window);
+    break;
   case operations.NAVIGATE_LINK_PREV:
-    return navigates.linkPrev(window);
+    navigates.linkPrev(window);
+    break;
   case operations.NAVIGATE_LINK_NEXT:
-    return navigates.linkNext(window);
+    navigates.linkNext(window);
+    break;
   case operations.NAVIGATE_PARENT:
-    return navigates.parent(window);
+    navigates.parent(window);
+    break;
   case operations.NAVIGATE_ROOT:
-    return navigates.root(window);
+    navigates.root(window);
+    break;
   case operations.FOCUS_INPUT:
-    return focuses.focusInput();
+    focuses.focusInput();
+    break;
   case operations.URLS_YANK:
     urls.yank(window);
-    return consoleFrames.postInfo(window.document, 'Current url yanked');
+    consoleFrames.postInfo(window.document, 'Current url yanked');
+    break;
   case operations.URLS_PASTE:
-    return urls.paste(window, operation.newTab ? operation.newTab : false);
+    urls.paste(window, operation.newTab ? operation.newTab : false);
+    break;
   default:
     browser.runtime.sendMessage({
       type: messages.BACKGROUND_OPERATION,
       operation,
     });
   }
+  return { type: '' };
 };
 
 export { exec };
