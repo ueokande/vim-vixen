@@ -1,15 +1,19 @@
+import messages from 'shared/messages';
 import actions from 'content/actions';
 
-const enable = () => {
-  return { type: actions.ADDON_ENABLE };
+const enable = () => setEnabled(true);
+
+const disable = () => setEnabled(false);
+
+const setEnabled = async(enabled) => {
+  await browser.runtime.sendMessage({
+    type: messages.ADDON_ENABLED_RESPONSE,
+    enabled,
+  });
+  return {
+    type: actions.ADDON_SET_ENABLED,
+    enabled,
+  };
 };
 
-const disable = () => {
-  return { type: actions.ADDON_DISABLE };
-};
-
-const toggleEnabled = () => {
-  return { type: actions.ADDON_TOGGLE_ENABLED };
-};
-
-export { enable, disable, toggleEnabled };
+export { enable, disable, setEnabled };

@@ -1,4 +1,3 @@
-import messages from 'shared/messages';
 import * as consoleActions from 'console/actions/console';
 
 const inputShownMode = (state) => {
@@ -26,15 +25,22 @@ export default class ConsoleComponent {
 
   onBlur() {
     let state = this.store.getState();
-    if (state.mode === 'command') {
-      this.hideCommand();
+    if (state.mode === 'command' || state.mode === 'find') {
+      return this.store.dispatch(consoleActions.hideCommand());
     }
   }
 
   doEnter(e) {
     e.stopPropagation();
     e.preventDefault();
-    return this.onEntered(e.target.value);
+
+    let state = this.store.getState();
+    let value = e.target.value;
+    if (state.mode === 'command') {
+      return this.store.dispatch(consoleActions.enterCommand(value));
+    } else if (state.mode === 'find') {
+      return this.store.dispatch(consoleActions.enterFind(value));
+    }
   }
 
   selectNext(e) {
@@ -51,11 +57,11 @@ export default class ConsoleComponent {
 
   onKeyDown(e) {
     if (e.keyCode === KeyboardEvent.DOM_VK_ESCAPE && e.ctrlKey) {
-      return this.hideCommand();
+      this.store.dispatch(consoleActions.hideCommand());
     }
     switch (e.keyCode) {
     case KeyboardEvent.DOM_VK_ESCAPE:
-      return this.hideCommand();
+      return this.store.dispatch(consoleActions.hideCommand());
     case KeyboardEvent.DOM_VK_RETURN:
       return this.doEnter(e);
     case KeyboardEvent.DOM_VK_TAB:
@@ -69,7 +75,7 @@ export default class ConsoleComponent {
       break;
     case KeyboardEvent.DOM_VK_OPEN_BRACKET:
       if (e.ctrlKey) {
-        return this.hideCommand();
+        return this.store.dispatch(consoleActions.hideCommand());
       }
       break;
     case KeyboardEvent.DOM_VK_M:
@@ -90,32 +96,10 @@ export default class ConsoleComponent {
     }
   }
 
-  onEntered(value) {
-    let state = this.store.getState();
-    if (state.mode === 'command') {
-      browser.runtime.sendMessage({
-        type: messages.CONSOLE_ENTER_COMMAND,
-        text: value,
-      });
-      this.hideCommand();
-    } else if (state.mode === 'find') {
-      this.hideCommand();
-      window.top.postMessage(JSON.stringify({
-        type: messages.CONSOLE_ENTER_FIND,
-        text: value,
-      }), '*');
-    }
-  }
-
-  async onInput(e) {
-    this.store.dispatch(consoleActions.setConsoleText(e.target.value));
-
-    let source = e.target.value;
-    let completions = await browser.runtime.sendMessage({
-      type: messages.CONSOLE_QUERY_COMPLETIONS,
-      text: source,
-    });
-    this.store.dispatch(consoleActions.setCompletions(source, completions));
+  onInput(e) {
+    let text = e.target.value;
+    this.store.dispatch(consoleActions.setConsoleText(text));
+    this.store.dispatch(consoleActions.getCompletions(text));
   }
 
   onInputShown(state) {
@@ -126,15 +110,10 @@ export default class ConsoleComponent {
     window.focus();
 
     if (state.mode === 'command') {
-      this.onInput({ target: input });
+      let text = state.consoleText;
+      input.value = text;
+      this.store.dispatch(consoleActions.getCompletions(text));
     }
-  }
-
-  hideCommand() {
-    this.store.dispatch(consoleActions.hideCommand());
-    window.top.postMessage(JSON.stringify({
-      type: messages.CONSOLE_UNFOCUS,
-    }), '*');
   }
 
   update() {

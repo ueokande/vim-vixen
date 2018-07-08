@@ -6,15 +6,9 @@ const defaultState = {
 
 export default function reducer(state = defaultState, action = {}) {
   switch (action.type) {
-  case actions.ADDON_ENABLE:
+  case actions.ADDON_SET_ENABLED:
     return { ...state,
-      enabled: true, };
-  case actions.ADDON_DISABLE:
-    return { ...state,
-      enabled: false, };
-  case actions.ADDON_TOGGLE_ENABLED:
-    return { ...state,
-      enabled: !state.enabled, };
+      enabled: action.enabled, };
   default:
     return state;
   }

@@ -3,10 +3,14 @@ import messages from 'shared/messages';
 import CompletionComponent from 'console/components/completion';
 import ConsoleComponent from 'console/components/console';
 import reducers from 'console/reducers';
-import { createStore } from 'shared/store';
+import { createStore, applyMiddleware } from 'redux';
+import promise from 'redux-promise';
 import * as consoleActions from 'console/actions/console';
 
-const store = createStore(reducers);
+const store = createStore(
+  reducers,
+  applyMiddleware(promise),
+);
 
 window.addEventListener('load', () => {
   let wrapper = document.querySelector('#vimvixen-console-completion');
