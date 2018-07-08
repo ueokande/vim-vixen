@@ -1,5 +1,5 @@
-import messages from 'shared/messages';
 import actions from '../actions';
+import * as consoleActions from './console';
 import * as tabs from '../shared/tabs';
 import * as bookmarks from '../shared/bookmarks';
 import * as parsers from 'shared/commands/parsers';
@@ -39,7 +39,7 @@ const winopenCommand = (url) => {
 
 const bufferCommand = async(keywords) => {
   if (keywords.length === 0) {
-    return Promise.resolve([]);
+    return;
   }
   let keywordsStr = keywords.join(' ');
   let got = await browser.tabs.query({
@@ -57,24 +57,18 @@ const bufferCommand = async(keywords) => {
 
 const addbookmarkCommand = async(tab, args) => {
   if (!args[0]) {
-    return;
+    return { type: '' };
   }
   let item = await bookmarks.create(args.join(' '), tab.url);
   if (!item) {
-    return browser.tabs.sendMessage(tab.id, {
-      type: messages.CONSOLE_SHOW_ERROR,
-      text: 'Could not create a bookmark',
-    });
+    return consoleActions.error(tab, 'Could not create a bookmark');
   }
-  return browser.tabs.sendMessage(tab.id, {
-    type: messages.CONSOLE_SHOW_INFO,
-    text: 'Saved current page: ' + item.url,
-  });
+  return consoleActions.info(tab, 'Saved current page: ' + item.url);
 };
 
 const setCommand = (args) => {
   if (!args[0]) {
-    return Promise.resolve();
+    return { type: '' };
   }
 
   let [name, value] = parsers.parseSetOption(args[0], properties.types);
@@ -85,49 +79,69 @@ const setCommand = (args) => {
   };
 };
 
-// eslint-disable-next-line complexity
-const exec = (tab, line, settings) => {
+// eslint-disable-next-line complexity, max-lines-per-function
+const doExec = async(tab, line, settings) => {
   let [name, args] = parsers.parseCommandLine(line);
 
   switch (name) {
   case 'o':
   case 'open':
-    return openCommand(parsers.normalizeUrl(args, settings.search));
+    await openCommand(parsers.normalizeUrl(args, settings.search));
+    break;
   case 't':
   case 'tabopen':
-    return tabopenCommand(parsers.normalizeUrl(args, settings.search));
+    await tabopenCommand(parsers.normalizeUrl(args, settings.search));
+    break;
   case 'w':
   case 'winopen':
-    return winopenCommand(parsers.normalizeUrl(args, settings.search));
+    await winopenCommand(parsers.normalizeUrl(args, settings.search));
+    break;
   case 'b':
   case 'buffer':
-    return bufferCommand(args);
+    await bufferCommand(args);
+    break;
   case 'bd':
   case 'bdel':
   case 'bdelete':
-    return tabs.closeTabByKeywords(args.join(' '));
+    await tabs.closeTabByKeywords(args.join(' '));
+    break;
   case 'bd!':
   case 'bdel!':
   case 'bdelete!':
-    return tabs.closeTabByKeywordsForce(args.join(' '));
+    await tabs.closeTabByKeywordsForce(args.join(' '));
+    break;
   case 'bdeletes':
-    return tabs.closeTabsByKeywords(args.join(' '));
+    await tabs.closeTabsByKeywords(args.join(' '));
+    break;
   case 'bdeletes!':
-    return tabs.closeTabsByKeywordsForce(args.join(' '));
+    await tabs.closeTabsByKeywordsForce(args.join(' '));
+    break;
   case 'addbookmark':
     return addbookmarkCommand(tab, args);
   case 'set':
     return setCommand(args);
   case 'q':
   case 'quit':
-    return tabcloseCommand();
+    await tabcloseCommand();
+    break;
   case 'qa':
   case 'quitall':
-    return tabcloseAllCommand();
-  case '':
-    return Promise.resolve();
+    await tabcloseAllCommand();
+    break;
+  default:
+    return consoleActions.error(tab, name + ' command is not defined');
   }
-  throw new Error(name + ' command is not defined');
+  return { type: '' };
+};
+
+// eslint-disable-next-line complexity
+const exec = async(tab, line, settings) => {
+  try {
+    let action = await doExec(tab, line, settings);
+    return action;
+  } catch (e) {
+    return consoleActions.error(tab, e.toString());
+  }
 };
 
 export { exec };

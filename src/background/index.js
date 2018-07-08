@@ -1,22 +1,17 @@
 import * as settingActions from 'background/actions/setting';
-import messages from 'shared/messages';
 import BackgroundComponent from 'background/components/background';
 import OperationComponent from 'background/components/operation';
 import TabComponent from 'background/components/tab';
 import IndicatorComponent from 'background/components/indicator';
 import reducers from 'background/reducers';
-import { createStore } from 'shared/store';
+import { createStore, applyMiddleware } from 'redux';
+import promise from 'redux-promise';
 import * as versions from 'shared/versions';
 
-const store = createStore(reducers, (e, sender) => {
-  console.error('Vim-Vixen:', e);
-  if (sender) {
-    return browser.tabs.sendMessage(sender.tab.id, {
-      type: messages.CONSOLE_SHOW_ERROR,
-      text: e.message,
-    });
-  }
-});
+const store = createStore(
+  reducers,
+  applyMiddleware(promise),
+);
 
 const checkAndNotifyUpdated = async() => {
   let updated = await versions.checkUpdated();
