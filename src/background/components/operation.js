@@ -100,7 +100,7 @@ export default class BackgroundComponent {
     case operations.COMMAND_SHOW_WINOPEN:
       if (operation.alter) {
         // alter url
-        return consoleActions.showCommand(tab, 'win ' + tab.url);
+        return consoleActions.showCommand(tab, 'winopen ' + tab.url);
       }
       return consoleActions.showCommand(tab, 'winopen ');
     case operations.COMMAND_SHOW_BUFFER:
