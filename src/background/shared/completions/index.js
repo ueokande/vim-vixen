@@ -2,6 +2,7 @@ import commandDocs from 'shared/commands/docs';
 import * as tabs from './tabs';
 import * as histories from './histories';
 import * as bookmarks from './bookmarks';
+import * as properties from 'shared/settings/properties';
 
 const completeCommands = (typing) => {
   let keys = Object.keys(commandDocs);
@@ -86,6 +87,40 @@ const getBufferCompletions = async(command, keywords, excludePinned) => {
   ];
 };
 
+const getSetCompletions = (command, keywords) => {
+  let keys = Object.keys(properties.docs).filter(
+    name => name.startsWith(keywords)
+  );
+  let items = keys.map((key) => {
+    if (properties.types[key] === 'boolean') {
+      return [
+        {
+          caption: key,
+          content: command + ' ' + key,
+          url: 'Enable ' + properties.docs[key],
+        }, {
+          caption: 'no' + key,
+          content: command + ' no' + key,
+          url: 'Disable ' + properties.docs[key],
+        }
+      ];
+    }
+    return [
+      {
+        caption: key,
+        content: command + ' ' + key,
+        url: 'Set ' + properties.docs[key],
+      }
+    ];
+  }).flat();
+  return Promise.resolve([
+    {
+      name: 'Properties',
+      items,
+    }
+  ]);
+};
+
 const complete = (line, settings) => {
   let trimmed = line.trimStart();
   let words = trimmed.split(/ +/);
@@ -121,6 +156,8 @@ const complete = (line, settings) => {
   case 'bdelete':
   case 'bdeletes':
     return getBufferCompletions(name, keywords, true);
+  case 'set':
+    return getSetCompletions(name, keywords);
   }
   return Promise.resolve([]);
 };

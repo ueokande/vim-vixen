@@ -15,4 +15,10 @@ const defaults = {
   adjacenttab: true,
 };
 
-export { types, defaults };
+const docs = {
+  hintchars: 'Hint characters on follow mode',
+  smoothscroll: 'smooth scroll',
+  adjacenttab: 'open adjacent tabs',
+};
+
+export { types, defaults, docs };
