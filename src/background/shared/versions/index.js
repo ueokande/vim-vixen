@@ -1,6 +1,6 @@
 import * as storage from './storage';
 import * as releaseNotes from './release-notes';
-import manifest from '../../../manifest.json';
+import manifest from '../../../../manifest.json';
 
 const NOTIFICATION_ID = 'vimvixen-update';
 
