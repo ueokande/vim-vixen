@@ -1,6 +1,18 @@
+import commandDocs from 'shared/commands/docs';
 import * as tabs from './tabs';
 import * as histories from './histories';
 import * as bookmarks from './bookmarks';
+
+const completeCommands = (typing) => {
+  let keys = Object.keys(commandDocs);
+  return keys
+    .filter(name => name.startsWith(typing))
+    .map(name => ({
+      caption: name,
+      content: name,
+      url: commandDocs[name],
+    }));
+};
 
 const getSearchCompletions = (command, keywords, searchConfig) => {
   let engineNames = Object.keys(searchConfig.engines);
@@ -74,20 +86,21 @@ const getBufferCompletions = async(command, keywords, excludePinned) => {
   ];
 };
 
-const getCompletions = (line, settings) => {
-  let typedWords = line.trim().split(/ +/);
-  let typing = '';
-  if (!line.endsWith(' ')) {
-    typing = typedWords.pop();
+const complete = (line, settings) => {
+  let trimmed = line.trimStart();
+  let words = trimmed.split(/ +/);
+  let name = words[0];
+  if (words.length === 1) {
+    return Promise.resolve([
+      {
+        name: 'Console Command',
+        items: completeCommands(name),
+      }
+    ]);
   }
+  let keywords = trimmed.slice(name.length).trimStart();
 
-  if (typedWords.length === 0) {
-    return Promise.resolve([]);
-  }
-  let name = typedWords.shift();
-  let keywords = typedWords.concat(typing).join(' ');
-
-  switch (name) {
+  switch (words[0]) {
   case 'o':
   case 'open':
   case 't':
@@ -110,10 +123,6 @@ const getCompletions = (line, settings) => {
     return getBufferCompletions(name, keywords, true);
   }
   return Promise.resolve([]);
-};
-
-const complete = (line, settings) => {
-  return getCompletions(line, settings);
 };
 
 export { complete };
