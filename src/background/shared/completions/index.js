@@ -113,6 +113,9 @@ const getSetCompletions = (command, keywords) => {
       }
     ];
   }).flat();
+  if (items.length === 0) {
+    return Promise.resolve([]);
+  }
   return Promise.resolve([
     {
       name: 'Properties',
@@ -126,6 +129,10 @@ const complete = (line, settings) => {
   let words = trimmed.split(/ +/);
   let name = words[0];
   if (words.length === 1) {
+    let items = completeCommands(name);
+    if (items.length  === 0) {
+      return Promise.resolve([]);
+    }
     return Promise.resolve([
       {
         name: 'Console Command',
