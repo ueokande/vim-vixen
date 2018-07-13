@@ -1,6 +1,19 @@
+import commandDocs from 'shared/commands/docs';
 import * as tabs from './tabs';
 import * as histories from './histories';
 import * as bookmarks from './bookmarks';
+import * as properties from 'shared/settings/properties';
+
+const completeCommands = (typing) => {
+  let keys = Object.keys(commandDocs);
+  return keys
+    .filter(name => name.startsWith(typing))
+    .map(name => ({
+      caption: name,
+      content: name,
+      url: commandDocs[name],
+    }));
+};
 
 const getSearchCompletions = (command, keywords, searchConfig) => {
   let engineNames = Object.keys(searchConfig.engines);
@@ -74,20 +87,63 @@ const getBufferCompletions = async(command, keywords, excludePinned) => {
   ];
 };
 
-const getCompletions = (line, settings) => {
-  let typedWords = line.trim().split(/ +/);
-  let typing = '';
-  if (!line.endsWith(' ')) {
-    typing = typedWords.pop();
-  }
-
-  if (typedWords.length === 0) {
+const getSetCompletions = (command, keywords) => {
+  let keys = Object.keys(properties.docs).filter(
+    name => name.startsWith(keywords)
+  );
+  let items = keys.map((key) => {
+    if (properties.types[key] === 'boolean') {
+      return [
+        {
+          caption: key,
+          content: command + ' ' + key,
+          url: 'Enable ' + properties.docs[key],
+        }, {
+          caption: 'no' + key,
+          content: command + ' no' + key,
+          url: 'Disable ' + properties.docs[key],
+        }
+      ];
+    }
+    return [
+      {
+        caption: key,
+        content: command + ' ' + key,
+        url: 'Set ' + properties.docs[key],
+      }
+    ];
+  });
+  items = items.reduce((acc, val) => acc.concat(val), []);
+  if (items.length === 0) {
     return Promise.resolve([]);
   }
-  let name = typedWords.shift();
-  let keywords = typedWords.concat(typing).join(' ');
+  return Promise.resolve([
+    {
+      name: 'Properties',
+      items,
+    }
+  ]);
+};
 
-  switch (name) {
+const complete = (line, settings) => {
+  let trimmed = line.trimStart();
+  let words = trimmed.split(/ +/);
+  let name = words[0];
+  if (words.length === 1) {
+    let items = completeCommands(name);
+    if (items.length === 0) {
+      return Promise.resolve([]);
+    }
+    return Promise.resolve([
+      {
+        name: 'Console Command',
+        items: completeCommands(name),
+      }
+    ]);
+  }
+  let keywords = trimmed.slice(name.length).trimStart();
+
+  switch (words[0]) {
   case 'o':
   case 'open':
   case 't':
@@ -108,12 +164,10 @@ const getCompletions = (line, settings) => {
   case 'bdelete':
   case 'bdeletes':
     return getBufferCompletions(name, keywords, true);
+  case 'set':
+    return getSetCompletions(name, keywords);
   }
   return Promise.resolve([]);
-};
-
-const complete = (line, settings) => {
-  return getCompletions(line, settings);
 };
 
 export { complete };

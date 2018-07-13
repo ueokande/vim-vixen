@@ -4,6 +4,7 @@ import FollowComponent from './follow';
 import * as settingActions from 'content/actions/setting';
 import messages from 'shared/messages';
 import * as addonActions from '../../actions/addon';
+import * as blacklists from 'shared/blacklists';
 
 export default class Common {
   constructor(win, store) {
@@ -14,42 +15,34 @@ export default class Common {
     input.onKey(key => follow.key(key));
     input.onKey(key => keymapper.key(key));
 
+    this.win = win;
     this.store = store;
     this.prevEnabled = undefined;
+    this.prevBlacklist = undefined;
 
     this.reloadSettings();
 
     messages.onMessage(this.onMessage.bind(this));
-    store.subscribe(() => this.update());
   }
 
   onMessage(message) {
+    let { enabled } = this.store.getState().addon;
     switch (message.type) {
     case messages.SETTINGS_CHANGED:
       return this.reloadSettings();
     case messages.ADDON_TOGGLE_ENABLED:
-      return this.store.dispatch(addonActions.toggleEnabled());
+      this.store.dispatch(addonActions.setEnabled(!enabled));
     }
   }
 
-  update() {
-    let enabled = this.store.getState().addon.enabled;
-    if (enabled !== this.prevEnabled) {
-      this.prevEnabled = enabled;
-
-      browser.runtime.sendMessage({
-        type: messages.ADDON_ENABLED_RESPONSE,
-        enabled,
-      });
-    }
-  }
-
-  async reloadSettings() {
+  reloadSettings() {
     try {
-      let settings = await browser.runtime.sendMessage({
-        type: messages.SETTINGS_QUERY,
+      this.store.dispatch(settingActions.load()).then(({ value: settings }) => {
+        let enabled = !blacklists.includes(
+          settings.blacklist, this.win.location.href
+        );
+        this.store.dispatch(addonActions.setEnabled(enabled));
       });
-      this.store.dispatch(settingActions.set(settings));
     } catch (e) {
       // Sometime sendMessage fails when background script is not ready.
       console.warn(e);

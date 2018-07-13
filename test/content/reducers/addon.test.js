@@ -7,31 +7,11 @@ describe("addon reducer", () => {
     expect(state).to.have.property('enabled', true);
   });
 
-  it('return next state for ADDON_ENABLE', () => {
-    let action = { type: actions.ADDON_ENABLE};
+  it('return next state for ADDON_SET_ENABLED', () => {
+    let action = { type: actions.ADDON_SET_ENABLED, enabled: true };
     let prev = { enabled: false };
     let state = addonReducer(prev, action);
 
     expect(state.enabled).is.equal(true);
   });
-
-  it('return next state for ADDON_DISABLE', () => {
-    let action = { type: actions.ADDON_DISABLE};
-    let prev = { enabled: true };
-    let state = addonReducer(prev, action);
-
-    expect(state.enabled).is.equal(false);
-  });
-
-  it('return next state for ADDON_TOGGLE_ENABLED', () => {
-    let action = { type: actions.ADDON_TOGGLE_ENABLED };
-    let state = { enabled: false };
-
-    state = addonReducer(state, action);
-    expect(state.enabled).is.equal(true);
-
-    state = addonReducer(state, action);
-    expect(state.enabled).is.equal(false);
-  });
-
 });

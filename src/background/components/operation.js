@@ -2,6 +2,7 @@ import messages from 'shared/messages';
 import operations from 'shared/operations';
 import * as tabs from '../shared//tabs';
 import * as zooms from '../shared/zooms';
+import * as consoleActions from '../actions/console';
 
 export default class BackgroundComponent {
   constructor(store) {
@@ -23,101 +24,104 @@ export default class BackgroundComponent {
     switch (message.type) {
     case messages.BACKGROUND_OPERATION:
       return this.store.dispatch(
-        this.exec(message.operation, sender.tab),
-        sender);
+        this.exec(message.operation, sender.tab));
     }
   }
 
   // eslint-disable-next-line complexity, max-lines-per-function
-  exec(operation, tab) {
+  async exec(operation, tab) {
     let tabState = this.store.getState().tab;
 
     switch (operation.type) {
     case operations.TAB_CLOSE:
-      return tabs.closeTab(tab.id);
+      await tabs.closeTab(tab.id);
+      break;
     case operations.TAB_CLOSE_FORCE:
-      return tabs.closeTabForce(tab.id);
+      await tabs.closeTabForce(tab.id);
+      break;
     case operations.TAB_REOPEN:
-      return tabs.reopenTab();
+      await tabs.reopenTab();
+      break;
     case operations.TAB_PREV:
-      return tabs.selectPrevTab(tab.index, operation.count);
+      await tabs.selectPrevTab(tab.index, operation.count);
+      break;
     case operations.TAB_NEXT:
-      return tabs.selectNextTab(tab.index, operation.count);
+      await tabs.selectNextTab(tab.index, operation.count);
+      break;
     case operations.TAB_FIRST:
-      return tabs.selectFirstTab();
+      await tabs.selectFirstTab();
+      break;
     case operations.TAB_LAST:
-      return tabs.selectLastTab();
+      await tabs.selectLastTab();
+      break;
     case operations.TAB_PREV_SEL:
       if (tabState.previousSelected > 0) {
-        return tabs.selectTab(tabState.previousSelected);
+        await tabs.selectTab(tabState.previousSelected);
       }
       break;
     case operations.TAB_RELOAD:
-      return tabs.reload(tab, operation.cache);
+      await tabs.reload(tab, operation.cache);
+      break;
     case operations.TAB_PIN:
-      return tabs.updateTabPinned(tab, true);
+      await tabs.updateTabPinned(tab, true);
+      break;
     case operations.TAB_UNPIN:
-      return tabs.updateTabPinned(tab, false);
+      await tabs.updateTabPinned(tab, false);
+      break;
     case operations.TAB_TOGGLE_PINNED:
-      return tabs.toggleTabPinned(tab);
+      await tabs.toggleTabPinned(tab);
+      break;
     case operations.TAB_DUPLICATE:
-      return tabs.duplicate(tab.id);
+      await tabs.duplicate(tab.id);
+      break;
     case operations.ZOOM_IN:
-      return zooms.zoomIn();
+      await zooms.zoomIn();
+      break;
     case operations.ZOOM_OUT:
-      return zooms.zoomOut();
+      await zooms.zoomOut();
+      break;
     case operations.ZOOM_NEUTRAL:
-      return zooms.neutral();
+      await zooms.neutral();
+      break;
     case operations.COMMAND_SHOW:
-      return this.sendConsoleShowCommand(tab, '');
+      return consoleActions.showCommand(tab, '');
     case operations.COMMAND_SHOW_OPEN:
       if (operation.alter) {
         // alter url
-        return this.sendConsoleShowCommand(tab, 'open ' + tab.url);
+        return consoleActions.showCommand(tab, 'open ' + tab.url);
       }
-      return this.sendConsoleShowCommand(tab, 'open ');
+      return consoleActions.showCommand(tab, 'open ');
     case operations.COMMAND_SHOW_TABOPEN:
       if (operation.alter) {
         // alter url
-        return this.sendConsoleShowCommand(tab, 'tabopen ' + tab.url);
+        return consoleActions.showCommand(tab, 'tabopen ' + tab.url);
       }
-      return this.sendConsoleShowCommand(tab, 'tabopen ');
+      return consoleActions.showCommand(tab, 'tabopen ');
     case operations.COMMAND_SHOW_WINOPEN:
       if (operation.alter) {
         // alter url
-        return this.sendConsoleShowCommand(tab, 'winopen ' + tab.url);
+        return consoleActions.showCommand(tab, 'winopen ' + tab.url);
       }
-      return this.sendConsoleShowCommand(tab, 'winopen ');
+      return consoleActions.showCommand(tab, 'winopen ');
     case operations.COMMAND_SHOW_BUFFER:
-      return this.sendConsoleShowCommand(tab, 'buffer ');
+      return consoleActions.showCommand(tab, 'buffer ');
     case operations.COMMAND_SHOW_ADDBOOKMARK:
       if (operation.alter) {
-        return this.sendConsoleShowCommand(tab, 'addbookmark ' + tab.title);
+        return consoleActions.showCommand(tab, 'addbookmark ' + tab.title);
       }
-      return this.sendConsoleShowCommand(tab, 'addbookmark ');
+      return consoleActions.showCommand(tab, 'addbookmark  ');
     case operations.FIND_START:
-      return browser.tabs.sendMessage(tab.id, {
-        type: messages.CONSOLE_SHOW_FIND
-      });
+      return consoleActions.showFind(tab);
     case operations.CANCEL:
-      return browser.tabs.sendMessage(tab.id, {
-        type: messages.CONSOLE_HIDE,
-      });
+      return consoleActions.hide(tab);
     case operations.PAGE_SOURCE:
-      return browser.tabs.create({
+      await browser.tabs.create({
         url: 'view-source:' + tab.url,
         index: tab.index + 1,
         openerTabId: tab.id,
       });
-    default:
-      return Promise.resolve();
+      break;
     }
-  }
-
-  sendConsoleShowCommand(tab, command) {
-    return browser.tabs.sendMessage(tab.id, {
-      type: messages.CONSOLE_SHOW_COMMAND,
-      command,
-    });
+    return { type: '' };
   }
 }

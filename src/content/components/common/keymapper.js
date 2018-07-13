@@ -20,6 +20,7 @@ export default class KeymapperComponent {
     this.store = store;
   }
 
+  // eslint-disable-next-line max-statements
   key(key) {
     this.store.dispatch(inputActions.keyPress(key));
 
@@ -47,8 +48,10 @@ export default class KeymapperComponent {
       return true;
     }
     let operation = keymaps.get(matched[0]);
-    this.store.dispatch(operationActions.exec(
-      operation, key.repeat, state.setting));
+    let act = operationActions.exec(
+      operation, key.repeat, state.setting, state.addon.enabled
+    );
+    this.store.dispatch(act);
     this.store.dispatch(inputActions.clearKeys());
     return true;
   }

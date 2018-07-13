@@ -11,6 +11,9 @@ const defaultState = {
 };
 
 const nextSelection = (state) => {
+  if (state.completions.length === 0) {
+    return [-1, -1];
+  }
   if (state.groupSelection < 0) {
     return [0, 0];
   }
