@@ -112,7 +112,8 @@ const getSetCompletions = (command, keywords) => {
         url: 'Set ' + properties.docs[key],
       }
     ];
-  }).flat();
+  });
+  items = items.reduce((acc, val) => acc.concat(val), []);
   if (items.length === 0) {
     return Promise.resolve([]);
   }
