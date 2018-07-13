@@ -130,7 +130,7 @@ const complete = (line, settings) => {
   let name = words[0];
   if (words.length === 1) {
     let items = completeCommands(name);
-    if (items.length  === 0) {
+    if (items.length === 0) {
       return Promise.resolve([]);
     }
     return Promise.resolve([
