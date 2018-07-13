@@ -1,17 +1,8 @@
-import settingReducer from './setting';
-import findReducer from './find';
-import tabReducer from './tab';
+import { combineReducers } from 'redux';
+import setting from './setting';
+import find from './find';
+import tab from './tab';
 
-// Make setting reducer instead of re-use
-const defaultState = {
-  setting: settingReducer(undefined, {}),
-  find: findReducer(undefined, {}),
-  tab: tabReducer(undefined, {}),
-};
-
-export default function reducer(state = defaultState, action = {}) {
-  return { ...state,
-    setting: settingReducer(state.setting, action),
-    find: findReducer(state.find, action),
-    tab: tabReducer(state.tab, action), };
-}
+export default combineReducers({
+  setting, find, tab,
+});

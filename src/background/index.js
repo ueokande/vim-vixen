@@ -6,7 +6,7 @@ import IndicatorComponent from 'background/components/indicator';
 import reducers from 'background/reducers';
 import { createStore, applyMiddleware } from 'redux';
 import promise from 'redux-promise';
-import * as versions from 'shared/versions';
+import * as versions from './shared/versions';
 
 const store = createStore(
   reducers,

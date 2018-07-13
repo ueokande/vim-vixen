@@ -1,4 +1,4 @@
-import * as storage from 'shared/versions/storage';
+import * as storage from 'background/shared/versions/storage';
 
 describe("shared/versions/storage", () => {
   describe('#load', () => {

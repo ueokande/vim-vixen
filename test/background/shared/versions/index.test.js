@@ -1,5 +1,5 @@
-import * as versions from 'shared/versions';
-import manifest from '../../../manifest.json';
+import * as versions from 'background/shared/versions';
+import manifest from '../../../../manifest.json';
 
 describe("shared/versions/storage", () => {
   describe('#checkUpdated', () => {
