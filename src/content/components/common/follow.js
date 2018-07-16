@@ -5,7 +5,7 @@ import * as dom from 'shared/utils/dom';
 const TARGET_SELECTOR = [
   'a', 'button', 'input', 'textarea', 'area',
   '[contenteditable=true]', '[contenteditable=""]', '[tabindex]',
-  '[role="button"]'
+  '[role="button"]', 'summary'
 ].join(',');
 
 
@@ -155,6 +155,7 @@ export default class Follow {
     case 'textarea':
       return element.focus();
     case 'button':
+    case 'summary':
       return element.click();
     default:
       if (dom.isContentEditable(element)) {

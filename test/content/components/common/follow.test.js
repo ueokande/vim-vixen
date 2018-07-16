@@ -11,10 +11,15 @@ describe('FollowComponent', () => {
         window,
         { width: window.innerWidth, height: window.innerHeight },
         { x: 0, y: 0 });
-      expect(targets).to.have.lengthOf(3);
+      expect(targets).to.have.lengthOf(4);
 
       let ids = Array.prototype.map.call(targets, (e) => e.id);
-      expect(ids).to.include.members(['visible_a', 'editable_div_1', 'editable_div_2']);
+      expect(ids).to.include.members([
+        'visible_a',
+        'editable_div_1',
+        'editable_div_2',
+        'summary_1',
+      ]);
     });
   });
 });
