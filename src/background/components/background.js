@@ -31,14 +31,12 @@ export default class BackgroundComponent {
         let action = tabActions.openNewTab(
           message.url, sender.tab.id, message.background,
           settings.value.properties.adjacenttab);
-        return this.store.dispatch(action, sender);
+        return this.store.dispatch(action);
       }
-      return this.store.dispatch(
-        tabActions.openToTab(message.url, sender.tab), sender);
+      return this.store.dispatch(tabActions.openToTab(message.url, sender.tab));
     case messages.CONSOLE_ENTER_COMMAND:
       this.store.dispatch(
         commandActions.exec(sender.tab, message.text, settings.value),
-        sender
       );
       return this.broadcastSettingsChanged();
     case messages.SETTINGS_QUERY:
