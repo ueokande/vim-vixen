@@ -8,6 +8,8 @@ import { createStore, applyMiddleware } from 'redux';
 import promise from 'redux-promise';
 import * as versions from './shared/versions';
 
+import ContentMessageListener from './infrastructures/content-message-listener';
+
 const store = createStore(
   reducers,
   applyMiddleware(promise),
@@ -32,3 +34,5 @@ const indicatorComponent = new IndicatorComponent(store);
 store.dispatch(settingActions.load());
 
 checkAndNotifyUpdated();
+
+new ContentMessageListener().run();
