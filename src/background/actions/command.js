@@ -2,7 +2,7 @@ import actions from '../actions';
 import * as consoleActions from './console';
 import * as tabs from '../shared/tabs';
 import * as bookmarks from '../shared/bookmarks';
-import * as parsers from 'shared/commands/parsers';
+import * as parsers from 'background/shared/commands/parsers';
 import * as properties from 'shared/settings/properties';
 
 const openCommand = async(url) => {

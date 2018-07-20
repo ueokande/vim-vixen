@@ -1,4 +1,4 @@
-import commandDocs from 'shared/commands/docs';
+import commandDocs from 'background/shared/commands/docs';
 import * as tabs from './tabs';
 import * as histories from './histories';
 import * as bookmarks from './bookmarks';

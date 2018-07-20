@@ -1,4 +1,4 @@
-import * as parsers from 'shared/commands/parsers';
+import * as parsers from 'background/shared/commands/parsers';
 
 describe("shared/commands/parsers", () => {
   describe("#parsers.parseSetOption", () => {
