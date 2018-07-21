@@ -27,8 +27,28 @@ export default class CompletionsInteractor {
     );
   }
 
-  queryOpen() {
-    return Promise.resolve(Completions.empty());
+  async queryOpen(name, keywords) {
+    let groups = [];
+    let histories = await this.completionRepository.queryHistories(keywords);
+    if (histories.length > 0) {
+      let items = histories.map(page => new CompletionItem({
+        caption: page.title,
+        content: name + ' ' + page.url,
+        url: page.url
+      }));
+      groups.push(new CompletionGroup('History', items));
+    }
+
+    let bookmarks = await this.completionRepository.queryBookmarks(keywords);
+    if (bookmarks.length > 0) {
+      let items = bookmarks.map(page => new CompletionItem({
+        caption: page.title,
+        content: name + ' ' + page.url,
+        url: page.url
+      }));
+      groups.push(new CompletionGroup('Bookmarks', items));
+    }
+    return new Completions(groups);
   }
 
   queryBuffer(name, keywords) {

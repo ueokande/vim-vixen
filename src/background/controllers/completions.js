@@ -21,7 +21,7 @@ export default class ContentMessageController {
     case 'tabopen':
     case 'w':
     case 'winopen':
-      return this.completionsInteractor.queryOpen(name);
+      return this.completionsInteractor.queryOpen(name, keywords);
     case 'b':
     case 'buffer':
       return this.completionsInteractor.queryBuffer(name, keywords);
