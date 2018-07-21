@@ -3,6 +3,9 @@ import CompletionGroup from '../domains/completion-group';
 import Completions from '../domains/completions';
 import CompletionRepository from '../repositories/completions';
 import CommandDocs from 'background/shared/commands/docs';
+import * as filters from './filters';
+
+const COMPLETION_ITEM_LIMIT = 10;
 
 export default class CompletionsInteractor {
   constructor() {
@@ -28,9 +31,18 @@ export default class CompletionsInteractor {
   }
 
   async queryOpen(name, keywords) {
+    // TODO get search engines from settings
     let groups = [];
     let histories = await this.completionRepository.queryHistories(keywords);
     if (histories.length > 0) {
+      histories = [histories]
+        .map(filters.filterBlankTitle)
+        .map(filters.filterHttp)
+        .map(filters.filterByTailingSlash)
+        .map(pages => filters.filterByPathname(pages, COMPLETION_ITEM_LIMIT))
+        .map(pages => filters.filterByOrigin(pages, COMPLETION_ITEM_LIMIT))[0]
+        .sort((x, y) => x.visitCount < y.visitCount)
+        .slice(0, COMPLETION_ITEM_LIMIT);
       let items = histories.map(page => new CompletionItem({
         caption: page.title,
         content: name + ' ' + page.url,
