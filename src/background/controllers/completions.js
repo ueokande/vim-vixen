@@ -13,6 +13,7 @@ export default class ContentMessageController {
     if (words.length === 1) {
       return this.completionsInteractor.queryConsoleCommand(name);
     }
+    let keywords = trimmed.slice(name.length).trimStart();
     switch (words[0]) {
     case 'o':
     case 'open':
@@ -20,22 +21,22 @@ export default class ContentMessageController {
     case 'tabopen':
     case 'w':
     case 'winopen':
-      break;
+      return this.completionsInteractor.queryOpen(name);
     case 'b':
     case 'buffer':
-      break;
-    case 'bd!':
-    case 'bdel!':
-    case 'bdelete!':
-    case 'bdeletes!':
-      break;
+      return this.completionsInteractor.queryBuffer(name, keywords);
     case 'bd':
     case 'bdel':
     case 'bdelete':
     case 'bdeletes':
-      break;
+      return this.completionsInteractor.queryBdelete(name, keywords);
+    case 'bd!':
+    case 'bdel!':
+    case 'bdelete!':
+    case 'bdeletes!':
+      return this.completionsInteractor.queryBdeleteForce(name, keywords);
     case 'set':
-      break;
+      return this.completionsInteractor.querySet(name, keywords);
     }
     return Promise.resolve(Completions.empty());
   }
