@@ -1,4 +1,3 @@
-import * as settingActions from 'background/actions/setting';
 import BackgroundComponent from 'background/components/background';
 import OperationComponent from 'background/components/operation';
 import TabComponent from 'background/components/tab';
@@ -9,6 +8,7 @@ import promise from 'redux-promise';
 import * as versions from './shared/versions';
 
 import ContentMessageListener from './infrastructures/content-message-listener';
+import SettingController from './controllers/setting';
 
 const store = createStore(
   reducers,
@@ -31,8 +31,8 @@ const tabComponent = new TabComponent(store);
 const indicatorComponent = new IndicatorComponent(store);
 /* eslint-enable no-unused-vars */
 
-store.dispatch(settingActions.load());
-
 checkAndNotifyUpdated();
+
+new SettingController().reload();
 
 new ContentMessageListener().run();

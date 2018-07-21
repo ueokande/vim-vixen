@@ -1,6 +1,5 @@
 import messages from 'shared/messages';
 import * as commandActions from 'background/actions/command';
-import * as settingActions from 'background/actions/setting';
 import * as findActions from 'background/actions/find';
 import * as tabActions from 'background/actions/tab';
 
@@ -37,11 +36,6 @@ export default class BackgroundComponent {
       this.store.dispatch(
         commandActions.exec(sender.tab, message.text, settings.value),
       );
-      return this.broadcastSettingsChanged();
-    case messages.SETTINGS_QUERY:
-      return Promise.resolve(this.store.getState().setting.value);
-    case messages.SETTINGS_RELOAD:
-      this.store.dispatch(settingActions.load());
       return this.broadcastSettingsChanged();
     case messages.FIND_GET_KEYWORD:
       return Promise.resolve(find.keyword);
