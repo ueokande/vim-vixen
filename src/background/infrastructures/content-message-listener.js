@@ -1,11 +1,13 @@
 import messages from '../../shared/messages';
 import CompletionsController from '../controllers/completions';
 import SettingController from '../controllers/setting';
+import FindController from '../controllers/find';
 
 export default class ContentMessageListener {
   constructor() {
     this.settingController = new SettingController();
     this.completionsController = new CompletionsController();
+    this.findController = new FindController();
   }
 
   run() {
@@ -29,6 +31,10 @@ export default class ContentMessageListener {
       return this.onSettingsQuery();
     case messages.SETTINGS_RELOAD:
       return this.onSettingsReload();
+    case messages.FIND_GET_KEYWORD:
+      return this.onFindGetKeyword();
+    case messages.FIND_SET_KEYWORD:
+      return this.onFindSetKeyword(message.keyword);
     }
   }
 
@@ -43,5 +49,13 @@ export default class ContentMessageListener {
 
   onSettingsReload() {
     return this.settingController.reload();
+  }
+
+  onFindGetKeyword() {
+    return this.findController.getKeyword();
+  }
+
+  onFindSetKeyword(keyword) {
+    return this.findController.setKeyword(keyword);
   }
 }

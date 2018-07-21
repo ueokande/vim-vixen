@@ -1,6 +1,5 @@
 import messages from 'shared/messages';
 import * as commandActions from 'background/actions/command';
-import * as findActions from 'background/actions/find';
 import * as tabActions from 'background/actions/tab';
 
 export default class BackgroundComponent {
@@ -21,7 +20,6 @@ export default class BackgroundComponent {
 
   onMessage(message, sender) {
     let settings = this.store.getState().setting;
-    let find = this.store.getState().find;
 
     switch (message.type) {
     case messages.OPEN_URL:
@@ -37,11 +35,6 @@ export default class BackgroundComponent {
         commandActions.exec(sender.tab, message.text, settings.value),
       );
       return this.broadcastSettingsChanged();
-    case messages.FIND_GET_KEYWORD:
-      return Promise.resolve(find.keyword);
-    case messages.FIND_SET_KEYWORD:
-      this.store.dispatch(findActions.setKeyword(message.keyword));
-      return Promise.resolve({});
     }
   }
 
