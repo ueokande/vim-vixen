@@ -1,14 +1,20 @@
-import * as storage from 'background/shared/versions/storage';
+import VersionRepository from 'background/repositories/version';
 
-describe("shared/versions/storage", () => {
-  describe('#load', () => {
+describe("background/repositories/version", () => {
+  let versionRepository;
+
+  beforeEach(() => {
+    versionRepository = new VersionRepository;
+  });
+
+  describe('#get', () => {
     beforeEach(() => {
       return browser.storage.local.remove('version');
     });
 
     it('loads saved version', async() => {
       await browser.storage.local.set({ version: '1.2.3' });
-      let version = await storage.load();
+      let version = await this.versionRepository.get();
       expect(version).to.equal('1.2.3');
     });
 
@@ -18,9 +24,9 @@ describe("shared/versions/storage", () => {
     });
   });
 
-  describe('#save', () => {
+  describe('#update', () => {
     it('saves version string', async() => {
-      await storage.save('2.3.4');
+      await versionRepository.update('2.3.4');
       let { version } = await browser.storage.local.get('version');
       expect(version).to.equal('2.3.4');
     });
