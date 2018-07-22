@@ -1,12 +1,12 @@
 import manifest from '../../../manifest.json';
 import VersionRepository from '../repositories/version';
-import TabRepository from '../repositories/tab';
+import TabPresenter from '../presenters/tab';
 import Notifier from '../infrastructures/notifier';
 
 export default class VersionInteractor {
   constructor() {
     this.versionRepository = new VersionRepository();
-    this.tabRepository = new TabRepository();
+    this.tabPresenter = new TabPresenter();
     this.notifier = new Notifier();
   }
 
@@ -19,7 +19,7 @@ export default class VersionInteractor {
     let message = 'Click here to see release notes';
     this.notifier.notify(title, message, () => {
       let url = this.releaseNoteUrl(manifest.version);
-      this.tabRepository.create(url);
+      this.tabPresenter.create(url);
     });
     this.versionRepository.update(manifest.version);
   }
