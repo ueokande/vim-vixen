@@ -2,12 +2,14 @@ import messages from '../../shared/messages';
 import CompletionsController from '../controllers/completions';
 import SettingController from '../controllers/setting';
 import FindController from '../controllers/find';
+import AddonEnabledController from '../controllers/addon-enabled';
 
 export default class ContentMessageListener {
   constructor() {
     this.settingController = new SettingController();
     this.completionsController = new CompletionsController();
     this.findController = new FindController();
+    this.addonEnabledController = new AddonEnabledController();
   }
 
   run() {
@@ -35,6 +37,8 @@ export default class ContentMessageListener {
       return this.onFindGetKeyword();
     case messages.FIND_SET_KEYWORD:
       return this.onFindSetKeyword(message.keyword);
+    case messages.ADDON_ENABLED_RESPONSE:
+      return this.onAddonEnabledResponse(message.enabled);
     }
   }
 
@@ -57,5 +61,9 @@ export default class ContentMessageListener {
 
   onFindSetKeyword(keyword) {
     return this.findController.setKeyword(keyword);
+  }
+
+  onAddonEnabledResponse(enabled) {
+    return this.addonEnabledController.indicate(enabled);
   }
 }

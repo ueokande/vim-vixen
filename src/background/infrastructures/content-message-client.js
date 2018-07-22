@@ -9,4 +9,17 @@ export default class ContentMessageClient {
       });
     }
   }
+
+  async getAddonEnabled(tabId) {
+    let { enabled } = await browser.tabs.sendMessage(tabId, {
+      type: messages.ADDON_ENABLED_QUERY,
+    });
+    return enabled;
+  }
+
+  toggleAddonEnabled(tabId) {
+    return browser.tabs.sendMessage(tabId, {
+      type: messages.ADDON_TOGGLE_ENABLED,
+    });
+  }
 }
