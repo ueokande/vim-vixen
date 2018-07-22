@@ -1,6 +1,5 @@
 import messages from 'shared/messages';
 import * as commandActions from 'background/actions/command';
-import * as tabActions from 'background/actions/tab';
 
 export default class BackgroundComponent {
   constructor(store) {
@@ -22,14 +21,6 @@ export default class BackgroundComponent {
     let settings = this.store.getState().setting;
 
     switch (message.type) {
-    case messages.OPEN_URL:
-      if (message.newTab) {
-        let action = tabActions.openNewTab(
-          message.url, sender.tab.id, message.background,
-          settings.value.properties.adjacenttab);
-        return this.store.dispatch(action);
-      }
-      return this.store.dispatch(tabActions.openToTab(message.url, sender.tab));
     case messages.CONSOLE_ENTER_COMMAND:
       this.store.dispatch(
         commandActions.exec(sender.tab, message.text, settings.value),

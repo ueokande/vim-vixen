@@ -3,6 +3,7 @@ import CompletionsController from '../controllers/completions';
 import SettingController from '../controllers/setting';
 import FindController from '../controllers/find';
 import AddonEnabledController from '../controllers/addon-enabled';
+import LinkController from '../controllers/link';
 
 export default class ContentMessageListener {
   constructor() {
@@ -10,6 +11,7 @@ export default class ContentMessageListener {
     this.completionsController = new CompletionsController();
     this.findController = new FindController();
     this.addonEnabledController = new AddonEnabledController();
+    this.linkController = new LinkController();
   }
 
   run() {
@@ -25,7 +27,7 @@ export default class ContentMessageListener {
     });
   }
 
-  onMessage(message) {
+  onMessage(message, sender) {
     switch (message.type) {
     case messages.CONSOLE_QUERY_COMPLETIONS:
       return this.onConsoleQueryCompletions(message.text);
@@ -39,6 +41,9 @@ export default class ContentMessageListener {
       return this.onFindSetKeyword(message.keyword);
     case messages.ADDON_ENABLED_RESPONSE:
       return this.onAddonEnabledResponse(message.enabled);
+    case messages.OPEN_URL:
+      return this.onOpenUrl(
+        message.newTab, message.url, sender.tab.id, message.background);
     }
   }
 
@@ -65,5 +70,12 @@ export default class ContentMessageListener {
 
   onAddonEnabledResponse(enabled) {
     return this.addonEnabledController.indicate(enabled);
+  }
+
+  onOpenUrl(newTab, url, openerId, background) {
+    if (newTab) {
+      return this.linkController.openNewTab(url, openerId, background);
+    }
+    return this.linkController.openToTab(url, openerId);
   }
 }
