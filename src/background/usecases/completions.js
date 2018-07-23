@@ -50,7 +50,7 @@ export default class CompletionsInteractor {
   }
 
   queryBuffer(name, keywords) {
-    return this.queryTabs(name, true, keywords);
+    return this.queryTabs(name, false, keywords);
   }
 
   queryBdelete(name, keywords) {

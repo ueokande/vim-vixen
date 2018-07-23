@@ -1,5 +1,5 @@
 import messages from '../../shared/messages';
-import CompletionsController from '../controllers/completions';
+import CommandController from '../controllers/command';
 import SettingController from '../controllers/setting';
 import FindController from '../controllers/find';
 import AddonEnabledController from '../controllers/addon-enabled';
@@ -8,7 +8,7 @@ import LinkController from '../controllers/link';
 export default class ContentMessageListener {
   constructor() {
     this.settingController = new SettingController();
-    this.completionsController = new CompletionsController();
+    this.commandController = new CommandController();
     this.findController = new FindController();
     this.addonEnabledController = new AddonEnabledController();
     this.linkController = new LinkController();
@@ -31,6 +31,8 @@ export default class ContentMessageListener {
     switch (message.type) {
     case messages.CONSOLE_QUERY_COMPLETIONS:
       return this.onConsoleQueryCompletions(message.text);
+    case messages.CONSOLE_ENTER_COMMAND:
+      return this.onConsoleEnterCommand(message.text);
     case messages.SETTINGS_QUERY:
       return this.onSettingsQuery();
     case messages.SETTINGS_RELOAD:
@@ -48,9 +50,14 @@ export default class ContentMessageListener {
   }
 
   async onConsoleQueryCompletions(line) {
-    let completions = await this.completionsController.getCompletions(line);
+    let completions = await this.commandController.getCompletions(line);
     return Promise.resolve(completions.serialize());
   }
+
+  onConsoleEnterCommand(text) {
+    return this.commandController.exec(text);
+  }
+
 
   onSettingsQuery() {
     return this.settingController.getSetting();
