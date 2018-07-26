@@ -5,6 +5,7 @@ import CompletionRepository from '../repositories/completions';
 import CommandDocs from 'background/shared/commands/docs';
 import * as filters from './filters';
 import SettingRepository from '../repositories/setting';
+import * as properties from '../../shared/settings/properties';
 
 const COMPLETION_ITEM_LIMIT = 10;
 
@@ -61,8 +62,40 @@ export default class CompletionsInteractor {
     return this.queryTabs(name, false, keywords);
   }
 
-  querySet() {
-    return Promise.resolve(Completions.empty());
+  querySet(name, keywords) {
+    let items = Object.keys(properties.docs).map((key) => {
+      if (properties.types[key] === 'boolean') {
+        return [
+          new CompletionItem({
+            caption: key,
+            content: name + ' ' + key,
+            url: 'Enable ' + properties.docs[key],
+          }),
+          new CompletionItem({
+            caption: 'no' + key,
+            content: name + ' no' + key,
+            url: 'Disable ' + properties.docs[key],
+          }),
+        ];
+      }
+      return [
+        new CompletionItem({
+          caption: key,
+          content: name + ' ' + key,
+          url: 'Set ' + properties.docs[key],
+        })
+      ];
+    });
+    items = items.reduce((acc, val) => acc.concat(val), []);
+    items = items.filter((item) => {
+      return item.caption.startsWith(keywords);
+    });
+    if (items.length === 0) {
+      return Promise.resolve(Completions.empty());
+    }
+    return Promise.resolve(
+      new Completions([new CompletionGroup('Properties', items)])
+    );
   }
 
   async queryTabs(name, excludePinned, args) {
