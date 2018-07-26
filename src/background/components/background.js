@@ -21,11 +21,6 @@ export default class BackgroundComponent {
     let settings = this.store.getState().setting;
 
     switch (message.type) {
-    case messages.CONSOLE_ENTER_COMMAND:
-      this.store.dispatch(
-        commandActions.exec(sender.tab, message.text, settings.value),
-      );
-      return this.broadcastSettingsChanged();
     }
   }
 

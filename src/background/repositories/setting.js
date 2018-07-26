@@ -14,4 +14,10 @@ export default class SettingRepository {
   update(value) {
     return this.cache.set(CACHED_SETTING_KEY, value);
   }
+
+  async setProperty(name, value) {
+    let current = await this.get();
+    current.properties[name] = value;
+    return this.update(current);
+  }
 }

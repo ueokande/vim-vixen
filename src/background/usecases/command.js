@@ -1,8 +1,11 @@
+import * as parsers from './parsers';
 import TabPresenter from '../presenters/tab';
 import WindowPresenter from '../presenters/window';
 import SettingRepository from '../repositories/setting';
 import BookmarkRepository from '../repositories/bookmark';
 import ConsolePresenter from '../presenters/console';
+import ContentMessageClient from '../infrastructures/content-message-client';
+import * as properties from 'shared/settings/properties';
 
 export default class CommandIndicator {
   constructor() {
@@ -11,6 +14,8 @@ export default class CommandIndicator {
     this.settingRepository = new SettingRepository();
     this.bookmarkRepository = new BookmarkRepository();
     this.consolePresenter = new ConsolePresenter();
+
+    this.contentMessageClient = new ContentMessageClient();
   }
 
   async open(keywords) {
@@ -86,29 +91,18 @@ export default class CommandIndicator {
     return this.consolePresenter.showInfo(tab.id, message);
   }
 
-  set(keywords) {
-    // TODO implement set command
+  async set(keywords) {
+    if (keywords.length === 0) {
+      return;
+    }
+    let [name, value] = parsers.parseSetOption(keywords, properties.types);
+    await this.settingRepository.setProperty(name, value);
+
+    return this.contentMessageClient.broadcastSettingsChanged();
   }
 
   async urlOrSearch(keywords) {
-    try {
-      return new URL(keywords).href;
-    } catch (e) {
-      if (keywords.includes('.') && !keywords.includes(' ')) {
-        return 'http://' + keywords;
-      }
-      let settings = await this.settingRepository.get();
-      let engines = settings.search.engines;
-
-      let template = engines[settings.search.default];
-      let query = keywords;
-
-      let first = keywords.trimStart().split(' ')[0];
-      if (Object.keys(engines).includes(first)) {
-        template = engines[first];
-        query = keywords.trimStart().slice(first.length).trimStart();
-      }
-      return template.replace('{}', encodeURIComponent(query));
-    }
+    let settings = await this.settingRepository.get();
+    return parsers.normalizeUrl(keywords, settings.search);
   }
 }
