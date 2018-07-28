@@ -1,4 +1,5 @@
 import * as parsers from './parsers';
+import * as urls from '../../shared/urls';
 import TabPresenter from '../presenters/tab';
 import WindowPresenter from '../presenters/window';
 import SettingRepository from '../repositories/setting';
@@ -103,6 +104,6 @@ export default class CommandIndicator {
 
   async urlOrSearch(keywords) {
     let settings = await this.settingRepository.get();
-    return parsers.normalizeUrl(keywords, settings.search);
+    return urls.normalizeUrl(keywords, settings.search);
   }
 }
