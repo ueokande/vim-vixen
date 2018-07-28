@@ -1,8 +1,8 @@
 import CompletionItem from '../domains/completion-item';
 import CompletionGroup from '../domains/completion-group';
 import Completions from '../domains/completions';
+import CommandDocs from '../domains/command-docs';
 import CompletionRepository from '../repositories/completions';
-import CommandDocs from 'background/shared/commands/docs';
 import * as filters from './filters';
 import SettingRepository from '../repositories/setting';
 import * as properties from '../../shared/settings/properties';

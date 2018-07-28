@@ -9,3 +9,4 @@ export default {
   quit: 'Close the current tab',
   quitall: 'Close all tabs',
 };
+

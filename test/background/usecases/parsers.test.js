@@ -1,6 +1,6 @@
 import * as parsers from 'background/usecases/parsers';
 
-describe("background/usecases/parsers", () => {
+describe("shared/commands/parsers", () => {
   describe("#parsers.parseSetOption", () => {
     it('parse set string', () => {
       let [key, value] = parsers.parseSetOption('encoding=utf-8', { encoding: 'string' });
@@ -65,10 +65,9 @@ describe("background/usecases/parsers", () => {
         .to.equal('https://yahoo.com/search?q=C%2B%2BCLI');
     });
 
-    it('user default search engine', () => {
+    it('user default  search engine', () => {
       expect(parsers.normalizeUrl('apple banana', config))
         .to.equal('https://google.com/search?q=apple%20banana');
     });
   });
 });
-
