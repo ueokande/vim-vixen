@@ -6,6 +6,6 @@ export default class AddonEnabledController {
   }
 
   indicate(enabled) {
-    this.addonEnabledInteractor.indicate(enabled);
+    return this.addonEnabledInteractor.indicate(enabled);
   }
 }

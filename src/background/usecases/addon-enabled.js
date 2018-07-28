@@ -15,7 +15,7 @@ export default class AddonEnabledInteractor {
   }
 
   indicate(enabled) {
-    this.indicatorPresentor.indicate(enabled);
+    return this.indicatorPresentor.indicate(enabled);
   }
 
   onIndicatorClick(tabId) {
