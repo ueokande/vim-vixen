@@ -1,8 +1,8 @@
 import ContentMessageListener from './infrastructures/content-message-listener';
 import SettingController from './controllers/setting';
-import VersionRepository from './controllers/version';
+import VersionController from './controllers/version';
 
 new SettingController().reload();
-new VersionRepository().notifyIfUpdated();
+new VersionController().notifyIfUpdated();
 
 new ContentMessageListener().run();
