@@ -48,6 +48,41 @@ export default class TabPresenter {
     return browser.tabs.remove(ids);
   }
 
+  async reopen() {
+    let window = await browser.windows.getCurrent();
+    let sessions = await browser.sessions.getRecentlyClosed();
+    let session = sessions.find((s) => {
+      return s.tab && s.tab.windowId === window.id;
+    });
+    if (!session) {
+      return;
+    }
+    if (session.tab) {
+      return browser.sessions.restore(session.tab.sessionId);
+    }
+    return browser.sessions.restore(session.window.sessionId);
+  }
+
+  reload(tabId, cache) {
+    return browser.tabs.reload(tabId, { bypassCache: cache });
+  }
+
+  setPinned(tabId, pinned) {
+    return browser.tabs.update(tabId, { pinned });
+  }
+
+  duplicate(id) {
+    return browser.tabs.duplicate(id);
+  }
+
+  getZoom(tabId) {
+    return browser.tabs.getZoom(tabId);
+  }
+
+  setZoom(tabId, factor) {
+    return browser.tabs.setZoom(tabId, factor);
+  }
+
   async createAdjacent(url, { openerTabId, active }) {
     let tabs = await browser.tabs.query({
       active: true, currentWindow: true

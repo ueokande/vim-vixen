@@ -4,6 +4,7 @@ import SettingController from '../controllers/setting';
 import FindController from '../controllers/find';
 import AddonEnabledController from '../controllers/addon-enabled';
 import LinkController from '../controllers/link';
+import OperationController from '../controllers/operation';
 
 export default class ContentMessageListener {
   constructor() {
@@ -12,6 +13,7 @@ export default class ContentMessageListener {
     this.findController = new FindController();
     this.addonEnabledController = new AddonEnabledController();
     this.linkController = new LinkController();
+    this.backgroundOperationController = new OperationController();
   }
 
   run() {
@@ -46,6 +48,8 @@ export default class ContentMessageListener {
     case messages.OPEN_URL:
       return this.onOpenUrl(
         message.newTab, message.url, sender.tab.id, message.background);
+    case messages.BACKGROUND_OPERATION:
+      return this.onBackgroundOperation(message.operation);
     }
   }
 
@@ -84,5 +88,9 @@ export default class ContentMessageListener {
       return this.linkController.openNewTab(url, openerId, background);
     }
     return this.linkController.openToTab(url, openerId);
+  }
+
+  onBackgroundOperation(operation) {
+    return this.backgroundOperationController.exec(operation);
   }
 }

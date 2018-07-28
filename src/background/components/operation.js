@@ -22,9 +22,6 @@ export default class BackgroundComponent {
 
   onMessage(message, sender) {
     switch (message.type) {
-    case messages.BACKGROUND_OPERATION:
-      return this.store.dispatch(
-        this.exec(message.operation, sender.tab));
     }
   }
 
