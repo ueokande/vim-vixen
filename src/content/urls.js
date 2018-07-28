@@ -1,4 +1,5 @@
 import messages from 'shared/messages';
+import * as urls from '../shared/urls';
 
 const yank = (win) => {
   let input = win.document.createElement('input');
@@ -14,7 +15,7 @@ const yank = (win) => {
   input.remove();
 };
 
-const paste = (win, newTab) => {
+const paste = (win, newTab, searchSettings) => {
   let textarea = win.document.createElement('textarea');
   win.document.body.append(textarea);
 
@@ -24,13 +25,13 @@ const paste = (win, newTab) => {
   textarea.focus();
 
   if (win.document.execCommand('paste')) {
-    if (/^(https?|ftp):\/\//.test(textarea.textContent)) {
-      browser.runtime.sendMessage({
-        type: messages.OPEN_URL,
-        url: textarea.textContent,
-        newTab: newTab ? newTab : false,
-      });
-    }
+    let value = textarea.textContent;
+    let url = urls.normalizeUrl(value, searchSettings);
+    browser.runtime.sendMessage({
+      type: messages.OPEN_URL,
+      url,
+      newTab,
+    });
   }
 
   textarea.remove();

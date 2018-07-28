@@ -83,7 +83,9 @@ const exec = (operation, repeat, settings, addonEnabled) => {
     consoleFrames.postInfo(window.document, 'Current url yanked');
     break;
   case operations.URLS_PASTE:
-    urls.paste(window, operation.newTab ? operation.newTab : false);
+    urls.paste(
+      window, operation.newTab ? operation.newTab : false, settings.search
+    );
     break;
   default:
     browser.runtime.sendMessage({
