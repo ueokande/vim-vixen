@@ -1,3 +1,8 @@
+const trimStart = (str) => {
+  // NOTE String.trimStart is available on Firefox 61
+  return str.replace(/^\s+/, '');
+};
+
 const normalizeUrl = (keywords, searchSettings) => {
   try {
     return new URL(keywords).href;
@@ -8,10 +13,10 @@ const normalizeUrl = (keywords, searchSettings) => {
     let template = searchSettings.engines[searchSettings.default];
     let query = keywords;
 
-    let first = keywords.trimStart().split(' ')[0];
+    let first = trimStart(keywords).split(' ')[0];
     if (Object.keys(searchSettings.engines).includes(first)) {
       template = searchSettings.engines[first];
-      query = keywords.trimStart().slice(first.length).trimStart();
+      query = trimStart(trimStart(keywords).slice(first.length));
     }
     return template.replace('{}', encodeURIComponent(query));
   }
