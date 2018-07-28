@@ -106,6 +106,9 @@ export default class CompletionsInteractor {
       url: tab.url,
       icon: tab.favIconUrl
     }));
+    if (items.length === 0) {
+      return Promise.resolve(Completions.empty());
+    }
     return new Completions([new CompletionGroup('Buffers', items)]);
   }
 
