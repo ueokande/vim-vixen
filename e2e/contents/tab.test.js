@@ -165,6 +165,7 @@ describe("tab test", () => {
   });
 
   it('opens view-source by gf', async () => {
+    await new Promise(resolve => setTimeout(resolve, 100));
     let win = await windows.get(targetWindow.id);
     let tab = win.tabs[0];
     await keys.press(tab.id, 'g');
