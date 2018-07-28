@@ -18,14 +18,12 @@ export default class ContentMessageListener {
 
   run() {
     browser.runtime.onMessage.addListener((message, sender) => {
-      try {
-        return this.onMessage(message, sender);
-      } catch (e) {
+      return this.onMessage(message, sender).catch((e) => {
         return browser.tabs.sendMessage(sender.tab.id, {
           type: messages.CONSOLE_SHOW_ERROR,
           text: e.message,
         });
-      }
+      });
     });
   }
 
