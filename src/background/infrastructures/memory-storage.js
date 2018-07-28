@@ -10,6 +10,10 @@ export default class MemoryStorage {
   }
 
   get(name) {
-    return JSON.parse(db[name]);
+    let data = db[name];
+    if (!data) {
+      return undefined;
+    }
+    return JSON.parse(data);
   }
 }

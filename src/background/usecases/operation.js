@@ -183,7 +183,9 @@ export default class OperationInteractor {
 
   onTabSelected(tabId) {
     let lastId = this.cache.get(CURRENT_SELECTED_KEY);
-    this.cache.set(LAST_SELECTED_KEY, lastId);
+    if (lastId) {
+      this.cache.set(LAST_SELECTED_KEY, lastId);
+    }
     this.cache.set(CURRENT_SELECTED_KEY, tabId);
   }
 }
