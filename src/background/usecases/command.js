@@ -78,10 +78,10 @@ export default class CommandIndicator {
     return this.tabPresenter.remove([tab.id]);
   }
 
-  async quitall() {
+  async quitAll() {
     let tabs = await this.tabPresenter.getAll();
     let ids = tabs.map(tab => tab.id);
-    this.tabPresenter.tabPresenter.remove(ids);
+    this.tabPresenter.remove(ids);
   }
 
   async addbookmark(title) {
