@@ -126,7 +126,7 @@ export default class OperationInteractor {
 
   async showCommand() {
     let tab = await this.tabPresenter.getCurrent();
-    this.consolePresenter.showCommand(tab.id, '');
+    return this.consolePresenter.showCommand(tab.id, '');
   }
 
   async showOpenCommand(alter) {
@@ -173,12 +173,12 @@ export default class OperationInteractor {
 
   async findStart() {
     let tab = await this.tabPresenter.getCurrent();
-    this.consolePresenter.showFind(tab.id);
+    return this.consolePresenter.showFind(tab.id);
   }
 
   async hideConsole() {
     let tab = await this.tabPresenter.getCurrent();
-    this.consolePresenter.hide(tab.id);
+    return this.consolePresenter.hide(tab.id);
   }
 
   onTabSelected(tabId) {

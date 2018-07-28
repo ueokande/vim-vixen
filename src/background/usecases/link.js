@@ -8,8 +8,7 @@ export default class LinkInteractor {
   }
 
   openToTab(url, tabId) {
-    this.tabPresenter.open(url, tabId);
-
+    return this.tabPresenter.open(url, tabId);
   }
 
   async openNewTab(url, openerId, background) {

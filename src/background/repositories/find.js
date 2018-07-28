@@ -12,7 +12,8 @@ export default class FindRepository {
   }
 
   setKeyword(keyword) {
-    return this.cache.set(FIND_KEYWORD_KEY, keyword);
+    this.cache.set(FIND_KEYWORD_KEY, keyword);
+    return Promise.resolve();
   }
 }
 
