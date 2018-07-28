@@ -48,6 +48,10 @@ export default class CommandController {
     let trimmed = line.trimStart();
     let words = trimmed.split(/ +/);
     let name = words[0];
+    if (words[0].length === 0) {
+      return Promise.resolve();
+    }
+
     let keywords = trimmed.slice(name.length).trimStart();
     switch (words[0]) {
     case 'o':
@@ -85,5 +89,6 @@ export default class CommandController {
     case 'set':
       return this.commandIndicator.set(keywords);
     }
+    throw new Error(words[0] + ' command is not defined');
   }
 }
