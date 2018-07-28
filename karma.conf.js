@@ -13,9 +13,9 @@ module.exports = function (config) {
     ],
 
     preprocessors: {
-      'test/main.js': [ 'webpack' ],
-      'test/**/*.test.js': [ 'webpack' ],
-      'test/**/*.test.jsx': [ 'webpack' ],
+      'test/main.js': [ 'webpack', 'sourcemap' ],
+      'test/**/*.test.js': [ 'webpack', 'sourcemap' ],
+      'test/**/*.test.jsx': [ 'webpack', 'sourcemap' ],
       'test/**/*.html': ['html2js']
     },
 
