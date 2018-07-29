@@ -44,7 +44,7 @@ body {
       background-position: 0 center;
       background-size: contain;
       background-repeat: no-repeat;
-      white-space: nowrap;
+      white-space: pre;
 
       &.vimvixen-completion-selected {
         background-color: yellow;

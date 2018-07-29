@@ -46,18 +46,6 @@ export default class TabPresenter {
     return browser.tabs.update(tabId, { active: true });
   }
 
-  async selectAt(index) {
-    let tabs = await browser.tabs.query({ currentWindow: true });
-    if (tabs.length < 2) {
-      return;
-    }
-    if (index < 0 || tabs.length <= index) {
-      throw new RangeError(`tab ${index + 1} does not exist`);
-    }
-    let id = tabs[index].id;
-    return browser.tabs.update(id, { active: true });
-  }
-
   remove(ids) {
     return browser.tabs.remove(ids);
   }
