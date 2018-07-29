@@ -1,3 +1,8 @@
+import MemoryStorage from '../infrastructures/memory-storage';
+
+const CURRENT_SELECTED_KEY = 'tabs.current.selected';
+const LAST_SELECTED_KEY = 'tabs.last.selected';
+
 export default class TabPresenter {
   open(url, tabId) {
     return browser.tabs.update(tabId, { url });
@@ -18,6 +23,15 @@ export default class TabPresenter {
     return browser.tabs.query({ currentWindow: true });
   }
 
+  async getLastSelectedId() {
+    let cache = new MemoryStorage();
+    let tabId = await cache.get(LAST_SELECTED_KEY);
+    if (tabId === null || typeof tabId === 'undefined') {
+      return;
+    }
+    return tabId;
+  }
+
   async getByKeyword(keyword, excludePinned = false) {
     let tabs = await browser.tabs.query({ currentWindow: true });
     return tabs.filter((t) => {
@@ -30,18 +44,6 @@ export default class TabPresenter {
 
   select(tabId) {
     return browser.tabs.update(tabId, { active: true });
-  }
-
-  async selectAt(index) {
-    let tabs = await browser.tabs.query({ currentWindow: true });
-    if (tabs.length < 2) {
-      return;
-    }
-    if (index < 0 || tabs.length <= index) {
-      throw new RangeError(`tab ${index + 1} does not exist`);
-    }
-    let id = tabs[index].id;
-    return browser.tabs.update(id, { active: true });
   }
 
   remove(ids) {
@@ -99,3 +101,14 @@ export default class TabPresenter {
     browser.tabs.onActivated.addListener(listener);
   }
 }
+
+let tabPresenter = new TabPresenter();
+tabPresenter.onSelected((tab) => {
+  let cache = new MemoryStorage();
+
+  let lastId = cache.get(CURRENT_SELECTED_KEY);
+  if (lastId) {
+    cache.set(LAST_SELECTED_KEY, lastId);
+  }
+  cache.set(CURRENT_SELECTED_KEY, tab.tabId);
+});

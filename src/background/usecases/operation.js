@@ -1,9 +1,5 @@
-import MemoryStorage from '../infrastructures/memory-storage';
 import TabPresenter from '../presenters/tab';
 import ConsolePresenter from '../presenters/console';
-
-const CURRENT_SELECTED_KEY = 'tabs.current.selected';
-const LAST_SELECTED_KEY = 'tabs.last.selected';
 
 const ZOOM_SETTINGS = [
   0.33, 0.50, 0.66, 0.75, 0.80, 0.90, 1.00,
@@ -13,11 +9,7 @@ const ZOOM_SETTINGS = [
 export default class OperationInteractor {
   constructor() {
     this.tabPresenter = new TabPresenter();
-    this.tabPresenter.onSelected(info => this.onTabSelected(info.tabId));
-
     this.consolePresenter = new ConsolePresenter();
-
-    this.cache = new MemoryStorage();
   }
 
   async close(force) {
@@ -69,7 +61,7 @@ export default class OperationInteractor {
   }
 
   async selectPrevSelected() {
-    let tabId = await this.cache.get(LAST_SELECTED_KEY);
+    let tabId = await this.tabPresenter.getLastSelectedId();
     if (tabId === null || typeof tabId === 'undefined') {
       return;
     }
@@ -179,14 +171,6 @@ export default class OperationInteractor {
   async hideConsole() {
     let tab = await this.tabPresenter.getCurrent();
     return this.consolePresenter.hide(tab.id);
-  }
-
-  onTabSelected(tabId) {
-    let lastId = this.cache.get(CURRENT_SELECTED_KEY);
-    if (lastId) {
-      this.cache.set(LAST_SELECTED_KEY, lastId);
-    }
-    this.cache.set(CURRENT_SELECTED_KEY, tabId);
   }
 }
 

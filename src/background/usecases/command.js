@@ -34,13 +34,29 @@ export default class CommandIndicator {
     return this.windowPresenter.create(url);
   }
 
+  // eslint-disable-next-line max-statements
   async buffer(keywords) {
     if (keywords.length === 0) {
       return;
     }
+
     if (!isNaN(keywords)) {
+      let tabs = await this.tabPresenter.getAll();
       let index = parseInt(keywords, 10) - 1;
-      return tabs.selectAt(index);
+      if (index < 0 || tabs.length <= index) {
+        throw new RangeError(`tab ${index + 1} does not exist`);
+      }
+      return this.tabPresenter.select(tabs[index].id);
+    } else if (keywords.trim() === '%') {
+      // Select current window
+      return;
+    } else if (keywords.trim() === '#') {
+      // Select last selected window
+      let lastId = await this.tabPresenter.getLastSelectedId();
+      if (typeof lastId === 'undefined' || lastId === null) {
+        throw new Error('No last selected tab');
+      }
+      return this.tabPresenter.select(lastId);
     }
 
     let current = await this.tabPresenter.getCurrent();
