@@ -27,7 +27,7 @@ const validateKeymaps = (keymaps) => {
 const validateSearch = (search) => {
   let engines = search.engines;
   for (let key of Object.keys(engines)) {
-    if (/\s/.test(key)) {
+    if ((/\s/).test(key)) {
       throw new Error(
         `While space in search engine name is not allowed: "${key}"`
       );
