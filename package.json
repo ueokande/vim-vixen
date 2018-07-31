@@ -42,7 +42,7 @@
     "karma-webpack": "^3.0.0",
     "mocha": "^5.2.0",
     "node-firefox-connect": "^1.2.0",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.9.2",
     "preact": "^8.2.9",
     "preact-redux": "^2.0.3",
     "redux": "^4.0.0",
