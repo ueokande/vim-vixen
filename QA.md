@@ -30,6 +30,8 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] <kbd>y</kbd>: yank current URL and show a message
 - [ ] <kbd>p</kbd>: open clipboard's URL in current tab
 - [ ] <kbd>P</kbd>: open clipboard's URL in new tab
+- [ ] <kbd>p</kbd>: search clipboard's keywords in current tab
+- [ ] <kbd>P</kbd>: search clipboard's keywords in new tab
 - [ ] Toggle enabled/disabled of plugin bu <kbd>Shift</kbd>+<kbd>Esc</kbd>
 - [ ] Hide error and info console by <kbd>Esc</kbd>
 - [ ] Vim-Vixen icons changes on <kbd>Shift</kbd>+<kbd>Esc</kbd>
@@ -76,12 +78,15 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `buffer 1`: select leftmost tab
 - [ ] `buffer 0`, `buffer <a number more than count of tabs>`: shows an error
 - [ ] select tabs rotationally when more than two tabs are matched
+- [ ] `buffer %`: select current tab (nothing to do)
+- [ ] `buffer #`: select last selected tab
 <br>
 
 - [ ] `addbookmark` creates a bookmark
 <br>
 
 - [ ] `q`, `quit`: close current tab
+- [ ] `qa`, `quitall`: close all tabs
 - [ ] `bdelete`: delete a not-pinned tab matches with keywords
 - [ ] `bdelete`: show errors no-tabs or more than 1 tabs matched
 - [ ] `bdelete`: can not delete pinned tab
@@ -98,16 +103,19 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `open<SP>`: show all engines and some history items
 - [ ] `open g`: complete search engines starts with `g` and matched with keywords `g`
 - [ ] `open foo bar`: complete history items matched with keywords `foo` and `bar`
+- [ ] `set `: show prperties starts with keywords
 - [ ] The completions shows histories, search engines, and bookmarks.
 - [ ] also `tabopen` and `winopen`
 - shortening commands such as `o` are not test in this release
 - [ ] Show completions for `:open`/`:tabopen`/`:buffer` on opening just after closed
+- [ ] Complete commands matched with input keywords in the prefix.
 
 #### Buffer command
 
 - [ ] `buffer`: show no completions
 - [ ] `buffer<SP>`: show all opened tabs in completion
 - [ ] `buffer x`: show tabs which has title and URL matches with `x`
+- [ ] shows tab index and marks
 
 #### Buffer command
 
