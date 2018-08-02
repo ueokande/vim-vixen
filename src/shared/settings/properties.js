@@ -16,7 +16,7 @@ const defaults = {
 };
 
 const docs = {
-  hintchars: 'Hint characters on follow mode',
+  hintchars: 'hint characters on follow mode',
   smoothscroll: 'smooth scroll',
   adjacenttab: 'open adjacent tabs',
 };
