@@ -40,7 +40,7 @@ export default {
     "zi": { "type": "zoom.in" },
     "zo": { "type": "zoom.out" },
     "zz": { "type": "zoom.neutral" },
-    "f": { "type": "follow.start", "newTab": false, "background": false },
+    "f": { "type": "follow.start", "newTab": false },
     "F": { "type": "follow.start", "newTab": true, "background": false },
     "H": { "type": "navigate.history.prev" },
     "L": { "type": "navigate.history.next" },
@@ -70,6 +70,11 @@ export default {
     }
   },
   "properties": {
-  }
+    "hintchars": "abcdefghijklmnopqrstuvwxyz",
+    "smoothscroll": false,
+    "adjacenttab": true
+  },
+  "blacklist": [
+  ]
 }`,
 };
