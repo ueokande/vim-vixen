@@ -58,22 +58,22 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 #### Exec a command
 
-- [ ] `<EMPTY>`, `<SP>`: do nothing
+- [ ] `<EMPTY>`: do nothing
 <br>
 
 - [ ] `open an apple`: search with keywords "an apple" by default search engine (google)
 - [ ] `open github.com`: open github.com
 - [ ] `open https://github.com`: open github.com
 - [ ] `open yahoo an apple`: search with keywords "an apple" by yahoo.com
-- [ ] `open yahoo`,`open yahoo<SP>`: search with empty keywords; yahoo redirects to top page
-- [ ] `open`,`open<SP>`: open default search engine
+- [ ] `open yahoo`: search with empty keywords; yahoo redirects to top page
+- [ ] `open`: open default search engine
 <br>
 
 - [ ] `tabopen`: do above tests replaced `open` with `tabopen`, and verify the page is opened in new tab
 - [ ] `winopen`: do above tests replaced `open` with `winopen`, and verify the page is opened in new window
 <br>
 
-- [ ] `buffer`,`buffer<SP>`: do nothing
+- [ ] `buffer`: do nothing
 - [ ] `buffer <title>`, `buffer <url>`: select tab which has an title matched with
 - [ ] `buffer 1`: select leftmost tab
 - [ ] `buffer 0`, `buffer <a number more than count of tabs>`: shows an error
@@ -99,7 +99,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 #### History and search engines
 
-- [ ] `open`: show no completions
 - [ ] `open<SP>`: show all engines and some history items
 - [ ] `open g`: complete search engines starts with `g` and matched with keywords `g`
 - [ ] `open foo bar`: complete history items matched with keywords `foo` and `bar`
@@ -107,12 +106,10 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] The completions shows histories, search engines, and bookmarks.
 - [ ] also `tabopen` and `winopen`
 - shortening commands such as `o` are not test in this release
-- [ ] Show completions for `:open`/`:tabopen`/`:buffer` on opening just after closed
 - [ ] Complete commands matched with input keywords in the prefix.
 
 #### Buffer command
 
-- [ ] `buffer`: show no completions
 - [ ] `buffer<SP>`: show all opened tabs in completion
 - [ ] `buffer x`: show tabs which has title and URL matches with `x`
 - [ ] shows tab index and marks
@@ -215,7 +212,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 ## Misc
 
-- [ ] Work after plugin reload
 - [ ] Work on `about:blank`
 - [ ] Able to map `<A-Z>` key.
 - [ ] Open file menu by <kbd>Alt</kbd>+<kbd>F</kbd> (Other than Mac OS)
