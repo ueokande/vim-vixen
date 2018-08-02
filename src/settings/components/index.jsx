@@ -68,6 +68,7 @@ class SettingsComponent extends Component {
 
   render() {
     let fields = null;
+    let disabled = this.props.error.length > 0;
     if (this.props.source === 'form') {
       fields = this.renderFormFields(this.props.form);
     } else if (this.props.source === 'json') {
@@ -84,7 +85,8 @@ class SettingsComponent extends Component {
             label='Use form'
             checked={this.props.source === 'form'}
             value='form'
-            onChange={this.bindSource.bind(this)} />
+            onChange={this.bindSource.bind(this)}
+            disabled={disabled} />
 
           <Input
             type='radio'
@@ -92,8 +94,8 @@ class SettingsComponent extends Component {
             label='Use plain JSON'
             checked={this.props.source === 'json'}
             value='json'
-            onChange={this.bindSource.bind(this)} />
-
+            onChange={this.bindSource.bind(this)}
+            disabled={disabled} />
           { fields }
         </form>
       </div>
@@ -128,6 +130,7 @@ class SettingsComponent extends Component {
     } else if (from === 'json' && to === 'form') {
       let b = window.confirm(DO_YOU_WANT_TO_CONTINUE);
       if (!b) {
+        this.forceUpdate();
         return;
       }
       this.props.dispatch(settingActions.switchToForm(this.props.json));

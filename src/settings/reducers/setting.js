@@ -14,11 +14,10 @@ export default function reducer(state = defaultState, action = {}) {
       source: action.source,
       json: action.json,
       form: action.form,
-      errors: '',
       error: '', };
   case actions.SETTING_SHOW_ERROR:
     return { ...state,
-      error: action.text,
+      error: action.error,
       json: action.json, };
   case actions.SETTING_SWITCH_TO_FORM:
     return { ...state,
