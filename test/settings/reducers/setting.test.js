@@ -25,7 +25,7 @@ describe("settings setting reducer", () => {
   it('return next state for SETTING_SHOW_ERROR', () => {
     let action = {
       type: actions.SETTING_SHOW_ERROR,
-      text: 'bad value',
+      error: 'bad value',
       json: '{}',
     };
     let state = settingReducer(undefined, action);
