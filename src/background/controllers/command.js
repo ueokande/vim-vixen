@@ -2,6 +2,11 @@ import CompletionsInteractor from '../usecases/completions';
 import CommandInteractor from '../usecases/command';
 import Completions from '../domains/completions';
 
+const trimStart = (str) => {
+  // NOTE String.trimStart is available on Firefox 61
+  return str.replace(/^\s+/, '');
+};
+
 export default class CommandController {
   constructor() {
     this.completionsInteractor = new CompletionsInteractor();
@@ -9,13 +14,13 @@ export default class CommandController {
   }
 
   getCompletions(line) {
-    let trimmed = line.trimStart();
+    let trimmed = trimStart(line);
     let words = trimmed.split(/ +/);
     let name = words[0];
     if (words.length === 1) {
       return this.completionsInteractor.queryConsoleCommand(name);
     }
-    let keywords = trimmed.slice(name.length).trimStart();
+    let keywords = trimStart(trimmed.slice(name.length));
     switch (words[0]) {
     case 'o':
     case 'open':
@@ -45,14 +50,14 @@ export default class CommandController {
 
   // eslint-disable-next-line complexity
   exec(line) {
-    let trimmed = line.trimStart();
+    let trimmed = trimStart(line);
     let words = trimmed.split(/ +/);
     let name = words[0];
     if (words[0].length === 0) {
       return Promise.resolve();
     }
 
-    let keywords = trimmed.slice(name.length).trimStart();
+    let keywords = trimStart(trimmed.slice(name.length));
     switch (words[0]) {
     case 'o':
     case 'open':
