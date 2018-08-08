@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: circleci/node:10-stretch-browsers
     environment:
-      - FIREFOX_VERSION: "60.0.2"
+      - FIREFOX_VERSION: "60.0esr"
     working_directory: ~
     steps:
       - restore_cache:
