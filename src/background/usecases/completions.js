@@ -183,10 +183,11 @@ export default class CompletionsInteractor {
 
   async queryBookmarkItems(name, keywords) {
     let bookmarks = await this.completionRepository.queryBookmarks(keywords);
-    return bookmarks.map(page => new CompletionItem({
-      caption: page.title,
-      content: name + ' ' + page.url,
-      url: page.url
-    }));
+    return bookmarks.slice(0, COMPLETION_ITEM_LIMIT)
+      .map(page => new CompletionItem({
+        caption: page.title,
+        content: name + ' ' + page.url,
+        url: page.url
+      }));
   }
 }
