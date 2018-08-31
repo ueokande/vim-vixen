@@ -6,7 +6,7 @@ export default {
   SETTING_SET: 'setting.set',
 
   // User input
-  INPUT_KEY_PRESS: 'input.key,press',
+  INPUT_KEY_PRESS: 'input.key.press',
   INPUT_CLEAR_KEYS: 'input.clear.keys',
 
   // Completion
