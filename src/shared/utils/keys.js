@@ -1,4 +1,4 @@
-const modifierdKeyName = (name) => {
+const modifiedKeyName = (name) => {
   if (name.length === 1) {
     return name;
   } else if (name === 'Escape') {
@@ -8,7 +8,7 @@ const modifierdKeyName = (name) => {
 };
 
 const fromKeyboardEvent = (e) => {
-  let key = modifierdKeyName(e.key);
+  let key = modifiedKeyName(e.key);
   let shift = e.shiftKey;
   if (key.length === 1 && key.toUpperCase() === key.toLowerCase()) {
     // make shift false for symbols to enable key bindings by symbold keys.
@@ -17,7 +17,7 @@ const fromKeyboardEvent = (e) => {
   }
 
   return {
-    key: modifierdKeyName(e.key),
+    key: modifiedKeyName(e.key),
     repeat: e.repeat,
     shiftKey: shift,
     ctrlKey: e.ctrlKey,
