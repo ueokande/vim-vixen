@@ -9,6 +9,7 @@ export default class ConsoleComponent {
     this.wrapper = wrapper;
     this.store = store;
     this.prevMode = '';
+    this.timer = null;
 
     let doc = this.wrapper.ownerDocument;
     let input = doc.querySelector('#vimvixen-console-command-input');
@@ -59,6 +60,7 @@ export default class ConsoleComponent {
     if (e.keyCode === KeyboardEvent.DOM_VK_ESCAPE && e.ctrlKey) {
       this.store.dispatch(consoleActions.hideCommand());
     }
+    clearTimeout(this.timer);
     switch (e.keyCode) {
     case KeyboardEvent.DOM_VK_ESCAPE:
       return this.store.dispatch(consoleActions.hideCommand());
@@ -99,9 +101,14 @@ export default class ConsoleComponent {
   onInput(e) {
     let state = this.store.getState();
     let text = e.target.value;
+    clearTimeout(this.timer);
     this.store.dispatch(consoleActions.setConsoleText(text));
     if (state.mode === 'command') {
-      this.store.dispatch(consoleActions.getCompletions(text));
+        this.timer = setTimeout(function(_text, _this) {
+            return function() { 
+                _this.store.dispatch(consoleActions.getCompletions(_text));
+            }
+        }(text, this), 150);
     }
   }
 
