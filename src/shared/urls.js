@@ -3,23 +3,29 @@ const trimStart = (str) => {
   return str.replace(/^\s+/, '');
 };
 
+const SUPPORTED_PROTOCOLS = ['http:', 'https:', 'ftp:', 'mailto:'];
+
 const normalizeUrl = (keywords, searchSettings) => {
   try {
-    return new URL(keywords).href;
+    let u = new URL(keywords);
+    if (SUPPORTED_PROTOCOLS.includes(u.protocol.toLowerCase())) {
+      return u.href;
+    }
   } catch (e) {
-    if (keywords.includes('.') && !keywords.includes(' ')) {
-      return 'http://' + keywords;
-    }
-    let template = searchSettings.engines[searchSettings.default];
-    let query = keywords;
-
-    let first = trimStart(keywords).split(' ')[0];
-    if (Object.keys(searchSettings.engines).includes(first)) {
-      template = searchSettings.engines[first];
-      query = trimStart(trimStart(keywords).slice(first.length));
-    }
-    return template.replace('{}', encodeURIComponent(query));
+    // fallthrough
   }
+  if (keywords.includes('.') && !keywords.includes(' ')) {
+    return 'http://' + keywords;
+  }
+  let template = searchSettings.engines[searchSettings.default];
+  let query = keywords;
+
+  let first = trimStart(keywords).split(' ')[0];
+  if (Object.keys(searchSettings.engines).includes(first)) {
+    template = searchSettings.engines[first];
+    query = trimStart(trimStart(keywords).slice(first.length));
+  }
+  return template.replace('{}', encodeURIComponent(query));
 };
 
 export { normalizeUrl };

@@ -11,6 +11,8 @@ describe("shared/commands/parsers", () => {
     };
 
     it('convertes search url', () => {
+      expect(parsers.normalizeUrl('google.com', config))
+        .to.equal('http://google.com');
       expect(parsers.normalizeUrl('google apple', config))
         .to.equal('https://google.com/search?q=apple');
       expect(parsers.normalizeUrl('yahoo apple', config))
@@ -24,6 +26,13 @@ describe("shared/commands/parsers", () => {
     it('user default  search engine', () => {
       expect(parsers.normalizeUrl('apple banana', config))
         .to.equal('https://google.com/search?q=apple%20banana');
+    });
+
+    it('searches with a word containing a colon', () => {
+      expect(parsers.normalizeUrl('foo:', config))
+        .to.equal('https://google.com/search?q=foo%3A');
+      expect(parsers.normalizeUrl('std::vector', config))
+        .to.equal('https://google.com/search?q=std%3A%3Avector');
     });
   });
 });
