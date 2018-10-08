@@ -36,18 +36,29 @@ export default class CompletionsInteractor {
   }
 
   async queryOpen(name, keywords) {
+    let settings = await this.settingRepository.get();
     let groups = [];
-    let engines = await this.querySearchEngineItems(name, keywords);
-    if (engines.length > 0) {
-      groups.push(new CompletionGroup('Search Engines', engines));
-    }
-    let histories = await this.queryHistoryItems(name, keywords);
-    if (histories.length > 0) {
-      groups.push(new CompletionGroup('History', histories));
-    }
-    let bookmarks = await this.queryBookmarkItems(name, keywords);
-    if (bookmarks.length > 0) {
-      groups.push(new CompletionGroup('Bookmarks', bookmarks));
+
+    for (let c of settings.properties.complete) {
+      if (c === 's') {
+        // eslint-disable-next-line no-await-in-loop
+        let engines = await this.querySearchEngineItems(name, keywords);
+        if (engines.length > 0) {
+          groups.push(new CompletionGroup('Search Engines', engines));
+        }
+      } else if (c === 'h') {
+        // eslint-disable-next-line no-await-in-loop
+        let histories = await this.queryHistoryItems(name, keywords);
+        if (histories.length > 0) {
+          groups.push(new CompletionGroup('History', histories));
+        }
+      } else if (c === 'b') {
+        // eslint-disable-next-line no-await-in-loop
+        let bookmarks = await this.queryBookmarkItems(name, keywords);
+        if (bookmarks.length > 0) {
+          groups.push(new CompletionGroup('Bookmarks', bookmarks));
+        }
+      }
     }
     return new Completions(groups);
   }
