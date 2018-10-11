@@ -22,4 +22,10 @@ export default {
 
   // Find
   FIND_SET_KEYWORD: 'find.set.keyword',
+
+  // Mark
+  MARK_START_SET: 'mark.start.set',
+  MARK_START_JUMP: 'mark.start.jump',
+  MARK_CANCEL: 'mark.cancel',
+  MARK_SET_LOCAL: 'mark.set.local',
 };
