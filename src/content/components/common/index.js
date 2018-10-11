@@ -1,6 +1,7 @@
 import InputComponent from './input';
-import KeymapperComponent from './keymapper';
 import FollowComponent from './follow';
+import MarkComponent from './mark';
+import KeymapperComponent from './keymapper';
 import * as settingActions from 'content/actions/setting';
 import messages from 'shared/messages';
 import * as addonActions from '../../actions/addon';
@@ -8,11 +9,13 @@ import * as blacklists from 'shared/blacklists';
 
 export default class Common {
   constructor(win, store) {
-    const follow = new FollowComponent(win, store);
     const input = new InputComponent(win.document.body, store);
+    const follow = new FollowComponent(win, store);
+    const mark = new MarkComponent(win.document.body, store);
     const keymapper = new KeymapperComponent(store);
 
     input.onKey(key => follow.key(key));
+    input.onKey(key => mark.key(key));
     input.onKey(key => keymapper.key(key));
 
     this.win = win;

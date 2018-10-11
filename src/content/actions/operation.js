@@ -40,16 +40,16 @@ const exec = (operation, repeat, settings, addonEnabled) => {
     scrolls.scrollPages(operation.count, smoothscroll, repeat);
     break;
   case operations.SCROLL_TOP:
-    scrolls.scrollTop(smoothscroll, repeat);
+    scrolls.scrollToTop(smoothscroll);
     break;
   case operations.SCROLL_BOTTOM:
-    scrolls.scrollBottom(smoothscroll, repeat);
+    scrolls.scrollToBottom(smoothscroll);
     break;
   case operations.SCROLL_HOME:
-    scrolls.scrollHome(smoothscroll, repeat);
+    scrolls.scrollToHome(smoothscroll);
     break;
   case operations.SCROLL_END:
-    scrolls.scrollEnd(smoothscroll, repeat);
+    scrolls.scrollToEnd(smoothscroll);
     break;
   case operations.FOLLOW_START:
     window.top.postMessage(JSON.stringify({
