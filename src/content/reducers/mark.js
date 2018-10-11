@@ -16,7 +16,7 @@ export default function reducer(state = defaultState, action = {}) {
     return { ...state, setMode: false, jumpMode: false };
   case actions.MARK_SET_LOCAL: {
     let marks = { ...state.marks };
-    marks[action.key] = { y: action.y };
+    marks[action.key] = { x: action.x, y: action.y };
     return { ...state, setMode: false, marks };
   }
   default:

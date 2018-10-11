@@ -12,10 +12,11 @@ const cancel = () => {
   return { type: actions.MARK_CANCEL };
 };
 
-const setLocal = (key, y) => {
+const setLocal = (key, x, y) => {
   return {
     type: actions.MARK_SET_LOCAL,
     key,
+    x,
     y,
   };
 };

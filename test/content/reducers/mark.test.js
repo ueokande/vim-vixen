@@ -31,9 +31,11 @@ describe("mark reducer", () => {
   });
 
   it('stores local mark', () => {
-    let action = { type: actions.MARK_SET_LOCAL, key: 'a', y: 10 };
-    let state = reducer(undefined, action);
+    let action = { type: actions.MARK_SET_LOCAL, key: 'a', x: 20, y: 30};
+    let state = reducer({ setMode: true }, action);
+    expect(state.setMode).to.be.false;
     expect(state.marks['a']).to.be.an('object')
-    expect(state.marks['a'].y).to.equal(10)
+    expect(state.marks['a'].x).to.equal(20)
+    expect(state.marks['a'].y).to.equal(30)
   });
 });
