@@ -70,7 +70,7 @@ export default {
   FIND_NEXT: 'find.next',
   FIND_PREV: 'find.prev',
 
-  /// Mark
+  // Mark
   MARK_SET_PREFIX: 'mark.set.prefix',
   MARK_JUMP_PREFIX: 'mark.jump.prefix',
 };
