@@ -6,6 +6,7 @@ import * as focuses from 'content/focuses';
 import * as urls from 'content/urls';
 import * as consoleFrames from 'content/console-frames';
 import * as addonActions from './addon';
+import * as markActions from './mark';
 import * as properties from 'shared/settings/properties';
 
 // eslint-disable-next-line complexity, max-lines-per-function
@@ -57,6 +58,10 @@ const exec = (operation, repeat, settings, addonEnabled) => {
       background: operation.background,
     }), '*');
     break;
+  case operations.MARK_SET_PREFIX:
+    return markActions.startSet();
+  case operations.MARK_JUMP_PREFIX:
+    return markActions.startJump();
   case operations.NAVIGATE_HISTORY_PREV:
     navigates.historyPrev(window);
     break;

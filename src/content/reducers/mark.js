@@ -1,19 +1,19 @@
 import actions from 'content/actions';
 
 const defaultState = {
-  set: false,
-  jump: false,
+  setMode: false,
+  jumpMode: false,
   marks: {},
 };
 
 export default function reducer(state = defaultState, action = {}) {
   switch (action.type) {
   case actions.MARK_START_SET:
-    return { ...state, set: true };
+    return { ...state, setMode: true };
   case actions.MARK_START_JUMP:
-    return { ...state, jump: true };
+    return { ...state, jumpMode: true };
   case actions.MARK_CANCEL:
-    return { ...state, set: false, jump: false };
+    return { ...state, setMode: false, jumpMode: false };
   case actions.MARK_SET_LOCAL: {
     let marks = { ...state.marks };
     marks[action.key] = { y: action.y };
