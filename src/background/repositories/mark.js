@@ -14,13 +14,13 @@ export default class MarkRepository {
     if (!data) {
       return Promise.resolve(undefined);
     }
-    let mark = new GlobalMark(data.tabId, data.x, data.y);
+    let mark = new GlobalMark(data.tabId, data.url, data.x, data.y);
     return Promise.resolve(mark);
   }
 
   setMark(key, mark) {
     let marks = this.getOrEmptyMarks();
-    marks[key] = { tabId: mark.tabId, x: mark.x, y: mark.y };
+    marks[key] = { tabId: mark.tabId, url: mark.url, x: mark.x, y: mark.y };
     this.cache.set(MARK_KEY, marks);
 
     return Promise.resolve();

@@ -7,6 +7,10 @@ const cancelKey = (key) => {
   return key.key === 'Esc' || key.key === '[' && key.ctrlKey;
 };
 
+const globalKey = (key) => {
+  return (/^[A-Z0-9]$/).test(key);
+};
+
 export default class MarkComponent {
   constructor(body, store) {
     this.body = body;
@@ -30,9 +34,9 @@ export default class MarkComponent {
 
     if (key.ctrlKey || key.metaKey || key.altKey) {
       consoleFrames.postError(window.document, 'Unknown mark');
-    } else if (key.shiftKey && markStage.setMode) {
+    } else if (globalKey(key.key) && markStage.setMode) {
       this.doSetGlobal(key);
-    } else if (key.shiftKey && markStage.jumpMode) {
+    } else if (globalKey(key.key) && markStage.jumpMode) {
       this.doJumpGlobal(key);
     } else if (markStage.setMode) {
       this.doSet(key);

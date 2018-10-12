@@ -22,4 +22,12 @@ export default class ContentMessageClient {
       type: messages.ADDON_TOGGLE_ENABLED,
     });
   }
+
+  scrollTo(tabId, x, y) {
+    return browser.tabs.sendMessage(tabId, {
+      type: messages.TAB_SCROLL_TO,
+      x,
+      y,
+    });
+  }
 }

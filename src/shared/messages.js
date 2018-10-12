@@ -46,6 +46,8 @@ export default {
   MARK_SET_GLOBAL: 'mark.set.global',
   MARK_JUMP_GLOBAL: 'mark.jump.global',
 
+  TAB_SCROLL_TO: 'tab.scroll.to',
+
   FIND_NEXT: 'find.next',
   FIND_PREV: 'find.prev',
   FIND_GET_KEYWORD: 'find.get.keyword',
