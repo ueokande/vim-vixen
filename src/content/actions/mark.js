@@ -1,4 +1,5 @@
 import actions from 'content/actions';
+import messages from 'shared/messages';
 
 const startSet = () => {
   return { type: actions.MARK_START_SET };
@@ -21,6 +22,25 @@ const setLocal = (key, x, y) => {
   };
 };
 
+const setGlobal = (key, x, y) => {
+  browser.runtime.sendMessage({
+    type: messages.MARK_SET_GLOBAL,
+    key,
+    x,
+    y,
+  });
+  return { type: '' };
+};
+
+const jumpGlobal = (key) => {
+  browser.runtime.sendMessage({
+    type: messages.MARK_JUMP_GLOBAL,
+    key,
+  });
+  return { type: '' };
+};
+
 export {
   startSet, startJump, cancel, setLocal,
+  setGlobal, jumpGlobal,
 };

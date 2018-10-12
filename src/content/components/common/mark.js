@@ -30,8 +30,10 @@ export default class MarkComponent {
 
     if (key.ctrlKey || key.metaKey || key.altKey) {
       consoleFrames.postError(window.document, 'Unknown mark');
-    } else if (key.shiftKey) {
-      consoleFrames.postError(window.document, 'Globa marks not supported');
+    } else if (key.shiftKey && markStage.setMode) {
+      this.doSetGlobal(key);
+    } else if (key.shiftKey && markStage.jumpMode) {
+      this.doJumpGlobal(key);
     } else if (markStage.setMode) {
       this.doSet(key);
     } else if (markStage.jumpMode) {
@@ -55,5 +57,14 @@ export default class MarkComponent {
 
     let { x, y } = marks[key.key];
     scrolls.scrollTo(x, y, smoothscroll);
+  }
+
+  doSetGlobal(key) {
+    let { x, y } = scrolls.getScroll();
+    this.store.dispatch(markActions.setGlobal(key.key, x, y));
+  }
+
+  doJumpGlobal(key) {
+    this.store.dispatch(markActions.jumpGlobal(key.key));
   }
 }
