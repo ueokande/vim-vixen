@@ -3,6 +3,7 @@ import FollowController from './follow-controller';
 import FindComponent from './find';
 import * as consoleFrames from '../../console-frames';
 import messages from 'shared/messages';
+import * as scrolls from 'content/scrolls';
 
 export default class TopContent {
 
@@ -33,6 +34,8 @@ export default class TopContent {
         type: messages.ADDON_ENABLED_RESPONSE,
         enabled: addonState.enabled,
       });
+    case messages.TAB_SCROLL_TO:
+      return scrolls.scrollTo(message.x, message.y, false);
     }
   }
 }

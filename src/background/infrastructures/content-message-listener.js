@@ -5,6 +5,7 @@ import FindController from '../controllers/find';
 import AddonEnabledController from '../controllers/addon-enabled';
 import LinkController from '../controllers/link';
 import OperationController from '../controllers/operation';
+import MarkController from '../controllers/mark';
 
 export default class ContentMessageListener {
   constructor() {
@@ -14,6 +15,7 @@ export default class ContentMessageListener {
     this.addonEnabledController = new AddonEnabledController();
     this.linkController = new LinkController();
     this.backgroundOperationController = new OperationController();
+    this.markController = new MarkController();
   }
 
   run() {
@@ -59,6 +61,10 @@ export default class ContentMessageListener {
         message.newTab, message.url, sender.tab.id, message.background);
     case messages.BACKGROUND_OPERATION:
       return this.onBackgroundOperation(message.operation);
+    case messages.MARK_SET_GLOBAL:
+      return this.onMarkSetGlobal(message.key, message.x, message.y);
+    case messages.MARK_JUMP_GLOBAL:
+      return this.onMarkJumpGlobal(message.key);
     }
   }
 
@@ -101,5 +107,13 @@ export default class ContentMessageListener {
 
   onBackgroundOperation(operation) {
     return this.backgroundOperationController.exec(operation);
+  }
+
+  onMarkSetGlobal(key, x, y) {
+    return this.markController.setGlobal(key, x, y);
+  }
+
+  onMarkJumpGlobal(key) {
+    return this.markController.jumpGlobal(key);
   }
 }

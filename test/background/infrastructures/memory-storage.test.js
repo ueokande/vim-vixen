@@ -1,8 +1,6 @@
 import MemoryStorage from 'background/infrastructures/memory-storage';
 
 describe("background/infrastructures/memory-storage", () => {
-  let versionRepository;
-
   it('stores values', () => {
     let cache = new MemoryStorage();
     cache.set('number', 123);

@@ -130,6 +130,11 @@ const scroller = (element, smooth, repeat) => {
   return new RoughtScroller(element);
 };
 
+const getScroll = () => {
+  let target = scrollTarget();
+  return { x: target.scrollLeft, y: target.scrollTop };
+};
+
 const scrollVertically = (count, smooth, repeat) => {
   let target = scrollTarget();
   let x = target.scrollLeft;
@@ -158,35 +163,42 @@ const scrollPages = (count, smooth, repeat) => {
   scroller(target, smooth, repeat).scroll(x, y);
 };
 
-const scrollTop = (smooth, repeat) => {
+const scrollTo = (x, y, smooth) => {
+  let target = scrollTarget();
+  scroller(target, smooth, false).scroll(x, y);
+};
+
+const scrollToTop = (smooth) => {
   let target = scrollTarget();
   let x = target.scrollLeft;
   let y = 0;
-  scroller(target, smooth, repeat).scroll(x, y);
+  scroller(target, smooth, false).scroll(x, y);
 };
 
-const scrollBottom = (smooth, repeat) => {
+const scrollToBottom = (smooth) => {
   let target = scrollTarget();
   let x = target.scrollLeft;
   let y = target.scrollHeight;
-  scroller(target, smooth, repeat).scroll(x, y);
+  scroller(target, smooth, false).scroll(x, y);
 };
 
-const scrollHome = (smooth, repeat) => {
+const scrollToHome = (smooth) => {
   let target = scrollTarget();
   let x = 0;
   let y = target.scrollTop;
-  scroller(target, smooth, repeat).scroll(x, y);
+  scroller(target, smooth, false).scroll(x, y);
 };
 
-const scrollEnd = (smooth, repeat) => {
+const scrollToEnd = (smooth) => {
   let target = scrollTarget();
   let x = target.scrollWidth;
   let y = target.scrollTop;
-  scroller(target, smooth, repeat).scroll(x, y);
+  scroller(target, smooth, false).scroll(x, y);
 };
 
 export {
+  getScroll,
   scrollVertically, scrollHorizonally, scrollPages,
-  scrollTop, scrollBottom, scrollHome, scrollEnd
+  scrollTo,
+  scrollToTop, scrollToBottom, scrollToHome, scrollToEnd
 };

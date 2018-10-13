@@ -42,6 +42,8 @@ export default {
     "zz": { "type": "zoom.neutral" },
     "f": { "type": "follow.start", "newTab": false },
     "F": { "type": "follow.start", "newTab": true, "background": false },
+    "m": { "type": "mark.set.prefix" },
+    "'": { "type": "mark.jump.prefix" },
     "H": { "type": "navigate.history.prev" },
     "L": { "type": "navigate.history.next" },
     "[[": { "type": "navigate.link.prev" },
