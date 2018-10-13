@@ -17,6 +17,9 @@ const KeyMapFields = [
     ['scroll.pages?{"count":-1}', 'Scroll up by a screen'],
     ['scroll.pages?{"count":1}', 'Scroll down by a screen'],
   ], [
+    ['mark.set.prefix', 'Set mark at current position'],
+    ['mark.jump.prefix', 'Jump to the mark'],
+  ], [
     ['tabs.close', 'Close a tab'],
     ['tabs.reopen', 'Reopen closed tab'],
     ['tabs.next?{"count":1}', 'Select next Tab'],
