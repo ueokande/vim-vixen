@@ -85,18 +85,6 @@ export default class TabPresenter {
     return browser.tabs.setZoom(tabId, factor);
   }
 
-  async createAdjacent(url, { openerTabId, active }) {
-    let tabs = await browser.tabs.query({
-      active: true, currentWindow: true
-    });
-    return browser.tabs.create({
-      url,
-      openerTabId,
-      active,
-      index: tabs[0].index + 1
-    });
-  }
-
   onSelected(listener) {
     browser.tabs.onActivated.addListener(listener);
   }

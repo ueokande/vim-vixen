@@ -74,7 +74,6 @@ export default {
   "properties": {
     "hintchars": "abcdefghijklmnopqrstuvwxyz",
     "smoothscroll": false,
-    "adjacenttab": true,
     "complete": "sbh"
   },
   "blacklist": [

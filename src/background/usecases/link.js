@@ -11,14 +11,7 @@ export default class LinkInteractor {
     return this.tabPresenter.open(url, tabId);
   }
 
-  async openNewTab(url, openerId, background) {
-    let settings = await this.settingRepository.get();
-    let { adjacenttab } = settings.properties;
-    if (adjacenttab) {
-      return this.tabPresenter.createAdjacent(url, {
-        openerTabId: openerId, active: !background
-      });
-    }
+  openNewTab(url, openerId, background) {
     return this.tabPresenter.create(url, {
       openerTabId: openerId, active: !background
     });

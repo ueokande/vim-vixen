@@ -50,8 +50,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] Open new tab in background by `"background": true`
 - [ ] Configure custom hint character by `:set hintchars=012345678`
 - [ ] Configure custom hint character by settings `"hintchars": "012345678"` in add-on preferences
-- [ ] Configure adjacent tab by `:set adjacenttab`
-- [ ] Configure adjacent tab by settings `adjacenttab: true` in add-on preferences
 - [ ] Opened tabs is in child on Tree Style Tab
 
 ### Consoles
