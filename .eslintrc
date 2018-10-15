@@ -62,6 +62,7 @@
     "quote-props": "off",
     "quotes": ["error", "single", { "allowTemplateLiterals": true }],
     "require-jsdoc": "off",
+    "require-unicode-regexp": "off",
     "sort-imports": "off",
     "sort-keys": "off",
     "sort-vars": "off",
