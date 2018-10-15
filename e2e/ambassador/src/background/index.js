@@ -1,6 +1,6 @@
 import {
   WINDOWS_CREATE, WINDOWS_REMOVE, WINDOWS_GET,
-  TABS_CREATE, TABS_SELECT_AT, TABS_GET, TABS_UPDATE,
+  TABS_CREATE, TABS_SELECT_AT, TABS_GET, TABS_UPDATE, TABS_REMOVE,
   TABS_GET_ZOOM, TABS_SET_ZOOM,
   EVENT_KEYPRESS, EVENT_KEYDOWN, EVENT_KEYUP,
   SCROLL_GET, SCROLL_SET,
@@ -30,6 +30,8 @@ receiveContentMessage((message) => {
     return browser.tabs.get(message.tabId);
   case TABS_UPDATE:
     return browser.tabs.update(message.tabId, message.properties);
+  case TABS_REMOVE:
+    return browser.tabs.remove(message.tabId);
   case TABS_GET_ZOOM:
     return browser.tabs.getZoom(message.tabId);
   case TABS_SET_ZOOM:

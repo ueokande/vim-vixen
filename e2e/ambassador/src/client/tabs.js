@@ -1,5 +1,5 @@
 import {
-  TABS_CREATE, TABS_SELECT_AT, TABS_GET, TABS_UPDATE,
+  TABS_CREATE, TABS_SELECT_AT, TABS_GET, TABS_UPDATE, TABS_REMOVE,
   TABS_GET_ZOOM, TABS_SET_ZOOM,
 } from '../shared/messages';
 import * as ipc from './ipc';
@@ -35,6 +35,13 @@ const update = (tabId, properties) => {
   });
 };
 
+const remove = (tabId) => {
+  return ipc.send({
+    type: TABS_REMOVE,
+    tabId
+  });
+};
+
 const getZoom = (tabId) => {
   return ipc.send({
     tabId,
@@ -50,4 +57,4 @@ const setZoom = (tabId, factor) => {
   });
 };
 
-export { create, selectAt, get, update, getZoom, setZoom };
+export { create, selectAt, get, update, remove, getZoom, setZoom };
