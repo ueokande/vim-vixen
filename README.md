@@ -56,6 +56,10 @@ See [console commands](#console-commands) section for more detailed description
 - <kbd>G</kbd>: scroll to bottom of a page
 - <kbd>0</kbd>: scroll to the leftmost part of a page
 - <kbd>$</kbd>: scroll to the rightmost part of a page
+- <kbd>m</kbd>: set a mark from current position
+- <kbd>'</kbd>: jump to position by the mark
+
+Lowercase alphabet mark (`[a-z]`) stores position on the current tab. Upper alphabet and numeric mark (`[A-Z0-9]`) stores position and tab.
 
 #### Zoom
 
@@ -217,6 +221,19 @@ Set hint characters
 
 ```
 :set hintchars=0123456789
+```
+
+#### `complete` property
+
+Set completion items on `open`, `tabopen` `winopen` commands.
+The allowed value is character sequence of `s`, `b`, or `n`.
+Each character presents as following:
+- `s`: search engines
+- `b`: bookmark items
+- `h`: history items.
+
+```
+:set complete=sbn
 ```
 
 ### Search engines
