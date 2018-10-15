@@ -1,11 +1,15 @@
-version: 2
-jobs:
-  build:
+version: 2.1
+
+executors:
+  default:
     docker:
       - image: circleci/node:10-stretch-browsers
     environment:
       - FIREFOX_VERSION: "60.0esr"
     working_directory: ~
+
+commands:
+  install_firefox:
     steps:
       - restore_cache:
           key: firefox-bin
@@ -23,9 +27,10 @@ jobs:
           key: firefox-bin
           paths:
             - ~/firefox
-      - run: sudo apt-get update && sudo apt-get install -y libgtk-3-0 libdbus-glib-1-2
+      - run: echo 'export PATH=~/firefox/$FIREFOX_VERSION:$PATH' >> $BASH_ENV
 
-      - checkout
+  setup_npm:
+    steps:
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
@@ -36,10 +41,36 @@ jobs:
           paths:
             - node_modules
 
-      - run: echo 'export PATH=~/firefox/$FIREFOX_VERSION:$PATH' >> $BASH_ENV
+jobs:
+  build:
+    executor:
+      name: default
+    steps:
+      - install_firefox
+      - checkout
+      - setup_npm
       - run: npm run lint
       - run: npm test
       - run: npm run package
+
+  e2e:
+    executor:
+      name: default
+    steps:
+      - install_firefox
+      - checkout
+      - setup_npm
       - run: npm run build
       - run: npm run ambassador:build
-      - run: node >/dev/null e2e/web-server & npm run test:e2e
+      - run:
+          name: Run web server
+          command: node e2e/web-server
+          background: true
+      - run: npm run test:e2e
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - e2e
