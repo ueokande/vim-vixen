@@ -4,12 +4,6 @@
 
 Test operations with default key maps.
 
-#### Scrolling
-
-- [ ] Smooth scroll by `:set smoothscroll`
-- [ ] Non-smooth scroll by `:set nosmoothscroll`
-- [ ] Configure custom hint character by settings `"smoothscroll": true`, `"smoothscroll": false`
-
 #### Console
 
 The behaviors of the console are tested in [Console section](#consoles).
@@ -48,9 +42,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] Select link and open it in new tab in `<iframe>`/`<frame`> on following by <kbd>F</kbd>
 - [ ] Select link and open it in `<area>` tags, for <kbd>f</kbd> and <kbd>F</kbd>
 - [ ] Open new tab in background by `"background": true`
-- [ ] Configure custom hint character by `:set hintchars=012345678`
-- [ ] Configure custom hint character by settings `"hintchars": "012345678"` in add-on preferences
-- [ ] Opened tabs is in child on Tree Style Tab
 
 ### Consoles
 
@@ -121,6 +112,20 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 - [ ] Select next item by <kbd>Tab</kbd> and previous item by <kbd>Shift</kbd>+<kbd>Tab</kbd>
 - [ ] Reopen tab on *only current window* by <kbd>u</kbd>
+
+### Properties
+
+- [ ] Configure custom hint character by `:set hintchars=012345678`
+- [ ] Configure custom hint character by settings `"hintchars": "012345678"` in add-on preferences
+- [ ] Opened tabs is in child on Tree Style Tab
+
+- [ ] Smooth scroll by `:set smoothscroll`
+- [ ] Non-smooth scroll by `:set nosmoothscroll`
+- [ ] Configure smooth scroll by settings `"smoothscroll": true`, `"smoothscroll": false`
+
+- [ ] Show search engine, bookmark and history items in order by `:set complete=sbh`
+- [ ] Show bookmark, search engine, and search engine items in order by `:set complete=bss`
+- [ ] Configure completion items by setting `"smoothscroll": "sbh"`, `"smoothscroll": "bss"`
 
 ### Settings
 
