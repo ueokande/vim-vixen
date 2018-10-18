@@ -125,7 +125,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 - [ ] Show search engine, bookmark and history items in order by `:set complete=sbh`
 - [ ] Show bookmark, search engine, and search engine items in order by `:set complete=bss`
-- [ ] Configure completion items by setting `"smoothscroll": "sbh"`, `"smoothscroll": "bss"`
+- [ ] Configure completion items by setting `"complete": "sbh"`, `"complete": "bss"`
 
 ### Settings
 
