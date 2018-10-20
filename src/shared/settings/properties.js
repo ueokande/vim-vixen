@@ -12,7 +12,7 @@ const types = {
 const defaults = {
   hintchars: 'abcdefghijklmnopqrstuvwxyz',
   smoothscroll: false,
-  complete: 'sbn',
+  complete: 'sbh',
 };
 
 const docs = {

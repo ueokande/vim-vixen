@@ -23,6 +23,7 @@ describe("zoom test", () => {
     let before = await tabs.getZoom(targetTab.id);
     await keys.press(targetTab.id, 'z');
     await keys.press(targetTab.id, 'i');
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     let actual = await tabs.getZoom(targetTab.id);
     expect(actual).to.be.greaterThan(before);
@@ -32,6 +33,7 @@ describe("zoom test", () => {
     let before = await tabs.getZoom(targetTab.id);
     await keys.press(targetTab.id, 'z');
     await keys.press(targetTab.id, 'o');
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     let actual = await tabs.getZoom(targetTab.id);
     expect(actual).to.be.lessThan(before);
@@ -42,6 +44,7 @@ describe("zoom test", () => {
     let before = await tabs.getZoom(targetTab.id);
     await keys.press(targetTab.id, 'z');
     await keys.press(targetTab.id, 'z');
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     let actual = await tabs.getZoom(targetTab.id);
     expect(actual).to.be.lessThan(before);

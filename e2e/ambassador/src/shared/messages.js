@@ -7,6 +7,7 @@ const TABS_CREATE = 'tabs.create';
 const TABS_SELECT_AT = 'tabs.selectAt';
 const TABS_GET = 'tabs.get';
 const TABS_UPDATE = 'tabs.update';
+const TABS_REMOVE = 'tabs.remove';
 const TABS_GET_ZOOM = 'tabs.get.zoom';
 const TABS_SET_ZOOM = 'tabs.set.zoom';
 const EVENT_KEYPRESS = 'event.keypress';
@@ -29,6 +30,7 @@ export {
   TABS_SELECT_AT,
   TABS_GET_ZOOM,
   TABS_SET_ZOOM,
+  TABS_REMOVE,
 
   EVENT_KEYPRESS,
   EVENT_KEYDOWN,

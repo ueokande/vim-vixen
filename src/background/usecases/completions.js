@@ -39,7 +39,8 @@ export default class CompletionsInteractor {
     let settings = await this.settingRepository.get();
     let groups = [];
 
-    for (let c of settings.properties.complete) {
+    let complete = settings.properties.complete || properties.defaults.complete;
+    for (let c of complete) {
       if (c === 's') {
         // eslint-disable-next-line no-await-in-loop
         let engines = await this.querySearchEngineItems(name, keywords);

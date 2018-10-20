@@ -72,7 +72,7 @@ http.createServer(function (req, res) {
   }
 
   let u = url.parse(req.url);
-  if (u.pathname === '/scroll') {
+  if (u.pathname === '/scroll' || u.pathname === '/mark') {
     handleScroll(req, res);
   } else if (u.pathname === '/a-pagenation') {
     handleAPagenation(req, res);

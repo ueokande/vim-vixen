@@ -97,9 +97,12 @@ export default class ConsoleComponent {
   }
 
   onInput(e) {
+    let state = this.store.getState();
     let text = e.target.value;
     this.store.dispatch(consoleActions.setConsoleText(text));
-    this.store.dispatch(consoleActions.getCompletions(text));
+    if (state.mode === 'command') {
+      this.store.dispatch(consoleActions.getCompletions(text));
+    }
   }
 
   onInputShown(state) {
