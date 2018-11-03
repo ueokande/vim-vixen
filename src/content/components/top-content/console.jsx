@@ -2,7 +2,7 @@ import './console.scss';
 import messages from 'shared/messages';
 import { connect } from 'preact-redux';
 import { h, Component } from 'preact';
-import * as consoleActions from 'console/actions/console';
+import * as consoleActions from '../../actions/console';
 
 const CompletionTitle = (props) => {
   return <li className='vimvixen-console-completion-title' >{props.name}</li>;
@@ -102,7 +102,8 @@ class ConsoleComponent extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.mode === '' && this.props.mode === 'command') {
-      this.context.store.dispatch(consoleActions.getCompletions(this.props.consoleText));
+      this.context.store.dispatch(
+        consoleActions.getCompletions(this.props.consoleText));
       this.input.focus();
     } else if (prevProps.mode === '' && this.props.mode === 'find') {
       this.input.focus();

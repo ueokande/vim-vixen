@@ -1,5 +1,5 @@
 import messages from 'shared/messages';
-import actions from 'console/actions';
+import actions from '../actions';
 
 const hide = () => {
   return {

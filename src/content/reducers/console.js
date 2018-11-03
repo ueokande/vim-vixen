@@ -1,4 +1,4 @@
-import actions from 'console/actions';
+import actions from '../actions';
 
 const defaultState = {
   mode: '',

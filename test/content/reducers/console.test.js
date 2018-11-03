@@ -1,5 +1,5 @@
-import actions from 'console/actions';
-import reducer from 'console/reducers';
+import actions from 'content/actions';
+import reducer from 'content/reducers/console';
 
 describe("console reducer", () => {
   it('return the initial state', () => {

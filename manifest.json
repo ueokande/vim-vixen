@@ -35,10 +35,6 @@
     "notifications",
     "bookmarks"
   ],
-  "web_accessible_resources": [
-    "build/console.html",
-    "build/console.js"
-  ],
   "options_ui": {
     "page": "build/settings.html"
   },

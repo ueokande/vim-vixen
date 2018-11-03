@@ -1,5 +1,5 @@
-import actions from 'console/actions';
-import * as consoleActions from 'console/actions/console';
+import actions from 'content/actions';
+import * as consoleActions from 'content/actions/console';
 
 describe("console actions", () => {
   describe('hide', () => {
