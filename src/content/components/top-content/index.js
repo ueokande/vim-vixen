@@ -1,9 +1,12 @@
 import CommonComponent from '../common';
 import FollowController from './follow-controller';
 import FindComponent from './find';
+import ConsoleComponent from './console';
 import * as consoleFrames from '../../console-frames';
 import messages from 'shared/messages';
 import * as scrolls from 'content/scrolls';
+import Preact from 'preact';
+import { Provider } from 'preact-redux';
 
 export default class TopContent {
 
@@ -15,8 +18,12 @@ export default class TopContent {
     new FollowController(win, store); // eslint-disable-line no-new
     new FindComponent(win, store); // eslint-disable-line no-new
 
-    // TODO make component
-    consoleFrames.initialize(this.win.document);
+    let provider = Preact.h(
+      Provider, { store: store },
+      Preact.h(ConsoleComponent),
+    );
+
+    Preact.render(provider, win.document.body);
 
     messages.onMessage(this.onMessage.bind(this));
   }
