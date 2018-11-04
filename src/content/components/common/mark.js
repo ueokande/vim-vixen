@@ -1,7 +1,22 @@
 import * as markActions from 'content/actions/mark';
 import * as scrolls from 'content/scrolls';
-import * as consoleFrames from 'content/console-frames';
 import * as properties from 'shared/settings/properties';
+import messages from 'shared/messages';
+
+const postUnknownMark = () => {
+  return browser.runtime.sendMessage({
+    type: messages.CONSOLE_SHOW_ERROR,
+    text: 'Unknown mark',
+  });
+};
+
+const postMarkIsNotSet = () => {
+  return browser.runtime.sendMessage({
+    type: messages.CONSOLE_SHOW_ERROR,
+    text: 'Mark is not set',
+  });
+};
+
 
 const cancelKey = (key) => {
   return key.key === 'Esc' || key.key === '[' && key.ctrlKey;
@@ -33,7 +48,7 @@ export default class MarkComponent {
     }
 
     if (key.ctrlKey || key.metaKey || key.altKey) {
-      consoleFrames.postError(window.document, 'Unknown mark');
+      postUnknownMark();
     } else if (globalKey(key.key) && markStage.setMode) {
       this.doSetGlobal(key);
     } else if (globalKey(key.key) && markStage.jumpMode) {
@@ -55,7 +70,7 @@ export default class MarkComponent {
 
   doJump(marks, key, smoothscroll) {
     if (!marks[key.key]) {
-      consoleFrames.postError(window.document, 'Mark is not set');
+      postMarkIsNotSet();
       return;
     }
 
