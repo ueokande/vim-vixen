@@ -2,7 +2,6 @@ import CommonComponent from '../common';
 import FollowController from './follow-controller';
 import FindComponent from './find';
 import ConsoleComponent from './console';
-import * as consoleFrames from '../../console-frames';
 import messages from 'shared/messages';
 import * as scrolls from 'content/scrolls';
 import Preact from 'preact';
@@ -33,8 +32,6 @@ export default class TopContent {
 
     switch (message.type) {
     case messages.CONSOLE_UNFOCUS:
-      this.win.focus();
-      consoleFrames.blur(window.document);
       return Promise.resolve();
     case messages.ADDON_ENABLED_QUERY:
       return Promise.resolve({

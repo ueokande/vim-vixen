@@ -1,4 +1,3 @@
-import './console-frame.scss';
 import { createStore, applyMiddleware } from 'redux';
 import promise from 'redux-promise';
 import reducers from 'content/reducers';
