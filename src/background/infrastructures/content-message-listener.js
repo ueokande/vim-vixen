@@ -42,6 +42,10 @@ export default class ContentMessageListener {
 
   onMessage(message, sender) {
     switch (message.type) {
+    case messages.CONSOLE_SHOW_INFO:
+      return this.onConsoleShowInfo(message.text, sender);
+    case messages.CONSOLE_SHOW_ERROR:
+      return this.onConsoleShowError(message.text, sender);
     case messages.CONSOLE_QUERY_COMPLETIONS:
       return this.onConsoleQueryCompletions(message.text);
     case messages.CONSOLE_ENTER_COMMAND:
@@ -66,6 +70,20 @@ export default class ContentMessageListener {
     case messages.MARK_JUMP_GLOBAL:
       return this.onMarkJumpGlobal(message.key);
     }
+  }
+
+  onConsoleShowInfo(text, sender) {
+    return browser.tabs.sendMessage(sender.tab.id, {
+      type: messages.CONSOLE_SHOW_INFO,
+      text,
+    });
+  }
+
+  onConsoleShowError(text, sender) {
+    return browser.tabs.sendMessage(sender.tab.id, {
+      type: messages.CONSOLE_SHOW_ERROR,
+      text,
+    });
   }
 
   async onConsoleQueryCompletions(line) {
