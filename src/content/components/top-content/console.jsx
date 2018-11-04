@@ -101,11 +101,11 @@ class ConsoleComponent extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.mode === '' && this.props.mode === 'command') {
+    if (prevProps.mode !== 'command' && this.props.mode === 'command') {
       this.context.store.dispatch(
         consoleActions.getCompletions(this.props.consoleText));
       this.input.focus();
-    } else if (prevProps.mode === '' && this.props.mode === 'find') {
+    } else if (prevProps.mode !== 'find' && this.props.mode === 'find') {
       this.input.focus();
     }
   }
