@@ -7,25 +7,35 @@
 
 import messages from 'shared/messages';
 import actions from 'content/actions';
-import * as consoleFrames from '../console-frames';
+
+// Adding watermark characters to avoid search targets in console
+const addWatermark = (text) => {
+  let added = '';
+  for (let c of text) {
+    added += c + '\u200B';
+  }
+  return added;
+};
 
 const postPatternNotFound = (pattern) => {
-  return consoleFrames.postError(
-    window.document,
-    'Pattern not found: ' + pattern);
+  return browser.runtime.sendMessage({
+    type: messages.CONSOLE_SHOW_ERROR,
+    text: 'Pattern not found: ' + pattern,
+  });
 };
 
 const postPatternFound = (pattern) => {
-  return consoleFrames.postInfo(
-    window.document,
-    'Pattern found: ' + pattern,
-  );
+  return browser.runtime.sendMessage({
+    type: messages.CONSOLE_SHOW_INFO,
+    text: addWatermark('Pattern found: ' + pattern),
+  });
 };
 
 const postNoPrevious = () => {
-  return consoleFrames.postError(
-    window.document,
-    'No previous search keywords');
+  return browser.runtime.sendMessage({
+    type: messages.CONSOLE_SHOW_ERROR,
+    text: 'No previous search keywords',
+  });
 };
 
 const find = (string, backwards) => {
