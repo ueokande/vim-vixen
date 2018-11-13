@@ -1,7 +1,7 @@
 .vimvixen-console {
   all: initial;
 
-  & > * {
+  * {
     margin: 0;
     padding: 0;
   }
@@ -27,12 +27,14 @@
 
   &-completion {
     background-color: white;
+    display: block;
     margin: 0;
     padding: 0;
 
-    @include consoole-font;
-
     &-title {
+      @include consoole-font;
+
+      display: block;
       background-color: lightgray;
       font-weight: bold;
       margin: 0;
@@ -40,6 +42,9 @@
     }
 
     &-item {
+      @include consoole-font;
+
+      display: block;
       padding-left: 1.5rem;
       background-position: 0 center;
       background-size: contain;
@@ -101,9 +106,13 @@
       content: '/';
     }
 
-    &-input {
+    &-input, &-input:focus {
       border: none;
       flex-grow: 1;
+      outline: none;
+      border-radius: 0;
+      box-shadow: none;
+      padding: 0;
 
       @include consoole-font;
     }

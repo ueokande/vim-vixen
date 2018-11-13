@@ -111,15 +111,22 @@ class ConsoleComponent extends Component {
   }
 
   render() {
+    let inner = null;
     switch (this.props.mode) {
     case 'command':
     case 'find':
-      return this.renderInput();
+      inner = this.renderInput();
+      break;
     case 'info':
     case 'error':
-      return this.renderMessage();
+      inner = this.renderMessage();
+      break;
     }
-    return <div className='vimvixen-console'></div>;
+    return (
+      <div lang='en' className='vimvixen-console'>
+        { inner }
+      </div>
+    );
   }
 
   renderInput() {
@@ -131,20 +138,18 @@ class ConsoleComponent extends Component {
     }
 
     return (
-      <div className='vimvixen-console'>
-        <div className='vimvixen-console-command-wrapper'>
-          { this.renderCompletions() }
-          <div className='vimvixen-console-command'>
-            <i className={clsName} />
-            <input
-              ref={(c) => { this.input = c; }}
-              className='vimvixen-console-command-input'
-              onBlur={this.onBlur.bind(this)}
-              onKeyDown={this.onKeyDown.bind(this)}
-              onInput={this.onInput.bind(this)}
-              value={this.props.consoleText}
-            />
-          </div>
+      <div className='vimvixen-console-command-wrapper'>
+        { this.renderCompletions() }
+        <div className='vimvixen-console-command'>
+          <i className={clsName} />
+          <input
+            ref={(c) => { this.input = c; }}
+            className='vimvixen-console-command-input'
+            onBlur={this.onBlur.bind(this)}
+            onKeyDown={this.onKeyDown.bind(this)}
+            onInput={this.onInput.bind(this)}
+            value={this.props.consoleText}
+          />
         </div>
       </div>
     );
@@ -158,9 +163,7 @@ class ConsoleComponent extends Component {
       clsName += ' vimvixen-console-info';
     }
     return (
-      <div className='vimvixen-console'>
-        <p className={clsName}>{ this.props.messageText }</p>
-      </div>
+      <p className={clsName}>{ this.props.messageText }</p>
     );
   }
 
