@@ -5,7 +5,7 @@ export default function Message(props) {
   case 'error':
     return (
       <p className='vimvixen-console-message vimvixen-console-error'>
-        { props.text }
+        { props.children }
       </p>
     );
   case 'info':
