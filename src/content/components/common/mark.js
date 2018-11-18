@@ -33,7 +33,7 @@ export default class MarkComponent {
     }
 
     if (key.ctrlKey || key.metaKey || key.altKey) {
-      consoleFrames.postError(window.document, 'Unknown mark');
+      consoleFrames.postError('Unknown mark');
     } else if (globalKey(key.key) && markStage.setMode) {
       this.doSetGlobal(key);
     } else if (globalKey(key.key) && markStage.jumpMode) {
@@ -55,7 +55,7 @@ export default class MarkComponent {
 
   doJump(marks, key, smoothscroll) {
     if (!marks[key.key]) {
-      consoleFrames.postError(window.document, 'Mark is not set');
+      consoleFrames.postError('Mark is not set');
       return;
     }
 

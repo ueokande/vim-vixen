@@ -63,6 +63,9 @@ export default {
   SETTINGS_CHANGED: 'settings.changed',
   SETTINGS_QUERY: 'settings.query',
 
+  WINDOW_TOP_MESSAGE: 'window.top.message',
+  CONSOLE_FRAME_MESSAGE: 'console.frame.message',
+
   onWebMessage,
   onBackgroundMessage,
   onMessage,

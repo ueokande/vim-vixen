@@ -38,6 +38,5 @@ const onMessage = (message) => {
 };
 
 browser.runtime.onMessage.addListener(onMessage);
-window.addEventListener('message', (event) => {
-  onMessage(JSON.parse(event.data));
-}, false);
+let port = browser.runtime.connect({ name: 'vimvixen-console' });
+port.onMessage.addListener(onMessage);

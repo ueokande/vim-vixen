@@ -16,22 +16,23 @@ const blur = (doc) => {
   iframe.blur();
 };
 
-const postMessage = (doc, message) => {
-  let iframe = doc.getElementById('vimvixen-console-frame');
-  iframe.contentWindow.postMessage(JSON.stringify(message), '*');
-};
-
-const postError = (doc, message) => {
-  return postMessage(doc, {
-    type: messages.CONSOLE_SHOW_ERROR,
-    text: message,
+const postError = (text) => {
+  browser.runtime.sendMessage({
+    type: messages.CONSOLE_FRAME_MESSAGE,
+    message: {
+      type: messages.CONSOLE_SHOW_ERROR,
+      text,
+    },
   });
 };
 
-const postInfo = (doc, message) => {
-  return postMessage(doc, {
-    type: messages.CONSOLE_SHOW_INFO,
-    text: message,
+const postInfo = (text) => {
+  browser.runtime.sendMessage({
+    type: messages.CONSOLE_FRAME_MESSAGE,
+    message: {
+      type: messages.CONSOLE_SHOW_INFO,
+      text,
+    },
   });
 };
 

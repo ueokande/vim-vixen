@@ -9,25 +9,6 @@ import messages from 'shared/messages';
 import actions from 'content/actions';
 import * as consoleFrames from '../console-frames';
 
-const postPatternNotFound = (pattern) => {
-  return consoleFrames.postError(
-    window.document,
-    'Pattern not found: ' + pattern);
-};
-
-const postPatternFound = (pattern) => {
-  return consoleFrames.postInfo(
-    window.document,
-    'Pattern found: ' + pattern,
-  );
-};
-
-const postNoPrevious = () => {
-  return consoleFrames.postError(
-    window.document,
-    'No previous search keywords');
-};
-
 const find = (string, backwards) => {
   let caseSensitive = false;
   let wrapScan = true;
@@ -60,13 +41,13 @@ const findNext = async(currentKeyword, reset, backwards) => {
     });
   }
   if (!keyword) {
-    return postNoPrevious();
+    return consoleFrames.postError('No previous search keywords');
   }
   let found = find(keyword, backwards);
   if (found) {
-    postPatternFound(keyword);
+    consoleFrames.postInfo('Pattern found: ' + keyword);
   } else {
-    postPatternNotFound(keyword);
+    consoleFrames.postError('Pattern not found: ' + keyword);
   }
 
   return {
