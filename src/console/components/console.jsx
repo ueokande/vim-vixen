@@ -94,12 +94,11 @@ class ConsoleComponent extends Component {
     if (prevProps.mode !== 'command' && this.props.mode === 'command') {
       this.context.store.dispatch(
         consoleActions.getCompletions(this.props.consoleText));
-      this.input.focus();
+      this.focus();
     } else if (prevProps.mode !== 'find' && this.props.mode === 'find') {
-      this.input.focus();
+      this.focus();
     }
   }
-
 
   render() {
     switch (this.props.mode) {
@@ -122,6 +121,11 @@ class ConsoleComponent extends Component {
         { this.props.messageText }
       </Message>;
     }
+  }
+
+  focus() {
+    window.focus();
+    this.input.focus();
   }
 }
 
