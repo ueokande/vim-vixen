@@ -16,6 +16,8 @@ export default class ContentMessageListener {
     this.linkController = new LinkController();
     this.backgroundOperationController = new OperationController();
     this.markController = new MarkController();
+
+    this.consolePorts = {};
   }
 
   run() {
@@ -38,6 +40,7 @@ export default class ContentMessageListener {
         });
       }
     });
+    browser.runtime.onConnect.addListener(this.onConnected.bind(this));
   }
 
   onMessage(message, sender) {
@@ -65,6 +68,8 @@ export default class ContentMessageListener {
       return this.onMarkSetGlobal(message.key, message.x, message.y);
     case messages.MARK_JUMP_GLOBAL:
       return this.onMarkJumpGlobal(message.key);
+    case messages.CONSOLE_FRAME_MESSAGE:
+      return this.onConsoleFrameMessage(sender.tab.id, message.message);
     }
   }
 
@@ -115,5 +120,22 @@ export default class ContentMessageListener {
 
   onMarkJumpGlobal(key) {
     return this.markController.jumpGlobal(key);
+  }
+
+  onConsoleFrameMessage(tabId, message) {
+    let port = this.consolePorts[tabId];
+    if (!port) {
+      return;
+    }
+    port.postMessage(message);
+  }
+
+  onConnected(port) {
+    if (port.name !== 'vimvixen-console') {
+      return;
+    }
+
+    let id = port.sender.tab.id;
+    this.consolePorts[id] = port;
   }
 }

@@ -1,11 +1,13 @@
-import './site.scss';
 import messages from 'shared/messages';
-import CompletionComponent from 'console/components/completion';
-import ConsoleComponent from 'console/components/console';
 import reducers from 'console/reducers';
 import { createStore, applyMiddleware } from 'redux';
 import promise from 'redux-promise';
 import * as consoleActions from 'console/actions/console';
+
+import { Provider } from 'preact-redux';
+import Console from './components/console';
+
+import { render, h } from 'preact';
 
 const store = createStore(
   reducers,
@@ -13,9 +15,11 @@ const store = createStore(
 );
 
 window.addEventListener('load', () => {
-  let wrapper = document.querySelector('#vimvixen-console-completion');
-  new CompletionComponent(wrapper, store); // eslint-disable-line no-new
-  new ConsoleComponent(document.body, store); // eslint-disable-line no-new
+  render(
+    <Provider store={store} >
+      <Console></Console>
+    </Provider>,
+    document.body);
 });
 
 const onMessage = (message) => {
@@ -34,6 +38,5 @@ const onMessage = (message) => {
 };
 
 browser.runtime.onMessage.addListener(onMessage);
-window.addEventListener('message', (event) => {
-  onMessage(JSON.parse(event.data));
-}, false);
+let port = browser.runtime.connect({ name: 'vimvixen-console' });
+port.onMessage.addListener(onMessage);
