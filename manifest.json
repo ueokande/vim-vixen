@@ -33,7 +33,8 @@
     "tabs",
     "clipboardRead",
     "notifications",
-    "bookmarks"
+    "bookmarks",
+    "browserSettings"
   ],
   "web_accessible_resources": [
     "build/console.html",
