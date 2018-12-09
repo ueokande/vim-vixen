@@ -26,7 +26,7 @@ const paste = (win, newTab, searchSettings) => {
 
   if (win.document.execCommand('paste')) {
     let value = textarea.textContent;
-    let url = urls.normalizeUrl(value, searchSettings);
+    let url = urls.searchUrl(value, searchSettings);
     browser.runtime.sendMessage({
       type: messages.OPEN_URL,
       url,

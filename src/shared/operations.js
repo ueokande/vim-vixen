@@ -40,6 +40,7 @@ export default {
 
   // Page
   PAGE_SOURCE: 'page.source',
+  PAGE_HOME: 'page.home',
 
   // Tabs
   TAB_CLOSE: 'tabs.close',

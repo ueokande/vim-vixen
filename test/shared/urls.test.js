@@ -1,7 +1,7 @@
 import * as parsers from 'shared/urls';
 
 describe("shared/commands/parsers", () => {
-  describe('#normalizeUrl', () => {
+  describe('#searchUrl', () => {
     const config = {
       default: 'google',
       engines: {
@@ -11,28 +11,46 @@ describe("shared/commands/parsers", () => {
     };
 
     it('convertes search url', () => {
-      expect(parsers.normalizeUrl('google.com', config))
+      expect(parsers.searchUrl('google.com', config))
         .to.equal('http://google.com');
-      expect(parsers.normalizeUrl('google apple', config))
+      expect(parsers.searchUrl('google apple', config))
         .to.equal('https://google.com/search?q=apple');
-      expect(parsers.normalizeUrl('yahoo apple', config))
+      expect(parsers.searchUrl('yahoo apple', config))
         .to.equal('https://yahoo.com/search?q=apple');
-      expect(parsers.normalizeUrl('google apple banana', config))
+      expect(parsers.searchUrl('google apple banana', config))
         .to.equal('https://google.com/search?q=apple%20banana');
-      expect(parsers.normalizeUrl('yahoo C++CLI', config))
+      expect(parsers.searchUrl('yahoo C++CLI', config))
         .to.equal('https://yahoo.com/search?q=C%2B%2BCLI');
     });
 
     it('user default  search engine', () => {
-      expect(parsers.normalizeUrl('apple banana', config))
+      expect(parsers.searchUrl('apple banana', config))
         .to.equal('https://google.com/search?q=apple%20banana');
     });
 
     it('searches with a word containing a colon', () => {
-      expect(parsers.normalizeUrl('foo:', config))
+      expect(parsers.searchUrl('foo:', config))
         .to.equal('https://google.com/search?q=foo%3A');
-      expect(parsers.normalizeUrl('std::vector', config))
+      expect(parsers.searchUrl('std::vector', config))
         .to.equal('https://google.com/search?q=std%3A%3Avector');
+    });
+  });
+
+  describe('#normalizeUrl', () => {
+    it('normalize urls', () => {
+      expect(parsers.normalizeUrl('https://google.com/'))
+        .to.equal('https://google.com/');
+      expect(parsers.normalizeUrl('google.com'))
+        .to.equal('http://google.com');
+    });
+  });
+
+  describe('#homepageUrls', () => {
+    it('split urls', () => {
+      expect(parsers.homepageUrls('https://google.com/'))
+        .to.deep.equal(['https://google.com/']);
+      expect(parsers.homepageUrls('yahoo.com|https://i-beam.org/'))
+        .to.deep.equal(['http://yahoo.com', 'https://i-beam.org/']);
     });
   });
 });

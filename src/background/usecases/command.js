@@ -120,6 +120,6 @@ export default class CommandIndicator {
 
   async urlOrSearch(keywords) {
     let settings = await this.settingRepository.get();
-    return urls.normalizeUrl(keywords, settings.search);
+    return urls.searchUrl(keywords, settings.search);
   }
 }

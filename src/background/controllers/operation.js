@@ -37,6 +37,8 @@ export default class OperationController {
       return this.operationInteractor.duplicate();
     case operations.PAGE_SOURCE:
       return this.operationInteractor.openPageSource();
+    case operations.PAGE_HOME:
+      return this.operationInteractor.openHome(operation.newTab);
     case operations.ZOOM_IN:
       return this.operationInteractor.zoomIn();
     case operations.ZOOM_OUT:

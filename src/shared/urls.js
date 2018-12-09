@@ -5,7 +5,7 @@ const trimStart = (str) => {
 
 const SUPPORTED_PROTOCOLS = ['http:', 'https:', 'ftp:', 'mailto:'];
 
-const normalizeUrl = (keywords, searchSettings) => {
+const searchUrl = (keywords, searchSettings) => {
   try {
     let u = new URL(keywords);
     if (SUPPORTED_PROTOCOLS.includes(u.protocol.toLowerCase())) {
@@ -28,4 +28,20 @@ const normalizeUrl = (keywords, searchSettings) => {
   return template.replace('{}', encodeURIComponent(query));
 };
 
-export { normalizeUrl };
+const normalizeUrl = (url) => {
+  try {
+    let u = new URL(url);
+    if (SUPPORTED_PROTOCOLS.includes(u.protocol.toLowerCase())) {
+      return u.href;
+    }
+  } catch (e) {
+    // fallthrough
+  }
+  return 'http://' + url;
+};
+
+const homepageUrls = (value) => {
+  return value.split('|').map(normalizeUrl);
+};
+
+export { searchUrl, normalizeUrl, homepageUrls };
