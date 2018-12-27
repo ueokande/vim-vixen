@@ -21,6 +21,7 @@ const KeyMapFields = [
     ['mark.jump.prefix', 'Jump to the mark'],
   ], [
     ['tabs.close', 'Close a tab'],
+    ['tabs.close.right', 'Close tabs to the right'],
     ['tabs.reopen', 'Reopen closed tab'],
     ['tabs.next?{"count":1}', 'Select next Tab'],
     ['tabs.prev?{"count":1}', 'Select prev Tab'],

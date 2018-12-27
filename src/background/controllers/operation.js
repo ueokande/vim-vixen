@@ -11,6 +11,8 @@ export default class OperationController {
     switch (operation.type) {
     case operations.TAB_CLOSE:
       return this.operationInteractor.close(false);
+    case operations.TAB_CLOSE_RIGHT:
+      return this.operationInteractor.closeRight();
     case operations.TAB_CLOSE_FORCE:
       return this.operationInteractor.close(true);
     case operations.TAB_REOPEN:

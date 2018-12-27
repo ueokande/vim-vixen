@@ -21,6 +21,18 @@ export default class OperationInteractor {
     return this.tabPresenter.remove([tab.id]);
   }
 
+  async closeRight() {
+    let tabs = await this.tabPresenter.getAll();
+    tabs.sort((t1, t2) => t1.index - t2.index);
+    let index = tabs.findIndex(t => t.active);
+    if (index < 0) {
+      return;
+    }
+    for (let i = index + 1; i < tabs.length; ++i) {
+      this.tabPresenter.remove(tabs[i].id);
+    }
+  }
+
   reopen() {
     return this.tabPresenter.reopen();
   }
