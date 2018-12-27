@@ -1,5 +1,6 @@
 import TabPresenter from '../presenters/tab';
 import ConsolePresenter from '../presenters/console';
+import * as urls from '../../shared/urls';
 
 const ZOOM_SETTINGS = [
   0.33, 0.50, 0.66, 0.75, 0.80, 0.90, 1.00,
@@ -171,6 +172,18 @@ export default class OperationInteractor {
   async hideConsole() {
     let tab = await this.tabPresenter.getCurrent();
     return this.consolePresenter.hide(tab.id);
+  }
+
+  async openHome(newTab) {
+    let tab = await this.tabPresenter.getCurrent();
+    let result = await browser.browserSettings.homepageOverride.get({});
+    let us = urls.homepageUrls(result.value);
+    if (us.length === 1 && !newTab) {
+      return this.tabPresenter.open(us[0], tab.id);
+    }
+    for (let u of us) {
+      this.tabPresenter.create(u, { openerTabId: tab.id });
+    }
   }
 }
 
