@@ -29,7 +29,10 @@ export default class OperationInteractor {
       return;
     }
     for (let i = index + 1; i < tabs.length; ++i) {
-      this.tabPresenter.remove(tabs[i].id);
+      let tab = tabs[i];
+      if (!tab.pinned) {
+        this.tabPresenter.remove(tab.id);
+      }
     }
   }
 
