@@ -40,6 +40,8 @@ const KeyMapFields = [
     ['navigate.parent', 'Go to parent directory'],
     ['navigate.root', 'Go to root directory'],
     ['page.source', 'Open page source'],
+    ['page.home', 'Open start page to current tab'],
+    ['page.home?{"newTab":true}', 'Open start page in new tab'],
     ['focus.input', 'Focus input'],
   ], [
     ['find.start', 'Start find mode'],
