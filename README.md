@@ -227,6 +227,7 @@ Set hint characters
 
 Set completion items on `open`, `tabopen` `winopen` commands.
 The allowed value is character sequence of `s`, `b`, or `h`.
+Hit <kbd>Tab</kbd> or <kbd>Shift</kbd>+<kbd>Tab</kbd> to Select an item from the completion list.
 Each character presents as following:
 - `s`: search engines
 - `b`: bookmark items
