@@ -226,14 +226,14 @@ Set hint characters
 #### `complete` property
 
 Set completion items on `open`, `tabopen` `winopen` commands.
-The allowed value is character sequence of `s`, `b`, or `n`.
+The allowed value is character sequence of `s`, `b`, or `h`.
 Each character presents as following:
 - `s`: search engines
 - `b`: bookmark items
 - `h`: history items.
 
 ```
-:set complete=sbn
+:set complete=sbh
 ```
 
 ### Search engines
