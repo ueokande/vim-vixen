@@ -23,7 +23,7 @@
   "homepage": "https://github.com/ueokande/vim-vixen",
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.2.6",
+    "babel-eslint": "^10.0.1",
     "babel-loader": "^7.1.5",
     "babel-preset-preact": "^1.1.0",
     "babel-preset-stage-2": "^6.24.1",
