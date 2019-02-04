@@ -23,6 +23,19 @@ describe("tab test", () => {
     expect(actual.tabs).to.have.lengthOf(before.tabs.length - 1);
   });
 
+  it('deletes tabs to the right by D', async () => {
+    let tab1 = await tabs.create(targetWindow.id, CLIENT_URL + '#1');
+    await tabs.create(targetWindow.id, CLIENT_URL + '#2');
+    await tabs.create(targetWindow.id, CLIENT_URL + '#3');
+
+    let before = await windows.get(targetWindow.id)
+    let tab = await tabs.selectAt(targetWindow.id, tab1.index)
+    await keys.press(tab.id, 'D', { shiftKey: true });
+
+    let actual = await windows.get(targetWindow.id);
+    expect(actual.tabs).to.have.lengthOf(before.tabs.length - 2);
+  });
+
   it('duplicates tab by zd', async () => {
     let tab = await tabs.create(targetWindow.id, CLIENT_URL);
     let before = await windows.get(targetWindow.id)
