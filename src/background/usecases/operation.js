@@ -197,7 +197,7 @@ export default class OperationInteractor {
       return this.tabPresenter.open(us[0], tab.id);
     }
     for (let u of us) {
-      this.tabPresenter.create(u, { openerTabId: tab.id });
+      this.tabPresenter.create(u);
     }
   }
 }
