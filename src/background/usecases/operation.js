@@ -195,7 +195,7 @@ export default class OperationInteractor {
     let us = urls.homepageUrls(result.value);
     if (us.length === 1 && us[0] === 'about:home') {
       // eslint-disable-next-line max-len
-      throw new Error('Cannot open Firefox Home (about:home) by WebExnteions, set your custom URLs');
+      throw new Error('Cannot open Firefox Home (about:home) by WebExtensions, set your custom URLs');
     }
     if (us.length === 1 && !newTab) {
       return this.tabPresenter.open(us[0], tab.id);
