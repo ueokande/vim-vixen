@@ -10,7 +10,7 @@ import * as markActions from './mark';
 import * as properties from 'shared/settings/properties';
 
 // eslint-disable-next-line complexity, max-lines-per-function
-const exec = (operation, repeat, settings, addonEnabled) => {
+const exec = (operation, settings, addonEnabled) => {
   let smoothscroll = settings.properties.smoothscroll ||
     properties.defaults.smoothscroll;
   switch (operation.type) {
@@ -31,13 +31,13 @@ const exec = (operation, repeat, settings, addonEnabled) => {
     }), '*');
     break;
   case operations.SCROLL_VERTICALLY:
-    scrolls.scrollVertically(operation.count, smoothscroll, repeat);
+    scrolls.scrollVertically(operation.count, smoothscroll);
     break;
   case operations.SCROLL_HORIZONALLY:
-    scrolls.scrollHorizonally(operation.count, smoothscroll, repeat);
+    scrolls.scrollHorizonally(operation.count, smoothscroll);
     break;
   case operations.SCROLL_PAGES:
-    scrolls.scrollPages(operation.count, smoothscroll, repeat);
+    scrolls.scrollPages(operation.count, smoothscroll);
     break;
   case operations.SCROLL_TOP:
     scrolls.scrollToTop(smoothscroll);
