@@ -1,4 +1,7 @@
 const modifiedKeyName = (name) => {
+  if (name === ' ') {
+    return 'Space';
+  }
   if (name.length === 1) {
     return name;
   } else if (name === 'Escape') {

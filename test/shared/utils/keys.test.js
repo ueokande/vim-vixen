@@ -35,6 +35,17 @@ describe("keys util", () => {
       expect(k.altKey).to.be.false;
       expect(k.metaKey).to.be.false;
     });
+
+    it('returns from keyboard input Crtl+Space', () => {
+      let k = keys.fromKeyboardEvent({
+        key: ' ', shiftKey: false, ctrlKey: true, altKey: false, metaKey: false
+      });
+      expect(k.key).to.equal('Space');
+      expect(k.shiftKey).to.be.false;
+      expect(k.ctrlKey).to.be.true;
+      expect(k.altKey).to.be.false;
+      expect(k.metaKey).to.be.false;
+    });
   });
 
   describe('fromMapKey', () => {
@@ -95,6 +106,15 @@ describe("keys util", () => {
     it('returns for Ctrl+Esc', () => {
       let key = keys.fromMapKey('<C-Esc>');
       expect(key.key).to.equal('Esc');
+      expect(key.shiftKey).to.be.false;
+      expect(key.ctrlKey).to.be.true;
+      expect(key.altKey).to.be.false;
+      expect(key.metaKey).to.be.false;
+    });
+
+    it('returns for Ctrl+Esc', () => {
+      let key = keys.fromMapKey('<C-Space>');
+      expect(key.key).to.equal('Space');
       expect(key.shiftKey).to.be.false;
       expect(key.ctrlKey).to.be.true;
       expect(key.altKey).to.be.false;
