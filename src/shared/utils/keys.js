@@ -18,7 +18,6 @@ const fromKeyboardEvent = (e) => {
 
   return {
     key: modifiedKeyName(e.key),
-    repeat: e.repeat,
     shiftKey: shift,
     ctrlKey: e.ctrlKey,
     altKey: e.altKey,

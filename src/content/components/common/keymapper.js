@@ -49,7 +49,7 @@ export default class KeymapperComponent {
     }
     let operation = keymaps.get(matched[0]);
     let act = operationActions.exec(
-      operation, key.repeat, state.setting, state.addon.enabled
+      operation, state.setting, state.addon.enabled
     );
     this.store.dispatch(act);
     this.store.dispatch(inputActions.clearKeys());
