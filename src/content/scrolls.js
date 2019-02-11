@@ -1,7 +1,7 @@
 import * as doms from 'shared/utils/dom';
 
-const SCROLL_DELTA_X = 48;
-const SCROLL_DELTA_Y = 48;
+const SCROLL_DELTA_X = 64;
+const SCROLL_DELTA_Y = 64;
 
 // dirty way to store scrolling state on globally
 let scrolling = false;
