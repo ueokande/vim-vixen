@@ -27,19 +27,17 @@ const CompletionItem = (props) => {
 class CompletionComponent extends Component {
   render() {
     let eles = [];
+    let index = 0;
     for (let i = 0; i < this.props.completions.length; ++i) {
       let group = this.props.completions[i];
       eles.push(<CompletionTitle title={ group.name }/>);
-      for (let j = 0; j < group.items.length; ++j) {
+      for (let j = 0; j < group.items.length; ++j, ++index) {
         let item = group.items[j];
-        let selected =
-          i === this.props.groupSelection &&
-          j === this.props.itemSelection;
         eles.push(<CompletionItem
           icon={item.icon}
           caption={item.caption}
           url={item.url}
-          highlight={selected}
+          highlight={index === this.props.select}
         / >);
       }
     }
