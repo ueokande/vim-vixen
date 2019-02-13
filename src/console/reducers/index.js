@@ -7,6 +7,7 @@ const defaultState = {
   completionSource: '',
   completions: [],
   select: -1,
+  viewIndex: 0,
 };
 
 const nextSelection = (state) => {

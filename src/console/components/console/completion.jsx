@@ -1,6 +1,8 @@
 import { Component, h } from 'preact';
 import { connect } from 'preact-redux';
 
+const COMPLETION_MAX_ITEMS = 33;
+
 const CompletionTitle = (props) => {
   return <li className='vimvixen-console-completion-title' >{props.title}</li>;
 };
@@ -25,22 +27,63 @@ const CompletionItem = (props) => {
 
 
 class CompletionComponent extends Component {
+  constructor() {
+    super();
+    this.state = { viewOffset: 0, select: -1 };
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.select === nextProps.select) {
+      return null;
+    }
+
+    let viewSelect = (() => {
+      let view = 0;
+      let index = 0;
+      for (let group of nextProps.completions) {
+        ++view;
+        // TODO refactor
+        for (let _ of group.items) {
+          if (index === nextProps.select) {
+            return view;
+          }
+          ++view;
+          ++index;
+        }
+      }
+    })();
+
+    let viewOffset = 0;
+    if (nextProps.select < 0) {
+      viewOffset = 0;
+    } else if (prevState.select < nextProps.select) {
+      viewOffset = Math.max(prevState.viewOffset,
+        viewSelect - COMPLETION_MAX_ITEMS + 1);
+    } else if (prevState.select > nextProps.select) {
+      viewOffset = Math.min(prevState.viewOffset, viewSelect);
+    }
+    return { viewOffset, select: nextProps.select };
+  }
+
   render() {
     let eles = [];
     let index = 0;
-    for (let i = 0; i < this.props.completions.length; ++i) {
-      let group = this.props.completions[i];
+
+    for (let group of this.props.completions) {
       eles.push(<CompletionTitle title={ group.name }/>);
-      for (let j = 0; j < group.items.length; ++j, ++index) {
-        let item = group.items[j];
+      for (let item of group.items) {
         eles.push(<CompletionItem
           icon={item.icon}
           caption={item.caption}
           url={item.url}
           highlight={index === this.props.select}
         / >);
+        ++index;
       }
     }
+
+    let viewOffset = this.state.viewOffset;
+    eles = eles.slice(viewOffset, viewOffset + COMPLETION_MAX_ITEMS);
 
     return (
       <ul className='vimvixen-console-completion'>
