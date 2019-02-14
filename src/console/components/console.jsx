@@ -6,6 +6,8 @@ import Completion from './console/completion';
 import Message from './console/message';
 import * as consoleActions from '../../console/actions/console';
 
+const COMPLETION_MAX_ITEMS = 33;
+
 class ConsoleComponent extends Component {
   onBlur() {
     if (this.props.mode === 'command' || this.props.mode === 'find') {
@@ -105,7 +107,7 @@ class ConsoleComponent extends Component {
     case 'command':
     case 'find':
       return <div className='vimvixen-console-command-wrapper'>
-        <Completion />
+        <Completion size={COMPLETION_MAX_ITEMS} />
         <Input
           ref={(c) => { this.input = c; }}
           mode={this.props.mode}
