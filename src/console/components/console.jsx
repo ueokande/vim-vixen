@@ -107,7 +107,11 @@ class ConsoleComponent extends Component {
     case 'command':
     case 'find':
       return <div className='vimvixen-console-command-wrapper'>
-        <Completion size={COMPLETION_MAX_ITEMS} />
+        <Completion
+          size={COMPLETION_MAX_ITEMS}
+          completions={this.props.completions}
+          select={this.props.select}
+        />
         <Input
           ref={(c) => { this.input = c; }}
           mode={this.props.mode}

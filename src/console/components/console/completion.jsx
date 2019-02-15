@@ -87,5 +87,4 @@ class CompletionComponent extends Component {
   }
 }
 
-const mapStateToProps = state => state;
-export default connect(mapStateToProps)(CompletionComponent);
+export default CompletionComponent;
