@@ -1,5 +1,4 @@
 import { Component, h } from 'preact';
-import { connect } from 'preact-redux';
 
 const CompletionTitle = (props) => {
   return <li className='vimvixen-console-completion-title' >{props.title}</li>;
