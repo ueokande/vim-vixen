@@ -3,6 +3,9 @@ import SettingController from './controllers/SettingController';
 import VersionController from './controllers/VersionController';
 
 new SettingController().reload();
-new VersionController().notifyIfUpdated();
+
+browser.runtime.onInstalled.addListener(() => {
+  new VersionController().notify();
+});
 
 new ContentMessageListener().run();
