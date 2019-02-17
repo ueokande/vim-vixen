@@ -63,7 +63,7 @@ class Scroller {
 
   scrollTo(x, y) {
     let behavior = this.smooth ? 'smooth' : 'auto';
-    window.scrollTo({
+    this.element.scrollTo({
       left: x,
       top: y,
       behavior: behavior,
@@ -76,7 +76,7 @@ class Scroller {
 
   scrollBy(x, y) {
     let behavior = this.smooth ? 'smooth' : 'auto';
-    window.scrollBy({
+    this.element.scrollBy({
       left: x,
       top: y,
       behavior: behavior,
