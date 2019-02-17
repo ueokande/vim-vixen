@@ -62,29 +62,22 @@ class Scroller {
   }
 
   scrollTo(x, y) {
-    let behavior = this.smooth ? 'smooth' : 'auto';
+    if (!this.smooth) {
+      this.element.scrollTo(x, y);
+      return;
+    }
     this.element.scrollTo({
       left: x,
       top: y,
-      behavior: behavior,
+      behavior: 'smooth',
     });
-    if (!this.smooth) {
-      return;
-    }
     this.prepareReset();
   }
 
   scrollBy(x, y) {
-    let behavior = this.smooth ? 'smooth' : 'auto';
-    this.element.scrollBy({
-      left: x,
-      top: y,
-      behavior: behavior,
-    });
-    if (!this.smooth) {
-      return;
-    }
-    this.prepareReset();
+    let left = this.element.scrollLeft + x;
+    let top = this.element.scrollTop + y;
+    this.scrollTo(left, top);
   }
 
   prepareReset() {
