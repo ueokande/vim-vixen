@@ -44,8 +44,8 @@ See [console commands](#console-commands) section for more detailed description
 
 #### Scrolling
 
-- <kbd>k</kbd>: scroll down
-- <kbd>j</kbd>: scroll up
+- <kbd>k</kbd>: scroll up
+- <kbd>j</kbd>: scroll down
 - <kbd>h</kbd>: scroll left
 - <kbd>l</kbd>: scroll right
 - <kbd>Ctrl</kbd>+<kbd>U</kbd>: scroll up for a half page
