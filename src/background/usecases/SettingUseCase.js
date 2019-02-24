@@ -1,15 +1,12 @@
-import Setting from '../domains/setting';
-import PersistentSettingRepository from '../repositories/persistent-setting';
-import SettingRepository from '../repositories/setting';
+import Setting from '../domains/Setting';
+// eslint-disable-next-line max-len
+import PersistentSettingRepository from '../repositories/PersistentSettingRepository';
+import SettingRepository from '../repositories/SettingRepository';
 
-export default class SettingInteractor {
+export default class SettingUseCase {
   constructor() {
     this.persistentSettingRepository = new PersistentSettingRepository();
     this.settingRepository = new SettingRepository();
-  }
-
-  save(settings) {
-    this.persistentSettingRepository.save(settings);
   }
 
   get() {

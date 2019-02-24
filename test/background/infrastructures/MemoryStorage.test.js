@@ -1,4 +1,4 @@
-import MemoryStorage from 'background/infrastructures/memory-storage';
+import MemoryStorage from 'background/infrastructures/MemoryStorage';
 
 describe("background/infrastructures/memory-storage", () => {
   it('stores values', () => {

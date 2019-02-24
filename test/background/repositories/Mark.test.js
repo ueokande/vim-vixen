@@ -1,5 +1,5 @@
-import MarkRepository from 'background/repositories/mark';
-import GlobalMark from 'background/domains/global-mark';
+import MarkRepository from 'background/repositories/MarkRepository';
+import GlobalMark from 'background/domains/GlobalMark';
 
 describe('background/repositories/mark', () => {
   let repository;

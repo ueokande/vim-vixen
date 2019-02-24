@@ -44,14 +44,5 @@ describe("shared/commands/parsers", () => {
         .to.equal('http://google.com');
     });
   });
-
-  describe('#homepageUrls', () => {
-    it('split urls', () => {
-      expect(parsers.homepageUrls('https://google.com/'))
-        .to.deep.equal(['https://google.com/']);
-      expect(parsers.homepageUrls('yahoo.com|https://i-beam.org/'))
-        .to.deep.equal(['http://yahoo.com', 'https://i-beam.org/']);
-    });
-  });
 });
 

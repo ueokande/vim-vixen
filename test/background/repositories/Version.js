@@ -1,4 +1,4 @@
-import VersionRepository from 'background/repositories/version';
+import VersionRepository from 'background/repositories/Version';
 
 describe("background/repositories/version", () => {
   let versionRepository;

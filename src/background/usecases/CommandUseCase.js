@@ -1,11 +1,11 @@
 import * as parsers from './parsers';
 import * as urls from '../../shared/urls';
-import TabPresenter from '../presenters/tab';
-import WindowPresenter from '../presenters/window';
-import SettingRepository from '../repositories/setting';
-import BookmarkRepository from '../repositories/bookmark';
-import ConsolePresenter from '../presenters/console';
-import ContentMessageClient from '../infrastructures/content-message-client';
+import TabPresenter from '../presenters/TabPresenter';
+import WindowPresenter from '../presenters/WindowPresenter';
+import SettingRepository from '../repositories/SettingRepository';
+import BookmarkRepository from '../repositories/BookmarkRepository';
+import ConsoleClient from '../infrastructures/ConsoleClient';
+import ContentMessageClient from '../infrastructures/ContentMessageClient';
 import * as properties from 'shared/settings/properties';
 
 export default class CommandIndicator {
@@ -14,7 +14,7 @@ export default class CommandIndicator {
     this.windowPresenter = new WindowPresenter();
     this.settingRepository = new SettingRepository();
     this.bookmarkRepository = new BookmarkRepository();
-    this.consolePresenter = new ConsolePresenter();
+    this.consoleClient = new ConsoleClient();
 
     this.contentMessageClient = new ContentMessageClient();
   }
@@ -105,7 +105,7 @@ export default class CommandIndicator {
     let tab = await this.tabPresenter.getCurrent();
     let item = await this.bookmarkRepository.create(title, tab.url);
     let message = 'Saved current page: ' + item.url;
-    return this.consolePresenter.showInfo(tab.id, message);
+    return this.consoleClient.showInfo(tab.id, message);
   }
 
   async set(keywords) {

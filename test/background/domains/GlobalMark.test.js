@@ -1,4 +1,4 @@
-import GlobalMark from 'background/domains/global-mark';
+import GlobalMark from 'background/domains/GlobalMark';
 
 describe('background/domains/global-mark', () => {
   describe('constructor and getter', () => {

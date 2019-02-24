@@ -1,19 +1,19 @@
-import CompletionItem from '../domains/completion-item';
-import CompletionGroup from '../domains/completion-group';
-import Completions from '../domains/completions';
-import CommandDocs from '../domains/command-docs';
-import CompletionRepository from '../repositories/completions';
+import CompletionItem from '../domains/CompletionItem';
+import CompletionGroup from '../domains/CompletionGroup';
+import Completions from '../domains/Completions';
+import CommandDocs from '../domains/CommandDocs';
+import CompletionsRepository from '../repositories/CompletionsRepository';
 import * as filters from './filters';
-import SettingRepository from '../repositories/setting';
-import TabPresenter from '../presenters/tab';
+import SettingRepository from '../repositories/SettingRepository';
+import TabPresenter from '../presenters/TabPresenter';
 import * as properties from '../../shared/settings/properties';
 
 const COMPLETION_ITEM_LIMIT = 10;
 
-export default class CompletionsInteractor {
+export default class CompletionsUseCase {
   constructor() {
     this.tabPresenter = new TabPresenter();
-    this.completionRepository = new CompletionRepository();
+    this.completionsRepository = new CompletionsRepository();
     this.settingRepository = new SettingRepository();
   }
 
@@ -86,7 +86,7 @@ export default class CompletionsInteractor {
         tabs = [tab];
       }
     } else {
-      tabs = await this.completionRepository.queryTabs(keywords, false);
+      tabs = await this.completionsRepository.queryTabs(keywords, false);
     }
     const flag = (tab) => {
       if (tab.active) {
@@ -153,7 +153,7 @@ export default class CompletionsInteractor {
   }
 
   async queryTabs(name, excludePinned, args) {
-    let tabs = await this.completionRepository.queryTabs(args, excludePinned);
+    let tabs = await this.completionsRepository.queryTabs(args, excludePinned);
     let items = tabs.map(tab => new CompletionItem({
       caption: tab.title,
       content: name + ' ' + tab.title,
@@ -177,7 +177,7 @@ export default class CompletionsInteractor {
   }
 
   async queryHistoryItems(name, keywords) {
-    let histories = await this.completionRepository.queryHistories(keywords);
+    let histories = await this.completionsRepository.queryHistories(keywords);
     histories = [histories]
       .map(filters.filterBlankTitle)
       .map(filters.filterHttp)
@@ -194,7 +194,7 @@ export default class CompletionsInteractor {
   }
 
   async queryBookmarkItems(name, keywords) {
-    let bookmarks = await this.completionRepository.queryBookmarks(keywords);
+    let bookmarks = await this.completionsRepository.queryBookmarks(keywords);
     return bookmarks.slice(0, COMPLETION_ITEM_LIMIT)
       .map(page => new CompletionItem({
         caption: page.title,

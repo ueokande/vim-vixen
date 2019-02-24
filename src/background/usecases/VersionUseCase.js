@@ -1,9 +1,9 @@
 import manifest from '../../../manifest.json';
-import VersionRepository from '../repositories/version';
-import TabPresenter from '../presenters/tab';
-import Notifier from '../infrastructures/notifier';
+import VersionRepository from '../repositories/VersionRepository';
+import TabPresenter from '../presenters/TabPresenter';
+import Notifier from '../infrastructures/Notifier';
 
-export default class VersionInteractor {
+export default class VersionUseCase {
   constructor() {
     this.versionRepository = new VersionRepository();
     this.tabPresenter = new TabPresenter();

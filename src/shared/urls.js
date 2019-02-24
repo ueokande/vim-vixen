@@ -40,8 +40,4 @@ const normalizeUrl = (url) => {
   return 'http://' + url;
 };
 
-const homepageUrls = (value) => {
-  return value.split('|').map(normalizeUrl);
-};
-
-export { searchUrl, normalizeUrl, homepageUrls };
+export { searchUrl, normalizeUrl };
