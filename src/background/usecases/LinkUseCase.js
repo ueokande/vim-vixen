@@ -1,7 +1,7 @@
-import SettingRepository from '../repositories/setting';
-import TabPresenter from '../presenters/tab';
+import SettingRepository from '../repositories/SettingRepository';
+import TabPresenter from '../presenters/TabPresenter';
 
-export default class LinkInteractor {
+export default class LinkUseCase {
   constructor() {
     this.settingRepository = new SettingRepository();
     this.tabPresenter = new TabPresenter();

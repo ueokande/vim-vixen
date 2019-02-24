@@ -1,6 +1,6 @@
-import ContentMessageListener from './infrastructures/content-message-listener';
-import SettingController from './controllers/setting';
-import VersionController from './controllers/version';
+import ContentMessageListener from './infrastructures/ContentMessageListener';
+import SettingController from './controllers/SettingController';
+import VersionController from './controllers/VersionController';
 
 new SettingController().reload();
 new VersionController().notifyIfUpdated();

@@ -1,6 +1,6 @@
-import FindRepository from '../repositories/find';
+import FindRepository from '../repositories/FindRepository';
 
-export default class FindInteractor {
+export default class FindUseCase {
   constructor() {
     this.findRepository = new FindRepository();
   }

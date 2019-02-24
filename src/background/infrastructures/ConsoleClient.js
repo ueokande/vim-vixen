@@ -1,6 +1,6 @@
 import messages from '../../shared/messages';
 
-export default class ConsolePresenter {
+export default class ConsoleClient {
   showCommand(tabId, command) {
     return browser.tabs.sendMessage(tabId, {
       type: messages.CONSOLE_SHOW_COMMAND,
@@ -34,3 +34,4 @@ export default class ConsolePresenter {
     });
   }
 }
+

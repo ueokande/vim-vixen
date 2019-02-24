@@ -1,14 +1,14 @@
-import GlobalMark from '../domains/global-mark';
-import TabPresenter from '../presenters/tab';
-import MarkRepository from '../repositories/mark';
-import ConsolePresenter from '../presenters/console';
-import ContentMessageClient from '../infrastructures/content-message-client';
+import GlobalMark from '../domains/GlobalMark';
+import TabPresenter from '../presenters/TabPresenter';
+import MarkRepository from '../repositories/MarkRepository';
+import ConsoleClient from '../infrastructures/ConsoleClient';
+import ContentMessageClient from '../infrastructures/ContentMessageClient';
 
-export default class MarkInteractor {
+export default class MarkUseCase {
   constructor() {
     this.tabPresenter = new TabPresenter();
     this.markRepository = new MarkRepository();
-    this.consolePresenter = new ConsolePresenter();
+    this.consoleClient = new ConsoleClient();
     this.contentMessageClient = new ContentMessageClient();
   }
 
@@ -23,7 +23,7 @@ export default class MarkInteractor {
 
     let mark = await this.markRepository.getMark(key);
     if (!mark) {
-      return this.consolePresenter.showError(current.id, 'Mark is not set');
+      return this.consoleClient.showError(current.id, 'Mark is not set');
     }
 
     return this.contentMessageClient.scrollTo(

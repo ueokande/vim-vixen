@@ -1,11 +1,11 @@
 import messages from '../../shared/messages';
-import CommandController from '../controllers/command';
-import SettingController from '../controllers/setting';
-import FindController from '../controllers/find';
-import AddonEnabledController from '../controllers/addon-enabled';
-import LinkController from '../controllers/link';
-import OperationController from '../controllers/operation';
-import MarkController from '../controllers/mark';
+import CommandController from '../controllers/CommandController';
+import SettingController from '../controllers/SettingController';
+import FindController from '../controllers/FindController';
+import AddonEnabledController from '../controllers/AddonEnabledController';
+import LinkController from '../controllers/LinkController';
+import OperationController from '../controllers/OperationController';
+import MarkController from '../controllers/MarkController';
 
 export default class ContentMessageListener {
   constructor() {

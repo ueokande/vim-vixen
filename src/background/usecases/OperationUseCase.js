@@ -1,5 +1,5 @@
-import TabPresenter from '../presenters/tab';
-import ConsolePresenter from '../presenters/console';
+import TabPresenter from '../presenters/TabPresenter';
+import ConsoleClient from '../infrastructures/ConsoleClient';
 import * as urls from '../../shared/urls';
 
 const ZOOM_SETTINGS = [
@@ -7,10 +7,10 @@ const ZOOM_SETTINGS = [
   1.10, 1.25, 1.50, 1.75, 2.00, 2.50, 3.00
 ];
 
-export default class OperationInteractor {
+export default class OperationUseCase {
   constructor() {
     this.tabPresenter = new TabPresenter();
-    this.consolePresenter = new ConsolePresenter();
+    this.consoleClient = new ConsoleClient();
   }
 
   async close(force) {
@@ -134,7 +134,7 @@ export default class OperationInteractor {
 
   async showCommand() {
     let tab = await this.tabPresenter.getCurrent();
-    return this.consolePresenter.showCommand(tab.id, '');
+    return this.consoleClient.showCommand(tab.id, '');
   }
 
   async showOpenCommand(alter) {
@@ -143,7 +143,7 @@ export default class OperationInteractor {
     if (alter) {
       command += tab.url;
     }
-    return this.consolePresenter.showCommand(tab.id, command);
+    return this.consoleClient.showCommand(tab.id, command);
   }
 
   async showTabopenCommand(alter) {
@@ -152,7 +152,7 @@ export default class OperationInteractor {
     if (alter) {
       command += tab.url;
     }
-    return this.consolePresenter.showCommand(tab.id, command);
+    return this.consoleClient.showCommand(tab.id, command);
   }
 
   async showWinopenCommand(alter) {
@@ -161,13 +161,13 @@ export default class OperationInteractor {
     if (alter) {
       command += tab.url;
     }
-    return this.consolePresenter.showCommand(tab.id, command);
+    return this.consoleClient.showCommand(tab.id, command);
   }
 
   async showBufferCommand() {
     let tab = await this.tabPresenter.getCurrent();
     let command = 'buffer ';
-    return this.consolePresenter.showCommand(tab.id, command);
+    return this.consoleClient.showCommand(tab.id, command);
   }
 
   async showAddbookmarkCommand(alter) {
@@ -176,17 +176,17 @@ export default class OperationInteractor {
     if (alter) {
       command += tab.title;
     }
-    return this.consolePresenter.showCommand(tab.id, command);
+    return this.consoleClient.showCommand(tab.id, command);
   }
 
   async findStart() {
     let tab = await this.tabPresenter.getCurrent();
-    return this.consolePresenter.showFind(tab.id);
+    return this.consoleClient.showFind(tab.id);
   }
 
   async hideConsole() {
     let tab = await this.tabPresenter.getCurrent();
-    return this.consolePresenter.hide(tab.id);
+    return this.consoleClient.hide(tab.id);
   }
 
   async openHome(newTab) {

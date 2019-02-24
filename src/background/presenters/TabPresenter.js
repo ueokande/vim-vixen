@@ -1,4 +1,4 @@
-import MemoryStorage from '../infrastructures/memory-storage';
+import MemoryStorage from '../infrastructures/MemoryStorage';
 
 const CURRENT_SELECTED_KEY = 'tabs.current.selected';
 const LAST_SELECTED_KEY = 'tabs.last.selected';

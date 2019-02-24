@@ -1,4 +1,4 @@
-import MemoryStorage from '../infrastructures/memory-storage';
+import MemoryStorage from '../infrastructures/MemoryStorage';
 
 const CACHED_SETTING_KEY = 'setting';
 

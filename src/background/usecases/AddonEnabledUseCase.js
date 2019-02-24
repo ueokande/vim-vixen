@@ -1,8 +1,8 @@
-import IndicatorPresenter from '../presenters/indicator';
-import TabPresenter from '../presenters/tab';
-import ContentMessageClient from '../infrastructures/content-message-client';
+import IndicatorPresenter from '../presenters/IndicatorPresenter';
+import TabPresenter from '../presenters/TabPresenter';
+import ContentMessageClient from '../infrastructures/ContentMessageClient';
 
-export default class AddonEnabledInteractor {
+export default class AddonEnabledUseCase {
   constructor() {
     this.indicatorPresentor = new IndicatorPresenter();
 

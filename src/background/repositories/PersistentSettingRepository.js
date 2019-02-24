@@ -1,4 +1,4 @@
-import Setting from '../domains/setting';
+import Setting from '../domains/Setting';
 
 export default class SettingRepository {
   save(settings) {

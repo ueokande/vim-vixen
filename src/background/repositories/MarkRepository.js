@@ -1,5 +1,5 @@
-import MemoryStorage from '../infrastructures/memory-storage';
-import GlobalMark from 'background/domains/global-mark';
+import MemoryStorage from '../infrastructures/MemoryStorage';
+import GlobalMark from '../domains/GlobalMark';
 
 const MARK_KEY = 'mark';
 

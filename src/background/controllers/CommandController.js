@@ -1,6 +1,6 @@
-import CompletionsInteractor from '../usecases/completions';
-import CommandInteractor from '../usecases/command';
-import Completions from '../domains/completions';
+import CompletionsUseCase from '../usecases/CompletionsUseCase';
+import CommandUseCase from '../usecases/CommandUseCase';
+import Completions from '../domains/Completions';
 
 const trimStart = (str) => {
   // NOTE String.trimStart is available on Firefox 61
@@ -9,8 +9,8 @@ const trimStart = (str) => {
 
 export default class CommandController {
   constructor() {
-    this.completionsInteractor = new CompletionsInteractor();
-    this.commandIndicator = new CommandInteractor();
+    this.completionsUseCase = new CompletionsUseCase();
+    this.commandIndicator = new CommandUseCase();
   }
 
   getCompletions(line) {
@@ -18,7 +18,7 @@ export default class CommandController {
     let words = trimmed.split(/ +/);
     let name = words[0];
     if (words.length === 1) {
-      return this.completionsInteractor.queryConsoleCommand(name);
+      return this.completionsUseCase.queryConsoleCommand(name);
     }
     let keywords = trimStart(trimmed.slice(name.length));
     switch (words[0]) {
@@ -28,22 +28,22 @@ export default class CommandController {
     case 'tabopen':
     case 'w':
     case 'winopen':
-      return this.completionsInteractor.queryOpen(name, keywords);
+      return this.completionsUseCase.queryOpen(name, keywords);
     case 'b':
     case 'buffer':
-      return this.completionsInteractor.queryBuffer(name, keywords);
+      return this.completionsUseCase.queryBuffer(name, keywords);
     case 'bd':
     case 'bdel':
     case 'bdelete':
     case 'bdeletes':
-      return this.completionsInteractor.queryBdelete(name, keywords);
+      return this.completionsUseCase.queryBdelete(name, keywords);
     case 'bd!':
     case 'bdel!':
     case 'bdelete!':
     case 'bdeletes!':
-      return this.completionsInteractor.queryBdeleteForce(name, keywords);
+      return this.completionsUseCase.queryBdeleteForce(name, keywords);
     case 'set':
-      return this.completionsInteractor.querySet(name, keywords);
+      return this.completionsUseCase.querySet(name, keywords);
     }
     return Promise.resolve(Completions.empty());
   }
