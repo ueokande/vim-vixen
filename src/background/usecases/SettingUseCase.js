@@ -9,10 +9,6 @@ export default class SettingUseCase {
     this.settingRepository = new SettingRepository();
   }
 
-  save(settings) {
-    this.persistentSettingRepository.save(settings);
-  }
-
   get() {
     return this.settingRepository.get();
   }
