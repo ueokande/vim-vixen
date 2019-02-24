@@ -40,6 +40,7 @@
     "no-alert": "off",
     "no-bitwise": "off",
     "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-continue": "off",
     "no-empty-function": "off",
     "no-magic-numbers": "off",
     "no-mixed-operators": "off",
