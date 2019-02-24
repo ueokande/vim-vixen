@@ -1,68 +1,76 @@
 import operations from '../../shared/operations';
-import OperationUseCase from '../usecases/OperationUseCase';
+import FindUseCase from '../usecases/FindUseCase';
+import ConsoleUseCase from '../usecases/ConsoleUseCase';
+import TabUseCase from '../usecases/TabUseCase';
+import TabSelectUseCase from '../usecases/TabSelectUseCase';
+import ZoomUseCase from '../usecases/ZoomUseCase';
 
 export default class OperationController {
   constructor() {
-    this.operationUseCase = new OperationUseCase();
+    this.findUseCase = new FindUseCase();
+    this.consoleUseCase = new ConsoleUseCase();
+    this.tabUseCase = new TabUseCase();
+    this.tabSelectUseCase = new TabSelectUseCase();
+    this.zoomUseCase = new ZoomUseCase();
   }
 
   // eslint-disable-next-line complexity, max-lines-per-function
   exec(operation) {
     switch (operation.type) {
     case operations.TAB_CLOSE:
-      return this.operationUseCase.close(false);
+      return this.tabUseCase.close(false);
     case operations.TAB_CLOSE_RIGHT:
-      return this.operationUseCase.closeRight();
+      return this.tabUseCase.closeRight();
     case operations.TAB_CLOSE_FORCE:
-      return this.operationUseCase.close(true);
+      return this.tabUseCase.close(true);
     case operations.TAB_REOPEN:
-      return this.operationUseCase.reopen();
+      return this.tabUseCase.reopen();
     case operations.TAB_PREV:
-      return this.operationUseCase.selectPrev(1);
+      return this.tabSelectUseCase.selectPrev(1);
     case operations.TAB_NEXT:
-      return this.operationUseCase.selectNext(1);
+      return this.tabSelectUseCase.selectNext(1);
     case operations.TAB_FIRST:
-      return this.operationUseCase.selectFirst();
+      return this.tabSelectUseCase.selectFirst();
     case operations.TAB_LAST:
-      return this.operationUseCase.selectLast();
+      return this.tabSelectUseCase.selectLast();
     case operations.TAB_PREV_SEL:
-      return this.operationUseCase.selectPrevSelected();
+      return this.tabSelectUseCase.selectPrevSelected();
     case operations.TAB_RELOAD:
-      return this.operationUseCase.reload(operation.cache);
+      return this.tabUseCase.reload(operation.cache);
     case operations.TAB_PIN:
-      return this.operationUseCase.setPinned(true);
+      return this.tabUseCase.setPinned(true);
     case operations.TAB_UNPIN:
-      return this.operationUseCase.setPinned(false);
+      return this.tabUseCase.setPinned(false);
     case operations.TAB_TOGGLE_PINNED:
-      return this.operationUseCase.togglePinned();
+      return this.tabUseCase.togglePinned();
     case operations.TAB_DUPLICATE:
-      return this.operationUseCase.duplicate();
+      return this.tabUseCase.duplicate();
     case operations.PAGE_SOURCE:
-      return this.operationUseCase.openPageSource();
+      return this.tabUseCase.openPageSource();
     case operations.PAGE_HOME:
-      return this.operationUseCase.openHome(operation.newTab);
+      return this.tabUseCase.openHome(operation.newTab);
     case operations.ZOOM_IN:
-      return this.operationUseCase.zoomIn();
+      return this.zoomUseCase.zoomIn();
     case operations.ZOOM_OUT:
-      return this.operationUseCase.zoomOut();
+      return this.zoomUseCase.zoomOut();
     case operations.ZOOM_NEUTRAL:
-      return this.operationUseCase.zoomNutoral();
+      return this.zoomUseCase.zoomNutoral();
     case operations.COMMAND_SHOW:
-      return this.operationUseCase.showCommand();
+      return this.consoleUseCase.showCommand();
     case operations.COMMAND_SHOW_OPEN:
-      return this.operationUseCase.showOpenCommand(operation.alter);
+      return this.consoleUseCase.showOpenCommand(operation.alter);
     case operations.COMMAND_SHOW_TABOPEN:
-      return this.operationUseCase.showTabopenCommand(operation.alter);
+      return this.consoleUseCase.showTabopenCommand(operation.alter);
     case operations.COMMAND_SHOW_WINOPEN:
-      return this.operationUseCase.showWinopenCommand(operation.alter);
+      return this.consoleUseCase.showWinopenCommand(operation.alter);
     case operations.COMMAND_SHOW_BUFFER:
-      return this.operationUseCase.showBufferCommand();
+      return this.consoleUseCase.showBufferCommand();
     case operations.COMMAND_SHOW_ADDBOOKMARK:
-      return this.operationUseCase.showAddbookmarkCommand(operation.alter);
+      return this.consoleUseCase.showAddbookmarkCommand(operation.alter);
     case operations.FIND_START:
-      return this.operationUseCase.findStart();
+      return this.findUseCase.findStart();
     case operations.CANCEL:
-      return this.operationUseCase.hideConsole();
+      return this.consoleUseCase.hideConsole();
     }
   }
 }
