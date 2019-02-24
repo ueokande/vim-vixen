@@ -4,6 +4,9 @@ export default class ContentMessageClient {
   async broadcastSettingsChanged() {
     let tabs = await browser.tabs.query({});
     for (let tab of tabs) {
+      if (tab.url.startsWith('about:')) {
+        continue;
+      }
       browser.tabs.sendMessage(tab.id, {
         type: messages.SETTINGS_CHANGED,
       });
