@@ -8,8 +8,7 @@ describe("console reducer", () => {
     expect(state).to.have.property('messageText', '');
     expect(state).to.have.property('consoleText', '');
     expect(state).to.have.deep.property('completions', []);
-    expect(state).to.have.property('groupSelection', -1);
-    expect(state).to.have.property('itemSelection', -1);
+    expect(state).to.have.property('select', -1);
   });
 
   it('return next state for CONSOLE_HIDE', () => {
@@ -60,8 +59,7 @@ describe("console reducer", () => {
 
   it ('return next state for CONSOLE_SET_COMPLETIONS', () => {
     let state = {
-      groupSelection: 0,
-      itemSelection: 0,
+      select: 0,
       completions: [],
     }
     let action = {
@@ -76,15 +74,13 @@ describe("console reducer", () => {
     }
     state = reducer(state, action);
     expect(state).to.have.property('completions', action.completions);
-    expect(state).to.have.property('groupSelection', -1);
-    expect(state).to.have.property('itemSelection', -1);
+    expect(state).to.have.property('select', -1);
   });
 
   it ('return next state for CONSOLE_COMPLETION_NEXT', () => {
     let action = { type: actions.CONSOLE_COMPLETION_NEXT };
     let state = {
-      groupSelection: -1,
-      itemSelection: -1,
+      select: -1,
       completions: [{
         name: 'Apple',
         items: [1, 2]
@@ -95,24 +91,22 @@ describe("console reducer", () => {
     };
 
     state = reducer(state, action);
-    expect(state).to.have.property('groupSelection', 0);
-    expect(state).to.have.property('itemSelection', 0);
+    expect(state).to.have.property('select', 0);
 
     state = reducer(state, action);
-    expect(state).to.have.property('groupSelection', 0);
-    expect(state).to.have.property('itemSelection', 1);
+    expect(state).to.have.property('select', 1);
 
     state = reducer(state, action);
+    expect(state).to.have.property('select', 2);
+
     state = reducer(state, action);
-    expect(state).to.have.property('groupSelection', -1);
-    expect(state).to.have.property('itemSelection', -1);
+    expect(state).to.have.property('select', -1);
   });
 
   it ('return next state for CONSOLE_COMPLETION_PREV', () => {
     let action = { type: actions.CONSOLE_COMPLETION_PREV };
     let state = {
-      groupSelection: -1,
-      itemSelection: -1,
+      select: -1,
       completions: [{
         name: 'Apple',
         items: [1, 2]
@@ -123,17 +117,15 @@ describe("console reducer", () => {
     };
 
     state = reducer(state, action);
-    expect(state).to.have.property('groupSelection', 1);
-    expect(state).to.have.property('itemSelection', 0);
+    expect(state).to.have.property('select', 2);
 
     state = reducer(state, action);
-    expect(state).to.have.property('groupSelection', 0);
-    expect(state).to.have.property('itemSelection', 1);
+    expect(state).to.have.property('select', 1);
 
     state = reducer(state, action);
+    expect(state).to.have.property('select', 0);
+
     state = reducer(state, action);
-    expect(state).to.have.property('groupSelection', -1);
-    expect(state).to.have.property('itemSelection', -1);
+    expect(state).to.have.property('select', -1);
   });
-
 });

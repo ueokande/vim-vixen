@@ -1,5 +1,4 @@
 import { Component, h } from 'preact';
-import { connect } from 'preact-redux';
 
 const CompletionTitle = (props) => {
   return <li className='vimvixen-console-completion-title' >{props.title}</li>;
@@ -25,24 +24,59 @@ const CompletionItem = (props) => {
 
 
 class CompletionComponent extends Component {
+  constructor() {
+    super();
+    this.state = { viewOffset: 0, select: -1 };
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.select === nextProps.select) {
+      return null;
+    }
+
+    let viewSelect = (() => {
+      let index = 0;
+      for (let i = 0; i < nextProps.completions.length; ++i) {
+        ++index;
+        let g = nextProps.completions[i];
+        if (nextProps.select + i + 1 < index + g.items.length) {
+          return nextProps.select + i + 1;
+        }
+        index += g.items.length;
+      }
+    })();
+
+    let viewOffset = 0;
+    if (nextProps.select < 0) {
+      viewOffset = 0;
+    } else if (prevState.select < nextProps.select) {
+      viewOffset = Math.max(prevState.viewOffset,
+        viewSelect - nextProps.size + 1);
+    } else if (prevState.select > nextProps.select) {
+      viewOffset = Math.min(prevState.viewOffset, viewSelect);
+    }
+    return { viewOffset, select: nextProps.select };
+  }
+
   render() {
     let eles = [];
-    for (let i = 0; i < this.props.completions.length; ++i) {
-      let group = this.props.completions[i];
+    let index = 0;
+
+    for (let group of this.props.completions) {
       eles.push(<CompletionTitle title={ group.name }/>);
-      for (let j = 0; j < group.items.length; ++j) {
-        let item = group.items[j];
-        let selected =
-          i === this.props.groupSelection &&
-          j === this.props.itemSelection;
+      for (let item of group.items) {
         eles.push(<CompletionItem
           icon={item.icon}
           caption={item.caption}
           url={item.url}
-          highlight={selected}
+          highlight={index === this.props.select}
         / >);
+        ++index;
       }
     }
+
+    let viewOffset = this.state.viewOffset;
+    eles = eles.slice(viewOffset, viewOffset + this.props.size);
 
     return (
       <ul className='vimvixen-console-completion'>
@@ -52,5 +86,4 @@ class CompletionComponent extends Component {
   }
 }
 
-const mapStateToProps = state => state;
-export default connect(mapStateToProps)(CompletionComponent);
+export default CompletionComponent;

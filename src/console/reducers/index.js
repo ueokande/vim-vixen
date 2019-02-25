@@ -6,52 +6,43 @@ const defaultState = {
   consoleText: '',
   completionSource: '',
   completions: [],
-  groupSelection: -1,
-  itemSelection: -1,
+  select: -1,
+  viewIndex: 0,
 };
 
 const nextSelection = (state) => {
   if (state.completions.length === 0) {
-    return [-1, -1];
+    return -1;
   }
-  if (state.groupSelection < 0) {
-    return [0, 0];
+  if (state.select < 0) {
+    return 0;
   }
 
-  let group = state.completions[state.groupSelection];
-  if (state.groupSelection + 1 >= state.completions.length &&
-    state.itemSelection + 1 >= group.items.length) {
-    return [-1, -1];
+  let length = state.completions
+    .map(g => g.items.length)
+    .reduce((x, y) => x + y);
+  if (state.select + 1 < length) {
+    return state.select + 1;
   }
-  if (state.itemSelection + 1 >= group.items.length) {
-    return [state.groupSelection + 1, 0];
-  }
-  return [state.groupSelection, state.itemSelection + 1];
+  return -1;
 };
 
 const prevSelection = (state) => {
-  if (state.groupSelection < 0) {
-    return [
-      state.completions.length - 1,
-      state.completions[state.completions.length - 1].items.length - 1
-    ];
+  let length = state.completions
+    .map(g => g.items.length)
+    .reduce((x, y) => x + y);
+  if (state.select < 0) {
+    return length - 1;
   }
-  if (state.groupSelection === 0 && state.itemSelection === 0) {
-    return [-1, -1];
-  } else if (state.itemSelection === 0) {
-    return [
-      state.groupSelection - 1,
-      state.completions[state.groupSelection - 1].items.length - 1
-    ];
-  }
-  return [state.groupSelection, state.itemSelection - 1];
+  return state.select - 1;
 };
 
-const nextConsoleText = (completions, group, item, defaults) => {
-  if (group < 0 || item < 0) {
+const nextConsoleText = (completions, select, defaults) => {
+  if (select < 0) {
     return defaults;
   }
-  return completions[group].items[item].content;
+  let items = completions.map(g => g.items).reduce((g1, g2) => g1.concat(g2));
+  return items[select].content;
 };
 
 // eslint-disable-next-line max-lines-per-function
@@ -90,25 +81,20 @@ export default function reducer(state = defaultState, action = {}) {
     return { ...state,
       completions: action.completions,
       completionSource: action.completionSource,
-      groupSelection: -1,
-      itemSelection: -1, };
+      select: -1 };
   case actions.CONSOLE_COMPLETION_NEXT: {
-    let next = nextSelection(state);
+    let select = nextSelection(state);
     return { ...state,
-      groupSelection: next[0],
-      itemSelection: next[1],
+      select: select,
       consoleText: nextConsoleText(
-        state.completions, next[0], next[1],
-        state.completionSource), };
+        state.completions, select, state.completionSource) };
   }
   case actions.CONSOLE_COMPLETION_PREV: {
-    let next = prevSelection(state);
+    let select = prevSelection(state);
     return { ...state,
-      groupSelection: next[0],
-      itemSelection: next[1],
+      select: select,
       consoleText: nextConsoleText(
-        state.completions, next[0], next[1],
-        state.completionSource), };
+        state.completions, select, state.completionSource) };
   }
   default:
     return state;
