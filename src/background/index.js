@@ -4,7 +4,10 @@ import VersionController from './controllers/VersionController';
 
 new SettingController().reload();
 
-browser.runtime.onInstalled.addListener(() => {
+browser.runtime.onInstalled.addListener((details) => {
+  if (details.reason !== 'install' && details.reason !== 'update') {
+    return;
+  }
   new VersionController().notify();
 });
 
