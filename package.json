@@ -49,7 +49,7 @@
     "sass-loader": "^7.1.0",
     "sinon-chrome": "^2.3.2",
     "style-loader": "^0.23.1",
-    "web-ext": "github:ueokande/web-ext#patched-2.9.1",
+    "web-ext": "github:ueokande/web-ext#patched-3.0.0",
     "webextensions-api-fake": "^0.5.1",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"
