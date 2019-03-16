@@ -6,7 +6,7 @@
 [![CircleCI](https://circleci.com/gh/ueokande/vim-vixen.svg?style=svg)](https://circleci.com/gh/ueokande/vim-vixen)
 [![devDependencies Status](https://david-dm.org/ueokande/vim-vixen/dev-status.svg)](https://david-dm.org/ueokande/vim-vixen?type=dev)
 
-Vim Vixen is a Firefox add-on which allows you to navigate with keyboard on the browser.
+Vim Vixen is a Firefox add-on which allows you to navigate with the keyboard on the browser.
 Firefox started to support WebExtensions API and will stop supporting add-ons using legacy APIs from version 57.
 For this reason, many legacy add-ons do not work on Firefox 57.
 Vim Vixen is a new choice for Vim users since Vim Vixen uses the WebExtensions API.
