@@ -8,12 +8,6 @@ Test operations with default key maps.
 
 The behaviors of the console are tested in [Console section](#consoles).
 
-- [ ] <kbd>:</kbd>: open empty console
-- [ ] <kbd>o</kbd>, <kbd>t</kbd>, <kbd>w</kbd>: open a console with `open`, `tabopen`, `winopen`
-- [ ] <kbd>O</kbd>, <kbd>T</kbd>, <kbd>W</kbd>: open a console with `open`, `tabopen`, `winopen` and current URL
-- [ ] <kbd>b</kbd>: open a console with `buffer`
-- [ ] <kbd>a</kbd>: open a console with `addbookmark` and the current page's title
-
 #### Misc
 
 - [ ] <kbd>y</kbd>: yank current URL and show a message
