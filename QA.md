@@ -14,11 +14,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] <kbd>b</kbd>: open a console with `buffer`
 - [ ] <kbd>a</kbd>: open a console with `addbookmark` and the current page's title
 
-#### Tabs
-
-- [ ] <kbd>r</kbd>: reload current tab
-- [ ] <kbd>R</kbd>: reload current tab without cache
-
 #### Misc
 
 - [ ] <kbd>y</kbd>: yank current URL and show a message
