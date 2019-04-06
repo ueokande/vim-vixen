@@ -18,8 +18,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 - [ ] <kbd>r</kbd>: reload current tab
 - [ ] <kbd>R</kbd>: reload current tab without cache
-- [ ] <kbd>g</kbd><kbd>h</kbd>: open start page on current tab
-- [ ] <kbd>g</kbd><kbd>H</kbd>: open start page to new tab
 
 #### Misc
 

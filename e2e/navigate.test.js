@@ -45,7 +45,11 @@ describe("zoom test", () => {
   before(async() => {
     http = newApp().listen(port);
 
-    firefox = await lanthan.firefox();
+    firefox = await lanthan.firefox({
+      prefs: {
+        'browser.startup.homepage': `http://127.0.0.1:${port}#home`,
+      }
+    });
     await firefox.session.installAddon(path.join(__dirname, '..'));
     session = firefox.session;
     browser = firefox.browser;
@@ -160,6 +164,32 @@ describe("zoom test", () => {
       let tab = (await browser.tabs.query({}))[0];
       let url = new URL(tab.url);
       assert.equal(url.pathname, '/pagenation-link/11');
+    });
+  });
+
+  it('should go to home page into current tab by gh', async () => {
+    await session.navigateTo(`http://127.0.0.1:${port}`);
+    let body = await session.findElementByCSS('body');
+    await body.sendKeys('g', 'h');
+
+    await eventually(async() => {
+      let tab = (await browser.tabs.query({}))[0];
+      let url = new URL(tab.url);
+      assert.equal(url.hash, '#home');
+    });
+  });
+
+  it('should go to home page into current tab by gH', async () => {
+    await session.navigateTo(`http://127.0.0.1:${port}`);
+    let body = await session.findElementByCSS('body');
+    await body.sendKeys('g', Key.Shift, 'H');
+
+    await eventually(async() => {
+      let tabs = await browser.tabs.query({});
+      assert.equal(tabs.length, 2);
+      assert.equal(new URL(tabs[0].url).hash, '');
+      assert.equal(new URL(tabs[1].url).hash, '#home');
+      assert.equal(tabs[1].active, true);
     });
   });
 });
