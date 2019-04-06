@@ -2,6 +2,7 @@ const express = require('express');
 const lanthan = require('lanthan');
 const path = require('path');
 const assert = require('power-assert');
+const eventually = require('./eventually');
 
 const Key = lanthan.Key;
 
@@ -58,8 +59,6 @@ describe("tab test", () => {
     let body = await session.findElementByCSS('body');
     await body.sendKeys('d');
 
-    await new Promise(resolve => setTimeout(resolve, 100));
-
     let current = await browser.tabs.query({ windowId: win.id });
     assert(current.length === tabs.length - 1);
   });
@@ -68,8 +67,6 @@ describe("tab test", () => {
     await browser.tabs.update(tabs[1].id, { active: true });
     let body = await session.findElementByCSS('body');
     await body.sendKeys(Key.Shift, 'd');
-
-    await new Promise(resolve => setTimeout(resolve, 100));
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert(current.length === 2);
@@ -80,12 +77,12 @@ describe("tab test", () => {
     let body = await session.findElementByCSS('body');
     await body.sendKeys('z', 'd');
 
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    let current = await browser.tabs.query({ windowId: win.id });
-    current.sort((t1, t2) => t1.index - t2.index);
-    assert(current.length === tabs.length + 1);
-    assert(current[0].url === current[1].url);
+    await eventually(async() => {
+      let current = await browser.tabs.query({ windowId: win.id });
+      current.sort((t1, t2) => t1.index - t2.index);
+      assert(current.length === tabs.length + 1);
+      assert(current[0].url === current[1].url);
+    });
   });
 
   it('makes pinned by zp', async () => {
@@ -169,12 +166,7 @@ describe("tab test", () => {
     let body = await session.findElementByCSS('body');
     await body.sendKeys('u');
 
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
     let current = await browser.tabs.query({ windowId: win.id });
-    if (current.length !== tabs.length) {
-      await new Promise(resolve => setTimeout(resolve, 50000));
-    }
     assert(current.length === tabs.length);
   });
 
@@ -201,10 +193,10 @@ describe("tab test", () => {
     let body = await session.findElementByCSS('body');
     await body.sendKeys('g', 'f');
 
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    let current = await browser.tabs.query({ windowId: win.id });
-    assert(current.length === tabs.length + 1);
-    assert(current[current.length - 1].url === `view-source:${url}#0`);
+    await eventually(async() => {
+      let current = await browser.tabs.query({ windowId: win.id });
+      assert(current.length === tabs.length + 1);
+      assert(current[current.length - 1].url === `view-source:${url}#0`);
+    });
   });
 });
