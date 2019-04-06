@@ -6,6 +6,7 @@ executors:
       - image: circleci/node:10-stretch-browsers
     environment:
       - FIREFOX_VERSION: "60.0esr"
+      - GECKODRIVER_VERSION: "0.24.0"
     working_directory: ~
 
 commands:
@@ -28,6 +29,18 @@ commands:
           paths:
             - ~/firefox
       - run: echo 'export PATH=~/firefox/$FIREFOX_VERSION:$PATH' >> $BASH_ENV
+
+  install_geckodriver:
+    steps:
+      - run:
+          name: Install geckodriver
+          command: |
+            mkdir -p geckodriver
+
+            url=https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v${GECKODRIVER_VERSION}-linux64.tar.gz
+            curl -sSLf "$url" | tar  -C geckodriver xvf -
+
+            echo 'export PATH=~/geckodriver/$GECKODRIVER_VERSION:$PATH' >> $BASH_ENV
 
   setup_npm:
     steps:
@@ -61,10 +74,9 @@ jobs:
       - checkout
       - setup_npm
       - run: npm run build
-      - run: npm run ambassador:build
       - run:
-          name: Run web server
-          command: node e2e/web-server
+          name: Run geckodriver
+          command: geckodriver
           background: true
       - run: npm run test:e2e
 
