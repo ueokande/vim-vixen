@@ -5,11 +5,9 @@
     "start": "webpack --mode development -w --debug --devtool inline-source-map",
     "build": "NODE_ENV=production webpack --mode production --progress --display-error-details",
     "package": "npm run build && script/package.sh",
-    "lint": "eslint --ext .jsx,.js src e2e/ambassador/src",
+    "lint": "eslint --ext .jsx,.js src",
     "test": "karma start",
-    "test:e2e": "karma start e2e/karma.conf.js",
-    "ambassador:start": "webpack --mode production -w --debug --context e2e/ambassador --config e2e/ambassador/webpack.config.js --devtool inline-source-map",
-    "ambassador:build": "webpack --mode production --context e2e/ambassador --config e2e/ambassador/webpack.config.js"
+    "test:e2e": "mocha --timeout 5000 e2e"
   },
   "repository": {
     "type": "git",
@@ -40,6 +38,7 @@
     "karma-sinon": "^1.0.5",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^3.0.5",
+    "lanthan": "git+https://github.com/ueokande/lanthan.git#master",
     "mocha": "^6.0.2",
     "node-sass": "^4.11.0",
     "preact": "^8.4.2",
