@@ -1,5 +1,3 @@
-const assert = require('assert');
-
 let defaultInterval = 100;
 let defaultTimeout = 2000;
 

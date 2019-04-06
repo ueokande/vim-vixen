@@ -1,7 +1,7 @@
 const express = require('express');
 const lanthan = require('lanthan');
 const path = require('path');
-const assert = require('power-assert');
+const assert = require('assert');
 const eventually = require('./eventually');
 
 const Key = lanthan.Key;
