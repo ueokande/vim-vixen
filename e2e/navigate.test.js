@@ -71,15 +71,24 @@ describe("navigate test", () => {
     http.close();
   });
 
+  beforeEach(async() => {
+    let tabs = await browser.tabs.query({});
+    for (let tab of tabs.slice(1)) {
+      await browser.tabs.remove(tab.id);
+    }
+  })
+
   it('should go to parent path without hash by gu', async () => {
     await session.navigateTo(`http://127.0.0.1:${port}/a/b/c`);
     let body = await session.findElementByCSS('body');
 
     await body.sendKeys('g', 'u');
 
-    let tab = (await browser.tabs.query({}))[0];
-    let url = new URL(tab.url);
-    assert.equal(url.pathname, `/a/b/`)
+    await eventually(async() => {
+      let tab = (await browser.tabs.query({}))[0];
+      let url = new URL(tab.url);
+      assert.equal(url.pathname, `/a/b/`)
+    });
   });
 
   it('should remove hash by gu', async () => {
@@ -88,10 +97,12 @@ describe("navigate test", () => {
 
     await body.sendKeys('g', 'u');
 
-    let tab = (await browser.tabs.query({}))[0];
-    let url = new URL(tab.url);
-    assert.equal(url.hash, '')
-    assert.equal(url.pathname, `/a/b/c`)
+    await eventually(async() => {
+      let tab = (await browser.tabs.query({}))[0];
+      let url = new URL(tab.url);
+      assert.equal(url.hash, '')
+      assert.equal(url.pathname, `/a/b/c`)
+    });
   });
 
   it('should go to root path by gU', async () => {
