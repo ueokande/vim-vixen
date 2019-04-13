@@ -85,7 +85,7 @@ const exec = (operation, settings, addonEnabled) => {
     break;
   case operations.URLS_YANK:
     urls.yank(window);
-    consoleFrames.postInfo('Current url yanked');
+    consoleFrames.postInfo('Yanked ' + window.location.href);
     break;
   case operations.URLS_PASTE:
     urls.paste(
