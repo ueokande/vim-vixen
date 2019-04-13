@@ -33,7 +33,6 @@ describe("tabopen command test", () => {
   let firefox;
   let session;
   let browser;
-  let tab;
   let body;
 
   before(async() => {

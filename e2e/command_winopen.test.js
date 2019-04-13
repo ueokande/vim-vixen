@@ -33,7 +33,6 @@ describe("winopen command test", () => {
   let firefox;
   let session;
   let browser;
-  let tab;
   let body;
 
   before(async() => {
