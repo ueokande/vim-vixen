@@ -1,5 +1,4 @@
 import actions from 'settings/actions';
-import messages from 'shared/messages';
 import * as validator from 'shared/settings/validator';
 import KeymapsForm from '../components/form/keymaps-form';
 import * as settingsValues from 'shared/settings/values';
@@ -24,9 +23,6 @@ const save = async(settings) => {
     };
   }
   await settingsStorage.save(settings);
-  await browser.runtime.sendMessage({
-    type: messages.SETTINGS_RELOAD
-  });
   return set(settings);
 };
 

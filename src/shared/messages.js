@@ -59,7 +59,6 @@ export default {
 
   OPEN_URL: 'open.url',
 
-  SETTINGS_RELOAD: 'settings.reload',
   SETTINGS_CHANGED: 'settings.changed',
   SETTINGS_QUERY: 'settings.query',
 
