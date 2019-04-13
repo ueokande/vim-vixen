@@ -20,7 +20,7 @@ const newApp = () => {
 };
 
 
-describe("zoom test", () => {
+describe("console test", () => {
   const port = 12321;
   let http;
   let firefox;
@@ -31,7 +31,7 @@ describe("zoom test", () => {
 
   before(async() => {
     firefox = await lanthan.firefox();
-    await firefox.session.installAddon(path.join(__dirname, '..'));
+    await firefox.session.installAddonFromPath(path.join(__dirname, '..'));
     session = firefox.session;
     browser = firefox.browser;
     http = newApp().listen(port);

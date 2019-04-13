@@ -43,7 +43,7 @@ const newApp = () => {
   return app;
 };
 
-describe("zoom test", () => {
+describe("navigate test", () => {
 
   const port = 12321;
   let http;
@@ -59,7 +59,7 @@ describe("zoom test", () => {
         'browser.startup.homepage': `http://127.0.0.1:${port}#home`,
       }
     });
-    await firefox.session.installAddon(path.join(__dirname, '..'));
+    await firefox.session.installAddonFromPath(path.join(__dirname, '..'));
     session = firefox.session;
     browser = firefox.browser;
   });
