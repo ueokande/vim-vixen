@@ -39,18 +39,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `<EMPTY>`: do nothing
 <br>
 
-- [ ] `open an apple`: search with keywords "an apple" by default search engine (google)
-- [ ] `open github.com`: open github.com
-- [ ] `open https://github.com`: open github.com
-- [ ] `open yahoo an apple`: search with keywords "an apple" by yahoo.com
-- [ ] `open yahoo`: search with empty keywords; yahoo redirects to top page
-- [ ] `open`: open default search engine
-<br>
-
-- [ ] `tabopen`: do above tests replaced `open` with `tabopen`, and verify the page is opened in new tab
-- [ ] `winopen`: do above tests replaced `open` with `winopen`, and verify the page is opened in new window
-<br>
-
 - [ ] `buffer`: do nothing
 - [ ] `buffer <title>`, `buffer <url>`: select tab which has an title matched with
 - [ ] `buffer 1`: select leftmost tab
