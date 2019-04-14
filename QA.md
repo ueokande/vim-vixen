@@ -39,8 +39,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `<EMPTY>`: do nothing
 <br>
 
-- [ ] `q`, `quit`: close current tab
-- [ ] `qa`, `quitall`: close all tabs
 - [ ] `bdelete`: delete a not-pinned tab matches with keywords
 - [ ] `bdelete`: show errors no-tabs or more than 1 tabs matched
 - [ ] `bdelete`: can not delete pinned tab
