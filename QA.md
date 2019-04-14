@@ -39,15 +39,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] `<EMPTY>`: do nothing
 <br>
 
-- [ ] `buffer`: do nothing
-- [ ] `buffer <title>`, `buffer <url>`: select tab which has an title matched with
-- [ ] `buffer 1`: select leftmost tab
-- [ ] `buffer 0`, `buffer <a number more than count of tabs>`: shows an error
-- [ ] select tabs rotationally when more than two tabs are matched
-- [ ] `buffer %`: select current tab (nothing to do)
-- [ ] `buffer #`: select last selected tab
-<br>
-
 - [ ] `addbookmark` creates a bookmark
 <br>
 
