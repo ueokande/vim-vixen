@@ -37,15 +37,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 #### Exec a command
 
 - [ ] `<EMPTY>`: do nothing
-<br>
-
-- [ ] `bdelete`: delete a not-pinned tab matches with keywords
-- [ ] `bdelete`: show errors no-tabs or more than 1 tabs matched
-- [ ] `bdelete`: can not delete pinned tab
-- [ ] `bdelete!`: delete a tab matches with keywords
-- [ ] `bdelete!`: delete a pinned tab matches with keywords
-- [ ] `bdeletes`: delete tabs with matched with keywords excluding pinned
-- [ ] `bdeletes!`: delete tabs with matched with keywords including pinned
 
 ### Completions
 
