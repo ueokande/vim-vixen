@@ -6,20 +6,8 @@ const eventually = require('./eventually');
 
 const Key = lanthan.Key;
 
-const newApp = () => {
-  let app = express();
-  app.get('/', (req, res) => {
-    res.send(`<!DOCTYPEhtml>
-<html lang="en">
-</html">`);
-  });
-  return app;
-};
-
 describe("zoom test", () => {
 
-  const port = 12321;
-  let http;
   let firefox;
   let session;
   let browser;
@@ -27,10 +15,8 @@ describe("zoom test", () => {
   let body;
 
   before(async() => {
-    http = newApp().listen(port);
-
     firefox = await lanthan.firefox();
-    await firefox.session.installAddon(path.join(__dirname, '..'));
+    await firefox.session.installAddonFromPath(path.join(__dirname, '..'));
     session = firefox.session;
     browser = firefox.browser;
     tab = (await browser.tabs.query({}))[0]
@@ -40,11 +26,10 @@ describe("zoom test", () => {
     if (firefox) {
       await firefox.close();
     }
-    http.close();
   });
 
   beforeEach(async() => {
-    await session.navigateTo(`http://127.0.0.1:${port}`);
+    await session.navigateTo('about:blank');
     body = await session.findElementByCSS('body');
   });
 

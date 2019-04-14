@@ -8,19 +8,6 @@ Test operations with default key maps.
 
 The behaviors of the console are tested in [Console section](#consoles).
 
-- [ ] <kbd>:</kbd>: open empty console
-- [ ] <kbd>o</kbd>, <kbd>t</kbd>, <kbd>w</kbd>: open a console with `open`, `tabopen`, `winopen`
-- [ ] <kbd>O</kbd>, <kbd>T</kbd>, <kbd>W</kbd>: open a console with `open`, `tabopen`, `winopen` and current URL
-- [ ] <kbd>b</kbd>: open a console with `buffer`
-- [ ] <kbd>a</kbd>: open a console with `addbookmark` and the current page's title
-
-#### Tabs
-
-- [ ] <kbd>r</kbd>: reload current tab
-- [ ] <kbd>R</kbd>: reload current tab without cache
-- [ ] <kbd>g</kbd><kbd>h</kbd>: open start page on current tab
-- [ ] <kbd>g</kbd><kbd>H</kbd>: open start page to new tab
-
 #### Misc
 
 - [ ] <kbd>y</kbd>: yank current URL and show a message
@@ -50,41 +37,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 #### Exec a command
 
 - [ ] `<EMPTY>`: do nothing
-<br>
-
-- [ ] `open an apple`: search with keywords "an apple" by default search engine (google)
-- [ ] `open github.com`: open github.com
-- [ ] `open https://github.com`: open github.com
-- [ ] `open yahoo an apple`: search with keywords "an apple" by yahoo.com
-- [ ] `open yahoo`: search with empty keywords; yahoo redirects to top page
-- [ ] `open`: open default search engine
-<br>
-
-- [ ] `tabopen`: do above tests replaced `open` with `tabopen`, and verify the page is opened in new tab
-- [ ] `winopen`: do above tests replaced `open` with `winopen`, and verify the page is opened in new window
-<br>
-
-- [ ] `buffer`: do nothing
-- [ ] `buffer <title>`, `buffer <url>`: select tab which has an title matched with
-- [ ] `buffer 1`: select leftmost tab
-- [ ] `buffer 0`, `buffer <a number more than count of tabs>`: shows an error
-- [ ] select tabs rotationally when more than two tabs are matched
-- [ ] `buffer %`: select current tab (nothing to do)
-- [ ] `buffer #`: select last selected tab
-<br>
-
-- [ ] `addbookmark` creates a bookmark
-<br>
-
-- [ ] `q`, `quit`: close current tab
-- [ ] `qa`, `quitall`: close all tabs
-- [ ] `bdelete`: delete a not-pinned tab matches with keywords
-- [ ] `bdelete`: show errors no-tabs or more than 1 tabs matched
-- [ ] `bdelete`: can not delete pinned tab
-- [ ] `bdelete!`: delete a tab matches with keywords
-- [ ] `bdelete!`: delete a pinned tab matches with keywords
-- [ ] `bdeletes`: delete tabs with matched with keywords excluding pinned
-- [ ] `bdeletes!`: delete tabs with matched with keywords including pinned
 
 ### Completions
 

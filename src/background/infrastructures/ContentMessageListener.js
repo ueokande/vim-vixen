@@ -51,8 +51,6 @@ export default class ContentMessageListener {
       return this.onConsoleEnterCommand(message.text);
     case messages.SETTINGS_QUERY:
       return this.onSettingsQuery();
-    case messages.SETTINGS_RELOAD:
-      return this.onSettingsReload();
     case messages.FIND_GET_KEYWORD:
       return this.onFindGetKeyword();
     case messages.FIND_SET_KEYWORD:
@@ -85,10 +83,6 @@ export default class ContentMessageListener {
 
   onSettingsQuery() {
     return this.settingController.getSetting();
-  }
-
-  onSettingsReload() {
-    return this.settingController.reload();
   }
 
   onFindGetKeyword() {
