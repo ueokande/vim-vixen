@@ -70,6 +70,7 @@ jobs:
     executor:
       name: default
     steps:
+      - run: sudo apt-get update && sudo apt-get -y install xsel
       - install_firefox
       - checkout
       - setup_npm
