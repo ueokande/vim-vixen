@@ -10,11 +10,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 #### Misc
 
-- [ ] <kbd>y</kbd>: yank current URL and show a message
-- [ ] <kbd>p</kbd>: open clipboard's URL in current tab
-- [ ] <kbd>P</kbd>: open clipboard's URL in new tab
-- [ ] <kbd>p</kbd>: search clipboard's keywords in current tab
-- [ ] <kbd>P</kbd>: search clipboard's keywords in new tab
 - [ ] Toggle enabled/disabled of plugin bu <kbd>Shift</kbd>+<kbd>Esc</kbd>
 - [ ] Hide error and info console by <kbd>Esc</kbd>
 - [ ] Vim-Vixen icons changes on <kbd>Shift</kbd>+<kbd>Esc</kbd>
