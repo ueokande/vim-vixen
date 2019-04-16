@@ -10,17 +10,13 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 #### Misc
 
-- [ ] <kbd>y</kbd>: yank current URL and show a message
-- [ ] <kbd>p</kbd>: open clipboard's URL in current tab
-- [ ] <kbd>P</kbd>: open clipboard's URL in new tab
-- [ ] <kbd>p</kbd>: search clipboard's keywords in current tab
-- [ ] <kbd>P</kbd>: search clipboard's keywords in new tab
 - [ ] Toggle enabled/disabled of plugin bu <kbd>Shift</kbd>+<kbd>Esc</kbd>
 - [ ] Hide error and info console by <kbd>Esc</kbd>
 - [ ] Vim-Vixen icons changes on <kbd>Shift</kbd>+<kbd>Esc</kbd>
 - [ ] Add-on is enabled and disabled by clicking the indicator on the tool bar.
 - [ ] The indicator changed on selected tab changed (changes add-on enabled)
 - [ ] Notify to users on add-on updated at first time.
+- [ ] Reopen tab on *only current window* by <kbd>u</kbd>
 
 ### Following links
 
@@ -31,6 +27,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] Select link and open it in new tab in `<iframe>`/`<frame`> on following by <kbd>F</kbd>
 - [ ] Select link and open it in `<area>` tags, for <kbd>f</kbd> and <kbd>F</kbd>
 - [ ] Open new tab in background by `"background": true`
+- [ ] Opened tabs is in child on Tree Style Tab
 
 ### Consoles
 
@@ -38,40 +35,14 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 - [ ] `<EMPTY>`: do nothing
 
-### Completions
-
-#### History and search engines
-
-- [ ] `open<SP>`: show all engines and some history items
-- [ ] `open g`: complete search engines starts with `g` and matched with keywords `g`
-- [ ] `open foo bar`: complete history items matched with keywords `foo` and `bar`
-- [ ] `set `: show prperties starts with keywords
-- [ ] The completions shows histories, search engines, and bookmarks.
-- [ ] also `tabopen` and `winopen`
-- shortening commands such as `o` are not test in this release
-- [ ] Complete commands matched with input keywords in the prefix.
-
-#### Buffer command
-
-- [ ] `buffer<SP>`: show all opened tabs in completion
-- [ ] `buffer x`: show tabs which has title and URL matches with `x`
-- [ ] shows tab index and marks
-
-#### Buffer command
-
-- [ ] `bdelete`, `bdeletes`: show tabs excluding pinned tabs
-- [ ] `bdelete!`, `bdeletes!`: show tabs including pinned tabs
-
 #### Misc
 
 - [ ] Select next item by <kbd>Tab</kbd> and previous item by <kbd>Shift</kbd>+<kbd>Tab</kbd>
-- [ ] Reopen tab on *only current window* by <kbd>u</kbd>
 
 ### Properties
 
 - [ ] Configure custom hint character by `:set hintchars=012345678`
 - [ ] Configure custom hint character by settings `"hintchars": "012345678"` in add-on preferences
-- [ ] Opened tabs is in child on Tree Style Tab
 
 - [ ] Smooth scroll by `:set smoothscroll`
 - [ ] Non-smooth scroll by `:set nosmoothscroll`
