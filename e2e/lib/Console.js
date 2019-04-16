@@ -8,6 +8,13 @@ class Console {
     input.sendKeys(...keys);
   }
 
+  async currentValue() {
+    return await this.session.executeScript(() => {
+      let input = document.querySelector('input');
+      return input.value;
+    });
+  }
+
   async getCompletions() {
     return await this.session.executeScript(() => {
       let items = document.querySelectorAll('.vimvixen-console-completion > li');
@@ -20,7 +27,8 @@ class Console {
         if (li.classList.contains('vimvixen-console-completion-title')) {
           objs.push({ type: 'title', text: li.textContent.trim() });
         } else if ('vimvixen-console-completion-item') {
-          objs.push({ type: 'item', text: li.textContent.trim() });
+          let highlight = li.classList.contains('vimvixen-completion-selected');
+          objs.push({ type: 'item', text: li.textContent.trim(), highlight });
         } else {
           throw new Error(`unexpected class: ${li.className}`);
         }

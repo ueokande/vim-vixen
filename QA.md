@@ -35,13 +35,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 - [ ] `<EMPTY>`: do nothing
 
-### Completions
-
-#### History and search engines
-
-- [ ] `set `: show prperties starts with keywords
-- [ ] Complete commands matched with input keywords in the prefix.
-
 #### Misc
 
 - [ ] Select next item by <kbd>Tab</kbd> and previous item by <kbd>Shift</kbd>+<kbd>Tab</kbd>
