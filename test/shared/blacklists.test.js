@@ -39,4 +39,11 @@ describe("shared/blacklist", () => {
     expect(includes(blacklist, 'https://github.com/abcdef')).to.be.true;
     expect(includes(blacklist, 'https://gist.github.com/abc')).to.be.false;
   })
+
+  it('matches address and port', () => {
+    let blacklist = ['127.0.0.1:8888'];
+
+    expect(includes(blacklist, 'http://127.0.0.1:8888/')).to.be.true;
+    expect(includes(blacklist, 'http://127.0.0.1:8888/hello')).to.be.true;
+  })
 });
