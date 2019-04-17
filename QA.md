@@ -69,14 +69,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 - validations in `"search"` section are not tested in this release
 
-##### `"blacklist"` section
-
-- [ ] `github.com/a` blocks `github.com/a`, and not blocks `github.com/aa`
-- [ ] `github.com/a*` blocks both `github.com/a` and `github.com/aa`
-- [ ] `github.com/` blocks `github.com/`, and not blocks `github.com/a`
-- [ ] `github.com` blocks both `github.com/` and `github.com/a`
-- [ ] `*.github.com` blocks `gist.github.com/`, and not `github.com`
-
 ##### Updating
 
 - [ ] changes are updated on textarea blure when no errors
