@@ -129,4 +129,127 @@ describe("completion on open/tabopen/winopen commands", () => {
       assert(items.every(x => x.includes('https://')));
     });
   })
+
+  it('should display only specified items in "complete" property by set command', async() => {
+    let c = new Console(session);
+
+    const execCommand = async(line) => {
+      await body.sendKeys(':');
+      await session.switchToFrame(0);
+      await c.sendKeys(line, Key.Enter);
+      await session.switchToParentFrame();
+    }
+
+    const typeCommand = async(...keys) => {
+      await body.sendKeys(':');
+      await session.switchToFrame(0);
+      await c.sendKeys(...keys);
+    }
+
+    const cancel = async() => {
+      await c.sendKeys(Key.Escape);
+      await session.switchToParentFrame();
+    }
+
+    await execCommand('set complete=sbh');
+    await typeCommand('open ');
+
+    await eventually(async() => {
+      let completions = await c.getCompletions();
+      let titles = completions.filter(x => x.type === 'title').map(x => x.text);
+      assert.deepEqual(titles, ['Search Engines', 'Bookmarks', 'History'])
+    });
+
+    await cancel();
+    await execCommand('set complete=bss');
+    await typeCommand('open ');
+
+    await eventually(async() => {
+      let completions = await c.getCompletions();
+      let titles = completions.filter(x => x.type === 'title').map(x => x.text);
+      assert.deepEqual(titles, ['Bookmarks', 'Search Engines', 'Search Engines'])
+    });
+  })
+
+  it('should display only specified items in "complete" property by setting', async() => {
+    const settings = {
+      source: 'json',
+      json: `{
+        "keymaps": {
+          ":": { "type": "command.show" }
+        },
+        "search": {
+          "default": "google",
+          "engines": { "google": "https://google.com/search?q={}" }
+        },
+        "properties": {
+          "complete": "sbh"
+        }
+      }`,
+    };
+    await browser.storage.local.set({ settings, });
+
+    let c = new Console(session);
+
+    const typeCommand = async(...keys) => {
+      await body.sendKeys(':');
+      await session.switchToFrame(0);
+      await c.sendKeys(...keys);
+    }
+
+    const cancel = async() => {
+      await c.sendKeys(Key.Escape);
+      await session.switchToParentFrame();
+    }
+
+    await browser.storage.local.set({ settings: {
+      source: 'json',
+      json: `{
+        "keymaps": {
+          ":": { "type": "command.show" }
+        },
+        "search": {
+          "default": "google",
+          "engines": { "google": "https://google.com/search?q={}" }
+        },
+        "properties": {
+          "complete": "sbh"
+        }
+      }`,
+    }});
+    await typeCommand('open ');
+
+    await eventually(async() => {
+      let completions = await c.getCompletions();
+      let titles = completions.filter(x => x.type === 'title').map(x => x.text);
+      assert.deepEqual(titles, ['Search Engines', 'Bookmarks', 'History'])
+    });
+
+    await cancel();
+
+    await browser.storage.local.set({ settings: {
+      source: 'json',
+      json: `{
+        "keymaps": {
+          ":": { "type": "command.show" }
+        },
+        "search": {
+          "default": "google",
+          "engines": { "google": "https://google.com/search?q={}" }
+        },
+        "properties": {
+          "complete": "bss"
+        }
+      }`,
+    }});
+    await typeCommand('open ');
+
+    await eventually(async() => {
+      let completions = await c.getCompletions();
+      let titles = completions.filter(x => x.type === 'title').map(x => x.text);
+      assert.deepEqual(titles, ['Bookmarks', 'Search Engines', 'Search Engines'])
+    });
+
+
+  })
 });

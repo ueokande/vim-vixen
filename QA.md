@@ -26,18 +26,9 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] Select link and open it in the frame in `<iframe>`/`<frame`> on following by <kbd>f</kbd>
 - [ ] Select link and open it in new tab in `<iframe>`/`<frame`> on following by <kbd>F</kbd>
 - [ ] Select link and open it in `<area>` tags, for <kbd>f</kbd> and <kbd>F</kbd>
-- [ ] Open new tab in background by `"background": true`
 - [ ] Opened tabs is in child on Tree Style Tab
 
 ### Consoles
-
-#### Exec a command
-
-- [ ] `<EMPTY>`: do nothing
-
-#### Misc
-
-- [ ] Select next item by <kbd>Tab</kbd> and previous item by <kbd>Shift</kbd>+<kbd>Tab</kbd>
 
 ### Properties
 
@@ -47,10 +38,7 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] Smooth scroll by `:set smoothscroll`
 - [ ] Non-smooth scroll by `:set nosmoothscroll`
 - [ ] Configure smooth scroll by settings `"smoothscroll": true`, `"smoothscroll": false`
-
-- [ ] Show search engine, bookmark and history items in order by `:set complete=sbh`
-- [ ] Show bookmark, search engine, and search engine items in order by `:set complete=bss`
-- [ ] Configure completion items by setting `"complete": "sbh"`, `"complete": "bss"`
+- [ ] Open new tab in background by `"background": true`
 
 ### Settings
 
