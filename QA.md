@@ -21,11 +21,9 @@ The behaviors of the console are tested in [Console section](#consoles).
 ### Properties
 
 - [ ] Configure custom hint character by `:set hintchars=012345678`
-- [ ] Configure custom hint character by settings `"hintchars": "012345678"` in add-on preferences
 - [ ] Smooth scroll by `:set smoothscroll`
 - [ ] Non-smooth scroll by `:set nosmoothscroll`
 - [ ] Configure smooth scroll by settings `"smoothscroll": true`, `"smoothscroll": false`
-- [ ] Open new tab in background by `"background": true`
 
 ### Settings
 
