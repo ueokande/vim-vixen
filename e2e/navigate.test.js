@@ -125,16 +125,20 @@ describe("navigate test", () => {
 
     await body.sendKeys(Key.Shift, 'h');
 
-    let tab = (await browser.tabs.query({}))[0];
-    let url = new URL(tab.url);
-    assert.equal(url.pathname, `/first`)
+    await eventually(async() => {
+      let tab = (await browser.tabs.query({}))[0];
+      let url = new URL(tab.url);
+      assert.equal(url.pathname, `/first`)
+    });
 
     body = await session.findElementByCSS('body');
     await body.sendKeys(Key.Shift, 'l');
 
-    tab = (await browser.tabs.query({}))[0];
-    url = new URL(tab.url);
-    assert.equal(url.pathname, `/second`)
+    await eventually(async() => {
+      tab = (await browser.tabs.query({}))[0];
+      url = new URL(tab.url);
+      assert.equal(url.pathname, `/second`)
+    });
   });
 
   it('should go previous and next page in <a> by [[ and ]]', async () => {
