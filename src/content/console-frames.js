@@ -1,4 +1,3 @@
-import './console-frame.scss';
 import messages from 'shared/messages';
 
 const initialize = (doc) => {

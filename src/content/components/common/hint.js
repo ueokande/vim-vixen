@@ -1,4 +1,3 @@
-import './hint.css';
 import * as dom from 'shared/utils/dom';
 
 const hintPosition = (element) => {
