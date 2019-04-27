@@ -4,7 +4,7 @@
   "scripts": {
     "start": "webpack --mode development -w --debug --devtool inline-source-map",
     "build": "NODE_ENV=production webpack --mode production --progress --display-error-details",
-    "package": "npm run build && script/package.sh",
+    "package": "npm run build && script/package",
     "lint": "eslint --ext .jsx,.js src",
     "test": "karma start",
     "test:e2e": "mocha --timeout 8000 e2e"
@@ -30,6 +30,7 @@
     "eslint": "^5.15.1",
     "eslint-plugin-react": "^7.12.4",
     "html-webpack-plugin": "^3.2.0",
+    "jszip": "^3.2.1",
     "karma": "^4.0.1",
     "karma-firefox-launcher": "^1.1.0",
     "karma-html2js-preprocessor": "^1.1.0",
