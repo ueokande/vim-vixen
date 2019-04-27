@@ -41,7 +41,7 @@
     "karma-webpack": "^3.0.5",
     "lanthan": "git+https://github.com/ueokande/lanthan.git#master",
     "mocha": "^6.0.2",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.12.0",
     "preact": "^8.4.2",
     "preact-redux": "^2.0.3",
     "redux": "^4.0.1",
