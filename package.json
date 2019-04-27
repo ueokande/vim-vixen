@@ -51,6 +51,6 @@
     "style-loader": "^0.23.1",
     "webextensions-api-fake": "^0.5.1",
     "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.0"
+    "webpack-cli": "^3.3.1"
   }
 }
