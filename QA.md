@@ -69,10 +69,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] able to add item
 - [ ] able to remove item
 - [ ] `github.com/a` blocks `github.com/a`, and not blocks `github.com/aa`
-- [ ] `github.com/a*` blocks both `github.com/a` and `github.com/aa`
-- [ ] `github.com/` blocks `github.com/`, and not blocks `github.com/a`
-- [ ] `github.com` blocks both `github.com/` and `github.com/a`
-- [ ] `*.github.com` blocks `gist.github.com/`, and not `github.com`
 
 ##### Updating
 
@@ -84,15 +80,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] show confirmation dialog on switched from json to form
 - [ ] state is saved on source changed
 - [ ] on switching form -> json -> form, first and last form setting is equivalent to first one
-
-### For certain sites
-
-- [ ] scroll on Hacker News
-- [ ] able to scroll on Gmail and Slack
-- [ ] Focus text box on Twitter or Slack, press <kbd>j</kbd>, then <kbd>j</kbd> is typed in the box
-- [ ] Focus the text box on Twitter or Slack on following mode
-- [ ] The pages is shown in https://pitchify.com/
-- [ ] Open console in http://www.espncricinfo.com/
 
 ## Find mode
 
