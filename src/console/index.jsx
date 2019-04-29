@@ -4,7 +4,7 @@ import { createStore, applyMiddleware } from 'redux';
 import promise from 'redux-promise';
 import * as consoleActions from 'console/actions/console';
 import { Provider } from 'react-redux';
-import Console from './components/console';
+import Console from './components/Console';
 import React from 'react';
 import ReactDOM from 'react-dom';
 

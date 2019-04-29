@@ -1,14 +1,15 @@
 import './console.scss';
 import { connect } from 'react-redux';
 import React from 'react';
-import Input from './console/input';
-import Completion from './console/completion';
-import Message from './console/message';
+import PropTypes from 'prop-types';
+import Input from './console/Input';
+import Completion from './console/Completion';
+import Message from './console/Message';
 import * as consoleActions from '../../console/actions/console';
 
 const COMPLETION_MAX_ITEMS = 33;
 
-class ConsoleComponent extends React.Component {
+class Console extends React.Component {
   onBlur() {
     if (this.props.mode === 'command' || this.props.mode === 'find') {
       return this.props.dispatch(consoleActions.hideCommand());
@@ -137,5 +138,15 @@ class ConsoleComponent extends React.Component {
   }
 }
 
+Console.propTypes = {
+  mode: PropTypes.string,
+  onBlur: PropTypes.func,
+  onKeyDown: PropTypes.func,
+  onInput: PropTypes.func,
+  consoleText: PropTypes.string,
+  messageText: PropTypes.string,
+  children: PropTypes.string,
+};
+
 const mapStateToProps = state => state;
-export default connect(mapStateToProps)(ConsoleComponent);
+export default connect(mapStateToProps)(Console);
