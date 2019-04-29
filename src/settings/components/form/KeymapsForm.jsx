@@ -1,5 +1,6 @@
 import './KeymapsForm.scss';
 import React from 'react';
+import PropTypes from 'prop-types';
 import Input from '../ui/Input';
 import keymaps from '../../keymaps';
 
@@ -43,5 +44,10 @@ class KeymapsForm extends React.Component {
     this.props.onChange(next);
   }
 }
+
+KeymapsForm.propTypes = {
+  value: PropTypes.objectOf(PropTypes.string),
+  onChange: PropTypes.func,
+};
 
 export default KeymapsForm;

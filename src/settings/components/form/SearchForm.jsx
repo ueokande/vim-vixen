@@ -1,5 +1,6 @@
 import './SearchForm.scss';
 import React from 'react';
+import PropTypes from 'prop-types';
 import AddButton from '../ui/AddButton';
 import DeleteButton from '../ui/DeleteButton';
 
@@ -74,5 +75,14 @@ class SearchForm extends React.Component {
     this.props.onChange(next);
   }
 }
+
+SearchForm.propTypes = {
+  value: PropTypes.shape({
+    default: PropTypes.string,
+    engines: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
+  }),
+  onChange: PropTypes.func,
+
+};
 
 export default SearchForm;

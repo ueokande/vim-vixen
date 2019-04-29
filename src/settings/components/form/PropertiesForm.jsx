@@ -1,5 +1,6 @@
 import './PropertiesForm.scss';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class PropertiesForm extends React.Component {
 
@@ -56,5 +57,10 @@ class PropertiesForm extends React.Component {
     this.props.onChange(next);
   }
 }
+
+PropertiesForm.propTypes = {
+  value: PropTypes.objectOf(PropTypes.any),
+  onChange: PropTypes.func,
+};
 
 export default PropertiesForm;

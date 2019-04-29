@@ -2,6 +2,7 @@ import './BlacklistForm.scss';
 import AddButton from '../ui/AddButton';
 import DeleteButton from '../ui/DeleteButton';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class BlacklistForm extends React.Component {
 
@@ -48,5 +49,10 @@ class BlacklistForm extends React.Component {
     this.props.onChange(next);
   }
 }
+
+BlacklistForm.propTypes = {
+  value: PropTypes.arrayOf(PropTypes.string),
+  onChange: PropTypes.func,
+};
 
 export default BlacklistForm;
