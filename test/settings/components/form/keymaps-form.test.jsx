@@ -1,4 +1,4 @@
-import { h, render } from 'preact';
+import { render } from 'react';
 import KeymapsForm from 'settings/components/form/keymaps-form'
 
 describe("settings/form/KeymapsForm", () => {

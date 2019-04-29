@@ -1,4 +1,4 @@
-import { h, render } from 'preact';
+import { render } from 'react';
 import SearchForm from 'settings/components/form/search-form'
 
 describe("settings/form/SearchForm", () => {

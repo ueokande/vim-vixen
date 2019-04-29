@@ -1,6 +1,6 @@
 import './site.scss';
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
+import React from 'react';
+import { connect } from 'react-redux';
 import Input from './ui/input';
 import SearchForm from './form/search-form';
 import KeymapsForm from './form/keymaps-form';
@@ -13,7 +13,7 @@ const DO_YOU_WANT_TO_CONTINUE =
   'Some settings in JSON can be lost when migrating.  ' +
   'Do you want to continue?';
 
-class SettingsComponent extends Component {
+class SettingsComponent extends React.Component {
   componentDidMount() {
     this.props.dispatch(settingActions.load());
   }
@@ -136,7 +136,7 @@ class SettingsComponent extends Component {
       this.props.dispatch(settingActions.switchToForm(this.props.json));
     }
 
-    let settings = this.context.store.getState();
+    let settings = this.props.getState();
     this.props.dispatch(settingActions.save(settings));
   }
 }

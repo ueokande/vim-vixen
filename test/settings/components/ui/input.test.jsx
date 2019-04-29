@@ -1,4 +1,4 @@
-import { h, render } from 'preact';
+import { render } from 'react';
 import Input from 'settings/components/ui/input'
 
 describe("settings/ui/Input", () => {

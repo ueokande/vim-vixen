@@ -1,4 +1,4 @@
-import { h, render } from 'preact';
+import { render } from 'react';
 import Completion from 'console/components/console/completion'
 
 describe("console/components/console/completion", () => {

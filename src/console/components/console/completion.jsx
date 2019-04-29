@@ -1,4 +1,4 @@
-import { Component, h } from 'preact';
+import React from 'react';
 
 const CompletionTitle = (props) => {
   return <li className='vimvixen-console-completion-title' >{props.title}</li>;
@@ -23,7 +23,7 @@ const CompletionItem = (props) => {
 };
 
 
-class CompletionComponent extends Component {
+class CompletionComponent extends React.Component {
   constructor() {
     super();
     this.state = { viewOffset: 0, select: -1 };

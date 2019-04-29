@@ -1,9 +1,9 @@
 import './search-form.scss';
-import { h, Component } from 'preact';
+import React from 'react';
 import AddButton from '../ui/add-button';
 import DeleteButton from '../ui/delete-button';
 
-class SearchForm extends Component {
+class SearchForm extends React.Component {
 
   render() {
     let value = this.props.value;

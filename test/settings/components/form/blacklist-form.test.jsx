@@ -1,4 +1,4 @@
-import { h, render } from 'preact';
+import { render } from 'react';
 import BlacklistForm from 'settings/components/form/blacklist-form'
 
 describe("settings/form/BlacklistForm", () => {

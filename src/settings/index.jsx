@@ -1,7 +1,7 @@
-import { h, render } from 'preact';
+import { render } from 'react';
 import SettingsComponent from './components';
 import reducer from './reducers/setting';
-import { Provider } from 'preact-redux';
+import { Provider } from 'react-redux';
 import promise from 'redux-promise';
 import { createStore, applyMiddleware } from 'redux';
 

@@ -1,6 +1,6 @@
 import './console.scss';
-import { connect } from 'preact-redux';
-import { Component, h } from 'preact';
+import { connect } from 'react-redux';
+import React from 'react';
 import Input from './console/input';
 import Completion from './console/completion';
 import Message from './console/message';
@@ -8,10 +8,10 @@ import * as consoleActions from '../../console/actions/console';
 
 const COMPLETION_MAX_ITEMS = 33;
 
-class ConsoleComponent extends Component {
+class ConsoleComponent extends React.Component {
   onBlur() {
     if (this.props.mode === 'command' || this.props.mode === 'find') {
-      return this.context.store.dispatch(consoleActions.hideCommand());
+      return this.props.dispatch(consoleActions.hideCommand());
     }
   }
 
@@ -21,45 +21,45 @@ class ConsoleComponent extends Component {
 
     let value = e.target.value;
     if (this.props.mode === 'command') {
-      return this.context.store.dispatch(consoleActions.enterCommand(value));
+      return this.props.dispatch(consoleActions.enterCommand(value));
     } else if (this.props.mode === 'find') {
-      return this.context.store.dispatch(consoleActions.enterFind(value));
+      return this.props.dispatch(consoleActions.enterFind(value));
     }
   }
 
   selectNext(e) {
-    this.context.store.dispatch(consoleActions.completionNext());
+    this.props.dispatch(consoleActions.completionNext());
     e.stopPropagation();
     e.preventDefault();
   }
 
   selectPrev(e) {
-    this.context.store.dispatch(consoleActions.completionPrev());
+    this.props.dispatch(consoleActions.completionPrev());
     e.stopPropagation();
     e.preventDefault();
   }
 
   onKeyDown(e) {
     if (e.keyCode === KeyboardEvent.DOM_VK_ESCAPE && e.ctrlKey) {
-      this.context.store.dispatch(consoleActions.hideCommand());
+      this.props.dispatch(consoleActions.hideCommand());
     }
     switch (e.keyCode) {
     case KeyboardEvent.DOM_VK_ESCAPE:
-      return this.context.store.dispatch(consoleActions.hideCommand());
+      return this.props.dispatch(consoleActions.hideCommand());
     case KeyboardEvent.DOM_VK_RETURN:
       return this.doEnter(e);
     case KeyboardEvent.DOM_VK_TAB:
       if (e.shiftKey) {
-        this.context.store.dispatch(consoleActions.completionPrev());
+        this.props.dispatch(consoleActions.completionPrev());
       } else {
-        this.context.store.dispatch(consoleActions.completionNext());
+        this.props.dispatch(consoleActions.completionNext());
       }
       e.stopPropagation();
       e.preventDefault();
       break;
     case KeyboardEvent.DOM_VK_OPEN_BRACKET:
       if (e.ctrlKey) {
-        return this.context.store.dispatch(consoleActions.hideCommand());
+        return this.props.dispatch(consoleActions.hideCommand());
       }
       break;
     case KeyboardEvent.DOM_VK_M:
@@ -82,9 +82,9 @@ class ConsoleComponent extends Component {
 
   onInput(e) {
     let text = e.target.value;
-    this.context.store.dispatch(consoleActions.setConsoleText(text));
+    this.props.dispatch(consoleActions.setConsoleText(text));
     if (this.props.mode === 'command') {
-      this.context.store.dispatch(consoleActions.getCompletions(text));
+      this.props.dispatch(consoleActions.getCompletions(text));
     }
   }
 
@@ -94,7 +94,7 @@ class ConsoleComponent extends Component {
       return;
     }
     if (prevProps.mode !== 'command' && this.props.mode === 'command') {
-      this.context.store.dispatch(
+      this.props.dispatch(
         consoleActions.getCompletions(this.props.consoleText));
       this.focus();
     } else if (prevProps.mode !== 'find' && this.props.mode === 'find') {
@@ -126,6 +126,8 @@ class ConsoleComponent extends Component {
       return <Message mode={ this.props.mode } >
         { this.props.messageText }
       </Message>;
+    default:
+      return null;
     }
   }
 

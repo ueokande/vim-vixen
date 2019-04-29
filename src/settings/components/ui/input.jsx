@@ -1,7 +1,7 @@
-import { h, Component } from 'preact';
+import React from 'react';
 import './input.scss';
 
-class Input extends Component {
+class Input extends React.Component {
 
   renderText(props) {
     let inputClassName = props.error ? 'input-error' : '';

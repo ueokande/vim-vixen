@@ -1,9 +1,9 @@
 import './blacklist-form.scss';
 import AddButton from '../ui/add-button';
 import DeleteButton from '../ui/delete-button';
-import { h, Component } from 'preact';
+import React from 'react';
 
-class BlacklistForm extends Component {
+class BlacklistForm extends React.Component {
 
   render() {
     let value = this.props.value;

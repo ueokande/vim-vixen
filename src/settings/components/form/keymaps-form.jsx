@@ -1,5 +1,5 @@
 import './keymaps-form.scss';
-import { h, Component } from 'preact';
+import React from 'react';
 import Input from '../ui/input';
 
 const KeyMapFields = [
@@ -72,7 +72,7 @@ const KeyMapFields = [
 
 const AllowdOps = [].concat(...KeyMapFields.map(group => group.map(e => e[0])));
 
-class KeymapsForm extends Component {
+class KeymapsForm extends React.Component {
 
   render() {
     let values = this.props.value;

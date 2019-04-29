@@ -1,7 +1,7 @@
 import './properties-form.scss';
-import { h, Component } from 'preact';
+import React from 'react';
 
-class PropertiesForm extends Component {
+class PropertiesForm extends React.Component {
 
   render() {
     let types = this.props.types;

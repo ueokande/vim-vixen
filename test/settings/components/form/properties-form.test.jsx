@@ -1,4 +1,4 @@
-import { h, render } from 'preact';
+import { render } from 'react';
 import PropertiesForm from 'settings/components/form/properties-form'
 
 describe("settings/form/PropertiesForm", () => {

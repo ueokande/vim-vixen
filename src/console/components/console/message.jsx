@@ -1,5 +1,3 @@
-import { h } from 'preact';
-
 export default function Message(props) {
   switch (props.mode) {
   case 'error':

@@ -1,6 +1,6 @@
-import { Component, h } from 'preact';
+import React from 'react';
 
-export default class InputComponent extends Component {
+export default class InputComponent extends React.Component {
   focus() {
     this.input.focus();
   }
