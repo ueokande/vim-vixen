@@ -1,11 +1,11 @@
 import './site.scss';
 import React from 'react';
 import { connect } from 'react-redux';
-import Input from './ui/input';
-import SearchForm from './form/search-form';
-import KeymapsForm from './form/keymaps-form';
-import BlacklistForm from './form/blacklist-form';
-import PropertiesForm from './form/properties-form';
+import Input from './ui/Input';
+import SearchForm from './form/SearchForm';
+import KeymapsForm from './form/KeymapsForm';
+import BlacklistForm from './form/BlacklistForm';
+import PropertiesForm from './form/PropertiesForm';
 import * as properties from 'shared/settings/properties';
 import * as settingActions from 'settings/actions/setting';
 
@@ -136,7 +136,7 @@ class SettingsComponent extends React.Component {
       this.props.dispatch(settingActions.switchToForm(this.props.json));
     }
 
-    let settings = this.props.getState();
+    let settings = this.props.store.getState();
     this.props.dispatch(settingActions.save(settings));
   }
 }

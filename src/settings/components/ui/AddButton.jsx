@@ -1,4 +1,4 @@
-import './add-button.scss';
+import './AddButton.scss';
 import React from 'react';
 
 class AddButton extends React.Component {

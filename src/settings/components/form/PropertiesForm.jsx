@@ -1,4 +1,4 @@
-import './properties-form.scss';
+import './PropertiesForm.scss';
 import React from 'react';
 
 class PropertiesForm extends React.Component {

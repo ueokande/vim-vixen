@@ -1,6 +1,6 @@
-import './blacklist-form.scss';
-import AddButton from '../ui/add-button';
-import DeleteButton from '../ui/delete-button';
+import './BlacklistForm.scss';
+import AddButton from '../ui/AddButton';
+import DeleteButton from '../ui/DeleteButton';
 import React from 'react';
 
 class BlacklistForm extends React.Component {
@@ -23,7 +23,7 @@ class BlacklistForm extends React.Component {
           </div>;
         })
       }
-      <AddButton name='add' style='float:right'
+      <AddButton name='add' style={{ float: 'right' }}
         onClick={this.bindValue.bind(this)} />
     </div>;
   }

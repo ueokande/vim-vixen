@@ -1,7 +1,7 @@
-import './search-form.scss';
+import './SearchForm.scss';
 import React from 'react';
-import AddButton from '../ui/add-button';
-import DeleteButton from '../ui/delete-button';
+import AddButton from '../ui/AddButton';
+import DeleteButton from '../ui/DeleteButton';
 
 class SearchForm extends React.Component {
 
@@ -40,7 +40,7 @@ class SearchForm extends React.Component {
           </div>;
         })
       }
-      <AddButton name='add' style='float:right'
+      <AddButton name='add' style={{ float: 'right' }}
         onClick={this.bindValue.bind(this)} />
     </div>;
   }

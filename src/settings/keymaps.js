@@ -1,8 +1,4 @@
-import './keymaps-form.scss';
-import React from 'react';
-import Input from '../ui/input';
-
-const KeyMapFields = [
+const fields = [
   [
     ['scroll.vertically?{"count":1}', 'Scroll down'],
     ['scroll.vertically?{"count":-1}', 'Scroll up'],
@@ -70,49 +66,9 @@ const KeyMapFields = [
   ]
 ];
 
-const AllowdOps = [].concat(...KeyMapFields.map(group => group.map(e => e[0])));
+const allowedOps = [].concat(...fields.map(group => group.map(e => e[0])));
 
-class KeymapsForm extends React.Component {
-
-  render() {
-    let values = this.props.value;
-    if (!values) {
-      values = {};
-    }
-    return <div className='form-keymaps-form'>
-      {
-        KeyMapFields.map((group, index) => {
-          return <div key={index} className='form-keymaps-form-field-group'>
-            {
-              group.map((field) => {
-                let name = field[0];
-                let label = field[1];
-                let value = values[name];
-                return <Input
-                  type='text' id={name} name={name} key={name}
-                  label={label} value={value}
-                  onChange={this.bindValue.bind(this)}
-                />;
-              })
-            }
-          </div>;
-        })
-      }
-    </div>;
-  }
-
-  bindValue(e) {
-    if (!this.props.onChange) {
-      return;
-    }
-
-    let next = { ...this.props.value };
-    next[e.target.name] = e.target.value;
-
-    this.props.onChange(next);
-  }
-}
-
-KeymapsForm.AllowdOps = AllowdOps;
-
-export default KeymapsForm;
+export default {
+  fields,
+  allowedOps,
+};
