@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function Message(props) {
   switch (props.mode) {
   case 'error':
