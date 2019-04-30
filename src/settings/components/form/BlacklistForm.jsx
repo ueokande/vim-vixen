@@ -7,14 +7,9 @@ import PropTypes from 'prop-types';
 class BlacklistForm extends React.Component {
 
   render() {
-    let value = this.props.value;
-    if (!value) {
-      value = [];
-    }
-
     return <div className='form-blacklist-form'>
       {
-        value.map((url, index) => {
+        this.props.value.map((url, index) => {
           return <div key={index} className='form-blacklist-form-row'>
             <input data-index={index} type='text' name='url'
               className='column-url' value={url}
@@ -53,6 +48,10 @@ class BlacklistForm extends React.Component {
 BlacklistForm.propTypes = {
   value: PropTypes.arrayOf(PropTypes.string),
   onChange: PropTypes.func,
+};
+
+BlacklistForm.defaultProps = {
+  value: [],
 };
 
 export default BlacklistForm;

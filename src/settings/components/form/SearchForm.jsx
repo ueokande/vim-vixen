@@ -8,9 +8,6 @@ class SearchForm extends React.Component {
 
   render() {
     let value = this.props.value;
-    if (!value) {
-      value = { default: '', engines: []};
-    }
     if (!value.engines) {
       value.engines = [];
     }
@@ -82,7 +79,10 @@ SearchForm.propTypes = {
     engines: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
   }),
   onChange: PropTypes.func,
+};
 
+SearchForm.defaultProps = {
+  value: { default: '', engines: []},
 };
 
 export default SearchForm;

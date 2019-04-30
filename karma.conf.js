@@ -29,6 +29,7 @@ module.exports = function (config) {
     singleRun: true,
 
     webpack: {
+      mode: 'development',
       devtool: 'inline-source-map',
       resolve: webpackConfig.resolve,
       module: webpackConfig.module

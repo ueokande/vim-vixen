@@ -7,10 +7,6 @@ import keymaps from '../../keymaps';
 class KeymapsForm extends React.Component {
 
   render() {
-    let values = this.props.value;
-    if (!values) {
-      values = {};
-    }
     return <div className='form-keymaps-form'>
       {
         keymaps.fields.map((group, index) => {
@@ -19,7 +15,7 @@ class KeymapsForm extends React.Component {
               group.map((field) => {
                 let name = field[0];
                 let label = field[1];
-                let value = values[name];
+                let value = this.props.value[name] || '';
                 return <Input
                   type='text' id={name} name={name} key={name}
                   label={label} value={value}
@@ -48,6 +44,10 @@ class KeymapsForm extends React.Component {
 KeymapsForm.propTypes = {
   value: PropTypes.objectOf(PropTypes.string),
   onChange: PropTypes.func,
+};
+
+KeymapsForm.defaultProps = {
+  value: {},
 };
 
 export default KeymapsForm;
