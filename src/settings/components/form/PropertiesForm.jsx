@@ -7,9 +7,6 @@ class PropertiesForm extends React.Component {
   render() {
     let types = this.props.types;
     let value = this.props.value;
-    if (!value) {
-      value = {};
-    }
 
     return <div className='form-properties-form'>
       {
@@ -40,10 +37,6 @@ class PropertiesForm extends React.Component {
   }
 
   bindValue(e) {
-    if (!this.props.onChange) {
-      return;
-    }
-
     let name = e.target.name;
     let next = { ...this.props.value };
     if (e.target.type.toLowerCase() === 'checkbox') {
@@ -61,6 +54,11 @@ class PropertiesForm extends React.Component {
 PropertiesForm.propTypes = {
   value: PropTypes.objectOf(PropTypes.any),
   onChange: PropTypes.func,
+};
+
+PropertiesForm.defaultProps = {
+  value: {},
+  onChange: () => {},
 };
 
 export default PropertiesForm;

@@ -30,10 +30,6 @@ class KeymapsForm extends React.Component {
   }
 
   bindValue(e) {
-    if (!this.props.onChange) {
-      return;
-    }
-
     let next = { ...this.props.value };
     next[e.target.name] = e.target.value;
 
@@ -48,6 +44,7 @@ KeymapsForm.propTypes = {
 
 KeymapsForm.defaultProps = {
   value: {},
+  onChange: () => {},
 };
 
 export default KeymapsForm;

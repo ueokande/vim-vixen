@@ -44,10 +44,6 @@ class SearchForm extends React.Component {
   }
 
   bindValue(e) {
-    if (!this.props.onChange) {
-      return;
-    }
-
     let value = this.props.value;
     let name = e.target.name;
     let index = e.target.getAttribute('data-index');
@@ -83,6 +79,7 @@ SearchForm.propTypes = {
 
 SearchForm.defaultProps = {
   value: { default: '', engines: []},
+  onChange: () => {},
 };
 
 export default SearchForm;

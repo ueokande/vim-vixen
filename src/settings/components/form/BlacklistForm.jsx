@@ -25,10 +25,6 @@ class BlacklistForm extends React.Component {
   }
 
   bindValue(e) {
-    if (!this.props.onChange) {
-      return;
-    }
-
     let name = e.target.name;
     let index = e.target.getAttribute('data-index');
     let next = this.props.value ? this.props.value.slice() : [];
@@ -52,6 +48,7 @@ BlacklistForm.propTypes = {
 
 BlacklistForm.defaultProps = {
   value: [],
+  onChange: () => {},
 };
 
 export default BlacklistForm;
