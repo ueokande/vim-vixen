@@ -26,6 +26,8 @@
     "noImplicitReturns": true,
 
     "moduleResolution": "node",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+
+    "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"]
   }
 }
