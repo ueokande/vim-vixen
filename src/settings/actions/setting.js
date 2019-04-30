@@ -1,8 +1,8 @@
 import actions from 'settings/actions';
 import * as validator from 'shared/settings/validator';
-import KeymapsForm from '../components/form/keymaps-form';
 import * as settingsValues from 'shared/settings/values';
 import * as settingsStorage from 'shared/settings/storage';
+import keymaps from '../keymaps';
 
 const load = async() => {
   let settings = await settingsStorage.loadRaw();
@@ -29,8 +29,7 @@ const save = async(settings) => {
 const switchToForm = (json) => {
   try {
     validator.validate(JSON.parse(json));
-    // AllowdOps filters operations, this is dirty dependency
-    let form = settingsValues.formFromJson(json, KeymapsForm.AllowdOps);
+    let form = settingsValues.formFromJson(json, keymaps.allowedOps);
     return {
       type: actions.SETTING_SWITCH_TO_FORM,
       form,
@@ -61,4 +60,4 @@ const set = (settings) => {
   };
 };
 
-export { load, save, switchToForm, switchToJson };
+export { load, save, set, switchToForm, switchToJson };

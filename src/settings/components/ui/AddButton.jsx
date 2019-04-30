@@ -1,7 +1,7 @@
-import './add-button.scss';
-import { h, Component } from 'preact';
+import './AddButton.scss';
+import React from 'react';
 
-class AddButton extends Component {
+class AddButton extends React.Component {
   render() {
     return <input
       className='ui-add-button' type='button' value='&#x271a;'

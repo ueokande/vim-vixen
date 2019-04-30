@@ -3,11 +3,10 @@ import reducers from 'console/reducers';
 import { createStore, applyMiddleware } from 'redux';
 import promise from 'redux-promise';
 import * as consoleActions from 'console/actions/console';
-
-import { Provider } from 'preact-redux';
-import Console from './components/console';
-
-import { render, h } from 'preact';
+import { Provider } from 'react-redux';
+import Console from './components/Console';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 const store = createStore(
   reducers,
@@ -15,11 +14,12 @@ const store = createStore(
 );
 
 window.addEventListener('load', () => {
-  render(
+  let wrapper = document.getElementById('vimvixen-console');
+  ReactDOM.render(
     <Provider store={store} >
       <Console></Console>
     </Provider>,
-    document.body);
+    wrapper);
 });
 
 const onMessage = (message) => {

@@ -1,15 +1,13 @@
-import './search-form.scss';
-import { h, Component } from 'preact';
-import AddButton from '../ui/add-button';
-import DeleteButton from '../ui/delete-button';
+import './SearchForm.scss';
+import React from 'react';
+import PropTypes from 'prop-types';
+import AddButton from '../ui/AddButton';
+import DeleteButton from '../ui/DeleteButton';
 
-class SearchForm extends Component {
+class SearchForm extends React.Component {
 
   render() {
     let value = this.props.value;
-    if (!value) {
-      value = { default: '', engines: []};
-    }
     if (!value.engines) {
       value.engines = [];
     }
@@ -25,11 +23,15 @@ class SearchForm extends Component {
           return <div key={index} className='form-search-form-row'>
             <input data-index={index} type='text' name='name'
               className='column-name' value={engine[0]}
-              onChange={this.bindValue.bind(this)} />
+              onChange={this.bindValue.bind(this)}
+              onBlur={this.props.onBlur}
+            />
             <input data-index={index} type='text' name='url'
               placeholder='http://example.com/?q={}'
               className='column-url' value={engine[1]}
-              onChange={this.bindValue.bind(this)} />
+              onChange={this.bindValue.bind(this)}
+              onBlur={this.props.onBlur}
+            />
             <div className='column-option'>
               <input data-index={index} type='radio' name='default'
                 checked={value.default === engine[0]}
@@ -40,16 +42,12 @@ class SearchForm extends Component {
           </div>;
         })
       }
-      <AddButton name='add' style='float:right'
+      <AddButton name='add' style={{ float: 'right' }}
         onClick={this.bindValue.bind(this)} />
     </div>;
   }
 
   bindValue(e) {
-    if (!this.props.onChange) {
-      return;
-    }
-
     let value = this.props.value;
     let name = e.target.name;
     let index = e.target.getAttribute('data-index');
@@ -72,7 +70,23 @@ class SearchForm extends Component {
     }
 
     this.props.onChange(next);
+    if (name === 'delete' || name === 'default') {
+      this.props.onBlur();
+    }
   }
 }
+
+SearchForm.propTypes = {
+  value: PropTypes.shape({
+    default: PropTypes.string,
+    engines: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
+  }),
+  onChange: PropTypes.func,
+};
+
+SearchForm.defaultProps = {
+  value: { default: '', engines: []},
+  onChange: () => {},
+};
 
 export default SearchForm;

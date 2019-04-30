@@ -1,11 +1,11 @@
 import './site.scss';
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
-import Input from './ui/input';
-import SearchForm from './form/search-form';
-import KeymapsForm from './form/keymaps-form';
-import BlacklistForm from './form/blacklist-form';
-import PropertiesForm from './form/properties-form';
+import React from 'react';
+import { connect } from 'react-redux';
+import Input from './ui/Input';
+import SearchForm from './form/SearchForm';
+import KeymapsForm from './form/KeymapsForm';
+import BlacklistForm from './form/BlacklistForm';
+import PropertiesForm from './form/PropertiesForm';
 import * as properties from 'shared/settings/properties';
 import * as settingActions from 'settings/actions/setting';
 
@@ -13,7 +13,7 @@ const DO_YOU_WANT_TO_CONTINUE =
   'Some settings in JSON can be lost when migrating.  ' +
   'Do you want to continue?';
 
-class SettingsComponent extends Component {
+class SettingsComponent extends React.Component {
   componentDidMount() {
     this.props.dispatch(settingActions.load());
   }
@@ -25,6 +25,7 @@ class SettingsComponent extends Component {
         <KeymapsForm
           value={form.keymaps}
           onChange={value => this.bindForm('keymaps', value)}
+          onBlur={this.save.bind(this)}
         />
       </fieldset>
       <fieldset>
@@ -32,6 +33,7 @@ class SettingsComponent extends Component {
         <SearchForm
           value={form.search}
           onChange={value => this.bindForm('search', value)}
+          onBlur={this.save.bind(this)}
         />
       </fieldset>
       <fieldset>
@@ -39,6 +41,7 @@ class SettingsComponent extends Component {
         <BlacklistForm
           value={form.blacklist}
           onChange={value => this.bindForm('blacklist', value)}
+          onBlur={this.save.bind(this)}
         />
       </fieldset>
       <fieldset>
@@ -47,6 +50,7 @@ class SettingsComponent extends Component {
           types={properties.types}
           value={form.properties}
           onChange={value => this.bindForm('properties', value)}
+          onBlur={this.save.bind(this)}
         />
       </fieldset>
     </div>;
@@ -61,6 +65,7 @@ class SettingsComponent extends Component {
         spellCheck='false'
         error={error}
         onChange={this.bindJson.bind(this)}
+        onBlur={this.save.bind(this)}
         value={json}
       />
     </div>;
@@ -109,7 +114,7 @@ class SettingsComponent extends Component {
       form: { ...this.props.form },
     };
     settings.form[name] = value;
-    this.props.dispatch(settingActions.save(settings));
+    this.props.dispatch(settingActions.set(settings));
   }
 
   bindJson(e) {
@@ -118,7 +123,7 @@ class SettingsComponent extends Component {
       json: e.target.value,
       form: this.props.form,
     };
-    this.props.dispatch(settingActions.save(settings));
+    this.props.dispatch(settingActions.set(settings));
   }
 
   bindSource(e) {
@@ -135,8 +140,10 @@ class SettingsComponent extends Component {
       }
       this.props.dispatch(settingActions.switchToForm(this.props.json));
     }
+  }
 
-    let settings = this.context.store.getState();
+  save() {
+    let settings = this.props.store.getState();
     this.props.dispatch(settingActions.save(settings));
   }
 }

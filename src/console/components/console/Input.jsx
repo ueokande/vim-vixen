@@ -1,6 +1,7 @@
-import { Component, h } from 'preact';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export default class InputComponent extends Component {
+class Input extends React.Component {
   focus() {
     this.input.focus();
   }
@@ -23,10 +24,20 @@ export default class InputComponent extends Component {
           ref={(c) => { this.input = c; }}
           onBlur={this.props.onBlur}
           onKeyDown={this.props.onKeyDown}
-          onInput={this.props.onInput}
+          onChange={this.props.onChange}
           value={this.props.value}
         />
       </div>
     );
   }
 }
+
+Input.propTypes = {
+  mode: PropTypes.string,
+  value: PropTypes.string,
+  onBlur: PropTypes.func,
+  onKeyDown: PropTypes.func,
+  onChange: PropTypes.func,
+};
+
+export default Input;

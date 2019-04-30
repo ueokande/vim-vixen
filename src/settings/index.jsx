@@ -1,7 +1,8 @@
-import { h, render } from 'preact';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import SettingsComponent from './components';
 import reducer from './reducers/setting';
-import { Provider } from 'preact-redux';
+import { Provider } from 'react-redux';
 import promise from 'redux-promise';
 import { createStore, applyMiddleware } from 'redux';
 
@@ -12,9 +13,9 @@ const store = createStore(
 
 document.addEventListener('DOMContentLoaded', () => {
   let wrapper = document.getElementById('vimvixen-settings');
-  render(
+  ReactDOM.render(
     <Provider store={store}>
-      <SettingsComponent />
+      <SettingsComponent store={store} />
     </Provider>,
     wrapper
   );

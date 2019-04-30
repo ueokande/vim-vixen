@@ -1,14 +1,28 @@
-import { h, render } from 'preact';
-import Input from 'settings/components/ui/input'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ReactTestUtils from 'react-dom/test-utils';
+import Input from 'settings/components/ui/Input'
 
 describe("settings/ui/Input", () => {
+  let container;
+
   beforeEach(() => {
-    document.body.innerHTML = '';
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => {
+    document.body.removeChild(container);
+    container = null;
   });
 
   context("type=text", () => {
     it('renders text input', () => {
-      render(<Input type='text' name='myname' label='myfield' value='myvalue'/>, document.body)
+      ReactTestUtils.act(() => {
+        ReactDOM.render(
+          <Input type='text' name='myname' label='myfield' value='myvalue'/>,
+          container);
+      });
 
       let label = document.querySelector('label');
       let input = document.querySelector('input');
@@ -19,20 +33,26 @@ describe("settings/ui/Input", () => {
     });
 
     it('invoke onChange', (done) => {
-      render(<Input type='text' name='myname' label='myfield' value='myvalue' onChange={(e) => {
-        expect(e.target.value).to.equal('newvalue');
-        done();
-      }}/>, document.body);
+      ReactTestUtils.act(() => {
+        ReactDOM.render(<Input type='text' name='myname' label='myfield' value='myvalue' onChange={(e) => {
+          expect(e.target.value).to.equal('newvalue');
+          done();
+        }}/>, container);
+      });
 
       let input = document.querySelector('input');
       input.value = 'newvalue';
-      input.dispatchEvent(new Event('change'))
+      ReactTestUtils.Simulate.change(input);
     });
   });
 
   context("type=radio", () => {
     it('renders radio button', () => {
-      render(<Input type='radio' name='myname' label='myfield' value='myvalue'/>, document.body)
+      ReactTestUtils.act(() => {
+        ReactDOM.render(
+          <Input type='radio' name='myname' label='myfield' value='myvalue'/>,
+          container);
+      });
 
       let label = document.querySelector('label');
       let input = document.querySelector('input');
@@ -43,20 +63,27 @@ describe("settings/ui/Input", () => {
     });
 
     it('invoke onChange', (done) => {
-      render(<Input type='text' name='radio' label='myfield' value='myvalue' onChange={(e) => {
-        expect(e.target.checked).to.be.true;
-        done();
-      }}/>, document.body);
+      ReactTestUtils.act(() => {
+        ReactDOM.render(<Input type='text' name='radio' label='myfield' value='myvalue' onChange={(e) => {
+          expect(e.target.checked).to.be.true;
+          done();
+        }}/>,
+        container);
+      });
 
       let input = document.querySelector('input');
       input.checked = true;
-      input.dispatchEvent(new Event('change'))
+      ReactTestUtils.Simulate.change(input);
     });
   });
 
   context("type=textarea", () => {
     it('renders textarea button', () => {
-      render(<Input type='textarea' name='myname' label='myfield' value='myvalue' error='myerror' />, document.body)
+      ReactTestUtils.act(() => {
+        ReactDOM.render(
+          <Input type='textarea' name='myname' label='myfield' value='myvalue' error='myerror' />,
+          container);
+      });
 
       let label = document.querySelector('label');
       let textarea = document.querySelector('textarea');
@@ -69,14 +96,16 @@ describe("settings/ui/Input", () => {
     });
 
     it('invoke onChange', (done) => {
-      render(<Input type='textarea' name='myname' label='myfield' value='myvalue' onChange={(e) => {
-        expect(e.target.value).to.equal('newvalue');
-        done();
-      }}/>, document.body);
+      ReactTestUtils.act(() => {
+        ReactDOM.render(<Input type='textarea' name='myname' label='myfield' value='myvalue' onChange={(e) => {
+          expect(e.target.value).to.equal('newvalue');
+          done();
+        }}/>, container);
+      });
 
       let input = document.querySelector('textarea');
       input.value = 'newvalue'
-      input.dispatchEvent(new Event('change'))
+      ReactTestUtils.Simulate.change(input);
     });
   });
 });

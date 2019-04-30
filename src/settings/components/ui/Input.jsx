@@ -1,7 +1,8 @@
-import { h, Component } from 'preact';
-import './input.scss';
+import React from 'react';
+import PropTypes from 'prop-types';
+import './Input.scss';
 
-class Input extends Component {
+class Input extends React.Component {
 
   renderText(props) {
     let inputClassName = props.error ? 'input-error' : '';
@@ -48,5 +49,12 @@ class Input extends Component {
     return null;
   }
 }
+
+Input.propTypes = {
+  type: PropTypes.string,
+  error: PropTypes.string,
+  label: PropTypes.string,
+  value: PropTypes.string,
+};
 
 export default Input;

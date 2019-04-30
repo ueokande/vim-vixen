@@ -1,14 +1,12 @@
-import './properties-form.scss';
-import { h, Component } from 'preact';
+import './PropertiesForm.scss';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-class PropertiesForm extends Component {
+class PropertiesForm extends React.Component {
 
   render() {
     let types = this.props.types;
     let value = this.props.value;
-    if (!value) {
-      value = {};
-    }
 
     return <div className='form-properties-form'>
       {
@@ -29,6 +27,7 @@ class PropertiesForm extends Component {
                 className='column-input'
                 value={value[name] ? value[name] : ''}
                 onChange={this.bindValue.bind(this)}
+                onBlur={this.props.onBlur}
                 checked={value[name]}
               />
             </label>
@@ -39,10 +38,6 @@ class PropertiesForm extends Component {
   }
 
   bindValue(e) {
-    if (!this.props.onChange) {
-      return;
-    }
-
     let name = e.target.name;
     let next = { ...this.props.value };
     if (e.target.type.toLowerCase() === 'checkbox') {
@@ -56,5 +51,15 @@ class PropertiesForm extends Component {
     this.props.onChange(next);
   }
 }
+
+PropertiesForm.propTypes = {
+  value: PropTypes.objectOf(PropTypes.any),
+  onChange: PropTypes.func,
+};
+
+PropertiesForm.defaultProps = {
+  value: {},
+  onChange: () => {},
+};
 
 export default PropertiesForm;

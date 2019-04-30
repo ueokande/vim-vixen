@@ -1,29 +1,9 @@
-import { Component, h } from 'preact';
+import React from 'react';
+import PropTypes from 'prop-types';
+import CompletionItem from './CompletionItem';
+import CompletionTitle from './CompletionTitle';
 
-const CompletionTitle = (props) => {
-  return <li className='vimvixen-console-completion-title' >{props.title}</li>;
-};
-
-const CompletionItem = (props) => {
-  let className = 'vimvixen-console-completion-item';
-  if (props.highlight) {
-    className += ' vimvixen-completion-selected';
-  }
-  return <li
-    className={className}
-    style={{ backgroundImage: 'url(' + props.icon + ')' }}
-  >
-    <span
-      className='vimvixen-console-completion-item-caption'
-    >{props.caption}</span>
-    <span
-      className='vimvixen-console-completion-item-url'
-    >{props.url}</span>
-  </li>;
-};
-
-
-class CompletionComponent extends Component {
+class Completion extends React.Component {
   constructor() {
     super();
     this.state = { viewOffset: 0, select: -1 };
@@ -63,9 +43,13 @@ class CompletionComponent extends Component {
     let index = 0;
 
     for (let group of this.props.completions) {
-      eles.push(<CompletionTitle title={ group.name }/>);
+      eles.push(<CompletionTitle
+        key={`group-${index}`}
+        title={ group.name }
+      />);
       for (let item of group.items) {
         eles.push(<CompletionItem
+          key={`item-${index}`}
           icon={item.icon}
           caption={item.caption}
           url={item.url}
@@ -86,4 +70,17 @@ class CompletionComponent extends Component {
   }
 }
 
-export default CompletionComponent;
+Completion.propTypes = {
+  select: PropTypes.number,
+  size: PropTypes.number,
+  completions: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    items: PropTypes.arrayOf(PropTypes.shape({
+      icon: PropTypes.string,
+      caption: PropTypes.string,
+      url: PropTypes.string,
+    })),
+  })),
+};
+
+export default Completion;

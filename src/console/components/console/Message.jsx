@@ -1,6 +1,7 @@
-import { h } from 'preact';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export default function Message(props) {
+const Message = (props) => {
   switch (props.mode) {
   case 'error':
     return (
@@ -15,4 +16,10 @@ export default function Message(props) {
       </p>
     );
   }
-}
+};
+
+Message.propTypes = {
+  children: PropTypes.string,
+};
+
+export default Message;
