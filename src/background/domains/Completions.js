@@ -19,9 +19,9 @@ export default class Completions {
     }));
   }
 
-  static EMPTY_COMPLETIONS = new Completions([]);
-
   static empty() {
-    return Completions.EMPTY_COMPLETIONS;
+    return EMPTY_COMPLETIONS;
   }
 }
+
+let EMPTY_COMPLETIONS = new Completions([]);

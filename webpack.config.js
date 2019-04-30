@@ -24,7 +24,7 @@ config = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
-          presets: ['react', 'stage-2']
+          presets: ['@babel/react']
         }
       },
       {
