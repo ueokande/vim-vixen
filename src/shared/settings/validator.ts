@@ -1,4 +1,4 @@
-import operations from 'shared/operations';
+import operations from '../operations';
 import * as properties from './properties';
 
 const VALID_TOP_KEYS = ['keymaps', 'search', 'blacklist', 'properties'];
@@ -6,7 +6,7 @@ const VALID_OPERATION_VALUES = Object.keys(operations).map((key) => {
   return operations[key];
 });
 
-const validateInvalidTopKeys = (settings) => {
+const validateInvalidTopKeys = (settings: any): void => {
   let invalidKey = Object.keys(settings).find((key) => {
     return !VALID_TOP_KEYS.includes(key);
   });
@@ -15,7 +15,7 @@ const validateInvalidTopKeys = (settings) => {
   }
 };
 
-const validateKeymaps = (keymaps) => {
+const validateKeymaps = (keymaps: any): void => {
   for (let key of Object.keys(keymaps)) {
     let value = keymaps[key];
     if (!VALID_OPERATION_VALUES.includes(value.type)) {
@@ -24,7 +24,7 @@ const validateKeymaps = (keymaps) => {
   }
 };
 
-const validateSearch = (search) => {
+const validateSearch = (search: any): void => {
   let engines = search.engines;
   for (let key of Object.keys(engines)) {
     if ((/\s/).test(key)) {
@@ -49,7 +49,7 @@ const validateSearch = (search) => {
   }
 };
 
-const validateProperties = (props) => {
+const validateProperties = (props: any): void => {
   for (let name of Object.keys(props)) {
     if (!properties.types[name]) {
       throw new Error(`Unknown property name: "${name}"`);
@@ -60,7 +60,7 @@ const validateProperties = (props) => {
   }
 };
 
-const validate = (settings) => {
+const validate = (settings: any): void => {
   validateInvalidTopKeys(settings);
   if (settings.keymaps) {
     validateKeymaps(settings.keymaps);

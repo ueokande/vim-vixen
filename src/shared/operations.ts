@@ -1,4 +1,4 @@
-export default {
+const operations: { [key: string]: string } = {
   // Hide console, or cancel some user actions
   CANCEL: 'cancel',
 
@@ -76,3 +76,5 @@ export default {
   MARK_SET_PREFIX: 'mark.set.prefix',
   MARK_JUMP_PREFIX: 'mark.jump.prefix',
 };
+
+export default operations;

@@ -1,6 +1,6 @@
-import * as re from 'shared/utils/re';
+import * as re from './utils/re';
 
-const includes = (blacklist, url) => {
+const includes = (blacklist: string[], url: string): boolean => {
   let u = new URL(url);
   return blacklist.some((item) => {
     if (!item.includes('/')) {

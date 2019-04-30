@@ -1,11 +1,11 @@
-const trimStart = (str) => {
+const trimStart = (str: string): string => {
   // NOTE String.trimStart is available on Firefox 61
   return str.replace(/^\s+/, '');
 };
 
 const SUPPORTED_PROTOCOLS = ['http:', 'https:', 'ftp:', 'mailto:', 'about:'];
 
-const searchUrl = (keywords, searchSettings) => {
+const searchUrl = (keywords: string, searchSettings: any): string => {
   try {
     let u = new URL(keywords);
     if (SUPPORTED_PROTOCOLS.includes(u.protocol.toLowerCase())) {
@@ -28,7 +28,7 @@ const searchUrl = (keywords, searchSettings) => {
   return template.replace('{}', encodeURIComponent(query));
 };
 
-const normalizeUrl = (url) => {
+const normalizeUrl = (url: string): string => {
   try {
     let u = new URL(url);
     if (SUPPORTED_PROTOCOLS.includes(u.protocol.toLowerCase())) {

@@ -1,6 +1,6 @@
 import * as properties from './properties';
 
-const operationFromFormName = (name) => {
+const operationFromFormName = (name: string): any => {
   let [type, argStr] = name.split('?');
   let args = {};
   if (argStr) {
@@ -9,7 +9,7 @@ const operationFromFormName = (name) => {
   return { type, ...args };
 };
 
-const operationToFormName = (op) => {
+const operationToFormName = (op: any): string => {
   let type = op.type;
   let args = { ...op };
   delete args.type;
@@ -20,12 +20,12 @@ const operationToFormName = (op) => {
   return op.type + '?' + JSON.stringify(args);
 };
 
-const valueFromJson = (json) => {
+const valueFromJson = (json: string): object => {
   return JSON.parse(json);
 };
 
-const valueFromForm = (form) => {
-  let keymaps = undefined;
+const valueFromForm = (form: any): object => {
+  let keymaps: any = undefined;
   if (form.keymaps) {
     keymaps = {};
     for (let name of Object.keys(form.keymaps)) {
@@ -34,7 +34,7 @@ const valueFromForm = (form) => {
     }
   }
 
-  let search = undefined;
+  let search: any = undefined;
   if (form.search) {
     search = { default: form.search.default };
 
@@ -54,12 +54,12 @@ const valueFromForm = (form) => {
   };
 };
 
-const jsonFromValue = (value) => {
+const jsonFromValue = (value: any): string => {
   return JSON.stringify(value, undefined, 2);
 };
 
-const formFromValue = (value, allowedOps) => {
-  let keymaps = undefined;
+const formFromValue = (value: any, allowedOps: any[]): any => {
+  let keymaps: any = undefined;
 
   if (value.keymaps) {
     let allowedSet = new Set(allowedOps);
@@ -73,7 +73,7 @@ const formFromValue = (value, allowedOps) => {
     }
   }
 
-  let search = undefined;
+  let search: any = undefined;
   if (value.search) {
     search = { default: value.search.default };
     if (value.search.engines) {
@@ -93,11 +93,11 @@ const formFromValue = (value, allowedOps) => {
   };
 };
 
-const jsonFromForm = (form) => {
+const jsonFromForm = (form: any): string => {
   return jsonFromValue(valueFromForm(form));
 };
 
-const formFromJson = (json, allowedOps) => {
+const formFromJson = (json: string, allowedOps: any[]): any => {
   let value = valueFromJson(json);
   return formFromValue(value, allowedOps);
 };

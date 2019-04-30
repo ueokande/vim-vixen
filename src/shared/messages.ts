@@ -1,5 +1,8 @@
-const onWebMessage = (listener) => {
-  window.addEventListener('message', (event) => {
+type WebMessageSender = Window | MessagePort | ServiceWorker | null;
+type WebMessageListener = (msg: any, sender: WebMessageSender | null) => void;
+
+const onWebMessage = (listener: WebMessageListener) => {
+  window.addEventListener('message', (event: MessageEvent) => {
     let sender = event.source;
     let message = null;
     try {
@@ -12,11 +15,15 @@ const onWebMessage = (listener) => {
   });
 };
 
-const onBackgroundMessage = (listener) => {
+const onBackgroundMessage = (
+  listener: (msg: any, sender: browser.runtime.MessageSender,
+) => void) => {
   browser.runtime.onMessage.addListener(listener);
 };
 
-const onMessage = (listener) => {
+const onMessage = (
+  listener: (msg: any, sender: WebMessageSender | browser.runtime.MessageSender,
+) => void) => {
   onWebMessage(listener);
   onBackgroundMessage(listener);
 };

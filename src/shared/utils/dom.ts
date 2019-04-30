@@ -1,16 +1,24 @@
-const isContentEditable = (element) => {
-  return element.hasAttribute('contenteditable') && (
-    element.getAttribute('contenteditable').toLowerCase() === 'true' ||
-    element.getAttribute('contenteditable').toLowerCase() === ''
-  );
+const isContentEditable = (element: Element): boolean => {
+  let value = element.getAttribute('contenteditable');
+  if (value === null) {
+    return false;
+  }
+  return value.toLowerCase() === 'true' || value.toLowerCase() === '';
 };
 
-const rectangleCoordsRect = (coords) => {
+interface Rect {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+}
+
+const rectangleCoordsRect = (coords: string): Rect => {
   let [left, top, right, bottom] = coords.split(',').map(n => Number(n));
   return { left, top, right, bottom };
 };
 
-const circleCoordsRect = (coords) => {
+const circleCoordsRect = (coords: string): Rect => {
   let [x, y, r] = coords.split(',').map(n => Number(n));
   return {
     left: x - r,
@@ -20,7 +28,7 @@ const circleCoordsRect = (coords) => {
   };
 };
 
-const polygonCoordsRect = (coords) => {
+const polygonCoordsRect = (coords: string): Rect => {
   let params = coords.split(',');
   let minx = Number(params[0]),
     maxx = Number(params[0]),
@@ -46,18 +54,24 @@ const polygonCoordsRect = (coords) => {
   return { left: minx, top: miny, right: maxx, bottom: maxy };
 };
 
-const viewportRect = (e) => {
+const viewportRect = (e: Element): Rect => {
   if (e.tagName !== 'AREA') {
     return e.getBoundingClientRect();
   }
 
-  let mapElement = e.parentNode;
-  let imgElement = document.querySelector(`img[usemap="#${mapElement.name}"]`);
+  let mapElement = e.parentNode as HTMLMapElement;
+  let imgElement = document.querySelector(
+    `img[usemap="#${mapElement.name}"]`
+  ) as HTMLImageElement;
   let {
     left: mapLeft,
     top: mapTop
   } = imgElement.getBoundingClientRect();
   let coords = e.getAttribute('coords');
+  if (!coords) {
+    return e.getBoundingClientRect();
+  }
+
   let rect = { left: 0, top: 0, right: 0, bottom: 0 };
   switch (e.getAttribute('shape')) {
   case 'rect':
@@ -81,7 +95,7 @@ const viewportRect = (e) => {
   };
 };
 
-const isVisible = (element) => {
+const isVisible = (element: Element): boolean => {
   let rect = element.getBoundingClientRect();
   let style = window.getComputedStyle(element);
 
@@ -94,7 +108,8 @@ const isVisible = (element) => {
   if (window.innerWidth < rect.left && window.innerHeight < rect.top) {
     return false;
   }
-  if (element.nodeName === 'INPUT' && element.type.toLowerCase() === 'hidden') {
+  if (element instanceof HTMLInputElement &&
+    element.type.toLowerCase() === 'hidden') {
     return false;
   }
 

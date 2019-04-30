@@ -1,12 +1,12 @@
 import DefaultSettings from './default';
 import * as settingsValues from './values';
 
-const loadRaw = async() => {
+const loadRaw = async(): Promise<any> => {
   let { settings } = await browser.storage.local.get('settings');
   if (!settings) {
     return DefaultSettings;
   }
-  return { ...DefaultSettings, ...settings };
+  return { ...DefaultSettings, ...settings as object };
 };
 
 const loadValue = async() => {
@@ -23,7 +23,7 @@ const loadValue = async() => {
   return { ...settingsValues.valueFromJson(DefaultSettings.json), ...value };
 };
 
-const save = (settings) => {
+const save = (settings: any): Promise<any> => {
   return browser.storage.local.set({
     settings,
   });

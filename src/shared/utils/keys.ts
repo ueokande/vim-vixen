@@ -1,4 +1,12 @@
-const modifiedKeyName = (name) => {
+interface Key {
+    key: string;
+    shiftKey: boolean | undefined;
+    ctrlKey: boolean | undefined;
+    altKey: boolean | undefined;
+    metaKey: boolean | undefined;
+}
+
+const modifiedKeyName = (name: string): string => {
   if (name === ' ') {
     return 'Space';
   }
@@ -10,7 +18,7 @@ const modifiedKeyName = (name) => {
   return name;
 };
 
-const fromKeyboardEvent = (e) => {
+const fromKeyboardEvent = (e: KeyboardEvent): Key => {
   let key = modifiedKeyName(e.key);
   let shift = e.shiftKey;
   if (key.length === 1 && key.toUpperCase() === key.toLowerCase()) {
@@ -28,7 +36,7 @@ const fromKeyboardEvent = (e) => {
   };
 };
 
-const fromMapKey = (key) => {
+const fromMapKey = (key: string): Key => {
   if (key.startsWith('<') && key.endsWith('>')) {
     let inner = key.slice(1, -1);
     let shift = inner.includes('S-');
@@ -55,8 +63,10 @@ const fromMapKey = (key) => {
   };
 };
 
-const fromMapKeys = (keys) => {
-  const fromMapKeysRecursive = (remainings, mappedKeys) => {
+const fromMapKeys = (keys: string): Key[] => {
+  const fromMapKeysRecursive = (
+    remainings: string, mappedKeys: Key[],
+  ): Key[] => {
     if (remainings.length === 0) {
       return mappedKeys;
     }
@@ -78,7 +88,7 @@ const fromMapKeys = (keys) => {
   return fromMapKeysRecursive(keys, []);
 };
 
-const equals = (e1, e2) => {
+const equals = (e1: Key, e2: Key): boolean => {
   return e1.key === e2.key &&
     e1.ctrlKey === e2.ctrlKey &&
     e1.metaKey === e2.metaKey &&
