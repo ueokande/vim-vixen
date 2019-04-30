@@ -13,9 +13,13 @@ class BlacklistForm extends React.Component {
           return <div key={index} className='form-blacklist-form-row'>
             <input data-index={index} type='text' name='url'
               className='column-url' value={url}
-              onChange={this.bindValue.bind(this)} />
+              onChange={this.bindValue.bind(this)}
+              onBlur={this.props.onBlur}
+            />
             <DeleteButton data-index={index} name='delete'
-              onClick={this.bindValue.bind(this)} />
+              onClick={this.bindValue.bind(this)}
+              onBlur={this.props.onBlur}
+            />
           </div>;
         })
       }
@@ -38,17 +42,22 @@ class BlacklistForm extends React.Component {
     }
 
     this.props.onChange(next);
+    if (name === 'delete') {
+      this.props.onBlur();
+    }
   }
 }
 
 BlacklistForm.propTypes = {
   value: PropTypes.arrayOf(PropTypes.string),
   onChange: PropTypes.func,
+  onBlur: PropTypes.func,
 };
 
 BlacklistForm.defaultProps = {
   value: [],
   onChange: () => {},
+  onBlur: () => {},
 };
 
 export default BlacklistForm;

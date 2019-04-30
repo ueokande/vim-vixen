@@ -60,4 +60,4 @@ const set = (settings) => {
   };
 };
 
-export { load, save, switchToForm, switchToJson };
+export { load, save, set, switchToForm, switchToJson };

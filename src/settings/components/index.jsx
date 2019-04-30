@@ -25,6 +25,7 @@ class SettingsComponent extends React.Component {
         <KeymapsForm
           value={form.keymaps}
           onChange={value => this.bindForm('keymaps', value)}
+          onBlur={this.save.bind(this)}
         />
       </fieldset>
       <fieldset>
@@ -32,6 +33,7 @@ class SettingsComponent extends React.Component {
         <SearchForm
           value={form.search}
           onChange={value => this.bindForm('search', value)}
+          onBlur={this.save.bind(this)}
         />
       </fieldset>
       <fieldset>
@@ -39,6 +41,7 @@ class SettingsComponent extends React.Component {
         <BlacklistForm
           value={form.blacklist}
           onChange={value => this.bindForm('blacklist', value)}
+          onBlur={this.save.bind(this)}
         />
       </fieldset>
       <fieldset>
@@ -47,6 +50,7 @@ class SettingsComponent extends React.Component {
           types={properties.types}
           value={form.properties}
           onChange={value => this.bindForm('properties', value)}
+          onBlur={this.save.bind(this)}
         />
       </fieldset>
     </div>;
@@ -61,6 +65,7 @@ class SettingsComponent extends React.Component {
         spellCheck='false'
         error={error}
         onChange={this.bindJson.bind(this)}
+        onBlur={this.save.bind(this)}
         value={json}
       />
     </div>;
@@ -109,7 +114,7 @@ class SettingsComponent extends React.Component {
       form: { ...this.props.form },
     };
     settings.form[name] = value;
-    this.props.dispatch(settingActions.save(settings));
+    this.props.dispatch(settingActions.set(settings));
   }
 
   bindJson(e) {
@@ -118,7 +123,7 @@ class SettingsComponent extends React.Component {
       json: e.target.value,
       form: this.props.form,
     };
-    this.props.dispatch(settingActions.save(settings));
+    this.props.dispatch(settingActions.set(settings));
   }
 
   bindSource(e) {
@@ -135,7 +140,9 @@ class SettingsComponent extends React.Component {
       }
       this.props.dispatch(settingActions.switchToForm(this.props.json));
     }
+  }
 
+  save() {
     let settings = this.props.store.getState();
     this.props.dispatch(settingActions.save(settings));
   }

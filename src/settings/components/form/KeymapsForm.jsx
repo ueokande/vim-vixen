@@ -20,6 +20,7 @@ class KeymapsForm extends React.Component {
                   type='text' id={name} name={name} key={name}
                   label={label} value={value}
                   onChange={this.bindValue.bind(this)}
+                  onBlur={this.props.onBlur}
                 />;
               })
             }

@@ -23,11 +23,15 @@ class SearchForm extends React.Component {
           return <div key={index} className='form-search-form-row'>
             <input data-index={index} type='text' name='name'
               className='column-name' value={engine[0]}
-              onChange={this.bindValue.bind(this)} />
+              onChange={this.bindValue.bind(this)}
+              onBlur={this.props.onBlur}
+            />
             <input data-index={index} type='text' name='url'
               placeholder='http://example.com/?q={}'
               className='column-url' value={engine[1]}
-              onChange={this.bindValue.bind(this)} />
+              onChange={this.bindValue.bind(this)}
+              onBlur={this.props.onBlur}
+            />
             <div className='column-option'>
               <input data-index={index} type='radio' name='default'
                 checked={value.default === engine[0]}
@@ -66,6 +70,9 @@ class SearchForm extends React.Component {
     }
 
     this.props.onChange(next);
+    if (name === 'delete' || name === 'default') {
+      this.props.onBlur();
+    }
   }
 }
 

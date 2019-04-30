@@ -27,6 +27,7 @@ class PropertiesForm extends React.Component {
                 className='column-input'
                 value={value[name] ? value[name] : ''}
                 onChange={this.bindValue.bind(this)}
+                onBlur={this.props.onBlur}
                 checked={value[name]}
               />
             </label>
