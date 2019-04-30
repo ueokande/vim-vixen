@@ -81,7 +81,7 @@ class Console extends React.Component {
     }
   }
 
-  onInput(e) {
+  onChange(e) {
     let text = e.target.value;
     this.props.dispatch(consoleActions.setConsoleText(text));
     if (this.props.mode === 'command') {
@@ -118,7 +118,7 @@ class Console extends React.Component {
           mode={this.props.mode}
           onBlur={this.onBlur.bind(this)}
           onKeyDown={this.onKeyDown.bind(this)}
-          onInput={this.onInput.bind(this)}
+          onChange={this.onChange.bind(this)}
           value={this.props.consoleText}
         />
       </div>;
@@ -140,9 +140,6 @@ class Console extends React.Component {
 
 Console.propTypes = {
   mode: PropTypes.string,
-  onBlur: PropTypes.func,
-  onKeyDown: PropTypes.func,
-  onInput: PropTypes.func,
   consoleText: PropTypes.string,
   messageText: PropTypes.string,
   children: PropTypes.string,

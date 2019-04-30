@@ -24,7 +24,7 @@ class Input extends React.Component {
           ref={(c) => { this.input = c; }}
           onBlur={this.props.onBlur}
           onKeyDown={this.props.onKeyDown}
-          onInput={this.props.onInput}
+          onChange={this.props.onChange}
           value={this.props.value}
         />
       </div>
@@ -37,7 +37,7 @@ Input.propTypes = {
   value: PropTypes.string,
   onBlur: PropTypes.func,
   onKeyDown: PropTypes.func,
-  onInput: PropTypes.func,
+  onChange: PropTypes.func,
 };
 
 export default Input;
