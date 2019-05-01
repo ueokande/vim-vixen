@@ -1,4 +1,14 @@
-import actions from 'console/actions';
+import * as actions from '../actions';
+
+interface State {
+  mode: string;
+  messageText: string;
+  consoleText: string;
+  completionSource: string;
+  completions: any[],
+  select: number;
+  viewIndex: number;
+}
 
 const defaultState = {
   mode: '',
@@ -10,7 +20,7 @@ const defaultState = {
   viewIndex: 0,
 };
 
-const nextSelection = (state) => {
+const nextSelection = (state: State): number => {
   if (state.completions.length === 0) {
     return -1;
   }
@@ -27,7 +37,7 @@ const nextSelection = (state) => {
   return -1;
 };
 
-const prevSelection = (state) => {
+const prevSelection = (state: State): number => {
   let length = state.completions
     .map(g => g.items.length)
     .reduce((x, y) => x + y);
@@ -37,7 +47,7 @@ const prevSelection = (state) => {
   return state.select - 1;
 };
 
-const nextConsoleText = (completions, select, defaults) => {
+const nextConsoleText = (completions: any[], select: number, defaults: any) => {
   if (select < 0) {
     return defaults;
   }
@@ -46,7 +56,10 @@ const nextConsoleText = (completions, select, defaults) => {
 };
 
 // eslint-disable-next-line max-lines-per-function
-export default function reducer(state = defaultState, action = {}) {
+export default function reducer(
+  state: State = defaultState,
+  action: actions.ConsoleAction,
+): State {
   switch (action.type) {
   case actions.CONSOLE_HIDE:
     return { ...state,

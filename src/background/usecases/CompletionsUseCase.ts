@@ -1,4 +1,3 @@
-import Completions from '../domains/Completions';
 import CompletionGroup from '../domains/CompletionGroup';
 import CommandDocs from '../domains/CommandDocs';
 import CompletionsRepository from '../repositories/CompletionsRepository';
@@ -25,7 +24,7 @@ export default class CompletionsUseCase {
     this.settingRepository = new SettingRepository();
   }
 
-  queryConsoleCommand(prefix: string): Promise<Completions> {
+  queryConsoleCommand(prefix: string): Promise<CompletionGroup[]> {
     let keys = Object.keys(CommandDocs);
     let items = keys
       .filter(name => name.startsWith(prefix))
@@ -38,10 +37,10 @@ export default class CompletionsUseCase {
     if (items.length === 0) {
       return Promise.resolve([]);
     }
-    return Promise.resolve([{ name: 'Console CompletionGroup', items }]);
+    return Promise.resolve([{ name: 'Console Command', items }]);
   }
 
-  async queryOpen(name: string, keywords: string): Promise<Completions> {
+  async queryOpen(name: string, keywords: string): Promise<CompletionGroup[]> {
     let settings = await this.settingRepository.get();
     let groups: CompletionGroup[] = [];
 
@@ -71,7 +70,10 @@ export default class CompletionsUseCase {
   }
 
   // eslint-disable-next-line max-statements
-  async queryBuffer(name: string, keywords: string): Promise<Completions> {
+  async queryBuffer(
+    name: string,
+    keywords: string,
+  ): Promise<CompletionGroup[]> {
     let lastId = await this.tabPresenter.getLastSelectedId();
     let trimmed = keywords.trim();
     let tabs: Tab[] = [];

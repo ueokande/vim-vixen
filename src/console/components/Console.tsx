@@ -1,7 +1,6 @@
 import './console.scss';
 import { connect } from 'react-redux';
 import React from 'react';
-import PropTypes from 'prop-types';
 import Input from './console/Input';
 import Completion from './console/Completion';
 import Message from './console/Message';
@@ -9,14 +8,29 @@ import * as consoleActions from '../../console/actions/console';
 
 const COMPLETION_MAX_ITEMS = 33;
 
-class Console extends React.Component {
+interface Props {
+  mode?: string;
+  consoleText?: string;
+  messageText?: string;
+  children?: string;
+}
+
+class Console extends React.Component<Props> {
+  private input: HTMLInputElement | null;
+
+  constructor(props: Props) {
+    super(props);
+
+    this.input = null;
+  }
+
   onBlur() {
     if (this.props.mode === 'command' || this.props.mode === 'find') {
       return this.props.dispatch(consoleActions.hideCommand());
     }
   }
 
-  doEnter(e) {
+  doEnter(e: React.KeyboardEvent<HTMLInputElement>) {
     e.stopPropagation();
     e.preventDefault();
 
@@ -28,19 +42,19 @@ class Console extends React.Component {
     }
   }
 
-  selectNext(e) {
+  selectNext(e: React.KeyboardEvent<HTMLInputElement>) {
     this.props.dispatch(consoleActions.completionNext());
     e.stopPropagation();
     e.preventDefault();
   }
 
-  selectPrev(e) {
+  selectPrev(e: React.KeyboardEvent<HTMLInputElement>) {
     this.props.dispatch(consoleActions.completionPrev());
     e.stopPropagation();
     e.preventDefault();
   }
 
-  onKeyDown(e) {
+  onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.keyCode === KeyboardEvent.DOM_VK_ESCAPE && e.ctrlKey) {
       this.props.dispatch(consoleActions.hideCommand());
     }
@@ -81,7 +95,7 @@ class Console extends React.Component {
     }
   }
 
-  onChange(e) {
+  onChange(e: React.ChangeEvent<HTMLInputElement>) {
     let text = e.target.value;
     this.props.dispatch(consoleActions.setConsoleText(text));
     if (this.props.mode === 'command') {
@@ -90,7 +104,7 @@ class Console extends React.Component {
   }
 
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (!this.input) {
       return;
     }
@@ -134,16 +148,11 @@ class Console extends React.Component {
 
   focus() {
     window.focus();
-    this.input.focus();
+    if (this.input) {
+      this.input.focus();
+    }
   }
 }
 
-Console.propTypes = {
-  mode: PropTypes.string,
-  consoleText: PropTypes.string,
-  messageText: PropTypes.string,
-  children: PropTypes.string,
-};
-
-const mapStateToProps = state => state;
+const mapStateToProps = (state: any) => state;
 export default connect(mapStateToProps)(Console);

@@ -1,7 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const Message = (props) => {
+interface Props {
+  mode: string;
+  children: string[];
+}
+
+const Message = (props: Props) => {
   switch (props.mode) {
   case 'error':
     return (
@@ -16,10 +20,7 @@ const Message = (props) => {
       </p>
     );
   }
-};
-
-Message.propTypes = {
-  children: PropTypes.string,
+  return null;
 };
 
 export default Message;

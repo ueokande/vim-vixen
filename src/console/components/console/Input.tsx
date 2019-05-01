@@ -1,9 +1,26 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-class Input extends React.Component {
+interface Props {
+  mode: string;
+  value: string;
+  onBlur: (e: React.FocusEvent<Element>) => void;
+  onKeyDown: (e: React.KeyboardEvent<Element>) => void;
+  onChange: (e: React.ChangeEvent<Element>) => void;
+}
+
+class Input extends React.Component<Props> {
+  private input: HTMLInputElement | null;
+
+  constructor(props: Props) {
+    super(props);
+
+    this.input = null;
+  }
+
   focus() {
-    this.input.focus();
+    if (this.input) {
+      this.input.focus();
+    }
   }
 
   render() {
@@ -31,13 +48,5 @@ class Input extends React.Component {
     );
   }
 }
-
-Input.propTypes = {
-  mode: PropTypes.string,
-  value: PropTypes.string,
-  onBlur: PropTypes.func,
-  onKeyDown: PropTypes.func,
-  onChange: PropTypes.func,
-};
 
 export default Input;

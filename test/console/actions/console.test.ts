@@ -1,4 +1,4 @@
-import actions from 'console/actions';
+import * as actions from 'console/actions';
 import * as consoleActions from 'console/actions/console';
 
 describe("console actions", () => {

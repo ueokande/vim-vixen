@@ -1,14 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const CompletionTitle = (props) => {
+interface Props {
+  title: string;
+}
+
+const CompletionTitle = (props: Props) => {
   return <li className='vimvixen-console-completion-title'>
     {props.title}
   </li>;
-};
-
-CompletionTitle.propTypes = {
-  title: PropTypes.string,
 };
 
 export default CompletionTitle;

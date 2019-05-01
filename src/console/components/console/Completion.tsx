@@ -1,15 +1,36 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import CompletionItem from './CompletionItem';
 import CompletionTitle from './CompletionTitle';
 
-class Completion extends React.Component {
-  constructor() {
-    super();
+interface Item {
+  icon?: string;
+  caption?: string;
+  url?: string;
+}
+
+interface Group {
+  name: string;
+  items: Item[];
+}
+
+interface Props {
+  select: number;
+  size: number;
+  completions: Group[];
+}
+
+interface State {
+  viewOffset: number;
+  select: number;
+}
+
+class Completion extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
     this.state = { viewOffset: 0, select: -1 };
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     if (prevState.select === nextProps.select) {
       return null;
     }
@@ -24,6 +45,7 @@ class Completion extends React.Component {
         }
         index += g.items.length;
       }
+      return -1;
     })();
 
     let viewOffset = 0;
@@ -69,18 +91,5 @@ class Completion extends React.Component {
     );
   }
 }
-
-Completion.propTypes = {
-  select: PropTypes.number,
-  size: PropTypes.number,
-  completions: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string,
-    items: PropTypes.arrayOf(PropTypes.shape({
-      icon: PropTypes.string,
-      caption: PropTypes.string,
-      url: PropTypes.string,
-    })),
-  })),
-};
 
 export default Completion;

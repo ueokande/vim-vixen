@@ -1,4 +1,4 @@
-import actions from 'console/actions';
+import * as actions from 'console/actions';
 import reducer from 'console/reducers';
 
 describe("console reducer", () => {

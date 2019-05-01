@@ -1,7 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const CompletionItem = (props) => {
+interface Props {
+  highlight: boolean;
+  caption?: string;
+  url?: string;
+  icon?: string;
+}
+
+const CompletionItem = (props: Props) => {
   let className = 'vimvixen-console-completion-item';
   if (props.highlight) {
     className += ' vimvixen-completion-selected';
