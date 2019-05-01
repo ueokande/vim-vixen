@@ -1,6 +1,5 @@
-import CompletionItem from '../domains/CompletionItem';
-import CompletionGroup from '../domains/CompletionGroup';
 import Completions from '../domains/Completions';
+import CompletionGroup from '../domains/CompletionGroup';
 import CommandDocs from '../domains/CommandDocs';
 import CompletionsRepository from '../repositories/CompletionsRepository';
 import * as filters from './filters';
@@ -10,14 +9,23 @@ import * as properties from '../../shared/settings/properties';
 
 const COMPLETION_ITEM_LIMIT = 10;
 
+type Tab = browser.tabs.Tab;
+type HistoryItem = browser.history.HistoryItem;
+
 export default class CompletionsUseCase {
+  private tabPresenter: TabPresenter;
+
+  private completionsRepository: CompletionsRepository;
+
+  private settingRepository: SettingRepository;
+
   constructor() {
     this.tabPresenter = new TabPresenter();
     this.completionsRepository = new CompletionsRepository();
     this.settingRepository = new SettingRepository();
   }
 
-  queryConsoleCommand(prefix) {
+  queryConsoleCommand(prefix: string): Promise<Completions> {
     let keys = Object.keys(CommandDocs);
     let items = keys
       .filter(name => name.startsWith(prefix))
@@ -28,16 +36,14 @@ export default class CompletionsUseCase {
       }));
 
     if (items.length === 0) {
-      return Promise.resolve(Completions.empty());
+      return Promise.resolve([]);
     }
-    return Promise.resolve(
-      new Completions([new CompletionGroup('Console Command', items)])
-    );
+    return Promise.resolve([{ name: 'Console CompletionGroup', items }]);
   }
 
-  async queryOpen(name, keywords) {
+  async queryOpen(name: string, keywords: string): Promise<Completions> {
     let settings = await this.settingRepository.get();
-    let groups = [];
+    let groups: CompletionGroup[] = [];
 
     let complete = settings.properties.complete || properties.defaults.complete;
     for (let c of complete) {
@@ -45,31 +51,31 @@ export default class CompletionsUseCase {
         // eslint-disable-next-line no-await-in-loop
         let engines = await this.querySearchEngineItems(name, keywords);
         if (engines.length > 0) {
-          groups.push(new CompletionGroup('Search Engines', engines));
+          groups.push({ name: 'Search Engines', items: engines });
         }
       } else if (c === 'h') {
         // eslint-disable-next-line no-await-in-loop
         let histories = await this.queryHistoryItems(name, keywords);
         if (histories.length > 0) {
-          groups.push(new CompletionGroup('History', histories));
+          groups.push({ name: 'History', items: histories });
         }
       } else if (c === 'b') {
         // eslint-disable-next-line no-await-in-loop
         let bookmarks = await this.queryBookmarkItems(name, keywords);
         if (bookmarks.length > 0) {
-          groups.push(new CompletionGroup('Bookmarks', bookmarks));
+          groups.push({ name: 'Bookmarks', items: bookmarks });
         }
       }
     }
-    return new Completions(groups);
+    return groups;
   }
 
   // eslint-disable-next-line max-statements
-  async queryBuffer(name, keywords) {
+  async queryBuffer(name: string, keywords: string): Promise<Completions> {
     let lastId = await this.tabPresenter.getLastSelectedId();
     let trimmed = keywords.trim();
-    let tabs = [];
-    if (trimmed.length > 0 && !isNaN(trimmed)) {
+    let tabs: Tab[] = [];
+    if (trimmed.length > 0 && !isNaN(Number(trimmed))) {
       let all = await this.tabPresenter.getAll();
       let index = parseInt(trimmed, 10) - 1;
       if (index >= 0 && index < all.length) {
@@ -77,18 +83,18 @@ export default class CompletionsUseCase {
       }
     } else if (trimmed === '%') {
       let all = await this.tabPresenter.getAll();
-      let tab = all.find(t => t.active);
+      let tab = all.find(t => t.active) as Tab;
       tabs = [tab];
     } else if (trimmed === '#') {
       if (typeof lastId !== 'undefined' && lastId !== null) {
         let all = await this.tabPresenter.getAll();
-        let tab = all.find(t => t.id === lastId);
+        let tab = all.find(t => t.id === lastId) as Tab;
         tabs = [tab];
       }
     } else {
       tabs = await this.completionsRepository.queryTabs(keywords, false);
     }
-    const flag = (tab) => {
+    const flag = (tab: Tab) => {
       if (tab.active) {
         return '%';
       } else if (tab.id === lastId) {
@@ -96,87 +102,90 @@ export default class CompletionsUseCase {
       }
       return ' ';
     };
-    let items = tabs.map(tab => new CompletionItem({
+    let items = tabs.map(tab => ({
       caption: tab.index + 1 + ': ' + flag(tab) + ' ' + tab.title,
       content: name + ' ' + tab.title,
       url: tab.url,
-      icon: tab.favIconUrl
+      icon: tab.favIconUrl,
     }));
     if (items.length === 0) {
-      return Promise.resolve(Completions.empty());
+      return Promise.resolve([]);
     }
-    return new Completions([new CompletionGroup('Buffers', items)]);
+    return [{ name: 'Buffers', items }];
   }
 
-  queryBdelete(name, keywords) {
+  queryBdelete(name: string, keywords: string): Promise<CompletionGroup[]> {
     return this.queryTabs(name, true, keywords);
   }
 
-  queryBdeleteForce(name, keywords) {
+  queryBdeleteForce(
+    name: string, keywords: string,
+  ): Promise<CompletionGroup[]> {
     return this.queryTabs(name, false, keywords);
   }
 
-  querySet(name, keywords) {
+  querySet(name: string, keywords: string): Promise<CompletionGroup[]> {
     let items = Object.keys(properties.docs).map((key) => {
       if (properties.types[key] === 'boolean') {
         return [
-          new CompletionItem({
+          {
             caption: key,
             content: name + ' ' + key,
             url: 'Enable ' + properties.docs[key],
-          }),
-          new CompletionItem({
+          }, {
             caption: 'no' + key,
             content: name + ' no' + key,
             url: 'Disable ' + properties.docs[key],
-          }),
+          }
         ];
       }
       return [
-        new CompletionItem({
+        {
           caption: key,
           content: name + ' ' + key,
           url: 'Set ' + properties.docs[key],
-        })
+        }
       ];
     });
-    items = items.reduce((acc, val) => acc.concat(val), []);
-    items = items.filter((item) => {
+    let flatten = items.reduce((acc, val) => acc.concat(val), []);
+    flatten = flatten.filter((item) => {
       return item.caption.startsWith(keywords);
     });
-    if (items.length === 0) {
-      return Promise.resolve(Completions.empty());
+    if (flatten.length === 0) {
+      return Promise.resolve([]);
     }
     return Promise.resolve(
-      new Completions([new CompletionGroup('Properties', items)])
+      [{ name: 'Properties', items: flatten }],
     );
   }
 
-  async queryTabs(name, excludePinned, args) {
+  async queryTabs(
+    name: string, excludePinned: boolean, args: string,
+  ): Promise<CompletionGroup[]> {
     let tabs = await this.completionsRepository.queryTabs(args, excludePinned);
-    let items = tabs.map(tab => new CompletionItem({
+    let items = tabs.map(tab => ({
       caption: tab.title,
       content: name + ' ' + tab.title,
       url: tab.url,
       icon: tab.favIconUrl
     }));
     if (items.length === 0) {
-      return Promise.resolve(Completions.empty());
+      return Promise.resolve([]);
     }
-    return new Completions([new CompletionGroup('Buffers', items)]);
+    return [{ name: 'Buffers', items }];
   }
 
-  async querySearchEngineItems(name, keywords) {
+  async querySearchEngineItems(name: string, keywords: string) {
     let settings = await this.settingRepository.get();
     let engines = Object.keys(settings.search.engines)
       .filter(key => key.startsWith(keywords));
-    return engines.map(key => new CompletionItem({
+    return engines.map(key => ({
       caption: key,
       content: name + ' ' + key,
     }));
   }
 
-  async queryHistoryItems(name, keywords) {
+  async queryHistoryItems(name: string, keywords: string) {
     let histories = await this.completionsRepository.queryHistories(keywords);
     histories = [histories]
       .map(filters.filterBlankTitle)
@@ -184,19 +193,21 @@ export default class CompletionsUseCase {
       .map(filters.filterByTailingSlash)
       .map(pages => filters.filterByPathname(pages, COMPLETION_ITEM_LIMIT))
       .map(pages => filters.filterByOrigin(pages, COMPLETION_ITEM_LIMIT))[0]
-      .sort((x, y) => x.visitCount < y.visitCount)
+      .sort((x: HistoryItem, y: HistoryItem) => {
+        return Number(x.visitCount) < Number(y.visitCount);
+      })
       .slice(0, COMPLETION_ITEM_LIMIT);
-    return histories.map(page => new CompletionItem({
+    return histories.map(page => ({
       caption: page.title,
       content: name + ' ' + page.url,
       url: page.url
     }));
   }
 
-  async queryBookmarkItems(name, keywords) {
+  async queryBookmarkItems(name: string, keywords: string) {
     let bookmarks = await this.completionsRepository.queryBookmarks(keywords);
     return bookmarks.slice(0, COMPLETION_ITEM_LIMIT)
-      .map(page => new CompletionItem({
+      .map(page => ({
         caption: page.title,
         content: name + ' ' + page.url,
         url: page.url

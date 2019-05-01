@@ -1,5 +1,7 @@
 export default class BookmarkRepository {
-  async create(title, url) {
+  async create(
+    title: string, url: string
+  ): Promise<browser.bookmarks.BookmarkTreeNode> {
     let item = await browser.bookmarks.create({
       type: 'bookmark',
       title,

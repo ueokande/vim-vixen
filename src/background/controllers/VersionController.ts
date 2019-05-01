@@ -1,11 +1,13 @@
 import VersionUseCase from '../usecases/VersionUseCase';
 
 export default class VersionController {
+  private versionUseCase: VersionUseCase;
+
   constructor() {
     this.versionUseCase = new VersionUseCase();
   }
 
-  notify() {
-    this.versionUseCase.notify();
+  notify(): void {
+    return this.versionUseCase.notify();
   }
 }

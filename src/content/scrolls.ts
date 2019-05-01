@@ -90,16 +90,6 @@ class Scroller {
   }
 }
 
-class RoughtScroller {
-  constructor(element) {
-    this.element = element;
-  }
-
-  scroll(x, y) {
-    this.element.scrollTo(x, y);
-  }
-}
-
 const getScroll = () => {
   let target = scrollTarget();
   return { x: target.scrollLeft, y: target.scrollTop };

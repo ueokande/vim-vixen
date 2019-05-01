@@ -2,60 +2,64 @@ import TabPresenter from '../presenters/TabPresenter';
 import ConsoleClient from '../infrastructures/ConsoleClient';
 
 export default class ConsoleUseCase {
+  private tabPresenter: TabPresenter;
+
+  private consoleClient: ConsoleClient;
+
   constructor() {
     this.tabPresenter = new TabPresenter();
     this.consoleClient = new ConsoleClient();
   }
 
-  async showCommand() {
+  async showCommand(): Promise<any> {
     let tab = await this.tabPresenter.getCurrent();
-    return this.consoleClient.showCommand(tab.id, '');
+    return this.consoleClient.showCommand(tab.id as number, '');
   }
 
-  async showOpenCommand(alter) {
+  async showOpenCommand(alter: boolean): Promise<any> {
     let tab = await this.tabPresenter.getCurrent();
     let command = 'open ';
     if (alter) {
-      command += tab.url;
+      command += tab.url || '';
     }
-    return this.consoleClient.showCommand(tab.id, command);
+    return this.consoleClient.showCommand(tab.id as number, command);
   }
 
-  async showTabopenCommand(alter) {
+  async showTabopenCommand(alter: boolean): Promise<any> {
     let tab = await this.tabPresenter.getCurrent();
     let command = 'tabopen ';
     if (alter) {
-      command += tab.url;
+      command += tab.url || '';
     }
-    return this.consoleClient.showCommand(tab.id, command);
+    return this.consoleClient.showCommand(tab.id as number, command);
   }
 
-  async showWinopenCommand(alter) {
+  async showWinopenCommand(alter: boolean): Promise<any> {
     let tab = await this.tabPresenter.getCurrent();
     let command = 'winopen ';
     if (alter) {
-      command += tab.url;
+      command += tab.url || '';
     }
-    return this.consoleClient.showCommand(tab.id, command);
+    return this.consoleClient.showCommand(tab.id as number, command);
   }
 
-  async showBufferCommand() {
+  async showBufferCommand(): Promise<any> {
     let tab = await this.tabPresenter.getCurrent();
     let command = 'buffer ';
-    return this.consoleClient.showCommand(tab.id, command);
+    return this.consoleClient.showCommand(tab.id as number, command);
   }
 
-  async showAddbookmarkCommand(alter) {
+  async showAddbookmarkCommand(alter: boolean): Promise<any> {
     let tab = await this.tabPresenter.getCurrent();
     let command = 'addbookmark ';
     if (alter) {
-      command += tab.title;
+      command += tab.title || '';
     }
-    return this.consoleClient.showCommand(tab.id, command);
+    return this.consoleClient.showCommand(tab.id as number, command);
   }
 
-  async hideConsole() {
+  async hideConsole(): Promise<any> {
     let tab = await this.tabPresenter.getCurrent();
-    return this.consoleClient.hide(tab.id);
+    return this.consoleClient.hide(tab.id as number);
   }
 }

@@ -1,7 +1,7 @@
-const db = {};
+const db: {[key: string]: any} = {};
 
 export default class MemoryStorage {
-  set(name, value) {
+  set(name: string, value: any): void {
     let data = JSON.stringify(value);
     if (typeof data === 'undefined') {
       throw new Error('value is not serializable');
@@ -9,7 +9,7 @@ export default class MemoryStorage {
     db[name] = data;
   }
 
-  get(name) {
+  get(name: string): any {
     let data = db[name];
     if (!data) {
       return undefined;

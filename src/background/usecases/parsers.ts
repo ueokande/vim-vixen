@@ -1,4 +1,4 @@
-const mustNumber = (v) => {
+const mustNumber = (v: any): number => {
   let num = Number(v);
   if (isNaN(num)) {
     throw new Error('Not number: ' + v);
@@ -6,8 +6,11 @@ const mustNumber = (v) => {
   return num;
 };
 
-const parseSetOption = (word, types) => {
-  let [key, value] = word.split('=');
+const parseSetOption = (
+  word: string,
+  types: { [key: string]: string },
+): any[] => {
+  let [key, value]: any[] = word.split('=');
   if (value === undefined) {
     value = !key.startsWith('no');
     key = value ? key : key.slice(2);
@@ -26,6 +29,7 @@ const parseSetOption = (word, types) => {
   case 'number': return [key, mustNumber(value)];
   case 'boolean': return [key, value];
   }
+  throw new Error('Unknown property type: ' + type);
 };
 
 export { parseSetOption };

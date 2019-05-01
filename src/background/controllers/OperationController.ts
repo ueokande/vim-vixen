@@ -6,6 +6,16 @@ import TabSelectUseCase from '../usecases/TabSelectUseCase';
 import ZoomUseCase from '../usecases/ZoomUseCase';
 
 export default class OperationController {
+  private findUseCase: FindUseCase;
+
+  private consoleUseCase: ConsoleUseCase;
+
+  private tabUseCase: TabUseCase;
+
+  private tabSelectUseCase: TabSelectUseCase;
+
+  private zoomUseCase: ZoomUseCase;
+
   constructor() {
     this.findUseCase = new FindUseCase();
     this.consoleUseCase = new ConsoleUseCase();
@@ -15,7 +25,7 @@ export default class OperationController {
   }
 
   // eslint-disable-next-line complexity, max-lines-per-function
-  exec(operation) {
+  exec(operation: any): Promise<any> {
     switch (operation.type) {
     case operations.TAB_CLOSE:
       return this.tabUseCase.close(false);
@@ -72,6 +82,7 @@ export default class OperationController {
     case operations.CANCEL:
       return this.consoleUseCase.hideConsole();
     }
+    throw new Error('unknown operation: ' + operation.type);
   }
 }
 

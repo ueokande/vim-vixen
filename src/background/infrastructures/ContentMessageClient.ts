@@ -1,10 +1,10 @@
 import messages from '../../shared/messages';
 
 export default class ContentMessageClient {
-  async broadcastSettingsChanged() {
+  async broadcastSettingsChanged(): Promise<void> {
     let tabs = await browser.tabs.query({});
     for (let tab of tabs) {
-      if (tab.url.startsWith('about:')) {
+      if (!tab.id || tab.url && tab.url.startsWith('about:')) {
         continue;
       }
       browser.tabs.sendMessage(tab.id, {
@@ -13,20 +13,20 @@ export default class ContentMessageClient {
     }
   }
 
-  async getAddonEnabled(tabId) {
+  async getAddonEnabled(tabId: number): Promise<boolean> {
     let { enabled } = await browser.tabs.sendMessage(tabId, {
       type: messages.ADDON_ENABLED_QUERY,
-    });
+    }) as { enabled: boolean };
     return enabled;
   }
 
-  toggleAddonEnabled(tabId) {
+  toggleAddonEnabled(tabId: number): Promise<void> {
     return browser.tabs.sendMessage(tabId, {
       type: messages.ADDON_TOGGLE_ENABLED,
     });
   }
 
-  scrollTo(tabId, x, y) {
+  scrollTo(tabId: number, x: number, y: number): Promise<void> {
     return browser.tabs.sendMessage(tabId, {
       type: messages.TAB_SCROLL_TO,
       x,

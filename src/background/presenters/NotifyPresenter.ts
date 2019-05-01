@@ -1,8 +1,12 @@
 const NOTIFICATION_ID = 'vimvixen-update';
 
 export default class NotifyPresenter {
-  notify(title, message, onclick) {
-    const listener = (id) => {
+  notify(
+    title: string,
+    message: string,
+    onclick: () => void,
+  ): Promise<string> {
+    const listener = (id: string) => {
       if (id !== NOTIFICATION_ID) {
         return;
       }

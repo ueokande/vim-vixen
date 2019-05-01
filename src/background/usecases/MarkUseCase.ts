@@ -1,10 +1,17 @@
-import GlobalMark from '../domains/GlobalMark';
 import TabPresenter from '../presenters/TabPresenter';
 import MarkRepository from '../repositories/MarkRepository';
 import ConsoleClient from '../infrastructures/ConsoleClient';
 import ContentMessageClient from '../infrastructures/ContentMessageClient';
 
 export default class MarkUseCase {
+  private tabPresenter: TabPresenter;
+
+  private markRepository: MarkRepository;
+
+  private consoleClient: ConsoleClient;
+
+  private contentMessageClient: ContentMessageClient;
+
   constructor() {
     this.tabPresenter = new TabPresenter();
     this.markRepository = new MarkRepository();
@@ -12,18 +19,19 @@ export default class MarkUseCase {
     this.contentMessageClient = new ContentMessageClient();
   }
 
-  async setGlobal(key, x, y) {
+  async setGlobal(key: string, x: number, y: number): Promise<any> {
     let tab = await this.tabPresenter.getCurrent();
-    let mark = new GlobalMark(tab.id, tab.url, x, y);
+    let mark = { tabId: tab.id, url: tab.url, x, y };
     return this.markRepository.setMark(key, mark);
   }
 
-  async jumpGlobal(key) {
+  async jumpGlobal(key: string): Promise<any> {
     let current = await this.tabPresenter.getCurrent();
 
     let mark = await this.markRepository.getMark(key);
     if (!mark) {
-      return this.consoleClient.showError(current.id, 'Mark is not set');
+      return this.consoleClient.showError(
+        current.id as number, 'Mark is not set');
     }
 
     return this.contentMessageClient.scrollTo(
@@ -32,7 +40,7 @@ export default class MarkUseCase {
       return this.tabPresenter.select(mark.tabId);
     }).catch(async() => {
       let tab = await this.tabPresenter.create(mark.url);
-      let mark2 = new GlobalMark(tab.id, mark.url, mark.x, mark.y);
+      let mark2 = { tabId: tab.id, url: mark.url, x: mark.x, y: mark.y };
       return this.markRepository.setMark(key, mark2);
     });
   }

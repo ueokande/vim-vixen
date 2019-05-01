@@ -6,9 +6,21 @@ import SettingRepository from '../repositories/SettingRepository';
 import BookmarkRepository from '../repositories/BookmarkRepository';
 import ConsoleClient from '../infrastructures/ConsoleClient';
 import ContentMessageClient from '../infrastructures/ContentMessageClient';
-import * as properties from 'shared/settings/properties';
+import * as properties from '../../shared/settings/properties';
 
 export default class CommandIndicator {
+  private tabPresenter: TabPresenter;
+
+  private windowPresenter: WindowPresenter;
+
+  private settingRepository: SettingRepository;
+
+  private bookmarkRepository: BookmarkRepository;
+
+  private consoleClient: ConsoleClient;
+
+  private contentMessageClient: ContentMessageClient;
+
   constructor() {
     this.tabPresenter = new TabPresenter();
     this.windowPresenter = new WindowPresenter();
@@ -19,34 +31,34 @@ export default class CommandIndicator {
     this.contentMessageClient = new ContentMessageClient();
   }
 
-  async open(keywords) {
+  async open(keywords: string): Promise<browser.tabs.Tab> {
     let url = await this.urlOrSearch(keywords);
     return this.tabPresenter.open(url);
   }
 
-  async tabopen(keywords) {
+  async tabopen(keywords: string): Promise<browser.tabs.Tab> {
     let url = await this.urlOrSearch(keywords);
     return this.tabPresenter.create(url);
   }
 
-  async winopen(keywords) {
+  async winopen(keywords: string): Promise<browser.windows.Window> {
     let url = await this.urlOrSearch(keywords);
     return this.windowPresenter.create(url);
   }
 
   // eslint-disable-next-line max-statements
-  async buffer(keywords) {
+  async buffer(keywords: string): Promise<any> {
     if (keywords.length === 0) {
       return;
     }
 
-    if (!isNaN(keywords)) {
+    if (!isNaN(Number(keywords))) {
       let tabs = await this.tabPresenter.getAll();
       let index = parseInt(keywords, 10) - 1;
       if (index < 0 || tabs.length <= index) {
         throw new RangeError(`tab ${index + 1} does not exist`);
       }
-      return this.tabPresenter.select(tabs[index].id);
+      return this.tabPresenter.select(tabs[index].id as number);
     } else if (keywords.trim() === '%') {
       // Select current window
       return;
@@ -66,13 +78,13 @@ export default class CommandIndicator {
     }
     for (let tab of tabs) {
       if (tab.index > current.index) {
-        return this.tabPresenter.select(tab.id);
+        return this.tabPresenter.select(tab.id as number);
       }
     }
-    return this.tabPresenter.select(tabs[0].id);
+    return this.tabPresenter.select(tabs[0].id as number);
   }
 
-  async bdelete(force, keywords) {
+  async bdelete(force: boolean, keywords: string): Promise<any> {
     let excludePinned = !force;
     let tabs = await this.tabPresenter.getByKeyword(keywords, excludePinned);
     if (tabs.length === 0) {
@@ -80,35 +92,35 @@ export default class CommandIndicator {
     } else if (tabs.length > 1) {
       throw new Error('More than one match for ' + keywords);
     }
-    return this.tabPresenter.remove([tabs[0].id]);
+    return this.tabPresenter.remove([tabs[0].id as number]);
   }
 
-  async bdeletes(force, keywords) {
+  async bdeletes(force: boolean, keywords: string): Promise<any> {
     let excludePinned = !force;
     let tabs = await this.tabPresenter.getByKeyword(keywords, excludePinned);
-    let ids = tabs.map(tab => tab.id);
+    let ids = tabs.map(tab => tab.id as number);
     return this.tabPresenter.remove(ids);
   }
 
-  async quit() {
+  async quit(): Promise<any> {
     let tab = await this.tabPresenter.getCurrent();
-    return this.tabPresenter.remove([tab.id]);
+    return this.tabPresenter.remove([tab.id as number]);
   }
 
-  async quitAll() {
+  async quitAll(): Promise<any> {
     let tabs = await this.tabPresenter.getAll();
-    let ids = tabs.map(tab => tab.id);
+    let ids = tabs.map(tab => tab.id as number);
     this.tabPresenter.remove(ids);
   }
 
-  async addbookmark(title) {
+  async addbookmark(title: string): Promise<any> {
     let tab = await this.tabPresenter.getCurrent();
     let item = await this.bookmarkRepository.create(title, tab.url);
     let message = 'Saved current page: ' + item.url;
     return this.consoleClient.showInfo(tab.id, message);
   }
 
-  async set(keywords) {
+  async set(keywords: string): Promise<any> {
     if (keywords.length === 0) {
       return;
     }
@@ -118,7 +130,7 @@ export default class CommandIndicator {
     return this.contentMessageClient.broadcastSettingsChanged();
   }
 
-  async urlOrSearch(keywords) {
+  async urlOrSearch(keywords: string): Promise<any> {
     let settings = await this.settingRepository.get();
     return urls.searchUrl(keywords, settings.search);
   }

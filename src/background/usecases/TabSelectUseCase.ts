@@ -1,11 +1,13 @@
 import TabPresenter from '../presenters/TabPresenter';
 
 export default class TabSelectUseCase {
+  private tabPresenter: TabPresenter;
+
   constructor() {
     this.tabPresenter = new TabPresenter();
   }
 
-  async selectPrev(count) {
+  async selectPrev(count: number): Promise<any> {
     let tabs = await this.tabPresenter.getAll();
     if (tabs.length < 2) {
       return;
@@ -15,10 +17,10 @@ export default class TabSelectUseCase {
       return;
     }
     let select = (tab.index - count + tabs.length) % tabs.length;
-    return this.tabPresenter.select(tabs[select].id);
+    return this.tabPresenter.select(tabs[select].id as number);
   }
 
-  async selectNext(count) {
+  async selectNext(count: number): Promise<any> {
     let tabs = await this.tabPresenter.getAll();
     if (tabs.length < 2) {
       return;
@@ -28,24 +30,24 @@ export default class TabSelectUseCase {
       return;
     }
     let select = (tab.index + count) % tabs.length;
-    return this.tabPresenter.select(tabs[select].id);
+    return this.tabPresenter.select(tabs[select].id as number);
   }
 
-  async selectFirst() {
+  async selectFirst(): Promise<any> {
     let tabs = await this.tabPresenter.getAll();
-    return this.tabPresenter.select(tabs[0].id);
+    return this.tabPresenter.select(tabs[0].id as number);
   }
 
-  async selectLast() {
+  async selectLast(): Promise<any> {
     let tabs = await this.tabPresenter.getAll();
-    return this.tabPresenter.select(tabs[tabs.length - 1].id);
+    return this.tabPresenter.select(tabs[tabs.length - 1].id as number);
   }
 
-  async selectPrevSelected() {
+  async selectPrevSelected(): Promise<any> {
     let tabId = await this.tabPresenter.getLastSelectedId();
     if (tabId === null || typeof tabId === 'undefined') {
-      return;
+      return Promise.resolve();
     }
-    this.tabPresenter.select(tabId);
+    return this.tabPresenter.select(tabId);
   }
 }

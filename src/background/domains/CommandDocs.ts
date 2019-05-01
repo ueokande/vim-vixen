@@ -8,5 +8,4 @@ export default {
   bdeletes: 'Close all tabs matched by keywords',
   quit: 'Close the current tab',
   quitall: 'Close all tabs',
-};
-
+} as {[key: string]: string};

@@ -9,12 +9,11 @@ describe('background/repositories/mark', () => {
   });
 
   it('get and set', async() => {
-    let mark = new GlobalMark(1, 'http://example.com', 10, 30);
+    let mark = { tabId: 1, url: 'http://example.com', x: 10, y: 30 };
 
     repository.setMark('A', mark);
 
     let got = await repository.getMark('A');
-    expect(got).to.be.a('object');
     expect(got.tabId).to.equal(1);
     expect(got.url).to.equal('http://example.com');
     expect(got.x).to.equal(10);

@@ -1,19 +1,23 @@
 import CompletionsUseCase from '../usecases/CompletionsUseCase';
 import CommandUseCase from '../usecases/CommandUseCase';
-import Completions from '../domains/Completions';
+import CompletionGroup from '../domains/CompletionGroup';
 
-const trimStart = (str) => {
+const trimStart = (str: string): string => {
   // NOTE String.trimStart is available on Firefox 61
   return str.replace(/^\s+/, '');
 };
 
 export default class CommandController {
+  private completionsUseCase: CompletionsUseCase;
+
+  private commandIndicator: CommandUseCase;
+
   constructor() {
     this.completionsUseCase = new CompletionsUseCase();
     this.commandIndicator = new CommandUseCase();
   }
 
-  getCompletions(line) {
+  getCompletions(line: string): Promise<CompletionGroup[]> {
     let trimmed = trimStart(line);
     let words = trimmed.split(/ +/);
     let name = words[0];
@@ -45,11 +49,11 @@ export default class CommandController {
     case 'set':
       return this.completionsUseCase.querySet(name, keywords);
     }
-    return Promise.resolve(Completions.empty());
+    return Promise.resolve([]);
   }
 
   // eslint-disable-next-line complexity
-  exec(line) {
+  exec(line: string): Promise<any> {
     let trimmed = trimStart(line);
     let words = trimmed.split(/ +/);
     let name = words[0];
