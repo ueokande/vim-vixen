@@ -26,6 +26,7 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
     "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.6",
     "@types/prop-types": "^15.7.1",
     "@types/react": "^16.8.15",
     "@types/react-dom": "^16.8.4",
