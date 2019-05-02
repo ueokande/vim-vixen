@@ -1,4 +1,4 @@
-import actions from 'content/actions';
+import * as actions from 'content/actions';
 import * as markActions from 'content/actions/mark';
 
 describe('mark actions', () => {

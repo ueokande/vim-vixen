@@ -1,4 +1,4 @@
-import messages from '../../shared/messages';
+import * as messages from '../../shared/messages';
 import * as actions from './index';
 
 const hide = (): actions.ConsoleAction => {

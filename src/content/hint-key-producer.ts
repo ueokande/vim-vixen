@@ -1,5 +1,9 @@
 export default class HintKeyProducer {
-  constructor(charset) {
+  private charset: string;
+
+  private counter: number[];
+
+  constructor(charset: string) {
     if (charset.length === 0) {
       throw new TypeError('charset is empty');
     }
@@ -8,13 +12,13 @@ export default class HintKeyProducer {
     this.counter = [];
   }
 
-  produce() {
+  produce(): string {
     this.increment();
 
     return this.counter.map(x => this.charset[x]).join('');
   }
 
-  increment() {
+  private increment(): void {
     let max = this.charset.length - 1;
     if (this.counter.every(x => x === max)) {
       this.counter = new Array(this.counter.length + 1).fill(0);

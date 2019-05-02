@@ -3,7 +3,7 @@ import * as scrolls from 'content/scrolls';
 import * as consoleFrames from 'content/console-frames';
 import * as properties from 'shared/settings/properties';
 
-const cancelKey = (key) => {
+const cancelKey = (key): boolean => {
   return key.key === 'Esc' || key.key === '[' && key.ctrlKey;
 };
 

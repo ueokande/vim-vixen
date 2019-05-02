@@ -1,4 +1,4 @@
-import operations from '../../shared/operations';
+import * as operations from '../../shared/operations';
 import FindUseCase from '../usecases/FindUseCase';
 import ConsoleUseCase from '../usecases/ConsoleUseCase';
 import TabUseCase from '../usecases/TabUseCase';
@@ -25,7 +25,7 @@ export default class OperationController {
   }
 
   // eslint-disable-next-line complexity, max-lines-per-function
-  exec(operation: any): Promise<any> {
+  exec(operation: operations.Operation): Promise<any> {
     switch (operation.type) {
     case operations.TAB_CLOSE:
       return this.tabUseCase.close(false);

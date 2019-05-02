@@ -1,4 +1,4 @@
-import actions from 'content/actions';
+import * as actions from 'content/actions';
 import findReducer from 'content/reducers/find';
 
 describe("find reducer", () => {

@@ -1,4 +1,4 @@
-import operations from '../operations';
+import * as operations from '../operations';
 import * as properties from './properties';
 
 const VALID_TOP_KEYS = ['keymaps', 'search', 'blacklist', 'properties'];

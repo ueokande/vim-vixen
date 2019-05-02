@@ -7,7 +7,7 @@ export default class VersionController {
     this.versionUseCase = new VersionUseCase();
   }
 
-  notify(): void {
+  notify(): Promise<void> {
     return this.versionUseCase.notify();
   }
 }

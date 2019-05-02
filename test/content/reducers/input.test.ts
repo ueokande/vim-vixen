@@ -1,4 +1,4 @@
-import actions from 'content/actions';
+import * as actions from 'content/actions';
 import inputReducer from 'content/reducers/input';
 
 describe("input reducer", () => {

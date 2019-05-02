@@ -1,11 +1,11 @@
 const NOTIFICATION_ID = 'vimvixen-update';
 
 export default class NotifyPresenter {
-  notify(
+  async notify(
     title: string,
     message: string,
     onclick: () => void,
-  ): Promise<string> {
+  ): Promise<void> {
     const listener = (id: string) => {
       if (id !== NOTIFICATION_ID) {
         return;
@@ -17,7 +17,7 @@ export default class NotifyPresenter {
     };
     browser.notifications.onClicked.addListener(listener);
 
-    return browser.notifications.create(NOTIFICATION_ID, {
+    await browser.notifications.create(NOTIFICATION_ID, {
       'type': 'basic',
       'iconUrl': browser.extension.getURL('resources/icon_48x48.png'),
       title,

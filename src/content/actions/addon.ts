@@ -1,11 +1,11 @@
-import messages from 'shared/messages';
-import actions from 'content/actions';
+import * as messages from '../../shared/messages';
+import * as actions from './index';
 
-const enable = () => setEnabled(true);
+const enable = (): Promise<actions.AddonAction> => setEnabled(true);
 
-const disable = () => setEnabled(false);
+const disable = (): Promise<actions.AddonAction> => setEnabled(false);
 
-const setEnabled = async(enabled) => {
+const setEnabled = async(enabled: boolean): Promise<actions.AddonAction> => {
   await browser.runtime.sendMessage({
     type: messages.ADDON_ENABLED_RESPONSE,
     enabled,

@@ -1,4 +1,4 @@
-import actions from 'content/actions';
+import * as actions from 'content/actions';
 import settingReducer from 'content/reducers/setting';
 
 describe("content setting reducer", () => {

@@ -1,4 +1,4 @@
-import actions from 'content/actions';
+import * as actions from 'content/actions';
 import addonReducer from 'content/reducers/addon';
 
 describe("addon reducer", () => {

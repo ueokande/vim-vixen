@@ -12,7 +12,7 @@ export default class VersionUseCase {
     this.notifyPresenter = new NotifyPresenter();
   }
 
-  notify(): Promise<string> {
+  notify(): Promise<void> {
     let title = `Vim Vixen ${manifest.version} has been installed`;
     let message = 'Click here to see release notes';
     let url = this.releaseNoteUrl(manifest.version);

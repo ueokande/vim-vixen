@@ -1,4 +1,4 @@
-import messages from '../../shared/messages';
+import * as messages from '../../shared/messages';
 import CompletionGroup from '../domains/CompletionGroup';
 import CommandController from '../controllers/CommandController';
 import SettingController from '../controllers/SettingController';
@@ -68,7 +68,9 @@ export default class ContentMessageListener {
     browser.runtime.onConnect.addListener(this.onConnected.bind(this));
   }
 
-  onMessage(message: any, senderTab: browser.tabs.Tab): Promise<any> | any {
+  onMessage(
+    message: messages.Message, senderTab: browser.tabs.Tab,
+  ): Promise<any> | any {
     switch (message.type) {
     case messages.CONSOLE_QUERY_COMPLETIONS:
       return this.onConsoleQueryCompletions(message.text);

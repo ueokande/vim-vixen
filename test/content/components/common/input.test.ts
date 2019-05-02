@@ -21,12 +21,14 @@ describe('InputComponent', () => {
         ++b;
       }
     });
-    component.onKeyDown({ key: 'a' });
-    component.onKeyDown({ key: 'b' });
-    component.onKeyPress({ key: 'a' });
-    component.onKeyUp({ key: 'a' });
-    component.onKeyPress({ key: 'b' });
-    component.onKeyUp({ key: 'b' });
+
+    let elem = document.body;
+    component.onKeyDown({ key: 'a', target: elem });
+    component.onKeyDown({ key: 'b', target: elem });
+    component.onKeyPress({ key: 'a', target: elem });
+    component.onKeyUp({ key: 'a', target: elem });
+    component.onKeyPress({ key: 'b', target: elem });
+    component.onKeyUp({ key: 'b', target: elem });
 
     expect(a).is.equals(1);
     expect(b).is.equals(1);

@@ -1,13 +1,23 @@
-import actions from 'content/actions';
+import * as actions from '../actions';
 
-const defaultState = {
+export interface State {
+  enabled: boolean;
+  newTab: boolean;
+  background: boolean;
+  keys: string,
+}
+
+const defaultState: State = {
   enabled: false,
   newTab: false,
   background: false,
   keys: '',
 };
 
-export default function reducer(state = defaultState, action = {}) {
+export default function reducer(
+  state: State = defaultState,
+  action: actions.FollowAction,
+): State {
   switch (action.type) {
   case actions.FOLLOW_CONTROLLER_ENABLE:
     return { ...state,

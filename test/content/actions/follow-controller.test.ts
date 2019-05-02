@@ -1,4 +1,4 @@
-import actions from 'content/actions';
+import * as actions from 'content/actions';
 import * as followControllerActions from 'content/actions/follow-controller';
 
 describe('follow-controller actions', () => {

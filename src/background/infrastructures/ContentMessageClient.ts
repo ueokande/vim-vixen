@@ -1,4 +1,4 @@
-import messages from '../../shared/messages';
+import * as messages from '../../shared/messages';
 
 export default class ContentMessageClient {
   async broadcastSettingsChanged(): Promise<void> {

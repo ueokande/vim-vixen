@@ -1,11 +1,19 @@
-import actions from 'content/actions';
+import * as actions from '../actions';
 
-const defaultState = {
+export interface State {
+  keyword: string | null;
+  found: boolean;
+}
+
+const defaultState: State = {
   keyword: null,
   found: false,
 };
 
-export default function reducer(state = defaultState, action = {}) {
+export default function reducer(
+  state: State = defaultState,
+  action: actions.FindAction,
+): State {
   switch (action.type) {
   case actions.FIND_SET_KEYWORD:
     return { ...state,

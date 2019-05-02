@@ -1,4 +1,4 @@
-import actions from 'content/actions';
+import * as actions from 'content/actions';
 import reducer from 'content/reducers/mark';
 
 describe("mark reducer", () => {

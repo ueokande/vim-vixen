@@ -1,19 +1,19 @@
-import * as doms from 'shared/utils/dom';
+import * as doms from '../shared/utils/dom';
 
 const SCROLL_DELTA_X = 64;
 const SCROLL_DELTA_Y = 64;
 
 // dirty way to store scrolling state on globally
 let scrolling = false;
-let lastTimeoutId = null;
+let lastTimeoutId: number | null = null;
 
-const isScrollableStyle = (element) => {
+const isScrollableStyle = (element: Element): boolean => {
   let { overflowX, overflowY } = window.getComputedStyle(element);
   return !(overflowX !== 'scroll' && overflowX !== 'auto' &&
     overflowY !== 'scroll' && overflowY !== 'auto');
 };
 
-const isOverflowed = (element) => {
+const isOverflowed = (element: Element): boolean => {
   return element.scrollWidth > element.clientWidth ||
     element.scrollHeight > element.clientHeight;
 };
@@ -22,7 +22,7 @@ const isOverflowed = (element) => {
 // this method is called by each scrolling, and the returned value of this
 // method is not cached.  That does not cause performance issue because in the
 // most pages, the window is root element i,e, documentElement.
-const findScrollable = (element) => {
+const findScrollable = (element: Element): Element | null => {
   if (isScrollableStyle(element) && isOverflowed(element)) {
     return element;
   }
@@ -56,12 +56,16 @@ const resetScrolling = () => {
 };
 
 class Scroller {
-  constructor(element, smooth) {
+  private element: Element;
+
+  private smooth: boolean;
+
+  constructor(element: Element, smooth: boolean) {
     this.element = element;
     this.smooth = smooth;
   }
 
-  scrollTo(x, y) {
+  scrollTo(x: number, y: number): void {
     if (!this.smooth) {
       this.element.scrollTo(x, y);
       return;
@@ -74,13 +78,13 @@ class Scroller {
     this.prepareReset();
   }
 
-  scrollBy(x, y) {
+  scrollBy(x: number, y: number): void {
     let left = this.element.scrollLeft + x;
     let top = this.element.scrollTop + y;
     this.scrollTo(left, top);
   }
 
-  prepareReset() {
+  prepareReset(): void {
     scrolling = true;
     if (lastTimeoutId) {
       clearTimeout(lastTimeoutId);
@@ -95,7 +99,7 @@ const getScroll = () => {
   return { x: target.scrollLeft, y: target.scrollTop };
 };
 
-const scrollVertically = (count, smooth) => {
+const scrollVertically = (count: number, smooth: boolean): void => {
   let target = scrollTarget();
   let delta = SCROLL_DELTA_Y * count;
   if (scrolling) {
@@ -104,7 +108,7 @@ const scrollVertically = (count, smooth) => {
   new Scroller(target, smooth).scrollBy(0, delta);
 };
 
-const scrollHorizonally = (count, smooth) => {
+const scrollHorizonally = (count: number, smooth: boolean): void => {
   let target = scrollTarget();
   let delta = SCROLL_DELTA_X * count;
   if (scrolling) {
@@ -113,7 +117,7 @@ const scrollHorizonally = (count, smooth) => {
   new Scroller(target, smooth).scrollBy(delta, 0);
 };
 
-const scrollPages = (count, smooth) => {
+const scrollPages = (count: number, smooth: boolean): void => {
   let target = scrollTarget();
   let height = target.clientHeight;
   let delta = height * count;
@@ -123,33 +127,33 @@ const scrollPages = (count, smooth) => {
   new Scroller(target, smooth).scrollBy(0, delta);
 };
 
-const scrollTo = (x, y, smooth) => {
+const scrollTo = (x: number, y: number, smooth: boolean): void => {
   let target = scrollTarget();
   new Scroller(target, smooth).scrollTo(x, y);
 };
 
-const scrollToTop = (smooth) => {
+const scrollToTop = (smooth: boolean): void => {
   let target = scrollTarget();
   let x = target.scrollLeft;
   let y = 0;
   new Scroller(target, smooth).scrollTo(x, y);
 };
 
-const scrollToBottom = (smooth) => {
+const scrollToBottom = (smooth: boolean): void => {
   let target = scrollTarget();
   let x = target.scrollLeft;
   let y = target.scrollHeight;
   new Scroller(target, smooth).scrollTo(x, y);
 };
 
-const scrollToHome = (smooth) => {
+const scrollToHome = (smooth: boolean): void => {
   let target = scrollTarget();
   let x = 0;
   let y = target.scrollTop;
   new Scroller(target, smooth).scrollTo(x, y);
 };
 
-const scrollToEnd = (smooth) => {
+const scrollToEnd = (smooth: boolean): void => {
   let target = scrollTarget();
   let x = target.scrollWidth;
   let y = target.scrollTop;

@@ -1,16 +1,21 @@
-import operations from 'shared/operations';
-import messages from 'shared/messages';
-import * as scrolls from 'content/scrolls';
-import * as navigates from 'content/navigates';
-import * as focuses from 'content/focuses';
-import * as urls from 'content/urls';
-import * as consoleFrames from 'content/console-frames';
+import * as operations from '../../shared/operations';
+import * as actions from './index';
+import * as messages from '../../shared/messages';
+import * as scrolls from '../scrolls';
+import * as navigates from '../navigates';
+import * as focuses from '../focuses';
+import * as urls from '../urls';
+import * as consoleFrames from '../console-frames';
 import * as addonActions from './addon';
 import * as markActions from './mark';
-import * as properties from 'shared/settings/properties';
+import * as properties from '../../shared/settings/properties';
 
 // eslint-disable-next-line complexity, max-lines-per-function
-const exec = (operation, settings, addonEnabled) => {
+const exec = (
+  operation: operations.Operation,
+  settings: any,
+  addonEnabled: boolean,
+): Promise<actions.Action> | actions.Action => {
   let smoothscroll = settings.properties.smoothscroll ||
     properties.defaults.smoothscroll;
   switch (operation.type) {
@@ -98,7 +103,7 @@ const exec = (operation, settings, addonEnabled) => {
       operation,
     });
   }
-  return { type: '' };
+  return { type: actions.NOOP };
 };
 
 export { exec };

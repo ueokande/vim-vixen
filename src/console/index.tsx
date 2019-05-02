@@ -1,4 +1,4 @@
-import messages from '../shared/messages';
+import * as messages from '../shared/messages';
 import reducers from './reducers';
 import { createStore, applyMiddleware } from 'redux';
 import promise from 'redux-promise';
@@ -23,15 +23,16 @@ window.addEventListener('load', () => {
 });
 
 const onMessage = (message: any): any => {
-  switch (message.type) {
+  let msg = messages.valueOf(message);
+  switch (msg.type) {
   case messages.CONSOLE_SHOW_COMMAND:
-    return store.dispatch(consoleActions.showCommand(message.command));
+    return store.dispatch(consoleActions.showCommand(msg.command));
   case messages.CONSOLE_SHOW_FIND:
     return store.dispatch(consoleActions.showFind());
   case messages.CONSOLE_SHOW_ERROR:
-    return store.dispatch(consoleActions.showError(message.text));
+    return store.dispatch(consoleActions.showError(msg.text));
   case messages.CONSOLE_SHOW_INFO:
-    return store.dispatch(consoleActions.showInfo(message.text));
+    return store.dispatch(consoleActions.showInfo(msg.text));
   case messages.CONSOLE_HIDE:
     return store.dispatch(consoleActions.hide());
   }

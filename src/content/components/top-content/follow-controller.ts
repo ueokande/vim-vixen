@@ -1,30 +1,46 @@
-import * as followControllerActions from 'content/actions/follow-controller';
-import messages from 'shared/messages';
-import HintKeyProducer from 'content/hint-key-producer';
-import * as properties from 'shared/settings/properties';
+import * as followControllerActions from '../../actions/follow-controller';
+import * as messages from '../../../shared/messages';
+import MessageListener, { WebMessageSender } from '../../MessageListener';
+import HintKeyProducer from '../../hint-key-producer';
+import * as properties from '../../../shared/settings/properties';
 
-const broadcastMessage = (win, message) => {
+const broadcastMessage = (win: Window, message: messages.Message): void => {
   let json = JSON.stringify(message);
-  let frames = [window.self].concat(Array.from(window.frames));
+  let frames = [win.self].concat(Array.from(win.frames as any));
   frames.forEach(frame => frame.postMessage(json, '*'));
 };
 
 export default class FollowController {
-  constructor(win, store) {
+  private win: Window;
+
+  private store: any;
+
+  private state: {
+    enabled?: boolean;
+    newTab?: boolean;
+    background?: boolean;
+    keys?: string,
+  };
+
+  private keys: string[];
+
+  private producer: HintKeyProducer | null;
+
+  constructor(win: Window, store: any) {
     this.win = win;
     this.store = store;
     this.state = {};
     this.keys = [];
     this.producer = null;
 
-    messages.onMessage(this.onMessage.bind(this));
+    new MessageListener().onWebMessage(this.onMessage.bind(this));
 
     store.subscribe(() => {
       this.update();
     });
   }
 
-  onMessage(message, sender) {
+  onMessage(message: messages.Message, sender: WebMessageSender) {
     switch (message.type) {
     case messages.FOLLOW_START:
       return this.store.dispatch(
@@ -36,7 +52,7 @@ export default class FollowController {
     }
   }
 
-  update() {
+  update(): void {
     let prevState = this.state;
     this.state = this.store.getState().followController;
 
@@ -49,8 +65,10 @@ export default class FollowController {
     }
   }
 
-  updateHints() {
-    let shown = this.keys.filter(key => key.startsWith(this.state.keys));
+  updateHints(): void {
+    let shown = this.keys.filter((key) => {
+      return key.startsWith(this.state.keys as string);
+    });
     if (shown.length === 1) {
       this.activate();
       this.store.dispatch(followControllerActions.disable());
@@ -58,18 +76,18 @@ export default class FollowController {
 
     broadcastMessage(this.win, {
       type: messages.FOLLOW_SHOW_HINTS,
-      keys: this.state.keys,
+      keys: this.state.keys as string,
     });
   }
 
-  activate() {
+  activate(): void {
     broadcastMessage(this.win, {
       type: messages.FOLLOW_ACTIVATE,
-      keys: this.state.keys,
+      keys: this.state.keys as string,
     });
   }
 
-  keyPress(key, ctrlKey) {
+  keyPress(key: string, ctrlKey: boolean): boolean {
     if (key === '[' && ctrlKey) {
       this.store.dispatch(followControllerActions.disable());
       return true;
@@ -107,25 +125,28 @@ export default class FollowController {
       viewSize: { width: viewWidth, height: viewHeight },
       framePosition: { x: 0, y: 0 },
     }), '*');
-    frameElements.forEach((element) => {
-      let { left: frameX, top: frameY } = element.getBoundingClientRect();
+    frameElements.forEach((ele) => {
+      let { left: frameX, top: frameY } = ele.getBoundingClientRect();
       let message = JSON.stringify({
         type: messages.FOLLOW_REQUEST_COUNT_TARGETS,
         viewSize: { width: viewWidth, height: viewHeight },
         framePosition: { x: frameX, y: frameY },
       });
-      element.contentWindow.postMessage(message, '*');
+      if (ele instanceof HTMLFrameElement && ele.contentWindow ||
+        ele instanceof HTMLIFrameElement && ele.contentWindow) {
+        ele.contentWindow.postMessage(message, '*');
+      }
     });
   }
 
-  create(count, sender) {
+  create(count: number, sender: WebMessageSender) {
     let produced = [];
     for (let i = 0; i < count; ++i) {
-      produced.push(this.producer.produce());
+      produced.push((this.producer as HintKeyProducer).produce());
     }
     this.keys = this.keys.concat(produced);
 
-    sender.postMessage(JSON.stringify({
+    (sender as Window).postMessage(JSON.stringify({
       type: messages.FOLLOW_CREATE_HINTS,
       keysArray: produced,
       newTab: this.state.newTab,

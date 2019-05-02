@@ -1,12 +1,26 @@
-import actions from 'content/actions';
+import * as actions from '../actions';
 
-const defaultState = {
+interface Mark {
+  x: number;
+  y: number;
+}
+
+export interface State {
+  setMode: boolean;
+  jumpMode: boolean;
+  marks: { [key: string]: Mark };
+}
+
+const defaultState: State = {
   setMode: false,
   jumpMode: false,
   marks: {},
 };
 
-export default function reducer(state = defaultState, action = {}) {
+export default function reducer(
+  state: State = defaultState,
+  action: actions.MarkAction,
+): State {
   switch (action.type) {
   case actions.MARK_START_SET:
     return { ...state, setMode: true };

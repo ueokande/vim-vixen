@@ -1,4 +1,4 @@
-interface Key {
+export interface Key {
     key: string;
     shiftKey: boolean | undefined;
     ctrlKey: boolean | undefined;

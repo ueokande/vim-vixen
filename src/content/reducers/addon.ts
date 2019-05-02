@@ -1,10 +1,17 @@
-import actions from 'content/actions';
+import * as actions from '../actions';
 
-const defaultState = {
+export interface State {
+  enabled: boolean;
+}
+
+const defaultState: State = {
   enabled: true,
 };
 
-export default function reducer(state = defaultState, action = {}) {
+export default function reducer(
+  state: State = defaultState,
+  action: actions.AddonAction,
+): State {
   switch (action.type) {
   case actions.ADDON_SET_ENABLED:
     return { ...state,

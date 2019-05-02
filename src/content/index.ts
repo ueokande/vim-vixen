@@ -1,14 +1,9 @@
-import { createStore, applyMiddleware } from 'redux';
-import promise from 'redux-promise';
-import reducers from 'content/reducers';
 import TopContentComponent from './components/top-content';
 import FrameContentComponent from './components/frame-content';
 import consoleFrameStyle from './site-style';
+import { newStore } from './store';
 
-const store = createStore(
-  reducers,
-  applyMiddleware(promise),
-);
+const store = newStore();
 
 if (window.self === window.top) {
   new TopContentComponent(window, store); // eslint-disable-line no-new

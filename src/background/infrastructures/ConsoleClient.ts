@@ -1,4 +1,4 @@
-import messages from '../../shared/messages';
+import * as messages from '../../shared/messages';
 
 export default class ConsoleClient {
   showCommand(tabId: number, command: string): Promise<any> {

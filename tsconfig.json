@@ -2,11 +2,11 @@
   "compilerOptions": {
     "target": "es2017",
     "module": "commonjs",
+    "lib": ["es6", "dom", "es2017"],
     "allowJs": true,
     "checkJs": true,
+    "noEmit": true,
     "jsx": "react",
-    "declaration": true,
-    "declarationMap": true,
     "sourceMap": true,
     "outDir": "./build",
     "removeComments": true,
@@ -29,5 +29,8 @@
     "esModuleInterop": true,
 
     "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"]
-  }
+  },
+  "include": [
+    "src"
+  ]
 }

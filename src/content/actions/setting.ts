@@ -1,15 +1,15 @@
-import actions from 'content/actions';
-import * as keyUtils from 'shared/utils/keys';
-import operations from 'shared/operations';
-import messages from 'shared/messages';
+import * as actions from './index';
+import * as keyUtils from '../../shared/utils/keys';
+import * as operations from '../../shared/operations';
+import * as messages from '../../shared/messages';
 
 const reservedKeymaps = {
   '<Esc>': { type: operations.CANCEL },
   '<C-[>': { type: operations.CANCEL },
 };
 
-const set = (value) => {
-  let entries = [];
+const set = (value: any): actions.SettingAction => {
+  let entries: any[] = [];
   if (value.keymaps) {
     let keymaps = { ...value.keymaps, ...reservedKeymaps };
     entries = Object.entries(keymaps).map((entry) => {
@@ -27,7 +27,7 @@ const set = (value) => {
   };
 };
 
-const load = async() => {
+const load = async(): Promise<actions.SettingAction> => {
   let settings = await browser.runtime.sendMessage({
     type: messages.SETTINGS_QUERY,
   });

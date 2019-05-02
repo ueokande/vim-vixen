@@ -2,33 +2,37 @@ import InputComponent from './input';
 import FollowComponent from './follow';
 import MarkComponent from './mark';
 import KeymapperComponent from './keymapper';
-import * as settingActions from 'content/actions/setting';
-import messages from 'shared/messages';
+import * as settingActions from '../../actions/setting';
+import * as messages from '../../../shared/messages';
+import MessageListener from '../../MessageListener';
 import * as addonActions from '../../actions/addon';
-import * as blacklists from 'shared/blacklists';
+import * as blacklists from '../../../shared/blacklists';
+import * as keys from '../../../shared/utils/keys';
 
 export default class Common {
-  constructor(win, store) {
-    const input = new InputComponent(win.document.body, store);
-    const follow = new FollowComponent(win, store);
+  private win: Window;
+
+  private store: any;
+
+  constructor(win: Window, store: any) {
+    const input = new InputComponent(win.document.body);
+    const follow = new FollowComponent(win);
     const mark = new MarkComponent(win.document.body, store);
     const keymapper = new KeymapperComponent(store);
 
-    input.onKey(key => follow.key(key));
-    input.onKey(key => mark.key(key));
-    input.onKey(key => keymapper.key(key));
+    input.onKey((key: keys.Key) => follow.key(key));
+    input.onKey((key: keys.Key) => mark.key(key));
+    input.onKey((key: keys.Key) => keymapper.key(key));
 
     this.win = win;
     this.store = store;
-    this.prevEnabled = undefined;
-    this.prevBlacklist = undefined;
 
     this.reloadSettings();
 
-    messages.onMessage(this.onMessage.bind(this));
+    new MessageListener().onBackgroundMessage(this.onMessage.bind(this));
   }
 
-  onMessage(message) {
+  onMessage(message: messages.Message) {
     let { enabled } = this.store.getState().addon;
     switch (message.type) {
     case messages.SETTINGS_CHANGED:
@@ -40,12 +44,13 @@ export default class Common {
 
   reloadSettings() {
     try {
-      this.store.dispatch(settingActions.load()).then(({ value: settings }) => {
-        let enabled = !blacklists.includes(
-          settings.blacklist, this.win.location.href
-        );
-        this.store.dispatch(addonActions.setEnabled(enabled));
-      });
+      this.store.dispatch(settingActions.load())
+        .then(({ value: settings }: any) => {
+          let enabled = !blacklists.includes(
+            settings.blacklist, this.win.location.href
+          );
+          this.store.dispatch(addonActions.setEnabled(enabled));
+        });
     } catch (e) {
       // Sometime sendMessage fails when background script is not ready.
       console.warn(e);

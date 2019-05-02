@@ -5,28 +5,41 @@
 // NOTE: window.find is not standard API
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/find
 
-import messages from 'shared/messages';
-import actions from 'content/actions';
+import * as messages from '../../shared/messages';
+import * as actions from './index';
 import * as consoleFrames from '../console-frames';
 
-const find = (string, backwards) => {
+const find = (str: string, backwards: boolean): boolean => {
   let caseSensitive = false;
   let wrapScan = true;
 
 
   // NOTE: aWholeWord dows not implemented, and aSearchInFrames does not work
   // because of same origin policy
-  let found = window.find(string, caseSensitive, backwards, wrapScan);
+
+  // eslint-disable-next-line no-extra-parens
+  let found = (<any>window).find(str, caseSensitive, backwards, wrapScan);
   if (found) {
     return found;
   }
-  window.getSelection().removeAllRanges();
-  return window.find(string, caseSensitive, backwards, wrapScan);
+  let sel = window.getSelection();
+  if (sel) {
+    sel.removeAllRanges();
+  }
+
+  // eslint-disable-next-line no-extra-parens
+  return (<any>window).find(str, caseSensitive, backwards, wrapScan);
 };
 
-const findNext = async(currentKeyword, reset, backwards) => {
+// eslint-disable-next-line max-statements
+const findNext = async(
+  currentKeyword: string, reset: boolean, backwards: boolean,
+): Promise<actions.FindAction> => {
   if (reset) {
-    window.getSelection().removeAllRanges();
+    let sel = window.getSelection();
+    if (sel) {
+      sel.removeAllRanges();
+    }
   }
 
   let keyword = currentKeyword;
@@ -41,7 +54,8 @@ const findNext = async(currentKeyword, reset, backwards) => {
     });
   }
   if (!keyword) {
-    return consoleFrames.postError('No previous search keywords');
+    await consoleFrames.postError('No previous search keywords');
+    return { type: actions.NOOP };
   }
   let found = find(keyword, backwards);
   if (found) {
@@ -57,11 +71,15 @@ const findNext = async(currentKeyword, reset, backwards) => {
   };
 };
 
-const next = (currentKeyword, reset) => {
+const next = (
+  currentKeyword: string, reset: boolean,
+): Promise<actions.FindAction> => {
   return findNext(currentKeyword, reset, false);
 };
 
-const prev = (currentKeyword, reset) => {
+const prev = (
+  currentKeyword: string, reset: boolean,
+): Promise<actions.FindAction> => {
   return findNext(currentKeyword, reset, true);
 };
 

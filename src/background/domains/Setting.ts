@@ -1,22 +1,30 @@
 import DefaultSettings from '../../shared/settings/default';
 import * as settingsValues from '../../shared/settings/values';
 
+type SettingValue = {
+    source: string,
+    json: string,
+    form: any
+}
+
 export default class Setting {
-  constructor({ source, json, form }) {
+  private obj: SettingValue;
+
+  constructor({ source, json, form }: SettingValue) {
     this.obj = {
       source, json, form
     };
   }
 
-  get source() {
+  get source(): string {
     return this.obj.source;
   }
 
-  get json() {
+  get json(): string {
     return this.obj.json;
   }
 
-  get form() {
+  get form(): any {
     return this.obj.form;
   }
 
@@ -33,11 +41,11 @@ export default class Setting {
     return { ...settingsValues.valueFromJson(DefaultSettings.json), ...value };
   }
 
-  serialize() {
+  serialize(): SettingValue {
     return this.obj;
   }
 
-  static deserialize(obj) {
+  static deserialize(obj: SettingValue): Setting {
     return new Setting({ source: obj.source, json: obj.json, form: obj.form });
   }
 

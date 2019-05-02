@@ -1,6 +1,6 @@
-import messages from 'shared/messages';
+import * as messages from '../shared/messages';
 
-const initialize = (doc) => {
+const initialize = (doc: Document): HTMLIFrameElement => {
   let iframe = doc.createElement('iframe');
   iframe.src = browser.runtime.getURL('build/console.html');
   iframe.id = 'vimvixen-console-frame';
@@ -10,13 +10,13 @@ const initialize = (doc) => {
   return iframe;
 };
 
-const blur = (doc) => {
-  let iframe = doc.getElementById('vimvixen-console-frame');
-  iframe.blur();
+const blur = (doc: Document) => {
+  let ele = doc.getElementById('vimvixen-console-frame') as HTMLIFrameElement;
+  ele.blur();
 };
 
-const postError = (text) => {
-  browser.runtime.sendMessage({
+const postError = (text: string): Promise<any> => {
+  return browser.runtime.sendMessage({
     type: messages.CONSOLE_FRAME_MESSAGE,
     message: {
       type: messages.CONSOLE_SHOW_ERROR,
@@ -25,8 +25,8 @@ const postError = (text) => {
   });
 };
 
-const postInfo = (text) => {
-  browser.runtime.sendMessage({
+const postInfo = (text: string): Promise<any> => {
+  return browser.runtime.sendMessage({
     type: messages.CONSOLE_FRAME_MESSAGE,
     message: {
       type: messages.CONSOLE_SHOW_INFO,

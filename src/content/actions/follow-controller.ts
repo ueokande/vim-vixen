@@ -1,6 +1,8 @@
-import actions from 'content/actions';
+import * as actions from './index';
 
-const enable = (newTab, background) => {
+const enable = (
+  newTab: boolean, background: boolean,
+): actions.FollowAction => {
   return {
     type: actions.FOLLOW_CONTROLLER_ENABLE,
     newTab,
@@ -8,20 +10,20 @@ const enable = (newTab, background) => {
   };
 };
 
-const disable = () => {
+const disable = (): actions.FollowAction => {
   return {
     type: actions.FOLLOW_CONTROLLER_DISABLE,
   };
 };
 
-const keyPress = (key) => {
+const keyPress = (key: string): actions.FollowAction => {
   return {
     type: actions.FOLLOW_CONTROLLER_KEY_PRESS,
     key: key
   };
 };
 
-const backspace = () => {
+const backspace = (): actions.FollowAction => {
   return {
     type: actions.FOLLOW_CONTROLLER_BACKSPACE,
   };

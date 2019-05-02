@@ -1,10 +1,17 @@
-import actions from 'content/actions';
+import * as actions from '../actions';
 
-const defaultState = {
+export interface State {
+  keys: string[];
+}
+
+const defaultState: State = {
   keys: []
 };
 
-export default function reducer(state = defaultState, action = {}) {
+export default function reducer(
+  state: State = defaultState,
+  action: actions.InputAction,
+): State {
   switch (action.type) {
   case actions.INPUT_KEY_PRESS:
     return { ...state,

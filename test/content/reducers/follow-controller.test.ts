@@ -1,4 +1,4 @@
-import actions from 'content/actions';
+import * as actions from 'content/actions';
 import followControllerReducer from 'content/reducers/follow-controller';
 
 describe('follow-controller reducer', () => {

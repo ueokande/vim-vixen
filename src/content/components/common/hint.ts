@@ -1,6 +1,11 @@
-import * as dom from 'shared/utils/dom';
+import * as dom from '../../../shared/utils/dom';
 
-const hintPosition = (element) => {
+interface Point {
+  x: number;
+  y: number;
+}
+
+const hintPosition = (element: Element): Point => {
   let { left, top, right, bottom } = dom.viewportRect(element);
 
   if (element.tagName !== 'AREA') {
@@ -14,16 +19,20 @@ const hintPosition = (element) => {
 };
 
 export default class Hint {
-  constructor(target, tag) {
-    if (!(document.body instanceof HTMLElement)) {
-      throw new TypeError('target is not an HTMLElement');
+  private target: HTMLElement;
+
+  private element: HTMLElement;
+
+  constructor(target: HTMLElement, tag: string) {
+    let doc = target.ownerDocument;
+    if (doc === null) {
+      throw new TypeError('ownerDocument is null');
     }
 
-    this.target = target;
-
-    let doc = target.ownerDocument;
     let { x, y } = hintPosition(target);
     let { scrollX, scrollY } = window;
+
+    this.target = target;
 
     this.element = doc.createElement('span');
     this.element.className = 'vimvixen-hint';
@@ -35,15 +44,19 @@ export default class Hint {
     doc.body.append(this.element);
   }
 
-  show() {
+  show(): void {
     this.element.style.display = 'inline';
   }
 
-  hide() {
+  hide(): void {
     this.element.style.display = 'none';
   }
 
-  remove() {
+  remove(): void {
     this.element.remove();
+  }
+
+  getTarget(): HTMLElement {
+    return this.target;
   }
 }

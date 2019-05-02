@@ -1,13 +1,13 @@
-import actions from 'content/actions';
+import * as actions from './index';
 
-const keyPress = (key) => {
+const keyPress = (key: string): actions.InputAction => {
   return {
     type: actions.INPUT_KEY_PRESS,
     key,
   };
 };
 
-const clearKeys = () => {
+const clearKeys = (): actions.InputAction => {
   return {
     type: actions.INPUT_CLEAR_KEYS
   };

@@ -1,7 +1,7 @@
-import * as inputActions from 'content/actions/input';
-import * as operationActions from 'content/actions/operation';
-import operations from 'shared/operations';
-import * as keyUtils from 'shared/utils/keys';
+import * as inputActions from '../../actions/input';
+import * as operationActions from '../../actions/operation';
+import * as operations from '../../../shared/operations';
+import * as keyUtils from '../../../shared/utils/keys';
 
 const mapStartsWith = (mapping, keys) => {
   if (mapping.length < keys.length) {
