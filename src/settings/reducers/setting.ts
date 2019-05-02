@@ -1,13 +1,23 @@
-import actions from 'settings/actions';
+import * as actions from '../actions';
 
-const defaultState = {
+interface State {
+  source: string;
+  json: string;
+  form: any;
+  error: string;
+}
+
+const defaultState: State = {
   source: '',
   json: '',
   form: null,
   error: '',
 };
 
-export default function reducer(state = defaultState, action = {}) {
+export default function reducer(
+  state = defaultState,
+  action: actions.SettingAction,
+) {
   switch (action.type) {
   case actions.SETTING_SET_SETTINGS:
     return { ...state,

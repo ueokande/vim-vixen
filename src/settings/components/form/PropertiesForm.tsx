@@ -1,8 +1,20 @@
 import './PropertiesForm.scss';
 import React from 'react';
-import PropTypes from 'prop-types';
 
-class PropertiesForm extends React.Component {
+interface Props {
+  types: {[key: string]: string};
+  value: {[key: string]: any};
+  onChange: (value: any) => void;
+  onBlur: () => void;
+}
+
+class PropertiesForm extends React.Component<Props> {
+  public static defaultProps: Props = {
+    types: {},
+    value: {},
+    onChange: () => {},
+    onBlur: () => {},
+  };
 
   render() {
     let types = this.props.types;
@@ -12,13 +24,15 @@ class PropertiesForm extends React.Component {
       {
         Object.keys(types).map((name) => {
           let type = types[name];
-          let inputType = null;
+          let inputType = '';
           if (type === 'string') {
             inputType = 'text';
           } else if (type === 'number') {
             inputType = 'number';
           } else if (type === 'boolean') {
             inputType = 'checkbox';
+          } else {
+            return null;
           }
           return <div key={name} className='form-properties-form-row'>
             <label>
@@ -37,7 +51,7 @@ class PropertiesForm extends React.Component {
     </div>;
   }
 
-  bindValue(e) {
+  bindValue(e: React.ChangeEvent<HTMLInputElement>) {
     let name = e.target.name;
     let next = { ...this.props.value };
     if (e.target.type.toLowerCase() === 'checkbox') {
@@ -51,15 +65,5 @@ class PropertiesForm extends React.Component {
     this.props.onChange(next);
   }
 }
-
-PropertiesForm.propTypes = {
-  value: PropTypes.objectOf(PropTypes.any),
-  onChange: PropTypes.func,
-};
-
-PropertiesForm.defaultProps = {
-  value: {},
-  onChange: () => {},
-};
 
 export default PropertiesForm;

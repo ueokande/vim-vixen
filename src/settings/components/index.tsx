@@ -6,19 +6,29 @@ import SearchForm from './form/SearchForm';
 import KeymapsForm from './form/KeymapsForm';
 import BlacklistForm from './form/BlacklistForm';
 import PropertiesForm from './form/PropertiesForm';
-import * as properties from 'shared/settings/properties';
-import * as settingActions from 'settings/actions/setting';
+import * as properties from '../../shared/settings/properties';
+import * as settingActions from '../../settings/actions/setting';
 
 const DO_YOU_WANT_TO_CONTINUE =
   'Some settings in JSON can be lost when migrating.  ' +
   'Do you want to continue?';
 
-class SettingsComponent extends React.Component {
+interface Props {
+  source: string;
+  json: string;
+  form: any;
+  error: string;
+
+  // FIXME
+  store: any;
+}
+
+class SettingsComponent extends React.Component<Props> {
   componentDidMount() {
     this.props.dispatch(settingActions.load());
   }
 
-  renderFormFields(form) {
+  renderFormFields(form: any) {
     return <div>
       <fieldset>
         <legend>Keybindings</legend>
@@ -56,15 +66,15 @@ class SettingsComponent extends React.Component {
     </div>;
   }
 
-  renderJsonFields(json, error) {
+  renderJsonFields(json: string, error: string) {
     return <div>
       <Input
         type='textarea'
         name='json'
         label='Plain JSON'
-        spellCheck='false'
+        spellCheck={false}
         error={error}
-        onChange={this.bindJson.bind(this)}
+        onValueChange={this.bindJson.bind(this)}
         onBlur={this.save.bind(this)}
         value={json}
       />
@@ -90,7 +100,7 @@ class SettingsComponent extends React.Component {
             label='Use form'
             checked={this.props.source === 'form'}
             value='form'
-            onChange={this.bindSource.bind(this)}
+            onValueChange={this.bindSource.bind(this)}
             disabled={disabled} />
 
           <Input
@@ -99,7 +109,7 @@ class SettingsComponent extends React.Component {
             label='Use plain JSON'
             checked={this.props.source === 'json'}
             value='json'
-            onChange={this.bindSource.bind(this)}
+            onValueChange={this.bindSource.bind(this)}
             disabled={disabled} />
           { fields }
         </form>
@@ -107,7 +117,7 @@ class SettingsComponent extends React.Component {
     );
   }
 
-  bindForm(name, value) {
+  bindForm(name: string, value: any) {
     let settings = {
       source: this.props.source,
       json: this.props.json,
@@ -117,22 +127,20 @@ class SettingsComponent extends React.Component {
     this.props.dispatch(settingActions.set(settings));
   }
 
-  bindJson(e) {
+  bindJson(_name: string, value: string) {
     let settings = {
       source: this.props.source,
-      json: e.target.value,
+      json: value,
       form: this.props.form,
     };
     this.props.dispatch(settingActions.set(settings));
   }
 
-  bindSource(e) {
+  bindSource(_name: string, value: string) {
     let from = this.props.source;
-    let to = e.target.value;
-
-    if (from === 'form' && to === 'json') {
+    if (from === 'form' && value === 'json') {
       this.props.dispatch(settingActions.switchToJson(this.props.form));
-    } else if (from === 'json' && to === 'form') {
+    } else if (from === 'json' && value === 'form') {
       let b = window.confirm(DO_YOU_WANT_TO_CONTINUE);
       if (!b) {
         this.forceUpdate();
@@ -148,6 +156,6 @@ class SettingsComponent extends React.Component {
   }
 }
 
-const mapStateToProps = state => state;
+const mapStateToProps = (state: any) => state;
 
 export default connect(mapStateToProps)(SettingsComponent);

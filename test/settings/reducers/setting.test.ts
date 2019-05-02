@@ -1,4 +1,4 @@
-import actions from 'settings/actions';
+import * as actions from 'settings/actions';
 import settingReducer from 'settings/reducers/setting';
 
 describe("settings setting reducer", () => {

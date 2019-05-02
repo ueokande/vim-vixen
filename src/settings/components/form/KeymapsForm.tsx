@@ -1,10 +1,22 @@
 import './KeymapsForm.scss';
 import React from 'react';
-import PropTypes from 'prop-types';
 import Input from '../ui/Input';
 import keymaps from '../../keymaps';
 
-class KeymapsForm extends React.Component {
+type Value = {[key: string]: string};
+
+interface Props{
+  value: Value;
+  onChange: (e: Value) => void;
+  onBlur: () => void;
+}
+
+class KeymapsForm extends React.Component<Props> {
+  public static defaultProps: Props = {
+    value: {},
+    onChange: () => {},
+    onBlur: () => {},
+  }
 
   render() {
     return <div className='form-keymaps-form'>
@@ -19,7 +31,7 @@ class KeymapsForm extends React.Component {
                 return <Input
                   type='text' id={name} name={name} key={name}
                   label={label} value={value}
-                  onChange={this.bindValue.bind(this)}
+                  onValueChange={this.bindValue.bind(this)}
                   onBlur={this.props.onBlur}
                 />;
               })
@@ -30,22 +42,12 @@ class KeymapsForm extends React.Component {
     </div>;
   }
 
-  bindValue(e) {
+  bindValue(name: string, value: string) {
     let next = { ...this.props.value };
-    next[e.target.name] = e.target.value;
+    next[name] = value;
 
     this.props.onChange(next);
   }
 }
-
-KeymapsForm.propTypes = {
-  value: PropTypes.objectOf(PropTypes.string),
-  onChange: PropTypes.func,
-};
-
-KeymapsForm.defaultProps = {
-  value: {},
-  onChange: () => {},
-};
 
 export default KeymapsForm;

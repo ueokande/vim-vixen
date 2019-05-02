@@ -1,7 +1,10 @@
 import './DeleteButton.scss';
 import React from 'react';
 
-class DeleteButton extends React.Component {
+interface Props extends React.AllHTMLAttributes<HTMLInputElement> {
+}
+
+class DeleteButton extends React.Component<Props> {
   render() {
     return <input
       className='ui-delete-button' type='button' value='&#x2716;'

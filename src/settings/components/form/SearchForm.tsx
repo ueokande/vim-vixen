@@ -1,10 +1,25 @@
 import './SearchForm.scss';
 import React from 'react';
-import PropTypes from 'prop-types';
 import AddButton from '../ui/AddButton';
 import DeleteButton from '../ui/DeleteButton';
 
-class SearchForm extends React.Component {
+interface Value {
+  default: string;
+  engines: string[][];
+}
+
+interface Props {
+  value: Value;
+  onChange: (value: Value) => void;
+  onBlur: () => void;
+}
+
+class SearchForm extends React.Component<Props> {
+  public static defaultProps: Props = {
+    value: { default: '', engines: []},
+    onChange: () => {},
+    onBlur: () => {},
+  }
 
   render() {
     let value = this.props.value;
@@ -47,11 +62,11 @@ class SearchForm extends React.Component {
     </div>;
   }
 
-  bindValue(e) {
+  bindValue(e: any) {
     let value = this.props.value;
     let name = e.target.name;
-    let index = e.target.getAttribute('data-index');
-    let next = {
+    let index = Number(e.target.getAttribute('data-index'));
+    let next: Value = {
       default: value.default,
       engines: value.engines ? value.engines.slice() : [],
     };
@@ -75,18 +90,5 @@ class SearchForm extends React.Component {
     }
   }
 }
-
-SearchForm.propTypes = {
-  value: PropTypes.shape({
-    default: PropTypes.string,
-    engines: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
-  }),
-  onChange: PropTypes.func,
-};
-
-SearchForm.defaultProps = {
-  value: { default: '', engines: []},
-  onChange: () => {},
-};
 
 export default SearchForm;

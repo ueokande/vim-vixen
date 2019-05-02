@@ -1,34 +1,57 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './Input.scss';
 
-class Input extends React.Component {
+interface Props extends React.AllHTMLAttributes<HTMLElement> {
+  name: string;
+  type: string;
+  error?: string;
+  label: string;
+  value: string;
+  onValueChange?: (name: string, value: string) => void;
+  onBlur?: (e: React.FocusEvent<Element>) => void;
+}
 
-  renderText(props) {
+class Input extends React.Component<Props> {
+  renderText(props: Props) {
     let inputClassName = props.error ? 'input-error' : '';
+    let pp = { ...props };
+    delete pp.onValueChange;
     return <div className='settings-ui-input'>
       <label htmlFor={props.id}>{ props.label }</label>
-      <input type='text' className={inputClassName} {...props} />
+      <input
+        type='text' className={inputClassName}
+        onChange={this.bindOnChange.bind(this)}
+        { ...pp } />
     </div>;
   }
 
-  renderRadio(props) {
+  renderRadio(props: Props) {
     let inputClassName = props.error ? 'input-error' : '';
+    let pp = { ...props };
+    delete pp.onValueChange;
     return <div className='settings-ui-input'>
       <label>
-        <input type='radio' className={inputClassName} {...props} />
+        <input
+          type='radio' className={inputClassName}
+          onChange={this.bindOnChange.bind(this)}
+          { ...pp } />
         { props.label }
       </label>
     </div>;
   }
 
-  renderTextArea(props) {
+  renderTextArea(props: Props) {
     let inputClassName = props.error ? 'input-error' : '';
+    let pp = { ...props };
+    delete pp.onValueChange;
     return <div className='settings-ui-input'>
       <label
         htmlFor={props.id}
       >{ props.label }</label>
-      <textarea className={inputClassName} {...props} />
+      <textarea
+        className={inputClassName}
+        onChange={this.bindOnChange.bind(this)}
+        { ...pp } />
       <p className='settings-ui-input-error'>{ this.props.error }</p>
     </div>;
   }
@@ -48,13 +71,12 @@ class Input extends React.Component {
     }
     return null;
   }
-}
 
-Input.propTypes = {
-  type: PropTypes.string,
-  error: PropTypes.string,
-  label: PropTypes.string,
-  value: PropTypes.string,
-};
+  bindOnChange(e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) {
+    if (this.props.onValueChange) {
+      this.props.onValueChange(e.target.name, e.target.value);
+    }
+  }
+}
 
 export default Input;
