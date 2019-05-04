@@ -1,7 +1,8 @@
-import Setting from '../domains/Setting';
 // eslint-disable-next-line max-len
 import PersistentSettingRepository from '../repositories/PersistentSettingRepository';
 import SettingRepository from '../repositories/SettingRepository';
+import { DefaultSettingData } from '../../shared/SettingData';
+import Settings from '../../shared/Settings';
 
 export default class SettingUseCase {
   private persistentSettingRepository: PersistentSettingRepository;
@@ -13,20 +14,18 @@ export default class SettingUseCase {
     this.settingRepository = new SettingRepository();
   }
 
-  get(): Promise<any> {
+  get(): Promise<Settings> {
     return this.settingRepository.get();
   }
 
-  async reload(): Promise<any> {
-    let settings = await this.persistentSettingRepository.load();
-    if (!settings) {
-      settings = Setting.defaultSettings();
+  async reload(): Promise<Settings> {
+    let data = await this.persistentSettingRepository.load();
+    if (!data) {
+      data = DefaultSettingData;
     }
 
-    let value = settings.value();
-
+    let value = data.toSettings();
     this.settingRepository.update(value);
-
     return value;
   }
 }

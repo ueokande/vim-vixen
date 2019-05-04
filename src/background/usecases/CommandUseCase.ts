@@ -6,7 +6,6 @@ import SettingRepository from '../repositories/SettingRepository';
 import BookmarkRepository from '../repositories/BookmarkRepository';
 import ConsoleClient from '../infrastructures/ConsoleClient';
 import ContentMessageClient from '../infrastructures/ContentMessageClient';
-import * as properties from '../../shared/settings/properties';
 
 export default class CommandIndicator {
   private tabPresenter: TabPresenter;
@@ -115,16 +114,16 @@ export default class CommandIndicator {
 
   async addbookmark(title: string): Promise<any> {
     let tab = await this.tabPresenter.getCurrent();
-    let item = await this.bookmarkRepository.create(title, tab.url);
+    let item = await this.bookmarkRepository.create(title, tab.url as string);
     let message = 'Saved current page: ' + item.url;
-    return this.consoleClient.showInfo(tab.id, message);
+    return this.consoleClient.showInfo(tab.id as number, message);
   }
 
   async set(keywords: string): Promise<any> {
     if (keywords.length === 0) {
       return;
     }
-    let [name, value] = parsers.parseSetOption(keywords, properties.types);
+    let [name, value] = parsers.parseSetOption(keywords);
     await this.settingRepository.setProperty(name, value);
 
     return this.contentMessageClient.broadcastSettingsChanged();

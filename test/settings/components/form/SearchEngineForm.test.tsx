@@ -3,14 +3,15 @@ import ReactDOM from 'react-dom';
 import ReactTestRenderer from 'react-test-renderer';
 import ReactTestUtils from 'react-dom/test-utils';
 import SearchForm from 'settings/components/form/SearchForm'
+import { FormSearch } from 'shared/SettingData';
 
 describe("settings/form/SearchForm", () => {
   describe('render', () => {
     it('renders SearchForm', () => {
-      let root = ReactTestRenderer.create(<SearchForm value={{
+      let root = ReactTestRenderer.create(<SearchForm value={FormSearch.valueOf({
         default: 'google',
         engines: [['google', 'google.com'], ['yahoo', 'yahoo.com']],
-      }} />).root;
+      })} />).root;
 
       let names = root.findAllByProps({ name: 'name' });
       expect(names).to.have.lengthOf(2);
@@ -21,28 +22,6 @@ describe("settings/form/SearchForm", () => {
       expect(urls).to.have.lengthOf(2);
       expect(urls[0].props.value).to.equal('google.com');
       expect(urls[1].props.value).to.equal('yahoo.com');
-    });
-
-    it('renders blank value', () => {
-      let root = ReactTestRenderer.create(<SearchForm />).root;
-
-      let names = root.findAllByProps({ name: 'name' });
-      expect(names).to.be.empty;
-
-      let urls = root.findAllByProps({ name: 'url' });
-      expect(urls).to.be.empty;
-    });
-
-    it('renders blank engines', () => {
-      let root = ReactTestRenderer.create(
-        <SearchForm value={{ default: 'google' }} />,
-      ).root;
-
-      let names = root.findAllByProps({ name: 'name' });
-      expect(names).to.be.empty;
-
-      let urls = root.findAllByProps({ name: 'url' });
-      expect(urls).to.be.empty;
     });
   });
 
@@ -62,14 +41,15 @@ describe("settings/form/SearchForm", () => {
     it('invokes onChange event on edit', (done) => {
       ReactTestUtils.act(() => {
         ReactDOM.render(<SearchForm
-          value={{
+          value={FormSearch.valueOf({
             default: 'google',
               engines: [['google', 'google.com'], ['yahoo', 'yahoo.com']]
-          }}
+          })}
           onChange={value => {
-            expect(value.default).to.equal('louvre');
-            expect(value.engines).to.have.lengthOf(2)
-            expect(value.engines).to.have.deep.members(
+            let json = value.toJSON();
+            expect(json.default).to.equal('louvre');
+            expect(json.engines).to.have.lengthOf(2)
+            expect(json.engines).to.have.deep.members(
               [['louvre', 'google.com'], ['yahoo', 'yahoo.com']]
             );
             done();
@@ -87,14 +67,15 @@ describe("settings/form/SearchForm", () => {
 
     it('invokes onChange event on delete', (done) => {
       ReactTestUtils.act(() => {
-        ReactDOM.render(<SearchForm value={{
+        ReactDOM.render(<SearchForm value={FormSearch.valueOf({
             default: 'yahoo',
             engines: [['louvre', 'google.com'], ['yahoo', 'yahoo.com']]
-          }}
+          })}
           onChange={value => {
-            expect(value.default).to.equal('yahoo');
-            expect(value.engines).to.have.lengthOf(1)
-            expect(value.engines).to.have.deep.members(
+            let json = value.toJSON();
+            expect(json.default).to.equal('yahoo');
+            expect(json.engines).to.have.lengthOf(1)
+            expect(json.engines).to.have.deep.members(
               [['yahoo', 'yahoo.com']]
             );
             done();
@@ -107,14 +88,15 @@ describe("settings/form/SearchForm", () => {
 
     it('invokes onChange event on add', (done) => {
       ReactTestUtils.act(() => {
-        ReactDOM.render(<SearchForm value={{
+        ReactDOM.render(<SearchForm value={FormSearch.valueOf({
           default: 'yahoo',
             engines: [['google', 'google.com']]
-          }}
+          })}
           onChange={value => {
-            expect(value.default).to.equal('yahoo');
-            expect(value.engines).to.have.lengthOf(2)
-            expect(value.engines).to.have.deep.members(
+            let json = value.toJSON();
+            expect(json.default).to.equal('yahoo');
+            expect(json.engines).to.have.lengthOf(2)
+            expect(json.engines).to.have.deep.members(
               [['google', 'google.com'], ['', '']],
             );
             done();

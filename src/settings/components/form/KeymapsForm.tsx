@@ -2,32 +2,30 @@ import './KeymapsForm.scss';
 import React from 'react';
 import Input from '../ui/Input';
 import keymaps from '../../keymaps';
+import { FormKeymaps } from '../../../shared/SettingData';
 
-type Value = {[key: string]: string};
-
-interface Props{
-  value: Value;
-  onChange: (e: Value) => void;
+interface Props {
+  value: FormKeymaps;
+  onChange: (e: FormKeymaps) => void;
   onBlur: () => void;
 }
 
 class KeymapsForm extends React.Component<Props> {
   public static defaultProps: Props = {
-    value: {},
+    value: FormKeymaps.valueOf({}),
     onChange: () => {},
     onBlur: () => {},
   }
 
   render() {
+    let values = this.props.value.toJSON();
     return <div className='form-keymaps-form'>
       {
         keymaps.fields.map((group, index) => {
           return <div key={index} className='form-keymaps-form-field-group'>
             {
-              group.map((field) => {
-                let name = field[0];
-                let label = field[1];
-                let value = this.props.value[name] || '';
+              group.map(([name, label]) => {
+                let value = values[name] || '';
                 return <Input
                   type='text' id={name} name={name} key={name}
                   label={label} value={value}
@@ -43,10 +41,7 @@ class KeymapsForm extends React.Component<Props> {
   }
 
   bindValue(name: string, value: string) {
-    let next = { ...this.props.value };
-    next[name] = value;
-
-    this.props.onChange(next);
+    this.props.onChange(this.props.value.buildWithOverride(name, value));
   }
 }
 

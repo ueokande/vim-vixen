@@ -8,7 +8,6 @@ import * as urls from '../urls';
 import * as consoleFrames from '../console-frames';
 import * as addonActions from './addon';
 import * as markActions from './mark';
-import * as properties from '../../shared/settings/properties';
 
 // eslint-disable-next-line complexity, max-lines-per-function
 const exec = (
@@ -16,8 +15,7 @@ const exec = (
   settings: any,
   addonEnabled: boolean,
 ): Promise<actions.Action> | actions.Action => {
-  let smoothscroll = settings.properties.smoothscroll ||
-    properties.defaults.smoothscroll;
+  let smoothscroll = settings.properties.smoothscroll;
   switch (operation.type) {
   case operations.ADDON_ENABLE:
     return addonActions.enable();

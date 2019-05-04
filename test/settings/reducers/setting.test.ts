@@ -4,8 +4,7 @@ import settingReducer from 'settings/reducers/setting';
 describe("settings setting reducer", () => {
   it('return the initial state', () => {
     let state = settingReducer(undefined, {});
-    expect(state).to.have.deep.property('json', '');
-    expect(state).to.have.deep.property('form', null);
+    expect(state).to.have.deep.property('source', 'json');
     expect(state).to.have.deep.property('error', '');
   });
 

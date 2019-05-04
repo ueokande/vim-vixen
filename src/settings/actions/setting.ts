@@ -1,35 +1,35 @@
 import * as actions from './index';
-import * as validator from '../../shared/settings/validator';
-import * as settingsValues from '../../shared/settings/values';
-import * as settingsStorage from '../../shared/settings/storage';
-import keymaps from '../keymaps';
+import * as storages from '../storage';
+import SettingData, {
+  JSONSettings, FormSettings, SettingSource,
+} from '../../shared/SettingData';
 
 const load = async(): Promise<actions.SettingAction> => {
-  let settings = await settingsStorage.loadRaw();
-  return set(settings);
+  let data = await storages.load();
+  return set(data);
 };
 
-const save = async(settings: any): Promise<actions.SettingAction> => {
+const save = async(data: SettingData): Promise<actions.SettingAction> => {
   try {
-    if (settings.source === 'json') {
-      let value = JSON.parse(settings.json);
-      validator.validate(value);
+    if (data.getSource() === SettingSource.JSON) {
+      // toSettings exercise validation
+      data.toSettings();
     }
   } catch (e) {
     return {
       type: actions.SETTING_SHOW_ERROR,
       error: e.toString(),
-      json: settings.json,
+      json: data.getJSON(),
     };
   }
-  await settingsStorage.save(settings);
-  return set(settings);
+  await storages.save(data);
+  return set(data);
 };
 
-const switchToForm = (json: string): actions.SettingAction => {
+const switchToForm = (json: JSONSettings): actions.SettingAction => {
   try {
-    validator.validate(JSON.parse(json));
-    let form = settingsValues.formFromJson(json, keymaps.allowedOps);
+    // toSettings exercise validation
+    let form = FormSettings.fromSettings(json.toSettings());
     return {
       type: actions.SETTING_SWITCH_TO_FORM,
       form,
@@ -43,21 +43,31 @@ const switchToForm = (json: string): actions.SettingAction => {
   }
 };
 
-const switchToJson = (form: any): actions.SettingAction => {
-  let json = settingsValues.jsonFromForm(form);
+const switchToJson = (form: FormSettings): actions.SettingAction => {
+  let json = JSONSettings.fromSettings(form.toSettings());
   return {
     type: actions.SETTING_SWITCH_TO_JSON,
     json,
   };
 };
 
-const set = (settings: any): actions.SettingAction => {
-  return {
-    type: actions.SETTING_SET_SETTINGS,
-    source: settings.source,
-    json: settings.json,
-    form: settings.form,
-  };
+const set = (data: SettingData): actions.SettingAction => {
+  let source = data.getSource();
+  switch (source) {
+  case SettingSource.JSON:
+    return {
+      type: actions.SETTING_SET_SETTINGS,
+      source: source,
+      json: data.getJSON(),
+    };
+  case SettingSource.Form:
+    return {
+      type: actions.SETTING_SET_SETTINGS,
+      source: source,
+      form: data.getForm(),
+    };
+  }
+  throw new Error(`unknown source: ${source}`);
 };
 
 export { load, save, set, switchToForm, switchToJson };

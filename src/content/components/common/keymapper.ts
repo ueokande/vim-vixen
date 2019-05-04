@@ -3,7 +3,10 @@ import * as operationActions from '../../actions/operation';
 import * as operations from '../../../shared/operations';
 import * as keyUtils from '../../../shared/utils/keys';
 
-const mapStartsWith = (mapping, keys) => {
+const mapStartsWith = (
+  mapping: keyUtils.Key[],
+  keys: keyUtils.Key[],
+): boolean => {
   if (mapping.length < keys.length) {
     return false;
   }
@@ -16,26 +19,33 @@ const mapStartsWith = (mapping, keys) => {
 };
 
 export default class KeymapperComponent {
-  constructor(store) {
+  private store: any;
+
+  constructor(store: any) {
     this.store = store;
   }
 
   // eslint-disable-next-line max-statements
-  key(key) {
+  key(key: keyUtils.Key): boolean {
     this.store.dispatch(inputActions.keyPress(key));
 
     let state = this.store.getState();
     let input = state.input;
-    let keymaps = new Map(state.setting.keymaps);
+    let keymaps = new Map<keyUtils.Key[], operations.Operation>(
+      state.setting.keymaps.map(
+        (e: {key: keyUtils.Key[], op: operations.Operation}) => [e.key, e.op],
+      )
+    );
 
-    let matched = Array.from(keymaps.keys()).filter((mapping) => {
-      return mapStartsWith(mapping, input.keys);
-    });
+    let matched = Array.from(keymaps.keys()).filter(
+      (mapping: keyUtils.Key[]) => {
+        return mapStartsWith(mapping, input.keys);
+      });
     if (!state.addon.enabled) {
       // available keymaps are only ADDON_ENABLE and ADDON_TOGGLE_ENABLED if
       // the addon disabled
       matched = matched.filter((keys) => {
-        let type = keymaps.get(keys).type;
+        let type = (keymaps.get(keys) as operations.Operation).type;
         return type === operations.ADDON_ENABLE ||
           type === operations.ADDON_TOGGLE_ENABLED;
       });
@@ -47,7 +57,7 @@ export default class KeymapperComponent {
       matched.length === 1 && input.keys.length < matched[0].length) {
       return true;
     }
-    let operation = keymaps.get(matched[0]);
+    let operation = keymaps.get(matched[0]) as operations.Operation;
     let act = operationActions.exec(
       operation, state.setting, state.addon.enabled
     );

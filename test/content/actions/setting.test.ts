@@ -4,32 +4,40 @@ import * as settingActions from 'content/actions/setting';
 describe("setting actions", () => {
   describe("set", () => {
     it('create SETTING_SET action', () => {
-      let action = settingActions.set({ red: 'apple', yellow: 'banana' });
-      expect(action.type).to.equal(actions.SETTING_SET);
-      expect(action.value.red).to.equal('apple');
-      expect(action.value.yellow).to.equal('banana');
-      expect(action.value.keymaps).to.be.empty;
-    });
-
-    it('converts keymaps', () => {
       let action = settingActions.set({
         keymaps: {
           'dd': 'remove current tab',
           'z<C-A>': 'increment',
+        },
+        search: {
+          default: "google",
+          engines: {
+            google: 'https://google.com/search?q={}',
+          }
+        },
+        properties: {
+          hintchars: 'abcd1234',
+        },
+        blacklist: [],
+      });
+      expect(action.type).to.equal(actions.SETTING_SET);
+      expect(action.settings.properties.hintchars).to.equal('abcd1234');
+    });
+
+    it('overrides cancel keys', () => {
+      let action = settingActions.set({
+        keymaps: {
+          "k": { "type": "scroll.vertically", "count": -1 },
+          "j": { "type": "scroll.vertically", "count": 1 },
         }
       });
-      let keymaps = action.value.keymaps;
-      let map = new Map(keymaps);
-      expect(map).to.have.deep.all.keys(
-        [
-          [{ key: 'Esc', shiftKey: false, ctrlKey: false, altKey: false, metaKey: false }],
-          [{ key: '[', shiftKey: false, ctrlKey: true, altKey: false, metaKey: false }],
-          [{ key: 'd', shiftKey: false, ctrlKey: false, altKey: false, metaKey: false },
-           { key: 'd', shiftKey: false, ctrlKey: false, altKey: false, metaKey: false }],
-          [{ key: 'z', shiftKey: false, ctrlKey: false, altKey: false, metaKey: false },
-           { key: 'a', shiftKey: false, ctrlKey: true, altKey: false, metaKey: false }],
-        ]
-      );
+      let keymaps = action.settings.keymaps;
+      expect(action.settings.keymaps).to.deep.equals({
+        "k": { type: "scroll.vertically", count: -1 },
+        "j": { type: "scroll.vertically", count: 1 },
+        '<Esc>': { type: 'cancel' },
+        '<C-[>': { type: 'cancel' },
+      });
     });
   });
 });

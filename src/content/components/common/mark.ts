@@ -1,7 +1,6 @@
-import * as markActions from 'content/actions/mark';
-import * as scrolls from 'content/scrolls';
-import * as consoleFrames from 'content/console-frames';
-import * as properties from 'shared/settings/properties';
+import * as markActions from '../../actions/mark';
+import * as scrolls from '../..//scrolls';
+import * as consoleFrames from '../..//console-frames';
 
 const cancelKey = (key): boolean => {
   return key.key === 'Esc' || key.key === '[' && key.ctrlKey;
@@ -20,8 +19,7 @@ export default class MarkComponent {
   // eslint-disable-next-line max-statements
   key(key) {
     let { mark: markStage, setting } = this.store.getState();
-    let smoothscroll = setting.properties.smoothscroll ||
-      properties.defaults.smoothscroll;
+    let smoothscroll = setting.properties.smoothscroll;
 
     if (!markStage.setMode && !markStage.jumpMode) {
       return false;

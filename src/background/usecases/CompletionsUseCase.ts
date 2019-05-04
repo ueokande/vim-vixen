@@ -4,7 +4,7 @@ import CompletionsRepository from '../repositories/CompletionsRepository';
 import * as filters from './filters';
 import SettingRepository from '../repositories/SettingRepository';
 import TabPresenter from '../presenters/TabPresenter';
-import * as properties from '../../shared/settings/properties';
+import * as PropertyDefs from '../../shared/property-defs';
 
 const COMPLETION_ITEM_LIMIT = 10;
 
@@ -44,7 +44,7 @@ export default class CompletionsUseCase {
     let settings = await this.settingRepository.get();
     let groups: CompletionGroup[] = [];
 
-    let complete = settings.properties.complete || properties.defaults.complete;
+    let complete = settings.properties.complete;
     for (let c of complete) {
       if (c === 's') {
         // eslint-disable-next-line no-await-in-loop
@@ -127,25 +127,25 @@ export default class CompletionsUseCase {
   }
 
   querySet(name: string, keywords: string): Promise<CompletionGroup[]> {
-    let items = Object.keys(properties.docs).map((key) => {
-      if (properties.types[key] === 'boolean') {
+    let items = PropertyDefs.defs.map((def) => {
+      if (def.type === 'boolean') {
         return [
           {
-            caption: key,
-            content: name + ' ' + key,
-            url: 'Enable ' + properties.docs[key],
+            caption: def.name,
+            content: name + ' ' + def.name,
+            url: 'Enable ' + def.description,
           }, {
-            caption: 'no' + key,
-            content: name + ' no' + key,
-            url: 'Disable ' + properties.docs[key],
+            caption: 'no' + def.name,
+            content: name + ' no' + def.name,
+            url: 'Disable ' + def.description
           }
         ];
       }
       return [
         {
-          caption: key,
-          content: name + ' ' + key,
-          url: 'Set ' + properties.docs[key],
+          caption: def.name,
+          content: name + ' ' + def.name,
+          url: 'Set ' + def.description,
         }
       ];
     });
@@ -195,8 +195,8 @@ export default class CompletionsUseCase {
       .map(filters.filterByTailingSlash)
       .map(pages => filters.filterByPathname(pages, COMPLETION_ITEM_LIMIT))
       .map(pages => filters.filterByOrigin(pages, COMPLETION_ITEM_LIMIT))[0]
-      .sort((x: HistoryItem, y: HistoryItem) => {
-        return Number(x.visitCount) < Number(y.visitCount);
+      .sort((x: HistoryItem, y: HistoryItem): number => {
+        return Number(x.visitCount) - Number(y.visitCount);
       })
       .slice(0, COMPLETION_ITEM_LIMIT);
     return histories.map(page => ({

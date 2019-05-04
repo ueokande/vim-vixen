@@ -443,5 +443,5 @@ export const valueOf = (o: any): Operation => {
   case MARK_JUMP_PREFIX:
     return { type: o.type };
   }
-  throw new Error('unknown operation type: ' + o.type);
+  throw new TypeError('unknown operation type: ' + o.type);
 };

@@ -1,23 +1,25 @@
 import * as actions from '../actions';
+import {
+  JSONSettings, FormSettings, SettingSource,
+} from '../../shared/SettingData';
 
-interface State {
-  source: string;
-  json: string;
-  form: any;
+export interface State {
+  source: SettingSource;
+  json?: JSONSettings;
+  form?: FormSettings;
   error: string;
 }
 
 const defaultState: State = {
-  source: '',
-  json: '',
-  form: null,
+  source: SettingSource.JSON,
+  json: JSONSettings.valueOf(''),
   error: '',
 };
 
 export default function reducer(
   state = defaultState,
   action: actions.SettingAction,
-) {
+): State {
   switch (action.type) {
   case actions.SETTING_SET_SETTINGS:
     return { ...state,
@@ -32,12 +34,12 @@ export default function reducer(
   case actions.SETTING_SWITCH_TO_FORM:
     return { ...state,
       error: '',
-      source: 'form',
+      source: SettingSource.Form,
       form: action.form, };
   case actions.SETTING_SWITCH_TO_JSON:
     return { ...state,
       error: '',
-      source: 'json',
+      source: SettingSource.JSON,
       json: action.json, };
   default:
     return state;

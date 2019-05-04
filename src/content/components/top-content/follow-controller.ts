@@ -2,7 +2,6 @@ import * as followControllerActions from '../../actions/follow-controller';
 import * as messages from '../../../shared/messages';
 import MessageListener, { WebMessageSender } from '../../MessageListener';
 import HintKeyProducer from '../../hint-key-producer';
-import * as properties from '../../../shared/settings/properties';
 
 const broadcastMessage = (win: Window, message: messages.Message): void => {
   let json = JSON.stringify(message);
@@ -162,7 +161,6 @@ export default class FollowController {
   }
 
   hintchars() {
-    return this.store.getState().setting.properties.hintchars ||
-      properties.defaults.hintchars;
+    return this.store.getState().setting.properties.hintchars;
   }
 }

@@ -1,3 +1,7 @@
+import {
+  JSONSettings, FormSettings, SettingSource,
+} from '../../shared/SettingData';
+
 // Settings
 export const SETTING_SET_SETTINGS = 'setting.set.settings';
 export const SETTING_SHOW_ERROR = 'setting.show.error';
@@ -6,25 +10,25 @@ export const SETTING_SWITCH_TO_JSON = 'setting.switch.to.json';
 
 interface SettingSetSettingsAcion {
   type: typeof SETTING_SET_SETTINGS;
-  source: string;
-  json: string;
-  form: any;
+  source: SettingSource;
+  json?: JSONSettings;
+  form?: FormSettings;
 }
 
 interface SettingShowErrorAction {
   type: typeof SETTING_SHOW_ERROR;
   error: string;
-  json: string;
+  json: JSONSettings;
 }
 
 interface SettingSwitchToFormAction {
   type: typeof SETTING_SWITCH_TO_FORM;
-  form: any;
+  form: FormSettings,
 }
 
 interface SettingSwitchToJsonAction {
   type: typeof SETTING_SWITCH_TO_JSON;
-  json: string;
+  json: JSONSettings,
 }
 
 export type SettingAction =

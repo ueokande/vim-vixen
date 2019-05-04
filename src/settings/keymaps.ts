@@ -66,9 +66,6 @@ const fields = [
   ]
 ];
 
-const allowedOps = [].concat(...fields.map(group => group.map(e => e[0])));
-
 export default {
   fields,
-  allowedOps,
 };

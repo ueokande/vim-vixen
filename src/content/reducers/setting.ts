@@ -1,12 +1,20 @@
 import * as actions from '../actions';
+import * as keyUtils from '../../shared/utils/keys';
+import * as operations from '../../shared/operations';
+import { Properties } from '../../shared/Settings';
 
 export interface State {
-  keymaps: any[];
+  keymaps: { key: keyUtils.Key[], op: operations.Operation }[];
+  properties: Properties;
 }
 
-const defaultState = {
-  // keymaps is and arrays of key-binding pairs, which is entries of Map
+const defaultState: State = {
   keymaps: [],
+  properties: {
+    complete: '',
+    smoothscroll: false,
+    hintchars: '',
+  },
 };
 
 export default function reducer(
@@ -15,7 +23,15 @@ export default function reducer(
 ): State {
   switch (action.type) {
   case actions.SETTING_SET:
-    return { ...action.value };
+    return {
+      keymaps: Object.entries(action.settings.keymaps).map((entry) => {
+        return {
+          key: keyUtils.fromMapKeys(entry[0]),
+          op: entry[1],
+        };
+      }),
+      properties: action.settings.properties,
+    };
   default:
     return state;
   }

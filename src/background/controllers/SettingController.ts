@@ -1,5 +1,6 @@
 import SettingUseCase from '../usecases/SettingUseCase';
 import ContentMessageClient from '../infrastructures/ContentMessageClient';
+import Settings from '../../shared/Settings';
 
 export default class SettingController {
   private settingUseCase: SettingUseCase;
@@ -11,7 +12,7 @@ export default class SettingController {
     this.contentMessageClient = new ContentMessageClient();
   }
 
-  getSetting(): any {
+  getSetting(): Promise<Settings> {
     return this.settingUseCase.get();
   }
 

@@ -2,15 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestRenderer from 'react-test-renderer';
 import ReactTestUtils from 'react-dom/test-utils';
-import KeymapsForm from 'settings/components/form/KeymapsForm'
+import KeymapsForm from '../../../../src/settings/components/form/KeymapsForm'
+import { FormKeymaps } from 'shared/SettingData';
+import { expect } from 'chai';
 
 describe("settings/form/KeymapsForm", () => {
   describe('render', () => {
     it('renders keymap fields', () => {
-      let root = ReactTestRenderer.create(<KeymapsForm value={{
+      let root = ReactTestRenderer.create(<KeymapsForm value={FormKeymaps.valueOf({
         'scroll.vertically?{"count":1}': 'j',
         'scroll.vertically?{"count":-1}': 'k',
-      }} />).root
+      })} />).root
 
       let inputj = root.findByProps({ id: 'scroll.vertically?{"count":1}' });
       let inputk = root.findByProps({ id: 'scroll.vertically?{"count":-1}' });
@@ -46,12 +48,12 @@ describe("settings/form/KeymapsForm", () => {
     it('invokes onChange event on edit', (done) => {
       ReactTestUtils.act(() => {
         ReactDOM.render(<KeymapsForm
-          value={{
+          value={FormKeymaps.valueOf({
             'scroll.vertically?{"count":1}': 'j',
             'scroll.vertically?{"count":-1}': 'k',
-          }}
+          })}
           onChange={value => {
-            expect(value['scroll.vertically?{"count":1}']).to.equal('jjj');
+            expect(value.toJSON()['scroll.vertically?{"count":1}']).to.equal('jjj');
             done();
           }} />, container);
       });

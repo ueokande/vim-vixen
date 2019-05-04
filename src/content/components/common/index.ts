@@ -8,6 +8,7 @@ import MessageListener from '../../MessageListener';
 import * as addonActions from '../../actions/addon';
 import * as blacklists from '../../../shared/blacklists';
 import * as keys from '../../../shared/utils/keys';
+import * as actions from '../../actions';
 
 export default class Common {
   private win: Window;
@@ -45,9 +46,9 @@ export default class Common {
   reloadSettings() {
     try {
       this.store.dispatch(settingActions.load())
-        .then(({ value: settings }: any) => {
+        .then((action: actions.SettingAction) => {
           let enabled = !blacklists.includes(
-            settings.blacklist, this.win.location.href
+            action.settings.blacklist, this.win.location.href
           );
           this.store.dispatch(addonActions.setEnabled(enabled));
         });
