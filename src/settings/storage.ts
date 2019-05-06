@@ -5,7 +5,7 @@ export const load = async(): Promise<SettingData> => {
   if (!settings) {
     return DefaultSettingData;
   }
-  return SettingData.valueOf(settings);
+  return SettingData.valueOf(settings as any);
 };
 
 export const save = (data: SettingData) => {
