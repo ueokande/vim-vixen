@@ -2,7 +2,7 @@ import React from 'react';
 
 interface Props {
   mode: string;
-  children: string[];
+  children: string;
 }
 
 const Message = (props: Props) => {

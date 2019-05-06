@@ -1,7 +1,8 @@
 import * as actions from '../actions';
+import * as keyUtils from '../../shared/utils/keys';
 
 export interface State {
-  keys: string[];
+  keys: keyUtils.Key[],
 }
 
 const defaultState: State = {

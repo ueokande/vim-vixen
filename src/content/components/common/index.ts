@@ -18,7 +18,7 @@ export default class Common {
   constructor(win: Window, store: any) {
     const input = new InputComponent(win.document.body);
     const follow = new FollowComponent(win);
-    const mark = new MarkComponent(win.document.body, store);
+    const mark = new MarkComponent(store);
     const keymapper = new KeymapperComponent(store);
 
     input.onKey((key: keys.Key) => follow.key(key));

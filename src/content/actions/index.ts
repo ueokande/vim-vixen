@@ -1,5 +1,6 @@
 import Redux from 'redux';
 import Settings from '../../shared/Settings';
+import * as keyUtils from '../../shared/utils/keys';
 
 // Enable/disable
 export const ADDON_SET_ENABLED = 'addon.set.enabled';
@@ -51,7 +52,7 @@ export interface SettingSetAction extends Redux.Action {
 
 export interface InputKeyPressAction extends Redux.Action {
   type: typeof INPUT_KEY_PRESS;
-  key: string;
+  key: keyUtils.Key;
 }
 
 export interface InputClearKeysAction extends Redux.Action {

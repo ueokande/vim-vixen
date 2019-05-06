@@ -20,7 +20,6 @@ describe("content setting reducer", () => {
       }
     }
     let state = settingReducer(undefined, action);
-    console.log(JSON.stringify(state.keymaps));
     expect(state.keymaps).to.have.deep.all.members([
       { key: [{ key: 'z', shiftKey: false, ctrlKey: false, altKey: false, metaKey: false },
               { key: 'z', shiftKey: false, ctrlKey: false, altKey: false, metaKey: false }],

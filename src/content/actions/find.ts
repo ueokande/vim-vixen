@@ -9,6 +9,20 @@ import * as messages from '../../shared/messages';
 import * as actions from './index';
 import * as consoleFrames from '../console-frames';
 
+interface MyWindow extends Window {
+  find(
+    aString: string,
+    aCaseSensitive?: boolean,
+    aBackwards?: boolean,
+    aWrapAround?: boolean,
+    aWholeWord?: boolean,
+    aSearchInFrames?: boolean,
+    aShowDialog?: boolean): boolean;
+}
+
+// eslint-disable-next-line no-var, vars-on-top, init-declarations
+declare var window: MyWindow;
+
 const find = (str: string, backwards: boolean): boolean => {
   let caseSensitive = false;
   let wrapScan = true;
@@ -18,7 +32,7 @@ const find = (str: string, backwards: boolean): boolean => {
   // because of same origin policy
 
   // eslint-disable-next-line no-extra-parens
-  let found = (<any>window).find(str, caseSensitive, backwards, wrapScan);
+  let found = window.find(str, caseSensitive, backwards, wrapScan);
   if (found) {
     return found;
   }
@@ -28,7 +42,7 @@ const find = (str: string, backwards: boolean): boolean => {
   }
 
   // eslint-disable-next-line no-extra-parens
-  return (<any>window).find(str, caseSensitive, backwards, wrapScan);
+  return window.find(str, caseSensitive, backwards, wrapScan);
 };
 
 // eslint-disable-next-line max-statements

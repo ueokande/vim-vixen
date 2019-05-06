@@ -1,9 +1,5 @@
+import Mark from '../Mark';
 import * as actions from '../actions';
-
-interface Mark {
-  x: number;
-  y: number;
-}
 
 export interface State {
   setMode: boolean;

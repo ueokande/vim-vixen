@@ -12,5 +12,5 @@ if (window.self === window.top) {
 }
 
 let style = window.document.createElement('style');
-style.textContent = consoleFrameStyle.default;
+style.textContent = consoleFrameStyle;
 window.document.head.appendChild(style);

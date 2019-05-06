@@ -40,7 +40,8 @@ const filterByPathname = (items: Item[], min: number): Item[] => {
     let pathname = url.origin + url.pathname;
     if (!hash[pathname]) {
       hash[pathname] = item;
-    } else if (hash[pathname].url.length > item.url.length) {
+    } else if ((hash[pathname].url as string).length >
+      (item.url as string).length) {
       hash[pathname] = item;
     }
   }
@@ -57,7 +58,8 @@ const filterByOrigin = (items: Item[], min: number): Item[] => {
     let origin = new URL(item.url as string).origin;
     if (!hash[origin]) {
       hash[origin] = item;
-    } else if (hash[origin].url.length > item.url.length) {
+    } else if ((hash[origin].url as string).length >
+      (item.url as string).length) {
       hash[origin] = item;
     }
   }

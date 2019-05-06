@@ -1,4 +1,3 @@
-import manifest from '../../../manifest.json';
 import TabPresenter from '../presenters/TabPresenter';
 import NotifyPresenter from '../presenters/NotifyPresenter';
 
@@ -13,6 +12,7 @@ export default class VersionUseCase {
   }
 
   notify(): Promise<void> {
+    let manifest = browser.runtime.getManifest();
     let title = `Vim Vixen ${manifest.version} has been installed`;
     let message = 'Click here to see release notes';
     let url = this.releaseNoteUrl(manifest.version);

@@ -3,23 +3,23 @@ import React from 'react';
 interface Props {
   mode: string;
   value: string;
-  onBlur: (e: React.FocusEvent<Element>) => void;
-  onKeyDown: (e: React.KeyboardEvent<Element>) => void;
-  onChange: (e: React.ChangeEvent<Element>) => void;
+  onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 class Input extends React.Component<Props> {
-  private input: HTMLInputElement | null;
+  private input: React.RefObject<HTMLInputElement>;
 
   constructor(props: Props) {
     super(props);
 
-    this.input = null;
+    this.input = React.createRef();
   }
 
   focus() {
-    if (this.input) {
-      this.input.focus();
+    if (this.input.current) {
+      this.input.current.focus();
     }
   }
 
@@ -38,7 +38,7 @@ class Input extends React.Component<Props> {
         </i>
         <input
           className='vimvixen-console-command-input'
-          ref={(c) => { this.input = c; }}
+          ref={this.input}
           onBlur={this.props.onBlur}
           onKeyDown={this.props.onKeyDown}
           onChange={this.props.onChange}

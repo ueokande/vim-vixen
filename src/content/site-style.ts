@@ -1,4 +1,4 @@
-exports.default = `
+export default `
 .vimvixen-console-frame {
   margin: 0;
   padding: 0;

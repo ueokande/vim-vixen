@@ -1,6 +1,6 @@
 import * as actions from '../actions';
 
-interface State {
+export interface State {
   mode: string;
   messageText: string;
   consoleText: string;
