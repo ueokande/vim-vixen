@@ -1,20 +1,20 @@
 import * as actions from '../actions';
 import * as keyUtils from '../../shared/utils/keys';
 import * as operations from '../../shared/operations';
-import { Properties } from '../../shared/Settings';
+import { Search, Properties, DefaultSetting } from '../../shared/Settings';
 
 export interface State {
   keymaps: { key: keyUtils.Key[], op: operations.Operation }[];
+  search: Search;
   properties: Properties;
 }
 
+// defaultState does not refer due to the state is load from
+// background on load.
 const defaultState: State = {
   keymaps: [],
-  properties: {
-    complete: '',
-    smoothscroll: false,
-    hintchars: '',
-  },
+  search: DefaultSetting.search,
+  properties: DefaultSetting.properties,
 };
 
 export default function reducer(
@@ -31,6 +31,7 @@ export default function reducer(
         };
       }),
       properties: action.settings.properties,
+      search: action.settings.search,
     };
   default:
     return state;

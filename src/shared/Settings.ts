@@ -117,7 +117,7 @@ export const valueOf = (o: any): Settings => {
   return settings;
 };
 
-const DefaultSetting: Settings = {
+export const DefaultSetting: Settings = {
   keymaps: {
     '0': { 'type': 'scroll.home' },
     ':': { 'type': 'command.show' },

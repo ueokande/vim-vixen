@@ -1,5 +1,6 @@
 import * as messages from '../shared/messages';
 import * as urls from '../shared/urls';
+import { Search } from '../shared/Settings';
 
 const yank = (win: Window) => {
   let input = win.document.createElement('input');
@@ -15,7 +16,7 @@ const yank = (win: Window) => {
   input.remove();
 };
 
-const paste = (win: Window, newTab: boolean, searchSettings: any) => {
+const paste = (win: Window, newTab: boolean, search: Search) => {
   let textarea = win.document.createElement('textarea');
   win.document.body.append(textarea);
 
@@ -26,7 +27,7 @@ const paste = (win: Window, newTab: boolean, searchSettings: any) => {
 
   if (win.document.execCommand('paste')) {
     let value = textarea.textContent as string;
-    let url = urls.searchUrl(value, searchSettings);
+    let url = urls.searchUrl(value, search);
     browser.runtime.sendMessage({
       type: messages.OPEN_URL,
       url,
