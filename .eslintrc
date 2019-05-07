@@ -5,12 +5,17 @@
     "browser" : true,
     "webextensions": true
   },
-  "plugins": ["react"],
-  "parser": "babel-eslint",
+  "plugins": [
+    "react",
+    "@typescript-eslint"
+  ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
-    }
+    },
+    "sourceType": "module",
+    "project": "./tsconfig.json"
   },
   "extends": [ "eslint:all", "plugin:react/recommended" ],
   "rules": {
@@ -30,6 +35,7 @@
     "indent": ["error", 2],
     "jsx-quotes": ["error", "prefer-single"],
     "max-classes-per-file": "off",
+    "max-lines": "off",
     "max-params": ["error", 5],
     "max-statements": ["error", 15],
     "multiline-comment-style": "off",
@@ -42,13 +48,14 @@
     "no-console": ["error", { "allow": ["warn", "error"] }],
     "no-continue": "off",
     "no-empty-function": "off",
+    "no-extra-parens": "off",
     "no-magic-numbers": "off",
     "no-mixed-operators": "off",
     "no-plusplus": "off",
     "no-ternary": "off",
     "no-undefined": "off",
     "no-undef-init": "off",
-    "no-unused-vars": ["error", { "varsIgnorePattern": "h" }],
+    "no-unused-vars": "off",
     "no-use-before-define": "off",
     "no-warning-comments": "off",
     "object-curly-newline": ["error", { "consistent": true }],
@@ -71,6 +78,7 @@
 
     "react/jsx-indent": ["error", 2],
     "react/prop-types": "off",
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/no-unused-vars": "error"
   }
 }

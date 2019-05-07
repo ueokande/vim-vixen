@@ -20,12 +20,16 @@ config = {
   module: {
     rules: [
       {
-        test: [ /\.js$/,  /\.jsx$/ ],
+        test: [ /\.js$/,  /\.jsx$/, /\.ts$/, /\.tsx$/],
         exclude: /node_modules/,
         loader: 'babel-loader',
-        query: {
-          presets: ['@babel/react']
-        }
+        options: {
+          presets: [
+            { plugins: ['@babel/plugin-proposal-class-properties'] },
+            '@babel/react',
+            '@babel/preset-typescript'
+          ]
+        },
       },
       {
         test: /\.css$/,
@@ -39,7 +43,7 @@ config = {
   },
 
   resolve: {
-    extensions: [ '.js', '.jsx' ],
+    extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
     modules: [path.join(__dirname, 'src'), 'node_modules']
   },
 
