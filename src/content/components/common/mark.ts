@@ -4,6 +4,10 @@ import * as consoleFrames from '../..//console-frames';
 import * as keyUtils from '../../../shared/utils/keys';
 import Mark from '../../Mark';
 
+import { SettingRepositoryImpl } from '../../repositories/SettingRepository';
+
+let settingRepository = new SettingRepositoryImpl();
+
 const cancelKey = (key: keyUtils.Key): boolean => {
   return key.key === 'Esc' || key.key === '[' && Boolean(key.ctrlKey);
 };
@@ -21,8 +25,8 @@ export default class MarkComponent {
 
   // eslint-disable-next-line max-statements
   key(key: keyUtils.Key) {
-    let { mark: markState, setting } = this.store.getState();
-    let smoothscroll = setting.properties.smoothscroll;
+    let smoothscroll = settingRepository.get().properties.smoothscroll;
+    let { mark: markState } = this.store.getState();
 
     if (!markState.setMode && !markState.jumpMode) {
       return false;

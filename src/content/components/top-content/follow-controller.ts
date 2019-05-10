@@ -3,6 +3,10 @@ import * as messages from '../../../shared/messages';
 import MessageListener, { WebMessageSender } from '../../MessageListener';
 import HintKeyProducer from '../../hint-key-producer';
 
+import { SettingRepositoryImpl } from '../../repositories/SettingRepository';
+
+let settingRepository = new SettingRepositoryImpl();
+
 const broadcastMessage = (win: Window, message: messages.Message): void => {
   let json = JSON.stringify(message);
   let frames = [win.self].concat(Array.from(win.frames as any));
@@ -160,7 +164,7 @@ export default class FollowController {
     });
   }
 
-  hintchars() {
-    return this.store.getState().setting.properties.hintchars;
+  private hintchars() {
+    return settingRepository.get().properties.hintchars;
   }
 }

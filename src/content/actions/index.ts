@@ -1,12 +1,8 @@
 import Redux from 'redux';
-import Settings from '../../shared/Settings';
 import * as keyUtils from '../../shared/utils/keys';
 
 // Find
 export const FIND_SET_KEYWORD = 'find.set.keyword';
-
-// Settings
-export const SETTING_SET = 'setting.set';
 
 // User input
 export const INPUT_KEY_PRESS = 'input.key.press';
@@ -35,11 +31,6 @@ export interface FindSetKeywordAction extends Redux.Action {
   type: typeof FIND_SET_KEYWORD;
   keyword: string;
   found: boolean;
-}
-
-export interface SettingSetAction extends Redux.Action {
-  type: typeof SETTING_SET;
-  settings: Settings,
 }
 
 export interface InputKeyPressAction extends Redux.Action {
@@ -94,7 +85,6 @@ export interface NoopAction extends Redux.Action {
 }
 
 export type FindAction = FindSetKeywordAction | NoopAction;
-export type SettingAction = SettingSetAction;
 export type InputAction = InputKeyPressAction | InputClearKeysAction;
 export type FollowAction =
   FollowControllerEnableAction | FollowControllerDisableAction |
@@ -105,7 +95,6 @@ export type MarkAction =
 
 export type Action =
   FindAction |
-  SettingAction |
   InputAction |
   FollowAction |
   MarkAction |

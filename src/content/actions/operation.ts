@@ -9,14 +9,16 @@ import * as consoleFrames from '../console-frames';
 import * as markActions from './mark';
 
 import AddonEnabledUseCase from '../usecases/AddonEnabledUseCase';
+import { SettingRepositoryImpl } from '../repositories/SettingRepository';
 
 let addonEnabledUseCase = new AddonEnabledUseCase();
+let settingRepository = new SettingRepositoryImpl();
 
 // eslint-disable-next-line complexity, max-lines-per-function
 const exec = async(
   operation: operations.Operation,
-  settings: any,
 ): Promise<actions.Action> => {
+  let settings = settingRepository.get();
   let smoothscroll = settings.properties.smoothscroll;
   switch (operation.type) {
   case operations.ADDON_ENABLE:
@@ -97,7 +99,8 @@ const exec = async(
     break;
   case operations.URLS_PASTE:
     urls.paste(
-      window, operation.newTab ? operation.newTab : false, settings.search
+      window, operation.newTab ? operation.newTab : false,
+      settings.search,
     );
     break;
   default:

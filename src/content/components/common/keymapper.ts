@@ -4,8 +4,18 @@ import * as operations from '../../../shared/operations';
 import * as keyUtils from '../../../shared/utils/keys';
 
 import AddonEnabledUseCase from '../../usecases/AddonEnabledUseCase';
+import { SettingRepositoryImpl } from '../../repositories/SettingRepository';
+import { Keymaps } from '../../../shared/Settings';
+
+type KeymapEntityMap = Map<keyUtils.Key[], operations.Operation>;
 
 let addonEnabledUseCase = new AddonEnabledUseCase();
+let settingRepository = new SettingRepositoryImpl();
+
+const reservedKeymaps: Keymaps = {
+  '<Esc>': { type: operations.CANCEL },
+  '<C-[>': { type: operations.CANCEL },
+};
 
 const mapStartsWith = (
   mapping: keyUtils.Key[],
@@ -29,18 +39,11 @@ export default class KeymapperComponent {
     this.store = store;
   }
 
-  // eslint-disable-next-line max-statements
   key(key: keyUtils.Key): boolean {
     this.store.dispatch(inputActions.keyPress(key));
 
-    let state = this.store.getState();
-    let input = state.input;
-    let keymaps = new Map<keyUtils.Key[], operations.Operation>(
-      state.setting.keymaps.map(
-        (e: {key: keyUtils.Key[], op: operations.Operation}) => [e.key, e.op],
-      )
-    );
-
+    let input = this.store.getState().input;
+    let keymaps = this.keymapEntityMap();
     let matched = Array.from(keymaps.keys()).filter(
       (mapping: keyUtils.Key[]) => {
         return mapStartsWith(mapping, input.keys);
@@ -62,11 +65,23 @@ export default class KeymapperComponent {
       return true;
     }
     let operation = keymaps.get(matched[0]) as operations.Operation;
-    let act = operationActions.exec(
-      operation, state.setting,
-    );
+    let act = operationActions.exec(operation);
     this.store.dispatch(act);
     this.store.dispatch(inputActions.clearKeys());
     return true;
+  }
+
+  private keymapEntityMap(): KeymapEntityMap {
+    let keymaps = {
+      ...settingRepository.get().keymaps,
+      ...reservedKeymaps,
+    };
+    let entries = Object.entries(keymaps).map((entry) => {
+      return [
+        keyUtils.fromMapKeys(entry[0]),
+        entry[1],
+      ];
+    }) as [keyUtils.Key[], operations.Operation][];
+    return new Map<keyUtils.Key[], operations.Operation>(entries);
   }
 }
