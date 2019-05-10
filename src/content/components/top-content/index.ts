@@ -5,15 +5,15 @@ import * as consoleFrames from '../../console-frames';
 import * as messages from '../../../shared/messages';
 import MessageListener from '../../MessageListener';
 import * as scrolls from '../../scrolls';
+import AddonEnabledUseCase from '../../usecases/AddonEnabledUseCase';
+
+let addonEnabledUseCase = new AddonEnabledUseCase();
 
 export default class TopContent {
   private win: Window;
 
-  private store: any;
-
   constructor(win: Window, store: any) {
     this.win = win;
-    this.store = store;
 
     new CommonComponent(win, store); // eslint-disable-line no-new
     new FollowController(win, store); // eslint-disable-line no-new
@@ -36,14 +36,11 @@ export default class TopContent {
   }
 
   onBackgroundMessage(message: messages.Message) {
-    let addonState = this.store.getState().addon;
+    let addonEnabled = addonEnabledUseCase.getEnabled();
 
     switch (message.type) {
     case messages.ADDON_ENABLED_QUERY:
-      return Promise.resolve({
-        type: messages.ADDON_ENABLED_RESPONSE,
-        enabled: addonState.enabled,
-      });
+      return Promise.resolve(addonEnabled);
     case messages.TAB_SCROLL_TO:
       return scrolls.scrollTo(message.x, message.y, false);
     }

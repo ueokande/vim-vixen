@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import addon, { State as AddonState } from './addon';
 import find, { State as FindState } from './find';
 import setting, { State as SettingState } from './setting';
 import input, { State as InputState } from './input';
@@ -8,7 +7,6 @@ import followController, { State as FollowControllerState }
 import mark, { State as MarkState } from './mark';
 
 export interface State {
-  addon: AddonState;
   find: FindState;
   setting: SettingState;
   input: InputState;
@@ -17,5 +15,5 @@ export interface State {
 }
 
 export default combineReducers({
-  addon, find, setting, input, followController, mark,
+  find, setting, input, followController, mark,
 });

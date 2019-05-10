@@ -25,7 +25,7 @@ export default class MessageListener {
   ) {
     browser.runtime.onMessage.addListener(
       (msg: any, sender: WebExtMessageSender) => {
-        listener(valueOf(msg), sender);
+        return listener(valueOf(msg), sender);
       },
     );
   }

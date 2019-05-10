@@ -3,6 +3,10 @@ import * as operationActions from '../../actions/operation';
 import * as operations from '../../../shared/operations';
 import * as keyUtils from '../../../shared/utils/keys';
 
+import AddonEnabledUseCase from '../../usecases/AddonEnabledUseCase';
+
+let addonEnabledUseCase = new AddonEnabledUseCase();
+
 const mapStartsWith = (
   mapping: keyUtils.Key[],
   keys: keyUtils.Key[],
@@ -41,7 +45,7 @@ export default class KeymapperComponent {
       (mapping: keyUtils.Key[]) => {
         return mapStartsWith(mapping, input.keys);
       });
-    if (!state.addon.enabled) {
+    if (!addonEnabledUseCase.getEnabled()) {
       // available keymaps are only ADDON_ENABLE and ADDON_TOGGLE_ENABLED if
       // the addon disabled
       matched = matched.filter((keys) => {
@@ -59,7 +63,7 @@ export default class KeymapperComponent {
     }
     let operation = keymaps.get(matched[0]) as operations.Operation;
     let act = operationActions.exec(
-      operation, state.setting, state.addon.enabled
+      operation, state.setting,
     );
     this.store.dispatch(act);
     this.store.dispatch(inputActions.clearKeys());

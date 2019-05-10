@@ -2,9 +2,6 @@ import Redux from 'redux';
 import Settings from '../../shared/Settings';
 import * as keyUtils from '../../shared/utils/keys';
 
-// Enable/disable
-export const ADDON_SET_ENABLED = 'addon.set.enabled';
-
 // Find
 export const FIND_SET_KEYWORD = 'find.set.keyword';
 
@@ -33,11 +30,6 @@ export const MARK_CANCEL = 'mark.cancel';
 export const MARK_SET_LOCAL = 'mark.set.local';
 
 export const NOOP = 'noop';
-
-export interface AddonSetEnabledAction extends Redux.Action {
-  type: typeof ADDON_SET_ENABLED;
-  enabled: boolean;
-}
 
 export interface FindSetKeywordAction extends Redux.Action {
   type: typeof FIND_SET_KEYWORD;
@@ -101,7 +93,6 @@ export interface NoopAction extends Redux.Action {
   type: typeof NOOP;
 }
 
-export type AddonAction = AddonSetEnabledAction;
 export type FindAction = FindSetKeywordAction | NoopAction;
 export type SettingAction = SettingSetAction;
 export type InputAction = InputKeyPressAction | InputClearKeysAction;
@@ -113,7 +104,6 @@ export type MarkAction =
   MarkCancelAction | MarkSetLocalAction | NoopAction;
 
 export type Action =
-  AddonAction |
   FindAction |
   SettingAction |
   InputAction |

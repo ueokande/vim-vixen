@@ -5,10 +5,13 @@ import KeymapperComponent from './keymapper';
 import * as settingActions from '../../actions/setting';
 import * as messages from '../../../shared/messages';
 import MessageListener from '../../MessageListener';
-import * as addonActions from '../../actions/addon';
 import * as blacklists from '../../../shared/blacklists';
 import * as keys from '../../../shared/utils/keys';
 import * as actions from '../../actions';
+
+import AddonEnabledUseCase from '../../usecases/AddonEnabledUseCase';
+
+let addonEnabledUseCase = new AddonEnabledUseCase();
 
 export default class Common {
   private win: Window;
@@ -34,12 +37,11 @@ export default class Common {
   }
 
   onMessage(message: messages.Message) {
-    let { enabled } = this.store.getState().addon;
     switch (message.type) {
     case messages.SETTINGS_CHANGED:
       return this.reloadSettings();
     case messages.ADDON_TOGGLE_ENABLED:
-      this.store.dispatch(addonActions.setEnabled(!enabled));
+      addonEnabledUseCase.toggle();
     }
   }
 
@@ -50,7 +52,11 @@ export default class Common {
           let enabled = !blacklists.includes(
             action.settings.blacklist, this.win.location.href
           );
-          this.store.dispatch(addonActions.setEnabled(enabled));
+          if (enabled) {
+            addonEnabledUseCase.enable();
+          } else {
+            addonEnabledUseCase.disable();
+          }
         });
     } catch (e) {
       // Sometime sendMessage fails when background script is not ready.

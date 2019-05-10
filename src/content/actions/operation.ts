@@ -6,23 +6,28 @@ import * as navigates from '../navigates';
 import * as focuses from '../focuses';
 import * as urls from '../urls';
 import * as consoleFrames from '../console-frames';
-import * as addonActions from './addon';
 import * as markActions from './mark';
 
+import AddonEnabledUseCase from '../usecases/AddonEnabledUseCase';
+
+let addonEnabledUseCase = new AddonEnabledUseCase();
+
 // eslint-disable-next-line complexity, max-lines-per-function
-const exec = (
+const exec = async(
   operation: operations.Operation,
   settings: any,
-  addonEnabled: boolean,
-): Promise<actions.Action> | actions.Action => {
+): Promise<actions.Action> => {
   let smoothscroll = settings.properties.smoothscroll;
   switch (operation.type) {
   case operations.ADDON_ENABLE:
-    return addonActions.enable();
+    await addonEnabledUseCase.enable();
+    return { type: actions.NOOP };
   case operations.ADDON_DISABLE:
-    return addonActions.disable();
+    await addonEnabledUseCase.disable();
+    return { type: actions.NOOP };
   case operations.ADDON_TOGGLE_ENABLED:
-    return addonActions.setEnabled(!addonEnabled);
+    await addonEnabledUseCase.toggle();
+    return { type: actions.NOOP };
   case operations.FIND_NEXT:
     window.top.postMessage(JSON.stringify({
       type: messages.FIND_NEXT,
