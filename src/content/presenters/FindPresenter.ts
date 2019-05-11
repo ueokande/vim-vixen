@@ -1,4 +1,3 @@
-import ConsoleClient, { ConsoleClientImpl } from '../client/ConsoleClient';
 
 export default interface FindPresenter {
   find(keyword: string, backwards: boolean): boolean;
@@ -28,12 +27,6 @@ interface MyWindow extends Window {
 declare var window: MyWindow;
 
 export class FindPresenterImpl implements FindPresenter {
-  private consoleClient: ConsoleClient;
-
-  constructor({ consoleClient = new ConsoleClientImpl() } = {}) {
-    this.consoleClient = consoleClient;
-  }
-
   find(keyword: string, backwards: boolean): boolean {
     let caseSensitive = false;
     let wrapScan = true;

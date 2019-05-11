@@ -1,12 +1,13 @@
 import * as markActions from '../../actions/mark';
-import * as scrolls from '../..//scrolls';
 import * as consoleFrames from '../..//console-frames';
 import * as keyUtils from '../../../shared/utils/keys';
 import Mark from '../../Mark';
 
 import { SettingRepositoryImpl } from '../../repositories/SettingRepository';
+import { ScrollPresenterImpl } from '../../presenters/ScrollPresenter';
 
 let settingRepository = new SettingRepositoryImpl();
+let scrollPresenter = new ScrollPresenterImpl();
 
 const cancelKey = (key: keyUtils.Key): boolean => {
   return key.key === 'Esc' || key.key === '[' && Boolean(key.ctrlKey);
@@ -54,7 +55,7 @@ export default class MarkComponent {
   }
 
   doSet(key: keyUtils.Key) {
-    let { x, y } = scrolls.getScroll();
+    let { x, y } = scrollPresenter.getScroll();
     this.store.dispatch(markActions.setLocal(key.key, x, y));
   }
 
@@ -69,11 +70,11 @@ export default class MarkComponent {
     }
 
     let { x, y } = marks[key.key];
-    scrolls.scrollTo(x, y, smoothscroll);
+    scrollPresenter.scrollTo(x, y, smoothscroll);
   }
 
   doSetGlobal(key: keyUtils.Key) {
-    let { x, y } = scrolls.getScroll();
+    let { x, y } = scrollPresenter.getScroll();
     this.store.dispatch(markActions.setGlobal(key.key, x, y));
   }
 

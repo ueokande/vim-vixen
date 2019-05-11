@@ -1,7 +1,6 @@
 import * as operations from '../../shared/operations';
 import * as actions from './index';
 import * as messages from '../../shared/messages';
-import * as scrolls from '../scrolls';
 import * as navigates from '../navigates';
 import * as focuses from '../focuses';
 import * as urls from '../urls';
@@ -10,9 +9,11 @@ import * as markActions from './mark';
 
 import AddonEnabledUseCase from '../usecases/AddonEnabledUseCase';
 import { SettingRepositoryImpl } from '../repositories/SettingRepository';
+import { ScrollPresenterImpl } from '../presenters/ScrollPresenter';
 
 let addonEnabledUseCase = new AddonEnabledUseCase();
 let settingRepository = new SettingRepositoryImpl();
+let scrollPresenter = new ScrollPresenterImpl();
 
 // eslint-disable-next-line complexity, max-lines-per-function
 const exec = async(
@@ -41,25 +42,25 @@ const exec = async(
     }), '*');
     break;
   case operations.SCROLL_VERTICALLY:
-    scrolls.scrollVertically(operation.count, smoothscroll);
+    scrollPresenter.scrollVertically(operation.count, smoothscroll);
     break;
   case operations.SCROLL_HORIZONALLY:
-    scrolls.scrollHorizonally(operation.count, smoothscroll);
+    scrollPresenter.scrollHorizonally(operation.count, smoothscroll);
     break;
   case operations.SCROLL_PAGES:
-    scrolls.scrollPages(operation.count, smoothscroll);
+    scrollPresenter.scrollPages(operation.count, smoothscroll);
     break;
   case operations.SCROLL_TOP:
-    scrolls.scrollToTop(smoothscroll);
+    scrollPresenter.scrollToTop(smoothscroll);
     break;
   case operations.SCROLL_BOTTOM:
-    scrolls.scrollToBottom(smoothscroll);
+    scrollPresenter.scrollToBottom(smoothscroll);
     break;
   case operations.SCROLL_HOME:
-    scrolls.scrollToHome(smoothscroll);
+    scrollPresenter.scrollToHome(smoothscroll);
     break;
   case operations.SCROLL_END:
-    scrolls.scrollToEnd(smoothscroll);
+    scrollPresenter.scrollToEnd(smoothscroll);
     break;
   case operations.FOLLOW_START:
     window.top.postMessage(JSON.stringify({

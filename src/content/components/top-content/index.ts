@@ -4,10 +4,11 @@ import FindComponent from './find';
 import * as consoleFrames from '../../console-frames';
 import * as messages from '../../../shared/messages';
 import MessageListener from '../../MessageListener';
-import * as scrolls from '../../scrolls';
 import AddonEnabledUseCase from '../../usecases/AddonEnabledUseCase';
+import { ScrollPresenterImpl } from '../../presenters/ScrollPresenter';
 
 let addonEnabledUseCase = new AddonEnabledUseCase();
+let scrollPresenter = new ScrollPresenterImpl();
 
 export default class TopContent {
   private win: Window;
@@ -42,7 +43,7 @@ export default class TopContent {
     case messages.ADDON_ENABLED_QUERY:
       return Promise.resolve(addonEnabled);
     case messages.TAB_SCROLL_TO:
-      return scrolls.scrollTo(message.x, message.y, false);
+      return scrollPresenter.scrollTo(message.x, message.y, false);
     }
   }
 }

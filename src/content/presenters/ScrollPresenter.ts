@@ -1,4 +1,4 @@
-import * as doms from '../shared/utils/dom';
+import * as doms from '../../shared/utils/dom';
 
 const SCROLL_DELTA_X = 64;
 const SCROLL_DELTA_Y = 64;
@@ -94,75 +94,86 @@ class Scroller {
   }
 }
 
-const getScroll = () => {
-  let target = scrollTarget();
-  return { x: target.scrollLeft, y: target.scrollTop };
-};
+type Point = { x: number, y: number };
 
-const scrollVertically = (count: number, smooth: boolean): void => {
-  let target = scrollTarget();
-  let delta = SCROLL_DELTA_Y * count;
-  if (scrolling) {
-    delta = SCROLL_DELTA_Y * count * 4;
+export default interface ScrollPresenter {
+  getScroll(): Point;
+  scrollVertically(amount: number, smooth: boolean): void;
+  scrollHorizonally(amount: number, smooth: boolean): void;
+  scrollPages(amount: number, smooth: boolean): void;
+  scrollTo(x: number, y: number, smooth: boolean): void;
+  scrollToTop(smooth: boolean): void;
+  scrollToBottom(smooth: boolean): void;
+  scrollToHome(smooth: boolean): void;
+  scrollToEnd(smooth: boolean): void;
+
+  // eslint-disable-next-line semi
+}
+
+export class ScrollPresenterImpl {
+  getScroll(): Point {
+    let target = scrollTarget();
+    return { x: target.scrollLeft, y: target.scrollTop };
   }
-  new Scroller(target, smooth).scrollBy(0, delta);
-};
 
-const scrollHorizonally = (count: number, smooth: boolean): void => {
-  let target = scrollTarget();
-  let delta = SCROLL_DELTA_X * count;
-  if (scrolling) {
-    delta = SCROLL_DELTA_X * count * 4;
+  scrollVertically(count: number, smooth: boolean): void {
+    let target = scrollTarget();
+    let delta = SCROLL_DELTA_Y * count;
+    if (scrolling) {
+      delta = SCROLL_DELTA_Y * count * 4;
+    }
+    new Scroller(target, smooth).scrollBy(0, delta);
   }
-  new Scroller(target, smooth).scrollBy(delta, 0);
-};
 
-const scrollPages = (count: number, smooth: boolean): void => {
-  let target = scrollTarget();
-  let height = target.clientHeight;
-  let delta = height * count;
-  if (scrolling) {
-    delta = height * count;
+  scrollHorizonally(count: number, smooth: boolean): void {
+    let target = scrollTarget();
+    let delta = SCROLL_DELTA_X * count;
+    if (scrolling) {
+      delta = SCROLL_DELTA_X * count * 4;
+    }
+    new Scroller(target, smooth).scrollBy(delta, 0);
   }
-  new Scroller(target, smooth).scrollBy(0, delta);
-};
 
-const scrollTo = (x: number, y: number, smooth: boolean): void => {
-  let target = scrollTarget();
-  new Scroller(target, smooth).scrollTo(x, y);
-};
+  scrollPages(count: number, smooth: boolean): void {
+    let target = scrollTarget();
+    let height = target.clientHeight;
+    let delta = height * count;
+    if (scrolling) {
+      delta = height * count;
+    }
+    new Scroller(target, smooth).scrollBy(0, delta);
+  }
 
-const scrollToTop = (smooth: boolean): void => {
-  let target = scrollTarget();
-  let x = target.scrollLeft;
-  let y = 0;
-  new Scroller(target, smooth).scrollTo(x, y);
-};
+  scrollTo(x: number, y: number, smooth: boolean): void {
+    let target = scrollTarget();
+    new Scroller(target, smooth).scrollTo(x, y);
+  }
 
-const scrollToBottom = (smooth: boolean): void => {
-  let target = scrollTarget();
-  let x = target.scrollLeft;
-  let y = target.scrollHeight;
-  new Scroller(target, smooth).scrollTo(x, y);
-};
+  scrollToTop(smooth: boolean): void {
+    let target = scrollTarget();
+    let x = target.scrollLeft;
+    let y = 0;
+    new Scroller(target, smooth).scrollTo(x, y);
+  }
 
-const scrollToHome = (smooth: boolean): void => {
-  let target = scrollTarget();
-  let x = 0;
-  let y = target.scrollTop;
-  new Scroller(target, smooth).scrollTo(x, y);
-};
+  scrollToBottom(smooth: boolean): void {
+    let target = scrollTarget();
+    let x = target.scrollLeft;
+    let y = target.scrollHeight;
+    new Scroller(target, smooth).scrollTo(x, y);
+  }
 
-const scrollToEnd = (smooth: boolean): void => {
-  let target = scrollTarget();
-  let x = target.scrollWidth;
-  let y = target.scrollTop;
-  new Scroller(target, smooth).scrollTo(x, y);
-};
+  scrollToHome(smooth: boolean): void {
+    let target = scrollTarget();
+    let x = 0;
+    let y = target.scrollTop;
+    new Scroller(target, smooth).scrollTo(x, y);
+  }
 
-export {
-  getScroll,
-  scrollVertically, scrollHorizonally, scrollPages,
-  scrollTo,
-  scrollToTop, scrollToBottom, scrollToHome, scrollToEnd
-};
+  scrollToEnd(smooth: boolean): void {
+    let target = scrollTarget();
+    let x = target.scrollWidth;
+    let y = target.scrollTop;
+    new Scroller(target, smooth).scrollTo(x, y);
+  }
+}
