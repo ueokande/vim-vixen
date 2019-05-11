@@ -1,8 +1,8 @@
 import FindRepository from '../../../src/content/repositories/FindRepository';
 import FindPresenter from '../../../src/content/presenters/FindPresenter';
-import ConsoleClient from '../../../src/content/client/ConsoleClient';
 import FindClient from '../../../src/content/client/FindClient';
 import FindUseCase from '../../../src/content/usecases/FindUseCase';
+import MockConsoleClient from '../mock/MockConsoleClient';
 import { expect } from 'chai';
 
 class MockFindRepository implements FindRepository {
@@ -55,29 +55,6 @@ class MockFindClient implements FindClient {
 
   setGlobalLastKeyword(keyword: string): Promise<void> {
     this.keyword = keyword;
-    return Promise.resolve();
-  }
-}
-
-class MockConsoleClient implements ConsoleClient {
-  public isError: boolean;
-
-  public text: string;
-
-  constructor() {
-    this.isError = false;
-    this.text = '';
-  }
-
-  info(text: string): Promise<void> {
-    this.isError = false;
-    this.text = text;
-    return Promise.resolve();
-  }
-
-  error(text: string): Promise<void> {
-    this.isError = true;
-    this.text = text;
     return Promise.resolve();
   }
 }

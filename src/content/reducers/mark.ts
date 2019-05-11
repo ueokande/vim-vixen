@@ -1,16 +1,13 @@
-import Mark from '../Mark';
 import * as actions from '../actions';
 
 export interface State {
   setMode: boolean;
   jumpMode: boolean;
-  marks: { [key: string]: Mark };
 }
 
 const defaultState: State = {
   setMode: false,
   jumpMode: false,
-  marks: {},
 };
 
 export default function reducer(
@@ -24,11 +21,6 @@ export default function reducer(
     return { ...state, jumpMode: true };
   case actions.MARK_CANCEL:
     return { ...state, setMode: false, jumpMode: false };
-  case actions.MARK_SET_LOCAL: {
-    let marks = { ...state.marks };
-    marks[action.key] = { x: action.x, y: action.y };
-    return { ...state, setMode: false, marks };
-  }
   default:
     return state;
   }

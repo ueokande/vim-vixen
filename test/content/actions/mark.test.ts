@@ -22,14 +22,4 @@ describe('mark actions', () => {
       expect(action.type).to.equal(actions.MARK_CANCEL);
     });
   });
-
-  describe('setLocal', () => {
-    it('create setLocal action', () => {
-      let action = markActions.setLocal('a', 20, 30);
-      expect(action.type).to.equal(actions.MARK_SET_LOCAL);
-      expect(action.key).to.equal('a');
-      expect(action.x).to.equal(20);
-      expect(action.y).to.equal(30);
-    });
-  });
 });

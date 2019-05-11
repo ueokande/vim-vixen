@@ -20,7 +20,6 @@ export const FOLLOW_CONTROLLER_BACKSPACE = 'follow.controller.backspace';
 export const MARK_START_SET = 'mark.start.set';
 export const MARK_START_JUMP = 'mark.start.jump';
 export const MARK_CANCEL = 'mark.cancel';
-export const MARK_SET_LOCAL = 'mark.set.local';
 
 export const NOOP = 'noop';
 
@@ -64,13 +63,6 @@ export interface MarkCancelAction extends Redux.Action {
   type: typeof MARK_CANCEL;
 }
 
-export interface MarkSetLocalAction extends Redux.Action {
-  type: typeof MARK_SET_LOCAL;
-  key: string;
-  x: number;
-  y: number;
-}
-
 export interface NoopAction extends Redux.Action {
   type: typeof NOOP;
 }
@@ -80,8 +72,7 @@ export type FollowAction =
   FollowControllerEnableAction | FollowControllerDisableAction |
   FollowControllerKeyPressAction | FollowControllerBackspaceAction;
 export type MarkAction =
-  MarkStartSetAction | MarkStartJumpAction |
-  MarkCancelAction | MarkSetLocalAction | NoopAction;
+  MarkStartSetAction | MarkStartJumpAction | MarkCancelAction | NoopAction;
 
 export type Action =
   InputAction |

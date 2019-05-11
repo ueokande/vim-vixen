@@ -6,7 +6,6 @@ describe("mark reducer", () => {
     let state = reducer(undefined, {});
     expect(state.setMode).to.be.false;
     expect(state.jumpMode).to.be.false;
-    expect(state.marks).to.be.empty;
   });
 
   it('starts set mode', () => {
@@ -28,14 +27,5 @@ describe("mark reducer", () => {
 
     state = reducer({ jumpMode: true }, action);
     expect(state.jumpMode).to.be.false;
-  });
-
-  it('stores local mark', () => {
-    let action = { type: actions.MARK_SET_LOCAL, key: 'a', x: 20, y: 30};
-    let state = reducer({ setMode: true }, action);
-    expect(state.setMode).to.be.false;
-    expect(state.marks['a']).to.be.an('object')
-    expect(state.marks['a'].x).to.equal(20)
-    expect(state.marks['a'].y).to.equal(30)
   });
 });

@@ -94,7 +94,7 @@ class Scroller {
   }
 }
 
-type Point = { x: number, y: number };
+export type Point = { x: number, y: number };
 
 export default interface ScrollPresenter {
   getScroll(): Point;
