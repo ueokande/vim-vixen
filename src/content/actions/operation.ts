@@ -3,15 +3,15 @@ import * as actions from './index';
 import * as messages from '../../shared/messages';
 import * as navigates from '../navigates';
 import * as focuses from '../focuses';
-import * as urls from '../urls';
-import * as consoleFrames from '../console-frames';
 import * as markActions from './mark';
 
 import AddonEnabledUseCase from '../usecases/AddonEnabledUseCase';
+import ClipboardUseCase from '../usecases/ClipboardUseCase';
 import { SettingRepositoryImpl } from '../repositories/SettingRepository';
 import { ScrollPresenterImpl } from '../presenters/ScrollPresenter';
 
 let addonEnabledUseCase = new AddonEnabledUseCase();
+let clipbaordUseCase = new ClipboardUseCase();
 let settingRepository = new SettingRepositoryImpl();
 let scrollPresenter = new ScrollPresenterImpl();
 
@@ -95,13 +95,11 @@ const exec = async(
     focuses.focusInput();
     break;
   case operations.URLS_YANK:
-    urls.yank(window);
-    consoleFrames.postInfo('Yanked ' + window.location.href);
+    await clipbaordUseCase.yankCurrentURL();
     break;
   case operations.URLS_PASTE:
-    urls.paste(
-      window, operation.newTab ? operation.newTab : false,
-      settings.search,
+    await clipbaordUseCase.openOrSearch(
+      operation.newTab ? operation.newTab : false,
     );
     break;
   default:
