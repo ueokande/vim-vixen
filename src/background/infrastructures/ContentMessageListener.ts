@@ -66,6 +66,12 @@ export default class ContentMessageListener {
       }
     });
     browser.runtime.onConnect.addListener(this.onConnected.bind(this));
+    browser.commands.onCommand.addListener((command) => {
+      const operation = { type: command };
+      this.onBackgroundOperation(operation).catch(() => {
+        // ignore
+      });
+    });
   }
 
   onMessage(

@@ -48,5 +48,31 @@
       "32": "resources/enabled_32x32.png"
     },
     "default_title": "Vim Vixen"
+  },
+  "commands": {
+     "tabs.close.force": {
+       "suggested_key": {
+         "default": "Ctrl+Shift+D"
+       },
+       "description": "delete tab"
+     },
+     "tabs.reopen": {
+       "suggested_key": {
+         "default": "Ctrl+Shift+U"
+       },
+       "description": "reopen closed tab"
+     },
+     "tabs.prev": {
+       "suggested_key": {
+         "default": "Ctrl+Shift+K"
+       },
+       "description": "select next tab"
+     },
+     "tabs.next": {
+       "suggested_key": {
+         "default": "Ctrl+Shift+J"
+       },
+       "description": "select previous tab"
+     }
   }
 }
