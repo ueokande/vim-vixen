@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "lib": ["es6", "dom", "es2017"],
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "jsx": "react",
+    "sourceMap": true,
+    "outDir": "./build",
+    "removeComments": true,
+    "importHelpers": true,
+
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+
+    "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"]
+  },
+  "include": [
+    "src"
+  ]
+}

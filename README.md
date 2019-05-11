@@ -92,8 +92,8 @@ change `"background"` property of `"follow.start"` action to true:
 #### Misc
 
 - <kbd>y</kbd>: copy URL in current tab
-- <kbd>p</kbd>: open clipbord's URL in current tab
-- <kbd>P</kbd>: open clipbord's URL in new tab
+- <kbd>p</kbd>: open clipboard's URL in current tab
+- <kbd>P</kbd>: open clipboard's URL in new tab
 - <kbd>Shift</kbd>+<kbd>Esc</kbd>: enable or disable the add-on in current tab.
 - <kbd>/</kbd>: start to find a keyword in the page
 - <kbd>n</kbd>: find next keyword in the page
@@ -179,7 +179,7 @@ Create a bookmark from the current URL.
 :addbookmark My bookmark title
 ```
 
-The key map <kbd>a</kbd> is a contenient way to create a bookmark from the
+The key map <kbd>a</kbd> is a convenient way to create a bookmark from the
 current page. That shows `:addbookmark` with a title from the current page into
 console.
 

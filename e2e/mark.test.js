@@ -29,7 +29,7 @@ describe("mark test", () => {
     http = newApp().listen(port);
 
     firefox = await lanthan.firefox();
-    await firefox.session.installAddon(path.join(__dirname, '..'));
+    await firefox.session.installAddonFromPath(path.join(__dirname, '..'));
     session = firefox.session;
     browser = firefox.browser;
   });

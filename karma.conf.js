@@ -6,16 +6,16 @@ module.exports = function (config) {
     basePath: '',
     frameworks: ['mocha', 'sinon'],
     files: [
-      'test/main.js',
-      'test/**/*.test.js',
-      'test/**/*.test.jsx',
+      'test/main.ts',
+      'test/**/*.test.ts',
+      'test/**/*.test.tsx',
       'test/**/*.html'
     ],
 
     preprocessors: {
-      'test/main.js': [ 'webpack', 'sourcemap' ],
-      'test/**/*.test.js': [ 'webpack', 'sourcemap' ],
-      'test/**/*.test.jsx': [ 'webpack', 'sourcemap' ],
+      'test/main.ts': [ 'webpack', 'sourcemap' ],
+      'test/**/*.test.ts': [ 'webpack', 'sourcemap' ],
+      'test/**/*.test.tsx': [ 'webpack', 'sourcemap' ],
       'test/**/*.html': ['html2js']
     },
 
@@ -29,6 +29,7 @@ module.exports = function (config) {
     singleRun: true,
 
     webpack: {
+      mode: 'development',
       devtool: 'inline-source-map',
       resolve: webpackConfig.resolve,
       module: webpackConfig.module
