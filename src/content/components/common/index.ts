@@ -1,4 +1,4 @@
-import InputComponent from './input';
+import InputDriver from './../../InputDriver';
 import FollowComponent from './follow';
 import MarkComponent from './mark';
 import KeymapperComponent from './keymapper';
@@ -15,7 +15,7 @@ let settingUseCase = new SettingUseCase();
 
 export default class Common {
   constructor(win: Window, store: any) {
-    const input = new InputComponent(win.document.body);
+    const input = new InputDriver(win.document.body);
     const follow = new FollowComponent();
     const mark = new MarkComponent(store);
     const keymapper = new KeymapperComponent(store);

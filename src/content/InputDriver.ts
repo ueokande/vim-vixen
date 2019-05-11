@@ -1,11 +1,11 @@
-import * as dom from '../../../shared/utils/dom';
-import * as keys from '../../../shared/utils/keys';
+import * as dom from '../shared/utils/dom';
+import * as keys from '../shared/utils/keys';
 
 const cancelKey = (e: KeyboardEvent): boolean => {
   return e.key === 'Escape' || e.key === '[' && e.ctrlKey;
 };
 
-export default class InputComponent {
+export default class InputDriver {
   private pressed: {[key: string]: string} = {};
 
   private onKeyListeners: ((key: keys.Key) => boolean)[] = [];
@@ -23,7 +23,7 @@ export default class InputComponent {
     this.onKeyListeners.push(cb);
   }
 
-  onKeyPress(e: KeyboardEvent) {
+  private onKeyPress(e: KeyboardEvent) {
     if (this.pressed[e.key] && this.pressed[e.key] !== 'keypress') {
       return;
     }
@@ -31,7 +31,7 @@ export default class InputComponent {
     this.capture(e);
   }
 
-  onKeyDown(e: KeyboardEvent) {
+  private onKeyDown(e: KeyboardEvent) {
     if (this.pressed[e.key] && this.pressed[e.key] !== 'keydown') {
       return;
     }
@@ -39,12 +39,12 @@ export default class InputComponent {
     this.capture(e);
   }
 
-  onKeyUp(e: KeyboardEvent) {
+  private onKeyUp(e: KeyboardEvent) {
     delete this.pressed[e.key];
   }
 
   // eslint-disable-next-line max-statements
-  capture(e: KeyboardEvent) {
+  private capture(e: KeyboardEvent) {
     let target = e.target;
     if (!(target instanceof HTMLElement)) {
       return;
@@ -71,7 +71,7 @@ export default class InputComponent {
     }
   }
 
-  fromInput(e: Element) {
+  private fromInput(e: Element) {
     return e instanceof HTMLInputElement ||
       e instanceof HTMLTextAreaElement ||
       e instanceof HTMLSelectElement ||
