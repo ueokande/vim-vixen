@@ -113,7 +113,7 @@ describe('FindUseCase', () => {
       presenter.document = 'gorilla kick';
       repository.keyword = 'gorilla';
 
-      await sut.startFind(null);
+      await sut.startFind(undefined);
 
       expect(await presenter.highlighted).to.be.true;
       expect(await consoleClient.text).to.equal('Pattern found: gorilla');
@@ -127,7 +127,7 @@ describe('FindUseCase', () => {
       repository.keyword = null;
       client.keyword = 'chimpanzee';
 
-      await sut.startFind(null);
+      await sut.startFind(undefined);
 
       expect(await presenter.highlighted).to.be.true;
       expect(await consoleClient.text).to.equal('Pattern found: chimpanzee');
@@ -150,7 +150,7 @@ describe('FindUseCase', () => {
       repository.keyword = null;
       client.keyword = null;
 
-      await sut.startFind(null);
+      await sut.startFind(undefined);
 
       expect(await consoleClient.text).to.equal('No previous search keywords');
       expect(await consoleClient.isError).to.be.true;
