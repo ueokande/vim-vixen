@@ -62,6 +62,12 @@
        },
        "description": "reopen closed tab"
      },
+     "tabs.reload": {
+       "suggested_key": {
+         "default": "Ctrl+Shift+R"
+       },
+       "description": "reload current tab"
+     },
      "tabs.prev": {
        "suggested_key": {
          "default": "Ctrl+Shift+K"
