@@ -25,7 +25,7 @@ export default class FindUseCase {
     this.consoleClient = consoleClient;
   }
 
-  async startFind(keyword: string | null): Promise<void> {
+  async startFind(keyword?: string): Promise<void> {
     this.presenter.clearSelection();
     if (keyword) {
       this.saveKeyword(keyword);

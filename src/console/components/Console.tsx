@@ -38,7 +38,8 @@ class Console extends React.Component<Props> {
     if (this.props.mode === 'command') {
       return this.props.dispatch(consoleActions.enterCommand(value));
     } else if (this.props.mode === 'find') {
-      return this.props.dispatch(consoleActions.enterFind(value));
+      return this.props.dispatch(consoleActions.enterFind(
+        value === '' ? undefined : value));
     }
   }
 

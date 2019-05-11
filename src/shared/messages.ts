@@ -42,162 +42,162 @@ export const SETTINGS_QUERY = 'settings.query';
 
 export const CONSOLE_FRAME_MESSAGE = 'console.frame.message';
 
-interface BackgroundOperationMessage {
+export interface BackgroundOperationMessage {
   type: typeof BACKGROUND_OPERATION;
   operation: operations.Operation;
 }
 
-interface ConsoleUnfocusMessage {
+export interface ConsoleUnfocusMessage {
   type: typeof CONSOLE_UNFOCUS;
 }
 
-interface ConsoleEnterCommandMessage {
+export interface ConsoleEnterCommandMessage {
   type: typeof CONSOLE_ENTER_COMMAND;
   text: string;
 }
 
-interface ConsoleEnterFindMessage {
+export interface ConsoleEnterFindMessage {
   type: typeof CONSOLE_ENTER_FIND;
-  text: string;
+  text?: string;
 }
 
-interface ConsoleQueryCompletionsMessage {
+export interface ConsoleQueryCompletionsMessage {
   type: typeof CONSOLE_QUERY_COMPLETIONS;
   text: string;
 }
 
-interface ConsoleShowCommandMessage {
+export interface ConsoleShowCommandMessage {
   type: typeof CONSOLE_SHOW_COMMAND;
   command: string;
 }
 
-interface ConsoleShowErrorMessage {
+export interface ConsoleShowErrorMessage {
   type: typeof CONSOLE_SHOW_ERROR;
   text: string;
 }
 
-interface ConsoleShowInfoMessage {
+export interface ConsoleShowInfoMessage {
   type: typeof CONSOLE_SHOW_INFO;
   text: string;
 }
 
-interface ConsoleShowFindMessage {
+export interface ConsoleShowFindMessage {
   type: typeof CONSOLE_SHOW_FIND;
 }
 
-interface ConsoleHideMessage {
+export interface ConsoleHideMessage {
   type: typeof CONSOLE_HIDE;
 }
 
-interface FollowStartMessage {
+export interface FollowStartMessage {
   type: typeof FOLLOW_START;
   newTab: boolean;
   background: boolean;
 }
 
-interface FollowRequestCountTargetsMessage {
+export interface FollowRequestCountTargetsMessage {
   type: typeof FOLLOW_REQUEST_COUNT_TARGETS;
   viewSize: { width: number, height: number };
   framePosition: { x: number, y: number };
 }
 
-interface FollowResponseCountTargetsMessage {
+export interface FollowResponseCountTargetsMessage {
   type: typeof FOLLOW_RESPONSE_COUNT_TARGETS;
   count: number;
 }
 
-interface FollowCreateHintsMessage {
+export interface FollowCreateHintsMessage {
   type: typeof FOLLOW_CREATE_HINTS;
   keysArray: string[];
   newTab: boolean;
   background: boolean;
 }
 
-interface FollowShowHintsMessage {
+export interface FollowShowHintsMessage {
   type: typeof FOLLOW_SHOW_HINTS;
   keys: string;
 }
 
-interface FollowRemoveHintsMessage {
+export interface FollowRemoveHintsMessage {
   type: typeof FOLLOW_REMOVE_HINTS;
 }
 
-interface FollowActivateMessage {
+export interface FollowActivateMessage {
   type: typeof FOLLOW_ACTIVATE;
   keys: string;
 }
 
-interface FollowKeyPressMessage {
+export interface FollowKeyPressMessage {
   type: typeof FOLLOW_KEY_PRESS;
   key: string;
   ctrlKey: boolean;
 }
 
-interface MarkSetGlobalMessage {
+export interface MarkSetGlobalMessage {
   type: typeof MARK_SET_GLOBAL;
   key: string;
   x: number;
   y: number;
 }
 
-interface MarkJumpGlobalMessage {
+export interface MarkJumpGlobalMessage {
   type: typeof MARK_JUMP_GLOBAL;
   key: string;
 }
 
-interface TabScrollToMessage {
+export interface TabScrollToMessage {
   type: typeof TAB_SCROLL_TO;
   x: number;
   y: number;
 }
 
-interface FindNextMessage {
+export interface FindNextMessage {
   type: typeof FIND_NEXT;
 }
 
-interface FindPrevMessage {
+export interface FindPrevMessage {
   type: typeof FIND_PREV;
 }
 
-interface FindGetKeywordMessage {
+export interface FindGetKeywordMessage {
   type: typeof FIND_GET_KEYWORD;
 }
 
-interface FindSetKeywordMessage {
+export interface FindSetKeywordMessage {
   type: typeof FIND_SET_KEYWORD;
   keyword: string;
   found: boolean;
 }
 
-interface AddonEnabledQueryMessage {
+export interface AddonEnabledQueryMessage {
   type: typeof ADDON_ENABLED_QUERY;
 }
 
-interface AddonEnabledResponseMessage {
+export interface AddonEnabledResponseMessage {
   type: typeof ADDON_ENABLED_RESPONSE;
   enabled: boolean;
 }
 
-interface AddonToggleEnabledMessage {
+export interface AddonToggleEnabledMessage {
   type: typeof ADDON_TOGGLE_ENABLED;
 }
 
-interface OpenUrlMessage {
+export interface OpenUrlMessage {
   type: typeof OPEN_URL;
   url: string;
   newTab: boolean;
   background: boolean;
 }
 
-interface SettingsChangedMessage {
+export interface SettingsChangedMessage {
   type: typeof SETTINGS_CHANGED;
 }
 
-interface SettingsQueryMessage {
+export interface SettingsQueryMessage {
   type: typeof SETTINGS_QUERY;
 }
 
-interface ConsoleFrameMessageMessage {
+export interface ConsoleFrameMessageMessage {
   type: typeof CONSOLE_FRAME_MESSAGE;
   message: any;
 }

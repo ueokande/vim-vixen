@@ -1,6 +1,5 @@
 import CommonComponent from '../common';
 import FollowController from './follow-controller';
-import FindComponent from './find';
 import * as consoleFrames from '../../console-frames';
 import * as messages from '../../../shared/messages';
 import MessageListener from '../../MessageListener';
@@ -18,7 +17,6 @@ export default class TopContent {
 
     new CommonComponent(win, store); // eslint-disable-line no-new
     new FollowController(win, store); // eslint-disable-line no-new
-    new FindComponent(); // eslint-disable-line no-new
 
     // TODO make component
     consoleFrames.initialize(this.win.document);

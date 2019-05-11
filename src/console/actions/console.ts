@@ -53,7 +53,7 @@ const enterCommand = async(
   return hideCommand();
 };
 
-const enterFind = (text: string): actions.ConsoleAction => {
+const enterFind = (text?: string): actions.ConsoleAction => {
   window.top.postMessage(JSON.stringify({
     type: messages.CONSOLE_ENTER_FIND,
     text,
