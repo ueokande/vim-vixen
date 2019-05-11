@@ -17,7 +17,7 @@ export default class TopContent {
 
     new CommonComponent(win, store); // eslint-disable-line no-new
     new FollowController(win, store); // eslint-disable-line no-new
-    new FindComponent(store); // eslint-disable-line no-new
+    new FindComponent(); // eslint-disable-line no-new
 
     // TODO make component
     consoleFrames.initialize(this.win.document);

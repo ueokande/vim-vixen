@@ -18,5 +18,4 @@ export class SettingRepositoryImpl implements SettingRepository {
   get(): Settings {
     return current;
   }
-
 }
