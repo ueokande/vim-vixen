@@ -7,6 +7,7 @@ import NavigateUseCase from '../usecases/NavigateUseCase';
 import FocusUseCase from '../usecases/FocusUseCase';
 import ClipboardUseCase from '../usecases/ClipboardUseCase';
 import BackgroundClient from '../client/BackgroundClient';
+import MarkKeyyUseCase from '../usecases/MarkKeyUseCase';
 import { Key } from '../../shared/utils/keys';
 
 export default class KeymapController {
@@ -26,6 +27,8 @@ export default class KeymapController {
 
   private backgroundClient: BackgroundClient;
 
+  private markKeyUseCase: MarkKeyyUseCase;
+
   constructor({
     keymapUseCase = new KeymapUseCase(),
     addonEnabledUseCase = new AddonEnabledUseCase(),
@@ -35,6 +38,7 @@ export default class KeymapController {
     focusUseCase = new FocusUseCase(),
     clipbaordUseCase = new ClipboardUseCase(),
     backgroundClient = new BackgroundClient(),
+    markKeyUseCase = new MarkKeyyUseCase(),
   } = {}) {
     this.keymapUseCase = keymapUseCase;
     this.addonEnabledUseCase = addonEnabledUseCase;
@@ -44,6 +48,7 @@ export default class KeymapController {
     this.focusUseCase = focusUseCase;
     this.clipbaordUseCase = clipbaordUseCase;
     this.backgroundClient = backgroundClient;
+    this.markKeyUseCase = markKeyUseCase;
   }
 
   // eslint-disable-next-line complexity, max-lines-per-function
@@ -98,10 +103,12 @@ export default class KeymapController {
     //     background: operation.background,
     //   }), '*');
     //   break;
-    // case operations.MARK_SET_PREFIX:
-    //   return markActions.startSet();
-    // case operations.MARK_JUMP_PREFIX:
-    //   return markActions.startJump();
+    case operations.MARK_SET_PREFIX:
+      this.markKeyUseCase.enableSetMode();
+      break;
+    case operations.MARK_JUMP_PREFIX:
+      this.markKeyUseCase.enableJumpMode();
+      break;
     case operations.NAVIGATE_HISTORY_PREV:
       this.navigateUseCase.openHistoryPrev();
       break;

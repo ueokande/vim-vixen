@@ -4,12 +4,15 @@ import consoleFrameStyle from './site-style';
 // import { newStore } from './store';
 import MessageListener from './MessageListener';
 import FindController from './controllers/FindController';
+import MarkController from './controllers/MarkController';
 import * as messages from '../shared/messages';
 import InputDriver from './InputDriver';
 import KeymapController from './controllers/KeymapController';
 import AddonEnabledUseCase from './usecases/AddonEnabledUseCase';
 import SettingUseCase from './usecases/SettingUseCase';
 import * as blacklists from '../shared/blacklists';
+import MarkKeyController from './controllers/MarkKeyController';
+import AddonEnabledController from './controllers/AddonEnabledController';
 
 // const store = newStore();
 
@@ -28,14 +31,28 @@ if (window.self === window.top) {
     }
     return undefined;
   });
+
+  let markController = new MarkController();
+  let addonEnabledController = new AddonEnabledController();
+
+  new MessageListener().onBackgroundMessage((message: messages.Message) => {
+    switch (message.type) {
+    case messages.ADDON_ENABLED_QUERY:
+      return addonEnabledController.getAddonEnabled(message);
+    case messages.TAB_SCROLL_TO:
+      return markController.scrollTo(message);
+    }
+    return undefined;
+  });
 } else {
   // new FrameContentComponent(window, store); // eslint-disable-line no-new
 }
 
 let keymapController = new KeymapController();
+let markKeyController = new MarkKeyController();
 let inputDriver = new InputDriver(document.body);
 // inputDriver.onKey(key => followSlaveController.pressKey(key));
-// inputDriver.onKey(key => markController.pressKey(key));
+inputDriver.onKey(key => markKeyController.press(key));
 inputDriver.onKey(key => keymapController.press(key));
 
 let style = window.document.createElement('style');
@@ -64,3 +81,14 @@ const reloadSettings = async() => {
   }
 };
 reloadSettings();
+
+new MessageListener().onBackgroundMessage((message: messages.Message): any => {
+  let addonEnabledUseCase = new AddonEnabledUseCase();
+
+  switch (message.type) {
+  case messages.SETTINGS_CHANGED:
+    return reloadSettings();
+  case messages.ADDON_TOGGLE_ENABLED:
+    return addonEnabledUseCase.toggle();
+  }
+});

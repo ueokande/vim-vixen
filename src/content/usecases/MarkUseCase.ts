@@ -51,9 +51,13 @@ export default class MarkUseCase {
       if (!pos) {
         throw new Error('Mark is not set');
       }
-      let smooth = this.settingRepository.get().properties.smoothscroll;
-      this.scrollPresenter.scrollTo(pos.x, pos.y, smooth);
+      this.scroll(pos.x, pos.y);
     }
+  }
+
+  scroll(x: number, y: number): void {
+    let smooth = this.settingRepository.get().properties.smoothscroll;
+    this.scrollPresenter.scrollTo(x, y, smooth);
   }
 
   private globalKey(key: string) {
