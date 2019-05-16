@@ -1,8 +1,11 @@
 import MessageListener from '../../MessageListener';
-import Hint from './hint';
+import Hint, { LinkHint, InputHint } from '../../presenters/Hint';
 import * as dom from '../../../shared/utils/dom';
 import * as messages from '../../../shared/messages';
 import * as keyUtils from '../../../shared/utils/keys';
+import TabsClient, { TabsClientImpl } from '../../client/TabsClient';
+
+let tabsClient: TabsClient = new TabsClientImpl();
 
 const TARGET_SELECTOR = [
   'a', 'button', 'input', 'textarea', 'area',
@@ -95,27 +98,6 @@ export default class Follow {
     return true;
   }
 
-  openLink(element: HTMLAreaElement|HTMLAnchorElement) {
-    // Browser prevent new tab by link with target='_blank'
-    if (!this.newTab && element.getAttribute('target') !== '_blank') {
-      element.click();
-      return;
-    }
-
-    let href = element.getAttribute('href');
-
-    // eslint-disable-next-line no-script-url
-    if (!href || href === '#' || href.toLowerCase().startsWith('javascript:')) {
-      return;
-    }
-    return browser.runtime.sendMessage({
-      type: messages.OPEN_URL,
-      url: element.href,
-      newTab: true,
-      background: this.background,
-    });
-  }
-
   countHints(sender: any, viewSize: Size, framePosition: Point) {
     this.targets = Follow.getTargetElements(this.win, viewSize, framePosition);
     sender.postMessage(JSON.stringify({
@@ -134,8 +116,13 @@ export default class Follow {
     this.hints = {};
     for (let i = 0; i < keysArray.length; ++i) {
       let keys = keysArray[i];
-      let hint = new Hint(this.targets[i], keys);
-      this.hints[keys] = hint;
+      let target = this.targets[i];
+      if (target instanceof HTMLAnchorElement ||
+        target instanceof HTMLAreaElement) {
+        this.hints[keys] = new LinkHint(target, keys);
+      } else {
+        this.hints[keys] = new InputHint(target, keys);
+      }
     }
   }
 
@@ -154,42 +141,26 @@ export default class Follow {
     this.targets = [];
   }
 
-  activateHints(keys: string) {
+  async activateHints(keys: string): Promise<void> {
     let hint = this.hints[keys];
     if (!hint) {
       return;
     }
-    let element = hint.getTarget();
-    switch (element.tagName.toLowerCase()) {
-    case 'a':
-      return this.openLink(element as HTMLAnchorElement);
-    case 'area':
-      return this.openLink(element as HTMLAreaElement);
-    case 'input':
-      switch ((element as HTMLInputElement).type) {
-      case 'file':
-      case 'checkbox':
-      case 'radio':
-      case 'submit':
-      case 'reset':
-      case 'button':
-      case 'image':
-      case 'color':
-        return element.click();
-      default:
-        return element.focus();
+
+    if (hint instanceof LinkHint) {
+      let url = hint.getLink();
+      // ignore taget='_blank'
+      if (!this.newTab && hint.getLinkTarget() !== '_blank') {
+        hint.click();
+        return;
       }
-    case 'textarea':
-      return element.focus();
-    case 'button':
-    case 'summary':
-      return element.click();
-    default:
-      if (dom.isContentEditable(element)) {
-        return element.focus();
-      } else if (element.hasAttribute('tabindex')) {
-        return element.click();
+      // eslint-disable-next-line no-script-url
+      if (!url || url === '#' || url.toLowerCase().startsWith('javascript:')) {
+        return;
       }
+      await tabsClient.openUrl(url, this.newTab, this.background);
+    } else if (hint instanceof InputHint) {
+      hint.activate();
     }
   }
 
