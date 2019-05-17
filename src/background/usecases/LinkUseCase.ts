@@ -12,8 +12,9 @@ export default class LinkUseCase {
   }
 
   openNewTab(url: string, openerId: number, background: boolean): Promise<any> {
-    return this.tabPresenter.create(url, {
-      openerTabId: openerId, active: !background
-    });
+    // openerTabId not supported on Android
+    let properties = typeof browser.tabs.Tab === "object" ?
+      { openerTabId: openerId, active: !background } : { active: !background };
+    return this.tabPresenter.create(url, properties);
   }
 }
