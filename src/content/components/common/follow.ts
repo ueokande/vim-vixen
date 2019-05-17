@@ -68,18 +68,12 @@ const isAriaHiddenOrAriaDisabled = (win: Window, element: Element): boolean => {
 export default class Follow {
   private win: Window;
 
-  private newTab: boolean;
-
-  private background: boolean;
-
   private hints: {[key: string]: Hint };
 
   private targets: HTMLElement[] = [];
 
   constructor(win: Window) {
     this.win = win;
-    this.newTab = false;
-    this.background = false;
     this.hints = {};
     this.targets = [];
 
@@ -106,13 +100,11 @@ export default class Follow {
     }), '*');
   }
 
-  createHints(keysArray: string[], newTab: boolean, background: boolean) {
+  createHints(keysArray: string[]) {
     if (keysArray.length !== this.targets.length) {
       throw new Error('illegal hint count');
     }
 
-    this.newTab = newTab;
-    this.background = background;
     this.hints = {};
     for (let i = 0; i < keysArray.length; ++i) {
       let keys = keysArray[i];
@@ -141,7 +133,7 @@ export default class Follow {
     this.targets = [];
   }
 
-  async activateHints(keys: string): Promise<void> {
+  async activateHints(keys: string, newTab: boolean, background: boolean): Promise<void> {
     let hint = this.hints[keys];
     if (!hint) {
       return;
@@ -150,7 +142,7 @@ export default class Follow {
     if (hint instanceof LinkHint) {
       let url = hint.getLink();
       // ignore taget='_blank'
-      if (!this.newTab && hint.getLinkTarget() !== '_blank') {
+      if (!newTab && hint.getLinkTarget() !== '_blank') {
         hint.click();
         return;
       }
@@ -158,7 +150,7 @@ export default class Follow {
       if (!url || url === '#' || url.toLowerCase().startsWith('javascript:')) {
         return;
       }
-      await tabsClient.openUrl(url, this.newTab, this.background);
+      await tabsClient.openUrl(url, newTab, background);
     } else if (hint instanceof InputHint) {
       hint.activate();
     }
@@ -169,12 +161,11 @@ export default class Follow {
     case messages.FOLLOW_REQUEST_COUNT_TARGETS:
       return this.countHints(sender, message.viewSize, message.framePosition);
     case messages.FOLLOW_CREATE_HINTS:
-      return this.createHints(
-        message.keysArray, message.newTab, message.background);
+      return this.createHints(message.keysArray);
     case messages.FOLLOW_SHOW_HINTS:
       return this.showHints(message.keys);
     case messages.FOLLOW_ACTIVATE:
-      return this.activateHints(message.keys);
+      return this.activateHints(message.keys, message.newTab, message.background);
     case messages.FOLLOW_REMOVE_HINTS:
       return this.removeHints();
     }

@@ -109,8 +109,6 @@ export interface FollowResponseCountTargetsMessage {
 export interface FollowCreateHintsMessage {
   type: typeof FOLLOW_CREATE_HINTS;
   keysArray: string[];
-  newTab: boolean;
-  background: boolean;
 }
 
 export interface FollowShowHintsMessage {
@@ -125,6 +123,8 @@ export interface FollowRemoveHintsMessage {
 export interface FollowActivateMessage {
   type: typeof FOLLOW_ACTIVATE;
   keys: string;
+  newTab: boolean;
+  background: boolean;
 }
 
 export interface FollowKeyPressMessage {

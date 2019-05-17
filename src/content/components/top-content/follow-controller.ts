@@ -87,6 +87,8 @@ export default class FollowController {
     broadcastMessage(this.win, {
       type: messages.FOLLOW_ACTIVATE,
       keys: this.state.keys as string,
+      newTab: this.state.newTab!!,
+      background: this.state.background!!,
     });
   }
 
