@@ -1,5 +1,5 @@
 import * as dom from '../shared/utils/dom';
-import * as keys from '../shared/utils/keys';
+import Key, * as keys from './domains/Key';
 
 const cancelKey = (e: KeyboardEvent): boolean => {
   return e.key === 'Escape' || e.key === '[' && e.ctrlKey;
@@ -8,7 +8,7 @@ const cancelKey = (e: KeyboardEvent): boolean => {
 export default class InputDriver {
   private pressed: {[key: string]: string} = {};
 
-  private onKeyListeners: ((key: keys.Key) => boolean)[] = [];
+  private onKeyListeners: ((key: Key) => boolean)[] = [];
 
   constructor(target: HTMLElement) {
     this.pressed = {};
@@ -19,7 +19,7 @@ export default class InputDriver {
     target.addEventListener('keyup', this.onKeyUp.bind(this));
   }
 
-  onKey(cb: (key: keys.Key) => boolean) {
+  onKey(cb: (key: Key) => boolean) {
     this.onKeyListeners.push(cb);
   }
 

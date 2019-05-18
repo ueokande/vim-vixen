@@ -7,29 +7,16 @@ import AddonEnabledRepository, { AddonEnabledRepositoryImpl }
 
 import * as operations from '../../shared/operations';
 import { Keymaps } from '../../shared/Settings';
-import * as keyUtils from '../../shared/utils/keys';
+import Key from '../domains/Key';
+import KeySequence, * as keySequenceUtils from '../domains/KeySequence';
 
-type KeymapEntityMap = Map<keyUtils.Key[], operations.Operation>;
+type KeymapEntityMap = Map<KeySequence, operations.Operation>;
 
 const reservedKeymaps: Keymaps = {
   '<Esc>': { type: operations.CANCEL },
   '<C-[>': { type: operations.CANCEL },
 };
 
-const mapStartsWith = (
-  mapping: keyUtils.Key[],
-  keys: keyUtils.Key[],
-): boolean => {
-  if (mapping.length < keys.length) {
-    return false;
-  }
-  for (let i = 0; i < keys.length; ++i) {
-    if (!keyUtils.equals(mapping[i], keys[i])) {
-      return false;
-    }
-  }
-  return true;
-};
 
 export default class KeymapUseCase {
   private repository: KeymapRepository;
@@ -48,13 +35,13 @@ export default class KeymapUseCase {
     this.addonEnabledRepository = addonEnabledRepository;
   }
 
-  nextOp(key: keyUtils.Key): operations.Operation | null {
-    let keys = this.repository.enqueueKey(key);
+  nextOp(key: Key): operations.Operation | null {
+    let sequence = this.repository.enqueueKey(key);
 
     let keymaps = this.keymapEntityMap();
     let matched = Array.from(keymaps.keys()).filter(
-      (mapping: keyUtils.Key[]) => {
-        return mapStartsWith(mapping, keys);
+      (mapping: KeySequence) => {
+        return mapping.startsWith(sequence);
       });
     if (!this.addonEnabledRepository.get()) {
       // available keymaps are only ADDON_ENABLE and ADDON_TOGGLE_ENABLED if
@@ -70,7 +57,7 @@ export default class KeymapUseCase {
       this.repository.clear();
       return null;
     } else if (matched.length > 1 ||
-      matched.length === 1 && keys.length < matched[0].length) {
+      matched.length === 1 && sequence.length() < matched[0].length()) {
       // More than one operations are matched
       return null;
     }
@@ -91,10 +78,10 @@ export default class KeymapUseCase {
     };
     let entries = Object.entries(keymaps).map((entry) => {
       return [
-        keyUtils.fromMapKeys(entry[0]),
+        keySequenceUtils.fromMapKeys(entry[0]),
         entry[1],
       ];
-    }) as [keyUtils.Key[], operations.Operation][];
-    return new Map<keyUtils.Key[], operations.Operation>(entries);
+    }) as [KeySequence, operations.Operation][];
+    return new Map<KeySequence, operations.Operation>(entries);
   }
 }

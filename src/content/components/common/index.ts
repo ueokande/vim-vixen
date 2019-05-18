@@ -1,11 +1,11 @@
 import InputDriver from './../../InputDriver';
 import FollowComponent from './follow';
 import MarkComponent from './mark';
-import KeymapperComponent from './keymapper';
+// import KeymapperComponent from './keymapper';
 import * as messages from '../../../shared/messages';
 import MessageListener from '../../MessageListener';
 import * as blacklists from '../../../shared/blacklists';
-import * as keys from '../../../shared/utils/keys';
+import Key from '../../domains/Key';
 
 import AddonEnabledUseCase from '../../usecases/AddonEnabledUseCase';
 import SettingUseCase from '../../usecases/SettingUseCase';
@@ -18,11 +18,11 @@ export default class Common {
     const input = new InputDriver(win.document.body);
     const follow = new FollowComponent();
     const mark = new MarkComponent(store);
-    const keymapper = new KeymapperComponent(store);
+    // const keymapper = new KeymapperComponent(store);
 
-    input.onKey((key: keys.Key) => follow.key(key));
-    input.onKey((key: keys.Key) => mark.key(key));
-    input.onKey((key: keys.Key) => keymapper.key(key));
+    input.onKey((key: Key) => follow.key(key));
+    input.onKey((key: Key) => mark.key(key));
+    // input.onKey((key: Key) => keymapper.key(key));
 
     this.reloadSettings();
 

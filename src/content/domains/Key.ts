@@ -1,9 +1,11 @@
-export interface Key {
-    key: string;
-    shiftKey: boolean | undefined;
-    ctrlKey: boolean | undefined;
-    altKey: boolean | undefined;
-    metaKey: boolean | undefined;
+export default interface Key {
+  key: string;
+  shiftKey?: boolean;
+  ctrlKey?: boolean;
+  altKey?: boolean;
+  metaKey?: boolean;
+
+  // eslint-disable-next-line semi
 }
 
 const modifiedKeyName = (name: string): string => {
@@ -18,7 +20,7 @@ const modifiedKeyName = (name: string): string => {
   return name;
 };
 
-const fromKeyboardEvent = (e: KeyboardEvent): Key => {
+export const fromKeyboardEvent = (e: KeyboardEvent): Key => {
   let key = modifiedKeyName(e.key);
   let shift = e.shiftKey;
   if (key.length === 1 && key.toUpperCase() === key.toLowerCase()) {
@@ -36,7 +38,7 @@ const fromKeyboardEvent = (e: KeyboardEvent): Key => {
   };
 };
 
-const fromMapKey = (key: string): Key => {
+export const fromMapKey = (key: string): Key => {
   if (key.startsWith('<') && key.endsWith('>')) {
     let inner = key.slice(1, -1);
     let shift = inner.includes('S-');
@@ -63,37 +65,10 @@ const fromMapKey = (key: string): Key => {
   };
 };
 
-const fromMapKeys = (keys: string): Key[] => {
-  const fromMapKeysRecursive = (
-    remainings: string, mappedKeys: Key[],
-  ): Key[] => {
-    if (remainings.length === 0) {
-      return mappedKeys;
-    }
-
-    let nextPos = 1;
-    if (remainings.startsWith('<')) {
-      let ltPos = remainings.indexOf('>');
-      if (ltPos > 0) {
-        nextPos = ltPos + 1;
-      }
-    }
-
-    return fromMapKeysRecursive(
-      remainings.slice(nextPos),
-      mappedKeys.concat([fromMapKey(remainings.slice(0, nextPos))])
-    );
-  };
-
-  return fromMapKeysRecursive(keys, []);
-};
-
-const equals = (e1: Key, e2: Key): boolean => {
+export const equals = (e1: Key, e2: Key): boolean => {
   return e1.key === e2.key &&
     e1.ctrlKey === e2.ctrlKey &&
     e1.metaKey === e2.metaKey &&
     e1.altKey === e2.altKey &&
     e1.shiftKey === e2.shiftKey;
 };
-
-export { fromKeyboardEvent, fromMapKey, fromMapKeys, equals };

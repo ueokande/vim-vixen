@@ -1,6 +1,6 @@
 import MarkUseCase from '../usecases/MarkUseCase';
 import MarkKeyyUseCase from '../usecases/MarkKeyUseCase';
-import * as keys from '../../shared/utils/keys';
+import Key from '../domains/Key';
 
 export default class MarkKeyController {
   private markUseCase: MarkUseCase;
@@ -15,7 +15,7 @@ export default class MarkKeyController {
     this.markKeyUseCase = markKeyUseCase;
   }
 
-  press(key: keys.Key): boolean {
+  press(key: Key): boolean {
     if (this.markKeyUseCase.isSetMode()) {
       this.markUseCase.set(key.key);
       this.markKeyUseCase.disableSetMode();

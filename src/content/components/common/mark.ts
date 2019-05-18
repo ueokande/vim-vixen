@@ -1,12 +1,12 @@
 import * as markActions from '../../actions/mark';
 import * as consoleFrames from '../..//console-frames';
-import * as keyUtils from '../../../shared/utils/keys';
+import Key from '../../domains/Key';
 
 import MarkUseCase from '../../usecases/MarkUseCase';
 
 let markUseCase = new MarkUseCase();
 
-const cancelKey = (key: keyUtils.Key): boolean => {
+const cancelKey = (key: Key): boolean => {
   return key.key === 'Esc' || key.key === '[' && Boolean(key.ctrlKey);
 };
 
@@ -18,7 +18,7 @@ export default class MarkComponent {
   }
 
   // eslint-disable-next-line max-statements
-  key(key: keyUtils.Key) {
+  key(key: Key) {
     let { mark: markState } = this.store.getState();
 
     if (!markState.setMode && !markState.jumpMode) {

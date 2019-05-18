@@ -1,7 +1,7 @@
 import MessageListener from '../../MessageListener';
 import { LinkHint, InputHint } from '../../presenters/Hint';
 import * as messages from '../../../shared/messages';
-import { Key } from '../../../shared/utils/keys';
+import Key from '../../domains/Key';
 import TabsClient, { TabsClientImpl } from '../../client/TabsClient';
 import FollowMasterClient, { FollowMasterClientImpl }
   from '../../client/FollowMasterClient';

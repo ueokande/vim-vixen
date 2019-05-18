@@ -1,5 +1,5 @@
 import Redux from 'redux';
-import * as keyUtils from '../../shared/utils/keys';
+import Key from '../domains/Key';
 
 // User input
 export const INPUT_KEY_PRESS = 'input.key.press';
@@ -25,7 +25,7 @@ export const NOOP = 'noop';
 
 export interface InputKeyPressAction extends Redux.Action {
   type: typeof INPUT_KEY_PRESS;
-  key: keyUtils.Key;
+  key: Key;
 }
 
 export interface InputClearKeysAction extends Redux.Action {

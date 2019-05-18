@@ -1,7 +1,7 @@
 import * as actions from './index';
-import * as keyUtils from '../../shared/utils/keys';
+import Key from '../domains/Key';
 
-const keyPress = (key: keyUtils.Key): actions.InputAction => {
+const keyPress = (key: Key): actions.InputAction => {
   return {
     type: actions.INPUT_KEY_PRESS,
     key,

@@ -8,7 +8,7 @@ import FocusUseCase from '../usecases/FocusUseCase';
 import ClipboardUseCase from '../usecases/ClipboardUseCase';
 import BackgroundClient from '../client/BackgroundClient';
 import MarkKeyyUseCase from '../usecases/MarkKeyUseCase';
-import { Key } from '../../shared/utils/keys';
+import Key from '../domains/Key';
 
 export default class KeymapController {
   private keymapUseCase: KeymapUseCase;

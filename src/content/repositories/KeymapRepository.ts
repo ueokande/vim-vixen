@@ -1,23 +1,24 @@
-import { Key } from '../../shared/utils/keys';
+import Key from '../domains/Key';
+import KeySequence from '../domains/KeySequence';
 
 export default interface KeymapRepository {
-  enqueueKey(key: Key): Key[];
+  enqueueKey(key: Key): KeySequence;
 
   clear(): void;
 
   // eslint-disable-next-line semi
 }
 
-let current: Key[] = [];
+let current: KeySequence = KeySequence.from([]);
 
 export class KeymapRepositoryImpl {
 
-  enqueueKey(key: Key): Key[] {
+  enqueueKey(key: Key): KeySequence {
     current.push(key);
     return current;
   }
 
   clear(): void {
-    current = [];
+    current = KeySequence.from([]);
   }
 }

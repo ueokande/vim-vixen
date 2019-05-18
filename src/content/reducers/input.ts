@@ -1,8 +1,8 @@
 import * as actions from '../actions';
-import * as keyUtils from '../../shared/utils/keys';
+import Key from '../domains/Key';
 
 export interface State {
-  keys: keyUtils.Key[],
+  keys: Key[],
 }
 
 const defaultState: State = {

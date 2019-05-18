@@ -1,11 +1,12 @@
-import * as keys from 'shared/utils/keys';
+import Key, * as keys from '../../../src/content/domains/Key';
+import { expect } from 'chai'
 
-describe("keys util", () => {
+describe("Key", () => {
   describe('fromKeyboardEvent', () => {
     it('returns from keyboard input Ctrl+X', () => {
-      let k = keys.fromKeyboardEvent({
-        key: 'x', shiftKey: false, ctrlKey: true, altKey: false, metaKey: true
-      });
+      let k = keys.fromKeyboardEvent(new KeyboardEvent('keydown', {
+        key: 'x', shiftKey: false, ctrlKey: true, altKey: false, metaKey: true,
+      }));
       expect(k.key).to.equal('x');
       expect(k.shiftKey).to.be.false;
       expect(k.ctrlKey).to.be.true;
@@ -14,9 +15,9 @@ describe("keys util", () => {
     });
 
     it('returns from keyboard input Shift+Esc', () => {
-      let k = keys.fromKeyboardEvent({
+      let k = keys.fromKeyboardEvent(new KeyboardEvent('keydown', {
         key: 'Escape', shiftKey: true, ctrlKey: false, altKey: false, metaKey: true
-      });
+      }));
       expect(k.key).to.equal('Esc');
       expect(k.shiftKey).to.be.true;
       expect(k.ctrlKey).to.be.false;
@@ -26,9 +27,9 @@ describe("keys util", () => {
 
     it('returns from keyboard input Ctrl+$', () => {
       // $ required shift pressing on most keyboards
-      let k = keys.fromKeyboardEvent({
+      let k = keys.fromKeyboardEvent(new KeyboardEvent('keydown', {
         key: '$', shiftKey: true, ctrlKey: true, altKey: false, metaKey: false
-      });
+      }));
       expect(k.key).to.equal('$');
       expect(k.shiftKey).to.be.false;
       expect(k.ctrlKey).to.be.true;
@@ -37,9 +38,9 @@ describe("keys util", () => {
     });
 
     it('returns from keyboard input Crtl+Space', () => {
-      let k = keys.fromKeyboardEvent({
+      let k = keys.fromKeyboardEvent(new KeyboardEvent('keydown', {
         key: ' ', shiftKey: false, ctrlKey: true, altKey: false, metaKey: false
-      });
+      }));
       expect(k.key).to.equal('Space');
       expect(k.shiftKey).to.be.false;
       expect(k.ctrlKey).to.be.true;
@@ -122,43 +123,15 @@ describe("keys util", () => {
     });
   });
 
-  describe('fromMapKeys', () => {
-    it('returns mapped keys for Shift+Esc', () => {
-      let keyArray = keys.fromMapKeys('<S-Esc>');
-      expect(keyArray).to.have.lengthOf(1);
-      expect(keyArray[0].key).to.equal('Esc');
-      expect(keyArray[0].shiftKey).to.be.true;
-    });
-
-    it('returns mapped keys for a<C-B><A-C>d<M-e>', () => {
-      let keyArray = keys.fromMapKeys('a<C-B><A-C>d<M-e>');
-      expect(keyArray).to.have.lengthOf(5);
-      expect(keyArray[0].key).to.equal('a');
-      expect(keyArray[1].ctrlKey).to.be.true;
-      expect(keyArray[1].key).to.equal('b');
-      expect(keyArray[2].altKey).to.be.true;
-      expect(keyArray[2].key).to.equal('c');
-      expect(keyArray[3].key).to.equal('d');
-      expect(keyArray[4].metaKey).to.be.true;
-      expect(keyArray[4].key).to.equal('e');
-    });
-  })
-
   describe('equals', () => {
-    expect(keys.equals({
-      key: 'x',
-      ctrlKey: true,
-    }, {
-      key: 'x',
-      ctrlKey: true,
-    })).to.be.true;
+    expect(keys.equals(
+      { key: 'x', ctrlKey: true, },
+      { key: 'x', ctrlKey: true, },
+    )).to.be.true;
 
-    expect(keys.equals({
-      key: 'X',
-      shiftKey: true,
-    }, {
-      key: 'x',
-      ctrlKey: true,
-    })).to.be.false;
+    expect(keys.equals(
+      { key: 'X', shiftKey: true, },
+      { key: 'x', ctrlKey: true, },
+    )).to.be.false;
   });
 });
