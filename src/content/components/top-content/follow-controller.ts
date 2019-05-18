@@ -1,17 +1,13 @@
 import * as followControllerActions from '../../actions/follow-controller';
 import * as messages from '../../../shared/messages';
-import MessageListener, { WebMessageSender } from '../../MessageListener';
+import MessageListener from '../../MessageListener';
 import HintKeyProducer from '../../hint-key-producer';
 
 import { SettingRepositoryImpl } from '../../repositories/SettingRepository';
+import FollowSlaveClient, { FollowSlaveClientImpl }
+  from '../../client/FollowSlaveClient';
 
 let settingRepository = new SettingRepositoryImpl();
-
-const broadcastMessage = (win: Window, message: messages.Message): void => {
-  let json = JSON.stringify(message);
-  let frames = [win.self].concat(Array.from(win.frames as any));
-  frames.forEach(frame => frame.postMessage(json, '*'));
-};
 
 export default class FollowController {
   private win: Window;
@@ -43,7 +39,7 @@ export default class FollowController {
     });
   }
 
-  onMessage(message: messages.Message, sender: WebMessageSender) {
+  onMessage(message: messages.Message, sender: Window) {
     switch (message.type) {
     case messages.FOLLOW_START:
       return this.store.dispatch(
@@ -77,18 +73,17 @@ export default class FollowController {
       this.store.dispatch(followControllerActions.disable());
     }
 
-    broadcastMessage(this.win, {
-      type: messages.FOLLOW_SHOW_HINTS,
-      keys: this.state.keys as string,
+    this.broadcastMessage((c: FollowSlaveClient) => {
+      c.filterHints(this.state.keys!!);
     });
   }
 
   activate(): void {
-    broadcastMessage(this.win, {
-      type: messages.FOLLOW_ACTIVATE,
-      keys: this.state.keys as string,
-      newTab: this.state.newTab!!,
-      background: this.state.background!!,
+    this.broadcastMessage((c: FollowSlaveClient) => {
+      c.activateIfExists(
+        this.state.keys!!,
+        this.state.newTab!!,
+        this.state.background!!);
     });
   }
 
@@ -123,50 +118,64 @@ export default class FollowController {
     let doc = this.win.document;
     let viewWidth = this.win.innerWidth || doc.documentElement.clientWidth;
     let viewHeight = this.win.innerHeight || doc.documentElement.clientHeight;
-    let frameElements = this.win.document.querySelectorAll('frame,iframe');
+    let frameElements = this.win.document.querySelectorAll('iframe');
 
-    this.win.postMessage(JSON.stringify({
-      type: messages.FOLLOW_REQUEST_COUNT_TARGETS,
-      viewSize: { width: viewWidth, height: viewHeight },
-      framePosition: { x: 0, y: 0 },
-    }), '*');
-    frameElements.forEach((ele) => {
+    new FollowSlaveClientImpl(this.win).requestHintCount(
+      { width: viewWidth, height: viewHeight },
+      { x: 0, y: 0 });
+
+    for (let ele of Array.from(frameElements)) {
       let { left: frameX, top: frameY } = ele.getBoundingClientRect();
-      let message = JSON.stringify({
-        type: messages.FOLLOW_REQUEST_COUNT_TARGETS,
-        viewSize: { width: viewWidth, height: viewHeight },
-        framePosition: { x: frameX, y: frameY },
-      });
-      if (ele instanceof HTMLFrameElement && ele.contentWindow ||
-        ele instanceof HTMLIFrameElement && ele.contentWindow) {
-        ele.contentWindow.postMessage(message, '*');
-      }
-    });
+      new FollowSlaveClientImpl(ele.contentWindow!!).requestHintCount(
+        { width: viewWidth, height: viewHeight },
+        { x: frameX, y: frameY },
+      );
+    }
   }
 
-  create(count: number, sender: WebMessageSender) {
+  create(count: number, sender: Window) {
     let produced = [];
     for (let i = 0; i < count; ++i) {
       produced.push((this.producer as HintKeyProducer).produce());
     }
     this.keys = this.keys.concat(produced);
 
-    (sender as Window).postMessage(JSON.stringify({
-      type: messages.FOLLOW_CREATE_HINTS,
-      keysArray: produced,
-      newTab: this.state.newTab,
-      background: this.state.background,
-    }), '*');
+    let doc = this.win.document;
+    let viewWidth = this.win.innerWidth || doc.documentElement.clientWidth;
+    let viewHeight = this.win.innerHeight || doc.documentElement.clientHeight;
+    let pos = { x: 0, y: 0 };
+    if (sender !== window) {
+      let frameElements = this.win.document.querySelectorAll('iframe');
+      let ele = Array.from(frameElements).find(e => e.contentWindow === sender);
+      if (!ele) {
+        // elements of the sender is gone
+        return;
+      }
+      let { left: frameX, top: frameY } = ele.getBoundingClientRect();
+      pos = { x: frameX, y: frameY };
+    }
+    new FollowSlaveClientImpl(sender).createHints(
+      { width: viewWidth, height: viewHeight },
+      pos,
+      produced,
+    );
   }
 
   remove() {
     this.keys = [];
-    broadcastMessage(this.win, {
-      type: messages.FOLLOW_REMOVE_HINTS,
+    this.broadcastMessage((c: FollowSlaveClient) => {
+      c.clearHints();
     });
   }
 
   private hintchars() {
     return settingRepository.get().properties.hintchars;
+  }
+
+  private broadcastMessage(f: (clinet: FollowSlaveClient) => void) {
+    let windows = [window.self].concat(Array.from(window.frames as any));
+    windows
+      .map(w => new FollowSlaveClientImpl(w))
+      .forEach(c => f(c));
   }
 }

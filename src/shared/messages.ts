@@ -108,12 +108,14 @@ export interface FollowResponseCountTargetsMessage {
 
 export interface FollowCreateHintsMessage {
   type: typeof FOLLOW_CREATE_HINTS;
-  keysArray: string[];
+  tags: string[];
+  viewSize: { width: number, height: number };
+  framePosition: { x: number, y: number };
 }
 
 export interface FollowShowHintsMessage {
   type: typeof FOLLOW_SHOW_HINTS;
-  keys: string;
+  prefix: string;
 }
 
 export interface FollowRemoveHintsMessage {
@@ -122,7 +124,7 @@ export interface FollowRemoveHintsMessage {
 
 export interface FollowActivateMessage {
   type: typeof FOLLOW_ACTIVATE;
-  keys: string;
+  tag: string;
   newTab: boolean;
   background: boolean;
 }

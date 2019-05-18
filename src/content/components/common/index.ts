@@ -16,7 +16,7 @@ let settingUseCase = new SettingUseCase();
 export default class Common {
   constructor(win: Window, store: any) {
     const input = new InputComponent(win.document.body);
-    const follow = new FollowComponent(win);
+    const follow = new FollowComponent();
     const mark = new MarkComponent(store);
     const keymapper = new KeymapperComponent(store);
 

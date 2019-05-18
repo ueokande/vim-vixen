@@ -9,11 +9,13 @@ import AddonEnabledUseCase from '../usecases/AddonEnabledUseCase';
 import ClipboardUseCase from '../usecases/ClipboardUseCase';
 import { SettingRepositoryImpl } from '../repositories/SettingRepository';
 import { ScrollPresenterImpl } from '../presenters/ScrollPresenter';
+import { FollowMasterClientImpl } from '../client/FollowMasterClient';
 
 let addonEnabledUseCase = new AddonEnabledUseCase();
 let clipbaordUseCase = new ClipboardUseCase();
 let settingRepository = new SettingRepositoryImpl();
 let scrollPresenter = new ScrollPresenterImpl();
+let followMasterClient = new FollowMasterClientImpl(window.top);
 
 // eslint-disable-next-line complexity, max-lines-per-function
 const exec = async(
@@ -63,11 +65,7 @@ const exec = async(
     scrollPresenter.scrollToEnd(smoothscroll);
     break;
   case operations.FOLLOW_START:
-    window.top.postMessage(JSON.stringify({
-      type: messages.FOLLOW_START,
-      newTab: operation.newTab,
-      background: operation.background,
-    }), '*');
+    followMasterClient.startFollow(operation.newTab, operation.background);
     break;
   case operations.MARK_SET_PREFIX:
     return markActions.startSet();
