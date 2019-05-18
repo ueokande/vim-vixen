@@ -1,5 +1,6 @@
 // import TopContentComponent from './components/top-content';
 // import FrameContentComponent from './components/frame-content';
+import * as consoleFrames from './console-frames';
 import consoleFrameStyle from './site-style';
 // import { newStore } from './store';
 import MessageListener from './MessageListener';
@@ -28,6 +29,9 @@ if (window.self === window.top) {
       return findController.next(message);
     case messages.FIND_PREV:
       return findController.prev(message);
+    case messages.CONSOLE_UNFOCUS:
+      window.focus();
+      consoleFrames.blur(window.document);
     }
     return undefined;
   });
@@ -44,6 +48,8 @@ if (window.self === window.top) {
     }
     return undefined;
   });
+
+  consoleFrames.initialize(window.document);
 } else {
   // new FrameContentComponent(window, store); // eslint-disable-line no-new
 }
