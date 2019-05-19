@@ -28,7 +28,10 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
 
-    "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"]
+    "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"],
+
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": [
     "src"
