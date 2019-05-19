@@ -1,5 +1,6 @@
 import FocusPresenter, { FocusPresenterImpl }
   from '../presenters/FocusPresenter';
+
 export default class FocusUseCases {
   private presenter: FocusPresenter;
 

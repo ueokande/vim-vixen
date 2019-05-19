@@ -1,19 +1,26 @@
-import * as navigates from 'content/navigates';
+import NavigationPresenter, { NavigationPresenterImpl }
+  from '../../../src/content/presenters/NavigationPresenter';
+import { expect } from 'chai';
 
-const testRel = (done, rel, html) => {
-  const method = rel === 'prev' ? 'linkPrev' : 'linkNext';
-  document.body.innerHTML = html;
-  navigates[method](window);
-  setTimeout(() => {
-    expect(document.location.hash).to.equal(`#${rel}`);
-    done();
-  }, 0);
-};
+describe('NavigationPresenter', () => {
+  let sut;
 
-const testPrev = html => done => testRel(done, 'prev', html);
-const testNext = html => done => testRel(done, 'next', html);
+  const testRel = (done, rel, html) => {
+    const method = rel === 'prev' ? sut.openLinkPrev.bind(sut) : sut.openLinkNext.bind(sut);
+    document.body.innerHTML = html;
+    method();
+    setTimeout(() => {
+      expect(document.location.hash).to.equal(`#${rel}`);
+      done();
+    }, 0);
+  };
+  const testPrev = html => done => testRel(done, 'prev', html);
+  const testNext = html => done => testRel(done, 'next', html);
 
-describe('navigates module', () => {
+  before(() => {
+    sut = new NavigationPresenterImpl();
+  });
+
   describe('#linkPrev', () => {
     it('navigates to <link> elements whose rel attribute is "prev"', testPrev(
       '<link rel="prev" href="#prev" />'
@@ -130,7 +137,7 @@ describe('navigates module', () => {
     // NOTE: not able to test location
     it('removes hash', () => {
       window.location.hash = '#section-1';
-      navigates.parent(window);
+      sut.openParent();
       expect(document.location.hash).to.be.empty;
     });
   });

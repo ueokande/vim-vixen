@@ -1,27 +1,36 @@
-import * as navigates from '../navigates';
+import NavigationPresenter, { NavigationPresenterImpl }
+  from '../presenters/NavigationPresenter';
 
-export default class NavigateClass {
+export default class NavigateUseCase {
+  private navigationPresenter: NavigationPresenter;
+
+  constructor({
+    navigationPresenter = new NavigationPresenterImpl(),
+  } = {}) {
+    this.navigationPresenter = navigationPresenter;
+  }
+
   openHistoryPrev(): void {
-    navigates.historyPrev(window);
+    this.navigationPresenter.openHistoryPrev();
   }
 
   openHistoryNext(): void {
-    navigates.historyNext(window);
+    this.navigationPresenter.openHistoryNext();
   }
 
   openLinkPrev(): void {
-    navigates.linkPrev(window);
+    this.navigationPresenter.openLinkPrev();
   }
 
   openLinkNext(): void {
-    navigates.linkNext(window);
+    this.navigationPresenter.openLinkNext();
   }
 
   openParent(): void {
-    navigates.parent(window);
+    this.navigationPresenter.openParent();
   }
 
   openRoot(): void {
-    navigates.root(window);
+    this.navigationPresenter.openRoot();
   }
 }
