@@ -8,6 +8,8 @@ import FocusUseCase from '../usecases/FocusUseCase';
 import ClipboardUseCase from '../usecases/ClipboardUseCase';
 import BackgroundClient from '../client/BackgroundClient';
 import MarkKeyyUseCase from '../usecases/MarkKeyUseCase';
+import FollowMasterClient, { FollowMasterClientImpl }
+  from '../client/FollowMasterClient';
 import Key from '../domains/Key';
 
 export default class KeymapController {
@@ -29,6 +31,8 @@ export default class KeymapController {
 
   private markKeyUseCase: MarkKeyyUseCase;
 
+  private followMasterClient: FollowMasterClient;
+
   constructor({
     keymapUseCase = new KeymapUseCase(),
     addonEnabledUseCase = new AddonEnabledUseCase(),
@@ -39,6 +43,7 @@ export default class KeymapController {
     clipbaordUseCase = new ClipboardUseCase(),
     backgroundClient = new BackgroundClient(),
     markKeyUseCase = new MarkKeyyUseCase(),
+    followMasterClient = new FollowMasterClientImpl(window.top),
   } = {}) {
     this.keymapUseCase = keymapUseCase;
     this.addonEnabledUseCase = addonEnabledUseCase;
@@ -49,6 +54,7 @@ export default class KeymapController {
     this.clipbaordUseCase = clipbaordUseCase;
     this.backgroundClient = backgroundClient;
     this.markKeyUseCase = markKeyUseCase;
+    this.followMasterClient = followMasterClient;
   }
 
   // eslint-disable-next-line complexity, max-lines-per-function
@@ -96,13 +102,9 @@ export default class KeymapController {
     case operations.SCROLL_END:
       this.scrollUseCase.scrollToEnd();
       break;
-    // case operations.FOLLOW_START:
-    //   window.top.postMessage(JSON.stringify({
-    //     type: messages.FOLLOW_START,
-    //     newTab: operation.newTab,
-    //     background: operation.background,
-    //   }), '*');
-    //   break;
+    case operations.FOLLOW_START:
+      this.followMasterClient.startFollow(op.newTab, op.background);
+      break;
     case operations.MARK_SET_PREFIX:
       this.markKeyUseCase.enableSetMode();
       break;

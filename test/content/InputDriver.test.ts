@@ -1,6 +1,6 @@
 import InputDriver from '../../src/content/InputDriver';
 import { expect } from 'chai';
-import { Key } from '../../src/shared/utils/keys';
+import Key from '../../src/content/domains/Key';
 
 describe('InputDriver', () => {
   let target: HTMLElement;
