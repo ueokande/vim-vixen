@@ -52,13 +52,15 @@ export default class CompletionsUseCase {
         if (engines.length > 0) {
           groups.push({ name: 'Search Engines', items: engines });
         }
-      } else if (c === 'h') {
+        // browser.history not supported on Android
+      } else if (c === 'h' && typeof browser.history === "object") {
         // eslint-disable-next-line no-await-in-loop
         let histories = await this.queryHistoryItems(name, keywords);
         if (histories.length > 0) {
           groups.push({ name: 'History', items: histories });
         }
-      } else if (c === 'b') {
+        // browser.bookmarks not supported on Android
+      } else if (c === 'b' && typeof browser.bookmarks === "object") {
         // eslint-disable-next-line no-await-in-loop
         let bookmarks = await this.queryBookmarkItems(name, keywords);
         if (bookmarks.length > 0) {
