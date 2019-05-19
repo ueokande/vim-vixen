@@ -14,10 +14,10 @@ export default class ContentMessageClient {
   }
 
   async getAddonEnabled(tabId: number): Promise<boolean> {
-    let { enabled } = await browser.tabs.sendMessage(tabId, {
+    let enabled = await browser.tabs.sendMessage(tabId, {
       type: messages.ADDON_ENABLED_QUERY,
-    }) as { enabled: boolean };
-    return enabled;
+    });
+    return enabled as any as boolean;
   }
 
   toggleAddonEnabled(tabId: number): Promise<void> {

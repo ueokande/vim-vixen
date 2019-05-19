@@ -79,6 +79,6 @@
     "react/jsx-indent": ["error", 2],
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/no-unused-vars": "error"
+    "@typescript-eslint/no-unused-vars": ["error", { args: "none" }],
   }
 }

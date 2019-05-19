@@ -1,3 +1,5 @@
+import { Search } from './Settings';
+
 const trimStart = (str: string): string => {
   // NOTE String.trimStart is available on Firefox 61
   return str.replace(/^\s+/, '');
@@ -5,7 +7,7 @@ const trimStart = (str: string): string => {
 
 const SUPPORTED_PROTOCOLS = ['http:', 'https:', 'ftp:', 'mailto:', 'about:'];
 
-const searchUrl = (keywords: string, searchSettings: any): string => {
+const searchUrl = (keywords: string, search: Search): string => {
   try {
     let u = new URL(keywords);
     if (SUPPORTED_PROTOCOLS.includes(u.protocol.toLowerCase())) {
@@ -17,12 +19,12 @@ const searchUrl = (keywords: string, searchSettings: any): string => {
   if (keywords.includes('.') && !keywords.includes(' ')) {
     return 'http://' + keywords;
   }
-  let template = searchSettings.engines[searchSettings.default];
+  let template = search.engines[search.default];
   let query = keywords;
 
   let first = trimStart(keywords).split(' ')[0];
-  if (Object.keys(searchSettings.engines).includes(first)) {
-    template = searchSettings.engines[first];
+  if (Object.keys(search.engines).includes(first)) {
+    template = search.engines[first];
     query = trimStart(trimStart(keywords).slice(first.length));
   }
   return template.replace('{}', encodeURIComponent(query));

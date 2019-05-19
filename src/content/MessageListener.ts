@@ -1,14 +1,16 @@
 import { Message, valueOf } from '../shared/messages';
 
-export type WebMessageSender = Window | MessagePort | ServiceWorker | null;
 export type WebExtMessageSender = browser.runtime.MessageSender;
 
 export default class MessageListener {
   onWebMessage(
-    listener: (msg: Message, sender: WebMessageSender) => void,
+    listener: (msg: Message, sender: Window) => void,
   ) {
     window.addEventListener('message', (event: MessageEvent) => {
       let sender = event.source;
+      if (!(sender instanceof Window)) {
+        return;
+      }
       let message = null;
       try {
         message = JSON.parse(event.data);
@@ -25,7 +27,7 @@ export default class MessageListener {
   ) {
     browser.runtime.onMessage.addListener(
       (msg: any, sender: WebExtMessageSender) => {
-        listener(valueOf(msg), sender);
+        return listener(valueOf(msg), sender);
       },
     );
   }

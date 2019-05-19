@@ -1,15 +1,15 @@
-import TopContentComponent from './components/top-content';
-import FrameContentComponent from './components/frame-content';
+import { ConsoleFramePresenterImpl } from './presenters/ConsoleFramePresenter';
 import consoleFrameStyle from './site-style';
-import { newStore } from './store';
-
-const store = newStore();
+import * as routes from './routes';
 
 if (window.self === window.top) {
-  new TopContentComponent(window, store); // eslint-disable-line no-new
-} else {
-  new FrameContentComponent(window, store); // eslint-disable-line no-new
+  routes.routeMasterComponents();
+
+  new ConsoleFramePresenterImpl().initialize();
 }
+
+routes.routeComponents();
+
 
 let style = window.document.createElement('style');
 style.textContent = consoleFrameStyle;
