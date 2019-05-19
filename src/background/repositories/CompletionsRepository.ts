@@ -1,6 +1,9 @@
+import { injectable } from 'tsyringe';
+
 type Tab = browser.tabs.Tab;
 type BookmarkTreeNode = browser.bookmarks.BookmarkTreeNode;
 
+@injectable()
 export default class CompletionsRepository {
   async queryBookmarks(keywords: string): Promise<BookmarkTreeNode[]> {
     let items = await browser.bookmarks.search({ query: keywords });

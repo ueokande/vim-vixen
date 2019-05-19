@@ -1,3 +1,4 @@
+import { injectable } from 'tsyringe';
 import * as messages from '../../shared/messages';
 import CompletionGroup from '../domains/CompletionGroup';
 import CommandController from '../controllers/CommandController';
@@ -8,32 +9,19 @@ import LinkController from '../controllers/LinkController';
 import OperationController from '../controllers/OperationController';
 import MarkController from '../controllers/MarkController';
 
+@injectable()
 export default class ContentMessageListener {
-  private settingController: SettingController;
-
-  private commandController: CommandController;
-
-  private findController: FindController;
-
-  private addonEnabledController: AddonEnabledController;
-
-  private linkController: LinkController;
-
-  private backgroundOperationController: OperationController;
-
-  private markController: MarkController;
-
   private consolePorts: {[tabId: number]: browser.runtime.Port};
 
-  constructor() {
-    this.settingController = new SettingController();
-    this.commandController = new CommandController();
-    this.findController = new FindController();
-    this.addonEnabledController = new AddonEnabledController();
-    this.linkController = new LinkController();
-    this.backgroundOperationController = new OperationController();
-    this.markController = new MarkController();
-
+  constructor(
+    private settingController: SettingController,
+    private commandController: CommandController,
+    private findController: FindController,
+    private addonEnabledController: AddonEnabledController,
+    private linkController: LinkController,
+    private backgroundOperationController: OperationController,
+    private markController: MarkController,
+  ) {
     this.consolePorts = {};
   }
 

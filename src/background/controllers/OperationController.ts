@@ -1,3 +1,4 @@
+import { injectable } from 'tsyringe';
 import * as operations from '../../shared/operations';
 import FindUseCase from '../usecases/FindUseCase';
 import ConsoleUseCase from '../usecases/ConsoleUseCase';
@@ -5,23 +6,15 @@ import TabUseCase from '../usecases/TabUseCase';
 import TabSelectUseCase from '../usecases/TabSelectUseCase';
 import ZoomUseCase from '../usecases/ZoomUseCase';
 
+@injectable()
 export default class OperationController {
-  private findUseCase: FindUseCase;
-
-  private consoleUseCase: ConsoleUseCase;
-
-  private tabUseCase: TabUseCase;
-
-  private tabSelectUseCase: TabSelectUseCase;
-
-  private zoomUseCase: ZoomUseCase;
-
-  constructor() {
-    this.findUseCase = new FindUseCase();
-    this.consoleUseCase = new ConsoleUseCase();
-    this.tabUseCase = new TabUseCase();
-    this.tabSelectUseCase = new TabSelectUseCase();
-    this.zoomUseCase = new ZoomUseCase();
+  constructor(
+    private findUseCase: FindUseCase,
+    private consoleUseCase: ConsoleUseCase,
+    private tabUseCase: TabUseCase,
+    private tabSelectUseCase: TabSelectUseCase,
+    private zoomUseCase: ZoomUseCase,
+  ) {
   }
 
   // eslint-disable-next-line complexity, max-lines-per-function

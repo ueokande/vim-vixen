@@ -1,3 +1,4 @@
+import { injectable } from 'tsyringe';
 import * as parsers from './parsers';
 import * as urls from '../../shared/urls';
 import TabPresenter from '../presenters/TabPresenter';
@@ -7,27 +8,16 @@ import BookmarkRepository from '../repositories/BookmarkRepository';
 import ConsoleClient from '../infrastructures/ConsoleClient';
 import ContentMessageClient from '../infrastructures/ContentMessageClient';
 
+@injectable()
 export default class CommandIndicator {
-  private tabPresenter: TabPresenter;
-
-  private windowPresenter: WindowPresenter;
-
-  private settingRepository: SettingRepository;
-
-  private bookmarkRepository: BookmarkRepository;
-
-  private consoleClient: ConsoleClient;
-
-  private contentMessageClient: ContentMessageClient;
-
-  constructor() {
-    this.tabPresenter = new TabPresenter();
-    this.windowPresenter = new WindowPresenter();
-    this.settingRepository = new SettingRepository();
-    this.bookmarkRepository = new BookmarkRepository();
-    this.consoleClient = new ConsoleClient();
-
-    this.contentMessageClient = new ContentMessageClient();
+  constructor(
+    private tabPresenter: TabPresenter,
+    private windowPresenter: WindowPresenter,
+    private settingRepository: SettingRepository,
+    private bookmarkRepository: BookmarkRepository,
+    private consoleClient: ConsoleClient,
+    private contentMessageClient: ContentMessageClient,
+  ) {
   }
 
   async open(keywords: string): Promise<browser.tabs.Tab> {

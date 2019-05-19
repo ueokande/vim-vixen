@@ -1,14 +1,14 @@
+import { injectable } from 'tsyringe';
 import TabPresenter from '../presenters/TabPresenter';
 import ConsoleClient from '../infrastructures/ConsoleClient';
 
+@injectable()
 export default class ConsoleUseCase {
-  private tabPresenter: TabPresenter;
 
-  private consoleClient: ConsoleClient;
-
-  constructor() {
-    this.tabPresenter = new TabPresenter();
-    this.consoleClient = new ConsoleClient();
+  constructor(
+    private tabPresenter: TabPresenter,
+    private consoleClient: ConsoleClient,
+  ) {
   }
 
   async showCommand(): Promise<any> {

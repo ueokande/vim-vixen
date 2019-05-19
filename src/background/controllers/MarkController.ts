@@ -1,10 +1,11 @@
+import { injectable } from 'tsyringe';
 import MarkUseCase from '../usecases/MarkUseCase';
 
+@injectable()
 export default class MarkController {
-  private markUseCase: MarkUseCase;
-
-  constructor() {
-    this.markUseCase = new MarkUseCase();
+  constructor(
+    private markUseCase: MarkUseCase,
+  ) {
   }
 
   setGlobal(key: string, x: number, y: number): Promise<any> {

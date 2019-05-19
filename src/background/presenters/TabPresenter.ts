@@ -1,3 +1,4 @@
+import { injectable } from 'tsyringe';
 import MemoryStorage from '../infrastructures/MemoryStorage';
 
 const CURRENT_SELECTED_KEY = 'tabs.current.selected';
@@ -5,6 +6,7 @@ const LAST_SELECTED_KEY = 'tabs.last.selected';
 
 type Tab = browser.tabs.Tab;
 
+@injectable()
 export default class TabPresenter {
   open(url: string, tabId?: number): Promise<Tab> {
     return browser.tabs.update(tabId, { url });

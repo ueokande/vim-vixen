@@ -1,14 +1,13 @@
+import { injectable } from 'tsyringe';
 import TabPresenter from '../presenters/TabPresenter';
 import NotifyPresenter from '../presenters/NotifyPresenter';
 
+@injectable()
 export default class VersionUseCase {
-  private tabPresenter: TabPresenter;
-
-  private notifyPresenter: NotifyPresenter;
-
-  constructor() {
-    this.tabPresenter = new TabPresenter();
-    this.notifyPresenter = new NotifyPresenter();
+  constructor(
+    private tabPresenter: TabPresenter,
+    private notifyPresenter: NotifyPresenter,
+  ) {
   }
 
   notify(): Promise<void> {

@@ -1,3 +1,4 @@
+import { injectable } from 'tsyringe';
 import * as urls from '../../shared/urls';
 
 declare namespace browser.browserSettings.homepageOverride {
@@ -16,6 +17,7 @@ declare namespace browser.browserSettings.homepageOverride {
   function get(param: object): Promise<BrowserSettings>;
 }
 
+@injectable()
 export default class BrowserSettingRepository {
   async getHomepageUrls(): Promise<string[]> {
     let { value } = await browser.browserSettings.homepageOverride.get({});

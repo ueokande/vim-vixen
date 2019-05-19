@@ -1,3 +1,6 @@
+import { injectable } from 'tsyringe';
+
+@injectable()
 export default class BookmarkRepository {
   async create(
     title: string, url: string

@@ -1,3 +1,6 @@
+import { injectable } from 'tsyringe';
+
+@injectable()
 export default class IndicatorPresenter {
   indicate(enabled: boolean): Promise<void> {
     let path = enabled

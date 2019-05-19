@@ -1,10 +1,11 @@
+import { injectable } from 'tsyringe';
 import FindUseCase from '../usecases/FindUseCase';
 
+@injectable()
 export default class FindController {
-  private findUseCase: FindUseCase;
-
-  constructor() {
-    this.findUseCase = new FindUseCase();
+  constructor(
+    private findUseCase: FindUseCase,
+  ) {
   }
 
   getKeyword(): Promise<string> {
