@@ -25,7 +25,12 @@ config = {
         loader: 'babel-loader',
         options: {
           presets: [
-            { plugins: ['@babel/plugin-proposal-class-properties'] },
+            {
+              plugins: [
+                ["@babel/plugin-proposal-decorators", { "legacy": true }],
+                '@babel/plugin-proposal-class-properties'
+              ]
+            },
             '@babel/react',
             '@babel/preset-typescript'
           ]
