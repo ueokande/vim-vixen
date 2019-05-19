@@ -11,10 +11,17 @@ export default class LinkUseCase {
     return this.tabPresenter.open(url, tabId);
   }
 
-  openNewTab(url: string, openerId: number, background: boolean): Promise<any> {
-    // openerTabId not supported on Android
-    let properties = typeof browser.tabs.Tab === "object" ?
-      { openerTabId: openerId, active: !background } : { active: !background };
+  async openNewTab(
+    url: string, openerId: number, background: boolean,
+  ): Promise<any> {
+    let properties: any = { active: !background };
+
+    let platform = await browser.runtime.getPlatformInfo();
+    if (platform.os !== 'android') {
+      // openerTabId not supported on Android
+      properties.openerTabId = openerId;
+    }
+
     return this.tabPresenter.create(url, properties);
   }
 }

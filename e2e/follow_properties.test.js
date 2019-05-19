@@ -126,9 +126,11 @@ describe('follow properties test', () => {
     });
     await body.sendKeys('jj');
 
-    let tabs = await browser.tabs.query({});
-    assert.equal(tabs[0].active, false);
-    assert.equal(tabs[1].active, true);
+    await eventually(async() => {
+      let tabs = await browser.tabs.query({});
+      assert.equal(tabs[0].active, false);
+      assert.equal(tabs[1].active, true);
+    });
   });
 
   it('should open tab in background by background:true', async () => {
@@ -139,8 +141,10 @@ describe('follow properties test', () => {
     });
     await body.sendKeys('jj');
 
-    let tabs = await browser.tabs.query({});
-    assert.equal(tabs[0].active, true);
-    assert.equal(tabs[1].active, false);
+    await eventually(async() => {
+      let tabs = await browser.tabs.query({});
+      assert.equal(tabs[0].active, true);
+      assert.equal(tabs[1].active, false);
+    });
   });
 });

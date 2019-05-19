@@ -3,13 +3,13 @@ export default class IndicatorPresenter {
     let path = enabled
       ? 'resources/enabled_32x32.png'
       : 'resources/disabled_32x32.png';
-    if (typeof browser.browserAction.setIcon === "function") {
+    if (typeof browser.browserAction.setIcon === 'function') {
       return browser.browserAction.setIcon({ path });
     }
-    else {
-      // setIcon not supported on Android
-      return Promise.resolve();
-    }
+
+    // setIcon not supported on Android
+    return Promise.resolve();
+
   }
 
   onClick(listener: (arg: browser.tabs.Tab) => void): void {
