@@ -4,7 +4,7 @@ import FollowMasterRepository, { FollowMasterRepositoryImpl }
   from '../repositories/FollowMasterRepository';
 import FollowSlaveClient, { FollowSlaveClientImpl }
   from '../client/FollowSlaveClient';
-import HintKeyProducer from '../hint-key-producer';
+import HintKeyProducer from './HintKeyProducer';
 import SettingRepository, { SettingRepositoryImpl }
   from '../repositories/SettingRepository';
 

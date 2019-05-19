@@ -1,9 +1,10 @@
-import HintKeyProducer from 'content/hint-key-producer';
+import HintKeyProducer from '../../../src/content/usecases/HintKeyProducer';
+import { expect } from 'chai';
 
 describe('HintKeyProducer class', () => {
   describe('#constructor', () => {
     it('throws an exception on empty charset', () => {
-      expect(() => new HintKeyProducer([])).to.throw(TypeError);
+      expect(() => new HintKeyProducer('')).to.throw(TypeError);
     });
   });
 
