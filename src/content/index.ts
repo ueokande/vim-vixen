@@ -1,8 +1,5 @@
-// import TopContentComponent from './components/top-content';
-// import FrameContentComponent from './components/frame-content';
 import * as consoleFrames from './console-frames';
 import consoleFrameStyle from './site-style';
-// import { newStore } from './store';
 import MessageListener from './MessageListener';
 import FindController from './controllers/FindController';
 import MarkController from './controllers/MarkController';
@@ -18,12 +15,8 @@ import * as blacklists from '../shared/blacklists';
 import MarkKeyController from './controllers/MarkKeyController';
 import AddonEnabledController from './controllers/AddonEnabledController';
 
-// const store = newStore();
-
 let listener = new MessageListener();
 if (window.self === window.top) {
-  // new TopContentComponent(window, store); // eslint-disable-line no-new
-
   let findController = new FindController();
 
   let followMasterController = new FollowMasterController();
@@ -63,8 +56,6 @@ if (window.self === window.top) {
   });
 
   consoleFrames.initialize(window.document);
-} else {
-  // new FrameContentComponent(window, store); // eslint-disable-line no-new
 }
 
 let followSlaveController = new FollowSlaveController();

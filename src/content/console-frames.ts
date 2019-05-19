@@ -1,5 +1,3 @@
-import * as messages from '../shared/messages';
-
 const initialize = (doc: Document): HTMLIFrameElement => {
   let iframe = doc.createElement('iframe');
   iframe.src = browser.runtime.getURL('build/console.html');
@@ -15,24 +13,4 @@ const blur = (doc: Document) => {
   ele.blur();
 };
 
-const postError = (text: string): Promise<any> => {
-  return browser.runtime.sendMessage({
-    type: messages.CONSOLE_FRAME_MESSAGE,
-    message: {
-      type: messages.CONSOLE_SHOW_ERROR,
-      text,
-    },
-  });
-};
-
-const postInfo = (text: string): Promise<any> => {
-  return browser.runtime.sendMessage({
-    type: messages.CONSOLE_FRAME_MESSAGE,
-    message: {
-      type: messages.CONSOLE_SHOW_INFO,
-      text,
-    },
-  });
-};
-
-export { initialize, blur, postError, postInfo };
+export { initialize, blur };
