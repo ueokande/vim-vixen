@@ -5,7 +5,6 @@
     "lib": ["es6", "dom", "es2017"],
     "allowJs": true,
     "checkJs": true,
-    "noEmit": true,
     "jsx": "react",
     "sourceMap": true,
     "outDir": "./build",
