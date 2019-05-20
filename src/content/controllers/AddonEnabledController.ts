@@ -1,13 +1,12 @@
+import { injectable } from 'tsyringe';
 import * as messages from '../../shared/messages';
 import AddonEnabledUseCase from '../usecases/AddonEnabledUseCase';
 
+@injectable()
 export default class AddonEnabledController {
-  private addonEnabledUseCase: AddonEnabledUseCase;
-
-  constructor({
-    addonEnabledUseCase = new AddonEnabledUseCase(),
-  } = {}) {
-    this.addonEnabledUseCase = addonEnabledUseCase;
+  constructor(
+    private addonEnabledUseCase: AddonEnabledUseCase,
+  ) {
   }
 
   getAddonEnabled(

@@ -1,13 +1,12 @@
+import { injectable } from 'tsyringe';
 import * as messages from '../../shared/messages';
 import MarkUseCase from '../usecases/MarkUseCase';
 
+@injectable()
 export default class MarkController {
-  private markUseCase: MarkUseCase;
-
-  constructor({
-    markUseCase = new MarkUseCase(),
-  } = {}) {
-    this.markUseCase = markUseCase;
+  constructor(
+    private markUseCase: MarkUseCase,
+  ) {
   }
 
   scrollTo(message: messages.TabScrollToMessage) {

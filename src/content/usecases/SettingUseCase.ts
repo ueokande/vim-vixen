@@ -1,19 +1,14 @@
-import SettingRepository, { SettingRepositoryImpl }
-  from '../repositories/SettingRepository';
-import SettingClient, { SettingClientImpl } from '../client/SettingClient';
+import { injectable, inject } from 'tsyringe';
+import SettingRepository from '../repositories/SettingRepository';
+import SettingClient from '../client/SettingClient';
 import Settings from '../../shared/Settings';
 
+@injectable()
 export default class SettingUseCase {
-  private repository: SettingRepository;
-
-  private client: SettingClient;
-
-  constructor({
-    repository = new SettingRepositoryImpl(),
-    client = new SettingClientImpl(),
-  } = {}) {
-    this.repository = repository;
-    this.client = client;
+  constructor(
+    @inject('SettingRepository') private repository: SettingRepository,
+    @inject('SettingClient') private client: SettingClient,
+  ) {
   }
 
   async reload(): Promise<Settings> {

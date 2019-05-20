@@ -1,28 +1,17 @@
-import FindPresenter, { FindPresenterImpl } from '../presenters/FindPresenter';
-import FindRepository, { FindRepositoryImpl }
-  from '../repositories/FindRepository';
-import FindClient, { FindClientImpl } from '../client/FindClient';
-import ConsoleClient, { ConsoleClientImpl } from '../client/ConsoleClient';
+import { injectable, inject } from 'tsyringe';
+import FindPresenter from '../presenters/FindPresenter';
+import FindRepository from '../repositories/FindRepository';
+import FindClient from '../client/FindClient';
+import ConsoleClient from '../client/ConsoleClient';
 
+@injectable()
 export default class FindUseCase {
-  private presenter: FindPresenter;
-
-  private repository: FindRepository;
-
-  private client: FindClient;
-
-  private consoleClient: ConsoleClient;
-
-  constructor({
-    presenter = new FindPresenterImpl() as FindPresenter,
-    repository = new FindRepositoryImpl(),
-    client = new FindClientImpl(),
-    consoleClient = new ConsoleClientImpl(),
-  } = {}) {
-    this.presenter = presenter;
-    this.repository = repository;
-    this.client = client;
-    this.consoleClient = consoleClient;
+  constructor(
+    @inject('FindPresenter') private presenter: FindPresenter,
+    @inject('FindRepository') private repository: FindRepository,
+    @inject('FindClient') private client: FindClient,
+    @inject('ConsoleClient') private consoleClient: ConsoleClient,
+  ) {
   }
 
   async startFind(keyword?: string): Promise<void> {

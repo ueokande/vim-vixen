@@ -1,31 +1,18 @@
+import { injectable, inject } from 'tsyringe';
 import * as urls from '../../shared/urls';
-import ClipboardRepository, { ClipboardRepositoryImpl }
-  from '../repositories/ClipboardRepository';
-import SettingRepository, { SettingRepositoryImpl }
-  from '../repositories/SettingRepository';
-import TabsClient, { TabsClientImpl }
-  from '../client/TabsClient';
-import ConsoleClient, { ConsoleClientImpl } from '../client/ConsoleClient';
+import ClipboardRepository from '../repositories/ClipboardRepository';
+import SettingRepository from '../repositories/SettingRepository';
+import TabsClient from '../client/TabsClient';
+import ConsoleClient from '../client/ConsoleClient';
 
+@injectable()
 export default class ClipboardUseCase {
-  private repository: ClipboardRepository;
-
-  private settingRepository: SettingRepository;
-
-  private client: TabsClient;
-
-  private consoleClient: ConsoleClient;
-
-  constructor({
-    repository = new ClipboardRepositoryImpl(),
-    settingRepository = new SettingRepositoryImpl(),
-    client = new TabsClientImpl(),
-    consoleClient = new ConsoleClientImpl(),
-  } = {}) {
-    this.repository = repository;
-    this.settingRepository = settingRepository;
-    this.client = client;
-    this.consoleClient = consoleClient;
+  constructor(
+    @inject('ClipboardRepository') private repository: ClipboardRepository,
+    @inject('SettingRepository') private settingRepository: SettingRepository,
+    @inject('TabsClient') private client: TabsClient,
+    @inject('ConsoleClient') private consoleClient: ConsoleClient,
+  ) {
   }
 
   async yankCurrentURL(): Promise<string> {

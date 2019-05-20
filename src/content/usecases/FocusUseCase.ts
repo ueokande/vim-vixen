@@ -1,13 +1,11 @@
-import FocusPresenter, { FocusPresenterImpl }
-  from '../presenters/FocusPresenter';
+import { injectable, inject } from 'tsyringe';
+import FocusPresenter from '../presenters/FocusPresenter';
 
+@injectable()
 export default class FocusUseCases {
-  private presenter: FocusPresenter;
-
-  constructor({
-    presenter = new FocusPresenterImpl(),
-  } = {}) {
-    this.presenter = presenter;
+  constructor(
+    @inject('FocusPresenter') private presenter: FocusPresenter,
+  ) {
   }
 
   focusFirstInput() {

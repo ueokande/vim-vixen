@@ -1,11 +1,9 @@
-import FollowSlaveRepository, { FollowSlaveRepositoryImpl }
-  from '../repositories/FollowSlaveRepository';
-import FollowPresenter, { FollowPresenterImpl }
-  from '../presenters/FollowPresenter';
-import TabsClient, { TabsClientImpl } from '../client/TabsClient';
+import { injectable, inject } from 'tsyringe';
+import FollowSlaveRepository from '../repositories/FollowSlaveRepository';
+import FollowPresenter from '../presenters/FollowPresenter';
+import TabsClient from '../client/TabsClient';
+import FollowMasterClient from '../client/FollowMasterClient';
 import { LinkHint, InputHint } from '../presenters/Hint';
-import FollowMasterClient, { FollowMasterClientImpl }
-  from '../client/FollowMasterClient';
 import Key from '../domains/Key';
 
 interface Size {
@@ -18,25 +16,21 @@ interface Point {
   y: number;
 }
 
+@injectable()
 export default class FollowSlaveUseCase {
-  private presenter: FollowPresenter;
+  constructor(
+    @inject('FollowPresenter')
+    private presenter: FollowPresenter,
 
-  private tabsClient: TabsClient;
+    @inject('TabsClient')
+    private tabsClient: TabsClient,
 
-  private followMasterClient: FollowMasterClient;
+    @inject('FollowMasterClient')
+    private followMasterClient: FollowMasterClient,
 
-  private followSlaveRepository: FollowSlaveRepository;
-
-  constructor({
-    presenter = new FollowPresenterImpl(),
-    tabsClient = new TabsClientImpl(),
-    followMasterClient = new FollowMasterClientImpl(window.top),
-    followSlaveRepository = new FollowSlaveRepositoryImpl(),
-  } = {}) {
-    this.presenter = presenter;
-    this.tabsClient = tabsClient;
-    this.followMasterClient = followMasterClient;
-    this.followSlaveRepository = followSlaveRepository;
+    @inject('FollowSlaveRepository')
+    private followSlaveRepository: FollowSlaveRepository,
+  ) {
   }
 
   countTargets(viewSize: Size, framePosition: Point): void {

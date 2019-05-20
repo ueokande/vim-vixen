@@ -1,31 +1,26 @@
-import FollowKeyRepository, { FollowKeyRepositoryImpl }
-  from '../repositories/FollowKeyRepository';
-import FollowMasterRepository, { FollowMasterRepositoryImpl }
-  from '../repositories/FollowMasterRepository';
+import { injectable, inject } from 'tsyringe';
+import FollowKeyRepository from '../repositories/FollowKeyRepository';
+import FollowMasterRepository from '../repositories/FollowMasterRepository';
 import FollowSlaveClient, { FollowSlaveClientImpl }
   from '../client/FollowSlaveClient';
+import SettingRepository from '../repositories/SettingRepository';
 import HintKeyProducer from './HintKeyProducer';
-import SettingRepository, { SettingRepositoryImpl }
-  from '../repositories/SettingRepository';
 
+@injectable()
 export default class FollowMasterUseCase {
-  private followKeyRepository: FollowKeyRepository;
-
-  private followMasterRepository: FollowMasterRepository;
-
-  private settingRepository: SettingRepository;
-
   // TODO Make repository
   private producer: HintKeyProducer | null;
 
-  constructor({
-    followKeyRepository = new FollowKeyRepositoryImpl(),
-    followMasterRepository = new FollowMasterRepositoryImpl(),
-    settingRepository = new SettingRepositoryImpl(),
-  } = {}) {
-    this.followKeyRepository = followKeyRepository;
-    this.followMasterRepository = followMasterRepository;
-    this.settingRepository = settingRepository;
+  constructor(
+    @inject('FollowKeyRepository')
+    private followKeyRepository: FollowKeyRepository,
+
+    @inject('FollowMasterRepository')
+    private followMasterRepository: FollowMasterRepository,
+
+    @inject('SettingRepository')
+    private settingRepository: SettingRepository,
+  ) {
     this.producer = null;
   }
 

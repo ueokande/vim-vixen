@@ -56,7 +56,7 @@ describe('AddonEnabledUseCase', () => {
 
     repository = new MockSettingRepository();
     client = new MockSettingClient(testSettings);
-    sut = new SettingUseCase({ repository, client });
+    sut = new SettingUseCase(repository, client);
   });
 
   describe('#reload', () => {

@@ -1,3 +1,4 @@
+import { injectable, inject } from 'tsyringe';
 import * as operations from '../../shared/operations';
 import KeymapUseCase from '../usecases/KeymapUseCase';
 import AddonEnabledUseCase from '../usecases/AddonEnabledUseCase';
@@ -8,53 +9,25 @@ import FocusUseCase from '../usecases/FocusUseCase';
 import ClipboardUseCase from '../usecases/ClipboardUseCase';
 import BackgroundClient from '../client/BackgroundClient';
 import MarkKeyyUseCase from '../usecases/MarkKeyUseCase';
-import FollowMasterClient, { FollowMasterClientImpl }
-  from '../client/FollowMasterClient';
+import FollowMasterClient from '../client/FollowMasterClient';
 import Key from '../domains/Key';
 
+@injectable()
 export default class KeymapController {
-  private keymapUseCase: KeymapUseCase;
+  constructor(
+    private keymapUseCase: KeymapUseCase,
+    private addonEnabledUseCase: AddonEnabledUseCase,
+    private findSlaveUseCase: FindSlaveUseCase,
+    private scrollUseCase: ScrollUseCase,
+    private navigateUseCase: NavigateUseCase,
+    private focusUseCase: FocusUseCase,
+    private clipbaordUseCase: ClipboardUseCase,
+    private backgroundClient: BackgroundClient,
+    private markKeyUseCase: MarkKeyyUseCase,
 
-  private addonEnabledUseCase: AddonEnabledUseCase;
-
-  private findSlaveUseCase: FindSlaveUseCase;
-
-  private scrollUseCase: ScrollUseCase;
-
-  private navigateUseCase: NavigateUseCase;
-
-  private focusUseCase: FocusUseCase;
-
-  private clipbaordUseCase: ClipboardUseCase;
-
-  private backgroundClient: BackgroundClient;
-
-  private markKeyUseCase: MarkKeyyUseCase;
-
-  private followMasterClient: FollowMasterClient;
-
-  constructor({
-    keymapUseCase = new KeymapUseCase(),
-    addonEnabledUseCase = new AddonEnabledUseCase(),
-    findSlaveUseCase = new FindSlaveUseCase(),
-    scrollUseCase = new ScrollUseCase(),
-    navigateUseCase = new NavigateUseCase(),
-    focusUseCase = new FocusUseCase(),
-    clipbaordUseCase = new ClipboardUseCase(),
-    backgroundClient = new BackgroundClient(),
-    markKeyUseCase = new MarkKeyyUseCase(),
-    followMasterClient = new FollowMasterClientImpl(window.top),
-  } = {}) {
-    this.keymapUseCase = keymapUseCase;
-    this.addonEnabledUseCase = addonEnabledUseCase;
-    this.findSlaveUseCase = findSlaveUseCase;
-    this.scrollUseCase = scrollUseCase;
-    this.navigateUseCase = navigateUseCase;
-    this.focusUseCase = focusUseCase;
-    this.clipbaordUseCase = clipbaordUseCase;
-    this.backgroundClient = backgroundClient;
-    this.markKeyUseCase = markKeyUseCase;
-    this.followMasterClient = followMasterClient;
+    @inject('FollowMasterClient')
+    private followMasterClient: FollowMasterClient,
+  ) {
   }
 
   // eslint-disable-next-line complexity, max-lines-per-function

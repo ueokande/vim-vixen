@@ -1,4 +1,5 @@
 import MarkRepository from '../../../src/content/repositories/MarkRepository';
+import { SettingRepositoryImpl } from '../../../src/content/repositories/SettingRepository';
 import MarkUseCase from '../../../src/content/usecases/MarkUseCase';
 import MarkClient from '../../../src/content/client/MarkClient';
 import MockConsoleClient from '../mock/MockConsoleClient';
@@ -54,9 +55,13 @@ describe('MarkUseCase', () => {
     client = new MockMarkClient();
     consoleClient = new MockConsoleClient();
     scrollPresenter = new MockScrollPresenter();
-    sut = new MarkUseCase({
-      repository, client, consoleClient, scrollPresenter,
-    });
+    sut = new MarkUseCase(
+      scrollPresenter,
+      client,
+      repository,
+      new SettingRepositoryImpl(),
+      consoleClient,
+    );
   });
 
   describe('#set', () => {

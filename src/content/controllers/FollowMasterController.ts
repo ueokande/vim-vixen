@@ -1,13 +1,12 @@
+import { injectable } from 'tsyringe';
 import FollowMasterUseCase from '../usecases/FollowMasterUseCase';
 import * as messages from '../../shared/messages';
 
+@injectable()
 export default class FollowMasterController {
-  private followMasterUseCase: FollowMasterUseCase;
-
-  constructor({
-    followMasterUseCase = new FollowMasterUseCase(),
-  } = {}) {
-    this.followMasterUseCase = followMasterUseCase;
+  constructor(
+    private followMasterUseCase: FollowMasterUseCase,
+  ) {
   }
 
   followStart(m: messages.FollowStartMessage): void {
