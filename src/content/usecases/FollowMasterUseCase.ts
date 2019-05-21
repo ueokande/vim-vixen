@@ -1,8 +1,8 @@
 import { injectable, inject } from 'tsyringe';
 import FollowKeyRepository from '../repositories/FollowKeyRepository';
 import FollowMasterRepository from '../repositories/FollowMasterRepository';
-import FollowSlaveClient, { FollowSlaveClientImpl }
-  from '../client/FollowSlaveClient';
+import FollowSlaveClient from '../client/FollowSlaveClient';
+import FollowSlaveClientFactory from '../client/FollowSlaveClientFactory';
 import SettingRepository from '../repositories/SettingRepository';
 import HintKeyProducer from './HintKeyProducer';
 
@@ -20,6 +20,9 @@ export default class FollowMasterUseCase {
 
     @inject('SettingRepository')
     private settingRepository: SettingRepository,
+
+    @inject('FollowSlaveClientFactory')
+    private followSlaveClientFactory: FollowSlaveClientFactory,
   ) {
     this.producer = null;
   }
@@ -33,7 +36,7 @@ export default class FollowMasterUseCase {
 
     let viewWidth = window.top.innerWidth;
     let viewHeight = window.top.innerHeight;
-    new FollowSlaveClientImpl(window.top).requestHintCount(
+    this.followSlaveClientFactory.create(window.top).requestHintCount(
       { width: viewWidth, height: viewHeight },
       { x: 0, y: 0 },
     );
@@ -42,7 +45,8 @@ export default class FollowMasterUseCase {
     for (let i = 0; i < frameElements.length; ++i) {
       let ele = frameElements[i] as HTMLFrameElement | HTMLIFrameElement;
       let { left: frameX, top: frameY } = ele.getBoundingClientRect();
-      new FollowSlaveClientImpl(ele.contentWindow!!).requestHintCount(
+      let client = this.followSlaveClientFactory.create(ele.contentWindow!!);
+      client.requestHintCount(
         { width: viewWidth, height: viewHeight },
         { x: frameX, y: frameY },
       );
@@ -72,7 +76,8 @@ export default class FollowMasterUseCase {
       let { left: frameX, top: frameY } = ele.getBoundingClientRect();
       pos = { x: frameX, y: frameY };
     }
-    new FollowSlaveClientImpl(sender).createHints(
+    let client = this.followSlaveClientFactory.create(sender);
+    client.createHints(
       { width: viewWidth, height: viewHeight },
       pos,
       produced,
@@ -133,7 +138,7 @@ export default class FollowMasterUseCase {
 
   private broadcastToSlaves(handler: (client: FollowSlaveClient) => void) {
     let allFrames = [window.self].concat(Array.from(window.frames as any));
-    let clients = allFrames.map(frame => new FollowSlaveClientImpl(frame));
+    let clients = allFrames.map(w => this.followSlaveClientFactory.create(w));
     for (let client of clients) {
       handler(client);
     }
