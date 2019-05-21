@@ -17,6 +17,14 @@ config = {
     filename: '[name].js'
   },
 
+  optimization: {
+    minimize: false
+  },
+
+  performance: {
+    hints: false
+  },
+
   module: {
     rules: [
       {
