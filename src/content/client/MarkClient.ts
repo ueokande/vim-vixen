@@ -5,8 +5,6 @@ export default interface MarkClient {
   setGloablMark(key: string, mark: Mark): Promise<void>;
 
   jumpGlobalMark(key: string): Promise<void>;
-
-  // eslint-disable-next-line semi
 }
 
 export class MarkClientImpl implements MarkClient {

@@ -20,8 +20,6 @@ export default interface FollowSlaveClient {
   clearHints(): void;
 
   activateIfExists(tag: string, newTab: boolean, background: boolean): void;
-
-  // eslint-disable-next-line semi
 }
 
 export class FollowSlaveClientImpl implements FollowSlaveClient {

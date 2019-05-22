@@ -3,8 +3,6 @@ import * as messages from '../../shared/messages';
 
 export default interface SettingClient {
   load(): Promise<Settings>;
-
-  // eslint-disable-next-line semi
 }
 
 export class SettingClientImpl {

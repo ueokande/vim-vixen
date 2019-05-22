@@ -7,8 +7,6 @@ export default interface FollowMasterClient {
   responseHintCount(count: number): void;
 
   sendKey(key: Key): void;
-
-  // eslint-disable-next-line semi
 }
 
 export class FollowMasterClientImpl implements FollowMasterClient {

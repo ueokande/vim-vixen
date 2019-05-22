@@ -13,7 +13,7 @@ type StateProps = ReturnType<typeof mapStateToProps>;
 interface DispatchProps {
   dispatch: (action: any) => void,
 }
-type Props = StateProps & DispatchProps
+type Props = StateProps & DispatchProps;
 
 class Console extends React.Component<Props> {
   private input: React.RefObject<Input>;

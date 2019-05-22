@@ -2,8 +2,6 @@ export default interface ConsoleFramePresenter {
   initialize(): void;
 
   blur(): void;
-
-  // eslint-disable-next-line semi
 }
 
 export class ConsoleFramePresenterImpl implements ConsoleFramePresenter {

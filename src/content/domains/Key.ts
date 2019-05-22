@@ -4,8 +4,6 @@ export default interface Key {
   ctrlKey?: boolean;
   altKey?: boolean;
   metaKey?: boolean;
-
-  // eslint-disable-next-line semi
 }
 
 const modifiedKeyName = (name: string): string => {

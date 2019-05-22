@@ -4,8 +4,6 @@ export default interface FollowSlaveRepository {
   disableFollowMode(): void;
 
   isFollowMode(): boolean;
-
-  // eslint-disable-next-line semi
 }
 
 const current: {

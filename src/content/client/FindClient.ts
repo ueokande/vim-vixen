@@ -4,8 +4,6 @@ export default interface FindClient {
   getGlobalLastKeyword(): Promise<string | null>;
 
   setGlobalLastKeyword(keyword: string): Promise<void>;
-
-  // eslint-disable-next-line semi
 }
 
 export class FindClientImpl implements FindClient {

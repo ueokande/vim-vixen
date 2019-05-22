@@ -12,8 +12,6 @@ export default interface FollowMasterRepository {
   getCurrentNewTabMode(): boolean;
 
   getCurrentBackgroundMode(): boolean;
-
-  // eslint-disable-next-line semi
 }
 
 const current: {

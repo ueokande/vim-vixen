@@ -3,8 +3,6 @@ import * as messages from '../../shared/messages';
 export default interface ConsoleClient {
   info(text: string): Promise<void>;
   error(text: string): Promise<void>;
-
-  // eslint-disable-next-line semi
 }
 
 export class ConsoleClientImpl implements ConsoleClient {

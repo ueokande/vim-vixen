@@ -19,7 +19,6 @@ export default interface Settings {
   search: Search;
   properties: Properties;
   blacklist: string[];
-  // eslint-disable-next-line semi
 }
 
 const DefaultProperties: Properties = PropertyDefs.defs.reduce(

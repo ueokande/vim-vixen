@@ -3,8 +3,6 @@ export default interface FindPresenter {
   find(keyword: string, backwards: boolean): boolean;
 
   clearSelection(): void;
-
-  // eslint-disable-next-line semi
 }
 
 // window.find(aString, aCaseSensitive, aBackwards, aWrapAround,

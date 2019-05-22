@@ -10,8 +10,6 @@ export default interface NavigationPresenter {
   openParent(): void;
 
   openRoot(): void;
-
-  // eslint-disable-next-line semi
 }
 
 const REL_PATTERN: {[key: string]: RegExp} = {

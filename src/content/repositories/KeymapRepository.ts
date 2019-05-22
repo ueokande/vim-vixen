@@ -5,8 +5,6 @@ export default interface KeymapRepository {
   enqueueKey(key: Key): KeySequence;
 
   clear(): void;
-
-  // eslint-disable-next-line semi
 }
 
 let current: KeySequence = KeySequence.from([]);

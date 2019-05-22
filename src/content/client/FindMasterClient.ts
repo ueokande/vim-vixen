@@ -4,8 +4,6 @@ export default interface FindMasterClient {
   findNext(): void;
 
   findPrev(): void;
-
-  // eslint-disable-next-line semi
 }
 
 export class FindMasterClientImpl implements FindMasterClient {
