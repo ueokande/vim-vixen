@@ -69,12 +69,10 @@ export default interface FollowPresenter {
   clearHints(): void;
 
   getHint(tag: string): Hint | undefined;
-
-  // eslint-disable-next-line semi
 }
 
 export class FollowPresenterImpl implements FollowPresenter {
-  private hints: Hint[]
+  private hints: Hint[];
 
   constructor() {
     this.hints = [];

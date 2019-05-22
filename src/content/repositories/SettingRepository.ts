@@ -6,8 +6,6 @@ export default interface SettingRepository {
   set(setting: Settings): void;
 
   get(): Settings;
-
-  // eslint-disable-next-line semi
 }
 
 export class SettingRepositoryImpl implements SettingRepository {

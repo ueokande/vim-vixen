@@ -106,8 +106,6 @@ export default interface ScrollPresenter {
   scrollToBottom(smooth: boolean): void;
   scrollToHome(smooth: boolean): void;
   scrollToEnd(smooth: boolean): void;
-
-  // eslint-disable-next-line semi
 }
 
 export class ScrollPresenterImpl {

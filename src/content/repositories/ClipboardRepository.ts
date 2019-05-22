@@ -2,8 +2,6 @@ export default interface ClipboardRepository {
   read(): string;
 
   write(text: string): void;
-
-  // eslint-disable-next-line semi
 }
 
 export class ClipboardRepositoryImpl {

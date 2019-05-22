@@ -72,6 +72,7 @@
     "quotes": ["error", "single", { "allowTemplateLiterals": true }],
     "require-jsdoc": "off",
     "require-unicode-regexp": "off",
+    "semi": "off",
     "sort-imports": "off",
     "sort-keys": "off",
     "sort-vars": "off",
@@ -80,6 +81,8 @@
     "react/jsx-indent": ["error", 2],
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
+
     "@typescript-eslint/no-unused-vars": ["error", { args: "none" }],
+    "@typescript-eslint/semi": ["error"]
   }
 }

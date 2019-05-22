@@ -6,8 +6,6 @@ export default interface FollowKeyRepository {
   popKey(): void;
 
   clearKeys(): void;
-
-  // eslint-disable-next-line semi
 }
 
 const current: {

@@ -10,8 +10,6 @@ export default interface MarkKeyRepository {
   enableJumpMode(): void;
 
   disabeJumpMode(): void;
-
-  // eslint-disable-next-line semi
 }
 
 interface Mode {

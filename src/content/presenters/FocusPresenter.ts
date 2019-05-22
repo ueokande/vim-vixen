@@ -2,8 +2,6 @@ import * as doms from '../../shared/utils/dom';
 
 export default interface FocusPresenter {
   focusFirstElement(): boolean;
-
-  // eslint-disable-next-line semi
 }
 
 export class FocusPresenterImpl implements FocusPresenter {

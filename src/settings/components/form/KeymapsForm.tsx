@@ -15,7 +15,7 @@ class KeymapsForm extends React.Component<Props> {
     value: FormKeymaps.valueOf({}),
     onChange: () => {},
     onBlur: () => {},
-  }
+  };
 
   render() {
     let values = this.props.value.toJSON();

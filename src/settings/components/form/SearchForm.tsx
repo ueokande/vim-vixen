@@ -15,7 +15,7 @@ class SearchForm extends React.Component<Props> {
     value: FormSearch.valueOf({ default: '', engines: []}),
     onChange: () => {},
     onBlur: () => {},
-  }
+  };
 
   render() {
     let value = this.props.value.toJSON();
