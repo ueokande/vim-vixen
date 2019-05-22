@@ -1,13 +1,12 @@
-import NavigationPresenter, { NavigationPresenterImpl }
-  from '../presenters/NavigationPresenter';
+import { injectable, inject } from 'tsyringe';
+import NavigationPresenter from '../presenters/NavigationPresenter';
 
+@injectable()
 export default class NavigateUseCase {
-  private navigationPresenter: NavigationPresenter;
-
-  constructor({
-    navigationPresenter = new NavigationPresenterImpl(),
-  } = {}) {
-    this.navigationPresenter = navigationPresenter;
+  constructor(
+    @inject('NavigationPresenter')
+    private navigationPresenter: NavigationPresenter,
+  ) {
   }
 
   openHistoryPrev(): void {

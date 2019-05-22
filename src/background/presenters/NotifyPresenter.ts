@@ -1,5 +1,8 @@
+import { injectable } from 'tsyringe';
+
 const NOTIFICATION_ID = 'vimvixen-update';
 
+@injectable()
 export default class NotifyPresenter {
   async notify(
     title: string,

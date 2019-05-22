@@ -1,18 +1,15 @@
+import { injectable } from 'tsyringe';
 import FindRepository from '../repositories/FindRepository';
 import TabPresenter from '../presenters/TabPresenter';
 import ConsoleClient from '../infrastructures/ConsoleClient';
 
+@injectable()
 export default class FindUseCase {
-  private tabPresenter: TabPresenter;
-
-  private findRepository: FindRepository;
-
-  private consoleClient: ConsoleClient;
-
-  constructor() {
-    this.tabPresenter = new TabPresenter();
-    this.findRepository = new FindRepository();
-    this.consoleClient = new ConsoleClient();
+  constructor(
+    private tabPresenter: TabPresenter,
+    private findRepository: FindRepository,
+    private consoleClient: ConsoleClient,
+  ) {
   }
 
   getKeyword(): Promise<string> {

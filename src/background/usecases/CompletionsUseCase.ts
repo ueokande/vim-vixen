@@ -1,3 +1,4 @@
+import { injectable } from 'tsyringe';
 import CompletionGroup from '../domains/CompletionGroup';
 import CommandDocs from '../domains/CommandDocs';
 import CompletionsRepository from '../repositories/CompletionsRepository';
@@ -11,17 +12,13 @@ const COMPLETION_ITEM_LIMIT = 10;
 type Tab = browser.tabs.Tab;
 type HistoryItem = browser.history.HistoryItem;
 
+@injectable()
 export default class CompletionsUseCase {
-  private tabPresenter: TabPresenter;
-
-  private completionsRepository: CompletionsRepository;
-
-  private settingRepository: SettingRepository;
-
-  constructor() {
-    this.tabPresenter = new TabPresenter();
-    this.completionsRepository = new CompletionsRepository();
-    this.settingRepository = new SettingRepository();
+  constructor(
+    private tabPresenter: TabPresenter,
+    private completionsRepository: CompletionsRepository,
+    private settingRepository: SettingRepository,
+  ) {
   }
 
   queryConsoleCommand(prefix: string): Promise<CompletionGroup[]> {

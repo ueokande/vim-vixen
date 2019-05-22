@@ -1,13 +1,12 @@
-import ConsoleFramePresenter, { ConsoleFramePresenterImpl }
-  from '../presenters/ConsoleFramePresenter';
+import { injectable, inject } from 'tsyringe';
+import ConsoleFramePresenter from '../presenters/ConsoleFramePresenter';
 
+@injectable()
 export default class ConsoleFrameUseCase {
-  private consoleFramePresenter: ConsoleFramePresenter;
-
-  constructor({
-    consoleFramePresenter = new ConsoleFramePresenterImpl(),
-  } = {}) {
-    this.consoleFramePresenter = consoleFramePresenter;
+  constructor(
+    @inject('ConsoleFramePresenter')
+    private consoleFramePresenter: ConsoleFramePresenter,
+  ) {
   }
 
   unfocus() {

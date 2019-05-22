@@ -1,23 +1,6 @@
-import ContentMessageListener from './infrastructures/ContentMessageListener';
-import SettingController from './controllers/SettingController';
-import VersionController from './controllers/VersionController';
+import 'reflect-metadata';
+import { container } from 'tsyringe';
+import Application from './Application';
 
-let settingController = new SettingController();
-settingController.reload();
-
-browser.runtime.onInstalled.addListener((details) => {
-  if (details.reason !== 'install' && details.reason !== 'update') {
-    return;
-  }
-  new VersionController().notify();
-});
-
-new ContentMessageListener().run();
-browser.storage.onChanged.addListener((changes, area) => {
-  if (area !== 'local') {
-    return;
-  }
-  if (changes.settings) {
-    settingController.reload();
-  }
-});
+let app = container.resolve(Application);
+app.run();

@@ -1,19 +1,17 @@
-import AddonIndicatorClient, { AddonIndicatorClientImpl }
-  from '../client/AddonIndicatorClient';
-import AddonEnabledRepository, { AddonEnabledRepositoryImpl }
-  from '../repositories/AddonEnabledRepository';
+import { injectable, inject } from 'tsyringe';
+import AddonIndicatorClient from '../client/AddonIndicatorClient';
+import AddonEnabledRepository from '../repositories/AddonEnabledRepository';
 
+@injectable()
 export default class AddonEnabledUseCase {
-  private indicator: AddonIndicatorClient;
 
-  private repository: AddonEnabledRepository;
+  constructor(
+    @inject('AddonIndicatorClient')
+    private indicator: AddonIndicatorClient,
 
-  constructor({
-    indicator = new AddonIndicatorClientImpl(),
-    repository = new AddonEnabledRepositoryImpl(),
-  } = {}) {
-    this.indicator = indicator;
-    this.repository = repository;
+    @inject('AddonEnabledRepository')
+    private repository: AddonEnabledRepository,
+  ) {
   }
 
   async enable(): Promise<void> {

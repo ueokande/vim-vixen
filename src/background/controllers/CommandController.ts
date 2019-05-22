@@ -1,3 +1,4 @@
+import { injectable } from 'tsyringe';
 import CompletionsUseCase from '../usecases/CompletionsUseCase';
 import CommandUseCase from '../usecases/CommandUseCase';
 import CompletionGroup from '../domains/CompletionGroup';
@@ -7,14 +8,12 @@ const trimStart = (str: string): string => {
   return str.replace(/^\s+/, '');
 };
 
+@injectable()
 export default class CommandController {
-  private completionsUseCase: CompletionsUseCase;
-
-  private commandIndicator: CommandUseCase;
-
-  constructor() {
-    this.completionsUseCase = new CompletionsUseCase();
-    this.commandIndicator = new CommandUseCase();
+  constructor(
+    private completionsUseCase: CompletionsUseCase,
+    private commandIndicator: CommandUseCase,
+  ) {
   }
 
   getCompletions(line: string): Promise<CompletionGroup[]> {

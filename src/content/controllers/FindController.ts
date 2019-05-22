@@ -1,13 +1,12 @@
+import { injectable } from 'tsyringe';
 import * as messages from '../../shared/messages';
 import FindUseCase from '../usecases/FindUseCase';
 
+@injectable()
 export default class FindController {
-  private findUseCase: FindUseCase;
-
-  constructor({
-    findUseCase = new FindUseCase(),
-  } = {}) {
-    this.findUseCase = findUseCase;
+  constructor(
+    private findUseCase: FindUseCase,
+  ) {
   }
 
   async start(m: messages.ConsoleEnterFindMessage): Promise<void> {

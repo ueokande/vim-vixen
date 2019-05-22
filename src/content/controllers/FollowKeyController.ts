@@ -1,13 +1,12 @@
+import { injectable } from 'tsyringe';
 import FollowSlaveUseCase from '../usecases/FollowSlaveUseCase';
 import Key from '../domains/Key';
 
+@injectable()
 export default class FollowKeyController {
-  private followSlaveUseCase: FollowSlaveUseCase;
-
-  constructor({
-    followSlaveUseCase = new FollowSlaveUseCase(),
-  } = {}) {
-    this.followSlaveUseCase = followSlaveUseCase;
+  constructor(
+    private followSlaveUseCase: FollowSlaveUseCase,
+  ) {
   }
 
   press(key: Key): boolean {

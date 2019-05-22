@@ -1,5 +1,7 @@
+import { injectable } from 'tsyringe';
 import * as messages from '../../shared/messages';
 
+@injectable()
 export default class ContentMessageClient {
   async broadcastSettingsChanged(): Promise<void> {
     let tabs = await browser.tabs.query({});

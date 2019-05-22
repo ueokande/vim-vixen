@@ -5,7 +5,6 @@
     "lib": ["es6", "dom", "es2017"],
     "allowJs": true,
     "checkJs": true,
-    "noEmit": true,
     "jsx": "react",
     "sourceMap": true,
     "outDir": "./build",
@@ -28,7 +27,10 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
 
-    "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"]
+    "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"],
+
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": [
     "src"

@@ -1,7 +1,9 @@
+import { injectable } from 'tsyringe';
 import MemoryStorage from '../infrastructures/MemoryStorage';
 
 const FIND_KEYWORD_KEY = 'find-keyword';
 
+@injectable()
 export default class FindRepository {
   private cache: MemoryStorage;
 

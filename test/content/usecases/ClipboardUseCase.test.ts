@@ -1,4 +1,5 @@
 import ClipboardRepository from '../../../src/content/repositories/ClipboardRepository';
+import { SettingRepositoryImpl } from '../../../src/content/repositories/SettingRepository';
 import TabsClient from '../../../src/content/client/TabsClient';
 import MockConsoleClient from '../mock/MockConsoleClient';
 import ClipboardUseCase from '../../../src/content/usecases/ClipboardUseCase';
@@ -43,7 +44,12 @@ describe('ClipboardUseCase', () => {
     repository = new MockClipboardRepository();
     client = new MockTabsClient();
     consoleClient = new MockConsoleClient();
-    sut = new ClipboardUseCase({ repository, client: client, consoleClient });
+    sut = new ClipboardUseCase(
+      repository,
+      new SettingRepositoryImpl(),
+      client,
+      consoleClient
+   );
   });
 
   describe('#yankCurrentURL', () => {

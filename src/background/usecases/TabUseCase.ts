@@ -1,14 +1,13 @@
+import { injectable } from 'tsyringe';
 import TabPresenter from '../presenters/TabPresenter';
 import BrowserSettingRepository from '../repositories/BrowserSettingRepository';
 
+@injectable()
 export default class TabUseCase {
-  private tabPresenter: TabPresenter;
-
-  private browserSettingRepository: BrowserSettingRepository;
-
-  constructor() {
-    this.tabPresenter = new TabPresenter();
-    this.browserSettingRepository = new BrowserSettingRepository();
+  constructor(
+    private tabPresenter: TabPresenter,
+    private browserSettingRepository: BrowserSettingRepository,
+  ) {
   }
 
   async close(force: boolean): Promise<any> {

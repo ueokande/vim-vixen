@@ -1,10 +1,11 @@
+import { injectable } from 'tsyringe';
 import TabPresenter from '../presenters/TabPresenter';
 
+@injectable()
 export default class TabSelectUseCase {
-  private tabPresenter: TabPresenter;
-
-  constructor() {
-    this.tabPresenter = new TabPresenter();
+  constructor(
+    private tabPresenter: TabPresenter,
+  ) {
   }
 
   async selectPrev(count: number): Promise<any> {

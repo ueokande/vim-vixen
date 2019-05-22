@@ -1,35 +1,19 @@
-import ScrollPresenter, { ScrollPresenterImpl }
-  from '../presenters/ScrollPresenter';
-import MarkClient, { MarkClientImpl } from '../client/MarkClient';
-import MarkRepository, { MarkRepositoryImpl }
-  from '../repositories/MarkRepository';
-import SettingRepository, { SettingRepositoryImpl }
-  from '../repositories/SettingRepository';
-import ConsoleClient, { ConsoleClientImpl } from '../client/ConsoleClient';
+import { injectable, inject } from 'tsyringe';
+import ScrollPresenter from '../presenters/ScrollPresenter';
+import MarkClient from '../client/MarkClient';
+import MarkRepository from '../repositories/MarkRepository';
+import SettingRepository from '../repositories/SettingRepository';
+import ConsoleClient from '../client/ConsoleClient';
 
+@injectable()
 export default class MarkUseCase {
-  private scrollPresenter: ScrollPresenter;
-
-  private client: MarkClient;
-
-  private repository: MarkRepository;
-
-  private settingRepository: SettingRepository;
-
-  private consoleClient: ConsoleClient;
-
-  constructor({
-    scrollPresenter = new ScrollPresenterImpl(),
-    client = new MarkClientImpl(),
-    repository = new MarkRepositoryImpl(),
-    settingRepository = new SettingRepositoryImpl(),
-    consoleClient = new ConsoleClientImpl(),
-  } = {}) {
-    this.scrollPresenter = scrollPresenter;
-    this.client = client;
-    this.repository = repository;
-    this.settingRepository = settingRepository;
-    this.consoleClient = consoleClient;
+  constructor(
+    @inject('ScrollPresenter') private scrollPresenter: ScrollPresenter,
+    @inject('MarkClient') private client: MarkClient,
+    @inject('MarkRepository') private repository: MarkRepository,
+    @inject('SettingRepository') private settingRepository: SettingRepository,
+    @inject('ConsoleClient') private consoleClient: ConsoleClient,
+  ) {
   }
 
   async set(key: string): Promise<void> {

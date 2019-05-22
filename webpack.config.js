@@ -17,19 +17,20 @@ config = {
     filename: '[name].js'
   },
 
+  optimization: {
+    minimize: false
+  },
+
+  performance: {
+    hints: false
+  },
+
   module: {
     rules: [
       {
-        test: [ /\.js$/,  /\.jsx$/, /\.ts$/, /\.tsx$/],
+        test: [ /\.ts$/, /\.tsx$/],
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          presets: [
-            { plugins: ['@babel/plugin-proposal-class-properties'] },
-            '@babel/react',
-            '@babel/preset-typescript'
-          ]
-        },
+        loader: 'ts-loader'
       },
       {
         test: /\.css$/,

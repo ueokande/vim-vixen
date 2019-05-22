@@ -1,7 +1,9 @@
+import { injectable } from 'tsyringe';
 import { Message, valueOf } from '../shared/messages';
 
 export type WebExtMessageSender = browser.runtime.MessageSender;
 
+@injectable()
 export default class MessageListener {
   onWebMessage(
     listener: (msg: Message, sender: Window) => void,

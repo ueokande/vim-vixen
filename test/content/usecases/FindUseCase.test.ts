@@ -71,7 +71,7 @@ describe('FindUseCase', () => {
     presenter = new MockFindPresenter();
     client = new MockFindClient();
     consoleClient = new MockConsoleClient();
-    sut = new FindUseCase({ repository, presenter, client, consoleClient });
+    sut = new FindUseCase(presenter, repository, client, consoleClient);
   });
 
   describe('#startFind', () => {

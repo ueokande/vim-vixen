@@ -1,6 +1,8 @@
-import chai from 'chai';
+import 'reflect-metadata';
+import { expect } from 'chai';
+
 const browserFake = require('webextensions-api-fake');
 const browser = browserFake();
 
-global.expect = chai.expect;
+global.expect = expect;
 global.browser = browser;

@@ -1,10 +1,11 @@
+import { injectable } from 'tsyringe';
 import LinkUseCase from '../usecases/LinkUseCase';
 
+@injectable()
 export default class LinkController {
-  private linkUseCase: LinkUseCase;
-
-  constructor() {
-    this.linkUseCase = new LinkUseCase();
+  constructor(
+    private linkUseCase: LinkUseCase,
+  ) {
   }
 
   openToTab(url: string, tabId: number): Promise<void> {

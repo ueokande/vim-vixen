@@ -1,13 +1,11 @@
-import FindMasterClient, { FindMasterClientImpl }
-  from '../client/FindMasterClient';
+import { injectable, inject } from 'tsyringe';
+import FindMasterClient from '../client/FindMasterClient';
 
+@injectable()
 export default class FindSlaveUseCase {
-  private findMasterClient: FindMasterClient;
-
-  constructor({
-    findMasterClient = new FindMasterClientImpl(),
-  } = {}) {
-    this.findMasterClient = findMasterClient;
+  constructor(
+    @inject('FindMasterClient') private findMasterClient: FindMasterClient,
+  ) {
   }
 
   findNext() {

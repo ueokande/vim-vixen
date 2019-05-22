@@ -40,7 +40,7 @@ describe('AddonEnabledUseCase', () => {
   beforeEach(() => {
     repository = new MockAddonEnabledRepository(true);
     indicator = new MockAddonIndicatorClient(false);
-    sut = new AddonEnabledUseCase({ repository, indicator });
+    sut = new AddonEnabledUseCase(indicator, repository);
   });
 
   describe('#enable', () => {

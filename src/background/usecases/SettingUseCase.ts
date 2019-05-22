@@ -1,17 +1,17 @@
-// eslint-disable-next-line max-len
-import PersistentSettingRepository from '../repositories/PersistentSettingRepository';
+import { injectable } from 'tsyringe';
+import PersistentSettingRepository
+  from '../repositories/PersistentSettingRepository';
 import SettingRepository from '../repositories/SettingRepository';
 import { DefaultSettingData } from '../../shared/SettingData';
 import Settings from '../../shared/Settings';
 
+@injectable()
 export default class SettingUseCase {
-  private persistentSettingRepository: PersistentSettingRepository;
 
-  private settingRepository: SettingRepository;
-
-  constructor() {
-    this.persistentSettingRepository = new PersistentSettingRepository();
-    this.settingRepository = new SettingRepository();
+  constructor(
+    private persistentSettingRepository: PersistentSettingRepository,
+    private settingRepository: SettingRepository,
+  ) {
   }
 
   get(): Promise<Settings> {

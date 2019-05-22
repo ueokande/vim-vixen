@@ -1,15 +1,14 @@
+import { injectable } from 'tsyringe';
 import SettingUseCase from '../usecases/SettingUseCase';
 import ContentMessageClient from '../infrastructures/ContentMessageClient';
 import Settings from '../../shared/Settings';
 
+@injectable()
 export default class SettingController {
-  private settingUseCase: SettingUseCase;
-
-  private contentMessageClient: ContentMessageClient;
-
-  constructor() {
-    this.settingUseCase = new SettingUseCase();
-    this.contentMessageClient = new ContentMessageClient();
+  constructor(
+    private settingUseCase: SettingUseCase,
+    private contentMessageClient: ContentMessageClient,
+  ) {
   }
 
   getSetting(): Promise<Settings> {

@@ -1,10 +1,11 @@
+import { injectable } from 'tsyringe';
 import VersionUseCase from '../usecases/VersionUseCase';
 
+@injectable()
 export default class VersionController {
-  private versionUseCase: VersionUseCase;
-
-  constructor() {
-    this.versionUseCase = new VersionUseCase();
+  constructor(
+    private versionUseCase: VersionUseCase,
+  ) {
   }
 
   notify(): Promise<void> {

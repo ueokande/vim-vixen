@@ -1,27 +1,21 @@
+import { injectable } from 'tsyringe';
 import IndicatorPresenter from '../presenters/IndicatorPresenter';
 import TabPresenter from '../presenters/TabPresenter';
 import ContentMessageClient from '../infrastructures/ContentMessageClient';
 
+@injectable()
 export default class AddonEnabledUseCase {
-  private indicatorPresentor: IndicatorPresenter;
-
-  private tabPresenter: TabPresenter;
-
-  private contentMessageClient: ContentMessageClient;
-
-  constructor() {
-    this.indicatorPresentor = new IndicatorPresenter();
-
+  constructor(
+    private indicatorPresentor: IndicatorPresenter,
+    private tabPresenter: TabPresenter,
+    private contentMessageClient: ContentMessageClient,
+  ) {
     this.indicatorPresentor.onClick((tab) => {
       if (tab.id) {
         this.onIndicatorClick(tab.id);
       }
     });
-
-    this.tabPresenter = new TabPresenter();
     this.tabPresenter.onSelected(info => this.onTabSelected(info.tabId));
-
-    this.contentMessageClient = new ContentMessageClient();
   }
 
   indicate(enabled: boolean): Promise<void> {

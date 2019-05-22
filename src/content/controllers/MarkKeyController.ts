@@ -1,18 +1,14 @@
+import { injectable } from 'tsyringe';
 import MarkUseCase from '../usecases/MarkUseCase';
 import MarkKeyyUseCase from '../usecases/MarkKeyUseCase';
 import Key from '../domains/Key';
 
+@injectable()
 export default class MarkKeyController {
-  private markUseCase: MarkUseCase;
-
-  private markKeyUseCase: MarkKeyyUseCase;
-
-  constructor({
-    markUseCase = new MarkUseCase(),
-    markKeyUseCase = new MarkKeyyUseCase(),
-  } = {}) {
-    this.markUseCase = markUseCase;
-    this.markKeyUseCase = markKeyUseCase;
+  constructor(
+    private markUseCase: MarkUseCase,
+    private markKeyUseCase: MarkKeyyUseCase,
+  ) {
   }
 
   press(key: Key): boolean {

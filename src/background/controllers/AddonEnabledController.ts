@@ -1,10 +1,12 @@
+import { injectable } from 'tsyringe';
 import AddonEnabledUseCase from '../usecases/AddonEnabledUseCase';
 
+@injectable()
 export default class AddonEnabledController {
-  private addonEnabledUseCase: AddonEnabledUseCase;
 
-  constructor() {
-    this.addonEnabledUseCase = new AddonEnabledUseCase();
+  constructor(
+    private addonEnabledUseCase: AddonEnabledUseCase,
+  ) {
   }
 
   indicate(enabled: boolean): Promise<any> {

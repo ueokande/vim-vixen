@@ -1,10 +1,7 @@
-import KeymapRepository, { KeymapRepositoryImpl }
-  from '../repositories/KeymapRepository';
-import SettingRepository, { SettingRepositoryImpl }
-  from '../repositories/SettingRepository';
-import AddonEnabledRepository, { AddonEnabledRepositoryImpl }
-  from '../repositories/AddonEnabledRepository';
-
+import { injectable, inject } from 'tsyringe';
+import KeymapRepository from '../repositories/KeymapRepository';
+import SettingRepository from '../repositories/SettingRepository';
+import AddonEnabledRepository from '../repositories/AddonEnabledRepository';
 import * as operations from '../../shared/operations';
 import { Keymaps } from '../../shared/Settings';
 import Key from '../domains/Key';
@@ -17,22 +14,18 @@ const reservedKeymaps: Keymaps = {
   '<C-[>': { type: operations.CANCEL },
 };
 
-
+@injectable()
 export default class KeymapUseCase {
-  private repository: KeymapRepository;
+  constructor(
+    @inject('KeymapRepository')
+    private repository: KeymapRepository,
 
-  private settingRepository: SettingRepository;
+    @inject('SettingRepository')
+    private settingRepository: SettingRepository,
 
-  private addonEnabledRepository: AddonEnabledRepository;
-
-  constructor({
-    repository = new KeymapRepositoryImpl(),
-    settingRepository = new SettingRepositoryImpl(),
-    addonEnabledRepository = new AddonEnabledRepositoryImpl(),
-  } = {}) {
-    this.repository = repository;
-    this.settingRepository = settingRepository;
-    this.addonEnabledRepository = addonEnabledRepository;
+    @inject('AddonEnabledRepository')
+    private addonEnabledRepository: AddonEnabledRepository,
+  ) {
   }
 
   nextOp(key: Key): operations.Operation | null {

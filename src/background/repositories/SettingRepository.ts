@@ -1,9 +1,11 @@
+import { injectable } from 'tsyringe';
 import MemoryStorage from '../infrastructures/MemoryStorage';
 import Settings from '../../shared/Settings';
 import * as PropertyDefs from '../../shared/property-defs';
 
 const CACHED_SETTING_KEY = 'setting';
 
+@injectable()
 export default class SettingRepository {
   private cache: MemoryStorage;
 

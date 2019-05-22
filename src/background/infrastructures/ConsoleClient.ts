@@ -1,5 +1,7 @@
+import { injectable } from 'tsyringe';
 import * as messages from '../../shared/messages';
 
+@injectable()
 export default class ConsoleClient {
   showCommand(tabId: number, command: string): Promise<any> {
     return browser.tabs.sendMessage(tabId, {
