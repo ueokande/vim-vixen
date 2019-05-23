@@ -5,6 +5,7 @@ import ConsoleUseCase from '../usecases/ConsoleUseCase';
 import TabUseCase from '../usecases/TabUseCase';
 import TabSelectUseCase from '../usecases/TabSelectUseCase';
 import ZoomUseCase from '../usecases/ZoomUseCase';
+import NavigateUseCase from '../usecases/NavigateUseCase';
 
 @injectable()
 export default class OperationController {
@@ -14,6 +15,7 @@ export default class OperationController {
     private tabUseCase: TabUseCase,
     private tabSelectUseCase: TabSelectUseCase,
     private zoomUseCase: ZoomUseCase,
+    private navigateUseCase: NavigateUseCase,
   ) {
   }
 
@@ -74,6 +76,14 @@ export default class OperationController {
       return this.findUseCase.findStart();
     case operations.CANCEL:
       return this.consoleUseCase.hideConsole();
+    case operations.NAVIGATE_HISTORY_PREV:
+      return this.navigateUseCase.openHistoryPrev();
+    case operations.NAVIGATE_HISTORY_NEXT:
+      return this.navigateUseCase.openHistoryNext();
+    case operations.NAVIGATE_LINK_PREV:
+      return this.navigateUseCase.openLinkPrev();
+    case operations.NAVIGATE_LINK_NEXT:
+      return this.navigateUseCase.openLinkNext();
     }
     throw new Error('unknown operation: ' + operation.type);
   }

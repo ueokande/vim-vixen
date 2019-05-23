@@ -84,18 +84,6 @@ export default class KeymapController {
     case operations.MARK_JUMP_PREFIX:
       this.markKeyUseCase.enableJumpMode();
       break;
-    case operations.NAVIGATE_HISTORY_PREV:
-      this.navigateUseCase.openHistoryPrev();
-      break;
-    case operations.NAVIGATE_HISTORY_NEXT:
-      this.navigateUseCase.openHistoryNext();
-      break;
-    case operations.NAVIGATE_LINK_PREV:
-      this.navigateUseCase.openLinkPrev();
-      break;
-    case operations.NAVIGATE_LINK_NEXT:
-      this.navigateUseCase.openLinkNext();
-      break;
     case operations.NAVIGATE_PARENT:
       this.navigateUseCase.openParent();
       break;
