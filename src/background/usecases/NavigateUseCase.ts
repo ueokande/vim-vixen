@@ -33,9 +33,9 @@ export default class NavigateUseCase {
   async openParent(): Promise<void> {
     let tab = await this.tabPresenter.getCurrent();
     let url = new URL(tab.url!!);
-    if (url.hash !== '') {
+    if (url.hash.length > 0) {
       url.hash = '';
-    } else if (url.search !== '') {
+    } else if (url.search.length > 0) {
       url.search = '';
     } else {
       const basenamePattern = /\/[^/]+$/;
