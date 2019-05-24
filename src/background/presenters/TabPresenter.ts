@@ -36,7 +36,7 @@ export default class TabPresenter {
     return tabId;
   }
 
-  async getByKeyword(keyword: string, excludePinned = false): Promise<Tab[]> {
+  async getByKeyword(keyword: string, excludePinned: boolean = false): Promise<Tab[]> {
     let tabs = await browser.tabs.query({ currentWindow: true });
     return tabs.filter((t) => {
       return t.url && t.url.toLowerCase().includes(keyword.toLowerCase()) ||

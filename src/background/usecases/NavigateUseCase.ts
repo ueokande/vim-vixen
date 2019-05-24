@@ -30,11 +30,28 @@ export default class NavigateUseCase {
     await this.navigateClient.linkPrev(tab.id!!);
   }
 
-  openParent(): Promise<void> {
-    throw new Error('not implemented');
+  async openParent(): Promise<void> {
+    let tab = await this.tabPresenter.getCurrent();
+    let url = new URL(tab.url!!);
+    if (url.hash !== '') {
+      url.hash = '';
+    } else if (url.search !== '') {
+      url.search = '';
+    } else {
+      const basenamePattern = /\/[^/]+$/;
+      const lastDirPattern = /\/[^/]+\/$/;
+      if (basenamePattern.test(url.pathname)) {
+        url.pathname = url.pathname.replace(basenamePattern, '/');
+      } else if (lastDirPattern.test(url.pathname)) {
+        url.pathname = url.pathname.replace(lastDirPattern, '/');
+      }
+    }
+    await this.tabPresenter.open(url.href);
   }
 
-  openRoot(): Promise<void> {
-    throw new Error('not implemented');
+  async openRoot(): Promise<void> {
+    let tab = await this.tabPresenter.getCurrent();
+    let url = new URL(tab.url!!);
+    await this.tabPresenter.open(url.origin);
   }
 }

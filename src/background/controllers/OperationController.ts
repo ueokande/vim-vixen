@@ -84,6 +84,10 @@ export default class OperationController {
       return this.navigateUseCase.openLinkPrev();
     case operations.NAVIGATE_LINK_NEXT:
       return this.navigateUseCase.openLinkNext();
+    case operations.NAVIGATE_PARENT:
+      return this.navigateUseCase.openParent();
+    case operations.NAVIGATE_ROOT:
+      return this.navigateUseCase.openRoot();
     }
     throw new Error('unknown operation: ' + operation.type);
   }

@@ -6,10 +6,6 @@ export default interface NavigationPresenter {
   openLinkPrev(): void;
 
   openLinkNext(): void;
-
-  openParent(): void;
-
-  openRoot(): void;
 }
 
 const REL_PATTERN: {[key: string]: RegExp} = {
@@ -49,29 +45,6 @@ export class NavigationPresenterImpl implements NavigationPresenter {
 
   openLinkNext(): void {
     this.linkRel('next');
-  }
-
-  openParent(): void {
-    const loc = window.location;
-    if (loc.hash !== '') {
-      loc.hash = '';
-      return;
-    } else if (loc.search !== '') {
-      loc.search = '';
-      return;
-    }
-
-    const basenamePattern = /\/[^/]+$/;
-    const lastDirPattern = /\/[^/]+\/$/;
-    if (basenamePattern.test(loc.pathname)) {
-      loc.pathname = loc.pathname.replace(basenamePattern, '/');
-    } else if (lastDirPattern.test(loc.pathname)) {
-      loc.pathname = loc.pathname.replace(lastDirPattern, '/');
-    }
-  }
-
-  openRoot(): void {
-    window.location.href = window.location.origin;
   }
 
   // Code common to linkPrev and linkNext which navigates to the specified page.

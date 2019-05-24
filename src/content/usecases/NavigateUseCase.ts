@@ -24,12 +24,4 @@ export default class NavigateUseCase {
   openLinkNext(): void {
     this.navigationPresenter.openLinkNext();
   }
-
-  openParent(): void {
-    this.navigationPresenter.openParent();
-  }
-
-  openRoot(): void {
-    this.navigationPresenter.openRoot();
-  }
 }

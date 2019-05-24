@@ -4,7 +4,6 @@ import KeymapUseCase from '../usecases/KeymapUseCase';
 import AddonEnabledUseCase from '../usecases/AddonEnabledUseCase';
 import FindSlaveUseCase from '../usecases/FindSlaveUseCase';
 import ScrollUseCase from '../usecases/ScrollUseCase';
-import NavigateUseCase from '../usecases/NavigateUseCase';
 import FocusUseCase from '../usecases/FocusUseCase';
 import ClipboardUseCase from '../usecases/ClipboardUseCase';
 import BackgroundClient from '../client/BackgroundClient';
@@ -19,7 +18,6 @@ export default class KeymapController {
     private addonEnabledUseCase: AddonEnabledUseCase,
     private findSlaveUseCase: FindSlaveUseCase,
     private scrollUseCase: ScrollUseCase,
-    private navigateUseCase: NavigateUseCase,
     private focusUseCase: FocusUseCase,
     private clipbaordUseCase: ClipboardUseCase,
     private backgroundClient: BackgroundClient,
@@ -83,12 +81,6 @@ export default class KeymapController {
       break;
     case operations.MARK_JUMP_PREFIX:
       this.markKeyUseCase.enableJumpMode();
-      break;
-    case operations.NAVIGATE_PARENT:
-      this.navigateUseCase.openParent();
-      break;
-    case operations.NAVIGATE_ROOT:
-      this.navigateUseCase.openRoot();
       break;
     case operations.FOCUS_INPUT:
       this.focusUseCase.focusFirstInput();
