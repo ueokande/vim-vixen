@@ -15,7 +15,7 @@ describe('NavigateUseCase', () => {
   });
 
   describe('#openParent()', async () => {
-    it.only('opens parent directory of file', async() => {
+    it('opens parent directory of file', async() => {
       var stub = sinon.stub(tabPresenter, 'getCurrent');
       stub.returns(Promise.resolve({ url: 'https://google.com/fruits/yellow/banana' }))
 
@@ -27,7 +27,7 @@ describe('NavigateUseCase', () => {
       mock.verify();
     });
 
-    it.only('opens parent directory of directory', async() => {
+    it('opens parent directory of directory', async() => {
       var stub = sinon.stub(tabPresenter, 'getCurrent');
       stub.returns(Promise.resolve({ url: 'https://google.com/fruits/yellow/' }))
 
@@ -39,7 +39,7 @@ describe('NavigateUseCase', () => {
       mock.verify();
     });
 
-    it.only('removes hash', async() => {
+    it('removes hash', async() => {
       var stub = sinon.stub(tabPresenter, 'getCurrent');
       stub.returns(Promise.resolve({ url: 'https://google.com/#top' }))
 
@@ -51,7 +51,7 @@ describe('NavigateUseCase', () => {
       mock.verify();
     });
 
-    it.only('removes search query', async() => {
+    it('removes search query', async() => {
       var stub = sinon.stub(tabPresenter, 'getCurrent');
       stub.returns(Promise.resolve({ url: 'https://google.com/search?q=apple' }))
 
@@ -65,7 +65,7 @@ describe('NavigateUseCase', () => {
   });
 
   describe('#openRoot()', () => {
-    it.only('opens root direectory', async() => {
+    it('opens root direectory', async() => {
       var stub = sinon.stub(tabPresenter, 'getCurrent');
       stub.returns(Promise.resolve({
         url: 'https://google.com/seach?q=apple',
