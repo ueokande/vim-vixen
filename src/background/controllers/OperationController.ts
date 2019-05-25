@@ -6,6 +6,7 @@ import TabUseCase from '../usecases/TabUseCase';
 import TabSelectUseCase from '../usecases/TabSelectUseCase';
 import ZoomUseCase from '../usecases/ZoomUseCase';
 import NavigateUseCase from '../usecases/NavigateUseCase';
+import RepeatUseCase from '../usecases/RepeatUseCase';
 
 @injectable()
 export default class OperationController {
@@ -16,11 +17,19 @@ export default class OperationController {
     private tabSelectUseCase: TabSelectUseCase,
     private zoomUseCase: ZoomUseCase,
     private navigateUseCase: NavigateUseCase,
+    private repeatUseCase: RepeatUseCase,
   ) {
   }
 
+  async exec(op: operations.Operation): Promise<any> {
+    await this.doOperation(op);
+    if (this.repeatUseCase.isRepeatable(op)) {
+      this.repeatUseCase.storeLastOperation(op);
+    }
+  }
+
   // eslint-disable-next-line complexity, max-lines-per-function
-  exec(operation: operations.Operation): Promise<any> {
+  doOperation(operation: operations.Operation): Promise<any> {
     switch (operation.type) {
     case operations.TAB_CLOSE:
       return this.tabUseCase.close(false);
@@ -88,6 +97,14 @@ export default class OperationController {
       return this.navigateUseCase.openParent();
     case operations.NAVIGATE_ROOT:
       return this.navigateUseCase.openRoot();
+    case operations.REPEAT_LAST:
+    {
+      let last = this.repeatUseCase.getLastOperation();
+      if (typeof last !== 'undefined') {
+        return this.doOperation(last);
+      }
+      return Promise.resolve();
+    }
     }
     throw new Error('unknown operation: ' + operation.type);
   }

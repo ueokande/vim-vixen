@@ -1,9 +1,11 @@
-import { injectable } from 'tsyringe';
 import * as operations from '../../shared/operations';
 import * as messages from '../../shared/messages';
 
-@injectable()
-export default class BackgroundClient {
+export default interface OperationClient {
+  execBackgroundOp(op: operations.Operation): Promise<void>;
+}
+
+export class OperationClientImpl implements OperationClient {
   execBackgroundOp(op: operations.Operation): Promise<void> {
     return browser.runtime.sendMessage({
       type: messages.BACKGROUND_OPERATION,

@@ -75,6 +75,9 @@ export const FIND_PREV = 'find.prev';
 export const MARK_SET_PREFIX = 'mark.set.prefix';
 export const MARK_JUMP_PREFIX = 'mark.jump.prefix';
 
+// Repeat
+export const REPEAT_LAST = 'repeat.last';
+
 export interface CancelOperation {
   type: typeof CANCEL;
 }
@@ -291,6 +294,10 @@ export interface MarkJumpPrefixOperation {
   type: typeof MARK_JUMP_PREFIX;
 }
 
+export interface RepeatLastOperation {
+  type: typeof REPEAT_LAST;
+}
+
 export type Operation =
   CancelOperation |
   AddonEnableOperation |
@@ -342,7 +349,8 @@ export type Operation =
   FindNextOperation |
   FindPrevOperation |
   MarkSetPrefixOperation |
-  MarkJumpPrefixOperation;
+  MarkJumpPrefixOperation |
+  RepeatLastOperation;
 
 const assertOptionalBoolean = (obj: any, name: string) => {
   if (Object.prototype.hasOwnProperty.call(obj, name) &&
@@ -441,6 +449,7 @@ export const valueOf = (o: any): Operation => {
   case FIND_PREV:
   case MARK_SET_PREFIX:
   case MARK_JUMP_PREFIX:
+  case REPEAT_LAST:
     return { type: o.type };
   }
   throw new TypeError('unknown operation type: ' + o.type);

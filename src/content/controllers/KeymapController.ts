@@ -6,7 +6,7 @@ import FindSlaveUseCase from '../usecases/FindSlaveUseCase';
 import ScrollUseCase from '../usecases/ScrollUseCase';
 import FocusUseCase from '../usecases/FocusUseCase';
 import ClipboardUseCase from '../usecases/ClipboardUseCase';
-import BackgroundClient from '../client/BackgroundClient';
+import OperationClient from '../client/OperationClient';
 import MarkKeyyUseCase from '../usecases/MarkKeyUseCase';
 import FollowMasterClient from '../client/FollowMasterClient';
 import Key from '../domains/Key';
@@ -20,8 +20,10 @@ export default class KeymapController {
     private scrollUseCase: ScrollUseCase,
     private focusUseCase: FocusUseCase,
     private clipbaordUseCase: ClipboardUseCase,
-    private backgroundClient: BackgroundClient,
     private markKeyUseCase: MarkKeyyUseCase,
+
+    @inject('OperationClient')
+    private backgroundClient: OperationClient,
 
     @inject('FollowMasterClient')
     private followMasterClient: FollowMasterClient,
