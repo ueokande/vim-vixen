@@ -390,6 +390,7 @@ export const DefaultSettingData: SettingData = SettingData.valueOf({
     "/": { "type": "find.start" },
     "n": { "type": "find.next" },
     "N": { "type": "find.prev" },
+    ".": { "type": "repeat.last" },
     "<S-Esc>": { "type": "addon.toggle.enabled" }
   },
   "search": {

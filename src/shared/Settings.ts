@@ -177,6 +177,7 @@ export const DefaultSetting: Settings = {
     '/': { 'type': 'find.start' },
     'n': { 'type': 'find.next' },
     'N': { 'type': 'find.prev' },
+    '.': { 'type': 'repeat.last' },
     '<S-Esc>': { 'type': 'addon.toggle.enabled' }
   },
   search: {
