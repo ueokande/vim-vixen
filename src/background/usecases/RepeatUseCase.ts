@@ -42,6 +42,7 @@ export default class RepeatUseCase {
     case operations.ZOOM_IN:
     case operations.ZOOM_OUT:
     case operations.ZOOM_NEUTRAL:
+    case operations.INTERNAL_OPEN_URL:
       return true;
     }
     return false;

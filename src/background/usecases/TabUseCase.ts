@@ -1,11 +1,13 @@
 import { injectable } from 'tsyringe';
 import TabPresenter from '../presenters/TabPresenter';
+import WindowPresenter from '../presenters/WindowPresenter';
 import BrowserSettingRepository from '../repositories/BrowserSettingRepository';
 
 @injectable()
 export default class TabUseCase {
   constructor(
     private tabPresenter: TabPresenter,
+    private windowPresenter: WindowPresenter,
     private browserSettingRepository: BrowserSettingRepository,
   ) {
   }
@@ -75,6 +77,19 @@ export default class TabUseCase {
     }
     for (let url of urls) {
       this.tabPresenter.create(url);
+    }
+  }
+
+  async openURL(
+    url: string, newTab?: boolean, newWindow?: boolean,
+  ): Promise<void> {
+    if (newWindow) {
+      await this.windowPresenter.create(url);
+    } else if (newTab) {
+      await this.tabPresenter.create(url);
+    } else {
+      let tab = await this.tabPresenter.getCurrent();
+      await this.tabPresenter.open(url, tab.id);
     }
   }
 }

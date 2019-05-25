@@ -105,6 +105,9 @@ export default class OperationController {
       }
       return Promise.resolve();
     }
+    case operations.INTERNAL_OPEN_URL:
+      return this.tabUseCase.openURL(
+        operation.url, operation.newTab, operation.newWindow);
     }
     throw new Error('unknown operation: ' + operation.type);
   }
