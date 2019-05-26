@@ -62,7 +62,6 @@ const fields = [
     ['zoom.in', 'Zoom-in'],
     ['zoom.out', 'Zoom-out'],
     ['zoom.neutral', 'Reset zoom level'],
-    ['page.source', 'Open a page source'],
     ['repeat.last', 'Repeat last change'],
   ]
 ];
