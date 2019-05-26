@@ -132,13 +132,4 @@ describe('NavigationPresenter', () => {
       '<a href="#dummy">next page</a><a rel="next" href="#next">click me</a>'
     ));
   });
-
-  describe('#parent', () => {
-    // NOTE: not able to test location
-    it('removes hash', () => {
-      window.location.hash = '#section-1';
-      sut.openParent();
-      expect(document.location.hash).to.be.empty;
-    });
-  });
 });

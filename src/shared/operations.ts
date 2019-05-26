@@ -75,6 +75,12 @@ export const FIND_PREV = 'find.prev';
 export const MARK_SET_PREFIX = 'mark.set.prefix';
 export const MARK_JUMP_PREFIX = 'mark.jump.prefix';
 
+// Repeat
+export const REPEAT_LAST = 'repeat.last';
+
+// Internal
+export const INTERNAL_OPEN_URL = 'internal.open.url';
+
 export interface CancelOperation {
   type: typeof CANCEL;
 }
@@ -291,6 +297,18 @@ export interface MarkJumpPrefixOperation {
   type: typeof MARK_JUMP_PREFIX;
 }
 
+export interface RepeatLastOperation {
+  type: typeof REPEAT_LAST;
+}
+
+export interface InternalOpenUrl {
+  type: typeof INTERNAL_OPEN_URL;
+  url: string;
+  newTab?: boolean;
+  newWindow?: boolean;
+  background?: boolean;
+}
+
 export type Operation =
   CancelOperation |
   AddonEnableOperation |
@@ -342,7 +360,9 @@ export type Operation =
   FindNextOperation |
   FindPrevOperation |
   MarkSetPrefixOperation |
-  MarkJumpPrefixOperation;
+  MarkJumpPrefixOperation |
+  RepeatLastOperation |
+  InternalOpenUrl;
 
 const assertOptionalBoolean = (obj: any, name: string) => {
   if (Object.prototype.hasOwnProperty.call(obj, name) &&
@@ -355,6 +375,13 @@ const assertRequiredNumber = (obj: any, name: string) => {
   if (!Object.prototype.hasOwnProperty.call(obj, name) ||
     typeof obj[name] !== 'number') {
     throw new TypeError(`Missing number parameter '${name}`);
+  }
+};
+
+const assertRequiredString = (obj: any, name: string) => {
+  if (!Object.prototype.hasOwnProperty.call(obj, name) ||
+    typeof obj[name] !== 'string') {
+    throw new TypeError(`Missing string parameter '${name}`);
   }
 };
 
@@ -401,6 +428,18 @@ export const valueOf = (o: any): Operation => {
       type: URLS_PASTE,
       newTab: Boolean(typeof o.newTab === undefined ? false : o.newTab),
     };
+  case INTERNAL_OPEN_URL:
+    assertOptionalBoolean(o, 'newTab');
+    assertOptionalBoolean(o, 'newWindow');
+    assertOptionalBoolean(o, 'background');
+    assertRequiredString(o, 'url');
+    return {
+      type: INTERNAL_OPEN_URL,
+      url: o.url,
+      newTab: Boolean(typeof o.newTab === undefined ? false : o.newTab),
+      newWindow: Boolean(typeof o.newWindow === undefined ? false : o.newWindow), // eslint-disable-line max-len
+      background: Boolean(typeof o.background === undefined ? true : o.background), // eslint-disable-line max-len
+    };
   case CANCEL:
   case ADDON_ENABLE:
   case ADDON_DISABLE:
@@ -441,6 +480,7 @@ export const valueOf = (o: any): Operation => {
   case FIND_PREV:
   case MARK_SET_PREFIX:
   case MARK_JUMP_PREFIX:
+  case REPEAT_LAST:
     return { type: o.type };
   }
   throw new TypeError('unknown operation type: ' + o.type);

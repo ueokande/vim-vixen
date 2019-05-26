@@ -42,6 +42,11 @@ export const SETTINGS_QUERY = 'settings.query';
 
 export const CONSOLE_FRAME_MESSAGE = 'console.frame.message';
 
+export const NAVIGATE_HISTORY_NEXT = 'navigate.history.next';
+export const NAVIGATE_HISTORY_PREV = 'navigate.history.prev';
+export const NAVIGATE_LINK_NEXT = 'navigate.link.next';
+export const NAVIGATE_LINK_PREV = 'navigate.link.prev';
+
 export interface BackgroundOperationMessage {
   type: typeof BACKGROUND_OPERATION;
   operation: operations.Operation;
@@ -204,6 +209,22 @@ export interface ConsoleFrameMessageMessage {
   message: any;
 }
 
+export interface NavigateHistoryNextMessage {
+  type: typeof NAVIGATE_HISTORY_NEXT;
+}
+
+export interface NavigateHistoryPrevMessage {
+  type: typeof NAVIGATE_HISTORY_PREV;
+}
+
+export interface NavigateLinkNext {
+  type: typeof NAVIGATE_LINK_NEXT;
+}
+
+export interface NavigateLinkPrev {
+  type: typeof NAVIGATE_LINK_PREV;
+}
+
 export type Message =
   BackgroundOperationMessage |
   ConsoleUnfocusMessage |
@@ -236,7 +257,11 @@ export type Message =
   OpenUrlMessage |
   SettingsChangedMessage |
   SettingsQueryMessage |
-  ConsoleFrameMessageMessage;
+  ConsoleFrameMessageMessage |
+  NavigateHistoryNextMessage |
+  NavigateHistoryPrevMessage |
+  NavigateLinkNext |
+  NavigateLinkPrev;
 
 // eslint-disable-next-line complexity
 export const valueOf = (o: any): Message => {
@@ -272,6 +297,10 @@ export const valueOf = (o: any): Message => {
   case SETTINGS_CHANGED:
   case SETTINGS_QUERY:
   case CONSOLE_FRAME_MESSAGE:
+  case NAVIGATE_HISTORY_NEXT:
+  case NAVIGATE_HISTORY_PREV:
+  case NAVIGATE_LINK_NEXT:
+  case NAVIGATE_LINK_PREV:
     return o;
   }
   throw new Error('unknown operation type: ' + o.type);

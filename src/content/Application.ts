@@ -12,6 +12,7 @@ import MarkKeyController from './controllers/MarkKeyController';
 import AddonEnabledController from './controllers/AddonEnabledController';
 import SettingController from './controllers/SettingController';
 import ConsoleFrameController from './controllers/ConsoleFrameController';
+import NavigateController from './controllers/NavigateController';
 import * as messages from '../shared/messages';
 
 type Message = messages.Message;
@@ -33,6 +34,7 @@ export default class Application {
     private addonEnabledController: AddonEnabledController,
     private settingController: SettingController,
     private consoleFrameController: ConsoleFrameController,
+    private navigateController: NavigateController,
   ) {
   }
 
@@ -98,6 +100,14 @@ export default class Application {
         return this.settingController.reloadSettings(msg);
       case messages.ADDON_TOGGLE_ENABLED:
         return this.addonEnabledUseCase.toggle();
+      case messages.NAVIGATE_HISTORY_NEXT:
+        return this.navigateController.openHistoryNext(msg);
+      case messages.NAVIGATE_HISTORY_PREV:
+        return this.navigateController.openHistoryPrev(msg);
+      case messages.NAVIGATE_LINK_NEXT:
+        return this.navigateController.openLinkNext(msg);
+      case messages.NAVIGATE_LINK_PREV:
+        return this.navigateController.openLinkPrev(msg);
       }
     });
 

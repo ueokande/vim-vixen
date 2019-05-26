@@ -4,10 +4,9 @@ import KeymapUseCase from '../usecases/KeymapUseCase';
 import AddonEnabledUseCase from '../usecases/AddonEnabledUseCase';
 import FindSlaveUseCase from '../usecases/FindSlaveUseCase';
 import ScrollUseCase from '../usecases/ScrollUseCase';
-import NavigateUseCase from '../usecases/NavigateUseCase';
 import FocusUseCase from '../usecases/FocusUseCase';
 import ClipboardUseCase from '../usecases/ClipboardUseCase';
-import BackgroundClient from '../client/BackgroundClient';
+import OperationClient from '../client/OperationClient';
 import MarkKeyyUseCase from '../usecases/MarkKeyUseCase';
 import FollowMasterClient from '../client/FollowMasterClient';
 import Key from '../domains/Key';
@@ -19,11 +18,12 @@ export default class KeymapController {
     private addonEnabledUseCase: AddonEnabledUseCase,
     private findSlaveUseCase: FindSlaveUseCase,
     private scrollUseCase: ScrollUseCase,
-    private navigateUseCase: NavigateUseCase,
     private focusUseCase: FocusUseCase,
     private clipbaordUseCase: ClipboardUseCase,
-    private backgroundClient: BackgroundClient,
     private markKeyUseCase: MarkKeyyUseCase,
+
+    @inject('OperationClient')
+    private backgroundClient: OperationClient,
 
     @inject('FollowMasterClient')
     private followMasterClient: FollowMasterClient,
@@ -83,24 +83,6 @@ export default class KeymapController {
       break;
     case operations.MARK_JUMP_PREFIX:
       this.markKeyUseCase.enableJumpMode();
-      break;
-    case operations.NAVIGATE_HISTORY_PREV:
-      this.navigateUseCase.openHistoryPrev();
-      break;
-    case operations.NAVIGATE_HISTORY_NEXT:
-      this.navigateUseCase.openHistoryNext();
-      break;
-    case operations.NAVIGATE_LINK_PREV:
-      this.navigateUseCase.openLinkPrev();
-      break;
-    case operations.NAVIGATE_LINK_NEXT:
-      this.navigateUseCase.openLinkNext();
-      break;
-    case operations.NAVIGATE_PARENT:
-      this.navigateUseCase.openParent();
-      break;
-    case operations.NAVIGATE_ROOT:
-      this.navigateUseCase.openRoot();
       break;
     case operations.FOCUS_INPUT:
       this.focusUseCase.focusFirstInput();

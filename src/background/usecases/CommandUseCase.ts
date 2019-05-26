@@ -1,4 +1,5 @@
 import { injectable } from 'tsyringe';
+import * as operations from '../../shared/operations';
 import * as parsers from './parsers';
 import * as urls from '../../shared/urls';
 import TabPresenter from '../presenters/TabPresenter';
@@ -7,6 +8,7 @@ import SettingRepository from '../repositories/SettingRepository';
 import BookmarkRepository from '../repositories/BookmarkRepository';
 import ConsoleClient from '../infrastructures/ConsoleClient';
 import ContentMessageClient from '../infrastructures/ContentMessageClient';
+import RepeatUseCase from '../usecases/RepeatUseCase';
 
 @injectable()
 export default class CommandIndicator {
@@ -17,21 +19,36 @@ export default class CommandIndicator {
     private bookmarkRepository: BookmarkRepository,
     private consoleClient: ConsoleClient,
     private contentMessageClient: ContentMessageClient,
+    private repeatUseCase: RepeatUseCase,
   ) {
   }
 
   async open(keywords: string): Promise<browser.tabs.Tab> {
     let url = await this.urlOrSearch(keywords);
+    this.repeatUseCase.storeLastOperation({
+      type: operations.INTERNAL_OPEN_URL,
+      url,
+    });
     return this.tabPresenter.open(url);
   }
 
   async tabopen(keywords: string): Promise<browser.tabs.Tab> {
     let url = await this.urlOrSearch(keywords);
+    this.repeatUseCase.storeLastOperation({
+      type: operations.INTERNAL_OPEN_URL,
+      url,
+      newTab: true,
+    });
     return this.tabPresenter.create(url);
   }
 
   async winopen(keywords: string): Promise<browser.windows.Window> {
     let url = await this.urlOrSearch(keywords);
+    this.repeatUseCase.storeLastOperation({
+      type: operations.INTERNAL_OPEN_URL,
+      url,
+      newWindow: true,
+    });
     return this.windowPresenter.create(url);
   }
 

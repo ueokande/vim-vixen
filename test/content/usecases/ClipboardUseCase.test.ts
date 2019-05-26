@@ -1,82 +1,69 @@
 import ClipboardRepository from '../../../src/content/repositories/ClipboardRepository';
 import { SettingRepositoryImpl } from '../../../src/content/repositories/SettingRepository';
-import TabsClient from '../../../src/content/client/TabsClient';
-import MockConsoleClient from '../mock/MockConsoleClient';
 import ClipboardUseCase from '../../../src/content/usecases/ClipboardUseCase';
+import OperationClient from '../../../src/content/client/OperationClient';
+import ConsoleClient from '../../../src/content/client/ConsoleClient';
+
+import * as sinon from 'sinon';
 import { expect } from 'chai';
 
-class MockClipboardRepository implements ClipboardRepository {
-  public clipboard: string;
-
-  constructor() {
-    this.clipboard = '';
-  }
-
-  read(): string {
-    return this.clipboard;
-  }
-
-  write(text: string): void {
-    this.clipboard = text;
-  }
-}
-
-class MockTabsClient implements TabsClient {
-  public last: string;
-
-  constructor() {
-    this.last = '';
-  }
-
-  openUrl(url: string, _newTab: boolean): Promise<void> {
-    this.last = url;
-    return Promise.resolve();
-  }
-}
-
 describe('ClipboardUseCase', () => {
-  let repository: MockClipboardRepository;
-  let client: MockTabsClient;
-  let consoleClient: MockConsoleClient;
+  let clipboardRepository: ClipboardRepository;
+  let operationClient: OperationClient;
+  let consoleClient: ConsoleClient;
   let sut: ClipboardUseCase;
 
   beforeEach(() => {
-    repository = new MockClipboardRepository();
-    client = new MockTabsClient();
-    consoleClient = new MockConsoleClient();
+    var modal = <ConsoleClient>{};
+
+    clipboardRepository = <ClipboardRepository>{ read() {}, write(_) {} };
+    operationClient = <OperationClient>{ internalOpenUrl(_) {} };
+    consoleClient = <ConsoleClient>{ info(_) {}};
     sut = new ClipboardUseCase(
-      repository,
+      clipboardRepository,
       new SettingRepositoryImpl(),
-      client,
-      consoleClient
+      consoleClient,
+      operationClient,
    );
   });
 
   describe('#yankCurrentURL', () => {
     it('yanks current url', async () => {
+      let href = window.location.href;
+      var mockRepository = sinon.mock(clipboardRepository);
+      mockRepository.expects('write').withArgs(href);
+      var mockConsoleClient = sinon.mock(consoleClient);
+      mockConsoleClient.expects('info').withArgs('Yanked ' + href);
+
       let yanked = await sut.yankCurrentURL();
 
-      expect(yanked).to.equal(window.location.href);
-      expect(repository.clipboard).to.equal(yanked);
-      expect(consoleClient.text).to.equal('Yanked ' + yanked);
+      expect(yanked).to.equal(href);
+      mockRepository.verify();
+      mockConsoleClient.verify();
     });
   });
 
   describe('#openOrSearch', () => {
     it('opens url from the clipboard', async () => {
       let url = 'https://github.com/ueokande/vim-vixen'
-      repository.clipboard = url;
+      sinon.stub(clipboardRepository, 'read').returns(url);
+      let mockOperationClient = sinon.mock(operationClient);
+      mockOperationClient.expects('internalOpenUrl').withArgs(url, true);
+
       await sut.openOrSearch(true);
 
-      expect(client.last).to.equal(url);
+      mockOperationClient.verify();
     });
 
     it('opens search results from the clipboard', async () => {
-      repository.clipboard = 'banana';
+      let url = 'https://google.com/search?q=banana';
+      sinon.stub(clipboardRepository, 'read').returns('banana');
+      let mockOperationClient = sinon.mock(operationClient);
+      mockOperationClient.expects('internalOpenUrl').withArgs(url, true);
+
       await sut.openOrSearch(true);
 
-      expect(client.last).to.equal('https://google.com/search?q=banana');
+      mockOperationClient.verify();
     });
   });
 });
-
