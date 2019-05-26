@@ -43,7 +43,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 ##### Updating
 
 - [ ] changes are updated on textarea blure when no errors
-- [ ] changes are not updated on textarea blure when errors occurs
 - [ ] keymap settings are applied to open tabs without reload
 - [ ] search settings are applied to open tabs without reload
 
