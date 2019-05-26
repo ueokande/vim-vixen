@@ -186,5 +186,9 @@ describe('Settings', () => {
       expect(value.search.engines).to.be.an('object');
       expect(value.blacklist).to.be.empty;
     });
+
+    it('throws a TypeError with an unknown field', () => {
+      expect(() => settings.valueOf({ name: 'alice' })).to.throw(TypeError)
+    });
   });
 });
