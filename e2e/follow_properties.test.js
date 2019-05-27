@@ -118,6 +118,36 @@ describe('follow properties test', () => {
     });
   });
 
+  it('should open tab in background by background:false', async () => {
+    await body.sendKeys(Key.Shift, 'f');
+    await eventually(async() => {
+      let hints = await session.findElementsByCSS('.vimvixen-hint');
+      assert.equal(hints.length, 5);
+    });
+    await body.sendKeys('jj');
+
+    await eventually(async() => {
+      let tabs = await browser.tabs.query({});
+      assert.equal(tabs[0].active, false);
+      assert.equal(tabs[1].active, true);
+    });
+  });
+
+  it('should open tab in background by background:true', async () => {
+    await body.sendKeys(Key.Control, 'f');
+    await eventually(async() => {
+      let hints = await session.findElementsByCSS('.vimvixen-hint');
+      assert.equal(hints.length, 5);
+    });
+    await body.sendKeys('jj');
+
+    await eventually(async() => {
+      let tabs = await browser.tabs.query({});
+      assert.equal(tabs[0].active, true);
+      assert.equal(tabs[1].active, false);
+    });
+  });
+
   it('should show hints with hintchars by settings', async () => {
     let c = new Console(session);
 
@@ -147,36 +177,6 @@ describe('follow properties test', () => {
       assert.equal(await hints[2].getStyle('display'), 'none');
       assert.equal(await hints[3].getStyle('display'), 'block');
       assert.equal(await hints[4].getStyle('display'), 'block');
-    });
-  });
-
-  it('should open tab in background by background:false', async () => {
-    await body.sendKeys(Key.Shift, 'f');
-    await eventually(async() => {
-      let hints = await session.findElementsByCSS('.vimvixen-hint');
-      assert.equal(hints.length, 5);
-    });
-    await body.sendKeys('jj');
-
-    await eventually(async() => {
-      let tabs = await browser.tabs.query({});
-      assert.equal(tabs[0].active, false);
-      assert.equal(tabs[1].active, true);
-    });
-  });
-
-  it('should open tab in background by background:true', async () => {
-    await body.sendKeys(Key.Control, 'f');
-    await eventually(async() => {
-      let hints = await session.findElementsByCSS('.vimvixen-hint');
-      assert.equal(hints.length, 5);
-    });
-    await body.sendKeys('jj');
-
-    await eventually(async() => {
-      let tabs = await browser.tabs.query({});
-      assert.equal(tabs[0].active, true);
-      assert.equal(tabs[1].active, false);
     });
   });
 });
