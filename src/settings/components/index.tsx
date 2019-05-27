@@ -175,6 +175,7 @@ class SettingsComponent extends React.Component<Props> {
     if (from === 'form' && value === 'json') {
       this.props.dispatch(settingActions.switchToJson(
         this.props.form as FormSettings));
+      this.save();
     } else if (from === 'json' && value === 'form') {
       let b = window.confirm(DO_YOU_WANT_TO_CONTINUE);
       if (!b) {
@@ -183,6 +184,7 @@ class SettingsComponent extends React.Component<Props> {
       }
       this.props.dispatch(
         settingActions.switchToForm(this.props.json as JSONSettings));
+      this.save();
     }
   }
 
