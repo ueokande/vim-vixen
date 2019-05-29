@@ -101,17 +101,23 @@ export const blacklistValueOf = (o: any): string[] => {
 
 export const valueOf = (o: any): Settings => {
   let settings = { ...DefaultSetting };
-  if (Object.prototype.hasOwnProperty.call(o, 'keymaps')) {
-    settings.keymaps = keymapsValueOf(o.keymaps);
-  }
-  if (Object.prototype.hasOwnProperty.call(o, 'search')) {
-    settings.search = searchValueOf(o.search);
-  }
-  if (Object.prototype.hasOwnProperty.call(o, 'properties')) {
-    settings.properties = propertiesValueOf(o.properties);
-  }
-  if (Object.prototype.hasOwnProperty.call(o, 'blacklist')) {
-    settings.blacklist = blacklistValueOf(o.blacklist);
+  for (let key of Object.keys(o)) {
+    switch (key) {
+    case 'keymaps':
+      settings.keymaps = keymapsValueOf(o.keymaps);
+      break;
+    case 'search':
+      settings.search = searchValueOf(o.search);
+      break;
+    case 'properties':
+      settings.properties = propertiesValueOf(o.properties);
+      break;
+    case 'blacklist':
+      settings.blacklist = blacklistValueOf(o.blacklist);
+      break;
+    default:
+      throw new TypeError('unknown setting: ' + key);
+    }
   }
   return settings;
 };

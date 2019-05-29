@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 const fields = [
   [
     ['scroll.vertically?{"count":1}', 'Scroll down'],
@@ -19,8 +21,8 @@ const fields = [
     ['tabs.close', 'Close a tab'],
     ['tabs.close.right', 'Close tabs to the right'],
     ['tabs.reopen', 'Reopen closed tab'],
-    ['tabs.next?{"count":1}', 'Select next Tab'],
-    ['tabs.prev?{"count":1}', 'Select prev Tab'],
+    ['tabs.next', 'Select next Tab'],
+    ['tabs.prev', 'Select prev Tab'],
     ['tabs.first', 'Select first tab'],
     ['tabs.last', 'Select last tab'],
     ['tabs.reload?{"cache":false}', 'Reload current tab'],
@@ -28,8 +30,8 @@ const fields = [
     ['tabs.pin.toggle', 'Toggle pinned state'],
     ['tabs.duplicate', 'Duplicate a tab'],
   ], [
-    ['follow.start?{"newTab":false}', 'Follow a link'],
-    ['follow.start?{"newTab":true}', 'Follow a link in new tab'],
+    ['follow.start?{"newTab":false,"background":false}', 'Follow a link'],
+    ['follow.start?{"newTab":true,"background":false}', 'Follow a link in new tab'],
     ['navigate.history.prev', 'Go back in histories'],
     ['navigate.history.next', 'Go forward in histories'],
     ['navigate.link.next', 'Open next link'],
@@ -37,7 +39,7 @@ const fields = [
     ['navigate.parent', 'Go to parent directory'],
     ['navigate.root', 'Go to root directory'],
     ['page.source', 'Open page source'],
-    ['page.home', 'Open start page to current tab'],
+    ['page.home?{"newTab":false}', 'Open start page to current tab'],
     ['page.home?{"newTab":true}', 'Open start page in new tab'],
     ['focus.input', 'Focus input'],
   ], [

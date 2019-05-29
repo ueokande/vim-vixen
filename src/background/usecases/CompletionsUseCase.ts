@@ -38,6 +38,9 @@ export default class CompletionsUseCase {
   }
 
   async queryOpen(name: string, keywords: string): Promise<CompletionGroup[]> {
+    // TODO This logic contains view entities.  They should be defined on
+    // content script
+
     let settings = await this.settingRepository.get();
     let groups: CompletionGroup[] = [];
 
@@ -195,7 +198,7 @@ export default class CompletionsUseCase {
       .map(pages => filters.filterByPathname(pages, COMPLETION_ITEM_LIMIT))
       .map(pages => filters.filterByOrigin(pages, COMPLETION_ITEM_LIMIT))[0]
       .sort((x: HistoryItem, y: HistoryItem): number => {
-        return Number(x.visitCount) - Number(y.visitCount);
+        return Number(y.visitCount) - Number(x.visitCount);
       })
       .slice(0, COMPLETION_ITEM_LIMIT);
     return histories.map(page => ({

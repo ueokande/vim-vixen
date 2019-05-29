@@ -20,10 +20,8 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 ### Properties
 
-- [ ] Configure custom hint character by `:set hintchars=012345678`
-- [ ] Smooth scroll by `:set smoothscroll`
-- [ ] Non-smooth scroll by `:set nosmoothscroll`
-- [ ] Configure smooth scroll by settings `"smoothscroll": true`, `"smoothscroll": false`
+- [ ] Toggle smooth scroll by `:set smoothscroll` and `:set nosmoothscroll`
+- [ ] Configure smooth scroll by settings `"smoothscroll": true` and `"smoothscroll": false`
 
 ### Settings
 
@@ -45,7 +43,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 ##### Updating
 
 - [ ] changes are updated on textarea blure when no errors
-- [ ] changes are not updated on textarea blure when errors occurs
 - [ ] keymap settings are applied to open tabs without reload
 - [ ] search settings are applied to open tabs without reload
 

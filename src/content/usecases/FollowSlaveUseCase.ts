@@ -63,16 +63,16 @@ export default class FollowSlaveUseCase {
 
     if (hint instanceof LinkHint) {
       let url = hint.getLink();
-      // ignore taget='_blank'
-      if (!newTab && hint.getLinkTarget() === '_blank') {
-        hint.click();
-        return;
+      let openNewTab = newTab;
+      // Open link by background script in order to prevent a popup block
+      if (hint.getLinkTarget() === '_blank') {
+        openNewTab = true;
       }
       // eslint-disable-next-line no-script-url
       if (!url || url === '#' || url.toLowerCase().startsWith('javascript:')) {
         return;
       }
-      await this.tabsClient.openUrl(url, newTab, background);
+      await this.tabsClient.openUrl(url, openNewTab, background);
     } else if (hint instanceof InputHint) {
       hint.activate();
     }

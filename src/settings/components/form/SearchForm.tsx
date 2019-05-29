@@ -54,6 +54,7 @@ class SearchForm extends React.Component<Props> {
     </div>;
   }
 
+  // eslint-disable-next-line max-statements
   bindValue(e: any) {
     let value = this.props.value.toJSON();
     let name = e.target.name;
@@ -72,8 +73,12 @@ class SearchForm extends React.Component<Props> {
       next.default = value.engines[index][0];
     } else if (name === 'add') {
       next.engines.push(['', '']);
-    } else if (name === 'delete') {
+    } else if (name === 'delete' && value.engines.length > 1) {
       next.engines.splice(index, 1);
+      if (value.engines[index][0] === value.default) {
+        let nextIndex = Math.min(index, next.engines.length - 1);
+        next.default = next.engines[nextIndex][0];
+      }
     }
 
     this.props.onChange(FormSearch.valueOf(next));

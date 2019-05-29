@@ -3,6 +3,7 @@ const lanthan = require('lanthan');
 const path = require('path');
 const assert = require('assert');
 const eventually = require('./eventually');
+const Console = require('./lib/Console');
 
 const Key = lanthan.Key;
 
@@ -114,7 +115,6 @@ describe('follow properties test', () => {
       assert.equal(await hints[2].getStyle('display'), 'block');
       assert.equal(await hints[3].getStyle('display'), 'block');
       assert.equal(await hints[4].getStyle('display'), 'none');
-
     });
   });
 
@@ -145,6 +145,38 @@ describe('follow properties test', () => {
       let tabs = await browser.tabs.query({});
       assert.equal(tabs[0].active, true);
       assert.equal(tabs[1].active, false);
+    });
+  });
+
+  it('should show hints with hintchars by settings', async () => {
+    let c = new Console(session);
+
+    await body.sendKeys(':');
+    await session.switchToFrame(0);
+    await c.sendKeys('set hintchars=abc', Key.Enter);
+    await session.switchToParentFrame();
+
+    await body.sendKeys('f');
+    await eventually(async() => {
+      let hints = await session.findElementsByCSS('.vimvixen-hint');
+      assert.equal(hints.length, 5);
+
+      assert.equal(await hints[0].getText(), 'A');
+      assert.equal(await hints[1].getText(), 'B');
+      assert.equal(await hints[2].getText(), 'C');
+      assert.equal(await hints[3].getText(), 'AA');
+      assert.equal(await hints[4].getText(), 'AB');
+    });
+
+    await body.sendKeys('a');
+    await eventually(async() => {
+      let hints = await session.findElementsByCSS('.vimvixen-hint');
+
+      assert.equal(await hints[0].getStyle('display'), 'block');
+      assert.equal(await hints[1].getStyle('display'), 'none');
+      assert.equal(await hints[2].getStyle('display'), 'none');
+      assert.equal(await hints[3].getStyle('display'), 'block');
+      assert.equal(await hints[4].getStyle('display'), 'block');
     });
   });
 });
