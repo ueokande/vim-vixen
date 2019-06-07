@@ -43,7 +43,7 @@
     "karma-mocha-reporter": "^2.2.5",
     "karma-sinon": "^1.0.5",
     "karma-sourcemap-loader": "^0.3.7",
-    "karma-webpack": "^3.0.5",
+    "karma-webpack": "^4.0.0",
     "lanthan": "git+https://github.com/ueokande/lanthan.git#master",
     "mocha": "^6.1.4",
     "node-sass": "^4.12.0",
