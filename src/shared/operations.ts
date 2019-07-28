@@ -201,6 +201,7 @@ export interface PageHomeOperation {
 
 export interface TabCloseOperation {
   type: typeof TAB_CLOSE;
+  selectLeft?: boolean;
 }
 
 export interface TabCloseForceOperation {
@@ -367,28 +368,28 @@ export type Operation =
 const assertOptionalBoolean = (obj: any, name: string) => {
   if (Object.prototype.hasOwnProperty.call(obj, name) &&
       typeof obj[name] !== 'boolean') {
-    throw new TypeError(`Not a boolean parameter '${name}'`);
+    throw new TypeError(`Not a boolean parameter: '${name}'`);
   }
 };
 
 const assertRequiredNumber = (obj: any, name: string) => {
   if (!Object.prototype.hasOwnProperty.call(obj, name) ||
     typeof obj[name] !== 'number') {
-    throw new TypeError(`Missing number parameter '${name}`);
+    throw new TypeError(`Missing number parameter: '${name}`);
   }
 };
 
 const assertRequiredString = (obj: any, name: string) => {
   if (!Object.prototype.hasOwnProperty.call(obj, name) ||
     typeof obj[name] !== 'string') {
-    throw new TypeError(`Missing string parameter '${name}`);
+    throw new TypeError(`Missing string parameter: '${name}`);
   }
 };
 
 // eslint-disable-next-line complexity, max-lines-per-function
 export const valueOf = (o: any): Operation => {
   if (!Object.prototype.hasOwnProperty.call(o, 'type')) {
-    throw new TypeError(`missing 'type' field`);
+    throw new TypeError(`Missing 'type' field`);
   }
   switch (o.type) {
   case COMMAND_SHOW_OPEN:
@@ -415,6 +416,12 @@ export const valueOf = (o: any): Operation => {
     return {
       type: PAGE_HOME,
       newTab: Boolean(typeof o.newTab === undefined ? false : o.newTab),
+    };
+  case TAB_CLOSE:
+    assertOptionalBoolean(o, 'selectLeft');
+    return {
+      type: TAB_CLOSE,
+      selectLeft: Boolean(typeof o.selectLeft === undefined ? false : o.selectLeft), // eslint-disable-line max-len
     };
   case TAB_RELOAD:
     assertOptionalBoolean(o, 'cache');
@@ -458,7 +465,6 @@ export const valueOf = (o: any): Operation => {
   case NAVIGATE_ROOT:
   case FOCUS_INPUT:
   case PAGE_SOURCE:
-  case TAB_CLOSE:
   case TAB_CLOSE_FORCE:
   case TAB_CLOSE_RIGHT:
   case TAB_REOPEN:
@@ -483,5 +489,5 @@ export const valueOf = (o: any): Operation => {
   case REPEAT_LAST:
     return { type: o.type };
   }
-  throw new TypeError('unknown operation type: ' + o.type);
+  throw new TypeError('Unknown operation type: ' + o.type);
 };

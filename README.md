@@ -6,41 +6,43 @@
 [![CircleCI](https://circleci.com/gh/ueokande/vim-vixen.svg?style=svg)](https://circleci.com/gh/ueokande/vim-vixen)
 [![devDependencies Status](https://david-dm.org/ueokande/vim-vixen/dev-status.svg)](https://david-dm.org/ueokande/vim-vixen?type=dev)
 
-Vim Vixen is a Firefox add-on which allows you to navigate with the keyboard on the browser.
-Firefox started to support WebExtensions API and will stop supporting add-ons using legacy APIs from version 57.
-For this reason, many legacy add-ons do not work on Firefox 57.
-Vim Vixen is a new choice for Vim users since Vim Vixen uses the WebExtensions API.
+Vim Vixen is a Firefox add-on which allows you to easily navigate the web by
+keyboard. Since version 57, Firefox has migrated to the WebExtensions API and
+has dropped support for legacy add-ons. Vim Vixen is a new choice for Vim users
+since it uses the WebExtensions API.
 
 ## Basic usage
 
-### Key-maps
+### Keymaps
 
-The key-maps are configurable in the add-ons preferences by navigating to `about:addons` and selecting "Extensions".
+Keymaps are configurable in the add-on's preferences by navigating to `about:addons` and selecting "Extensions".
 The default mappings are as follows:
 
 #### Console
 
-- <kbd>:</kbd>: open console
-- <kbd>o</kbd>, <kbd>t</kbd>, <kbd>w</kbd>: open a page in current tab, new tab, or new window
-- <kbd>O</kbd>, <kbd>T</kbd>, <kbd>W</kbd>: similar to <kbd>o</kbd>, <kbd>t</kbd>, <kbd>w</kbd>, but that contains current URL
-- <kbd>b</kbd>: Select tabs by URL or title
-- <kbd>a</kbd>: add current page to the bookmarks
+- <kbd>:</kbd>: open the console
+- <kbd>o</kbd>, <kbd>t</kbd>, <kbd>w</kbd>: open a page in the current tab, a new tab, or new window
+- <kbd>O</kbd>, <kbd>T</kbd>, <kbd>W</kbd>: similar to <kbd>o</kbd>, <kbd>t</kbd>, <kbd>w</kbd>, but using the current URL
+- <kbd>b</kbd>: select tabs by URL or title
+- <kbd>a</kbd>: add the current page to your bookmarks
 
-See [console commands](#console-commands) section for more detailed description
+See the [console commands](#console-commands) section for a more detailed description.
 
 #### Tabs
-- <kbd>d</kbd>: delete tab
-- <kbd>!</kbd><kbd>d</kbd>: delete pinned tab
-- <kbd>u</kbd>: reopen close tab
-- <kbd>r</kbd>: reload current tab
-- <kbd>R</kbd>: reload current tab without cache
-- <kbd>K</kbd> or <kbd>g</kbd><kbd>T</kbd>: select previous tab
-- <kbd>J</kbd> or <kbd>g</kbd><kbd>t</kbd>: select next tab
-- <kbd>g</kbd><kbd>0</kbd>: select first tab
-- <kbd>g</kbd><kbd>$</kbd>: select last tab
-- <kbd>Ctrl</kbd>+<kbd>6</kbd>: open previously selected tab
-- <kbd>z</kbd><kbd>p</kbd>: pin tab
-- <kbd>z</kbd><kbd>d</kbd>: duplicate tab
+
+- <kbd>d</kbd>: delete the current tab and select the tab to its right
+- <kbd>D</kbd>: delete the current tab and select the tab to its left
+- <kbd>!</kbd><kbd>d</kbd>: delete a pinned tab
+- <kbd>u</kbd>: reopen a close tab
+- <kbd>r</kbd>: reload the current tab
+- <kbd>R</kbd>: reload the current tab, bypassing the cache
+- <kbd>K</kbd> or <kbd>g</kbd><kbd>T</kbd>: select the previous tab
+- <kbd>J</kbd> or <kbd>g</kbd><kbd>t</kbd>: select the next tab
+- <kbd>g</kbd><kbd>0</kbd>: select the first tab
+- <kbd>g</kbd><kbd>$</kbd>: select the last tab
+- <kbd>Ctrl</kbd>+<kbd>6</kbd>: open the previously-selected tab
+- <kbd>z</kbd><kbd>p</kbd>: pin the curent tab tab
+- <kbd>z</kbd><kbd>d</kbd>: duplicate the current tab
 
 #### Scrolling
 
@@ -48,18 +50,19 @@ See [console commands](#console-commands) section for more detailed description
 - <kbd>j</kbd>: scroll down
 - <kbd>h</kbd>: scroll left
 - <kbd>l</kbd>: scroll right
-- <kbd>Ctrl</kbd>+<kbd>U</kbd>: scroll up for a half page
-- <kbd>Ctrl</kbd>+<kbd>D</kbd>: scroll down for a half page
-- <kbd>Ctrl</kbd>+<kbd>B</kbd>: scroll up for a whole page
-- <kbd>Ctrl</kbd>+<kbd>F</kbd>: scroll down for a whole page
-- <kbd>g</kbd><kbd>g</kbd>: scroll to top of a page
-- <kbd>G</kbd>: scroll to bottom of a page
+- <kbd>Ctrl</kbd>+<kbd>U</kbd>: scroll up half a page
+- <kbd>Ctrl</kbd>+<kbd>D</kbd>: scroll down half a page
+- <kbd>Ctrl</kbd>+<kbd>B</kbd>: scroll up a page
+- <kbd>Ctrl</kbd>+<kbd>F</kbd>: scroll down a page
+- <kbd>g</kbd><kbd>g</kbd>: scroll to the top of a page
+- <kbd>G</kbd>: scroll to the bottom of a page
 - <kbd>0</kbd>: scroll to the leftmost part of a page
 - <kbd>$</kbd>: scroll to the rightmost part of a page
-- <kbd>m</kbd>: set a mark from current position
-- <kbd>'</kbd>: jump to position by the mark
+- <kbd>m</kbd>: set a mark for the current position
+- <kbd>'</kbd>: jump to a marked position
 
-Lowercase alphabet mark (`[a-z]`) stores position on the current tab. Upper alphabet and numeric mark (`[A-Z0-9]`) stores position and tab.
+Lowercase marks (`[a-z]`) store the position of the current tab. Uppercase and
+numeric marks (`[A-Z0-9]`) store the position and the tab.
 
 #### Zoom
 
@@ -69,109 +72,111 @@ Lowercase alphabet mark (`[a-z]`) stores position on the current tab. Upper alph
 
 #### Navigation
 
-- <kbd>f</kbd>: start following links in the page in the current tab
-- <kbd>F</kbd>: start following links in the page in new tabs
+- <kbd>f</kbd>: follow links in the page in the current tab
+- <kbd>F</kbd>: follow links in the page in a new tab
 - <kbd>H</kbd>: go back in history
 - <kbd>L</kbd>: go forward in history
-- <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: find  prev or next links and open it
-- <kbd>g</kbd><kbd>u</kbd>: go to parent directory
-- <kbd>g</kbd><kbd>U</kbd>: go to root directory
-- <kbd>g</kbd><kbd>i</kbd>: focus first input
+- <kbd>[</kbd><kbd>[</kbd>, <kbd>]</kbd><kbd>]</kbd>: find a link to the previous/next page and open it
+- <kbd>g</kbd><kbd>u</kbd>: go to the parent directory
+- <kbd>g</kbd><kbd>U</kbd>: go to the root directory
+- <kbd>g</kbd><kbd>i</kbd>: focus the first input field
 
-Plugin can be configured to follow links in new tabs in background instead of
-switching to a new tab immediately. To do this you need to update config file:
-change `"background"` property of `"follow.start"` action to true:
+Vim Vixen can be configured to follow links opened in tabs in the background
+instead of switching to a new tab immediately. To do this, you'll need to update
+the config file: change the `"background"` property of the `"follow.start"`
+action to `true`, e.g.:
+
 ```json
 {
     "keymaps": {
-        "F": { "type": "follow.start", "newTab": true, "background": true },
+        "F": { "type": "follow.start", "newTab": true, "background": true }
     }
 }
 ```
 
 #### Misc
 
-- <kbd>y</kbd>: copy URL in current tab
-- <kbd>p</kbd>: open clipboard's URL in current tab
-- <kbd>P</kbd>: open clipboard's URL in new tab
-- <kbd>Shift</kbd>+<kbd>Esc</kbd>: enable or disable the add-on in current tab.
-- <kbd>/</kbd>: start to find a keyword in the page
-- <kbd>n</kbd>: find next keyword in the page
-- <kbd>N</kbd>: find prev keyword in the page
-- <kbd>g</kbd><kbd>f</kbd>: view page source
+- <kbd>y</kbd>: copy the URL of the current tab to the clipboard
+- <kbd>p</kbd>: open the clipboard's URL in the current tab
+- <kbd>P</kbd>: open the clipboard's URL in new tab
+- <kbd>Shift</kbd>+<kbd>Esc</kbd>: enable or disable the add-on in the current tab
+- <kbd>/</kbd>: start searching for text in the page
+- <kbd>n</kbd>: find the next search result in the page
+- <kbd>N</kbd>: find the previous search result in the page
+- <kbd>g</kbd><kbd>f</kbd>: view the source of the current tab
 
 ### Console commands
 
-Vim Vixen provides a console for `ex`-style commands similar to Vimperator.
+Vim Vixen provides a console for `ex`-style commands, similar to Vimperator.
 
-Open the console with <kbd>:</kbd>. Or start it with initial values using
-<kbd>o</kbd>/<kbd>O</kbd>, <kbd>t</kbd>/<kbd>T</kbd>,
-or <kbd>w</kbd>/<kbd>W</kbd>.
+Open the console with <kbd>:</kbd>. Or populate it with initial values using
+<kbd>o</kbd>/<kbd>O</kbd>, <kbd>t</kbd>/<kbd>T</kbd>, or
+<kbd>w</kbd>/<kbd>W</kbd>.
 
-#### `:open` command
+#### `:open`
 
 The `:open` command operates two different ways, depending on the parameter.
-When the parameter is a URL, that URL is opened in the current tab.
+When the parameter is a URL, it's opened in the current tab.
 
 ```
 :open http://github.com/ueokande
 ```
 
-Otherwise, the current tab will open a search page with the supplied string (defaults to Google).
+Otherwise, the current tab opens a search page with the supplied string (defaults to Google).
 
 ```
 :open How to contribute to Vim-Vixen
 ```
 
-To use a search engine other than the default, specify which search engine to use as the first parameter.
+To use a search engine other than the default, specify the search engine to use as the first parameter.
 
 ```
 :open yahoo How to contribute to Vim-Vixen
 ```
 
-To adjust the search engine default and add/remove search engines, see the [search engines](#search-engines) section.
+To adjust the default search-engine and add/remove search engines, see the [search engines](#search-engines) section.
 
-#### `:tabopen` command
+#### `:tabopen`
 
-Open a URL or search keywords by search engine in new tab.
+Open a URL or search-engine query in a new tab.
 
-#### `:quit` or `:q` command
+#### `:quit` or `:q`
 
 Close the current tab.
 
-#### `:quitall` or `:qa` command
+#### `:quitall` or `:qa`
 
 Close all tabs.
 
-#### `:bdelete` command
+#### `:bdelete`
 
 Close a certain tab.
 
-You can add `!` at the end of the command to close tab even if it is pinned:
+You can add `!` to the end of the command to close a tab even if it is pinned:
 
 ```
 :bdelete!
 ```
 
-#### `:bdeletes` command
+#### `:bdeletes`
 
-Close tabs matches with keywords.
+Close tabs matching the specified keywords.
 
-You can add `!` at the end of the command to close even pinned tabs:
+You can add `!` to the end of the command to close pinned tabs:
 
 ```
 :bdeletes!
 ```
 
-#### `:winopen` command
+#### `:winopen`
 
-Open a URL or search keywords by search engine in new window.
+Open a URL or search-engine query in a new window.
 
-#### `:buffer` command
+#### `:buffer`
 
-Select tabs by URL or title matched by keywords.
+Select tabs by URL or title keywords.
 
-#### `:addbookmark` command
+#### `:addbookmark`
 
 Create a bookmark from the current URL.
 
@@ -179,20 +184,19 @@ Create a bookmark from the current URL.
 :addbookmark My bookmark title
 ```
 
-The key map <kbd>a</kbd> is a convenient way to create a bookmark from the
-current page. That shows `:addbookmark` with a title from the current page into
-console.
+The keymap <kbd>a</kbd> is a convenient way to create a bookmark for the
+current page. It populates the console with `:addbookmark` and the title of
+the current page.
 
-#### `:set` command
+#### `:set`
 
-`:set` command can temporary override properties using console. See
-[properties](#properties) section for more detailed description of available
-properties.
+The `:set` command can be used to temporarily override properties in the
+console. See the [properties](#properties) section for more details on
+the available properties.
 
 ### Properties
 
-Plugin supports configurable properties which can be configured in JSON
-settings:
+Vim Vixen can be configured by defining settings in a JSON document, e.g.:
 
 ```json
 {
@@ -202,33 +206,35 @@ settings:
 }
 ```
 
-Properties can be temporary overwritten by `:set` command in console.
+Properties can be temporarily overridden by using the `:set` command in the
+console.
 
-List of available properties you can find below:
+The following properties are available:
 
-#### `smoothscroll` property
+#### `smoothscroll`
 
-Enable/disable smooth scroll.
+Enable/disable smooth scrolling.
 
 ```
-:set smoothscroll   " enable smooth scroll
-:set nosmoothscroll " disable smooth scroll
+:set smoothscroll   " enable smooth scrolling
+:set nosmoothscroll " disable smooth scrolling
 ```
 
-#### `hintchars` property
+#### `hintchars`
 
-Set hint characters
+Set hint characters.
 
 ```
 :set hintchars=0123456789
 ```
 
-#### `complete` property
+#### `complete`
 
-Set completion items on `open`, `tabopen` `winopen` commands.
+Set completion items on `open`, `tabopen`, and `winopen` commands.
 The allowed value is character sequence of `s`, `b`, or `h`.
-Hit <kbd>Tab</kbd> or <kbd>Shift</kbd>+<kbd>Tab</kbd> to Select an item from the completion list.
-Each character presents as following:
+Hit <kbd>Tab</kbd> or <kbd>Shift</kbd>+<kbd>Tab</kbd> to select an item from the completion list.
+Each character represents the following:
+
 - `s`: search engines
 - `b`: bookmark items
 - `h`: history items.
@@ -239,10 +245,10 @@ Each character presents as following:
 
 ### Search engines
 
-Vim Vixen supports search by search engines like Google and Yahoo.
+Vim Vixen supports searching with search engines such as Google and Yahoo.
 
-You can configure search engines, including the default search engine, in the add-ons preferences.
-The URLs specified in `"engines"` must contain a {}-placeholder, which will be
+You can configure search engines, including the default search engine, in the add-on's preferences.
+The URLs specified in `"engines"` must contain a `{}`-placeholder, which will be
 replaced with the search keyword parameters of the command.
 
 ```json
@@ -264,7 +270,7 @@ replaced with the search keyword parameters of the command.
 ### Blacklist
 
 The blacklist allows you to disable the plugin for certain pages by URL patterns.
-For instance, when you describe `"*.slack.com"`, the plugin is disabled on any Slack rooms.
+For instance, you could use `"*.slack.com"` to disable the plugin on all Slack channels.
 In addition, you can also specify path patterns, such as `"example.com/mail/*"`.
 
 ```json
@@ -278,6 +284,16 @@ In addition, you can also specify path patterns, such as `"example.com/mail/*"`.
 
 You can toggle Vim Vixen between disabled and enabled with
 <kbd>shift</kbd>+<kbd>Esc</kbd>.
+
+## Compatibility
+
+- Firefox 52+
+- Firefox for Android
+- Waterfox 56
+
+## Copyright
+
+Copyright © 2017-2019 by Shin'ya Ueoka
 
 ## Licence
 

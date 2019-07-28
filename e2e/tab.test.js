@@ -55,18 +55,32 @@ describe("tab test", () => {
     await browser.windows.remove(win.id);
   });
 
-  it('deletes tab by d', async () => {
+  it('deletes tab and selects right by d', async () => {
+    await browser.tabs.update(tabs[3].id, { active: true });
     let body = await session.findElementByCSS('body');
     await body.sendKeys('d');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert(current.length === tabs.length - 1);
+    assert(current[3].active);
+    assert(current[3].url === tabs[4].url);
   });
 
-  it('deletes tabs to the right by D', async () => {
+  it('deletes tab and selects left by D', async () => {
+    await browser.tabs.update(tabs[3].id, { active: true });
+    let body = await session.findElementByCSS('body');
+    await body.sendKeys(Key.Shift, 'D');
+
+    let current = await browser.tabs.query({ windowId: win.id });
+    assert(current.length === tabs.length - 1);
+    assert(current[2].active);
+    assert(current[2].url === tabs[2].url);
+  });
+
+  it('deletes all tabs to the right by gD', async () => {
     await browser.tabs.update(tabs[1].id, { active: true });
     let body = await session.findElementByCSS('body');
-    await body.sendKeys(Key.Shift, 'd');
+    await body.sendKeys('g', Key.Shift, 'D');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert(current.length === 2);

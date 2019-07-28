@@ -90,7 +90,7 @@ class Scroller {
       clearTimeout(lastTimeoutId);
       lastTimeoutId = null;
     }
-    lastTimeoutId = setTimeout(resetScrolling, 100);
+    lastTimeoutId = window.setTimeout(resetScrolling, 100);
   }
 }
 

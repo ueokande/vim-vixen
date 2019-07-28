@@ -32,7 +32,7 @@ export default class OperationController {
   doOperation(operation: operations.Operation): Promise<any> {
     switch (operation.type) {
     case operations.TAB_CLOSE:
-      return this.tabUseCase.close(false);
+      return this.tabUseCase.close(false, operation.selectLeft);
     case operations.TAB_CLOSE_RIGHT:
       return this.tabUseCase.closeRight();
     case operations.TAB_CLOSE_FORCE:
