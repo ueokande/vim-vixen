@@ -4,7 +4,20 @@ const NOTIFICATION_ID = 'vimvixen-update';
 
 @injectable()
 export default class NotifyPresenter {
-  async notify(
+  async notifyUpdated(version: string, onclick: () => void): Promise<void> {
+    let title = `Vim Vixen ${version} has been installed`;
+    let message = 'Click here to see release notes';
+    await this.notify(title, message, onclick);
+  }
+
+  async notifyInvalidSettings(onclick: () => void): Promise<void> {
+    let title = `Loaded settings is invalid`;
+    // eslint-disable-next-line max-len
+    let message = 'The default settings is used due to the last saved settings is invalid.  Check your current settings from the add-on preference';
+    await this.notify(title, message, onclick);
+  }
+
+  private async notify(
     title: string,
     message: string,
     onclick: () => void,
