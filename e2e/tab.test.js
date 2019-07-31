@@ -77,10 +77,10 @@ describe("tab test", () => {
     assert(current[2].url === tabs[2].url);
   });
 
-  it('deletes all tabs to the right by gD', async () => {
+  it('deletes all tabs to the right by x$', async () => {
     await browser.tabs.update(tabs[1].id, { active: true });
     let body = await session.findElementByCSS('body');
-    await body.sendKeys('g', Key.Shift, 'D');
+    await body.sendKeys('x', '$');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert(current.length === 2);

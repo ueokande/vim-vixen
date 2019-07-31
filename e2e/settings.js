@@ -25,7 +25,7 @@ module.exports = {
     "$": { "type": "scroll.end" },
     "d": { "type": "tabs.close" },
     "D": { "type": "tabs.close", "selectLeft": true },
-    "gd": { "type": "tabs.close.right" },
+    "x$": { "type": "tabs.close.right" },
     "!d": { "type": "tabs.close.force" },
     "u": { "type": "tabs.reopen" },
     "K": { "type": "tabs.prev", "count": 1 },
