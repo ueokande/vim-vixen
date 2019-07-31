@@ -287,9 +287,7 @@ You can toggle Vim Vixen between disabled and enabled with
 
 ## Compatibility
 
-- Firefox 52+
-- Firefox for Android
-- Waterfox 56
+- Firefox 60 ESR
 
 ## Copyright
 
