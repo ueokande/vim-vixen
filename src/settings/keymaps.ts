@@ -18,7 +18,7 @@ const fields = [
     ['mark.set.prefix', 'Set mark at current position'],
     ['mark.jump.prefix', 'Jump to the mark'],
   ], [
-    ['tabs.close?{"selectLeft":false}', 'Close a tab'],
+    ['tabs.close?{"select":"right"}', 'Close a tab'],
     ['tabs.close.right', 'Close all tabs to the right'],
     ['tabs.reopen', 'Reopen closed tab'],
     ['tabs.next', 'Select next tab'],

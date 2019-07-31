@@ -353,7 +353,7 @@ export const DefaultSettingData: SettingData = SettingData.valueOf({
     "G": { "type": "scroll.bottom" },
     "$": { "type": "scroll.end" },
     "d": { "type": "tabs.close" },
-    "D": { "type": "tabs.close", "selectLeft": true },
+    "D": { "type": "tabs.close", "select": "left" },
     "x$": { "type": "tabs.close.right" },
     "!d": { "type": "tabs.close.force" },
     "u": { "type": "tabs.reopen" },

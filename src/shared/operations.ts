@@ -201,7 +201,7 @@ export interface PageHomeOperation {
 
 export interface TabCloseOperation {
   type: typeof TAB_CLOSE;
-  selectLeft?: boolean;
+  select?: 'left' | 'right';
 }
 
 export interface TabCloseForceOperation {
@@ -372,6 +372,19 @@ const assertOptionalBoolean = (obj: any, name: string) => {
   }
 };
 
+const assertOptionalString = (obj: any, name: string, values?: string[]) => {
+  if (Object.prototype.hasOwnProperty.call(obj, name)) {
+    let value = obj[name];
+    if (typeof value !== 'string') {
+      throw new TypeError(`Not a string parameter: '${name}'`);
+    }
+    if (values && values.length && values.indexOf(value) === -1) {
+      // eslint-disable-next-line max-len
+      throw new TypeError(`Invalid parameter for '${name}': '${value}'`);
+    }
+  }
+};
+
 const assertRequiredNumber = (obj: any, name: string) => {
   if (!Object.prototype.hasOwnProperty.call(obj, name) ||
     typeof obj[name] !== 'number') {
@@ -418,10 +431,10 @@ export const valueOf = (o: any): Operation => {
       newTab: Boolean(typeof o.newTab === undefined ? false : o.newTab),
     };
   case TAB_CLOSE:
-    assertOptionalBoolean(o, 'selectLeft');
+    assertOptionalString(o, 'select', ['left', 'right']);
     return {
       type: TAB_CLOSE,
-      selectLeft: Boolean(typeof o.selectLeft === undefined ? false : o.selectLeft), // eslint-disable-line max-len
+      select: (typeof o.select === undefined ? 'right' : o.select),
     };
   case TAB_RELOAD:
     assertOptionalBoolean(o, 'cache');
