@@ -12,10 +12,14 @@ export default class TabUseCase {
   ) {
   }
 
-  async close(force: boolean): Promise<any> {
+  async close(force: boolean, selectLeft = false): Promise<any> {
     let tab = await this.tabPresenter.getCurrent();
     if (!force && tab.pinned) {
       return Promise.resolve();
+    }
+    if (selectLeft && tab.index > 0) {
+      let tabs = await this.tabPresenter.getAll();
+      await this.tabPresenter.select(tabs[tab.index - 1].id as number);
     }
     return this.tabPresenter.remove([tab.id as number]);
   }
