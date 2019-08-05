@@ -33,6 +33,7 @@
     "function-paren-newline": "off",
     "id-length": "off",
     "indent": ["error", 2],
+    "init-declarations": "off",
     "jsx-quotes": ["error", "prefer-single"],
     "max-classes-per-file": "off",
     "max-lines": "off",

@@ -12,10 +12,8 @@ export default class VersionUseCase {
 
   notify(): Promise<void> {
     let manifest = browser.runtime.getManifest();
-    let title = `Vim Vixen ${manifest.version} has been installed`;
-    let message = 'Click here to see release notes';
     let url = this.releaseNoteUrl(manifest.version);
-    return this.notifyPresenter.notify(title, message, () => {
+    return this.notifyPresenter.notifyUpdated(manifest.version, () => {
       this.tabPresenter.create(url);
     });
   }

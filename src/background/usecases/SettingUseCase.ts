@@ -4,6 +4,7 @@ import PersistentSettingRepository
 import SettingRepository from '../repositories/SettingRepository';
 import { DefaultSettingData } from '../../shared/SettingData';
 import Settings from '../../shared/Settings';
+import NotifyPresenter from '../presenters/NotifyPresenter';
 
 @injectable()
 export default class SettingUseCase {
@@ -11,6 +12,7 @@ export default class SettingUseCase {
   constructor(
     private persistentSettingRepository: PersistentSettingRepository,
     private settingRepository: SettingRepository,
+    private notifyPresenter: NotifyPresenter,
   ) {
   }
 
@@ -24,8 +26,14 @@ export default class SettingUseCase {
       data = DefaultSettingData;
     }
 
-    let value = data.toSettings();
-    this.settingRepository.update(value);
+    let value: Settings;
+    try {
+      value = data.toSettings();
+    } catch (e) {
+      this.notifyPresenter.notifyInvalidSettings();
+      value = DefaultSettingData.toSettings();
+    }
+    this.settingRepository.update(value!!);
     return value;
   }
 }
