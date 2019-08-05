@@ -30,7 +30,9 @@ export default class SettingUseCase {
     try {
       value = data.toSettings();
     } catch (e) {
-      this.notifyPresenter.notifyInvalidSettings();
+      this.notifyPresenter.notifyInvalidSettings(() => {
+        browser.runtime.openOptionsPage();
+      });
       value = DefaultSettingData.toSettings();
     }
     this.settingRepository.update(value!!);
