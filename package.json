@@ -57,7 +57,7 @@
     "sass-loader": "^7.1.0",
     "sinon": "^7.3.2",
     "sinon-chrome": "^3.0.1",
-    "style-loader": "^0.23.1",
+    "style-loader": "^1.0.0",
     "ts-loader": "^6.0.1",
     "tsyringe": "^3.2.0",
     "typescript": "^3.4.5",
