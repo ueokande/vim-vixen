@@ -4,12 +4,27 @@ const path = require('path');
 const assert = require('assert');
 const eventually = require('./eventually');
 
+const newApp = () => {
+  let app = express();
+  app.get('/', (req, res) => {
+    res.send(`<!DOCTYPEhtml>
+<html lang="en">
+  <body style="width:10000px; height:10000px"></body>
+</html">`);
+  });
+  return app;
+};
+
 describe("options page", () => {
+  const port = 12321;
+  let http;
   let firefox;
   let session;
   let browser;
 
   before(async() => {
+    http = newApp().listen(port);
+
     firefox = await lanthan.firefox({
       spy: path.join(__dirname, '..'),
       builderf: (builder) => {
@@ -26,6 +41,8 @@ describe("options page", () => {
     if (firefox) {
       await firefox.close();
     }
+
+    http.close();
   });
 
   beforeEach(async() => {
@@ -35,16 +52,16 @@ describe("options page", () => {
     }
   })
 
+  const updateTextarea = async(value) => {
+    let textarea = await session.findElementByCSS('textarea');
+    await session.executeScript(`document.querySelector('textarea').value = '${value}'`)
+    await textarea.sendKeys(' ');
+    await session.executeScript(() => document.querySelector('textarea').blur());
+  }
+
   it('saves current config on blur', async () => {
     let url = await browser.runtime.getURL("build/settings.html")
     await session.navigateTo(url);
-
-    let textarea = await session.findElementByCSS('textarea');
-    const updateTextarea = async(value) => {
-      await session.executeScript(`document.querySelector('textarea').value = '${value}'`)
-      await textarea.sendKeys(' ');
-      await session.executeScript(() => document.querySelector('textarea').blur());
-    }
 
     await updateTextarea(`{ "blacklist": [ "https://example.com" ] }`);
 
@@ -62,5 +79,21 @@ describe("options page", () => {
     let text = await error.getText();
     assert.ok(text.startsWith('SyntaxError:'))
   });
-});
 
+  it('updates keymaps without reloading', async () => {
+    await browser.tabs.create({ url: `http://127.0.0.1:${port}`, active: false });
+    let url = await browser.runtime.getURL("build/settings.html")
+    await session.navigateTo(url);
+
+    let handles = await session.getWindowHandles();
+    await updateTextarea(`{ "keymaps": { "zz": { "type": "scroll.vertically", "count": 10 } } }`);
+
+    await session.switchToWindow(handles[1]);
+
+    let body = await session.findElementByCSS('body');
+    await body.sendKeys('zz')
+
+    let y = await session.executeScript(() => window.pageYOffset);
+    assert.equal(y, 640);
+  })
+});

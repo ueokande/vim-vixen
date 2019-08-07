@@ -25,32 +25,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 ### Settings
 
-#### JSON Settings
-
-##### Validations
-
-- [ ] show error on invalid json
-- [ ] show error when top-level keys has keys other than `keymaps`, `search`, `blacklist`, and `properties`
-
-###### `"keymaps"` section
-
-- [ ] show error on unknown operation name in `"keymaps"`
-
-###### `"search"` section
-
-- validations in `"search"` section are not tested in this release
-
-##### Updating
-
-- [ ] changes are updated on textarea blure when no errors
-- [ ] keymap settings are applied to open tabs without reload
-- [ ] search settings are applied to open tabs without reload
-
-##### Properties
-
-- [ ] show errors when invalid property name
-- [ ] show errors when invalid property type
-
 #### Form Settings
 
 <!-- validation on form settings does not implement in 0.7 -->
