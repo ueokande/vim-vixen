@@ -29,7 +29,7 @@
     "@types/react-redux": "^7.0.9",
     "@types/redux-promise": "^0.5.28",
     "@types/sinon": "^7.0.11",
-    "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
     "chai": "^4.2.0",
     "css-loader": "^2.1.1",
     "eslint": "^5.16.0",
