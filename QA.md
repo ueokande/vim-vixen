@@ -37,20 +37,12 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 ##### `"blacklist"` section
 
-- [ ] able to add item
-- [ ] able to remove item
 - [ ] `github.com/a` blocks `github.com/a`, and not blocks `github.com/aa`
 
 ##### Updating
 
 - [ ] keymap settings are applied to open tabs without reload
 - [ ] search settings are applied to open tabs without reload
-
-### Settings source
-
-- [ ] show confirmation dialog on switched from json to form
-- [ ] state is saved on source changed
-- [ ] on switching form -> json -> form, first and last form setting is equivalent to first one
 
 ## Find mode
 
@@ -60,9 +52,3 @@ The behaviors of the console are tested in [Console section](#consoles).
 - [ ] Wrap search by <kbd>n</kbd>/<kbd>N</kbd>
 - [ ] Find with last keyword if keyword is empty
 - [ ] Find keyword last used on new tab opened
-
-## Misc
-
-- [ ] Work on `about:blank`
-- [ ] Able to map `<A-Z>` key.
-- [ ] Open file menu by <kbd>Alt</kbd>+<kbd>F</kbd> (Other than Mac OS)
