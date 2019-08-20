@@ -27,14 +27,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 
 #### Form Settings
 
-<!-- validation on form settings does not implement in 0.7 -->
-
-##### Search Engines
-
-- [ ] able to change default
-- [ ] able to remove item
-- [ ] able to add item
-
 ##### `"blacklist"` section
 
 - [ ] `github.com/a` blocks `github.com/a`, and not blocks `github.com/aa`

@@ -38,6 +38,18 @@ describe("options form page", () => {
     await session.executeScript(`document.querySelectorAll('${selector}')[${nth}].blur()`);
   }
 
+  const setSearchEngineValue = async(nth, name, url) => {
+    let selector = '.form-search-form input.column-name';
+    let input = (await session.findElementsByCSS(selector))[nth];
+    await input.sendKeys(name);
+    await session.executeScript(`document.querySelectorAll('${selector}')[${nth}].blur()`);
+
+    selector = '.form-search-form input.column-url';
+    input = (await session.findElementsByCSS(selector))[nth];
+    await input.sendKeys(url);
+    await session.executeScript(`document.querySelectorAll('${selector}')[${nth}].blur()`);
+  }
+
   it('switch to form settings', async () => {
     let url = await browser.runtime.getURL("build/settings.html")
     await session.navigateTo(url);
@@ -58,9 +70,11 @@ describe("options form page", () => {
     await useFormInput.click();
     await session.acceptAlert();
 
+    // assert default
     let settings = (await browser.storage.local.get('settings')).settings;
     assert.deepEqual(settings.form.blacklist, [])
 
+    // add blacklist items
     let addButton = await session.findElementByCSS('.form-blacklist-form .ui-add-button');
     await addButton.click();
     await setBlacklistValue(0, 'google.com')
@@ -74,10 +88,37 @@ describe("options form page", () => {
     settings = (await browser.storage.local.get('settings')).settings;
     assert.deepEqual(settings.form.blacklist, ['google.com', 'yahoo.com'])
 
+    // delete first item
     let deleteButton = (await session.findElementsByCSS('.form-blacklist-form .ui-delete-button'))[0];
     await deleteButton.click()
 
     settings = (await browser.storage.local.get('settings')).settings;
     assert.deepEqual(settings.form.blacklist, ['yahoo.com'])
+  });
+
+  it.only('add search engines', async () => {
+    let url = await browser.runtime.getURL("build/settings.html")
+    await session.navigateTo(url);
+
+    let useFormInput = await session.findElementByCSS('#setting-source-form');
+    await useFormInput.click();
+    await session.acceptAlert();
+
+    // assert default
+    let settings = (await browser.storage.local.get('settings')).settings;
+    assert.deepEqual(settings.form.search.default, 'google');
+
+    // change default
+    let radio = (await session.findElementsByCSS('.form-search-form input[type=radio]'))[2];
+    await radio.click();
+    settings = (await browser.storage.local.get('settings')).settings;
+    assert.deepEqual(settings.form.search.default, 'bing');
+
+    let addButton = await session.findElementByCSS('.form-search-form .ui-add-button');
+    await addButton.click();
+    await setSearchEngineValue(6, 'yippy', 'https://www.yippy.com/search?query={}');
+
+    settings = (await browser.storage.local.get('settings')).settings;
+    assert.deepEqual(settings.form.search.engines[6], ['yippy', 'https://www.yippy.com/search?query={}']);
   });
 });
