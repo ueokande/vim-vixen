@@ -71,10 +71,12 @@ describe("tab test", () => {
     let body = await session.findElementByCSS('body');
     await body.sendKeys(Key.Shift, 'D');
 
-    let current = await browser.tabs.query({ windowId: win.id });
-    assert(current.length === tabs.length - 1);
-    assert(current[2].active);
-    assert(current[2].url === tabs[2].url);
+    await eventually(async() => {
+      let current = await browser.tabs.query({ windowId: win.id });
+      assert(current.length === tabs.length - 1);
+      assert(current[2].active);
+      assert(current[2].url === tabs[2].url);
+    })
   });
 
   it('deletes all tabs to the right by x$', async () => {
