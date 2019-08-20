@@ -8,7 +8,7 @@
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
     "type-checks": "tsc --noEmit",
     "test": "karma start",
-    "test:e2e": "mocha --timeout 8000 e2e"
+    "test:e2e": "mocha --timeout 8000 --retries 5 e2e"
   },
   "repository": {
     "type": "git",
