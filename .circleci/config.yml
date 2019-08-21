@@ -75,10 +75,6 @@ jobs:
       - checkout
       - setup_npm
       - run: npm run build
-      - run:
-          name: Run geckodriver
-          command: geckodriver
-          background: true
       - run: npm run test:e2e
 
 workflows:
