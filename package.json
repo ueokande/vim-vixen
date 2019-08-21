@@ -59,7 +59,7 @@
     "sinon-chrome": "^3.0.1",
     "style-loader": "^0.23.1",
     "ts-loader": "^6.0.1",
-    "tsyringe": "^3.2.0",
+    "tsyringe": "^3.3.0",
     "typescript": "^3.4.5",
     "web-ext-types": "^3.1.0",
     "webextensions-api-fake": "^0.8.0",
