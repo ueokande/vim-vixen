@@ -50,7 +50,7 @@
     "node-sass": "^4.12.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-redux": "^7.1.0",
+    "react-redux": "^7.1.1",
     "react-test-renderer": "^16.9.0",
     "redux": "^4.0.4",
     "redux-promise": "^0.6.0",
