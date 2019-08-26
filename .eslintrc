@@ -31,6 +31,7 @@
     "default-case": "off",
     "dot-location": ["error", "property"],
     "function-paren-newline": "off",
+    "function-call-argument-newline": ["error", "consistent"],
     "id-length": "off",
     "indent": ["error", 2],
     "init-declarations": "off",
