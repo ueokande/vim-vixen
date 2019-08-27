@@ -21,7 +21,12 @@ export default class SettingUseCase {
   }
 
   async reload(): Promise<Settings> {
-    let data = await this.persistentSettingRepository.load();
+    let data;
+    try {
+      data = await this.persistentSettingRepository.load();
+    } catch (e) {
+      this.showUnableToLoad(e);
+    }
     if (!data) {
       data = DefaultSettingData;
     }
@@ -30,12 +35,17 @@ export default class SettingUseCase {
     try {
       value = data.toSettings();
     } catch (e) {
-      this.notifyPresenter.notifyInvalidSettings(() => {
-        browser.runtime.openOptionsPage();
-      });
+      this.showUnableToLoad(e);
       value = DefaultSettingData.toSettings();
     }
     this.settingRepository.update(value!!);
     return value;
+  }
+
+  private showUnableToLoad(e: Error) {
+    console.error('unable to load settings', e);
+    this.notifyPresenter.notifyInvalidSettings(() => {
+      browser.runtime.openOptionsPage();
+    });
   }
 }

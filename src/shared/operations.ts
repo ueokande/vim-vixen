@@ -368,7 +368,9 @@ export type Operation =
 const assertOptionalBoolean = (obj: any, name: string) => {
   if (Object.prototype.hasOwnProperty.call(obj, name) &&
       typeof obj[name] !== 'boolean') {
-    throw new TypeError(`Not a boolean parameter: '${name}'`);
+    throw new TypeError(
+      `Not a boolean parameter: '${name} (${typeof obj[name]})'`,
+    );
   }
 };
 
@@ -376,7 +378,9 @@ const assertOptionalString = (obj: any, name: string, values?: string[]) => {
   if (Object.prototype.hasOwnProperty.call(obj, name)) {
     let value = obj[name];
     if (typeof value !== 'string') {
-      throw new TypeError(`Not a string parameter: '${name}'`);
+      throw new TypeError(
+        `Not a string parameter: '${name}' (${typeof value})`,
+      );
     }
     if (values && values.length && values.indexOf(value) === -1) {
       // eslint-disable-next-line max-len
@@ -421,32 +425,32 @@ export const valueOf = (o: any): Operation => {
     assertOptionalBoolean(o, 'background');
     return {
       type: FOLLOW_START,
-      newTab: Boolean(typeof o.newTab === undefined ? false : o.newTab),
-      background: Boolean(typeof o.background === undefined ? true : o.background), // eslint-disable-line max-len
+      newTab: Boolean(typeof o.newTab === 'undefined' ? false : o.newTab),
+      background: Boolean(typeof o.background === 'undefined' ? true : o.background), // eslint-disable-line max-len
     };
   case PAGE_HOME:
     assertOptionalBoolean(o, 'newTab');
     return {
       type: PAGE_HOME,
-      newTab: Boolean(typeof o.newTab === undefined ? false : o.newTab),
+      newTab: Boolean(typeof o.newTab === 'undefined' ? false : o.newTab),
     };
   case TAB_CLOSE:
     assertOptionalString(o, 'select', ['left', 'right']);
     return {
       type: TAB_CLOSE,
-      select: (typeof o.select === undefined ? 'right' : o.select),
+      select: (typeof o.select === 'undefined' ? 'right' : o.select),
     };
   case TAB_RELOAD:
     assertOptionalBoolean(o, 'cache');
     return {
       type: TAB_RELOAD,
-      cache: Boolean(typeof o.cache === undefined ? false : o.cache),
+      cache: Boolean(typeof o.cache === 'undefined' ? false : o.cache),
     };
   case URLS_PASTE:
     assertOptionalBoolean(o, 'newTab');
     return {
       type: URLS_PASTE,
-      newTab: Boolean(typeof o.newTab === undefined ? false : o.newTab),
+      newTab: Boolean(typeof o.newTab === 'undefined' ? false : o.newTab),
     };
   case INTERNAL_OPEN_URL:
     assertOptionalBoolean(o, 'newTab');
@@ -456,9 +460,9 @@ export const valueOf = (o: any): Operation => {
     return {
       type: INTERNAL_OPEN_URL,
       url: o.url,
-      newTab: Boolean(typeof o.newTab === undefined ? false : o.newTab),
-      newWindow: Boolean(typeof o.newWindow === undefined ? false : o.newWindow), // eslint-disable-line max-len
-      background: Boolean(typeof o.background === undefined ? true : o.background), // eslint-disable-line max-len
+      newTab: Boolean(typeof o.newTab === 'undefined' ? false : o.newTab),
+      newWindow: Boolean(typeof o.newWindow === 'undefined' ? false : o.newWindow), // eslint-disable-line max-len
+      background: Boolean(typeof o.background === 'undefined' ? true : o.background), // eslint-disable-line max-len
     };
   case CANCEL:
   case ADDON_ENABLE:
