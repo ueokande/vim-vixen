@@ -5,7 +5,12 @@ export const load = async(): Promise<SettingData> => {
   if (!settings) {
     return DefaultSettingData;
   }
-  return SettingData.valueOf(settings as any);
+  try {
+    return SettingData.valueOf(settings as any);
+  } catch (e) {
+    console.error('unable to load settings', e);
+    return DefaultSettingData;
+  }
 };
 
 export const save = (data: SettingData) => {
