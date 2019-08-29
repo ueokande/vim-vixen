@@ -54,7 +54,7 @@
     "redux": "^4.0.1",
     "redux-promise": "^0.6.0",
     "reflect-metadata": "^0.1.13",
-    "sass-loader": "^7.1.0",
+    "sass-loader": "^8.0.0",
     "sinon": "^7.3.2",
     "sinon-chrome": "^3.0.1",
     "style-loader": "^0.23.1",
