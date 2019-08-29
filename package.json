@@ -3,7 +3,7 @@
   "description": "Vim vixen",
   "scripts": {
     "start": "webpack --mode development -w --debug --devtool inline-source-map",
-    "build": "NODE_ENV=production webpack --mode production --progress --display-error-details",
+    "build": "NODE_ENV=production webpack --mode production --progress --display-error-details --devtool inline-source-map",
     "package": "npm run build && script/package",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
     "type-checks": "tsc --noEmit",
