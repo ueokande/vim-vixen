@@ -22,14 +22,14 @@ export default class ContentMessageClient {
     return enabled as any as boolean;
   }
 
-  toggleAddonEnabled(tabId: number): Promise<void> {
-    return browser.tabs.sendMessage(tabId, {
+  async toggleAddonEnabled(tabId: number): Promise<void> {
+    await browser.tabs.sendMessage(tabId, {
       type: messages.ADDON_TOGGLE_ENABLED,
     });
   }
 
-  scrollTo(tabId: number, x: number, y: number): Promise<void> {
-    return browser.tabs.sendMessage(tabId, {
+  async scrollTo(tabId: number, x: number, y: number): Promise<void> {
+    await browser.tabs.sendMessage(tabId, {
       type: messages.TAB_SCROLL_TO,
       x,
       y,
