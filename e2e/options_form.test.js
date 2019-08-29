@@ -96,7 +96,7 @@ describe("options form page", () => {
     assert.deepEqual(settings.form.blacklist, ['yahoo.com'])
   });
 
-  it.only('add search engines', async () => {
+  it('add search engines', async () => {
     let url = await browser.runtime.getURL("build/settings.html")
     await session.navigateTo(url);
 
