@@ -69,6 +69,7 @@ describe("options form page", () => {
     let useFormInput = await session.findElementByCSS('#setting-source-form');
     await useFormInput.click();
     await session.acceptAlert();
+    await session.executeScript(() => window.scrollBy(0, 1000));
 
     // assert default
     let settings = (await browser.storage.local.get('settings')).settings;
