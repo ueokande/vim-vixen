@@ -44,7 +44,7 @@ describe("completion on open/tabopen/winopen commands", () => {
     });
     
     // Add item into hitories
-    await session.navigateTo(`https://i-beam.org`);
+    await session.navigateTo(`https://i-beam.org/404`);
   });
 
   after(async() => {
