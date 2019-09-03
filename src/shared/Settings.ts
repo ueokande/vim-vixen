@@ -21,13 +21,6 @@ export default interface Settings {
   blacklist: string[];
 }
 
-const DefaultProperties: Properties = PropertyDefs.defs.reduce(
-  (o: {[name: string]: PropertyDefs.Type}, def) => {
-    o[def.name] = def.defaultValue;
-    return o;
-  }, {}) as Properties;
-
-
 export const keymapsValueOf = (o: any): Keymaps => {
   return Object.keys(o).reduce((keymaps: Keymaps, key: string): Keymaps => {
     let op = operations.valueOf(o[key]);
@@ -82,7 +75,7 @@ export const propertiesValueOf = (o: any): Properties => {
     }
   }
   return {
-    ...DefaultProperties,
+    ...PropertyDefs.defaultValues,
     ...o,
   };
 };

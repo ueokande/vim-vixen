@@ -48,3 +48,9 @@ export const defs: Def[] = [
     'which are completed at the open page',
     'sbh'),
 ];
+
+export const defaultValues = {
+  hintchars: 'abcdefghijklmnopqrstuvwxyz',
+  smoothscroll: false,
+  complete: 'sbh',
+};

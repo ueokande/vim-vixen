@@ -25,12 +25,19 @@ class PropertiesForm extends React.Component<Props> {
         Object.keys(types).map((name) => {
           let type = types[name];
           let inputType = '';
+          let onChange = this.bindValue.bind(this);
           if (type === 'string') {
             inputType = 'text';
           } else if (type === 'number') {
             inputType = 'number';
           } else if (type === 'boolean') {
             inputType = 'checkbox';
+
+            // Settings are saved onBlur, but checkbox does not fire it
+            onChange = (e) => {
+              this.bindValue(e);
+              this.props.onBlur();
+            };
           } else {
             return null;
           }
@@ -40,7 +47,7 @@ class PropertiesForm extends React.Component<Props> {
               <input type={inputType} name={name}
                 className='column-input'
                 value={value[name] ? value[name] : ''}
-                onChange={this.bindValue.bind(this)}
+                onChange={onChange}
                 onBlur={this.props.onBlur}
                 checked={value[name]}
               />
