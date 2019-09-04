@@ -47,7 +47,7 @@ commands:
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
-          name: Install npm wee
+          name: Install dependencies
           command: npm install
       - save_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
@@ -77,6 +77,19 @@ jobs:
       - run: npm run build
       - run: npm run test:e2e
 
+  deploy:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - setup_npm
+      - run: npm run package
+      - run:
+          name: Deploy to AMO
+          command: |
+            version=$(jq -r '.version' manifest.json)
+            ./script/deploy vim-vixen@i-beam.org "$version" "vim-vixen-${version}.zip"
+
 workflows:
   version: 2
   build_and_test:
@@ -86,3 +99,26 @@ workflows:
           filters:
             branches:
               ignore: /^greenkeeper\/.*/
+  deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /^.*/
+            branches:
+              ignore: /.*/
+      - e2e:
+          filters:
+            tags:
+              only: /^.*/
+            branches:
+              ignore: /.*/
+      - deploy:
+          requires:
+            - build
+            - e2e
+          filters:
+            tags:
+              only: /^.*/
+            branches:
+              ignore: /.*/
