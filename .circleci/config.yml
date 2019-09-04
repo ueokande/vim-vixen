@@ -82,4 +82,7 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - e2e
+      - e2e:
+          filters:
+            branches:
+              ignore: /^greenkeeper\/.*/
