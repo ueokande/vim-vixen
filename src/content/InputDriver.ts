@@ -8,9 +8,6 @@ const cancelKey = (e: KeyboardEvent): boolean => {
   if (e.key === '[' && e.ctrlKey) {
     return true;
   }
-  if (e.key === 'c' && e.ctrlKey) {
-    return true;
-  }
   return false;
 };
 
