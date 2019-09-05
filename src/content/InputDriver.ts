@@ -2,7 +2,16 @@ import * as dom from '../shared/utils/dom';
 import Key, * as keys from './domains/Key';
 
 const cancelKey = (e: KeyboardEvent): boolean => {
-  return e.key === 'Escape' || e.key === '[' && e.ctrlKey;
+  if (e.key === 'Escape') {
+    return true;
+  }
+  if (e.key === '[' && e.ctrlKey) {
+    return true;
+  }
+  if (e.key === 'c' && e.ctrlKey) {
+    return true;
+  }
+  return false;
 };
 
 export default class InputDriver {

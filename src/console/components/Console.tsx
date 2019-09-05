@@ -72,6 +72,13 @@ class Console extends React.Component<Props> {
       break;
     case '[':
       if (e.ctrlKey) {
+        e.preventDefault();
+        return this.props.dispatch(consoleActions.hideCommand());
+      }
+      break;
+    case 'c':
+      if (e.ctrlKey) {
+        e.preventDefault();
         return this.props.dispatch(consoleActions.hideCommand());
       }
       break;
