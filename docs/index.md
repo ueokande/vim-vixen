@@ -1,6 +1,15 @@
+---
+title: Vim Vixen
+---
+
 # Vim Vixen
 
 Vim Vixen is a Firefox add-on which allows you to easily navigate the web by
 keyboard. Since version 57, Firefox has migrated to the WebExtensions API and
 has dropped support for legacy add-ons. Vim Vixen is a new choice for Vim users
 since it uses the WebExtensions API.
+
+## Related links
+
+- [Vim Vixen - GitHub](https://github.com/ueokande/vim-vixen)
+- [Vim Vixen - Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/vim-vixen/)
