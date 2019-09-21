@@ -5,25 +5,23 @@ const assert = require('assert');
 const eventually = require('./eventually');
 const settings = require('./settings');
 const Console = require('./lib/Console');
-
-const Key = lanthan.Key;
+const { Builder } = require('lanthan');
+const { By } = require('selenium-webdriver');
 
 describe("completion on set commands", () => {
   const port = 12321;
-  let firefox;
+  let lanthan;
   let session;
   let browser;
   let body;
 
   before(async() => {
-    firefox = await lanthan.firefox({
-      spy: path.join(__dirname, '..'),
-      builderf: (builder) => {
-        builder.addFile('build/settings.js');
-      },
-    });
-    session = firefox.session;
-    browser = firefox.browser;
+    lanthan = await Builder
+      .forBrowser('firefox')
+      .spyAddon(path.join(__dirname, '..'))
+      .build();
+    webdriver = lanthan.getWebDriver();
+    browser = lanthan.getWebExtBrowser();
 
     await browser.storage.local.set({
       settings,
@@ -31,21 +29,21 @@ describe("completion on set commands", () => {
   });
 
   after(async() => {
-    if (firefox) {
-      await firefox.close();
+    if (lanthan) {
+      await lanthan.quit();
     }
   });
 
   beforeEach(async() => {
-    await session.navigateTo(`about:blank`);
-    body = await session.findElementByCSS('body');
+    await webdriver.navigate().to(`about:blank`);
+    body = await webdriver.findElement(By.css('body'));
   });
 
   it('should show all property names by "set" command with empty params', async() => {
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let c = new Console(session);
+    await webdriver.switchTo().frame(0);
+    let c = new Console(webdriver);
     await c.sendKeys('set ');
 
     await eventually(async() => {
@@ -62,8 +60,8 @@ describe("completion on set commands", () => {
   it('should show filtered property names by "set" command', async() => {
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let c = new Console(session);
+    await webdriver.switchTo().frame(0);
+    let c = new Console(webdriver);
     await c.sendKeys('set no');
 
     await eventually(async() => {

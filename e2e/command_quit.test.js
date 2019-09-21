@@ -1,10 +1,9 @@
 const express = require('express');
-const lanthan = require('lanthan');
 const path = require('path');
 const assert = require('assert');
 const eventually = require('./eventually');
-
-const Key = lanthan.Key;
+const { Builder } = require('lanthan');
+const { By, Key } = require('selenium-webdriver');
 
 const newApp = () => {
   let app = express();
@@ -23,27 +22,24 @@ const newApp = () => {
 describe('quit/quitall command test', () => {
   const port = 12321;
   let http;
-  let firefox;
-  let session;
+  let lanthan;
+  let webdriver;
   let browser;
 
   before(async() => {
     http = newApp().listen(port);
-
-    firefox = await lanthan.firefox({
-      spy: path.join(__dirname, '..'),
-      builderf: (builder) => {
-        builder.addFile('build/settings.js');
-      },
-    });
-    session = firefox.session;
-    browser = firefox.browser;
+    lanthan = await Builder
+      .forBrowser('firefox')
+      .spyAddon(path.join(__dirname, '..'))
+      .build();
+    webdriver = lanthan.getWebDriver();
+    browser = lanthan.getWebExtBrowser();
   });
 
   after(async() => {
     http.close();
-    if (firefox) {
-      await firefox.close();
+    if (lanthan) {
+      await lanthan.quit();
     }
   });
 
@@ -58,22 +54,22 @@ describe('quit/quitall command test', () => {
     }
 
     await eventually(async() => {
-      let handles = await session.getWindowHandles();
+      let handles = await webdriver.getAllWindowHandles();
       assert.equal(handles.length, 5);
-      await session.switchToWindow(handles[2]);
-      await session.findElementByCSS('iframe');
+      await webdriver.switchTo().window(handles[2]);
+      await webdriver.findElement(By.css('iframe'));
     });
 
     await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   it('should current tab by q command', async() => {
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let input = await session.findElementByCSS('input');
-    await input.sendKeys('q', Key.Enter);
+    await webdriver.switchTo().frame(0);
+    let input = await webdriver.findElement(By.css('input'));
+    await input.sendKeys('q', Key.ENTER);
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -82,12 +78,12 @@ describe('quit/quitall command test', () => {
   });
 
   it('should current tab by quit command', async() => {
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let input = await session.findElementByCSS('input');
-    await input.sendKeys('quit', Key.Enter);
+    await webdriver.switchTo().frame(0);
+    let input = await webdriver.findElement(By.css('input'));
+    await input.sendKeys('quit', Key.ENTER);
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -96,12 +92,12 @@ describe('quit/quitall command test', () => {
   });
 
   it('should current tab by qa command', async() => {
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let input = await session.findElementByCSS('input');
-    await input.sendKeys('qa', Key.Enter);
+    await webdriver.switchTo().frame(0);
+    let input = await webdriver.findElement(By.css('input'));
+    await input.sendKeys('qa', Key.ENTER);
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -110,12 +106,12 @@ describe('quit/quitall command test', () => {
   });
 
   it('should current tab by quitall command', async() => {
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let input = await session.findElementByCSS('input');
-    await input.sendKeys('quitall', Key.Enter);
+    await webdriver.switchTo().frame(0);
+    let input = await webdriver.findElement(By.css('input'));
+    await input.sendKeys('quitall', Key.ENTER);
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});

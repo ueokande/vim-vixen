@@ -1,10 +1,9 @@
 const express = require('express');
-const lanthan = require('lanthan');
 const path = require('path');
 const assert = require('assert');
 const eventually = require('./eventually');
-
-const Key = lanthan.Key;
+const { Builder } = require('lanthan');
+const { By, Key } = require('selenium-webdriver');
 
 const newApp = () => {
   let app = express();
@@ -22,41 +21,39 @@ const newApp = () => {
 describe('addbookmark command test', () => {
   const port = 12321;
   let http;
-  let firefox;
-  let session;
+  let lanthan;
+  let webdriver;
   let browser;
 
   before(async() => {
     http = newApp().listen(port);
 
-    firefox = await lanthan.firefox({
-      spy: path.join(__dirname, '..'),
-      builderf: (builder) => {
-        builder.addFile('build/settings.js');
-      },
-    });
-    session = firefox.session;
-    browser = firefox.browser;
+    lanthan = await Builder
+      .forBrowser('firefox')
+      .spyAddon(path.join(__dirname, '..'))
+      .build();
+    webdriver = lanthan.getWebDriver();
+    browser = lanthan.getWebExtBrowser();
   });
 
   after(async() => {
     http.close();
-    if (firefox) {
-      await firefox.close();
+    if (lanthan) {
+      await lanthan.quit();
     }
   });
 
   beforeEach(async() => {
-    await session.navigateTo(`http://127.0.0.1:${port}/happy`);
+    await webdriver.navigate().to(`http://127.0.0.1:${port}/happy`);
   });
 
   it('should add a bookmark from the current page', async() => {
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let input = await session.findElementByCSS('input');
-    await input.sendKeys('addbookmark how to be happy', Key.Enter);
+    await webdriver.switchTo().frame(0);
+    let input = await webdriver.findElement(By.css('input'));
+    await input.sendKeys('addbookmark how to be happy', Key.ENTER);
 
     await eventually(async() => {
       var bookmarks = await browser.bookmarks.search({ title: 'how to be happy' });

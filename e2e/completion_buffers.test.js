@@ -1,12 +1,11 @@
 const express = require('express');
-const lanthan = require('lanthan');
 const path = require('path');
 const assert = require('assert');
 const eventually = require('./eventually');
 const settings = require('./settings');
 const Console = require('./lib/Console');
-
-const Key = lanthan.Key;
+const { Builder } = require('lanthan');
+const { By, Key } = require('selenium-webdriver');
 
 const newApp = () => {
 
@@ -26,20 +25,18 @@ const newApp = () => {
 describe("completion on buffer/bdelete/bdeletes", () => {
   const port = 12321;
   let http;
-  let firefox;
-  let session;
+  let lanthan;
+  let webdriver;
   let browser;
   let body;
 
   before(async() => {
-    firefox = await lanthan.firefox({
-      spy: path.join(__dirname, '..'),
-      builderf: (builder) => {
-        builder.addFile('build/settings.js');
-      },
-    });
-    session = firefox.session;
-    browser = firefox.browser;
+    lanthan = await Builder
+      .forBrowser('firefox')
+      .spyAddon(path.join(__dirname, '..'))
+      .build();
+    webdriver = lanthan.getWebDriver();
+    browser = lanthan.getWebExtBrowser();
     http = newApp().listen(port);
 
     await browser.storage.local.set({
@@ -49,8 +46,8 @@ describe("completion on buffer/bdelete/bdeletes", () => {
 
   after(async() => {
     http.close();
-    if (firefox) {
-      await firefox.close();
+    if (lanthan) {
+      await lanthan.quit();
     }
   });
 
@@ -67,12 +64,12 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     }
 
     await eventually(async() => {
-      let handles = await session.getWindowHandles();
+      let handles = await webdriver.getAllWindowHandles();
       assert.equal(handles.length, 5);
-      await session.switchToWindow(handles[2]);
-      await session.findElementByCSS('iframe');
+      await webdriver.switchTo().window(handles[2]);
+      await webdriver.findElement(By.css('iframe'));
     });
-    body = await session.findElementByCSS('body');
+    body = await webdriver.findElement(By.css('body'));
 
     await new Promise((resolve) => setTimeout(resolve, 100));
   });
@@ -80,8 +77,8 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   it('should all tabs by "buffer" command with empty params', async() => {
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let c = new Console(session);
+    await webdriver.switchTo().frame(0);
+    let c = new Console(webdriver);
     await c.sendKeys('buffer ');
 
     await eventually(async() => {
@@ -102,8 +99,8 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   it('should filter items with URLs by keywords on "buffer" command', async() => {
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let c = new Console(session);
+    await webdriver.switchTo().frame(0);
+    let c = new Console(webdriver);
     await c.sendKeys('buffer title_site2');
 
     await eventually(async() => {
@@ -118,8 +115,8 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   it('should filter items with titles by keywords on "buffer" command', async() => {
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let c = new Console(session);
+    await webdriver.switchTo().frame(0);
+    let c = new Console(webdriver);
     await c.sendKeys('buffer /site2');
 
     await eventually(async() => {
@@ -132,8 +129,8 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   it('should show one item by number on "buffer" command', async() => {
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let c = new Console(session);
+    await webdriver.switchTo().frame(0);
+    let c = new Console(webdriver);
     await c.sendKeys('buffer 2');
 
     await eventually(async() => {
@@ -147,8 +144,8 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   it('should show unpinned tabs "bdelete" command', async() => {
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let c = new Console(session);
+    await webdriver.switchTo().frame(0);
+    let c = new Console(webdriver);
     await c.sendKeys('bdelete site');
 
     await eventually(async() => {
@@ -163,8 +160,8 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   it('should show unpinned tabs "bdeletes" command', async() => {
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let c = new Console(session);
+    await webdriver.switchTo().frame(0);
+    let c = new Console(webdriver);
     await c.sendKeys('bdelete site');
 
     await eventually(async() => {
@@ -179,8 +176,8 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   it('should show both pinned and unpinned tabs "bdelete!" command', async() => {
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let c = new Console(session);
+    await webdriver.switchTo().frame(0);
+    let c = new Console(webdriver);
     await c.sendKeys('bdelete! site');
 
     await eventually(async() => {
@@ -197,8 +194,8 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   it('should show both pinned and unpinned tabs "bdeletes!" command', async() => {
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let c = new Console(session);
+    await webdriver.switchTo().frame(0);
+    let c = new Console(webdriver);
     await c.sendKeys('bdeletes! site');
 
     await eventually(async() => {

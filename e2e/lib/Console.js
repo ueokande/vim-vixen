@@ -1,22 +1,24 @@
+const { By } = require('selenium-webdriver');
+
 class Console {
-  constructor(session) {
-    this.session = session;
+  constructor(webdriver) {
+    this.webdriver = webdriver;
   }
 
   async sendKeys(...keys) {
-    let input = await this.session.findElementByCSS('input');
+    let input = await this.webdriver.findElement(By.css('input'));
     input.sendKeys(...keys);
   }
 
   async currentValue() {
-    return await this.session.executeScript(() => {
+    return await this.webdriver.executeScript(() => {
       let input = document.querySelector('input');
       return input.value;
     });
   }
 
   async getCompletions() {
-    return await this.session.executeScript(() => {
+    return await this.webdriver.executeScript(() => {
       let items = document.querySelectorAll('.vimvixen-console-completion > li');
       if (items.length === 0) {
         throw new Error('completion items not found');

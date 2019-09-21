@@ -1,36 +1,34 @@
 const express = require('express');
-const lanthan = require('lanthan');
+const { Builder } = require('lanthan');
 const path = require('path');
 const assert = require('assert');
 const eventually = require('./eventually');
-
-const Key = lanthan.Key;
+const { Key, By } = require('selenium-webdriver');
 
 describe("zoom test", () => {
-
-  let firefox;
-  let session;
+  let lanthan;
+  let webdriver;
   let browser;
   let tab;
   let body;
 
   before(async() => {
-    firefox = await lanthan.firefox();
-    await firefox.session.installAddonFromPath(path.join(__dirname, '..'));
-    session = firefox.session;
-    browser = firefox.browser;
+    lanthan = await Builder
+      .forBrowser('firefox')
+      .spyAddon(path.join(__dirname, '..'))
+      .build();
+    webdriver = lanthan.getWebDriver();
+    browser = lanthan.getWebExtBrowser();
     tab = (await browser.tabs.query({}))[0]
   });
 
   after(async() => {
-    if (firefox) {
-      await firefox.close();
-    }
+    await lanthan.quit();
   });
 
   beforeEach(async() => {
-    await session.navigateTo('about:blank');
-    body = await session.findElementByCSS('body');
+    await webdriver.navigate().to('about:blank');
+    body = await webdriver.findElement(By.css('body'));
   });
 
   it('should zoom in by zi', async () => {

@@ -1,10 +1,9 @@
 const express = require('express');
-const lanthan = require('lanthan');
 const path = require('path');
 const assert = require('assert');
 const eventually = require('./eventually');
-
-const Key = lanthan.Key;
+const { Builder } = require('lanthan');
+const { Key, By } = require('selenium-webdriver');
 
 const newApp = () => {
   let app = express();
@@ -20,44 +19,48 @@ describe("tab test", () => {
   const url = `http://127.0.0.1:${port}/`;
 
   let http;
-  let firefox;
-  let session;
+  let lanthan;
+  let webdriver
   let browser;
   let tabs;
 
   before(async() => {
-    firefox = await lanthan.firefox();
-    await firefox.session.installAddonFromPath(path.join(__dirname, '..'));
-    session = firefox.session;
-    browser = firefox.browser;
+    lanthan = await Builder
+      .forBrowser('firefox')
+      .spyAddon(path.join(__dirname, '..'))
+      .build();
+    webdriver = lanthan.getWebDriver();
+    browser = lanthan.getWebExtBrowser();
     http = newApp().listen(port);
 
-    await session.navigateTo(`${url}`);
+    await webdriver.navigate().to(`${url}`);
   });
 
   after(async() => {
-    http.close();
-    if (firefox) {
-      await firefox.close();
+    if (http) {
+      http.close();
+    }
+    if (lanthan) {
+      await lanthan.quit();
     }
   });
 
   it('repeats last operation', async () => {
     let before = await browser.tabs.query({});
 
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let input = await session.findElementByCSS('input');
-    input.sendKeys(`tabopen ${url}newtab`, Key.Enter);
+    await webdriver.switchTo().frame(0);
+    let input = await webdriver.findElement(By.css('input'));
+    input.sendKeys(`tabopen ${url}newtab`, Key.ENTER);
 
     await eventually(async() => {
       let current = await browser.tabs.query({ url: `*://*/newtab` });
       assert.equal(current.length, 1);
     });
 
-    body = await session.findElementByCSS('body');
+    body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('.');
 
     await eventually(async() => {
@@ -72,7 +75,7 @@ describe("tab test", () => {
     }
     let before = await browser.tabs.query({});
 
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('d');
 
     await eventually(async() => {
@@ -81,7 +84,7 @@ describe("tab test", () => {
     });
 
     await browser.tabs.update(before[2].id, { active: true });
-    body = await session.findElementByCSS('body');
+    body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('.');
 
     await eventually(async() => {

@@ -1,10 +1,9 @@
 const express = require('express');
-const lanthan = require('lanthan');
 const path = require('path');
 const assert = require('assert');
 const eventually = require('./eventually');
-
-const Key = lanthan.Key;
+const { Builder } = require('lanthan');
+const { By } = require('selenium-webdriver');
 
 const newApp = () => {
   let app = express();
@@ -21,61 +20,65 @@ describe("mark test", () => {
 
   const port = 12321;
   let http;
-  let firefox;
-  let session;
+  let lanthan;
+  let webdriver;
   let browser;
 
   before(async() => {
     http = newApp().listen(port);
 
-    firefox = await lanthan.firefox();
-    await firefox.session.installAddonFromPath(path.join(__dirname, '..'));
-    session = firefox.session;
-    browser = firefox.browser;
+    lanthan = await Builder
+      .forBrowser('firefox')
+      .spyAddon(path.join(__dirname, '..'))
+      .build();
+    webdriver = lanthan.getWebDriver();
+    browser = lanthan.getWebExtBrowser();
   });
 
   after(async() => {
-    if (firefox) {
-      await firefox.close();
+    if (lanthan) {
+      await lanthan.quit();
     }
-    http.close();
+    if (http) {
+      http.close();
+    }
   });
 
   it('should set a local mark and jump to it', async () => {
-    await session.navigateTo(`http://127.0.0.1:${port}`);
-    let body = await session.findElementByCSS('body');
+    await webdriver.navigate().to(`http://127.0.0.1:${port}`);
+    let body = await webdriver.findElement(By.css('body'));
 
-    await session.executeScript(() => window.scrollTo(200, 200));
+    await webdriver.executeScript(() => window.scrollTo(200, 200));
     await body.sendKeys('m', 'a');
-    await session.executeScript(() => window.scrollTo(500, 500));
+    await webdriver.executeScript(() => window.scrollTo(500, 500));
     await body.sendKeys('\'', 'a');
 
     await eventually(async() => {
-      let pageXOffset = await session.executeScript(() => window.pageXOffset);
-      let pageYOffset = await session.executeScript(() => window.pageYOffset);
+      let pageXOffset = await webdriver.executeScript(() => window.pageXOffset);
+      let pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
       assert.equal(pageXOffset, 200);
       assert.equal(pageYOffset, 200);
     });
   });
 
   it('should set a global mark and jump to it', async () => {
-    await session.navigateTo(`http://127.0.0.1:${port}#first`);
-    let body = await session.findElementByCSS('body');
+    await webdriver.navigate().to(`http://127.0.0.1:${port}#first`);
+    let body = await webdriver.findElement(By.css('body'));
 
-    await session.executeScript(() => window.scrollTo(200, 200));
+    await webdriver.executeScript(() => window.scrollTo(200, 200));
     await body.sendKeys('m', 'A');
-    await session.executeScript(() => window.scrollTo(500, 500));
+    await webdriver.executeScript(() => window.scrollTo(500, 500));
     await body.sendKeys('\'', 'A');
 
     await eventually(async() => {
-      let pageXOffset = await session.executeScript(() => window.pageXOffset);
-      let pageYOffset = await session.executeScript(() => window.pageYOffset);
+      let pageXOffset = await webdriver.executeScript(() => window.pageXOffset);
+      let pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
       assert.equal(pageXOffset, 200);
       assert.equal(pageYOffset, 200);
     });
 
     await browser.tabs.create({ url: `http://127.0.0.1:${port}#second` });
-    body = await session.findElementByCSS('body');
+    body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('\'', 'A');
 
     await eventually(async() => {
@@ -83,17 +86,17 @@ describe("mark test", () => {
       let url = new URL(tab.url);
       assert.equal(url.hash, '#first');
 
-      let pageXOffset = await session.executeScript(() => window.pageXOffset);
-      let pageYOffset = await session.executeScript(() => window.pageYOffset);
+      let pageXOffset = await webdriver.executeScript(() => window.pageXOffset);
+      let pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
       assert.equal(pageXOffset, 200);
       assert.equal(pageYOffset, 200);
     });
   });
 
   it('set a global mark and creates new tab from gone', async () => {
-    await session.navigateTo(`http://127.0.0.1:${port}#first`);
-    await session.executeScript(() => window.scrollTo(500, 500));
-    let body = await session.findElementByCSS('body');
+    await webdriver.navigate().to(`http://127.0.0.1:${port}#first`);
+    await webdriver.executeScript(() => window.scrollTo(500, 500));
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('m', 'A');
 
     let tab = (await browser.tabs.query({ active: true }))[0];
@@ -102,12 +105,12 @@ describe("mark test", () => {
 
     let handles;
     await eventually(async() => {
-      handles = await session.getWindowHandles();
+      handles = await webdriver.getAllWindowHandles();
       assert.equal(handles.length, 2);
     });
-    await session.switchToWindow(handles[0]);
-    await session.navigateTo(`http://127.0.0.1:${port}#second`);
-    body = await session.findElementByCSS('body');
+    await webdriver.switchTo().window(handles[0]);
+    await webdriver.navigate().to(`http://127.0.0.1:${port}#second`);
+    body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('\'', 'A');
 
     await eventually(async() => {

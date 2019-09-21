@@ -1,12 +1,11 @@
 const express = require('express');
-const lanthan = require('lanthan');
 const path = require('path');
 const assert = require('assert');
 const eventually = require('./eventually');
 const settings = require('./settings');
+const { Builder } = require('lanthan');
+const { By, Key } = require('selenium-webdriver');
 const Console = require('./lib/Console');
-
-const Key = lanthan.Key;
 
 const newApp = () => {
   let app = express();
@@ -22,20 +21,18 @@ const newApp = () => {
 describe("general completion test", () => {
   const port = 12321;
   let http;
-  let firefox;
-  let session;
+  let lanthan;
+  let webdriver;
   let browser;
   let body;
 
   before(async() => {
-    firefox = await lanthan.firefox({
-      spy: path.join(__dirname, '..'),
-      builderf: (builder) => {
-        builder.addFile('build/settings.js');
-      },
-    });
-    session = firefox.session;
-    browser = firefox.browser;
+    lanthan = await Builder
+      .forBrowser('firefox')
+      .spyAddon(path.join(__dirname, '..'))
+      .build();
+    webdriver = lanthan.getWebDriver();
+    browser = lanthan.getWebExtBrowser();
     http = newApp().listen(port);
 
     await browser.storage.local.set({
@@ -45,21 +42,21 @@ describe("general completion test", () => {
 
   after(async() => {
     http.close();
-    if (firefox) {
-      await firefox.close();
+    if (lanthan) {
+      await lanthan.quit();
     }
   });
 
   beforeEach(async() => {
-    await session.navigateTo(`http://127.0.0.1:${port}`);
-    body = await session.findElementByCSS('body');
+    await webdriver.navigate().to(`http://127.0.0.1:${port}`);
+    body = await webdriver.findElement(By.css('body'));
   });
 
   it('should all commands on empty line', async() => {
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let c = new Console(session);
+    await webdriver.switchTo().frame(0);
+    let c = new Console(webdriver);
 
     await eventually(async() => {
       let items = await c.getCompletions();
@@ -74,8 +71,8 @@ describe("general completion test", () => {
   it('should only commands filtered by prefix', async() => {
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let c = new Console(session);
+    await webdriver.switchTo().frame(0);
+    let c = new Console(webdriver);
     await c.sendKeys('b');
 
     await eventually(async() => {
@@ -91,8 +88,8 @@ describe("general completion test", () => {
   it('selects completion items by <Tab>/<S-Tab> keys', async() => {
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
-    let c = new Console(session);
+    await webdriver.switchTo().frame(0);
+    let c = new Console(webdriver);
     await c.sendKeys('b');
 
     await eventually(async() => {
@@ -100,7 +97,7 @@ describe("general completion test", () => {
       assert.equal(items.length, 4);
     });
 
-    await c.sendKeys(Key.Tab);
+    await c.sendKeys(Key.TAB);
     await eventually(async() => {
       let items = await c.getCompletions();
       assert(items[1].highlight)
@@ -109,7 +106,7 @@ describe("general completion test", () => {
       assert.equal(v, 'buffer');
     });
 
-    await c.sendKeys(Key.Tab, Key.Tab);
+    await c.sendKeys(Key.TAB, Key.TAB);
     await eventually(async() => {
       let items = await c.getCompletions();
       assert(items[3].highlight)
@@ -118,13 +115,13 @@ describe("general completion test", () => {
       assert.equal(v, 'bdeletes');
     });
 
-    await c.sendKeys(Key.Tab);
+    await c.sendKeys(Key.TAB);
     await eventually(async() => {
       let v = await c.currentValue();
       assert.equal(v, 'b');
     });
 
-    await c.sendKeys(Key.Shift, Key.Tab);
+    await c.sendKeys(Key.SHIFT, Key.TAB);
     await eventually(async() => {
       let items = await c.getCompletions();
       assert(items[3].highlight)

@@ -1,10 +1,9 @@
 const express = require('express');
-const lanthan = require('lanthan');
 const path = require('path');
 const assert = require('assert');
 const eventually = require('./eventually');
-
-const Key = lanthan.Key;
+const { Builder } = require('lanthan');
+const { Key, By } = require('selenium-webdriver');
 
 const newApp = () => {
   let app = express();
@@ -23,102 +22,106 @@ const newApp = () => {
 describe("console test", () => {
   const port = 12321;
   let http;
-  let firefox;
-  let session;
+  let lanthan;
+  let webdriver;
   let browser;
   let tab;
   let body;
 
   before(async() => {
-    firefox = await lanthan.firefox();
-    await firefox.session.installAddonFromPath(path.join(__dirname, '..'));
-    session = firefox.session;
-    browser = firefox.browser;
     http = newApp().listen(port);
+    lanthan = await Builder
+      .forBrowser('firefox')
+      .spyAddon(path.join(__dirname, '..'))
+      .build();
+    webdriver = lanthan.getWebDriver();
+    browser = lanthan.getWebExtBrowser();
   });
 
   after(async() => {
-    http.close();
-    if (firefox) {
-      await firefox.close();
+    if (lanthan) {
+      await lanthan.quit();
+    }
+    if (http) {
+      http.close();
     }
   });
 
   beforeEach(async() => {
-    await session.navigateTo(`http://127.0.0.1:${port}`);
-    body = await session.findElementByCSS('body');
+    await webdriver.navigate().to(`http://127.0.0.1:${port}`);
+    body = await webdriver.findElement(By.css('body'));
   });
 
   it('open console with :', async() => {
     await body.sendKeys(':');
 
-    await session.switchToFrame(0);
+    await webdriver.switchTo().frame(0);
     
-    let input = await session.findElementByCSS('input');
+    let input = await webdriver.findElement(By.css('input'));
     assert.equal(await input.isDisplayed(), true);
   });
 
   it('open console with open command by o', async() => {
     await body.sendKeys('o');
 
-    await session.switchToFrame(0);
-    let value = await session.executeScript(() => document.querySelector('input').value);
+    await webdriver.switchTo().frame(0);
+    let value = await webdriver.executeScript(() => document.querySelector('input').value);
     assert.equal(value, 'open ');
   });
 
   it('open console with open command and current URL by O', async() => {
-    await body.sendKeys(Key.Shift, 'o');
+    await body.sendKeys(Key.SHIFT, 'o');
 
-    await session.switchToFrame(0);
-    let value = await session.executeScript(() => document.querySelector('input').value);
+    await webdriver.switchTo().frame(0);
+    let value = await webdriver.executeScript(() => document.querySelector('input').value);
     assert.equal(value, `open http://127.0.0.1:${port}/`);
   });
 
   it('open console with tabopen command by t', async() => {
     await body.sendKeys('t');
 
-    await session.switchToFrame(0);
-    let value = await session.executeScript(() => document.querySelector('input').value);
+    await webdriver.switchTo().frame(0);
+    let value = await webdriver.executeScript(() => document.querySelector('input').value);
     assert.equal(value, 'tabopen ');
   });
 
   it('open console with tabopen command and current URL by T', async() => {
-    await body.sendKeys(Key.Shift, 't');
+    await body.sendKeys(Key.SHIFT, 't');
 
-    await session.switchToFrame(0);
-    let value = await session.executeScript(() => document.querySelector('input').value);
+    await webdriver.switchTo().frame(0);
+    let value = await webdriver.executeScript(() => document.querySelector('input').value);
     assert.equal(value, `tabopen http://127.0.0.1:${port}/`);
   });
 
   it('open console with winopen command by w', async() => {
     await body.sendKeys('w');
 
-    await session.switchToFrame(0);
-    let value = await session.executeScript(() => document.querySelector('input').value);
+    await webdriver.switchTo().frame(0);
+    let value = await webdriver.executeScript(() => document.querySelector('input').value);
     assert.equal(value, 'winopen ');
   });
 
   it('open console with winopen command and current URL by W', async() => {
-    await body.sendKeys(Key.Shift, 'W');
+    await body.sendKeys(Key.SHIFT, 'W');
 
-    await session.switchToFrame(0);
-    let value = await session.executeScript(() => document.querySelector('input').value);
+    await webdriver.switchTo().frame(0);
+    let value = await webdriver.executeScript(() => document.querySelector('input').value);
     assert.equal(value, `winopen http://127.0.0.1:${port}/`);
   });
 
   it('open console with buffer command by b', async() => {
     await body.sendKeys('b');
 
-    await session.switchToFrame(0);
-    let value = await session.executeScript(() => document.querySelector('input').value);
+    await webdriver.switchTo().frame(0);
+    let value = await webdriver.executeScript(() => document.querySelector('input').value);
     assert.equal(value, `buffer `);
   });
 
   it('open console with addbookmark command with title by a', async() => {
     await body.sendKeys('a');
 
-    await session.switchToFrame(0);
-    let value = await session.executeScript(() => document.querySelector('input').value);
+    await webdriver.switchTo().frame(0);
+    let value = await webdriver.executeScript(() => document.querySelector('input').value);
     assert.equal(value, `addbookmark Hello, world!`);
   });
 });

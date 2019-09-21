@@ -1,12 +1,11 @@
 const express = require('express');
-const lanthan = require('lanthan');
 const path = require('path');
 const assert = require('assert');
 const eventually = require('./eventually');
 const clipboard = require('./lib/clipboard');
 const settings = require('./settings');
-
-const Key = lanthan.Key;
+const { Builder } = require('lanthan');
+const { By, Key } = require('selenium-webdriver');
 
 const newApp = () => {
   let app = express();
@@ -20,18 +19,19 @@ describe("navigate test", () => {
 
   const port = 12321;
   let http;
-  let firefox;
-  let session;
+  let lanthan;
+  let webdriver;
   let browser;
 
   before(async() => {
     http = newApp().listen(port);
 
-    firefox = await lanthan.firefox({
-      spy: path.join(__dirname, '..'),
-    });
-    session = firefox.session;
-    browser = firefox.browser;
+    lanthan = await Builder
+      .forBrowser('firefox')
+      .spyAddon(path.join(__dirname, '..'))
+      .build();
+    webdriver = lanthan.getWebDriver();
+    browser = lanthan.getWebExtBrowser();
 
     await browser.storage.local.set({
       settings,
@@ -39,8 +39,8 @@ describe("navigate test", () => {
   });
 
   after(async() => {
-    if (firefox) {
-      await firefox.close();
+    if (lanthan) {
+      await lanthan.quit();
     }
     http.close();
   });
@@ -53,8 +53,8 @@ describe("navigate test", () => {
   })
 
   it('should copy current URL by y', async () => {
-    await session.navigateTo(`http://127.0.0.1:${port}/#should_copy_url`);
-    let body = await session.findElementByCSS('body');
+    await webdriver.navigate().to(`http://127.0.0.1:${port}/#should_copy_url`);
+    let body = await webdriver.findElement(By.css('body'));
 
     await body.sendKeys('y');
     await eventually(async() => {
@@ -64,8 +64,8 @@ describe("navigate test", () => {
   });
 
   it('should open an URL from clipboard by p', async () => {
-    await session.navigateTo(`http://127.0.0.1:${port}/`);
-    let body = await session.findElementByCSS('body');
+    await webdriver.navigate().to(`http://127.0.0.1:${port}/`);
+    let body = await webdriver.findElement(By.css('body'));
 
     await clipboard.write(`http://127.0.0.1:${port}/#open_from_clipboard`);
     await body.sendKeys('p');
@@ -77,11 +77,11 @@ describe("navigate test", () => {
   });
 
   it('should open an URL from clipboard to new tab by P', async () => {
-    await session.navigateTo(`http://127.0.0.1:${port}/`);
-    let body = await session.findElementByCSS('body');
+    await webdriver.navigate().to(`http://127.0.0.1:${port}/`);
+    let body = await webdriver.findElement(By.css('body'));
 
     await clipboard.write(`http://127.0.0.1:${port}/#open_to_new_tab`);
-    await body.sendKeys(Key.Shift, 'p');
+    await body.sendKeys(Key.SHIFT, 'p');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -93,8 +93,8 @@ describe("navigate test", () => {
   });
 
   it('should open search result with keywords in clipboard by p', async () => {
-    await session.navigateTo(`http://127.0.0.1:${port}/`);
-    let body = await session.findElementByCSS('body');
+    await webdriver.navigate().to(`http://127.0.0.1:${port}/`);
+    let body = await webdriver.findElement(By.css('body'));
 
     await clipboard.write(`an apple`);
     await body.sendKeys('p');
@@ -106,11 +106,11 @@ describe("navigate test", () => {
   });
 
   it('should open search result with keywords in clipboard to new tabby P', async () => {
-    await session.navigateTo(`http://127.0.0.1:${port}/`);
-    let body = await session.findElementByCSS('body');
+    await webdriver.navigate().to(`http://127.0.0.1:${port}/`);
+    let body = await webdriver.findElement(By.css('body'));
 
     await clipboard.write(`an apple`);
-    await body.sendKeys(Key.Shift, 'p');
+    await body.sendKeys(Key.SHIFT, 'p');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});

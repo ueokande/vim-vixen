@@ -1,8 +1,9 @@
 const express = require('express');
-const lanthan = require('lanthan');
 const path = require('path');
 const assert = require('assert');
 const eventually = require('./eventually');
+const { Builder } = require('lanthan');
+const { By } = require('selenium-webdriver');
 
 const newApp = () => {
   let app = express();
@@ -18,31 +19,28 @@ const newApp = () => {
 describe("options page", () => {
   const port = 12321;
   let http;
-  let firefox;
+  let lanthan;
   let session;
   let browser;
 
   before(async() => {
     http = newApp().listen(port);
 
-    firefox = await lanthan.firefox({
-      spy: path.join(__dirname, '..'),
-      builderf: (builder) => {
-        builder.addFile('build/settings.js');
-        builder.addFile('build/settings.html');
-      },
-    });
-    await firefox.session.installAddonFromPath(path.join(__dirname, '..'));
-    session = firefox.session;
-    browser = firefox.browser;
+    lanthan = await Builder
+      .forBrowser('firefox')
+      .spyAddon(path.join(__dirname, '..'))
+      .build();
+    webdriver = lanthan.getWebDriver();
+    browser = lanthan.getWebExtBrowser();
   });
 
   after(async() => {
-    if (firefox) {
-      await firefox.close();
+    if (lanthan) {
+      await lanthan.quit();
     }
-
-    http.close();
+    if (http) {
+      http.close();
+    }
   });
 
   beforeEach(async() => {
@@ -53,15 +51,15 @@ describe("options page", () => {
   })
 
   const updateTextarea = async(value) => {
-    let textarea = await session.findElementByCSS('textarea');
-    await session.executeScript(`document.querySelector('textarea').value = '${value}'`)
+    let textarea = await webdriver.findElement(By.css('textarea'));
+    await webdriver.executeScript(`document.querySelector('textarea').value = '${value}'`)
     await textarea.sendKeys(' ');
-    await session.executeScript(() => document.querySelector('textarea').blur());
+    await webdriver.executeScript(() => document.querySelector('textarea').blur());
   }
 
   it('saves current config on blur', async () => {
     let url = await browser.runtime.getURL("build/settings.html")
-    await session.navigateTo(url);
+    await webdriver.navigate().to(url);
 
     await updateTextarea(`{ "blacklist": [ "https://example.com" ] }`);
 
@@ -75,7 +73,7 @@ describe("options page", () => {
     assert.equal(settings.source, 'json')
     assert.equal(settings.json, '{ "blacklist": [ "https://example.com" ] } ')
 
-    let error = await session.findElementByCSS('.settings-ui-input-error');
+    let error = await webdriver.findElement(By.css('.settings-ui-input-error'));
     let text = await error.getText();
     assert.ok(text.startsWith('SyntaxError:'))
   });
@@ -83,17 +81,17 @@ describe("options page", () => {
   it('updates keymaps without reloading', async () => {
     await browser.tabs.create({ url: `http://127.0.0.1:${port}`, active: false });
     let url = await browser.runtime.getURL("build/settings.html")
-    await session.navigateTo(url);
+    await webdriver.navigate().to(url);
 
-    let handles = await session.getWindowHandles();
     await updateTextarea(`{ "keymaps": { "zz": { "type": "scroll.vertically", "count": 10 } } }`);
 
-    await session.switchToWindow(handles[1]);
+    let handles = await webdriver.getAllWindowHandles();
+    await webdriver.switchTo().window(handles[1]);
 
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('zz')
 
-    let y = await session.executeScript(() => window.pageYOffset);
+    let y = await webdriver.executeScript(() => window.pageYOffset);
     assert.equal(y, 640);
   })
 });

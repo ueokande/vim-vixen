@@ -3,8 +3,8 @@ const lanthan = require('lanthan');
 const path = require('path');
 const assert = require('assert');
 const eventually = require('./eventually');
-
-const Key = lanthan.Key;
+const { Builder } = require('lanthan');
+const { Key, By } = require('selenium-webdriver');
 
 const newApp = () => {
   let app = express();
@@ -20,24 +20,28 @@ describe("tab test", () => {
   const url = `http://127.0.0.1:${port}/`;
 
   let http;
-  let firefox;
-  let session;
+  let lanthan;
+  let webdriver
   let browser;
   let win;
   let tabs;
 
   before(async() => {
-    firefox = await lanthan.firefox();
-    await firefox.session.installAddonFromPath(path.join(__dirname, '..'));
-    session = firefox.session;
-    browser = firefox.browser;
+    lanthan = await Builder
+      .forBrowser('firefox')
+      .spyAddon(path.join(__dirname, '..'))
+      .build();
+    webdriver = lanthan.getWebDriver();
+    browser = lanthan.getWebExtBrowser();
     http = newApp().listen(port);
   });
 
   after(async() => {
-    http.close();
-    if (firefox) {
-      await firefox.close();
+    if (http) {
+      http.close();
+    }
+    if (lanthan) {
+      await lanthan.quit();
     }
   });
 
@@ -45,7 +49,7 @@ describe("tab test", () => {
     win = await browser.windows.create({ url: `${url}#0` });
     for (let i = 1; i < 5; ++i) {
       await browser.tabs.create({ url: `${url}#${i}`, windowId: win.id });
-      await session.navigateTo(`${url}#${i}`);
+      await webdriver.navigate().to(`${url}#${i}`);
     }
     tabs = await browser.tabs.query({ windowId: win.id });
     tabs.sort((t1, t2) => t1.index - t2.index);
@@ -57,7 +61,7 @@ describe("tab test", () => {
 
   it('deletes tab and selects right by d', async () => {
     await browser.tabs.update(tabs[3].id, { active: true });
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('d');
 
     let current = await browser.tabs.query({ windowId: win.id });
@@ -68,8 +72,8 @@ describe("tab test", () => {
 
   it('deletes tab and selects left by D', async () => {
     await browser.tabs.update(tabs[3].id, { active: true });
-    let body = await session.findElementByCSS('body');
-    await body.sendKeys(Key.Shift, 'D');
+    let body = await webdriver.findElement(By.css('body'));
+    await body.sendKeys(Key.SHIFT, 'D');
 
     await eventually(async() => {
       let current = await browser.tabs.query({ windowId: win.id });
@@ -81,7 +85,7 @@ describe("tab test", () => {
 
   it('deletes all tabs to the right by x$', async () => {
     await browser.tabs.update(tabs[1].id, { active: true });
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('x', '$');
 
     let current = await browser.tabs.query({ windowId: win.id });
@@ -90,7 +94,7 @@ describe("tab test", () => {
 
   it('duplicates tab by zd', async () => {
     await browser.tabs.update(tabs[0].id, { active: true });
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('z', 'd');
 
     await eventually(async() => {
@@ -103,7 +107,7 @@ describe("tab test", () => {
 
   it('makes pinned by zp', async () => {
     await browser.tabs.update(tabs[0].id, { active: true });
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('z', 'p');
 
     let current = await browser.tabs.query({ windowId: win.id });
@@ -112,8 +116,8 @@ describe("tab test", () => {
 
   it('selects previous tab by K', async () => {
     await browser.tabs.update(tabs[2].id, { active: true });
-    let body = await session.findElementByCSS('body');
-    await body.sendKeys(Key.Shift, 'K');
+    let body = await webdriver.findElement(By.css('body'));
+    await body.sendKeys(Key.SHIFT, 'K');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert(current[1].active);
@@ -121,8 +125,8 @@ describe("tab test", () => {
 
   it('selects previous tab by K rotatory', async () => {
     await browser.tabs.update(tabs[0].id, { active: true });
-    let body = await session.findElementByCSS('body');
-    await body.sendKeys(Key.Shift, 'K');
+    let body = await webdriver.findElement(By.css('body'));
+    await body.sendKeys(Key.SHIFT, 'K');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert(current[current.length - 1].active)
@@ -130,8 +134,8 @@ describe("tab test", () => {
 
   it('selects next tab by J', async () => {
     await browser.tabs.update(tabs[2].id, { active: true });
-    let body = await session.findElementByCSS('body');
-    await body.sendKeys(Key.Shift, 'J');
+    let body = await webdriver.findElement(By.css('body'));
+    await body.sendKeys(Key.SHIFT, 'J');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert(current[3].active);
@@ -139,8 +143,8 @@ describe("tab test", () => {
 
   it('selects previous tab by J rotatory', async () => {
     await browser.tabs.update(tabs[tabs.length - 1].id, { active: true });
-    let body = await session.findElementByCSS('body');
-    await body.sendKeys(Key.Shift, 'J');
+    let body = await webdriver.findElement(By.css('body'));
+    await body.sendKeys(Key.SHIFT, 'J');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert(current[0].active)
@@ -148,7 +152,7 @@ describe("tab test", () => {
 
   it('selects first tab by g0', async () => {
     await browser.tabs.update(tabs[2].id, { active: true });
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('g', '0');
 
     let current = await browser.tabs.query({ windowId: win.id });
@@ -157,7 +161,7 @@ describe("tab test", () => {
 
   it('selects last tab by g$', async () => {
     await browser.tabs.update(tabs[2].id, { active: true });
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('g', '$');
 
     let current = await browser.tabs.query({ windowId: win.id });
@@ -168,8 +172,8 @@ describe("tab test", () => {
     await browser.tabs.update(tabs[1].id, { active: true });
     await browser.tabs.update(tabs[4].id, { active: true });
 
-    let body = await session.findElementByCSS('body');
-    await body.sendKeys(Key.Control, '6');
+    let body = await webdriver.findElement(By.css('body'));
+    await body.sendKeys(Key.CONTROL, '6');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert(current[1].active)
@@ -179,7 +183,7 @@ describe("tab test", () => {
   // This might be a bug in Firefox.
   it.skip('reopen tab by u', async () => {
     await browser.tabs.remove(tabs[1].id);
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('u');
 
     let current = await browser.tabs.query({ windowId: win.id });
@@ -188,7 +192,7 @@ describe("tab test", () => {
 
   it('does not delete pinned tab by d', async () => {
     await browser.tabs.update(tabs[0].id, { active: true, pinned: true });
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('d');
 
     let current = await browser.tabs.query({ windowId: win.id });
@@ -197,7 +201,7 @@ describe("tab test", () => {
 
   it('deletes pinned tab by !d', async () => {
     await browser.tabs.update(tabs[0].id, { active: true, pinned: true });
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('!', 'd');
 
     let current = await browser.tabs.query({ windowId: win.id });
@@ -206,7 +210,7 @@ describe("tab test", () => {
 
   it('opens view-source by gf', async () => {
     await browser.tabs.update(tabs[0].id, { active: true });
-    let body = await session.findElementByCSS('body');
+    let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('g', 'f');
 
     await eventually(async() => {

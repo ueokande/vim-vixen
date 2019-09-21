@@ -1,11 +1,10 @@
 const express = require('express');
-const lanthan = require('lanthan');
 const path = require('path');
 const assert = require('assert');
 const eventually = require('./eventually');
 const Console = require('./lib/Console');
-
-const Key = lanthan.Key;
+const { Builder } = require('lanthan');
+const { Key, By } = require('selenium-webdriver');
 
 const newApp = () => {
   let app = express();
@@ -25,9 +24,9 @@ const newApp = () => {
   return app;
 };
 
-const waitForHints = async(session) => {
+const waitForHints = async(webdriver) => {
   await eventually(async() => {
-    let hints = await session.findElementsByCSS('.vimvixen-hint');
+    let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
     assert(hints.length > 0);
   });
 };
@@ -36,22 +35,20 @@ describe('follow properties test', () => {
 
   const port = 12321;
   let http;
-  let firefox;
-  let session;
+  let lanthan;
+  let webdriver;
   let browser;
   let body;
 
   before(async() => {
     http = newApp().listen(port);
 
-    firefox = await lanthan.firefox({
-      spy: path.join(__dirname, '..'),
-      builderf: (builder) => {
-        builder.addFile('build/settings.js');
-      },
-    });
-    session = firefox.session;
-    browser = firefox.browser;
+    lanthan = await Builder
+      .forBrowser('firefox')
+      .spyAddon(path.join(__dirname, '..'))
+      .build();
+    webdriver = lanthan.getWebDriver();
+    browser = lanthan.getWebExtBrowser();
 
     await browser.storage.local.set({ settings: {
       source: 'json',
@@ -74,15 +71,15 @@ describe('follow properties test', () => {
   });
 
   after(async() => {
-    if (firefox) {
-      await firefox.close();
+    if (lanthan) {
+      await lanthan.quit();
     }
     http.close();
   });
 
   beforeEach(async() => {
-    await session.navigateTo(`http://127.0.0.1:${port}/`);
-    body = await session.findElementByCSS('body');
+    await webdriver.navigate().to(`http://127.0.0.1:${port}/`);
+    body = await webdriver.findElement(By.css('body'));
   });
 
   afterEach(async() => {
@@ -95,7 +92,7 @@ describe('follow properties test', () => {
   it('should show hints with hintchars by settings', async () => {
     await body.sendKeys('f');
     await eventually(async() => {
-      let hints = await session.findElementsByCSS('.vimvixen-hint');
+      let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
       assert.equal(hints.length, 5);
 
       assert.equal(await hints[0].getText(), 'J');
@@ -108,20 +105,20 @@ describe('follow properties test', () => {
     await body.sendKeys('j');
 
     await eventually(async() => {
-      let hints = await session.findElementsByCSS('.vimvixen-hint');
+      let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
 
-      assert.equal(await hints[0].getStyle('display'), 'block');
-      assert.equal(await hints[1].getStyle('display'), 'none');
-      assert.equal(await hints[2].getStyle('display'), 'block');
-      assert.equal(await hints[3].getStyle('display'), 'block');
-      assert.equal(await hints[4].getStyle('display'), 'none');
+      assert.equal(await hints[0].getCssValue('display'), 'block');
+      assert.equal(await hints[1].getCssValue('display'), 'none');
+      assert.equal(await hints[2].getCssValue('display'), 'block');
+      assert.equal(await hints[3].getCssValue('display'), 'block');
+      assert.equal(await hints[4].getCssValue('display'), 'none');
     });
   });
 
   it('should open tab in background by background:false', async () => {
-    await body.sendKeys(Key.Shift, 'f');
+    await body.sendKeys(Key.SHIFT, 'f');
     await eventually(async() => {
-      let hints = await session.findElementsByCSS('.vimvixen-hint');
+      let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
       assert.equal(hints.length, 5);
     });
     await body.sendKeys('jj');
@@ -134,9 +131,9 @@ describe('follow properties test', () => {
   });
 
   it('should open tab in background by background:true', async () => {
-    await body.sendKeys(Key.Control, 'f');
+    await body.sendKeys(Key.CONTROL, 'f');
     await eventually(async() => {
-      let hints = await session.findElementsByCSS('.vimvixen-hint');
+      let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
       assert.equal(hints.length, 5);
     });
     await body.sendKeys('jj');
@@ -149,16 +146,17 @@ describe('follow properties test', () => {
   });
 
   it('should show hints with hintchars by settings', async () => {
-    let c = new Console(session);
+    let c = new Console(webdriver);
 
     await body.sendKeys(':');
-    await session.switchToFrame(0);
-    await c.sendKeys('set hintchars=abc', Key.Enter);
-    await session.switchToParentFrame();
+    await webdriver.switchTo().frame(0);
+    await c.sendKeys('set hintchars=abc', Key.ENTER);
+    await new Promise(resolve => setTimeout(resolve, 100));
+    await webdriver.switchTo().parentFrame();
 
     await body.sendKeys('f');
     await eventually(async() => {
-      let hints = await session.findElementsByCSS('.vimvixen-hint');
+      let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
       assert.equal(hints.length, 5);
 
       assert.equal(await hints[0].getText(), 'A');
@@ -170,13 +168,13 @@ describe('follow properties test', () => {
 
     await body.sendKeys('a');
     await eventually(async() => {
-      let hints = await session.findElementsByCSS('.vimvixen-hint');
+      let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
 
-      assert.equal(await hints[0].getStyle('display'), 'block');
-      assert.equal(await hints[1].getStyle('display'), 'none');
-      assert.equal(await hints[2].getStyle('display'), 'none');
-      assert.equal(await hints[3].getStyle('display'), 'block');
-      assert.equal(await hints[4].getStyle('display'), 'block');
+      assert.equal(await hints[0].getCssValue('display'), 'block');
+      assert.equal(await hints[1].getCssValue('display'), 'none');
+      assert.equal(await hints[2].getCssValue('display'), 'none');
+      assert.equal(await hints[3].getCssValue('display'), 'block');
+      assert.equal(await hints[4].getCssValue('display'), 'block');
     });
   });
 });

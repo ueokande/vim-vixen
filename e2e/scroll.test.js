@@ -1,9 +1,8 @@
 const express = require('express');
-const lanthan = require('lanthan');
 const path = require('path');
 const assert = require('assert');
-
-const Key = lanthan.Key;
+const { Builder } = require('lanthan');
+const { Key, By } = require('selenium-webdriver');
 
 const newApp = () => {
   let app = express();
@@ -20,131 +19,135 @@ describe("scroll test", () => {
 
   const port = 12321;
   let http;
-  let firefox;
-  let session;
+  let lanthan;
+  let webdriver;
   let body;
 
   before(async() => {
     http = newApp().listen(port);
 
-    firefox = await lanthan.firefox();
-    await firefox.session.installAddonFromPath(path.join(__dirname, '..'));
-    session = firefox.session;
+    lanthan = await Builder
+      .forBrowser('firefox')
+      .spyAddon(path.join(__dirname, '..'))
+      .build();
+    webdriver = lanthan.getWebDriver();
   });
 
   after(async() => {
-    if (firefox) {
-      await firefox.close();
+    if (lanthan) {
+      await lanthan.quit();
     }
-    http.close();
+    if (http) {
+      http.close();
+    }
   });
 
   beforeEach(async() => {
-    await session.navigateTo(`http://127.0.0.1:${port}`);
-    body = await session.findElementByCSS('body');
+    await webdriver.navigate().to(`http://127.0.0.1:${port}`);
+    body = await webdriver.findElement(By.css('body'));
   });
 
 
   it('scrolls up by k', async () => {
     await body.sendKeys('j');
 
-    let pageYOffset = await session.executeScript(() => window.pageYOffset);
+    let pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
     assert.equal(pageYOffset, 64);
   });
 
   it('scrolls down by j', async () => {
-    await session.executeScript(() => window.scrollTo(0, 200));
+    await webdriver.executeScript(() => window.scrollTo(0, 200));
     await body.sendKeys('k');
 
-    let pageYOffset = await session.executeScript(() => window.pageYOffset);
+    let pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
     assert.equal(pageYOffset, 136);
   });
 
   it('scrolls left by h', async () => {
-    await session.executeScript(() => window.scrollTo(100, 100));
+    await webdriver.executeScript(() => window.scrollTo(100, 100));
     await body.sendKeys('h');
 
-    let pageXOffset = await session.executeScript(() => window.pageXOffset);
+    let pageXOffset = await webdriver.executeScript(() => window.pageXOffset);
     assert.equal(pageXOffset, 36);
   });
 
   it('scrolls left by l', async () => {
-    await session.executeScript(() => window.scrollTo(100, 100));
+    await webdriver.executeScript(() => window.scrollTo(100, 100));
     await body.sendKeys('l');
 
-    let pageXOffset = await session.executeScript(() => window.pageXOffset);
+    let pageXOffset = await webdriver.executeScript(() => window.pageXOffset);
     assert.equal(pageXOffset, 164);
   });
 
   it('scrolls top by gg', async () => {
-    await session.executeScript(() => window.scrollTo(0, 100));
+    await webdriver.executeScript(() => window.scrollTo(0, 100));
     await body.sendKeys('g', 'g');
 
-    let pageYOffset = await session.executeScript(() => window.pageYOffset);
+    let pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
     assert.equal(pageYOffset, 0);
   });
 
   it('scrolls bottom by G', async () => {
-    await session.executeScript(() => window.scrollTo(0, 100));
-    await body.sendKeys(Key.Shift, 'g');
+    await webdriver.executeScript(() => window.scrollTo(0, 100));
+    await body.sendKeys(Key.SHIFT, 'g');
 
-    let pageYOffset = await session.executeScript(() => window.pageYOffset);
+    let pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
     assert(pageYOffset > 5000);
   });
 
   it('scrolls bottom by 0', async () => {
-    await session.executeScript(() => window.scrollTo(0, 100));
-    await body.sendKeys(Key.Shift, '0');
+    await webdriver.executeScript(() => window.scrollTo(0, 100));
+    await body.sendKeys(Key.SHIFT, '0');
 
-    let pageXOffset = await session.executeScript(() => window.pageXOffset);
+    let pageXOffset = await webdriver.executeScript(() => window.pageXOffset);
     assert(pageXOffset === 0);
   });
 
   it('scrolls bottom by $', async () => {
-    await session.executeScript(() => window.scrollTo(0, 100));
-    await body.sendKeys(Key.Shift, '$');
+    await webdriver.executeScript(() => window.scrollTo(0, 100));
+    await body.sendKeys(Key.SHIFT, '$');
 
-    let pageXOffset = await session.executeScript(() => window.pageXOffset);
+    let pageXOffset = await webdriver.executeScript(() => window.pageXOffset);
     assert(pageXOffset > 5000);
   });
 
   it('scrolls bottom by <C-U>', async () => {
-    await session.executeScript(() => window.scrollTo(0, 1000));
-    await body.sendKeys(Key.Control, 'u');
+    await webdriver.executeScript(() => window.scrollTo(0, 1000));
+    await body.sendKeys(Key.CONTROL, 'u');
 
     let pageHeight = 
-      await session.executeScript(() => window.document.documentElement.clientHeight);
-    let pageYOffset = await session.executeScript(() => window.pageYOffset);
+      await webdriver.executeScript(() => window.document.documentElement.clientHeight);
+    let pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
     assert(Math.abs(pageYOffset - (1000 - Math.floor(pageHeight / 2))) < 5);
   });
 
   it('scrolls bottom by <C-D>', async () => {
-    await session.executeScript(() => window.scrollTo(0, 1000));
-    await body.sendKeys(Key.Control, 'd');
+    await webdriver.executeScript(() => window.scrollTo(0, 1000));
+    await body.sendKeys(Key.CONTROL, 'd');
 
     let pageHeight = 
-      await session.executeScript(() => window.document.documentElement.clientHeight);
-    let pageYOffset = await session.executeScript(() => window.pageYOffset);
+      await webdriver.executeScript(() => window.document.documentElement.clientHeight);
+    let pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
     assert(Math.abs(pageYOffset - (1000 + Math.floor(pageHeight / 2))) < 5);
   });
 
   it('scrolls bottom by <C-B>', async () => {
-    await session.executeScript(() => window.scrollTo(0, 1000));
-    await body.sendKeys(Key.Control, 'b');
+    await webdriver.executeScript(() => window.scrollTo(0, 1000));
+    await body.sendKeys(Key.CONTROL, 'b');
 
     let pageHeight = 
-      await session.executeScript(() => window.document.documentElement.clientHeight);
-    let pageYOffset = await session.executeScript(() => window.pageYOffset);
+      await webdriver.executeScript(() => window.document.documentElement.clientHeight);
+    let pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
     assert(Math.abs(pageYOffset - (1000 - pageHeight)) < 5);
   });
 
   it('scrolls bottom by <C-F>', async () => {
-    await session.executeScript(() => window.scrollTo(0, 1000));
-    await body.sendKeys(Key.Control, 'f');
+    await webdriver.executeScript(() => window.scrollTo(0, 1000));
+    await body.sendKeys(Key.CONTROL, 'f');
 
     let pageHeight = 
-      await session.executeScript(() => window.document.documentElement.clientHeight);
-    let pageYOffset = await session.executeScript(() => window.pageYOffset);
+      await webdriver.executeScript(() => window.document.documentElement.clientHeight);
+    let pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
     assert(Math.abs(pageYOffset - (1000 + pageHeight)) < 5);
   });
 });
