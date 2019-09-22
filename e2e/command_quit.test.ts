@@ -1,9 +1,12 @@
-const express = require('express');
-const path = require('path');
-const assert = require('assert');
-const eventually = require('./eventually');
-const { Builder } = require('lanthan');
-const { By, Key } = require('selenium-webdriver');
+import express from 'express';
+import * as path from 'path';
+import * as assert from 'assert';
+import * as http from 'http';
+
+import eventually from './eventually';
+import { Builder, Lanthan } from 'lanthan';
+import { WebDriver, By, Key } from 'selenium-webdriver';
+
 
 const newApp = () => {
   let app = express();
@@ -21,10 +24,10 @@ const newApp = () => {
 
 describe('quit/quitall command test', () => {
   const port = 12321;
-  let http;
-  let lanthan;
-  let webdriver;
-  let browser;
+  let http: http.Server;
+  let lanthan: Lanthan;
+  let webdriver: WebDriver;
+  let browser: any;
 
   before(async() => {
     http = newApp().listen(port);

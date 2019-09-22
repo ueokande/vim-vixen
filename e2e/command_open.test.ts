@@ -1,23 +1,25 @@
-const express = require('express');
-const path = require('path');
-const assert = require('assert');
-const eventually = require('./eventually');
-const settings = require('./settings');
-const { Builder } = require('lanthan');
-const { By, Key } = require('selenium-webdriver');
+import express from 'express';
+import * as path from 'path';
+import * as assert from 'assert';
+import * as http from 'http';
+
+import settings from './settings';
+import eventually from './eventually';
+import { Builder, Lanthan } from 'lanthan';
+import { WebDriver, WebElement, By, Key } from 'selenium-webdriver';
 
 const newApp = () => {
 
   let app = express();
   for (let name of ['google', 'yahoo', 'bing', 'duckduckgo', 'twitter', 'wikipedia']) {
-    app.get('/' + name, (req, res) => {
+    app.get('/' + name, (_req, res) => {
       res.send(`<!DOCTYPEhtml>
 <html lang="en">
   <body><h1>${name.charAt(0).toUpperCase() + name.slice(1)}</h1></body>
 </html">`);
     });
   }
-  app.get('/', (req, res) => {
+  app.get('/', (_req, res) => {
     res.send(`<!DOCTYPEhtml>
 <html lang="en">
   <body><h1>home</h1></body>
@@ -28,11 +30,11 @@ const newApp = () => {
 
 describe("open command test", () => {
   const port = 12321;
-  let http;
-  let lanthan;
-  let webdriver;
-  let browser;
-  let body;
+  let http: http.Server;
+  let lanthan: Lanthan;
+  let webdriver: WebDriver;
+  let browser: any;
+  let body: WebElement;
 
   before(async() => {
     lanthan = await Builder

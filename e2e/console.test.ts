@@ -1,13 +1,14 @@
-const express = require('express');
-const path = require('path');
-const assert = require('assert');
-const eventually = require('./eventually');
-const { Builder } = require('lanthan');
-const { Key, By } = require('selenium-webdriver');
+import express from 'express';
+import * as path from 'path';
+import * as assert from 'assert';
+import * as http from 'http';
+
+import { Builder, Lanthan } from 'lanthan';
+import { WebDriver, WebElement, By, Key } from 'selenium-webdriver';
 
 const newApp = () => {
   let app = express();
-  app.get('/', (req, res) => {
+  app.get('/', (_req, res) => {
     res.send(`<!DOCTYPEhtml>
 <html lang="en">
   <head>
@@ -21,12 +22,10 @@ const newApp = () => {
 
 describe("console test", () => {
   const port = 12321;
-  let http;
-  let lanthan;
-  let webdriver;
-  let browser;
-  let tab;
-  let body;
+  let http: http.Server;
+  let lanthan: Lanthan;
+  let webdriver: WebDriver;
+  let body: WebElement;
 
   before(async() => {
     http = newApp().listen(port);
@@ -35,7 +34,6 @@ describe("console test", () => {
       .spyAddon(path.join(__dirname, '..'))
       .build();
     webdriver = lanthan.getWebDriver();
-    browser = lanthan.getWebExtBrowser();
   });
 
   after(async() => {
@@ -65,7 +63,7 @@ describe("console test", () => {
     await body.sendKeys('o');
 
     await webdriver.switchTo().frame(0);
-    let value = await webdriver.executeScript(() => document.querySelector('input').value);
+    let value = await webdriver.executeScript(() => document.querySelector('input')!!.value);
     assert.equal(value, 'open ');
   });
 
@@ -73,7 +71,7 @@ describe("console test", () => {
     await body.sendKeys(Key.SHIFT, 'o');
 
     await webdriver.switchTo().frame(0);
-    let value = await webdriver.executeScript(() => document.querySelector('input').value);
+    let value = await webdriver.executeScript(() => document.querySelector('input')!!.value);
     assert.equal(value, `open http://127.0.0.1:${port}/`);
   });
 
@@ -81,7 +79,7 @@ describe("console test", () => {
     await body.sendKeys('t');
 
     await webdriver.switchTo().frame(0);
-    let value = await webdriver.executeScript(() => document.querySelector('input').value);
+    let value = await webdriver.executeScript(() => document.querySelector('input')!!.value);
     assert.equal(value, 'tabopen ');
   });
 
@@ -89,7 +87,7 @@ describe("console test", () => {
     await body.sendKeys(Key.SHIFT, 't');
 
     await webdriver.switchTo().frame(0);
-    let value = await webdriver.executeScript(() => document.querySelector('input').value);
+    let value = await webdriver.executeScript(() => document.querySelector('input')!!.value);
     assert.equal(value, `tabopen http://127.0.0.1:${port}/`);
   });
 
@@ -97,7 +95,7 @@ describe("console test", () => {
     await body.sendKeys('w');
 
     await webdriver.switchTo().frame(0);
-    let value = await webdriver.executeScript(() => document.querySelector('input').value);
+    let value = await webdriver.executeScript(() => document.querySelector('input')!!.value);
     assert.equal(value, 'winopen ');
   });
 
@@ -105,7 +103,7 @@ describe("console test", () => {
     await body.sendKeys(Key.SHIFT, 'W');
 
     await webdriver.switchTo().frame(0);
-    let value = await webdriver.executeScript(() => document.querySelector('input').value);
+    let value = await webdriver.executeScript(() => document.querySelector('input')!!.value);
     assert.equal(value, `winopen http://127.0.0.1:${port}/`);
   });
 
@@ -113,7 +111,7 @@ describe("console test", () => {
     await body.sendKeys('b');
 
     await webdriver.switchTo().frame(0);
-    let value = await webdriver.executeScript(() => document.querySelector('input').value);
+    let value = await webdriver.executeScript(() => document.querySelector('input')!!.value);
     assert.equal(value, `buffer `);
   });
 
@@ -121,7 +119,7 @@ describe("console test", () => {
     await body.sendKeys('a');
 
     await webdriver.switchTo().frame(0);
-    let value = await webdriver.executeScript(() => document.querySelector('input').value);
+    let value = await webdriver.executeScript(() => document.querySelector('input')!!.value);
     assert.equal(value, `addbookmark Hello, world!`);
   });
 });

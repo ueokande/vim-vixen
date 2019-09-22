@@ -1,28 +1,29 @@
-const express = require('express');
-const path = require('path');
-const assert = require('assert');
-const eventually = require('./eventually');
-const { Builder } = require('lanthan');
-const { Key, By } = require('selenium-webdriver');
+import express from 'express';
+import * as path from 'path';
+import * as assert from 'assert';
+import * as http from 'http';
+
+import eventually from './eventually';
+import { Builder, Lanthan } from 'lanthan';
+import { WebDriver, By, Key } from 'selenium-webdriver';
+
 
 const newApp = () => {
   let app = express();
-  app.get('/', (req, res) => {
+  app.get('/', (_req, res) => {
     res.send('ok');
   });
   return app;
 };
 
 describe("tab test", () => {
-
   const port = 12321;
   const url = `http://127.0.0.1:${port}/`;
 
-  let http;
-  let lanthan;
-  let webdriver
-  let browser;
-  let tabs;
+  let http: http.Server;
+  let lanthan: Lanthan;
+  let webdriver: WebDriver;
+  let browser: any;
 
   before(async() => {
     lanthan = await Builder
@@ -46,8 +47,6 @@ describe("tab test", () => {
   });
 
   it('repeats last operation', async () => {
-    let before = await browser.tabs.query({});
-
     let body = await webdriver.findElement(By.css('body'));
     await body.sendKeys(':');
 

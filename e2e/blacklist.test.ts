@@ -1,13 +1,13 @@
-const express = require('express');
-const path = require('path');
-const assert = require('assert');
-const settings = require('./settings');
-const { Builder } = require('lanthan');
-const { By } = require('selenium-webdriver');
+import express from 'express';
+import * as path from 'path';
+import * as assert from 'assert';
+import { Builder, Lanthan } from 'lanthan';
+import { WebDriver, By } from 'selenium-webdriver';
+import * as http from 'http';
 
 const newApp = () => {
   let app = express();
-  app.get('/*', (req, res) => {
+  app.get('/*', (_req, res) => {
     res.status(200).send(`<!DOCTYPEhtml>
 <html lang="en">
   <body style="width:10000px; height:10000px"></body>
@@ -17,12 +17,11 @@ const newApp = () => {
 };
 
 describe("navigate test", () => {
-
   const port = 12321;
-  let http;
-  let lanthan;
-  let webdriver;
-  let browser;
+  let http: http.Server;
+  let lanthan: Lanthan;
+  let webdriver: WebDriver;
+  let browser: any;
 
   before(async() => {
     http = newApp().listen(port);
@@ -73,4 +72,3 @@ describe("navigate test", () => {
     assert.equal(pageYOffset, 64);
   });
 });
-

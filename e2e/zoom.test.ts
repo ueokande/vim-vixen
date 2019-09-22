@@ -1,16 +1,17 @@
-const express = require('express');
-const { Builder } = require('lanthan');
-const path = require('path');
-const assert = require('assert');
-const eventually = require('./eventually');
-const { Key, By } = require('selenium-webdriver');
+import * as path from 'path';
+import * as assert from 'assert';
+
+import eventually from './eventually';
+import { Builder, Lanthan } from 'lanthan';
+import { WebDriver, WebElement, By } from 'selenium-webdriver';
+
 
 describe("zoom test", () => {
-  let lanthan;
-  let webdriver;
-  let browser;
-  let tab;
-  let body;
+  let lanthan: Lanthan;
+  let webdriver: WebDriver;
+  let browser: any;
+  let tab: any;
+  let body: WebElement;
 
   before(async() => {
     lanthan = await Builder
@@ -37,7 +38,7 @@ describe("zoom test", () => {
 
     await eventually(async() => {
       let actual = await browser.tabs.getZoom(tab.id);
-      assert(before < actual);
+      assert.ok(before < actual);
     });
   });
 
@@ -47,7 +48,7 @@ describe("zoom test", () => {
 
     await eventually(async() => {
       let actual = await browser.tabs.getZoom(tab.id);
-      assert(before > actual);
+      assert.ok(before > actual);
     });
   });
 
@@ -57,7 +58,7 @@ describe("zoom test", () => {
 
     await eventually(async() => {
       let actual = await browser.tabs.getZoom(tab.id);
-      assert(actual === 1);
+      assert.ok(actual === 1);
     });
   });
 });

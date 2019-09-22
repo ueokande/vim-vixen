@@ -1,17 +1,18 @@
-const express = require('express');
-const lanthan = require('lanthan');
-const path = require('path');
-const assert = require('assert');
-const eventually = require('./eventually');
-const settings = require('./settings');
-const { Builder } = require('lanthan');
-const { By, Key } = require('selenium-webdriver');
-const Console = require('./lib/Console');
+import express from 'express';
+import * as path from 'path';
+import * as assert from 'assert';
+import * as http from 'http';
+
+import settings from './settings';
+import eventually from './eventually';
+import { Builder, Lanthan } from 'lanthan';
+import { WebDriver, WebElement, By, Key } from 'selenium-webdriver';
+import { Console } from './lib/Console';
 
 const newApp = () => {
 
   let app = express();
-  app.get('/', (req, res) => {
+  app.get('/', (_req, res) => {
     res.send(`<!DOCTYPEhtml>
 <html lang="en">
   <body>ok</body>
@@ -22,11 +23,11 @@ const newApp = () => {
 
 describe("completion on open/tabopen/winopen commands", () => {
   const port = 12321;
-  let http;
-  let lanthan;
-  let webdriver;
-  let browser;
-  let body;
+  let http: http.Server;
+  let lanthan: Lanthan;
+  let webdriver: WebDriver;
+  let browser: any;
+  let body: WebElement;
 
   before(async() => {
     lanthan = await Builder
@@ -66,9 +67,9 @@ describe("completion on open/tabopen/winopen commands", () => {
 
     await eventually(async() => {
       let completions = await c.getCompletions();
-      assert(completions.find(x => x.type === 'title' && x.text === 'Search Engines'));
-      assert(completions.find(x => x.type === 'title' && x.text === 'Bookmarks'));
-      assert(completions.find(x => x.type === 'title' && x.text === 'History'));
+      assert.ok(completions.find(x => x.type === 'title' && x.text === 'Search Engines'));
+      assert.ok(completions.find(x => x.type === 'title' && x.text === 'Bookmarks'));
+      assert.ok(completions.find(x => x.type === 'title' && x.text === 'History'));
     });
   });
 
@@ -82,7 +83,7 @@ describe("completion on open/tabopen/winopen commands", () => {
     await eventually(async() => {
       let completions = await c.getCompletions();
       let items = completions.filter(x => x.type === 'item').map(x => x.text);
-      assert(items.every(x => x.includes('https://')));
+      assert.ok(items.every(x => x.includes('https://')));
     });
   })
 
@@ -96,7 +97,7 @@ describe("completion on open/tabopen/winopen commands", () => {
     await eventually(async() => {
       let completions = await c.getCompletions();
       let items = completions.filter(x => x.type === 'item').map(x => x.text);
-      assert(items.every(x => x.toLowerCase().includes('getting')));
+      assert.ok(items.every(x => x.toLowerCase().includes('getting')));
     });
   })
 
@@ -110,7 +111,7 @@ describe("completion on open/tabopen/winopen commands", () => {
     await eventually(async() => {
       let completions = await c.getCompletions();
       let items = completions.filter(x => x.type === 'item').map(x => x.text);
-      assert(items.every(x => x.includes('https://')));
+      assert.ok(items.every(x => x.includes('https://')));
     });
   })
 
@@ -124,22 +125,22 @@ describe("completion on open/tabopen/winopen commands", () => {
     await eventually(async() => {
       let completions = await c.getCompletions();
       let items = completions.filter(x => x.type === 'item').map(x => x.text);
-      assert(items.every(x => x.includes('https://')));
+      assert.ok(items.every(x => x.includes('https://')));
     });
   })
 
   it('should display only specified items in "complete" property by set command', async() => {
     let c = new Console(webdriver);
 
-    const execCommand = async(line) => {
+    const execCommand = async(line: string) => {
       await body.sendKeys(':');
       await webdriver.switchTo().frame(0);
       await c.sendKeys(line, Key.ENTER);
       await new Promise(resolve => setTimeout(resolve, 100));
-      await webdriver.switchTo().parentFrame();
+      await (webdriver.switchTo() as any).parentFrame();
     }
 
-    const typeCommand = async(...keys) => {
+    const typeCommand = async(...keys: string[]) => {
       await body.sendKeys(':');
       await webdriver.switchTo().frame(0);
       await c.sendKeys(...keys);
@@ -148,7 +149,7 @@ describe("completion on open/tabopen/winopen commands", () => {
     const cancel = async() => {
       await c.sendKeys(Key.ESCAPE);
       await new Promise(resolve => setTimeout(resolve, 100));
-      await webdriver.switchTo().parentFrame();
+      await (webdriver.switchTo() as any).parentFrame();
     }
 
     await execCommand('set complete=sbh');
@@ -191,7 +192,7 @@ describe("completion on open/tabopen/winopen commands", () => {
 
     let c = new Console(webdriver);
 
-    const typeCommand = async(...keys) => {
+    const typeCommand = async(...keys: string[]) => {
       await body.sendKeys(':');
       await webdriver.switchTo().frame(0);
       await c.sendKeys(...keys);
@@ -200,7 +201,7 @@ describe("completion on open/tabopen/winopen commands", () => {
     const cancel = async() => {
       await c.sendKeys(Key.ESCAPE);
       await new Promise(resolve => setTimeout(resolve, 100));
-      await webdriver.switchTo().parentFrame();
+      await (webdriver.switchTo() as any).parentFrame();
     }
 
     await browser.storage.local.set({ settings: {

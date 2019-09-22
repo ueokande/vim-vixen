@@ -1,12 +1,14 @@
-const path = require('path');
-const assert = require('assert');
-const { Builder } = require('lanthan');
-const { By } = require('selenium-webdriver');
+import * as path from 'path';
+import * as assert from 'assert';
+
+import { Builder, Lanthan } from 'lanthan';
+import { WebDriver, By } from 'selenium-webdriver';
+
 
 describe("options form page", () => {
-  let lanthan;
-  let webdriver;
-  let browser;
+  let lanthan: Lanthan;
+  let webdriver: WebDriver;
+  let browser: any;
 
   beforeEach(async() => {
     lanthan = await Builder
@@ -28,14 +30,14 @@ describe("options form page", () => {
     }
   })
 
-  const setBlacklistValue = async(nth, value) => {
+  const setBlacklistValue = async(nth: number, value: string) => {
     let selector = '.form-blacklist-form .column-url';
     let input = (await webdriver.findElements(By.css(selector)))[nth];
     await input.sendKeys(value);
     await webdriver.executeScript(`document.querySelectorAll('${selector}')[${nth}].blur()`);
   }
 
-  const setSearchEngineValue = async(nth, name, url) => {
+  const setSearchEngineValue = async(nth: number, name: string, url: string) => {
     let selector = '.form-search-form input.column-name';
     let input = (await webdriver.findElements(By.css(selector)))[nth];
     await input.sendKeys(name);

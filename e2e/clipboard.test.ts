@@ -1,15 +1,17 @@
-const express = require('express');
-const path = require('path');
-const assert = require('assert');
-const eventually = require('./eventually');
-const clipboard = require('./lib/clipboard');
-const settings = require('./settings');
-const { Builder } = require('lanthan');
-const { By, Key } = require('selenium-webdriver');
+import express from 'express';
+import * as path from 'path';
+import * as assert from 'assert';
+import * as http from 'http';
+
+import eventually from './eventually';
+import * as clipboard from './lib/clipboard';
+import settings from './settings';
+import { Builder, Lanthan } from 'lanthan';
+import { WebDriver, By, Key } from 'selenium-webdriver';
 
 const newApp = () => {
   let app = express();
-  app.get('/', (req, res) => {
+  app.get('/', (_req, res) => {
     res.status(200).send(`<html lang="en"></html">`);
   });
   return app;
@@ -18,10 +20,10 @@ const newApp = () => {
 describe("navigate test", () => {
 
   const port = 12321;
-  let http;
-  let lanthan;
-  let webdriver;
-  let browser;
+  let http: http.Server;
+  let lanthan: Lanthan;
+  let webdriver: WebDriver;
+  let browser: any;
 
   before(async() => {
     http = newApp().listen(port);
@@ -85,7 +87,7 @@ describe("navigate test", () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.deepEqual(tabs.map(t => t.url), [
+      assert.deepEqual(tabs.map((t: any) => t.url), [
         `http://127.0.0.1:${port}/`,
         `http://127.0.0.1:${port}/#open_to_new_tab`,
       ]);
@@ -114,7 +116,7 @@ describe("navigate test", () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.deepEqual(tabs.map(t => t.url), [
+      assert.deepEqual(tabs.map((t: any) => t.url), [
         `http://127.0.0.1:${port}/`,
         `http://127.0.0.1:${port}/google?q=an%20apple`,
       ]);

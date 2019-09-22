@@ -1,28 +1,30 @@
-const express = require('express');
-const path = require('path');
-const assert = require('assert');
-const eventually = require('./eventually');
-const { Builder } = require('lanthan');
-const { Key, By } = require('selenium-webdriver');
+import express from 'express';
+import * as path from 'path';
+import * as assert from 'assert';
+import * as http from 'http';
+
+import eventually from './eventually';
+import { Builder, Lanthan } from 'lanthan';
+import { WebDriver, By, Key } from 'selenium-webdriver';
 
 const newApp = () => {
   let app = express();
 
-  app.get('/', (req, res) => {
+  app.get('/', (_req, res) => {
     res.send(`<!DOCTYPEhtml>
 <html lang="en">
   <body><a href="hello">hello</a></body>
 </html">`);
   });
 
-  app.get('/follow-input', (req, res) => {
+  app.get('/follow-input', (_req, res) => {
     res.send(`<!DOCTYPEhtml>
 <html lang="en">
   <body><input></body>
 </html">`);
   });
 
-  app.get('/area', (req, res) => {
+  app.get('/area', (_req, res) => {
     res.send(`<!DOCTYPEhtml>
 <html lang="en">
   <body>
@@ -49,7 +51,7 @@ const newApp = () => {
    * |                 |
    * +-----------------+
    */
-  app.get('/test1', (req, res) => {
+  app.get('/test1', (_req, res) => {
     res.send(`<!DOCTYPEhtml>
 <html lang="en">
   <body>
@@ -71,13 +73,13 @@ const newApp = () => {
  * |                 |
  * +-----------------+
  */
-  app.get('/test2', (req, res) => {
+  app.get('/test2', (_req, res) => {
     res.send(`<!DOCTYPEhtml>
 <html lang="en">
   <body><iframe height="5000" src='/test2-frame'></body>
 </html">`);
   });
-  app.get('/test2-frame', (req, res) => {
+  app.get('/test2-frame', (_req, res) => {
     res.send(`<!DOCTYPEhtml>
 <html lang="en">
   <body>
@@ -98,13 +100,13 @@ const newApp = () => {
  * |                 |
  * +-----------------+
  */
-  app.get('/test3', (req, res) => {
+  app.get('/test3', (_req, res) => {
     res.send(`<!DOCTYPEhtml>
 <html lang="en">
   <body><iframe src='/test3-frame'></body>
 </html">`);
   });
-  app.get('/test3-frame', (req, res) => {
+  app.get('/test3-frame', (_req, res) => {
     res.send(`<!DOCTYPEhtml>
 <html lang="en">
   <body>
@@ -118,20 +120,20 @@ const newApp = () => {
   return app;
 };
 
-const waitForHints = async(webdriver) => {
+const waitForHints = async(webdriver: WebDriver): Promise<void> => {
   await eventually(async() => {
     let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
-    assert(hints.length > 0);
+    assert.ok(hints.length > 0);
   });
 };
 
 describe('follow test', () => {
 
   const port = 12321;
-  let http;
-  let lanthan;
-  let webdriver;
-  let browser;
+  let http: http.Server;
+  let lanthan: Lanthan;
+  let webdriver: WebDriver;
+  let browser: any;
 
   before(async() => {
     http = newApp().listen(port);
@@ -167,7 +169,7 @@ describe('follow test', () => {
     await waitForHints(webdriver);
     await body.sendKeys('a');
 
-    let tagName = await webdriver.executeScript(() => document.activeElement.tagName);
+    let tagName = await webdriver.executeScript(() => document.activeElement!!.tagName) as string;
     assert.equal(tagName.toLowerCase(), 'input');
   });
 
@@ -193,7 +195,7 @@ describe('follow test', () => {
     await waitForHints(webdriver);
     await body.sendKeys('a');
 
-    let tagName = await webdriver.executeScript(() => document.activeElement.tagName);
+    let tagName = await webdriver.executeScript(() => document.activeElement!!.tagName) as string;
     assert.equal(tagName.toLowerCase(), 'input');
   });
 

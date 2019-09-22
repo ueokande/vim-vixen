@@ -1,10 +1,8 @@
-'use strict';
+import { spawn } from 'child_process';
 
-const { spawn } = require('child_process');
-
-const readLinux = () => {
+const readLinux = (): Promise<string> => {
   let stdout = '', stderr = '';
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let xsel = spawn('xsel', ['--clipboard', '--output']);
     xsel.stdout.on('data', (data) => {
       stdout += data;
@@ -21,9 +19,9 @@ const readLinux = () => {
   });
 };
 
-const writeLinux = (data) => {
-  let stdout = '', stderr = '';
-  return new Promise((resolve, reject) => {
+const writeLinux = (data: string): Promise<string> => {
+  let stderr = '';
+  return new Promise((resolve) => {
     let xsel = spawn('xsel', ['--clipboard', '--input']);
     xsel.stderr.on('data', (data) => {
       stderr += data;
@@ -39,25 +37,30 @@ const writeLinux = (data) => {
   });
 };
 
-const unsupported = (os) => {
-  return () => {
-    throw new Error(`Unsupported os: ${os}`);
-  };
-};
-
-const detect = () => {
-  switch (process.platform) {
-    case 'linux':
-      return {
-        read: readLinux,
-        write: writeLinux,
-      };
-    default:
-      return {
-        read: unsupported(process.platform),
-        write: unsupported(process.platform),
-      };
+class UnsupportedError extends Error {
+  constructor(platform: string) {
+    super();
+    this.message = `Unsupported platform: ${platform}`;
   }
 }
 
-module.exports = detect();
+const read = () => {
+  switch (process.platform) {
+  case 'linux':
+    return readLinux();
+  }
+  throw new UnsupportedError(process.platform);
+}
+
+const write = (data: string) => {
+  switch (process.platform) {
+  case 'linux':
+    return writeLinux(data);
+  }
+  throw new UnsupportedError(process.platform);
+}
+
+export {
+  read,
+  write,
+};

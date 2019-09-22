@@ -1,10 +1,12 @@
-const express = require('express');
-const path = require('path');
-const assert = require('assert');
-const eventually = require('./eventually');
-const { Builder } = require('lanthan');
-const { Options: FirefoxOptions } = require('selenium-webdriver/firefox');
-const { Key, By } = require('selenium-webdriver');
+import express from 'express';
+import * as path from 'path';
+import * as assert from 'assert';
+import * as http from 'http';
+
+import eventually from './eventually';
+import { Builder, Lanthan } from 'lanthan';
+import { WebDriver, By, Key } from 'selenium-webdriver';
+import { Options as FirefoxOptions } from 'selenium-webdriver/firefox';
 
 const newApp = () => {
   let app = express();
@@ -24,7 +26,7 @@ const newApp = () => {
   </head>
 </html">`);
   });
-  app.get('/reload', (req, res) => {
+  app.get('/reload', (_req, res) => {
     res.status(200).send(`
 <html lang="en">
   <head>
@@ -46,13 +48,13 @@ const newApp = () => {
 describe("navigate test", () => {
 
   const port = 12321;
-  let http;
-  let lanthan;
-  let webdriver;
-  let browser;
+  let http: http.Server;
+  let lanthan: Lanthan;
+  let webdriver: WebDriver;
+  let browser: any;
 
   before(async() => {
-    let opts = new FirefoxOptions()
+    let opts = (new FirefoxOptions() as any)
       .setPreference('browser.startup.homepage', `http://127.0.0.1:${port}#home`);
     http = newApp().listen(port);
     lanthan = await Builder
@@ -135,8 +137,8 @@ describe("navigate test", () => {
     await body.sendKeys(Key.SHIFT, 'l');
 
     await eventually(async() => {
-      tab = (await browser.tabs.query({}))[0];
-      url = new URL(tab.url);
+      let tab = (await browser.tabs.query({}))[0];
+      let url = new URL(tab.url);
       assert.equal(url.pathname, `/second`)
     });
   });
@@ -220,11 +222,11 @@ describe("navigate test", () => {
   it('should reload current tab by r', async () => {
     await webdriver.navigate().to(`http://127.0.0.1:${port}/reload`);
     await webdriver.executeScript(() => window.scrollTo(500, 500));
-    let before
+    let before: number;
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
       before = Number(new URL(tab.url).hash.split('#')[1]);
-      assert(before > 0);
+      assert.ok(before > 0);
     });
 
     let body = await webdriver.findElement(By.css('body'));
@@ -234,7 +236,7 @@ describe("navigate test", () => {
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
       after = Number(new URL(tab.url).hash.split('#')[1]);
-      assert(after > before);
+      assert.ok(after > before);
     });
 
     await eventually(async() => {
@@ -246,11 +248,11 @@ describe("navigate test", () => {
   it('should reload current tab without cache by R', async () => {
     await webdriver.navigate().to(`http://127.0.0.1:${port}/reload`);
     await webdriver.executeScript(() => window.scrollTo(500, 500));
-    let before
+    let before: number;
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
       before = Number(new URL(tab.url).hash.split('#')[1]);
-      assert(before > 0);
+      assert.ok(before > 0);
     });
 
     let body = await webdriver.findElement(By.css('body'));
@@ -260,7 +262,7 @@ describe("navigate test", () => {
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
       after = Number(new URL(tab.url).hash.split('#')[1]);
-      assert(after > before);
+      assert.ok(after > before);
     });
 
     // assert that the page offset is reset to 0, and 'eventually' is timed-out.

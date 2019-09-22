@@ -1,13 +1,15 @@
-const express = require('express');
-const path = require('path');
-const assert = require('assert');
-const eventually = require('./eventually');
-const { Builder } = require('lanthan');
-const { By } = require('selenium-webdriver');
+import express from 'express';
+import * as path from 'path';
+import * as assert from 'assert';
+import * as http from 'http';
+
+import eventually from './eventually';
+import { Builder, Lanthan } from 'lanthan';
+import { WebDriver, By } from 'selenium-webdriver';
 
 const newApp = () => {
   let app = express();
-  app.get('/', (req, res) => {
+  app.get('/', (_req, res) => {
     res.send(`<!DOCTYPEhtml>
 <html lang="en">
   <body style="width:10000px; height:10000px"></body>
@@ -17,12 +19,11 @@ const newApp = () => {
 };
 
 describe("mark test", () => {
-
   const port = 12321;
-  let http;
-  let lanthan;
-  let webdriver;
-  let browser;
+  let http: http.Server;
+  let lanthan: Lanthan;
+  let webdriver: WebDriver;
+  let browser: any;
 
   before(async() => {
     http = newApp().listen(port);
@@ -103,12 +104,13 @@ describe("mark test", () => {
     await browser.tabs.create({ url: `http://127.0.0.1:${port}#second` });
     await browser.tabs.remove(tab.id);
 
-    let handles;
+    let handles: string[];
     await eventually(async() => {
       handles = await webdriver.getAllWindowHandles();
+      await webdriver.getAllWindowHandles
       assert.equal(handles.length, 2);
     });
-    await webdriver.switchTo().window(handles[0]);
+    await webdriver.switchTo().window(handles!![0]);
     await webdriver.navigate().to(`http://127.0.0.1:${port}#second`);
     body = await webdriver.findElement(By.css('body'));
     await body.sendKeys('\'', 'A');

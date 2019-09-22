@@ -1,15 +1,17 @@
-const express = require('express');
-const path = require('path');
-const assert = require('assert');
-const eventually = require('./eventually');
-const settings = require('./settings');
-const { Builder } = require('lanthan');
-const { By, Key } = require('selenium-webdriver');
-const Console = require('./lib/Console');
+import express from 'express';
+import * as path from 'path';
+import * as assert from 'assert';
+import * as http from 'http';
+
+import settings from './settings';
+import eventually from './eventually';
+import { Builder, Lanthan } from 'lanthan';
+import { WebDriver, WebElement, By, Key } from 'selenium-webdriver';
+import { Console } from './lib/Console';
 
 const newApp = () => {
   let app = express();
-  app.get('/', (req, res) => {
+  app.get('/', (_req, res) => {
     res.send(`<!DOCTYPEhtml>
 <html lang="en">
   <body>ok</body>
@@ -20,11 +22,11 @@ const newApp = () => {
 
 describe("general completion test", () => {
   const port = 12321;
-  let http;
-  let lanthan;
-  let webdriver;
-  let browser;
-  let body;
+  let http: http.Server;
+  let lanthan: Lanthan;
+  let webdriver: WebDriver;
+  let browser: any;
+  let body: WebElement;
 
   before(async() => {
     lanthan = await Builder
@@ -62,9 +64,9 @@ describe("general completion test", () => {
       let items = await c.getCompletions();
       assert.equal(items.length, 10);
       assert.deepEqual(items[0], { type: 'title', text: 'Console Command' });
-      assert(items[1].text.startsWith('set'))
-      assert(items[2].text.startsWith('open'))
-      assert(items[3].text.startsWith('tabopen'))
+      assert.ok(items[1].text.startsWith('set'))
+      assert.ok(items[2].text.startsWith('open'))
+      assert.ok(items[3].text.startsWith('tabopen'))
     });
   });
 
@@ -79,9 +81,9 @@ describe("general completion test", () => {
       let items = await c.getCompletions();
       assert.equal(items.length, 4);
       assert.deepEqual(items[0], { type: 'title', text: 'Console Command' });
-      assert(items[1].text.startsWith('buffer'))
-      assert(items[2].text.startsWith('bdelete'))
-      assert(items[3].text.startsWith('bdeletes'))
+      assert.ok(items[1].text.startsWith('buffer'))
+      assert.ok(items[2].text.startsWith('bdelete'))
+      assert.ok(items[3].text.startsWith('bdeletes'))
     });
   });
 
@@ -100,7 +102,7 @@ describe("general completion test", () => {
     await c.sendKeys(Key.TAB);
     await eventually(async() => {
       let items = await c.getCompletions();
-      assert(items[1].highlight)
+      assert.ok(items[1].highlight)
 
       let v = await c.currentValue();
       assert.equal(v, 'buffer');
@@ -109,7 +111,7 @@ describe("general completion test", () => {
     await c.sendKeys(Key.TAB, Key.TAB);
     await eventually(async() => {
       let items = await c.getCompletions();
-      assert(items[3].highlight)
+      assert.ok(items[3].highlight)
 
       let v = await c.currentValue();
       assert.equal(v, 'bdeletes');
@@ -124,7 +126,7 @@ describe("general completion test", () => {
     await c.sendKeys(Key.SHIFT, Key.TAB);
     await eventually(async() => {
       let items = await c.getCompletions();
-      assert(items[3].highlight)
+      assert.ok(items[3].highlight)
 
       let v = await c.currentValue();
       assert.equal(v, 'bdeletes');

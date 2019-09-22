@@ -1,11 +1,13 @@
-const express = require('express');
-const path = require('path');
-const assert = require('assert');
-const eventually = require('./eventually');
-const settings = require('./settings');
-const Console = require('./lib/Console');
-const { Builder } = require('lanthan');
-const { By, Key } = require('selenium-webdriver');
+import express from 'express';
+import * as path from 'path';
+import * as assert from 'assert';
+import * as http from 'http';
+
+import settings from './settings';
+import eventually from './eventually';
+import { Builder, Lanthan } from 'lanthan';
+import { WebDriver, WebElement, By } from 'selenium-webdriver';
+import { Console } from './lib/Console';
 
 const newApp = () => {
 
@@ -24,11 +26,11 @@ const newApp = () => {
 
 describe("completion on buffer/bdelete/bdeletes", () => {
   const port = 12321;
-  let http;
-  let lanthan;
-  let webdriver;
-  let browser;
-  let body;
+  let http: http.Server;
+  let lanthan: Lanthan;
+  let webdriver: WebDriver;
+  let browser: any;
+  let body: WebElement;
 
   before(async() => {
     lanthan = await Builder
@@ -85,14 +87,14 @@ describe("completion on buffer/bdelete/bdeletes", () => {
       let items = await c.getCompletions();
       assert.equal(items.length, 6);
       assert.deepEqual(items[0], { type: 'title', text: 'Buffers' });
-      assert(items[1].text.startsWith('1:'));
-      assert(items[2].text.startsWith('2:'));
-      assert(items[3].text.startsWith('3:'));
-      assert(items[4].text.startsWith('4:'));
-      assert(items[5].text.startsWith('5:'));
+      assert.ok(items[1].text.startsWith('1:'));
+      assert.ok(items[2].text.startsWith('2:'));
+      assert.ok(items[3].text.startsWith('3:'));
+      assert.ok(items[4].text.startsWith('4:'));
+      assert.ok(items[5].text.startsWith('5:'));
 
-      assert(items[3].text.includes('%'));
-      assert(items[5].text.includes('#'));
+      assert.ok(items[3].text.includes('%'));
+      assert.ok(items[5].text.includes('#'));
     });
   })
 
@@ -106,9 +108,9 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     await eventually(async() => {
       let items = await c.getCompletions();
       assert.deepEqual(items[0], { type: 'title', text: 'Buffers' });
-      assert(items[1].text.startsWith('2:'));
-      assert(items[1].text.includes('title_site2'));
-      assert(items[1].text.includes(`http://127.0.0.1:${port}/site2`));
+      assert.ok(items[1].text.startsWith('2:'));
+      assert.ok(items[1].text.includes('title_site2'));
+      assert.ok(items[1].text.includes(`http://127.0.0.1:${port}/site2`));
     });
   })
 
@@ -122,7 +124,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     await eventually(async() => {
       let items = await c.getCompletions();
       assert.deepEqual(items[0], { type: 'title', text: 'Buffers' });
-      assert(items[1].text.startsWith('2:'));
+      assert.ok(items[1].text.startsWith('2:'));
     });
   })
 
@@ -137,7 +139,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
       let items = await c.getCompletions();
       assert.equal(items.length, 2);
       assert.deepEqual(items[0], { type: 'title', text: 'Buffers' });
-      assert(items[1].text.startsWith('2:'));
+      assert.ok(items[1].text.startsWith('2:'));
     });
   })
 
@@ -151,9 +153,9 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     await eventually(async() => {
       let items = await c.getCompletions();
       assert.equal(items.length, 4);
-      assert(items[1].text.includes('site3'));
-      assert(items[2].text.includes('site4'));
-      assert(items[3].text.includes('site5'));
+      assert.ok(items[1].text.includes('site3'));
+      assert.ok(items[2].text.includes('site4'));
+      assert.ok(items[3].text.includes('site5'));
     });
   })
 
@@ -167,9 +169,9 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     await eventually(async() => {
       let items = await c.getCompletions();
       assert.equal(items.length, 4);
-      assert(items[1].text.includes('site3'));
-      assert(items[2].text.includes('site4'));
-      assert(items[3].text.includes('site5'));
+      assert.ok(items[1].text.includes('site3'));
+      assert.ok(items[2].text.includes('site4'));
+      assert.ok(items[3].text.includes('site5'));
     });
   })
 
@@ -183,11 +185,11 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     await eventually(async() => {
       let items = await c.getCompletions();
       assert.equal(items.length, 6);
-      assert(items[1].text.includes('site1'));
-      assert(items[2].text.includes('site2'));
-      assert(items[3].text.includes('site3'));
-      assert(items[4].text.includes('site4'));
-      assert(items[5].text.includes('site5'));
+      assert.ok(items[1].text.includes('site1'));
+      assert.ok(items[2].text.includes('site2'));
+      assert.ok(items[3].text.includes('site3'));
+      assert.ok(items[4].text.includes('site4'));
+      assert.ok(items[5].text.includes('site5'));
     });
   })
 
@@ -201,11 +203,11 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     await eventually(async() => {
       let items = await c.getCompletions();
       assert.equal(items.length, 6);
-      assert(items[1].text.includes('site1'));
-      assert(items[2].text.includes('site2'));
-      assert(items[3].text.includes('site3'));
-      assert(items[4].text.includes('site4'));
-      assert(items[5].text.includes('site5'));
+      assert.ok(items[1].text.includes('site1'));
+      assert.ok(items[2].text.includes('site2'));
+      assert.ok(items[3].text.includes('site3'));
+      assert.ok(items[4].text.includes('site4'));
+      assert.ok(items[5].text.includes('site5'));
     });
   })
 });

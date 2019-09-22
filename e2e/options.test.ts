@@ -1,13 +1,14 @@
-const express = require('express');
-const path = require('path');
-const assert = require('assert');
-const eventually = require('./eventually');
-const { Builder } = require('lanthan');
-const { By } = require('selenium-webdriver');
+import express from 'express';
+import * as path from 'path';
+import * as assert from 'assert';
+import * as http from 'http';
+
+import { Builder, Lanthan } from 'lanthan';
+import { WebDriver, By } from 'selenium-webdriver';
 
 const newApp = () => {
   let app = express();
-  app.get('/', (req, res) => {
+  app.get('/', (_req, res) => {
     res.send(`<!DOCTYPEhtml>
 <html lang="en">
   <body style="width:10000px; height:10000px"></body>
@@ -18,10 +19,10 @@ const newApp = () => {
 
 describe("options page", () => {
   const port = 12321;
-  let http;
-  let lanthan;
-  let session;
-  let browser;
+  let http: http.Server;
+  let lanthan: Lanthan;
+  let webdriver: WebDriver;
+  let browser: any;
 
   before(async() => {
     http = newApp().listen(port);
@@ -50,11 +51,11 @@ describe("options page", () => {
     }
   })
 
-  const updateTextarea = async(value) => {
+  const updateTextarea = async(value: string) => {
     let textarea = await webdriver.findElement(By.css('textarea'));
     await webdriver.executeScript(`document.querySelector('textarea').value = '${value}'`)
     await textarea.sendKeys(' ');
-    await webdriver.executeScript(() => document.querySelector('textarea').blur());
+    await webdriver.executeScript(() => document.querySelector('textarea')!!.blur());
   }
 
   it('saves current config on blur', async () => {
