@@ -46,7 +46,7 @@
     "karma-sinon": "^1.0.5",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^4.0.2",
-    "lanthan": "git+https://github.com/ueokande/lanthan.git#master",
+    "lanthan": "0.0.1",
     "mocha": "^6.2.0",
     "node-sass": "^4.12.0",
     "react": "^16.9.0",
