@@ -5,7 +5,8 @@ import * as http from 'http';
 
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, By } from 'selenium-webdriver';
+import { WebDriver } from 'selenium-webdriver';
+import Page from './lib/Page';
 
 const newApp = () => {
   let app = express();
@@ -46,59 +47,48 @@ describe("mark test", () => {
   });
 
   it('should set a local mark and jump to it', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}`);
-    let body = await webdriver.findElement(By.css('body'));
-
-    await webdriver.executeScript(() => window.scrollTo(200, 200));
-    await body.sendKeys('m', 'a');
-    await webdriver.executeScript(() => window.scrollTo(500, 500));
-    await body.sendKeys('\'', 'a');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}`);
+    await page.scrollTo(200, 200);
+    await page.sendKeys('m', 'a');
+    await page.scrollTo(500, 500);
+    await page.sendKeys('\'', 'a');
 
     await eventually(async() => {
-      let pageXOffset = await webdriver.executeScript(() => window.pageXOffset);
-      let pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
-      assert.equal(pageXOffset, 200);
-      assert.equal(pageYOffset, 200);
+      assert.equal(await page.getScrollX(), 200);
+      assert.equal(await page.getScrollY(), 200);
     });
   });
 
   it('should set a global mark and jump to it', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}#first`);
-    let body = await webdriver.findElement(By.css('body'));
-
-    await webdriver.executeScript(() => window.scrollTo(200, 200));
-    await body.sendKeys('m', 'A');
-    await webdriver.executeScript(() => window.scrollTo(500, 500));
-    await body.sendKeys('\'', 'A');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}#first`);
+    await page.scrollTo(200, 200);
+    await page.sendKeys('m', 'A');
+    await page.scrollTo(500, 500);
+    await page.sendKeys('\'', 'A');
 
     await eventually(async() => {
-      let pageXOffset = await webdriver.executeScript(() => window.pageXOffset);
-      let pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
-      assert.equal(pageXOffset, 200);
-      assert.equal(pageYOffset, 200);
+      assert.equal(await page.getScrollX(), 200);
+      assert.equal(await page.getScrollY(), 200);
     });
 
     await browser.tabs.create({ url: `http://127.0.0.1:${port}#second` });
-    body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('\'', 'A');
+    page = await Page.currentContext(webdriver);
+    await page.sendKeys('\'', 'A');
 
     await eventually(async() => {
       let tab = (await browser.tabs.query({ active: true }))[0];
       let url = new URL(tab.url);
       assert.equal(url.hash, '#first');
 
-      let pageXOffset = await webdriver.executeScript(() => window.pageXOffset);
-      let pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
-      assert.equal(pageXOffset, 200);
-      assert.equal(pageYOffset, 200);
+      assert.equal(await page.getScrollX(), 200);
+      assert.equal(await page.getScrollY(), 200);
     });
   });
 
   it('set a global mark and creates new tab from gone', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}#first`);
-    await webdriver.executeScript(() => window.scrollTo(500, 500));
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('m', 'A');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}#first`);
+    await page.scrollTo(500, 500);
+    await page.sendKeys('m', 'A');
 
     let tab = (await browser.tabs.query({ active: true }))[0];
     await browser.tabs.create({ url: `http://127.0.0.1:${port}#second` });
@@ -107,13 +97,12 @@ describe("mark test", () => {
     let handles: string[];
     await eventually(async() => {
       handles = await webdriver.getAllWindowHandles();
-      await webdriver.getAllWindowHandles
       assert.equal(handles.length, 2);
     });
     await webdriver.switchTo().window(handles!![0]);
-    await webdriver.navigate().to(`http://127.0.0.1:${port}#second`);
-    body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('\'', 'A');
+
+    page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}#second`);
+    await page.sendKeys('\'', 'A');
 
     await eventually(async() => {
       let tab = (await browser.tabs.query({ active: true }))[0];

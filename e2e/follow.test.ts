@@ -5,7 +5,8 @@ import * as http from 'http';
 
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, By, Key } from 'selenium-webdriver';
+import { WebDriver, Key } from 'selenium-webdriver';
+import Page from './lib/Page';
 
 const newApp = () => {
   let app = express();
@@ -120,13 +121,6 @@ const newApp = () => {
   return app;
 };
 
-const waitForHints = async(webdriver: WebDriver): Promise<void> => {
-  await eventually(async() => {
-    let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
-    assert.ok(hints.length > 0);
-  });
-};
-
 describe('follow test', () => {
 
   const port = 12321;
@@ -162,24 +156,20 @@ describe('follow test', () => {
   });
 
   it('should focus an input by f', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/follow-input`);
-
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('f');
-    await waitForHints(webdriver);
-    await body.sendKeys('a');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/follow-input`);
+    await page.sendKeys('f');
+    await page.waitAndGetHints();
+    await page.sendKeys('a');
 
     let tagName = await webdriver.executeScript(() => document.activeElement!!.tagName) as string;
     assert.equal(tagName.toLowerCase(), 'input');
   });
 
   it('should open a link by f', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/`);
-
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('f');
-    await waitForHints(webdriver);
-    await body.sendKeys('a');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/`);
+    await page.sendKeys('f');
+    await page.waitAndGetHints();
+    await page.sendKeys('a');
 
     await eventually(async() => {
       let hash = await webdriver.executeScript('return location.pathname');
@@ -188,24 +178,20 @@ describe('follow test', () => {
   });
 
   it('should focus an input by F', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/follow-input`);
-
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(Key.SHIFT, 'f');
-    await waitForHints(webdriver);
-    await body.sendKeys('a');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/follow-input`);
+    await page.sendKeys(Key.SHIFT, 'f');
+    await page.waitAndGetHints();
+    await page.sendKeys('a');
 
     let tagName = await webdriver.executeScript(() => document.activeElement!!.tagName) as string;
     assert.equal(tagName.toLowerCase(), 'input');
   });
 
   it('should open a link to new tab by F', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/`);
-
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(Key.SHIFT, 'f');
-    await waitForHints(webdriver);
-    await body.sendKeys('a');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/`);
+    await page.sendKeys(Key.SHIFT, 'f');
+    await page.waitAndGetHints();
+    await page.sendKeys('a');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -216,50 +202,36 @@ describe('follow test', () => {
   });
 
   it('should show hints of links in area', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/area`);
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/area`);
+    await page.sendKeys(Key.SHIFT, 'f');
 
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(Key.SHIFT, 'f');
-    await eventually(async() => {
-      let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
-      assert.equal(hints.length, 3);
-    });
+    let hints = await page.waitAndGetHints();
+    assert.equal(hints.length, 3);
   });
 
   it('should shows hints only in viewport', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/test1`);
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/test1`);
+    await page.sendKeys(Key.SHIFT, 'f');
 
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(Key.SHIFT, 'f');
-    await eventually(async() => {
-      let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
-      assert.equal(hints.length, 1);
-    });
+    let hints = await page.waitAndGetHints();
+    assert.equal(hints.length, 1);
   });
 
   it('should shows hints only in window of the frame', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/test2`);
-
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(Key.SHIFT, 'f');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/test2`);
+    await page.sendKeys(Key.SHIFT, 'f');
 
     await webdriver.switchTo().frame(0);
-    await eventually(async() => {
-      let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
-      assert.equal(hints.length, 1);
-    });
+    let hints = await page.waitAndGetHints();
+    assert.equal(hints.length, 1);
   });
 
   it('should shows hints only in the frame', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/test3`);
-
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(Key.SHIFT, 'f');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/test3`);
+    await page.sendKeys(Key.SHIFT, 'f');
 
     await webdriver.switchTo().frame(0);
-    await eventually(async() => {
-      let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
-      assert.equal(hints.length, 1);
-    });
+    let hints = await page.waitAndGetHints();
+    assert.equal(hints.length, 1);
   });
 });

@@ -1,9 +1,11 @@
 import express from 'express';
 import * as path from 'path';
 import * as assert from 'assert';
+
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, By } from 'selenium-webdriver';
+import { WebDriver } from 'selenium-webdriver';
 import * as http from 'http';
+import Page from './lib/Page';
 
 const newApp = () => {
   let app = express();
@@ -54,21 +56,19 @@ describe("navigate test", () => {
       },
     });
 
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/a`);
-
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('j');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/a`);
+    await page.sendKeys('j')
 
     // not works
     let pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
+    let scrollY = await page.getScrollY();
     assert.equal(pageYOffset, 0);
 
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/ab`);
-    body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('j');
+    page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/ab`);
+    await page.sendKeys('j');
 
     // works
-    pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
-    assert.equal(pageYOffset, 64);
+    scrollY = await page.getScrollY();
+    assert.equal(scrollY, 64);
   });
 });

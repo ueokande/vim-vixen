@@ -5,7 +5,8 @@ import * as http from 'http';
 
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, By, Key } from 'selenium-webdriver';
+import { WebDriver } from 'selenium-webdriver';
+import Page from './lib/Page';
 
 const newApp = () => {
   let app = express();
@@ -59,19 +60,13 @@ describe('buffer command test', () => {
       let handles = await webdriver.getAllWindowHandles();
       assert.equal(handles.length, 5);
       await webdriver.switchTo().window(handles[2]);
-      await webdriver.findElement(By.css('iframe'));
     });
-
-    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   it('should do nothing by buffer command with no parameters', async() => {
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('buffer', Key.ENTER);
+    let page = await Page.currentContext(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('buffer');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
@@ -80,55 +75,41 @@ describe('buffer command test', () => {
   });
 
   it('should select a tab by buffer command with a number', async() => {
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('buffer', Key.ENTER);
+    let page = await Page.currentContext(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('buffer 1');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
-      assert.equal(tabs[0].index, 2);
+      assert.equal(tabs[0].index, 0);
     });
   });
 
   it('should should an out of range error by buffer commands', async() => {
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('buffer 0', Key.ENTER);
+    let page = await Page.currentContext(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('buffer 0');
 
     await eventually(async() => {
-      let p = await webdriver.findElement(By.css('.vimvixen-console-error'));
-      let text = await p.getText();
+      let text = await console.getErrorMessage();
       assert.equal(text, 'tab 0 does not exist');
     });
 
     await (webdriver.switchTo() as any).parentFrame();
-    body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
 
-    await webdriver.switchTo().frame(0);
-    input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('buffer 9', Key.ENTER);
+    console = await page.showConsole();
+    await console.execCommand('buffer 9');
 
     await eventually(async() => {
-      let p = await webdriver.findElement(By.css('.vimvixen-console-error'));
-      let text = await p.getText();
+      let text = await console.getErrorMessage();
       assert.equal(text, 'tab 9 does not exist');
     });
   });
 
   it('should select a tab by buffer command with a title', async() => {
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('buffer my_site1', Key.ENTER);
+    let page = await Page.currentContext(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('buffer my_site1');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
@@ -137,12 +118,9 @@ describe('buffer command test', () => {
   });
 
   it('should select a tab by buffer command with an URL', async() => {
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('buffer /site1', Key.ENTER);
+    let page = await Page.currentContext(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('buffer /site1');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
@@ -154,12 +132,9 @@ describe('buffer command test', () => {
     let handles = await webdriver.getAllWindowHandles();
     await webdriver.switchTo().window(handles[4]);
 
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('buffer site', Key.ENTER);
+    let page = await Page.currentContext(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('buffer site');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
@@ -168,12 +143,9 @@ describe('buffer command test', () => {
   });
 
   it('should do nothing by ":buffer %"', async() => {
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('buffer %', Key.ENTER);
+    let page = await Page.currentContext(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('buffer %');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
@@ -185,12 +157,9 @@ describe('buffer command test', () => {
     let handles = await webdriver.getAllWindowHandles();
     await webdriver.switchTo().window(handles[1]);
 
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('buffer #', Key.ENTER);
+    let page = await Page.currentContext(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('buffer #');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });

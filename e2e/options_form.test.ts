@@ -2,12 +2,10 @@ import * as path from 'path';
 import * as assert from 'assert';
 
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, By } from 'selenium-webdriver';
-
+import OptionPage from './lib/OptionPage';
 
 describe("options form page", () => {
   let lanthan: Lanthan;
-  let webdriver: WebDriver;
   let browser: any;
 
   beforeEach(async() => {
@@ -15,7 +13,6 @@ describe("options form page", () => {
       .forBrowser('firefox')
       .spyAddon(path.join(__dirname, '..'))
       .build();
-    webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
 
     let tabs = await browser.tabs.query({});
@@ -30,93 +27,56 @@ describe("options form page", () => {
     }
   })
 
-  const setBlacklistValue = async(nth: number, value: string) => {
-    let selector = '.form-blacklist-form .column-url';
-    let input = (await webdriver.findElements(By.css(selector)))[nth];
-    await input.sendKeys(value);
-    await webdriver.executeScript(`document.querySelectorAll('${selector}')[${nth}].blur()`);
-  }
-
-  const setSearchEngineValue = async(nth: number, name: string, url: string) => {
-    let selector = '.form-search-form input.column-name';
-    let input = (await webdriver.findElements(By.css(selector)))[nth];
-    await input.sendKeys(name);
-    await webdriver.executeScript(`document.querySelectorAll('${selector}')[${nth}].blur()`);
-
-    selector = '.form-search-form input.column-url';
-    input = (await webdriver.findElements(By.css(selector)))[nth];
-    await input.sendKeys(url);
-    await webdriver.executeScript(`document.querySelectorAll('${selector}')[${nth}].blur()`);
-  }
-
   it('switch to form settings', async () => {
-    let url = await browser.runtime.getURL("build/settings.html")
-    await webdriver.navigate().to(url);
-
-    let useFormInput = await webdriver.findElement(By.css('#setting-source-form'));
-    await useFormInput.click();
-    await webdriver.switchTo().alert().accept();
+    let page = await OptionPage.open(lanthan);
+    await page.switchToForm();
 
     let { settings } = await browser.storage.local.get('settings');
     assert.equal(settings.source, 'form')
   })
 
   it('add blacklist', async () => {
-    let url = await browser.runtime.getURL("build/settings.html")
-    await webdriver.navigate().to(url);
-
-    let useFormInput = await webdriver.findElement(By.css('#setting-source-form'));
-    await useFormInput.click();
-    await webdriver.switchTo().alert().accept();
-    await webdriver.executeScript(() => window.scrollBy(0, 1000));
+    let page = await OptionPage.open(lanthan);
+    let forms = await page.switchToForm();
 
     // assert default
     let settings = (await browser.storage.local.get('settings')).settings;
     assert.deepEqual(settings.form.blacklist, [])
 
     // add blacklist items
-    let addButton = await webdriver.findElement(By.css('.form-blacklist-form .ui-add-button'))
-    await addButton.click();
-    await setBlacklistValue(0, 'google.com')
+    await forms.addBlacklist();
+    await forms.setBlacklist(0, 'google.com')
 
     settings = (await browser.storage.local.get('settings')).settings;
     assert.deepEqual(settings.form.blacklist, ['google.com'])
 
-    await addButton.click();
-    await setBlacklistValue(1, 'yahoo.com')
+    await forms.addBlacklist();
+    await forms.setBlacklist(1, 'yahoo.com')
 
     settings = (await browser.storage.local.get('settings')).settings;
     assert.deepEqual(settings.form.blacklist, ['google.com', 'yahoo.com'])
 
     // delete first item
-    let deleteButton = (await webdriver.findElements(By.css('.form-blacklist-form .ui-delete-button')))[0];
-    await deleteButton.click()
-
+    await forms.removeBlackList(0);
     settings = (await browser.storage.local.get('settings')).settings;
     assert.deepEqual(settings.form.blacklist, ['yahoo.com'])
   });
 
   it('add search engines', async () => {
-    let url = await browser.runtime.getURL("build/settings.html")
-    await webdriver.navigate().to(url);
-
-    let useFormInput = await webdriver.findElement(By.css('#setting-source-form'));
-    await useFormInput.click();
-    await webdriver.switchTo().alert().accept();
+    let page = await OptionPage.open(lanthan);
+    let forms = await page.switchToForm();
 
     // assert default
     let settings = (await browser.storage.local.get('settings')).settings;
     assert.deepEqual(settings.form.search.default, 'google');
 
     // change default
-    let radio = (await webdriver.findElements(By.css('.form-search-form input[type=radio]')))[2];
-    await radio.click();
+    await forms.setDefaultSearchEngine(2);
     settings = (await browser.storage.local.get('settings')).settings;
     assert.deepEqual(settings.form.search.default, 'bing');
 
-    let addButton = await webdriver.findElement(By.css('.form-search-form .ui-add-button'))
-    await addButton.click();
-    await setSearchEngineValue(6, 'yippy', 'https://www.yippy.com/search?query={}');
+    await forms.addSearchEngine();
+    await forms.setSearchEngine(6, 'yippy', 'https://www.yippy.com/search?query={}');
 
     settings = (await browser.storage.local.get('settings')).settings;
     assert.deepEqual(settings.form.search.engines[6], ['yippy', 'https://www.yippy.com/search?query={}']);

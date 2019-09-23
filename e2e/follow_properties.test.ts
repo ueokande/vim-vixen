@@ -5,8 +5,8 @@ import * as http from 'http';
 
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, WebElement, By, Key } from 'selenium-webdriver';
-import { Console } from './lib/Console';
+import { WebDriver, Key } from 'selenium-webdriver';
+import Page from './lib/Page';
 
 const newApp = () => {
   let app = express();
@@ -32,7 +32,7 @@ describe('follow properties test', () => {
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
-  let body: WebElement;
+  let page: Page;
 
   before(async() => {
     http = newApp().listen(port);
@@ -72,8 +72,7 @@ describe('follow properties test', () => {
   });
 
   beforeEach(async() => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/`);
-    body = await webdriver.findElement(By.css('body'));
+    page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}`);
   });
 
   afterEach(async() => {
@@ -84,38 +83,31 @@ describe('follow properties test', () => {
   });
 
   it('should show hints with hintchars by settings', async () => {
-    await body.sendKeys('f');
-    await eventually(async() => {
-      let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
-      assert.equal(hints.length, 5);
+    await page.sendKeys('f');
 
-      assert.equal(await hints[0].getText(), 'J');
-      assert.equal(await hints[1].getText(), 'K');
-      assert.equal(await hints[2].getText(), 'JJ');
-      assert.equal(await hints[3].getText(), 'JK');
-      assert.equal(await hints[4].getText(), 'KJ');
-    });
+    let hints = await page.waitAndGetHints();
+    assert.equal(hints.length, 5);
 
-    await body.sendKeys('j');
+    assert.equal(hints[0].text, 'J');
+    assert.equal(hints[1].text, 'K');
+    assert.equal(hints[2].text, 'JJ');
+    assert.equal(hints[3].text, 'JK');
+    assert.equal(hints[4].text, 'KJ');
 
-    await eventually(async() => {
-      let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
+    await page.sendKeys('j');
+    hints = await page.waitAndGetHints();
 
-      assert.equal(await hints[0].getCssValue('display'), 'block');
-      assert.equal(await hints[1].getCssValue('display'), 'none');
-      assert.equal(await hints[2].getCssValue('display'), 'block');
-      assert.equal(await hints[3].getCssValue('display'), 'block');
-      assert.equal(await hints[4].getCssValue('display'), 'none');
-    });
+    assert.equal(hints[0].displayed, true);
+    assert.equal(hints[1].displayed, false);
+    assert.equal(hints[2].displayed, true);
+    assert.equal(hints[3].displayed, true);
+    assert.equal(hints[4].displayed, false);
   });
 
   it('should open tab in background by background:false', async () => {
-    await body.sendKeys(Key.SHIFT, 'f');
-    await eventually(async() => {
-      let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
-      assert.equal(hints.length, 5);
-    });
-    await body.sendKeys('jj');
+    await page.sendKeys(Key.SHIFT, 'f');
+    await page.waitAndGetHints();
+    await page.sendKeys('jj');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -125,12 +117,9 @@ describe('follow properties test', () => {
   });
 
   it('should open tab in background by background:true', async () => {
-    await body.sendKeys(Key.CONTROL, 'f');
-    await eventually(async() => {
-      let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
-      assert.equal(hints.length, 5);
-    });
-    await body.sendKeys('jj');
+    await page.sendKeys(Key.CONTROL, 'f');
+    await page.waitAndGetHints();
+    await page.sendKeys('jj');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -140,35 +129,25 @@ describe('follow properties test', () => {
   });
 
   it('should show hints with hintchars by settings', async () => {
-    let c = new Console(webdriver);
-
-    await body.sendKeys(':');
-    await webdriver.switchTo().frame(0);
-    await c.sendKeys('set hintchars=abc', Key.ENTER);
-    await new Promise(resolve => setTimeout(resolve, 100));
+    let console = await page.showConsole();
+    await console.execCommand('set hintchars=abc');
     await (webdriver.switchTo() as any).parentFrame();
 
-    await body.sendKeys('f');
-    await eventually(async() => {
-      let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
-      assert.equal(hints.length, 5);
+    await page.sendKeys('f');
+    let hints = await page.waitAndGetHints();
+    assert.equal(hints.length, 5);
+    assert.equal(hints[0].text, 'A');
+    assert.equal(hints[1].text, 'B');
+    assert.equal(hints[2].text, 'C');
+    assert.equal(hints[3].text, 'AA');
+    assert.equal(hints[4].text, 'AB');
 
-      assert.equal(await hints[0].getText(), 'A');
-      assert.equal(await hints[1].getText(), 'B');
-      assert.equal(await hints[2].getText(), 'C');
-      assert.equal(await hints[3].getText(), 'AA');
-      assert.equal(await hints[4].getText(), 'AB');
-    });
-
-    await body.sendKeys('a');
-    await eventually(async() => {
-      let hints = await webdriver.findElements(By.css(`.vimvixen-hint`));
-
-      assert.equal(await hints[0].getCssValue('display'), 'block');
-      assert.equal(await hints[1].getCssValue('display'), 'none');
-      assert.equal(await hints[2].getCssValue('display'), 'none');
-      assert.equal(await hints[3].getCssValue('display'), 'block');
-      assert.equal(await hints[4].getCssValue('display'), 'block');
-    });
+    await page.sendKeys('a');
+    hints = await page.waitAndGetHints();
+    assert.equal(hints[0].displayed, true);
+    assert.equal(hints[1].displayed, false);
+    assert.equal(hints[2].displayed, false);
+    assert.equal(hints[3].displayed, true);
+    assert.equal(hints[4].displayed, true);
   });
 });

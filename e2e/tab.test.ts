@@ -5,7 +5,8 @@ import * as http from 'http';
 
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, By, Key } from 'selenium-webdriver';
+import { WebDriver, Key } from 'selenium-webdriver';
+import Page from './lib/Page';
 
 const newApp = () => {
   let app = express();
@@ -61,32 +62,34 @@ describe("tab test", () => {
 
   it('deletes tab and selects right by d', async () => {
     await browser.tabs.update(tabs[3].id, { active: true });
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('d');
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys('d');
 
-    let current = await browser.tabs.query({ windowId: win.id });
-    assert.ok(current.length === tabs.length - 1);
-    assert.ok(current[3].active);
-    assert.ok(current[3].url === tabs[4].url);
+    await eventually(async() => {
+      let current = await browser.tabs.query({ windowId: win.id });
+      assert.ok(current.length === tabs.length - 1);
+      assert.ok(current[3].active);
+      assert.ok(current[3].id === tabs[4].id);
+    });
   });
 
   it('deletes tab and selects left by D', async () => {
     await browser.tabs.update(tabs[3].id, { active: true });
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(Key.SHIFT, 'D');
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys(Key.SHIFT, 'D');
 
     await eventually(async() => {
       let current = await browser.tabs.query({ windowId: win.id });
       assert.ok(current.length === tabs.length - 1);
       assert.ok(current[2].active);
-      assert.ok(current[2].url === tabs[2].url);
+      assert.ok(current[2].id === tabs[2].id);
     })
   });
 
   it('deletes all tabs to the right by x$', async () => {
     await browser.tabs.update(tabs[1].id, { active: true });
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('x', '$');
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys('x', '$');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert.ok(current.length === 2);
@@ -94,8 +97,8 @@ describe("tab test", () => {
 
   it('duplicates tab by zd', async () => {
     await browser.tabs.update(tabs[0].id, { active: true });
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('z', 'd');
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys('z', 'd');
 
     await eventually(async() => {
       let current = await browser.tabs.query({ windowId: win.id });
@@ -107,8 +110,8 @@ describe("tab test", () => {
 
   it('makes pinned by zp', async () => {
     await browser.tabs.update(tabs[0].id, { active: true });
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('z', 'p');
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys('z', 'p');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert.ok(current[0].pinned);
@@ -116,8 +119,8 @@ describe("tab test", () => {
 
   it('selects previous tab by K', async () => {
     await browser.tabs.update(tabs[2].id, { active: true });
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(Key.SHIFT, 'K');
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys(Key.SHIFT, 'K');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert.ok(current[1].active);
@@ -125,8 +128,8 @@ describe("tab test", () => {
 
   it('selects previous tab by K rotatory', async () => {
     await browser.tabs.update(tabs[0].id, { active: true });
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(Key.SHIFT, 'K');
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys(Key.SHIFT, 'K');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert.ok(current[current.length - 1].active)
@@ -134,8 +137,8 @@ describe("tab test", () => {
 
   it('selects next tab by J', async () => {
     await browser.tabs.update(tabs[2].id, { active: true });
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(Key.SHIFT, 'J');
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys(Key.SHIFT, 'J');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert.ok(current[3].active);
@@ -143,8 +146,8 @@ describe("tab test", () => {
 
   it('selects previous tab by J rotatory', async () => {
     await browser.tabs.update(tabs[tabs.length - 1].id, { active: true });
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(Key.SHIFT, 'J');
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys(Key.SHIFT, 'J');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert.ok(current[0].active)
@@ -152,8 +155,8 @@ describe("tab test", () => {
 
   it('selects first tab by g0', async () => {
     await browser.tabs.update(tabs[2].id, { active: true });
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('g', '0');
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys('g', '0');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert.ok(current[0].active)
@@ -161,8 +164,8 @@ describe("tab test", () => {
 
   it('selects last tab by g$', async () => {
     await browser.tabs.update(tabs[2].id, { active: true });
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('g', '$');
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys('g', '$');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert.ok(current[current.length - 1].active)
@@ -172,8 +175,8 @@ describe("tab test", () => {
     await browser.tabs.update(tabs[1].id, { active: true });
     await browser.tabs.update(tabs[4].id, { active: true });
 
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(Key.CONTROL, '6');
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys(Key.CONTROL, '6');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert.ok(current[1].active)
@@ -183,8 +186,8 @@ describe("tab test", () => {
   // This might be a bug in Firefox.
   it.skip('reopen tab by u', async () => {
     await browser.tabs.remove(tabs[1].id);
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('u');
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys('u');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert.ok(current.length === tabs.length);
@@ -192,8 +195,8 @@ describe("tab test", () => {
 
   it('does not delete pinned tab by d', async () => {
     await browser.tabs.update(tabs[0].id, { active: true, pinned: true });
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('d');
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys('d');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert.ok(current.length === tabs.length);
@@ -201,8 +204,8 @@ describe("tab test", () => {
 
   it('deletes pinned tab by !d', async () => {
     await browser.tabs.update(tabs[0].id, { active: true, pinned: true });
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('!', 'd');
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys('!', 'd');
 
     let current = await browser.tabs.query({ windowId: win.id });
     assert.ok(current.length === tabs.length - 1);
@@ -210,8 +213,8 @@ describe("tab test", () => {
 
   it('opens view-source by gf', async () => {
     await browser.tabs.update(tabs[0].id, { active: true });
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('g', 'f');
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys('g', 'f');
 
     await eventually(async() => {
       let current = await browser.tabs.query({ windowId: win.id });

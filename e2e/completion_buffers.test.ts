@@ -6,8 +6,8 @@ import * as http from 'http';
 import settings from './settings';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, WebElement, By } from 'selenium-webdriver';
-import { Console } from './lib/Console';
+import { WebDriver } from 'selenium-webdriver';
+import Page from './lib/Page';
 
 const newApp = () => {
 
@@ -30,7 +30,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
-  let body: WebElement;
+  let page: Page;
 
   before(async() => {
     lanthan = await Builder
@@ -69,22 +69,17 @@ describe("completion on buffer/bdelete/bdeletes", () => {
       let handles = await webdriver.getAllWindowHandles();
       assert.equal(handles.length, 5);
       await webdriver.switchTo().window(handles[2]);
-      await webdriver.findElement(By.css('iframe'));
     });
-    body = await webdriver.findElement(By.css('body'));
 
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    page = await Page.currentContext(webdriver);
   });
 
   it('should all tabs by "buffer" command with empty params', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let c = new Console(webdriver);
-    await c.sendKeys('buffer ');
+    let console = await page.showConsole();
+    await console.inputKeys('buffer ');
 
     await eventually(async() => {
-      let items = await c.getCompletions();
+      let items = await console.getCompletions();
       assert.equal(items.length, 6);
       assert.deepEqual(items[0], { type: 'title', text: 'Buffers' });
       assert.ok(items[1].text.startsWith('1:'));
@@ -99,14 +94,11 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   })
 
   it('should filter items with URLs by keywords on "buffer" command', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let c = new Console(webdriver);
-    await c.sendKeys('buffer title_site2');
+    let console = await page.showConsole();
+    await console.inputKeys('buffer title_site2');
 
     await eventually(async() => {
-      let items = await c.getCompletions();
+      let items = await console.getCompletions();
       assert.deepEqual(items[0], { type: 'title', text: 'Buffers' });
       assert.ok(items[1].text.startsWith('2:'));
       assert.ok(items[1].text.includes('title_site2'));
@@ -115,28 +107,22 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   })
 
   it('should filter items with titles by keywords on "buffer" command', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let c = new Console(webdriver);
-    await c.sendKeys('buffer /site2');
+    let console = await page.showConsole();
+    await console.inputKeys('buffer /site2');
 
     await eventually(async() => {
-      let items = await c.getCompletions();
+      let items = await console.getCompletions();
       assert.deepEqual(items[0], { type: 'title', text: 'Buffers' });
       assert.ok(items[1].text.startsWith('2:'));
     });
   })
 
   it('should show one item by number on "buffer" command', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let c = new Console(webdriver);
-    await c.sendKeys('buffer 2');
+    let console = await page.showConsole();
+    await console.inputKeys('buffer 2');
 
     await eventually(async() => {
-      let items = await c.getCompletions();
+      let items = await console.getCompletions();
       assert.equal(items.length, 2);
       assert.deepEqual(items[0], { type: 'title', text: 'Buffers' });
       assert.ok(items[1].text.startsWith('2:'));
@@ -144,14 +130,11 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   })
 
   it('should show unpinned tabs "bdelete" command', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let c = new Console(webdriver);
-    await c.sendKeys('bdelete site');
+    let console = await page.showConsole();
+    await console.inputKeys('bdelete site');
 
     await eventually(async() => {
-      let items = await c.getCompletions();
+      let items = await console.getCompletions();
       assert.equal(items.length, 4);
       assert.ok(items[1].text.includes('site3'));
       assert.ok(items[2].text.includes('site4'));
@@ -160,14 +143,11 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   })
 
   it('should show unpinned tabs "bdeletes" command', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let c = new Console(webdriver);
-    await c.sendKeys('bdelete site');
+    let console = await page.showConsole();
+    await console.inputKeys('bdeletes site');
 
     await eventually(async() => {
-      let items = await c.getCompletions();
+      let items = await console.getCompletions();
       assert.equal(items.length, 4);
       assert.ok(items[1].text.includes('site3'));
       assert.ok(items[2].text.includes('site4'));
@@ -176,14 +156,11 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   })
 
   it('should show both pinned and unpinned tabs "bdelete!" command', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let c = new Console(webdriver);
-    await c.sendKeys('bdelete! site');
+    let console = await page.showConsole();
+    await console.inputKeys('bdelete! site');
 
     await eventually(async() => {
-      let items = await c.getCompletions();
+      let items = await console.getCompletions();
       assert.equal(items.length, 6);
       assert.ok(items[1].text.includes('site1'));
       assert.ok(items[2].text.includes('site2'));
@@ -194,14 +171,11 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   })
 
   it('should show both pinned and unpinned tabs "bdeletes!" command', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let c = new Console(webdriver);
-    await c.sendKeys('bdeletes! site');
+    let console = await page.showConsole();
+    await console.inputKeys('bdeletes! site');
 
     await eventually(async() => {
-      let items = await c.getCompletions();
+      let items = await console.getCompletions();
       assert.equal(items.length, 6);
       assert.ok(items[1].text.includes('site1'));
       assert.ok(items[2].text.includes('site2'));

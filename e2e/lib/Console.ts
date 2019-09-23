@@ -1,4 +1,4 @@
-import { WebDriver, By } from 'selenium-webdriver';
+import { WebDriver, By, Key } from 'selenium-webdriver';
 
 export type CompletionItem = {
   type: string;
@@ -25,6 +25,21 @@ export class Console {
     });
   }
 
+  async execCommand(command: string): Promise<void> {
+    let input = await this.webdriver.findElement(By.css('input.vimvixen-console-command-input'));
+    await input.sendKeys(command, Key.ENTER);
+  }
+
+  async getErrorMessage(): Promise<string> {
+    let p = await this.webdriver.findElement(By.css('.vimvixen-console-error'));
+    return p.getText();
+  }
+
+  async inputKeys(...keys: string[]) {
+    let input = await this.webdriver.findElement(By.css('input'));
+    await input.sendKeys(...keys);
+  }
+
   getCompletions(): Promise<CompletionItem[]> {
     return this.webdriver.executeScript(() => {
       let items = document.querySelectorAll('.vimvixen-console-completion > li');
@@ -45,5 +60,13 @@ export class Console {
       }
       return objs;
     });
+  }
+
+  async close(): Promise<void> {
+    let input = await this.webdriver.findElement(By.css('input'));
+    await input.sendKeys(Key.ESCAPE);
+    // TODO remove sleep
+    await new Promise(resolve => setTimeout(resolve, 100));
+    await (this.webdriver.switchTo() as any).parentFrame();
   }
 }

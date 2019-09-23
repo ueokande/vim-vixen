@@ -2,9 +2,12 @@ import express from 'express';
 import * as path from 'path';
 import * as assert from 'assert';
 import * as http from 'http';
+import eventually from './eventually';
 
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, By } from 'selenium-webdriver';
+import { WebDriver } from 'selenium-webdriver';
+import Page from './lib/Page';
+import OptionPage from './lib/OptionPage';
 
 const newApp = () => {
   let app = express();
@@ -51,48 +54,41 @@ describe("options page", () => {
     }
   })
 
-  const updateTextarea = async(value: string) => {
-    let textarea = await webdriver.findElement(By.css('textarea'));
-    await webdriver.executeScript(`document.querySelector('textarea').value = '${value}'`)
-    await textarea.sendKeys(' ');
-    await webdriver.executeScript(() => document.querySelector('textarea')!!.blur());
-  }
-
   it('saves current config on blur', async () => {
-    let url = await browser.runtime.getURL("build/settings.html")
-    await webdriver.navigate().to(url);
-
-    await updateTextarea(`{ "blacklist": [ "https://example.com" ] }`);
+    let page = await OptionPage.open(lanthan);
+    let jsonPage = await page.asJSONOptionPage();
+    await jsonPage.updateSettings(`{ "blacklist": [ "https://example.com" ] }`)
 
     let { settings } = await browser.storage.local.get('settings');
     assert.equal(settings.source, 'json')
     assert.equal(settings.json, '{ "blacklist": [ "https://example.com" ] } ')
 
-    await updateTextarea(`invalid json`);
+    await jsonPage.updateSettings(`invalid json`);
 
     settings = (await browser.storage.local.get('settings')).settings;
     assert.equal(settings.source, 'json')
     assert.equal(settings.json, '{ "blacklist": [ "https://example.com" ] } ')
 
-    let error = await webdriver.findElement(By.css('.settings-ui-input-error'));
-    let text = await error.getText();
-    assert.ok(text.startsWith('SyntaxError:'))
+    let message = await jsonPage.getErrorMessage();
+    assert.ok(message.startsWith('SyntaxError:'))
   });
 
   it('updates keymaps without reloading', async () => {
+    let optionPage = await OptionPage.open(lanthan);
+    let jsonPage = await optionPage.asJSONOptionPage();
+    await jsonPage.updateSettings(`{ "keymaps": { "zz": { "type": "scroll.vertically", "count": 10 } } }`);
+
     await browser.tabs.create({ url: `http://127.0.0.1:${port}`, active: false });
-    let url = await browser.runtime.getURL("build/settings.html")
-    await webdriver.navigate().to(url);
-
-    await updateTextarea(`{ "keymaps": { "zz": { "type": "scroll.vertically", "count": 10 } } }`);
-
+    await new Promise((resolve) => setTimeout(resolve, 100));
     let handles = await webdriver.getAllWindowHandles();
     await webdriver.switchTo().window(handles[1]);
 
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('zz')
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys('zz');
 
-    let y = await webdriver.executeScript(() => window.pageYOffset);
-    assert.equal(y, 640);
+    await eventually(async() => {
+      let y = await page.getScrollY();
+      assert.equal(y, 640);
+    });
   })
 });

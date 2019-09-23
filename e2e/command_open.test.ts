@@ -6,7 +6,8 @@ import * as http from 'http';
 import settings from './settings';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, WebElement, By, Key } from 'selenium-webdriver';
+import { WebDriver } from 'selenium-webdriver';
+import Page from './lib/Page';
 
 const newApp = () => {
 
@@ -34,7 +35,7 @@ describe("open command test", () => {
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
-  let body: WebElement;
+  let page: Page;
 
   before(async() => {
     lanthan = await Builder
@@ -58,16 +59,12 @@ describe("open command test", () => {
   });
 
   beforeEach(async() => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}`);
-    body = await webdriver.findElement(By.css('body'));
+    page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}`);
   })
 
   it('should open default search for keywords by open command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('open an apple', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('open an apple');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
@@ -77,11 +74,8 @@ describe("open command test", () => {
   });
 
   it('should open certain search page for keywords by open command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('open yahoo an apple', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('open yahoo an apple');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true })
@@ -91,11 +85,8 @@ describe("open command test", () => {
   });
 
   it('should open default engine with empty keywords by open command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('open', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('open');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true })
@@ -105,11 +96,8 @@ describe("open command test", () => {
   });
 
   it('should open certain search page for empty keywords by open command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('open yahoo', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('open yahoo');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true })
@@ -119,30 +107,24 @@ describe("open command test", () => {
   });
 
   it('should open a site with domain by open command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('open i-beam.org', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('open example.com');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true })
       let url = new URL(tabs[0].url);
-      assert.equal(url.href, 'https://i-beam.org/')
+      assert.equal(url.href, 'http://example.com/')
     });
   });
 
   it('should open a site with URL by open command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('open https://i-beam.org', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('open https://example.com/');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true })
       let url = new URL(tabs[0].url);
-      assert.equal(url.href, 'https://i-beam.org/')
+      assert.equal(url.href, 'https://example.com/')
     });
   });
 });

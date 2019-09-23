@@ -5,7 +5,8 @@ import * as http from 'http';
 
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, By, Key } from 'selenium-webdriver';
+import { WebDriver } from 'selenium-webdriver';
+import Page from './lib/Page';
 
 const newApp = () => {
   let app = express();
@@ -50,12 +51,9 @@ describe('addbookmark command test', () => {
   });
 
   it('should add a bookmark from the current page', async() => {
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('addbookmark how to be happy', Key.ENTER);
+    let page = await Page.currentContext(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('addbookmark how to be happy');
 
     await eventually(async() => {
       var bookmarks = await browser.bookmarks.search({ title: 'how to be happy' });

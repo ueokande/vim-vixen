@@ -7,7 +7,8 @@ import eventually from './eventually';
 import * as clipboard from './lib/clipboard';
 import settings from './settings';
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, By, Key } from 'selenium-webdriver';
+import { WebDriver, Key } from 'selenium-webdriver';
+import Page from './lib/Page';
 
 const newApp = () => {
   let app = express();
@@ -17,8 +18,7 @@ const newApp = () => {
   return app;
 };
 
-describe("navigate test", () => {
-
+describe("clipboard test", () => {
   const port = 12321;
   let http: http.Server;
   let lanthan: Lanthan;
@@ -55,10 +55,9 @@ describe("navigate test", () => {
   })
 
   it('should copy current URL by y', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/#should_copy_url`);
-    let body = await webdriver.findElement(By.css('body'));
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/#should_copy_url`);
+    await page.sendKeys('y');
 
-    await body.sendKeys('y');
     await eventually(async() => {
       let data = await clipboard.read();
       assert.equal(data, `http://127.0.0.1:${port}/#should_copy_url`);
@@ -66,11 +65,10 @@ describe("navigate test", () => {
   });
 
   it('should open an URL from clipboard by p', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/`);
-    let body = await webdriver.findElement(By.css('body'));
-
     await clipboard.write(`http://127.0.0.1:${port}/#open_from_clipboard`);
-    await body.sendKeys('p');
+
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/`);
+    await page.sendKeys('p');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
@@ -79,11 +77,10 @@ describe("navigate test", () => {
   });
 
   it('should open an URL from clipboard to new tab by P', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/`);
-    let body = await webdriver.findElement(By.css('body'));
-
     await clipboard.write(`http://127.0.0.1:${port}/#open_to_new_tab`);
-    await body.sendKeys(Key.SHIFT, 'p');
+
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/`);
+    await page.sendKeys(Key.SHIFT, 'p');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -95,24 +92,22 @@ describe("navigate test", () => {
   });
 
   it('should open search result with keywords in clipboard by p', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/`);
-    let body = await webdriver.findElement(By.css('body'));
-
     await clipboard.write(`an apple`);
-    await body.sendKeys('p');
+
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/`);
+    await page.sendKeys(Key.SHIFT, 'p');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({});
+      let tabs = await browser.tabs.query({ active: true });
       assert.equal(tabs[0].url, `http://127.0.0.1:${port}/google?q=an%20apple`);
     });
   });
 
   it('should open search result with keywords in clipboard to new tabby P', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/`);
-    let body = await webdriver.findElement(By.css('body'));
-
     await clipboard.write(`an apple`);
-    await body.sendKeys(Key.SHIFT, 'p');
+
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/`);
+    await page.sendKeys(Key.SHIFT, 'p');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});

@@ -3,15 +3,15 @@ import * as assert from 'assert';
 
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, WebElement, By } from 'selenium-webdriver';
-
+import { WebDriver } from 'selenium-webdriver';
+import Page from './lib/Page';
 
 describe("zoom test", () => {
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
   let tab: any;
-  let body: WebElement;
+  let page: Page;
 
   before(async() => {
     lanthan = await Builder
@@ -21,6 +21,7 @@ describe("zoom test", () => {
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
     tab = (await browser.tabs.query({}))[0]
+    page = await Page.currentContext(webdriver);
   });
 
   after(async() => {
@@ -29,12 +30,11 @@ describe("zoom test", () => {
 
   beforeEach(async() => {
     await webdriver.navigate().to('about:blank');
-    body = await webdriver.findElement(By.css('body'));
   });
 
   it('should zoom in by zi', async () => {
     let before = await browser.tabs.getZoom(tab.id);
-    await body.sendKeys('z', 'i');
+    await page.sendKeys('zi');
 
     await eventually(async() => {
       let actual = await browser.tabs.getZoom(tab.id);
@@ -44,7 +44,7 @@ describe("zoom test", () => {
 
   it('should zoom out by zo', async () => {
     let before = await browser.tabs.getZoom(tab.id);
-    await body.sendKeys('z', 'o');
+    await page.sendKeys('zo');
 
     await eventually(async() => {
       let actual = await browser.tabs.getZoom(tab.id);
@@ -52,9 +52,9 @@ describe("zoom test", () => {
     });
   });
 
-  it('scrolls left by h', async () => {
+  it('should reset zoom by zz', async () => {
     await browser.tabs.setZoom(tab.id, 2);
-    await body.sendKeys('z', 'z');
+    await page.sendKeys('zz');
 
     await eventually(async() => {
       let actual = await browser.tabs.getZoom(tab.id);

@@ -4,14 +4,14 @@ import * as assert from 'assert';
 import settings from './settings';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, WebElement, By } from 'selenium-webdriver';
-import { Console } from './lib/Console';
+import { WebDriver } from 'selenium-webdriver';
+import Page from './lib/Page';
 
 describe("completion on set commands", () => {
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
-  let body: WebElement;
+  let page: Page;
 
   before(async() => {
     lanthan = await Builder
@@ -33,19 +33,15 @@ describe("completion on set commands", () => {
   });
 
   beforeEach(async() => {
-    await webdriver.navigate().to(`about:blank`);
-    body = await webdriver.findElement(By.css('body'));
+    page = await Page.navigateTo(webdriver, `about:blank`);
   });
 
   it('should show all property names by "set" command with empty params', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let c = new Console(webdriver);
-    await c.sendKeys('set ');
+    let console = await page.showConsole();
+    await console.inputKeys('set ');
 
     await eventually(async() => {
-      let items = await c.getCompletions();
+      let items = await console.getCompletions();
       assert.equal(items.length, 5);
       assert.deepEqual(items[0], { type: 'title', text: 'Properties' });
       assert.ok(items[1].text.startsWith('hintchars'))
@@ -56,14 +52,11 @@ describe("completion on set commands", () => {
   });
 
   it('should show filtered property names by "set" command', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let c = new Console(webdriver);
-    await c.sendKeys('set no');
+    let console = await page.showConsole();
+    await console.inputKeys('set no');
 
     await eventually(async() => {
-      let items = await c.getCompletions();
+      let items = await console.getCompletions();
       assert.equal(items.length, 2);
       assert.ok(items[1].text.includes('nosmoothscroll'))
     });

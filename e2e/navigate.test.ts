@@ -5,8 +5,9 @@ import * as http from 'http';
 
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, By, Key } from 'selenium-webdriver';
+import { WebDriver, Key } from 'selenium-webdriver';
 import { Options as FirefoxOptions } from 'selenium-webdriver/firefox';
+import Page from './lib/Page';
 
 const newApp = () => {
   let app = express();
@@ -81,10 +82,8 @@ describe("navigate test", () => {
   })
 
   it('should go to parent path without hash by gu', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/a/b/c`);
-    let body = await webdriver.findElement(By.css('body'));
-
-    await body.sendKeys('g', 'u');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/a/b/c`);
+    await page.sendKeys('g', 'u');
 
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
@@ -94,10 +93,8 @@ describe("navigate test", () => {
   });
 
   it('should remove hash by gu', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/a/b/c#hash`);
-    let body = await webdriver.findElement(By.css('body'));
-
-    await body.sendKeys('g', 'u');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/a/b/c#hash`);
+    await page.sendKeys('g', 'u');
 
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
@@ -108,10 +105,8 @@ describe("navigate test", () => {
   });
 
   it('should go to root path by gU', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/a/b/c#hash`);
-    let body = await webdriver.findElement(By.css('body'));
-
-    await body.sendKeys('g', Key.SHIFT, 'u');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/a/b/c#hash`);
+    await page.sendKeys('g', Key.SHIFT, 'u');
 
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
@@ -121,11 +116,9 @@ describe("navigate test", () => {
   });
 
   it('should go back and forward in history by H and L', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/first`);
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/second`);
-    let body = await webdriver.findElement(By.css('body'));
-
-    await body.sendKeys(Key.SHIFT, 'h');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/first`);
+    await page.navigateTo(`http://127.0.0.1:${port}/second`);
+    await page.sendKeys(Key.SHIFT, 'h');
 
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
@@ -133,8 +126,8 @@ describe("navigate test", () => {
       assert.equal(url.pathname, `/first`)
     });
 
-    body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(Key.SHIFT, 'l');
+    page = await Page.currentContext(webdriver);
+    page.sendKeys(Key.SHIFT, 'l');
 
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
@@ -144,10 +137,8 @@ describe("navigate test", () => {
   });
 
   it('should go previous and next page in <a> by [[ and ]]', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/pagenation-a/10`);
-
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('[', '[');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/pagenation-a/10`);
+    await page.sendKeys('[', '[');
 
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
@@ -157,9 +148,8 @@ describe("navigate test", () => {
   });
 
   it('should go next page in <a> by ]]', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/pagenation-a/10`);
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(']', ']');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/pagenation-a/10`);
+    await page.sendKeys(']', ']');
 
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
@@ -169,10 +159,8 @@ describe("navigate test", () => {
   });
 
   it('should go previous page in <link> by ]]', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/pagenation-link/10`);
-
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('[', '[');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/pagenation-link/10`);
+    await page.sendKeys('[', '[');
 
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
@@ -182,9 +170,8 @@ describe("navigate test", () => {
   });
 
   it('should go next page by in <link> by [[', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/pagenation-link/10`);
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(']', ']');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/pagenation-link/10`);
+    await page.sendKeys(']', ']');
 
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
@@ -194,9 +181,8 @@ describe("navigate test", () => {
   });
 
   it('should go to home page into current tab by gh', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}`);
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('g', 'h');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}`);
+    await page.sendKeys('g', 'h');
 
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
@@ -206,9 +192,8 @@ describe("navigate test", () => {
   });
 
   it('should go to home page into current tab by gH', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}`);
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('g', Key.SHIFT, 'H');
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}`);
+    await page.sendKeys('g', Key.SHIFT, 'H');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -220,8 +205,9 @@ describe("navigate test", () => {
   });
 
   it('should reload current tab by r', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/reload`);
-    await webdriver.executeScript(() => window.scrollTo(500, 500));
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/reload`);
+    await page.scrollTo(500, 500);
+
     let before: number;
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
@@ -229,8 +215,7 @@ describe("navigate test", () => {
       assert.ok(before > 0);
     });
 
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('r');
+    await page.sendKeys('r');
 
     let after
     await eventually(async() => {
@@ -240,14 +225,15 @@ describe("navigate test", () => {
     });
 
     await eventually(async() => {
-      let pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
-      assert.equal(pageYOffset, 500);
+      let page = await Page.currentContext(webdriver);
+      assert.equal(await page.getScrollX(), 500);
     });
   });
 
   it('should reload current tab without cache by R', async () => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}/reload`);
-    await webdriver.executeScript(() => window.scrollTo(500, 500));
+    let page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/reload`);
+    await page.scrollTo(500, 500);
+
     let before: number;
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
@@ -255,8 +241,7 @@ describe("navigate test", () => {
       assert.ok(before > 0);
     });
 
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(Key.SHIFT, 'R');
+    await page.sendKeys(Key.SHIFT, 'R');
 
     let after
     await eventually(async() => {
@@ -265,12 +250,9 @@ describe("navigate test", () => {
       assert.ok(after > before);
     });
 
-    // assert that the page offset is reset to 0, and 'eventually' is timed-out.
-    await assert.rejects(async () => {
-      await eventually(async() => {
-        let pageYOffset = await webdriver.executeScript(() => window.pageYOffset);
-        assert.equal(pageYOffset, 500);
-      });
+    await eventually(async() => {
+      let page = await Page.currentContext(webdriver);
+      assert.equal(await page.getScrollY(), 0);
     });
   });
 });

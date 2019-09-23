@@ -5,8 +5,8 @@ import * as http from 'http';
 
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, By, Key } from 'selenium-webdriver';
-
+import { WebDriver } from 'selenium-webdriver';
+import Page from './lib/Page';
 
 const newApp = () => {
   let app = express();
@@ -33,8 +33,6 @@ describe("tab test", () => {
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
     http = newApp().listen(port);
-
-    await webdriver.navigate().to(`${url}`);
   });
 
   after(async() => {
@@ -46,21 +44,18 @@ describe("tab test", () => {
     }
   });
 
-  it('repeats last operation', async () => {
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys(`tabopen ${url}newtab`, Key.ENTER);
+  it('repeats last command', async () => {
+    let page = await Page.navigateTo(webdriver, url);
+    let console = await page.showConsole();
+    await console.execCommand(`tabopen ${url}newtab`);
 
     await eventually(async() => {
       let current = await browser.tabs.query({ url: `*://*/newtab` });
       assert.equal(current.length, 1);
     });
 
-    body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('.');
+    page = await Page.currentContext(webdriver);
+    await page.sendKeys('.');
 
     await eventually(async() => {
       let current = await browser.tabs.query({ url: `*://*/newtab` });
@@ -74,8 +69,8 @@ describe("tab test", () => {
     }
     let before = await browser.tabs.query({});
 
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('d');
+    let page = await Page.currentContext(webdriver);
+    await page.sendKeys('d');
 
     await eventually(async() => {
       let current = await browser.tabs.query({});
@@ -83,8 +78,8 @@ describe("tab test", () => {
     });
 
     await browser.tabs.update(before[2].id, { active: true });
-    body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys('.');
+    page = await Page.currentContext(webdriver);
+    await page.sendKeys('.');
 
     await eventually(async() => {
       let current = await browser.tabs.query({});

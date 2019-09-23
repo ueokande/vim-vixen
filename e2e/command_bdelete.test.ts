@@ -5,7 +5,8 @@ import * as http from 'http';
 
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, By, Key } from 'selenium-webdriver';
+import { WebDriver } from 'selenium-webdriver';
+import Page from './lib/Page';
 
 const newApp = () => {
   let app = express();
@@ -60,19 +61,13 @@ describe('bdelete/bdeletes command test', () => {
       let handles = await webdriver.getAllWindowHandles();
       assert.equal(handles.length, 5);
       await webdriver.switchTo().window(handles[2]);
-      await webdriver.findElement(By.css('iframe'));
     });
-
-    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   it('should delete an unpinned tab by bdelete command', async() => {
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('bdelete site5', Key.ENTER);
+    let page = await Page.currentContext(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('bdelete site5');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -86,12 +81,9 @@ describe('bdelete/bdeletes command test', () => {
   });
 
   it('should not delete an pinned tab by bdelete command by bdelete command', async() => {
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('bdelete site1', Key.ENTER);
+    let page = await Page.currentContext(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('bdelete site1');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -100,42 +92,31 @@ describe('bdelete/bdeletes command test', () => {
   });
 
   it('should show an error when no tabs are matched by bdelete command', async() => {
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('bdelete xyz', Key.ENTER);
+    let page = await Page.currentContext(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('bdelete xyz');
 
     await eventually(async() => {
-      let p = await webdriver.findElement(By.css('.vimvixen-console-error'));
-      let text = await p.getText();
+      let text = await console.getErrorMessage();
       assert.equal(text, 'No matching buffer for xyz');
     });
   });
 
   it('should show an error when more than one tabs are matched by bdelete command', async() => {
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('bdelete site', Key.ENTER);
+    let page = await Page.currentContext(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('bdelete site');
 
     await eventually(async() => {
-      let p = await webdriver.findElement(By.css('.vimvixen-console-error'));
-      let text = await p.getText();
+      let text = await console.getErrorMessage();
       assert.equal(text, 'More than one match for site');
     });
   });
 
   it('should delete an unpinned tab by bdelete! command', async() => {
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('bdelete! site5', Key.ENTER);
+    let page = await Page.currentContext(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('bdelete! site5');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -149,12 +130,9 @@ describe('bdelete/bdeletes command test', () => {
   });
 
   it('should delete an pinned tab by bdelete! command', async() => {
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('bdelete! site1', Key.ENTER);
+    let page = await Page.currentContext(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('bdelete! site1');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -168,12 +146,9 @@ describe('bdelete/bdeletes command test', () => {
   });
 
   it('should delete unpinned tabs by bdeletes command', async() => {
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('bdeletes site', Key.ENTER);
+    let page = await Page.currentContext(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('bdeletes site');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -186,12 +161,9 @@ describe('bdelete/bdeletes command test', () => {
   });
 
   it('should delete both pinned and unpinned tabs by bdeletes! command', async() => {
-    let body = await webdriver.findElement(By.css('body'));
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    await input.sendKeys('bdeletes! site', Key.ENTER);
+    let page = await Page.currentContext(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('bdeletes! site');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});

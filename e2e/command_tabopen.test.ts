@@ -6,8 +6,8 @@ import * as http from 'http';
 import settings from './settings';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, WebElement, By, Key } from 'selenium-webdriver';
-
+import { WebDriver } from 'selenium-webdriver';
+import Page from './lib/Page';
 
 const newApp = () => {
 
@@ -35,7 +35,7 @@ describe("tabopen command test", () => {
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
-  let body: WebElement;
+  let page: Page;
 
   before(async() => {
     http = newApp().listen(port);
@@ -64,16 +64,12 @@ describe("tabopen command test", () => {
       await browser.tabs.remove(tab.id);
     }
 
-    await webdriver.navigate().to(`http://127.0.0.1:${port}`);
-    body = await webdriver.findElement(By.css('body'));
+    page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}`);
   })
 
   it('should open default search for keywords by tabopen command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('tabopen an apple', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('tabopen an apple');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -84,11 +80,8 @@ describe("tabopen command test", () => {
   });
 
   it('should open certain search page for keywords by tabopen command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('tabopen yahoo an apple', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('tabopen yahoo an apple');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -99,11 +92,8 @@ describe("tabopen command test", () => {
   });
 
   it('should open default engine with empty keywords by tabopen command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('tabopen', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('tabopen');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -114,11 +104,8 @@ describe("tabopen command test", () => {
   });
 
   it('should open certain search page for empty keywords by tabopen command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('tabopen yahoo', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('tabopen yahoo');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
@@ -129,32 +116,26 @@ describe("tabopen command test", () => {
   });
 
   it('should open a site with domain by tabopen command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('tabopen i-beam.org', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('tabopen example.com');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
       assert.equal(tabs.length, 2);
       let url = new URL(tabs[1].url);
-      assert.equal(url.href, 'https://i-beam.org/')
+      assert.equal(url.href, 'http://example.com/')
     });
   });
 
   it('should open a site with URL by tabopen command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('tabopen https://i-beam.org', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('tabopen https://example.com/');
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
       assert.equal(tabs.length, 2);
       let url = new URL(tabs[1].url);
-      assert.equal(url.href, 'https://i-beam.org/')
+      assert.equal(url.href, 'https://example.com/')
     });
   });
 });

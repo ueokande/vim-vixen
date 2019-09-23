@@ -6,8 +6,8 @@ import * as http from 'http';
 import settings from './settings';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, WebElement, By, Key } from 'selenium-webdriver';
-import { Console } from './lib/Console';
+import { WebDriver } from 'selenium-webdriver';
+import Page from './lib/Page';
 
 const newApp = () => {
 
@@ -27,7 +27,7 @@ describe("completion on open/tabopen/winopen commands", () => {
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
-  let body: WebElement;
+  let page: Page;
 
   before(async() => {
     lanthan = await Builder
@@ -54,19 +54,15 @@ describe("completion on open/tabopen/winopen commands", () => {
   });
 
   beforeEach(async() => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}`);
-    body = await webdriver.findElement(By.css('body'));
+    page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}`);
   });
 
   it('should show completions from search engines, bookmarks, and histories by "open" command', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let c = new Console(webdriver);
-    await c.sendKeys('open ');
+    let console = await page.showConsole();
+    await console.inputKeys('open ');
 
     await eventually(async() => {
-      let completions = await c.getCompletions();
+      let completions = await console.getCompletions();
       assert.ok(completions.find(x => x.type === 'title' && x.text === 'Search Engines'));
       assert.ok(completions.find(x => x.type === 'title' && x.text === 'Bookmarks'));
       assert.ok(completions.find(x => x.type === 'title' && x.text === 'History'));
@@ -74,136 +70,79 @@ describe("completion on open/tabopen/winopen commands", () => {
   });
 
   it('should filter items with URLs by keywords on "open" command', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let c = new Console(webdriver);
-    await c.sendKeys('open https://');
+    let console = await page.showConsole();
+    await console.inputKeys('open https://');
 
     await eventually(async() => {
-      let completions = await c.getCompletions();
+      let completions = await console.getCompletions();
       let items = completions.filter(x => x.type === 'item').map(x => x.text);
       assert.ok(items.every(x => x.includes('https://')));
     });
   })
 
   it('should filter items with titles by keywords on "open" command', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let c = new Console(webdriver);
-    await c.sendKeys('open getting');
+    let console = await page.showConsole();
+    await console.inputKeys('open getting');
 
     await eventually(async() => {
-      let completions = await c.getCompletions();
+      let completions = await console.getCompletions();
       let items = completions.filter(x => x.type === 'item').map(x => x.text);
       assert.ok(items.every(x => x.toLowerCase().includes('getting')));
     });
   })
 
   it('should filter items with titles by keywords on "tabopen" command', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let c = new Console(webdriver);
-    await c.sendKeys('tabopen https://');
+    let console = await page.showConsole();
+    await console.inputKeys('tabopen getting');
 
     await eventually(async() => {
-      let completions = await c.getCompletions();
+      let completions = await console.getCompletions();
       let items = completions.filter(x => x.type === 'item').map(x => x.text);
       assert.ok(items.every(x => x.includes('https://')));
     });
   })
 
   it('should filter items with titles by keywords on "winopen" command', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let c = new Console(webdriver);
-    await c.sendKeys('winopen https://');
+    let console = await page.showConsole();
+    await console.inputKeys('winopen https://');
 
     await eventually(async() => {
-      let completions = await c.getCompletions();
+      let completions = await console.getCompletions();
       let items = completions.filter(x => x.type === 'item').map(x => x.text);
       assert.ok(items.every(x => x.includes('https://')));
     });
   })
 
   it('should display only specified items in "complete" property by set command', async() => {
-    let c = new Console(webdriver);
+    let console = await page.showConsole();
+    await console.execCommand('set complete=sbh');
+    await (webdriver.switchTo() as any).parentFrame();
 
-    const execCommand = async(line: string) => {
-      await body.sendKeys(':');
-      await webdriver.switchTo().frame(0);
-      await c.sendKeys(line, Key.ENTER);
-      await new Promise(resolve => setTimeout(resolve, 100));
-      await (webdriver.switchTo() as any).parentFrame();
-    }
-
-    const typeCommand = async(...keys: string[]) => {
-      await body.sendKeys(':');
-      await webdriver.switchTo().frame(0);
-      await c.sendKeys(...keys);
-    }
-
-    const cancel = async() => {
-      await c.sendKeys(Key.ESCAPE);
-      await new Promise(resolve => setTimeout(resolve, 100));
-      await (webdriver.switchTo() as any).parentFrame();
-    }
-
-    await execCommand('set complete=sbh');
-    await typeCommand('open ');
+    console = await page.showConsole();
+    await console.inputKeys('open ');
 
     await eventually(async() => {
-      let completions = await c.getCompletions();
+      let completions = await console.getCompletions();
       let titles = completions.filter(x => x.type === 'title').map(x => x.text);
       assert.deepEqual(titles, ['Search Engines', 'Bookmarks', 'History'])
     });
 
-    await cancel();
-    await execCommand('set complete=bss');
-    await typeCommand('open ');
+    await console.close();
+    console = await page.showConsole();
+    await console.execCommand('set complete=bss');
+    await (webdriver.switchTo() as any).parentFrame();
+
+    console = await page.showConsole();
+    await console.inputKeys('open ');
 
     await eventually(async() => {
-      let completions = await c.getCompletions();
+      let completions = await console.getCompletions();
       let titles = completions.filter(x => x.type === 'title').map(x => x.text);
       assert.deepEqual(titles, ['Bookmarks', 'Search Engines', 'Search Engines'])
     });
   })
 
   it('should display only specified items in "complete" property by setting', async() => {
-    const settings = {
-      source: 'json',
-      json: `{
-        "keymaps": {
-          ":": { "type": "command.show" }
-        },
-        "search": {
-          "default": "google",
-          "engines": { "google": "https://google.com/search?q={}" }
-        },
-        "properties": {
-          "complete": "sbh"
-        }
-      }`,
-    };
-    await browser.storage.local.set({ settings, });
-
-    let c = new Console(webdriver);
-
-    const typeCommand = async(...keys: string[]) => {
-      await body.sendKeys(':');
-      await webdriver.switchTo().frame(0);
-      await c.sendKeys(...keys);
-    }
-
-    const cancel = async() => {
-      await c.sendKeys(Key.ESCAPE);
-      await new Promise(resolve => setTimeout(resolve, 100));
-      await (webdriver.switchTo() as any).parentFrame();
-    }
-
     await browser.storage.local.set({ settings: {
       source: 'json',
       json: `{
@@ -219,15 +158,18 @@ describe("completion on open/tabopen/winopen commands", () => {
         }
       }`,
     }});
-    await typeCommand('open ');
+
+    let console = await page.showConsole();
+    await console.inputKeys('open ');
 
     await eventually(async() => {
-      let completions = await c.getCompletions();
+      let completions = await console.getCompletions();
       let titles = completions.filter(x => x.type === 'title').map(x => x.text);
       assert.deepEqual(titles, ['Search Engines', 'Bookmarks', 'History'])
     });
 
-    await cancel();
+    await console.close();
+    await (webdriver.switchTo() as any).parentFrame();
 
     await browser.storage.local.set({ settings: {
       source: 'json',
@@ -244,14 +186,14 @@ describe("completion on open/tabopen/winopen commands", () => {
         }
       }`,
     }});
-    await typeCommand('open ');
+
+    console = await page.showConsole();
+    await console.inputKeys('open ');
 
     await eventually(async() => {
-      let completions = await c.getCompletions();
+      let completions = await console.getCompletions();
       let titles = completions.filter(x => x.type === 'title').map(x => x.text);
       assert.deepEqual(titles, ['Bookmarks', 'Search Engines', 'Search Engines'])
     });
-
-
   })
 });

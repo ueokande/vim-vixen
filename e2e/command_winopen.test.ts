@@ -6,7 +6,8 @@ import * as http from 'http';
 import settings from './settings';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, WebElement, By, Key } from 'selenium-webdriver';
+import { WebDriver } from 'selenium-webdriver';
+import Page from './lib/Page';
 
 const newApp = () => {
 
@@ -34,7 +35,7 @@ describe("winopen command test", () => {
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
-  let body: WebElement;
+  let page: Page;
 
   before(async() => {
     http = newApp().listen(port);
@@ -62,16 +63,12 @@ describe("winopen command test", () => {
       await browser.windows.remove(win.id);
     }
 
-    await webdriver.navigate().to(`http://127.0.0.1:${port}`);
-    body = await webdriver.findElement(By.css('body'));
+    page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}/area`);
   })
 
   it('should open default search for keywords by winopen command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('winopen an apple', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('winopen an apple');
 
     await eventually(async() => {
       let wins = await browser.windows.getAll();
@@ -84,11 +81,8 @@ describe("winopen command test", () => {
   });
 
   it('should open certain search page for keywords by winopen command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('winopen yahoo an apple', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('winopen yahoo an apple');
 
     await eventually(async() => {
       let wins = await browser.windows.getAll();
@@ -101,11 +95,8 @@ describe("winopen command test", () => {
   });
 
   it('should open default engine with empty keywords by winopen command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('winopen', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('winopen');
 
     await eventually(async() => {
       let wins = await browser.windows.getAll();
@@ -118,11 +109,8 @@ describe("winopen command test", () => {
   });
 
   it('should open certain search page for empty keywords by winopen command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('winopen yahoo', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('winopen yahoo');
 
     await eventually(async() => {
       let wins = await browser.windows.getAll();
@@ -135,11 +123,8 @@ describe("winopen command test", () => {
   });
 
   it('should open a site with domain by winopen command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('winopen i-beam.org', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('winopen example.com');
 
     await eventually(async() => {
       let wins = await browser.windows.getAll();
@@ -147,16 +132,13 @@ describe("winopen command test", () => {
 
       let tabs = await browser.tabs.query({ windowId: wins[1].id });
       let url = new URL(tabs[0].url);
-      assert.equal(url.href, 'https://i-beam.org/')
+      assert.equal(url.href, 'http://example.com/')
     });
   });
 
   it('should open a site with URL by winopen command ', async() => {
-    await body.sendKeys(':');
-
-    await webdriver.switchTo().frame(0);
-    let input = await webdriver.findElement(By.css('input'));
-    input.sendKeys('winopen https://i-beam.org', Key.ENTER);
+    let console = await page.showConsole();
+    await console.execCommand('winopen https://example.com/');
 
     await eventually(async() => {
       let wins = await browser.windows.getAll();
@@ -164,7 +146,7 @@ describe("winopen command test", () => {
 
       let tabs = await browser.tabs.query({ windowId: wins[1].id });
       let url = new URL(tabs[0].url);
-      assert.equal(url.href, 'https://i-beam.org/')
+      assert.equal(url.href, 'https://example.com/')
     });
   });
 });
