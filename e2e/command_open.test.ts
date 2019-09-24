@@ -59,6 +59,7 @@ describe("open command test", () => {
   });
 
   beforeEach(async() => {
+    await webdriver.switchTo().defaultContent();
     page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}`);
   })
 
