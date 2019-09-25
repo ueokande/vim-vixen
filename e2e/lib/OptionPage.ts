@@ -32,5 +32,8 @@ export default class OptionPage {
     // TODO validate current page
     return new JSONOptionPage(this.lanthan);
   }
-}
 
+  scrollTo(x: number, y: number): Promise<void> {
+    return this.webdriver.executeScript(`window.scrollTo(${x}, ${y})`);
+  }
+}
