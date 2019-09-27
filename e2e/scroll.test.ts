@@ -1,63 +1,49 @@
-import express from 'express';
 import * as path from 'path';
 import * as assert from 'assert';
-import * as http from 'http';
 
+import TestServer from './lib/TestServer';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver, Key } from 'selenium-webdriver';
 import Page from './lib/Page';
 
-const newApp = () => {
-  let app = express();
-  app.get('/', (_req, res) => {
-    res.send(`<!DOCTYPEhtml>
-<html lang="en">
-  <body style="width:10000px; height:10000px"></body>
-</html">`);
-  });
-  return app;
-};
-
 describe("scroll test", () => {
-  const port = 12321;
-  let http: http.Server;
+  let server = new TestServer().receiveContent('/',
+    `<!DOCTYPE html><html lang="en"><body style="width:10000px; height:10000px"></body></html>`,
+  );
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let page: Page;
 
   before(async() => {
-    http = newApp().listen(port);
-
     lanthan = await Builder
       .forBrowser('firefox')
       .spyAddon(path.join(__dirname, '..'))
       .build();
     webdriver = lanthan.getWebDriver();
+    await server.start();
   });
 
   after(async() => {
+    await server.stop();
     if (lanthan) {
       await lanthan.quit();
-    }
-    if (http) {
-      http.close();
     }
   });
 
   beforeEach(async() => {
-    await webdriver.navigate().to(`http://127.0.0.1:${port}`);
+    await webdriver.navigate().to(server.url());
     page = await Page.currentContext(webdriver);
   });
 
 
-  it('scrolls up by k', async () => {
+  it('scrolls up by j', async () => {
     await page.sendKeys('j');
 
     let scrollY = await page.getScrollY();
     assert.equal(scrollY, 64);
   });
 
-  it('scrolls down by j', async () => {
+  it('scrolls down by k', async () => {
     await webdriver.executeScript(() => window.scrollTo(0, 200));
     await page.sendKeys('k');
 

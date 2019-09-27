@@ -1,42 +1,29 @@
-import express from 'express';
 import * as path from 'path';
 import * as assert from 'assert';
-import * as http from 'http';
 
+import TestServer from './lib/TestServer';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver, Key } from 'selenium-webdriver';
 import Page from './lib/Page';
 
-const newApp = () => {
-  let app = express();
-
-  app.get('/', (_req, res) => {
-    res.send(`<!DOCTYPEhtml>
-<html lang="en">
-  <body>
-    <a href="/">link1</a>
-    <a href="/">link2</a>
-    <a href="/">link3</a>
-    <a href="/">link4</a>
-    <a href="/">link5</a>
-  </body>
-</html">`);
-  });
-  return app;
-};
-
 describe('follow properties test', () => {
-  const port = 12321;
-  let http: http.Server;
+  let server = new TestServer().receiveContent('/', `
+    <!DOCTYPE html>
+    <html lang="en"><body>
+      <a href="/">link1</a>
+      <a href="/">link2</a>
+      <a href="/">link3</a>
+      <a href="/">link4</a>
+      <a href="/">link5</a>
+    </body></html">`);
+
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
   let page: Page;
 
   before(async() => {
-    http = newApp().listen(port);
-
     lanthan = await Builder
       .forBrowser('firefox')
       .spyAddon(path.join(__dirname, '..'))
@@ -62,17 +49,19 @@ describe('follow properties test', () => {
         }
       }`,
     }});
+
+    await server.start();
   });
 
   after(async() => {
+    await server.stop();
     if (lanthan) {
       await lanthan.quit();
     }
-    http.close();
   });
 
   beforeEach(async() => {
-    page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}`);
+    page = await Page.navigateTo(webdriver, server.url());
   });
 
   afterEach(async() => {

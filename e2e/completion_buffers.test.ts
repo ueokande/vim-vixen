@@ -1,32 +1,24 @@
-import express from 'express';
-import * as path from 'path';
 import * as assert from 'assert';
-import * as http from 'http';
+import * as path from 'path';
 
+import { Request, Response } from 'express'
+import TestServer from './lib/TestServer';
 import settings from './settings';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
 
-const newApp = () => {
-
-  let app = express();
-  app.get('/*', (req, res) => {
-    res.send(`<!DOCTYPEhtml>
-<html lang="en">
-  <head>
-    <title>title_${req.path.slice(1)}</title>
-  </head>
-  <body><h1>home</h1></body>
-</html">`);
-  });
-  return app;
-};
-
 describe("completion on buffer/bdelete/bdeletes", () => {
-  const port = 12321;
-  let http: http.Server;
+  let server = new TestServer().handle('/*', (req: Request, res: Response) => {
+    res.send(`
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <title>title_${req.path.slice(1)}</title>
+        </head>
+      </html">`);
+  });
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
@@ -39,15 +31,16 @@ describe("completion on buffer/bdelete/bdeletes", () => {
       .build();
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
-    http = newApp().listen(port);
 
     await browser.storage.local.set({
       settings,
     });
+
+    await server.start();
   });
 
   after(async() => {
-    http.close();
+    await server.stop();
     if (lanthan) {
       await lanthan.quit();
     }
@@ -59,10 +52,10 @@ describe("completion on buffer/bdelete/bdeletes", () => {
       await browser.tabs.remove(tab.id);
     }
 
-    await browser.tabs.update(tabs[0].id, { url: `http://127.0.0.1:${port}/site1`, pinned: true });
-    await browser.tabs.create({ url: `http://127.0.0.1:${port}/site2`, pinned: true })
+    await browser.tabs.update(tabs[0].id, { url: server.url('/site1'), pinned: true });
+    await browser.tabs.create({ url:server.url('/site2'), pinned: true })
     for (let i = 3; i <= 5; ++i) {
-      await browser.tabs.create({ url: `http://127.0.0.1:${port}/site${i}` })
+      await browser.tabs.create({ url: server.url('/site' + i) });
     }
 
     await eventually(async() => {
@@ -102,7 +95,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
       assert.deepEqual(items[0], { type: 'title', text: 'Buffers' });
       assert.ok(items[1].text.startsWith('2:'));
       assert.ok(items[1].text.includes('title_site2'));
-      assert.ok(items[1].text.includes(`http://127.0.0.1:${port}/site2`));
+      assert.ok(items[1].text.includes(server.url('/site2')));
     });
   })
 

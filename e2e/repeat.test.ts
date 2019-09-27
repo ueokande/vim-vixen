@@ -1,26 +1,14 @@
-import express from 'express';
 import * as path from 'path';
 import * as assert from 'assert';
-import * as http from 'http';
 
+import TestServer from './lib/TestServer';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
 
-const newApp = () => {
-  let app = express();
-  app.get('/', (_req, res) => {
-    res.send('ok');
-  });
-  return app;
-};
-
 describe("tab test", () => {
-  const port = 12321;
-  const url = `http://127.0.0.1:${port}/`;
-
-  let http: http.Server;
+  let server = new TestServer().receiveContent('/*', 'ok');
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
@@ -32,22 +20,20 @@ describe("tab test", () => {
       .build();
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
-    http = newApp().listen(port);
+    await server.start();
   });
 
   after(async() => {
-    if (http) {
-      http.close();
-    }
+    await server.stop();
     if (lanthan) {
       await lanthan.quit();
     }
   });
 
   it('repeats last command', async () => {
-    let page = await Page.navigateTo(webdriver, url);
+    let page = await Page.navigateTo(webdriver, server.url());
     let console = await page.showConsole();
-    await console.execCommand(`tabopen ${url}newtab`);
+    await console.execCommand(`tabopen ${server.url('/newtab')}`);
 
     await eventually(async() => {
       let current = await browser.tabs.query({ url: `*://*/newtab` });
@@ -65,7 +51,7 @@ describe("tab test", () => {
 
   it('repeats last operation', async () => {
     for (let i = 1; i < 5; ++i) {
-      await browser.tabs.create({ url: `${url}#${i}` });
+      await browser.tabs.create({ url: server.url('/#' + i) });
     }
     let before = await browser.tabs.query({});
 

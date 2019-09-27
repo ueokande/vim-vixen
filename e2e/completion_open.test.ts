@@ -1,60 +1,47 @@
-import express from 'express';
 import * as path from 'path';
 import * as assert from 'assert';
-import * as http from 'http';
 
+import TestServer from './lib/TestServer';
 import settings from './settings';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
 
-const newApp = () => {
-
-  let app = express();
-  app.get('/', (_req, res) => {
-    res.send(`<!DOCTYPEhtml>
-<html lang="en">
-  <body>ok</body>
-</html">`);
-  });
-  return app;
-};
-
 describe("completion on open/tabopen/winopen commands", () => {
-  const port = 12321;
-  let http: http.Server;
+  let server = new TestServer().receiveContent('/*', 'ok');
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
   let page: Page;
 
   before(async() => {
+    await server.start();
+
     lanthan = await Builder
       .forBrowser('firefox')
       .spyAddon(path.join(__dirname, '..'))
       .build();
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
-    http = newApp().listen(port);
 
     await browser.storage.local.set({
       settings,
     });
     
     // Add item into hitories
-    await webdriver.navigate().to(`https://i-beam.org/404`);
+    await webdriver.navigate().to(('https://i-beam.org/404'));
   });
 
   after(async() => {
-    http.close();
+    await server.stop();
     if (lanthan) {
       await lanthan.quit();
     }
   });
 
   beforeEach(async() => {
-    page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}`);
+    page = await Page.navigateTo(webdriver, server.url());
   });
 
   it('should show completions from search engines, bookmarks, and histories by "open" command', async() => {

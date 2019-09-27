@@ -1,7 +1,5 @@
-import express from 'express';
 import * as path from 'path';
 import * as assert from 'assert';
-import * as http from 'http';
 
 import eventually from './eventually';
 import settings from './settings';
@@ -9,20 +7,7 @@ import { Builder, Lanthan } from 'lanthan';
 import { WebDriver, Key } from 'selenium-webdriver';
 import Page from './lib/Page';
 
-const newApp = () => {
-  let app = express();
-  app.get('/', (_req, res) => {
-    res.send(`<!DOCTYPEhtml>
-<html lang="en">
-  <body>ok</body>
-</html">`);
-  });
-  return app;
-};
-
 describe("general completion test", () => {
-  const port = 12321;
-  let http: http.Server;
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
@@ -35,7 +20,6 @@ describe("general completion test", () => {
       .build();
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
-    http = newApp().listen(port);
 
     await browser.storage.local.set({
       settings,
@@ -43,14 +27,13 @@ describe("general completion test", () => {
   });
 
   after(async() => {
-    http.close();
     if (lanthan) {
       await lanthan.quit();
     }
   });
 
   beforeEach(async() => {
-    page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}`);
+    page = await Page.navigateTo(webdriver, 'about:blank');
   });
 
   it('should all commands on empty line', async() => {

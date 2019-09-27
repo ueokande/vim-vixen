@@ -1,26 +1,14 @@
-import express from 'express';
 import * as path from 'path';
 import * as assert from 'assert';
-import * as http from 'http';
 
+import TestServer from './lib/TestServer';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver, Key } from 'selenium-webdriver';
 import Page from './lib/Page';
 
-const newApp = () => {
-  let app = express();
-  app.get('/', (_req, res) => {
-    res.send('ok');
-  });
-  return app;
-};
-
 describe("tab test", () => {
-  const port = 12321;
-  const url = `http://127.0.0.1:${port}/`;
-
-  let http: http.Server;
+  let server = new TestServer().receiveContent('/*', 'ok');
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
@@ -34,23 +22,21 @@ describe("tab test", () => {
       .build();
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
-    http = newApp().listen(port);
+    await server.start();
   });
 
   after(async() => {
-    if (http) {
-      http.close();
-    }
+    await server.stop();
     if (lanthan) {
       await lanthan.quit();
     }
   });
 
   beforeEach(async() => {
-    win = await browser.windows.create({ url: `${url}#0` });
+    win = await browser.windows.create({ url: server.url('/#0') });
     for (let i = 1; i < 5; ++i) {
-      await browser.tabs.create({ url: `${url}#${i}`, windowId: win.id });
-      await webdriver.navigate().to(`${url}#${i}`);
+      await browser.tabs.create({ url: server.url('/#' + i), windowId: win.id });
+      await webdriver.navigate().to(server.url('/#' + i));
     }
     tabs = await browser.tabs.query({ windowId: win.id });
     tabs.sort((t1: any, t2: any) => t1.index - t2.index);
@@ -219,7 +205,7 @@ describe("tab test", () => {
     await eventually(async() => {
       let current = await browser.tabs.query({ windowId: win.id });
       assert.ok(current.length === tabs.length + 1);
-      assert.ok(current[current.length - 1].url === `view-source:${url}#0`);
+      assert.ok(current[current.length - 1].url === `view-source:${server.url('/#0')}`);
     });
   });
 });

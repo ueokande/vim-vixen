@@ -1,53 +1,37 @@
-import express from 'express';
 import * as path from 'path';
 import * as assert from 'assert';
-import * as http from 'http';
 
+import TestServer from './lib/TestServer';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver, Key } from 'selenium-webdriver';
 import Page from './lib/Page';
 
-const newApp = () => {
-  let app = express();
-  app.get('/', (_req, res) => {
-    res.send(`<!DOCTYPEhtml>
-<html lang="en">
-  <head>
-    <title>Hello, world!</title>
-  </head>
-</html">`);
-  });
-  return app;
-};
-
-
 describe("console test", () => {
-  const port = 12321;
-  let http: http.Server;
+  let server = new TestServer().receiveContent('/', 
+    `<!DOCTYPE html><html lang="en"><head><title>Hello, world!</title></head></html">`,
+  );
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let page: Page;
 
   before(async() => {
-    http = newApp().listen(port);
     lanthan = await Builder
       .forBrowser('firefox')
       .spyAddon(path.join(__dirname, '..'))
       .build();
     webdriver = lanthan.getWebDriver();
+    await server.start();
   });
 
   after(async() => {
+    await server.stop();
     if (lanthan) {
       await lanthan.quit();
-    }
-    if (http) {
-      http.close();
     }
   });
 
   beforeEach(async() => {
-    page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}`);
+    page = await Page.navigateTo(webdriver, server.url());
   });
 
   it('open console with :', async() => {
@@ -65,7 +49,7 @@ describe("console test", () => {
   it('open console with open command and current URL by O', async() => {
     await page.sendKeys(Key.SHIFT, 'o');
     let console = await page.getConsole();
-    assert.equal(await console.currentValue(), `open http://127.0.0.1:${port}/`);
+    assert.equal(await console.currentValue(), `open ${server.url()}`);
   });
 
   it('open console with tabopen command by t', async() => {
@@ -77,7 +61,7 @@ describe("console test", () => {
   it('open console with tabopen command and current URL by T', async() => {
     await page.sendKeys(Key.SHIFT, 't');
     let console = await page.getConsole();
-    assert.equal(await console.currentValue(), `tabopen http://127.0.0.1:${port}/`);
+    assert.equal(await console.currentValue(), `tabopen ${server.url()}`);
   });
 
   it('open console with winopen command by w', async() => {
@@ -89,7 +73,7 @@ describe("console test", () => {
   it('open console with winopen command and current URL by W', async() => {
     await page.sendKeys(Key.SHIFT, 'W');
     let console = await page.getConsole();
-    assert.equal(await console.currentValue(), `winopen http://127.0.0.1:${port}/`);
+    assert.equal(await console.currentValue(), `winopen ${server.url()}`);
   });
 
   it('open console with buffer command by b', async() => {

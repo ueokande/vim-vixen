@@ -1,46 +1,39 @@
-import express from 'express';
 import * as path from 'path';
 import * as assert from 'assert';
-import * as http from 'http';
+import { Request, Response } from 'express';
 
+import TestServer from './lib/TestServer';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
 
-const newApp = () => {
-  let app = express();
-  app.get('/*', (req, res) => {
-    res.send(`<!DOCTYPEhtml>
-<html lang="en">
-  <head>
-    <title>my_${req.path.slice(1)}</title>
-  </head>
-  <body><h1>${req.path}</h1></body>
-</html">`);
-  });
-  return app;
-};
-
 describe('buffer command test', () => {
-  const port = 12321;
-  let http: http.Server;
+  let server = new TestServer().handle('/*', (req: Request, res: Response) => {
+    res.send(`
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <title>my_${req.path.slice(1)}</title>
+        </head>
+      </html">`);
+  });
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
 
   before(async() => {
-    http = newApp().listen(port);
     lanthan = await Builder
       .forBrowser('firefox')
       .spyAddon(path.join(__dirname, '..'))
       .build();
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
+    await server.start();
   });
 
   after(async() => {
-    http.close();
+    await server.stop();
     if (lanthan) {
       await lanthan.quit();
     }
@@ -51,9 +44,9 @@ describe('buffer command test', () => {
     for (let tab of tabs.slice(1)) {
       await browser.tabs.remove(tab.id);
     }
-    await browser.tabs.update(tabs[0].id, { url: `http://127.0.0.1:${port}/site1` });
+    await browser.tabs.update(tabs[0].id, { url: server.url('/site1') });
     for (let i = 2; i <= 5; ++i) {
-      await browser.tabs.create({ url: `http://127.0.0.1:${port}/site${i}`})
+      await browser.tabs.create({ url: server.url('/site' + i) });
     }
 
     await eventually(async() => {

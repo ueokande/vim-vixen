@@ -1,46 +1,30 @@
-import express from 'express';
 import * as path from 'path';
 import * as assert from 'assert';
-import * as http from 'http';
 
+import TestServer from './lib/TestServer';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
 
-const newApp = () => {
-  let app = express();
-  app.get('/*', (req, res) => {
-    res.send(`<!DOCTYPEhtml>
-<html lang="en">
-  <head>
-    <title>my_${req.path.slice(1)}</title>
-  </head>
-  <body><h1>${req.path}</h1></body>
-</html">`);
-  });
-  return app;
-};
-
 describe('bdelete/bdeletes command test', () => {
-  const port = 12321;
-  let http: http.Server;
+  let server = new TestServer().receiveContent('/*', 'ok');
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
 
   before(async() => {
-    http = newApp().listen(port);
     lanthan = await Builder
       .forBrowser('firefox')
       .spyAddon(path.join(__dirname, '..'))
       .build();
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
+    await server.start();
   });
 
   after(async() => {
-    http.close();
+    await server.stop();
     if (lanthan) {
       await lanthan.quit();
     }
@@ -51,11 +35,11 @@ describe('bdelete/bdeletes command test', () => {
     for (let tab of tabs.slice(1)) {
       await browser.tabs.remove(tab.id);
     }
-    await browser.tabs.update(tabs[0].id, { url: `http://127.0.0.1:${port}/site1`, pinned: true });
-    await browser.tabs.create({ url: `http://127.0.0.1:${port}/site2`, pinned: true })
-    await browser.tabs.create({ url: `http://127.0.0.1:${port}/site3`, pinned: true })
-    await browser.tabs.create({ url: `http://127.0.0.1:${port}/site4` })
-    await browser.tabs.create({ url: `http://127.0.0.1:${port}/site5` })
+    await browser.tabs.update(tabs[0].id, { url: server.url('/site1'), pinned: true });
+    await browser.tabs.create({ url: server.url('/site2'), pinned: true })
+    await browser.tabs.create({ url: server.url('/site3'), pinned: true })
+    await browser.tabs.create({ url: server.url('/site4'), })
+    await browser.tabs.create({ url: server.url('/site5'), })
 
     await eventually(async() => {
       let handles = await webdriver.getAllWindowHandles();
@@ -72,10 +56,10 @@ describe('bdelete/bdeletes command test', () => {
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
       assert.deepEqual(tabs.map((t: any) => t.url), [
-        `http://127.0.0.1:${port}/site1`,
-        `http://127.0.0.1:${port}/site2`,
-        `http://127.0.0.1:${port}/site3`,
-        `http://127.0.0.1:${port}/site4`,
+        server.url('/site1'),
+        server.url('/site2'),
+        server.url('/site3'),
+        server.url('/site4'),
       ])
     });
   });
@@ -121,10 +105,10 @@ describe('bdelete/bdeletes command test', () => {
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
       assert.deepEqual(tabs.map((t: any) => t.url), [
-        `http://127.0.0.1:${port}/site1`,
-        `http://127.0.0.1:${port}/site2`,
-        `http://127.0.0.1:${port}/site3`,
-        `http://127.0.0.1:${port}/site4`,
+        server.url('/site1'),
+        server.url('/site2'),
+        server.url('/site3'),
+        server.url('/site4'),
       ])
     });
   });
@@ -137,10 +121,10 @@ describe('bdelete/bdeletes command test', () => {
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
       assert.deepEqual(tabs.map((t: any) => t.url), [
-        `http://127.0.0.1:${port}/site2`,
-        `http://127.0.0.1:${port}/site3`,
-        `http://127.0.0.1:${port}/site4`,
-        `http://127.0.0.1:${port}/site5`,
+        server.url('/site2'),
+        server.url('/site3'),
+        server.url('/site4'),
+        server.url('/site5'),
       ])
     });
   });
@@ -153,9 +137,9 @@ describe('bdelete/bdeletes command test', () => {
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
       assert.deepEqual(tabs.map((t: any) => t.url), [
-        `http://127.0.0.1:${port}/site1`,
-        `http://127.0.0.1:${port}/site2`,
-        `http://127.0.0.1:${port}/site3`,
+        server.url('/site1'),
+        server.url('/site2'),
+        server.url('/site3'),
       ])
     });
   });

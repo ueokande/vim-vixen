@@ -1,44 +1,23 @@
-import express from 'express';
 import * as path from 'path';
 import * as assert from 'assert';
-import * as http from 'http';
 
+import TestServer from './lib/TestServer';
 import settings from './settings';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
 
-const newApp = () => {
-
-  let app = express();
-  for (let name of ['google', 'yahoo', 'bing', 'duckduckgo', 'twitter', 'wikipedia']) {
-    app.get('/' + name, (_req, res) => {
-      res.send(`<!DOCTYPEhtml>
-<html lang="en">
-  <body><h1>${name.charAt(0).toUpperCase() + name.slice(1)}</h1></body>
-</html">`);
-    });
-  }
-  app.get('/', (_req, res) => {
-    res.send(`<!DOCTYPEhtml>
-<html lang="en">
-  <body><h1>home</h1></body>
-</html">`);
-  });
-  return app;
-};
-
 describe("tabopen command test", () => {
-  const port = 12321;
-  let http: http.Server;
+  let server = new TestServer(12321)
+    .receiveContent('/google', 'google')
+    .receiveContent('/yahoo', 'yahoo');
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
   let page: Page;
 
   before(async() => {
-    http = newApp().listen(port);
     lanthan = await Builder
       .forBrowser('firefox')
       .spyAddon(path.join(__dirname, '..'))
@@ -49,10 +28,12 @@ describe("tabopen command test", () => {
     await browser.storage.local.set({
       settings,
     });
+
+    await server.start();
   });
 
   after(async() => {
-    http.close();
+    await server.stop();
     if (lanthan) {
       await lanthan.quit();
     }
@@ -64,7 +45,7 @@ describe("tabopen command test", () => {
       await browser.tabs.remove(tab.id);
     }
 
-    page = await Page.navigateTo(webdriver, `http://127.0.0.1:${port}`);
+    page = await Page.navigateTo(webdriver, server.url());
   })
 
   it('should open default search for keywords by tabopen command ', async() => {
@@ -75,7 +56,7 @@ describe("tabopen command test", () => {
       let tabs = await browser.tabs.query({});
       assert.equal(tabs.length, 2);
       let url = new URL(tabs[1].url);
-      assert.equal(url.href, `http://127.0.0.1:${port}/google?q=an%20apple`)
+      assert.equal(url.href, server.url('/google?q=an%20apple') )
     });
   });
 
@@ -87,7 +68,7 @@ describe("tabopen command test", () => {
       let tabs = await browser.tabs.query({});
       assert.equal(tabs.length, 2);
       let url = new URL(tabs[1].url);
-      assert.equal(url.href, `http://127.0.0.1:${port}/yahoo?q=an%20apple`)
+      assert.equal(url.href, server.url('/yahoo?q=an%20apple'))
     });
   });
 
@@ -99,7 +80,7 @@ describe("tabopen command test", () => {
       let tabs = await browser.tabs.query({});
       assert.equal(tabs.length, 2);
       let url = new URL(tabs[1].url);
-      assert.equal(url.href, `http://127.0.0.1:${port}/google?q=`)
+      assert.equal(url.href, server.url('/google?q='))
     });
   });
 
@@ -111,7 +92,7 @@ describe("tabopen command test", () => {
       let tabs = await browser.tabs.query({});
       assert.equal(tabs.length, 2);
       let url = new URL(tabs[1].url);
-      assert.equal(url.href, `http://127.0.0.1:${port}/yahoo?q=`)
+      assert.equal(url.href, server.url('/yahoo?q='))
     });
   });
 
