@@ -37,16 +37,28 @@ export default class TestServer {
     return `http://${addr.address}:${addr.port}${path}`
   }
 
-  listen() {
+  start(): Promise<void>  {
+    if (this.http) {
+      throw new Error('http server already started');
+    }
+
     this.http = http.createServer(this.app)
-    this.http.listen(this.port, this.address);
+    return new Promise((resolve) => {
+      this.http!!.listen(this.port, this.address, () => {
+        resolve();
+      })
+    });
   }
 
-  close(): void {
+  stop(): Promise<void> {
     if (!this.http) {
-      return;
+      return Promise.resolve();
     }
-    this.http.close();
-    this.http = undefined;
+    return new Promise((resolve) => {
+      this.http!!.close(() => {
+        this.http = undefined;
+        resolve();
+      });
+    })
   }
 }
