@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   source: 'json',
   json: `{
   "keymaps": {
@@ -83,4 +83,4 @@ module.exports = {
   "blacklist": [
   ]
 }`,
-}
+};

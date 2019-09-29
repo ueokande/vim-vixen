@@ -19,8 +19,6 @@ module.exports = function (config) {
       'test/**/*.html': ['html2js']
     },
 
-    reporters: ['progress'],
-
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
