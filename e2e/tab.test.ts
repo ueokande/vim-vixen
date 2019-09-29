@@ -53,9 +53,9 @@ describe("tab test", () => {
 
     await eventually(async() => {
       let current = await browser.tabs.query({ windowId: win.id });
-      assert.ok(current.length === tabs.length - 1);
-      assert.ok(current[3].active);
-      assert.ok(current[3].id === tabs[4].id);
+      assert.strictEqual(current.length, tabs.length - 1);
+      assert.strictEqual(current[3].active, true);
+      assert.strictEqual(current[3].id, tabs[4].id);
     });
   });
 
@@ -66,9 +66,9 @@ describe("tab test", () => {
 
     await eventually(async() => {
       let current = await browser.tabs.query({ windowId: win.id });
-      assert.ok(current.length === tabs.length - 1);
-      assert.ok(current[2].active);
-      assert.ok(current[2].id === tabs[2].id);
+      assert.strictEqual(current.length, tabs.length - 1);
+      assert.strictEqual(current[2].active, true);
+      assert.strictEqual(current[2].id, tabs[2].id);
     })
   });
 
@@ -78,7 +78,7 @@ describe("tab test", () => {
     await page.sendKeys('x', '$');
 
     let current = await browser.tabs.query({ windowId: win.id });
-    assert.ok(current.length === 2);
+    assert.strictEqual(current.length, 2);
   });
 
   it('duplicates tab by zd', async () => {
@@ -89,8 +89,8 @@ describe("tab test", () => {
     await eventually(async() => {
       let current = await browser.tabs.query({ windowId: win.id });
       current.sort((t1: any, t2: any) => t1.index - t2.index);
-      assert.ok(current.length === tabs.length + 1);
-      assert.ok(current[0].url === current[1].url);
+      assert.strictEqual(current.length, tabs.length + 1);
+      assert.strictEqual(current[0].url, current[1].url);
     });
   });
 
@@ -100,7 +100,7 @@ describe("tab test", () => {
     await page.sendKeys('z', 'p');
 
     let current = await browser.tabs.query({ windowId: win.id });
-    assert.ok(current[0].pinned);
+    assert.strictEqual(current[0].pinned, true);
   });
 
   it('selects previous tab by K', async () => {
@@ -109,7 +109,7 @@ describe("tab test", () => {
     await page.sendKeys(Key.SHIFT, 'K');
 
     let current = await browser.tabs.query({ windowId: win.id });
-    assert.ok(current[1].active);
+    assert.strictEqual(current[1].active, true);
   });
 
   it('selects previous tab by K rotatory', async () => {
@@ -118,7 +118,7 @@ describe("tab test", () => {
     await page.sendKeys(Key.SHIFT, 'K');
 
     let current = await browser.tabs.query({ windowId: win.id });
-    assert.ok(current[current.length - 1].active)
+    assert.strictEqual(current[current.length - 1].active, true)
   });
 
   it('selects next tab by J', async () => {
@@ -127,7 +127,7 @@ describe("tab test", () => {
     await page.sendKeys(Key.SHIFT, 'J');
 
     let current = await browser.tabs.query({ windowId: win.id });
-    assert.ok(current[3].active);
+    assert.strictEqual(current[3].active, true);
   });
 
   it('selects previous tab by J rotatory', async () => {
@@ -136,7 +136,7 @@ describe("tab test", () => {
     await page.sendKeys(Key.SHIFT, 'J');
 
     let current = await browser.tabs.query({ windowId: win.id });
-    assert.ok(current[0].active)
+    assert.strictEqual(current[0].active, true)
   });
 
   it('selects first tab by g0', async () => {
@@ -145,7 +145,7 @@ describe("tab test", () => {
     await page.sendKeys('g', '0');
 
     let current = await browser.tabs.query({ windowId: win.id });
-    assert.ok(current[0].active)
+    assert.strictEqual(current[0].active, true)
   });
 
   it('selects last tab by g$', async () => {
@@ -154,7 +154,7 @@ describe("tab test", () => {
     await page.sendKeys('g', '$');
 
     let current = await browser.tabs.query({ windowId: win.id });
-    assert.ok(current[current.length - 1].active)
+    assert.strictEqual(current[current.length - 1].active, true)
   });
 
   it('selects last selected tab by <C-6>', async () => {
@@ -165,7 +165,7 @@ describe("tab test", () => {
     await page.sendKeys(Key.CONTROL, '6');
 
     let current = await browser.tabs.query({ windowId: win.id });
-    assert.ok(current[1].active)
+    assert.strictEqual(current[1].active, true)
   });
 
   // browser.sessions.getRecentlyClosed() sometime throws "An unexpected error occurred"
@@ -176,7 +176,7 @@ describe("tab test", () => {
     await page.sendKeys('u');
 
     let current = await browser.tabs.query({ windowId: win.id });
-    assert.ok(current.length === tabs.length);
+    assert.strictEqual(current.length, tabs.length);
   });
 
   it('does not delete pinned tab by d', async () => {
@@ -185,7 +185,7 @@ describe("tab test", () => {
     await page.sendKeys('d');
 
     let current = await browser.tabs.query({ windowId: win.id });
-    assert.ok(current.length === tabs.length);
+    assert.strictEqual(current.length, tabs.length);
   });
 
   it('deletes pinned tab by !d', async () => {
@@ -194,7 +194,7 @@ describe("tab test", () => {
     await page.sendKeys('!', 'd');
 
     let current = await browser.tabs.query({ windowId: win.id });
-    assert.ok(current.length === tabs.length - 1);
+    assert.strictEqual(current.length, tabs.length - 1);
   });
 
   it('opens view-source by gf', async () => {
@@ -204,8 +204,8 @@ describe("tab test", () => {
 
     await eventually(async() => {
       let current = await browser.tabs.query({ windowId: win.id });
-      assert.ok(current.length === tabs.length + 1);
-      assert.ok(current[current.length - 1].url === `view-source:${server.url('/#0')}`);
+      assert.strictEqual(current.length, tabs.length + 1);
+      assert.strictEqual(current[current.length - 1].url, `view-source:${server.url('/#0')}`);
     });
   });
 });

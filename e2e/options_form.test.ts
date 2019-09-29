@@ -32,7 +32,7 @@ describe("options form page", () => {
     await page.switchToForm();
 
     let { settings } = await browser.storage.local.get('settings');
-    assert.equal(settings.source, 'form')
+    assert.strictEqual(settings.source, 'form')
   })
 
   it('add blacklist', async () => {
@@ -43,25 +43,25 @@ describe("options form page", () => {
 
     // assert default
     let settings = (await browser.storage.local.get('settings')).settings;
-    assert.deepEqual(settings.form.blacklist, [])
+    assert.deepStrictEqual(settings.form.blacklist, [])
 
     // add blacklist items
     await forms.addBlacklist();
     await forms.setBlacklist(0, 'google.com')
 
     settings = (await browser.storage.local.get('settings')).settings;
-    assert.deepEqual(settings.form.blacklist, ['google.com'])
+    assert.deepStrictEqual(settings.form.blacklist, ['google.com'])
 
     await forms.addBlacklist();
     await forms.setBlacklist(1, 'yahoo.com')
 
     settings = (await browser.storage.local.get('settings')).settings;
-    assert.deepEqual(settings.form.blacklist, ['google.com', 'yahoo.com'])
+    assert.deepStrictEqual(settings.form.blacklist, ['google.com', 'yahoo.com'])
 
     // delete first item
     await forms.removeBlackList(0);
     settings = (await browser.storage.local.get('settings')).settings;
-    assert.deepEqual(settings.form.blacklist, ['yahoo.com'])
+    assert.deepStrictEqual(settings.form.blacklist, ['yahoo.com'])
   });
 
   it('add search engines', async () => {
@@ -70,17 +70,17 @@ describe("options form page", () => {
 
     // assert default
     let settings = (await browser.storage.local.get('settings')).settings;
-    assert.deepEqual(settings.form.search.default, 'google');
+    assert.deepStrictEqual(settings.form.search.default, 'google');
 
     // change default
     await forms.setDefaultSearchEngine(2);
     settings = (await browser.storage.local.get('settings')).settings;
-    assert.deepEqual(settings.form.search.default, 'bing');
+    assert.deepStrictEqual(settings.form.search.default, 'bing');
 
     await forms.addSearchEngine();
     await forms.setSearchEngine(6, 'yippy', 'https://www.yippy.com/search?query={}');
 
     settings = (await browser.storage.local.get('settings')).settings;
-    assert.deepEqual(settings.form.search.engines[6], ['yippy', 'https://www.yippy.com/search?query={}']);
+    assert.deepStrictEqual(settings.form.search.engines[6], ['yippy', 'https://www.yippy.com/search?query={}']);
   });
 });

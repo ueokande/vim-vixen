@@ -40,8 +40,8 @@ describe("general completion test", () => {
     let console = await page.showConsole();
 
     let items = await console.getCompletions();
-    assert.equal(items.length, 10);
-    assert.deepEqual(items[0], { type: 'title', text: 'Console Command' });
+    assert.strictEqual(items.length, 10);
+    assert.deepStrictEqual(items[0], { type: 'title', text: 'Console Command' });
     assert.ok(items[1].text.startsWith('set'))
     assert.ok(items[2].text.startsWith('open'))
     assert.ok(items[3].text.startsWith('tabopen'))
@@ -52,8 +52,8 @@ describe("general completion test", () => {
     await console.inputKeys('b');
 
     let items = await console.getCompletions();
-    assert.equal(items.length, 4);
-    assert.deepEqual(items[0], { type: 'title', text: 'Console Command' });
+    assert.strictEqual(items.length, 4);
+    assert.deepStrictEqual(items[0], { type: 'title', text: 'Console Command' });
     assert.ok(items[1].text.startsWith('buffer'))
     assert.ok(items[2].text.startsWith('bdelete'))
     assert.ok(items[3].text.startsWith('bdeletes'))
@@ -68,33 +68,33 @@ describe("general completion test", () => {
     await console.inputKeys('b');
     await eventually(async() => {
       let items = await console.getCompletions();
-      assert.equal(items.length, 4);
+      assert.strictEqual(items.length, 4);
     });
 
     await console.sendKeys(Key.TAB);
     await eventually(async() => {
       let items = await console.getCompletions();
       assert.ok(items[1].highlight)
-      assert.equal(await console.currentValue(), 'buffer');
+      assert.strictEqual(await console.currentValue(), 'buffer');
     });
 
     await console.sendKeys(Key.TAB, Key.TAB);
     await eventually(async() => {
       let items = await console.getCompletions();
       assert.ok(items[3].highlight)
-      assert.equal(await console.currentValue(), 'bdeletes');
+      assert.strictEqual(await console.currentValue(), 'bdeletes');
     });
 
     await console.sendKeys(Key.TAB);
     await eventually(async() => {
-      assert.equal(await console.currentValue(), 'b');
+      assert.strictEqual(await console.currentValue(), 'b');
     });
 
     await console.sendKeys(Key.SHIFT, Key.TAB);
     await eventually(async() => {
       let items = await console.getCompletions();
       assert.ok(items[3].highlight)
-      assert.equal(await console.currentValue(), 'bdeletes');
+      assert.strictEqual(await console.currentValue(), 'bdeletes');
     });
   });
 });

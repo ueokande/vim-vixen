@@ -60,7 +60,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
 
     await eventually(async() => {
       let handles = await webdriver.getAllWindowHandles();
-      assert.equal(handles.length, 5);
+      assert.strictEqual(handles.length, 5);
       await webdriver.switchTo().window(handles[2]);
     });
 
@@ -73,8 +73,8 @@ describe("completion on buffer/bdelete/bdeletes", () => {
 
     await eventually(async() => {
       let items = await console.getCompletions();
-      assert.equal(items.length, 6);
-      assert.deepEqual(items[0], { type: 'title', text: 'Buffers' });
+      assert.strictEqual(items.length, 6);
+      assert.deepStrictEqual(items[0], { type: 'title', text: 'Buffers' });
       assert.ok(items[1].text.startsWith('1:'));
       assert.ok(items[2].text.startsWith('2:'));
       assert.ok(items[3].text.startsWith('3:'));
@@ -92,7 +92,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
 
     await eventually(async() => {
       let items = await console.getCompletions();
-      assert.deepEqual(items[0], { type: 'title', text: 'Buffers' });
+      assert.deepStrictEqual(items[0], { type: 'title', text: 'Buffers' });
       assert.ok(items[1].text.startsWith('2:'));
       assert.ok(items[1].text.includes('title_site2'));
       assert.ok(items[1].text.includes(server.url('/site2')));
@@ -105,7 +105,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
 
     await eventually(async() => {
       let items = await console.getCompletions();
-      assert.deepEqual(items[0], { type: 'title', text: 'Buffers' });
+      assert.deepStrictEqual(items[0], { type: 'title', text: 'Buffers' });
       assert.ok(items[1].text.startsWith('2:'));
     });
   })
@@ -116,8 +116,8 @@ describe("completion on buffer/bdelete/bdeletes", () => {
 
     await eventually(async() => {
       let items = await console.getCompletions();
-      assert.equal(items.length, 2);
-      assert.deepEqual(items[0], { type: 'title', text: 'Buffers' });
+      assert.strictEqual(items.length, 2);
+      assert.deepStrictEqual(items[0], { type: 'title', text: 'Buffers' });
       assert.ok(items[1].text.startsWith('2:'));
     });
   })
@@ -128,7 +128,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
 
     await eventually(async() => {
       let items = await console.getCompletions();
-      assert.equal(items.length, 4);
+      assert.strictEqual(items.length, 4);
       assert.ok(items[1].text.includes('site3'));
       assert.ok(items[2].text.includes('site4'));
       assert.ok(items[3].text.includes('site5'));
@@ -141,7 +141,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
 
     await eventually(async() => {
       let items = await console.getCompletions();
-      assert.equal(items.length, 4);
+      assert.strictEqual(items.length, 4);
       assert.ok(items[1].text.includes('site3'));
       assert.ok(items[2].text.includes('site4'));
       assert.ok(items[3].text.includes('site5'));
@@ -154,7 +154,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
 
     await eventually(async() => {
       let items = await console.getCompletions();
-      assert.equal(items.length, 6);
+      assert.strictEqual(items.length, 6);
       assert.ok(items[1].text.includes('site1'));
       assert.ok(items[2].text.includes('site2'));
       assert.ok(items[3].text.includes('site3'));
@@ -169,7 +169,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
 
     await eventually(async() => {
       let items = await console.getCompletions();
-      assert.equal(items.length, 6);
+      assert.strictEqual(items.length, 6);
       assert.ok(items[1].text.includes('site1'));
       assert.ok(items[2].text.includes('site2'));
       assert.ok(items[3].text.includes('site3'));

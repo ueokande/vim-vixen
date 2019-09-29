@@ -49,7 +49,7 @@ describe("blacklist test", () => {
     await page.sendKeys('j')
 
     let scrollY = await page.getScrollY();
-    assert.equal(scrollY, 0);
+    assert.strictEqual(scrollY, 0);
   });
 
   it('should enabled add-on if the URL is not in the blacklist', async () => {
@@ -57,6 +57,6 @@ describe("blacklist test", () => {
     await page.sendKeys('j');
 
     let scrollY = await page.getScrollY();
-    assert.equal(scrollY, 64);
+    assert.strictEqual(scrollY, 64);
   });
 });

@@ -53,11 +53,11 @@ describe("winopen command test", () => {
 
     await eventually(async() => {
       let wins = await browser.windows.getAll();
-      assert.equal(wins.length, 2);
+      assert.strictEqual(wins.length, 2);
 
       let tabs = await browser.tabs.query({ windowId: wins[1].id });
       let url = new URL(tabs[0].url);
-      assert.equal(url.href, server.url('/google?q=an%20apple'))
+      assert.strictEqual(url.href, server.url('/google?q=an%20apple'))
     });
   });
 
@@ -67,11 +67,11 @@ describe("winopen command test", () => {
 
     await eventually(async() => {
       let wins = await browser.windows.getAll();
-      assert.equal(wins.length, 2);
+      assert.strictEqual(wins.length, 2);
 
       let tabs = await browser.tabs.query({ windowId: wins[1].id });
       let url = new URL(tabs[0].url);
-      assert.equal(url.href, server.url('/yahoo?q=an%20apple'))
+      assert.strictEqual(url.href, server.url('/yahoo?q=an%20apple'))
     });
   });
 
@@ -81,11 +81,11 @@ describe("winopen command test", () => {
 
     await eventually(async() => {
       let wins = await browser.windows.getAll();
-      assert.equal(wins.length, 2);
+      assert.strictEqual(wins.length, 2);
 
       let tabs = await browser.tabs.query({ windowId: wins[1].id });
       let url = new URL(tabs[0].url);
-      assert.equal(url.href, server.url('/google?q='))
+      assert.strictEqual(url.href, server.url('/google?q='))
     });
   });
 
@@ -95,11 +95,11 @@ describe("winopen command test", () => {
 
     await eventually(async() => {
       let wins = await browser.windows.getAll();
-      assert.equal(wins.length, 2);
+      assert.strictEqual(wins.length, 2);
 
       let tabs = await browser.tabs.query({ windowId: wins[1].id });
       let url = new URL(tabs[0].url);
-      assert.equal(url.href, server.url('/yahoo?q='))
+      assert.strictEqual(url.href, server.url('/yahoo?q='))
     });
   });
 
@@ -109,11 +109,11 @@ describe("winopen command test", () => {
 
     await eventually(async() => {
       let wins = await browser.windows.getAll();
-      assert.equal(wins.length, 2);
+      assert.strictEqual(wins.length, 2);
 
       let tabs = await browser.tabs.query({ windowId: wins[1].id });
       let url = new URL(tabs[0].url);
-      assert.equal(url.href, 'http://example.com/')
+      assert.strictEqual(url.href, 'http://example.com/')
     });
   });
 
@@ -123,11 +123,11 @@ describe("winopen command test", () => {
 
     await eventually(async() => {
       let wins = await browser.windows.getAll();
-      assert.equal(wins.length, 2);
+      assert.strictEqual(wins.length, 2);
 
       let tabs = await browser.tabs.query({ windowId: wins[1].id });
       let url = new URL(tabs[0].url);
-      assert.equal(url.href, 'https://example.com/')
+      assert.strictEqual(url.href, 'https://example.com/')
     });
   });
 });

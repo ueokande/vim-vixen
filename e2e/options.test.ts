@@ -47,14 +47,14 @@ describe("options page", () => {
     await jsonPage.updateSettings(`{ "blacklist": [ "https://example.com" ] }`)
 
     let { settings } = await browser.storage.local.get('settings');
-    assert.equal(settings.source, 'json')
-    assert.equal(settings.json, '{ "blacklist": [ "https://example.com" ] } ')
+    assert.strictEqual(settings.source, 'json')
+    assert.strictEqual(settings.json, '{ "blacklist": [ "https://example.com" ] } ')
 
     await jsonPage.updateSettings(`invalid json`);
 
     settings = (await browser.storage.local.get('settings')).settings;
-    assert.equal(settings.source, 'json')
-    assert.equal(settings.json, '{ "blacklist": [ "https://example.com" ] } ')
+    assert.strictEqual(settings.source, 'json')
+    assert.strictEqual(settings.json, '{ "blacklist": [ "https://example.com" ] } ')
 
     let message = await jsonPage.getErrorMessage();
     assert.ok(message.startsWith('SyntaxError:'))
@@ -75,7 +75,7 @@ describe("options page", () => {
 
     await eventually(async() => {
       let y = await page.getScrollY();
-      assert.equal(y, 640);
+      assert.strictEqual(y, 640);
     });
   })
 });

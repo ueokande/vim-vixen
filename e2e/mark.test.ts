@@ -41,8 +41,8 @@ describe("mark test", () => {
     await page.sendKeys('\'', 'a');
 
     await eventually(async() => {
-      assert.equal(await page.getScrollX(), 200);
-      assert.equal(await page.getScrollY(), 200);
+      assert.strictEqual(await page.getScrollX(), 200);
+      assert.strictEqual(await page.getScrollY(), 200);
     });
   });
 
@@ -54,8 +54,8 @@ describe("mark test", () => {
     await page.sendKeys('\'', 'A');
 
     await eventually(async() => {
-      assert.equal(await page.getScrollX(), 200);
-      assert.equal(await page.getScrollY(), 200);
+      assert.strictEqual(await page.getScrollX(), 200);
+      assert.strictEqual(await page.getScrollY(), 200);
     });
 
     await browser.tabs.create({ url: server.url('/#second') });
@@ -65,10 +65,10 @@ describe("mark test", () => {
     await eventually(async() => {
       let tab = (await browser.tabs.query({ active: true }))[0];
       let url = new URL(tab.url);
-      assert.equal(url.hash, '#first');
+      assert.strictEqual(url.hash, '#first');
 
-      assert.equal(await page.getScrollX(), 200);
-      assert.equal(await page.getScrollY(), 200);
+      assert.strictEqual(await page.getScrollX(), 200);
+      assert.strictEqual(await page.getScrollY(), 200);
     });
   });
 
@@ -84,7 +84,7 @@ describe("mark test", () => {
     let handles: string[];
     await eventually(async() => {
       handles = await webdriver.getAllWindowHandles();
-      assert.equal(handles.length, 2);
+      assert.strictEqual(handles.length, 2);
     });
     await webdriver.switchTo().window(handles!![0]);
 
@@ -94,7 +94,7 @@ describe("mark test", () => {
     await eventually(async() => {
       let tab = (await browser.tabs.query({ active: true }))[0];
       let url = new URL(tab.url);
-      assert.equal(url.hash, '#first');
+      assert.strictEqual(url.hash, '#first');
     });
   });
 });

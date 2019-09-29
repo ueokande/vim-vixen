@@ -141,7 +141,7 @@ describe('follow test', () => {
     await page.sendKeys('a');
 
     let tagName = await webdriver.executeScript(() => document.activeElement!!.tagName) as string;
-    assert.equal(tagName.toLowerCase(), 'input');
+    assert.strictEqual(tagName.toLowerCase(), 'input');
   });
 
   it('should open a link by f', async () => {
@@ -152,7 +152,7 @@ describe('follow test', () => {
 
     await eventually(async() => {
       let hash = await webdriver.executeScript('return location.pathname');
-      assert.equal(hash, '/hello');
+      assert.strictEqual(hash, '/hello');
     });
   });
 
@@ -163,7 +163,7 @@ describe('follow test', () => {
     await page.sendKeys('a');
 
     let tagName = await webdriver.executeScript(() => document.activeElement!!.tagName) as string;
-    assert.equal(tagName.toLowerCase(), 'input');
+    assert.strictEqual(tagName.toLowerCase(), 'input');
   });
 
   it('should open a link to new tab by F', async () => {
@@ -174,9 +174,9 @@ describe('follow test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.equal(tabs.length, 2);
-      assert.equal(new URL(tabs[1].url).pathname, '/hello');
-      assert.equal(tabs[1].openerTabId, tabs[0].id);
+      assert.strictEqual(tabs.length, 2);
+      assert.strictEqual(new URL(tabs[1].url).pathname, '/hello');
+      assert.strictEqual(tabs[1].openerTabId, tabs[0].id);
     });
   });
 
@@ -185,7 +185,7 @@ describe('follow test', () => {
     await page.sendKeys(Key.SHIFT, 'f');
 
     let hints = await page.waitAndGetHints();
-    assert.equal(hints.length, 3);
+    assert.strictEqual(hints.length, 3);
   });
 
   it('should shows hints only in viewport', async () => {
@@ -193,7 +193,7 @@ describe('follow test', () => {
     await page.sendKeys(Key.SHIFT, 'f');
 
     let hints = await page.waitAndGetHints();
-    assert.equal(hints.length, 1);
+    assert.strictEqual(hints.length, 1);
   });
 
   it('should shows hints only in window of the frame', async () => {
@@ -202,7 +202,7 @@ describe('follow test', () => {
 
     await webdriver.switchTo().frame(0);
     let hints = await page.waitAndGetHints();
-    assert.equal(hints.length, 1);
+    assert.strictEqual(hints.length, 1);
   });
 
   it('should shows hints only in the frame', async () => {
@@ -211,6 +211,6 @@ describe('follow test', () => {
 
     await webdriver.switchTo().frame(0);
     let hints = await page.waitAndGetHints();
-    assert.equal(hints.length, 1);
+    assert.strictEqual(hints.length, 1);
   });
 });

@@ -51,7 +51,7 @@ describe("open command test", () => {
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
       let url = new URL(tabs[0].url);
-      assert.equal(url.href, server.url('/google?q=an%20apple'))
+      assert.strictEqual(url.href, server.url('/google?q=an%20apple'))
     });
   });
 
@@ -62,7 +62,7 @@ describe("open command test", () => {
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true })
       let url = new URL(tabs[0].url);
-      assert.equal(url.href, server.url('/yahoo?q=an%20apple'))
+      assert.strictEqual(url.href, server.url('/yahoo?q=an%20apple'))
     });
   });
 
@@ -73,7 +73,7 @@ describe("open command test", () => {
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true })
       let url = new URL(tabs[0].url);
-      assert.equal(url.href, server.url('/google?q='))
+      assert.strictEqual(url.href, server.url('/google?q='))
     });
   });
 
@@ -84,7 +84,7 @@ describe("open command test", () => {
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true })
       let url = new URL(tabs[0].url);
-      assert.equal(url.href, server.url('/yahoo?q='))
+      assert.strictEqual(url.href, server.url('/yahoo?q='))
     });
   });
 
@@ -95,7 +95,7 @@ describe("open command test", () => {
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true })
       let url = new URL(tabs[0].url);
-      assert.equal(url.href, 'http://example.com/')
+      assert.strictEqual(url.href, 'http://example.com/')
     });
   });
 
@@ -106,7 +106,7 @@ describe("open command test", () => {
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true })
       let url = new URL(tabs[0].url);
-      assert.equal(url.href, 'https://example.com/')
+      assert.strictEqual(url.href, 'https://example.com/')
     });
   });
 });

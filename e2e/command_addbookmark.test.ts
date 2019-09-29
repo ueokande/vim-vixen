@@ -44,8 +44,8 @@ describe('addbookmark command test', () => {
 
     await eventually(async() => {
       var bookmarks = await browser.bookmarks.search({ title: 'how to be happy' });
-      assert.equal(bookmarks.length, 1);
-      assert.equal(bookmarks[0].url, server.url('/happy'));
+      assert.strictEqual(bookmarks.length, 1);
+      assert.strictEqual(bookmarks[0].url, server.url('/happy'));
     });
   });
 });

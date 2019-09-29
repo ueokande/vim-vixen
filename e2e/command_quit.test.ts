@@ -42,7 +42,7 @@ describe('quit/quitall command test', () => {
 
     await eventually(async() => {
       let handles = await webdriver.getAllWindowHandles();
-      assert.equal(handles.length, 5);
+      assert.strictEqual(handles.length, 5);
       await webdriver.switchTo().window(handles[2]);
     });
   });
@@ -54,7 +54,7 @@ describe('quit/quitall command test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.equal(tabs.length, 4)
+      assert.strictEqual(tabs.length, 4)
     });
   });
 
@@ -65,7 +65,7 @@ describe('quit/quitall command test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.equal(tabs.length, 4)
+      assert.strictEqual(tabs.length, 4)
     });
   });
 
@@ -76,7 +76,7 @@ describe('quit/quitall command test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.equal(tabs.length, 1)
+      assert.strictEqual(tabs.length, 1)
     });
   });
 
@@ -87,7 +87,7 @@ describe('quit/quitall command test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.equal(tabs.length, 1)
+      assert.strictEqual(tabs.length, 1)
     });
   });
 });

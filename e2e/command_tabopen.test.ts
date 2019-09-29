@@ -54,9 +54,9 @@ describe("tabopen command test", () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.equal(tabs.length, 2);
+      assert.strictEqual(tabs.length, 2);
       let url = new URL(tabs[1].url);
-      assert.equal(url.href, server.url('/google?q=an%20apple') )
+      assert.strictEqual(url.href, server.url('/google?q=an%20apple') )
     });
   });
 
@@ -66,9 +66,9 @@ describe("tabopen command test", () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.equal(tabs.length, 2);
+      assert.strictEqual(tabs.length, 2);
       let url = new URL(tabs[1].url);
-      assert.equal(url.href, server.url('/yahoo?q=an%20apple'))
+      assert.strictEqual(url.href, server.url('/yahoo?q=an%20apple'))
     });
   });
 
@@ -78,9 +78,9 @@ describe("tabopen command test", () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.equal(tabs.length, 2);
+      assert.strictEqual(tabs.length, 2);
       let url = new URL(tabs[1].url);
-      assert.equal(url.href, server.url('/google?q='))
+      assert.strictEqual(url.href, server.url('/google?q='))
     });
   });
 
@@ -90,9 +90,9 @@ describe("tabopen command test", () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.equal(tabs.length, 2);
+      assert.strictEqual(tabs.length, 2);
       let url = new URL(tabs[1].url);
-      assert.equal(url.href, server.url('/yahoo?q='))
+      assert.strictEqual(url.href, server.url('/yahoo?q='))
     });
   });
 
@@ -102,9 +102,9 @@ describe("tabopen command test", () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.equal(tabs.length, 2);
+      assert.strictEqual(tabs.length, 2);
       let url = new URL(tabs[1].url);
-      assert.equal(url.href, 'http://example.com/')
+      assert.strictEqual(url.href, 'http://example.com/')
     });
   });
 
@@ -114,9 +114,9 @@ describe("tabopen command test", () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.equal(tabs.length, 2);
+      assert.strictEqual(tabs.length, 2);
       let url = new URL(tabs[1].url);
-      assert.equal(url.href, 'https://example.com/')
+      assert.strictEqual(url.href, 'https://example.com/')
     });
   });
 });

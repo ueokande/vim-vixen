@@ -58,7 +58,7 @@ describe("zoom test", () => {
 
     await eventually(async() => {
       let actual = await browser.tabs.getZoom(tab.id);
-      assert.ok(actual === 1);
+      assert.strictEqual(actual, 1);
     });
   });
 });

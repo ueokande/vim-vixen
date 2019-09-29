@@ -37,7 +37,7 @@ describe("tab test", () => {
 
     await eventually(async() => {
       let current = await browser.tabs.query({ url: `*://*/newtab` });
-      assert.equal(current.length, 1);
+      assert.strictEqual(current.length, 1);
     });
 
     page = await Page.currentContext(webdriver);
@@ -45,7 +45,7 @@ describe("tab test", () => {
 
     await eventually(async() => {
       let current = await browser.tabs.query({ url: `*://*/newtab` });
-      assert.equal(current.length, 2);
+      assert.strictEqual(current.length, 2);
     });
   });
 
@@ -60,7 +60,7 @@ describe("tab test", () => {
 
     await eventually(async() => {
       let current = await browser.tabs.query({});
-      assert.equal(current.length,  before.length - 1);
+      assert.strictEqual(current.length,  before.length - 1);
     });
 
     await browser.tabs.update(before[2].id, { active: true });
@@ -69,7 +69,7 @@ describe("tab test", () => {
 
     await eventually(async() => {
       let current = await browser.tabs.query({});
-      assert.equal(current.length, before.length - 2);
+      assert.strictEqual(current.length, before.length - 2);
     });
   });
 });

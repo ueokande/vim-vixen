@@ -43,7 +43,7 @@ describe('bdelete/bdeletes command test', () => {
 
     await eventually(async() => {
       let handles = await webdriver.getAllWindowHandles();
-      assert.equal(handles.length, 5);
+      assert.strictEqual(handles.length, 5);
       await webdriver.switchTo().window(handles[2]);
     });
   });
@@ -55,7 +55,7 @@ describe('bdelete/bdeletes command test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.deepEqual(tabs.map((t: any) => t.url), [
+      assert.deepStrictEqual(tabs.map((t: any) => t.url), [
         server.url('/site1'),
         server.url('/site2'),
         server.url('/site3'),
@@ -71,7 +71,7 @@ describe('bdelete/bdeletes command test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.equal(tabs.length, 5);
+      assert.strictEqual(tabs.length, 5);
     });
   });
 
@@ -82,7 +82,7 @@ describe('bdelete/bdeletes command test', () => {
 
     await eventually(async() => {
       let text = await console.getErrorMessage();
-      assert.equal(text, 'No matching buffer for xyz');
+      assert.strictEqual(text, 'No matching buffer for xyz');
     });
   });
 
@@ -93,7 +93,7 @@ describe('bdelete/bdeletes command test', () => {
 
     await eventually(async() => {
       let text = await console.getErrorMessage();
-      assert.equal(text, 'More than one match for site');
+      assert.strictEqual(text, 'More than one match for site');
     });
   });
 
@@ -104,7 +104,7 @@ describe('bdelete/bdeletes command test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.deepEqual(tabs.map((t: any) => t.url), [
+      assert.deepStrictEqual(tabs.map((t: any) => t.url), [
         server.url('/site1'),
         server.url('/site2'),
         server.url('/site3'),
@@ -120,7 +120,7 @@ describe('bdelete/bdeletes command test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.deepEqual(tabs.map((t: any) => t.url), [
+      assert.deepStrictEqual(tabs.map((t: any) => t.url), [
         server.url('/site2'),
         server.url('/site3'),
         server.url('/site4'),
@@ -136,7 +136,7 @@ describe('bdelete/bdeletes command test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.deepEqual(tabs.map((t: any) => t.url), [
+      assert.deepStrictEqual(tabs.map((t: any) => t.url), [
         server.url('/site1'),
         server.url('/site2'),
         server.url('/site3'),
@@ -151,7 +151,7 @@ describe('bdelete/bdeletes command test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.equal(tabs.length, 1);
+      assert.strictEqual(tabs.length, 1);
     });
   });
 });

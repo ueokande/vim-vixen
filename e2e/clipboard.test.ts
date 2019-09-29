@@ -50,7 +50,7 @@ describe("clipboard test", () => {
 
     await eventually(async() => {
       let data = await clipboard.read();
-      assert.equal(data, server.url('/#should_copy_url'));
+      assert.strictEqual(data, server.url('/#should_copy_url'));
     });
   });
 
@@ -62,7 +62,7 @@ describe("clipboard test", () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
-      assert.equal(tabs[0].url, server.url('/#open_from_clipboard'));
+      assert.strictEqual(tabs[0].url, server.url('/#open_from_clipboard'));
     });
   });
 
@@ -74,7 +74,7 @@ describe("clipboard test", () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.deepEqual(tabs.map((t: any) => t.url), [
+      assert.deepStrictEqual(tabs.map((t: any) => t.url), [
         server.url(),
         server.url('/#open_to_new_tab'),
       ]);
@@ -89,7 +89,7 @@ describe("clipboard test", () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
-      assert.equal(tabs[0].url, server.url('/google?q=an%20apple'));
+      assert.strictEqual(tabs[0].url, server.url('/google?q=an%20apple'));
     });
   });
 
@@ -101,7 +101,7 @@ describe("clipboard test", () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.deepEqual(tabs.map((t: any) => t.url), [
+      assert.deepStrictEqual(tabs.map((t: any) => t.url), [
         server.url(),
         server.url('/google?q=an%20apple'),
       ]);

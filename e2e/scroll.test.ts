@@ -40,7 +40,7 @@ describe("scroll test", () => {
     await page.sendKeys('j');
 
     let scrollY = await page.getScrollY();
-    assert.equal(scrollY, 64);
+    assert.strictEqual(scrollY, 64);
   });
 
   it('scrolls down by k', async () => {
@@ -48,7 +48,7 @@ describe("scroll test", () => {
     await page.sendKeys('k');
 
     let scrollY = await page.getScrollY();
-    assert.equal(scrollY, 136);
+    assert.strictEqual(scrollY, 136);
   });
 
   it('scrolls left by h', async () => {
@@ -56,7 +56,7 @@ describe("scroll test", () => {
     await page.sendKeys('h');
 
     let pageXOffset = await webdriver.executeScript(() => window.pageXOffset) as number;
-    assert.equal(pageXOffset, 36);
+    assert.strictEqual(pageXOffset, 36);
   });
 
   it('scrolls left by l', async () => {
@@ -64,7 +64,7 @@ describe("scroll test", () => {
     await page.sendKeys('l');
 
     let pageXOffset = await webdriver.executeScript(() => window.pageXOffset) as number;
-    assert.equal(pageXOffset, 164);
+    assert.strictEqual(pageXOffset, 164);
   });
 
   it('scrolls top by gg', async () => {
@@ -72,7 +72,7 @@ describe("scroll test", () => {
     await page.sendKeys('g', 'g');
 
     let scrollY = await page.getScrollY();
-    assert.equal(scrollY, 0);
+    assert.strictEqual(scrollY, 0);
   });
 
   it('scrolls bottom by G', async () => {

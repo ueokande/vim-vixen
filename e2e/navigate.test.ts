@@ -84,7 +84,7 @@ describe("navigate test", () => {
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
       let url = new URL(tab.url);
-      assert.equal(url.pathname, `/a/b/`)
+      assert.strictEqual(url.pathname, `/a/b/`)
     });
   });
 
@@ -95,8 +95,8 @@ describe("navigate test", () => {
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
       let url = new URL(tab.url);
-      assert.equal(url.hash, '')
-      assert.equal(url.pathname, `/a/b/c`)
+      assert.strictEqual(url.hash, '')
+      assert.strictEqual(url.pathname, `/a/b/c`)
     });
   });
 
@@ -107,7 +107,7 @@ describe("navigate test", () => {
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
       let url = new URL(tab.url);
-      assert.equal(url.pathname, `/`)
+      assert.strictEqual(url.pathname, `/`)
     });
   });
 
@@ -119,7 +119,7 @@ describe("navigate test", () => {
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
       let url = new URL(tab.url);
-      assert.equal(url.pathname, `/first`)
+      assert.strictEqual(url.pathname, `/first`)
     });
 
     page = await Page.currentContext(webdriver);
@@ -128,7 +128,7 @@ describe("navigate test", () => {
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
       let url = new URL(tab.url);
-      assert.equal(url.pathname, `/second`)
+      assert.strictEqual(url.pathname, `/second`)
     });
   });
 
@@ -139,7 +139,7 @@ describe("navigate test", () => {
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
       let url = new URL(tab.url);
-      assert.equal(url.pathname, '/pagenation-a/9');
+      assert.strictEqual(url.pathname, '/pagenation-a/9');
     });
   });
 
@@ -150,7 +150,7 @@ describe("navigate test", () => {
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
       let url = new URL(tab.url);
-      assert.equal(url.pathname, '/pagenation-a/11');
+      assert.strictEqual(url.pathname, '/pagenation-a/11');
     });
   });
 
@@ -161,7 +161,7 @@ describe("navigate test", () => {
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
       let url = new URL(tab.url);
-      assert.equal(url.pathname, '/pagenation-link/9');
+      assert.strictEqual(url.pathname, '/pagenation-link/9');
     });
   });
 
@@ -172,7 +172,7 @@ describe("navigate test", () => {
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
       let url = new URL(tab.url);
-      assert.equal(url.pathname, '/pagenation-link/11');
+      assert.strictEqual(url.pathname, '/pagenation-link/11');
     });
   });
 
@@ -183,7 +183,7 @@ describe("navigate test", () => {
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
       let url = new URL(tab.url);
-      assert.equal(url.hash, '#home');
+      assert.strictEqual(url.hash, '#home');
     });
   });
 
@@ -193,10 +193,10 @@ describe("navigate test", () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.equal(tabs.length, 2);
-      assert.equal(new URL(tabs[0].url).hash, '');
-      assert.equal(new URL(tabs[1].url).hash, '#home');
-      assert.equal(tabs[1].active, true);
+      assert.strictEqual(tabs.length, 2);
+      assert.strictEqual(new URL(tabs[0].url).hash, '');
+      assert.strictEqual(new URL(tabs[1].url).hash, '#home');
+      assert.strictEqual(tabs[1].active, true);
     });
   });
 
@@ -222,7 +222,7 @@ describe("navigate test", () => {
 
     await eventually(async() => {
       let page = await Page.currentContext(webdriver);
-      assert.equal(await page.getScrollX(), 500);
+      assert.strictEqual(await page.getScrollX(), 500);
     });
   });
 
@@ -248,7 +248,7 @@ describe("navigate test", () => {
 
     await eventually(async() => {
       let page = await Page.currentContext(webdriver);
-      assert.equal(await page.getScrollY(), 0);
+      assert.strictEqual(await page.getScrollY(), 0);
     });
   });
 });

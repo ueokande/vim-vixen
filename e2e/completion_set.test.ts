@@ -42,8 +42,8 @@ describe("completion on set commands", () => {
 
     await eventually(async() => {
       let items = await console.getCompletions();
-      assert.equal(items.length, 5);
-      assert.deepEqual(items[0], { type: 'title', text: 'Properties' });
+      assert.strictEqual(items.length, 5);
+      assert.deepStrictEqual(items[0], { type: 'title', text: 'Properties' });
       assert.ok(items[1].text.startsWith('hintchars'))
       assert.ok(items[2].text.startsWith('smoothscroll'))
       assert.ok(items[3].text.startsWith('nosmoothscroll'))
@@ -57,7 +57,7 @@ describe("completion on set commands", () => {
 
     await eventually(async() => {
       let items = await console.getCompletions();
-      assert.equal(items.length, 2);
+      assert.strictEqual(items.length, 2);
       assert.ok(items[1].text.includes('nosmoothscroll'))
     });
   });

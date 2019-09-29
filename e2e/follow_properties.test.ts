@@ -75,22 +75,22 @@ describe('follow properties test', () => {
     await page.sendKeys('f');
 
     let hints = await page.waitAndGetHints();
-    assert.equal(hints.length, 5);
+    assert.strictEqual(hints.length, 5);
 
-    assert.equal(hints[0].text, 'J');
-    assert.equal(hints[1].text, 'K');
-    assert.equal(hints[2].text, 'JJ');
-    assert.equal(hints[3].text, 'JK');
-    assert.equal(hints[4].text, 'KJ');
+    assert.strictEqual(hints[0].text, 'J');
+    assert.strictEqual(hints[1].text, 'K');
+    assert.strictEqual(hints[2].text, 'JJ');
+    assert.strictEqual(hints[3].text, 'JK');
+    assert.strictEqual(hints[4].text, 'KJ');
 
     await page.sendKeys('j');
     hints = await page.waitAndGetHints();
 
-    assert.equal(hints[0].displayed, true);
-    assert.equal(hints[1].displayed, false);
-    assert.equal(hints[2].displayed, true);
-    assert.equal(hints[3].displayed, true);
-    assert.equal(hints[4].displayed, false);
+    assert.strictEqual(hints[0].displayed, true);
+    assert.strictEqual(hints[1].displayed, false);
+    assert.strictEqual(hints[2].displayed, true);
+    assert.strictEqual(hints[3].displayed, true);
+    assert.strictEqual(hints[4].displayed, false);
   });
 
   it('should open tab in background by background:false', async () => {
@@ -100,8 +100,8 @@ describe('follow properties test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.equal(tabs[0].active, false);
-      assert.equal(tabs[1].active, true);
+      assert.strictEqual(tabs[0].active, false);
+      assert.strictEqual(tabs[1].active, true);
     });
   });
 
@@ -112,8 +112,8 @@ describe('follow properties test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({});
-      assert.equal(tabs[0].active, true);
-      assert.equal(tabs[1].active, false);
+      assert.strictEqual(tabs[0].active, true);
+      assert.strictEqual(tabs[1].active, false);
     });
   });
 
@@ -124,19 +124,19 @@ describe('follow properties test', () => {
 
     await page.sendKeys('f');
     let hints = await page.waitAndGetHints();
-    assert.equal(hints.length, 5);
-    assert.equal(hints[0].text, 'A');
-    assert.equal(hints[1].text, 'B');
-    assert.equal(hints[2].text, 'C');
-    assert.equal(hints[3].text, 'AA');
-    assert.equal(hints[4].text, 'AB');
+    assert.strictEqual(hints.length, 5);
+    assert.strictEqual(hints[0].text, 'A');
+    assert.strictEqual(hints[1].text, 'B');
+    assert.strictEqual(hints[2].text, 'C');
+    assert.strictEqual(hints[3].text, 'AA');
+    assert.strictEqual(hints[4].text, 'AB');
 
     await page.sendKeys('a');
     hints = await page.waitAndGetHints();
-    assert.equal(hints[0].displayed, true);
-    assert.equal(hints[1].displayed, false);
-    assert.equal(hints[2].displayed, false);
-    assert.equal(hints[3].displayed, true);
-    assert.equal(hints[4].displayed, true);
+    assert.strictEqual(hints[0].displayed, true);
+    assert.strictEqual(hints[1].displayed, false);
+    assert.strictEqual(hints[2].displayed, false);
+    assert.strictEqual(hints[3].displayed, true);
+    assert.strictEqual(hints[4].displayed, true);
   });
 });

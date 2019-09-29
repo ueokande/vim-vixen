@@ -111,7 +111,7 @@ describe("completion on open/tabopen/winopen commands", () => {
     await eventually(async() => {
       let completions = await console.getCompletions();
       let titles = completions.filter(x => x.type === 'title').map(x => x.text);
-      assert.deepEqual(titles, ['Search Engines', 'Bookmarks', 'History'])
+      assert.deepStrictEqual(titles, ['Search Engines', 'Bookmarks', 'History'])
     });
 
     await console.close();
@@ -125,7 +125,7 @@ describe("completion on open/tabopen/winopen commands", () => {
     await eventually(async() => {
       let completions = await console.getCompletions();
       let titles = completions.filter(x => x.type === 'title').map(x => x.text);
-      assert.deepEqual(titles, ['Bookmarks', 'Search Engines', 'Search Engines'])
+      assert.deepStrictEqual(titles, ['Bookmarks', 'Search Engines', 'Search Engines'])
     });
   })
 
@@ -152,7 +152,7 @@ describe("completion on open/tabopen/winopen commands", () => {
     await eventually(async() => {
       let completions = await console.getCompletions();
       let titles = completions.filter(x => x.type === 'title').map(x => x.text);
-      assert.deepEqual(titles, ['Search Engines', 'Bookmarks', 'History'])
+      assert.deepStrictEqual(titles, ['Search Engines', 'Bookmarks', 'History'])
     });
 
     await console.close();
@@ -180,7 +180,7 @@ describe("completion on open/tabopen/winopen commands", () => {
     await eventually(async() => {
       let completions = await console.getCompletions();
       let titles = completions.filter(x => x.type === 'title').map(x => x.text);
-      assert.deepEqual(titles, ['Bookmarks', 'Search Engines', 'Search Engines'])
+      assert.deepStrictEqual(titles, ['Bookmarks', 'Search Engines', 'Search Engines'])
     });
   })
 });

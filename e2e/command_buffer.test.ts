@@ -51,7 +51,7 @@ describe('buffer command test', () => {
 
     await eventually(async() => {
       let handles = await webdriver.getAllWindowHandles();
-      assert.equal(handles.length, 5);
+      assert.strictEqual(handles.length, 5);
       await webdriver.switchTo().window(handles[2]);
     });
   });
@@ -63,7 +63,7 @@ describe('buffer command test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
-      assert.equal(tabs[0].index, 2);
+      assert.strictEqual(tabs[0].index, 2);
     });
   });
 
@@ -74,7 +74,7 @@ describe('buffer command test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
-      assert.equal(tabs[0].index, 0);
+      assert.strictEqual(tabs[0].index, 0);
     });
   });
 
@@ -85,7 +85,7 @@ describe('buffer command test', () => {
 
     await eventually(async() => {
       let text = await console.getErrorMessage();
-      assert.equal(text, 'tab 0 does not exist');
+      assert.strictEqual(text, 'tab 0 does not exist');
     });
 
     await (webdriver.switchTo() as any).parentFrame();
@@ -95,7 +95,7 @@ describe('buffer command test', () => {
 
     await eventually(async() => {
       let text = await console.getErrorMessage();
-      assert.equal(text, 'tab 9 does not exist');
+      assert.strictEqual(text, 'tab 9 does not exist');
     });
   });
 
@@ -106,7 +106,7 @@ describe('buffer command test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
-      assert.equal(tabs[0].index, 0);
+      assert.strictEqual(tabs[0].index, 0);
     });
   });
 
@@ -117,7 +117,7 @@ describe('buffer command test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
-      assert.equal(tabs[0].index, 0);
+      assert.strictEqual(tabs[0].index, 0);
     });
   });
 
@@ -131,7 +131,7 @@ describe('buffer command test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
-      assert.equal(tabs[0].index, 0);
+      assert.strictEqual(tabs[0].index, 0);
     });
   });
 
@@ -142,7 +142,7 @@ describe('buffer command test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
-      assert.equal(tabs[0].index, 2);
+      assert.strictEqual(tabs[0].index, 2);
     });
   });
 
@@ -156,7 +156,7 @@ describe('buffer command test', () => {
 
     await eventually(async() => {
       let tabs = await browser.tabs.query({ active: true });
-      assert.equal(tabs[0].index, 2);
+      assert.strictEqual(tabs[0].index, 2);
     });
   });
 });
