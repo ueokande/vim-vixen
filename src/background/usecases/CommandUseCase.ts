@@ -4,6 +4,7 @@ import * as parsers from './parsers';
 import * as urls from '../../shared/urls';
 import TabPresenter from '../presenters/TabPresenter';
 import WindowPresenter from '../presenters/WindowPresenter';
+import HelpPresenter from '../presenters/HelpPresenter';
 import SettingRepository from '../repositories/SettingRepository';
 import BookmarkRepository from '../repositories/BookmarkRepository';
 import ConsoleClient from '../infrastructures/ConsoleClient';
@@ -15,6 +16,7 @@ export default class CommandIndicator {
   constructor(
     private tabPresenter: TabPresenter,
     private windowPresenter: WindowPresenter,
+    private helpPresenter: HelpPresenter,
     private settingRepository: SettingRepository,
     private bookmarkRepository: BookmarkRepository,
     private consoleClient: ConsoleClient,
@@ -136,7 +138,11 @@ export default class CommandIndicator {
     return this.contentMessageClient.broadcastSettingsChanged();
   }
 
-  async urlOrSearch(keywords: string): Promise<any> {
+  help(): Promise<void> {
+    return this.helpPresenter.open();
+  }
+
+  private async urlOrSearch(keywords: string): Promise<any> {
     let settings = await this.settingRepository.get();
     return urls.searchUrl(keywords, settings.search);
   }
