@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "en-US" }}">
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="stylesheet" type="text/css" media="screen" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Zilla+Slab:700&display=swap" rel="stylesheet">
+  {%- if page.title -%}
+    <title>{{ page.title }} - Vim Vixen</title>
+  {%- else -%}
+    <title>Vim Vixen</title>
+  {%- endif -%}
+{% seo title=false%}
+</head>
+
+<body>
+  <header>
+    <h1><a href='index.html'>Vim Vixen</a></h1>
+    <ul>
+      <li><a target="_blank" rel="noopener" href='https://github.com/ueokande/vim-vixen'>GtiHub</a></li>
+      <li><a target="_blank" rel="noopener" href='https://addons.mozilla.org/firefox/addon/vim-vixen/'>Firefox Add-ons</a></li>
+    </ul>
+  </header>
+
+  <aside>
+    <h1>Guide</h1>
+    <ul>
+      <li><a href='./keymaps.html'>Keymaps</a></li>
+      <li><a href='./console_commands.html'>Console commands</a></li>
+      <li><a href='./blacklist.html'>Blacklist</a></li>
+      <li><a href='./search_engines.html'>Search engines</a></li>
+      <li><a href='./properties.html'>Properties</a></li>
+    </ul>
+  </aside>
+
+  <main>
+    <article>
+      {{ content }}
+    </article>
+  </main>
+
+</body>
+</html>
