@@ -7,32 +7,6 @@ title: Keymaps
 Keymaps are configurable in the add-on's preferences by navigating to `about:addons` and selecting "Extensions".
 The default mappings are as follows:
 
-## Console
-
-- <kbd>:</kbd>: open the console
-- <kbd>o</kbd>, <kbd>t</kbd>, <kbd>w</kbd>: open a page in the current tab, a new tab, or new window
-- <kbd>O</kbd>, <kbd>T</kbd>, <kbd>W</kbd>: similar to <kbd>o</kbd>, <kbd>t</kbd>, <kbd>w</kbd>, but using the current URL
-- <kbd>b</kbd>: select tabs by URL or title
-- <kbd>a</kbd>: add the current page to your bookmarks
-
-See the [console commands](./console_commands.html) section for a more detailed description.
-
-## Tabs
-
-- <kbd>d</kbd>: delete the current tab and select the tab to its right
-- <kbd>D</kbd>: delete the current tab and select the tab to its left
-- <kbd>!</kbd><kbd>d</kbd>: delete a pinned tab
-- <kbd>u</kbd>: reopen a close tab
-- <kbd>r</kbd>: reload the current tab
-- <kbd>R</kbd>: reload the current tab, bypassing the cache
-- <kbd>K</kbd> or <kbd>g</kbd><kbd>T</kbd>: select the previous tab
-- <kbd>J</kbd> or <kbd>g</kbd><kbd>t</kbd>: select the next tab
-- <kbd>g</kbd><kbd>0</kbd>: select the first tab
-- <kbd>g</kbd><kbd>$</kbd>: select the last tab
-- <kbd>Ctrl</kbd>+<kbd>6</kbd>: open the previously-selected tab
-- <kbd>z</kbd><kbd>p</kbd>: pin the curent tab tab
-- <kbd>z</kbd><kbd>d</kbd>: duplicate the current tab
-
 ## Scrolling
 
 - <kbd>k</kbd>: scroll up
@@ -52,6 +26,32 @@ See the [console commands](./console_commands.html) section for a more detailed 
 
 Lowercase marks (`[a-z]`) store the position of the current tab. Uppercase and
 numeric marks (`[A-Z0-9]`) store the position and the tab.
+
+## Select and manage tabs
+
+- <kbd>d</kbd>: delete the current tab and select the tab to its right
+- <kbd>D</kbd>: delete the current tab and select the tab to its left
+- <kbd>!</kbd><kbd>d</kbd>: delete a pinned tab
+- <kbd>u</kbd>: reopen a close tab
+- <kbd>r</kbd>: reload the current tab
+- <kbd>R</kbd>: reload the current tab, bypassing the cache
+- <kbd>K</kbd> or <kbd>g</kbd><kbd>T</kbd>: select the previous tab
+- <kbd>J</kbd> or <kbd>g</kbd><kbd>t</kbd>: select the next tab
+- <kbd>g</kbd><kbd>0</kbd>: select the first tab
+- <kbd>g</kbd><kbd>$</kbd>: select the last tab
+- <kbd>Ctrl</kbd>+<kbd>6</kbd>: open the previously-selected tab
+- <kbd>z</kbd><kbd>p</kbd>: pin the curent tab tab
+- <kbd>z</kbd><kbd>d</kbd>: duplicate the current tab
+
+## Console
+
+- <kbd>:</kbd>: open the console
+- <kbd>o</kbd>, <kbd>t</kbd>, <kbd>w</kbd>: open a page in the current tab, a new tab, or new window
+- <kbd>O</kbd>, <kbd>T</kbd>, <kbd>W</kbd>: similar to <kbd>o</kbd>, <kbd>t</kbd>, <kbd>w</kbd>, but using the current URL
+- <kbd>b</kbd>: select tabs by URL or title
+- <kbd>a</kbd>: add the current page to your bookmarks
+
+See the [console commands](./console_commands.html) section for a more detailed description.
 
 ## Zoom
 
