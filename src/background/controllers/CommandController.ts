@@ -96,6 +96,9 @@ export default class CommandController {
       return this.commandIndicator.quitAll();
     case 'set':
       return this.commandIndicator.set(keywords);
+    case 'h':
+    case 'help':
+      return this.commandIndicator.help();
     }
     throw new Error(words[0] + ' command is not defined');
   }

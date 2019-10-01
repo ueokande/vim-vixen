@@ -8,4 +8,5 @@ export default {
   bdeletes: 'Close all tabs matched by keywords',
   quit: 'Close the current tab',
   quitall: 'Close all tabs',
+  help: 'Open Vim Vixen help in new tab',
 } as {[key: string]: string};
