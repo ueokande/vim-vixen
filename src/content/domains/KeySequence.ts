@@ -1,4 +1,4 @@
-import Key, * as keyUtils from './Key';
+import Key from './Key';
 
 export default class KeySequence {
   private keys: Key[];
@@ -24,7 +24,7 @@ export default class KeySequence {
       return false;
     }
     for (let i = 0; i < o.keys.length; ++i) {
-      if (!keyUtils.equals(this.keys[i], o.keys[i])) {
+      if (!this.keys[i].equals(o.keys[i])) {
         return false;
       }
     }
@@ -54,7 +54,7 @@ export const fromMapKeys = (keys: string): KeySequence => {
 
     return fromMapKeysRecursive(
       remainings.slice(nextPos),
-      mappedKeys.concat([keyUtils.fromMapKey(remainings.slice(0, nextPos))])
+      mappedKeys.concat([Key.fromMapKey(remainings.slice(0, nextPos))])
     );
   };
 

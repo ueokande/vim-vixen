@@ -21,10 +21,10 @@ describe('InputDriver', () => {
   it('register callbacks', (done) => {
     driver.onKey((key: Key): boolean => {
       expect(key.key).to.equal('a');
-      expect(key.ctrlKey).to.be.true;
-      expect(key.shiftKey).to.be.false;
-      expect(key.altKey).to.be.false;
-      expect(key.metaKey).to.be.false;
+      expect(key.ctrl).to.be.true;
+      expect(key.shift).to.be.false;
+      expect(key.alt).to.be.false;
+      expect(key.meta).to.be.false;
       done();
       return true;
     });
@@ -68,15 +68,15 @@ describe('InputDriver', () => {
 
   it('propagates and stop handler chain', () => {
     let a = 0, b = 0, c = 0;
-    driver.onKey((key: Key): boolean => {
+    driver.onKey((_key: Key): boolean => {
       a++;
       return false;
     });
-    driver.onKey((key: Key): boolean => {
+    driver.onKey((_key: Key): boolean => {
       b++;
       return true;
     });
-    driver.onKey((key: Key): boolean => {
+    driver.onKey((_key: Key): boolean => {
       c++;
       return true;
     });
@@ -89,7 +89,7 @@ describe('InputDriver', () => {
   })
 
   it('does not invoke only meta keys', () => {
-    driver.onKey((key: Key): boolean=> {
+    driver.onKey((_key: Key): boolean=> {
       expect.fail();
       return false;
     });
@@ -115,7 +115,7 @@ describe('InputDriver', () => {
   it('ignores events from contenteditable elements', () => {
     let div = window.document.createElement('div');
     let driver = new InputDriver(div);
-    driver.onKey((key: Key): boolean => {
+    driver.onKey((_key: Key): boolean => {
       expect.fail();
       return false;
     });

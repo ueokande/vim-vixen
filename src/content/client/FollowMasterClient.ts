@@ -35,7 +35,7 @@ export class FollowMasterClientImpl implements FollowMasterClient {
     this.postMessage({
       type: messages.FOLLOW_KEY_PRESS,
       key: key.key,
-      ctrlKey: key.ctrlKey || false,
+      ctrlKey: key.ctrl || false,
     });
   }
 

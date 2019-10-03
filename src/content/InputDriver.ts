@@ -1,5 +1,5 @@
 import * as dom from '../shared/utils/dom';
-import Key, * as keys from './domains/Key';
+import Key from './domains/Key';
 
 const cancelKey = (e: KeyboardEvent): boolean => {
   if (e.key === 'Escape') {
@@ -66,7 +66,7 @@ export default class InputDriver {
       return;
     }
 
-    let key = keys.fromKeyboardEvent(e);
+    let key = Key.fromKeyboardEvent(e);
     for (let listener of this.onKeyListeners) {
       let stop = listener(key);
       if (stop) {
