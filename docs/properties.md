@@ -9,11 +9,13 @@ Vim Vixen can be configured by defining settings in a JSON document, e.g.:
 ```json
 {
    "properties": {
+       "smoothscroll": true,
+       "hintchars": "abcdefghijklmnopqrstuvwxyz",
        "complete": "sbh"
    }
 }
 ```
-
+If a property is not set, it will be used the default.
 Properties can be temporarily overridden by using the `:set` command in the
 console.
 
@@ -30,7 +32,7 @@ Enable/disable smooth scrolling.
 
 ## `hintchars`
 
-Set hint characters.
+Set hint characters. They will be used to follow links in the page.
 
 ```
 :set hintchars=0123456789
