@@ -7,7 +7,7 @@ export default interface KeymapRepository {
   clear(): void;
 }
 
-let current: KeySequence = KeySequence.from([]);
+let current: KeySequence = new KeySequence([]);
 
 export class KeymapRepositoryImpl {
 
@@ -17,6 +17,6 @@ export class KeymapRepositoryImpl {
   }
 
   clear(): void {
-    current = KeySequence.from([]);
+    current = new KeySequence([]);
   }
 }

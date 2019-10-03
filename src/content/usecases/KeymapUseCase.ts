@@ -5,7 +5,7 @@ import AddonEnabledRepository from '../repositories/AddonEnabledRepository';
 import * as operations from '../../shared/operations';
 import { Keymaps } from '../../shared/Settings';
 import Key from '../domains/Key';
-import KeySequence, * as keySequenceUtils from '../domains/KeySequence';
+import KeySequence from '../domains/KeySequence';
 
 type KeymapEntityMap = Map<KeySequence, operations.Operation>;
 
@@ -71,7 +71,7 @@ export default class KeymapUseCase {
     };
     let entries = Object.entries(keymaps).map((entry) => {
       return [
-        keySequenceUtils.fromMapKeys(entry[0]),
+        KeySequence.fromMapKeys(entry[0]),
         entry[1],
       ];
     }) as [KeySequence, operations.Operation][];

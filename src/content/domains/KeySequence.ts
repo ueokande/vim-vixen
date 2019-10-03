@@ -1,14 +1,9 @@
 import Key from './Key';
 
 export default class KeySequence {
-  private keys: Key[];
-
-  private constructor(keys: Key[]) {
-    this.keys = keys;
-  }
-
-  static from(keys: Key[]): KeySequence {
-    return new KeySequence(keys);
+  constructor(
+    public readonly keys: Key[],
+  ) {
   }
 
   push(key: Key): number {
@@ -31,34 +26,29 @@ export default class KeySequence {
     return true;
   }
 
-  getKeyArray(): Key[] {
-    return this.keys;
+  static fromMapKeys(keys: string): KeySequence {
+    const fromMapKeysRecursive = (
+      remaining: string, mappedKeys: Key[],
+    ): Key[] => {
+      if (remaining.length === 0) {
+        return mappedKeys;
+      }
+
+      let nextPos = 1;
+      if (remaining.startsWith('<')) {
+        let ltPos = remaining.indexOf('>');
+        if (ltPos > 0) {
+          nextPos = ltPos + 1;
+        }
+      }
+
+      return fromMapKeysRecursive(
+        remaining.slice(nextPos),
+        mappedKeys.concat([Key.fromMapKey(remaining.slice(0, nextPos))])
+      );
+    };
+
+    let data = fromMapKeysRecursive(keys, []);
+    return new KeySequence(data);
   }
 }
-
-export const fromMapKeys = (keys: string): KeySequence => {
-  const fromMapKeysRecursive = (
-    remainings: string, mappedKeys: Key[],
-  ): Key[] => {
-    if (remainings.length === 0) {
-      return mappedKeys;
-    }
-
-    let nextPos = 1;
-    if (remainings.startsWith('<')) {
-      let ltPos = remainings.indexOf('>');
-      if (ltPos > 0) {
-        nextPos = ltPos + 1;
-      }
-    }
-
-    return fromMapKeysRecursive(
-      remainings.slice(nextPos),
-      mappedKeys.concat([Key.fromMapKey(remainings.slice(0, nextPos))])
-    );
-  };
-
-  let data = fromMapKeysRecursive(keys, []);
-  return KeySequence.from(data);
-};
-
