@@ -1,5 +1,6 @@
 import * as operations from './operations';
 import Settings, * as settings from './Settings';
+import Keymaps from './settings/Keymaps';
 
 export class FormKeymaps {
   private data: {[op: string]: string};
@@ -8,8 +9,8 @@ export class FormKeymaps {
     this.data = data;
   }
 
-  toKeymaps(): settings.Keymaps {
-    let keymaps: settings.Keymaps = {};
+  toKeymaps(): Keymaps {
+    let keymaps: { [key: string]: operations.Operation } = {};
     for (let name of Object.keys(this.data)) {
       let [type, argStr] = name.split('?');
       let args = {};
@@ -19,7 +20,7 @@ export class FormKeymaps {
       let key = this.data[name];
       keymaps[key] = operations.valueOf({ type, ...args });
     }
-    return keymaps;
+    return Keymaps.fromJSON(keymaps);
   }
 
   toJSON(): {[op: string]: string} {
@@ -42,10 +43,11 @@ export class FormKeymaps {
     return new FormKeymaps(data);
   }
 
-  static fromKeymaps(keymaps: settings.Keymaps): FormKeymaps {
+  static fromKeymaps(keymaps: Keymaps): FormKeymaps {
+    let json = keymaps.toJSON();
     let data: {[op: string]: string} = {};
-    for (let key of Object.keys(keymaps)) {
-      let op = keymaps[key];
+    for (let key of Object.keys(json)) {
+      let op = json[key];
       let args = { ...op };
       delete args.type;
 
@@ -109,27 +111,32 @@ export class FormSearch {
   }
 }
 
-export class JSONSettings {
-  private json: string;
-
-  constructor(json: any) {
-    this.json = json;
+export class JSONTextSettings {
+  constructor(
+    private json: string,
+  ) {
   }
 
   toSettings(): Settings {
     return settings.valueOf(JSON.parse(this.json));
   }
 
-  toJSON(): string {
+  toJSONText(): string {
     return this.json;
   }
 
-  static valueOf(o: ReturnType<JSONSettings['toJSON']>): JSONSettings {
-    return new JSONSettings(o);
+  static fromText(o: string): JSONTextSettings {
+    return new JSONTextSettings(o);
   }
 
-  static fromSettings(data: Settings): JSONSettings {
-    return new JSONSettings(JSON.stringify(data, undefined, 2));
+  static fromSettings(data: Settings): JSONTextSettings {
+    let json = {
+      keymaps: data.keymaps.toJSON(),
+      search: data.search,
+      properties: data.properties,
+      blacklist: data.blacklist,
+    };
+    return new JSONTextSettings(JSON.stringify(json, undefined, 2));
   }
 }
 
@@ -192,7 +199,7 @@ export class FormSettings {
 
   toSettings(): Settings {
     return settings.valueOf({
-      keymaps: this.keymaps.toKeymaps(),
+      keymaps: this.keymaps.toKeymaps().toJSON(),
       search: this.search.toSearchSettings(),
       properties: this.properties,
       blacklist: this.blacklist,
@@ -244,7 +251,7 @@ export enum SettingSource {
 export default class SettingData {
   private source: SettingSource;
 
-  private json?: JSONSettings;
+  private json?: JSONTextSettings;
 
   private form?: FormSettings;
 
@@ -252,7 +259,7 @@ export default class SettingData {
     source, json, form
   }: {
     source: SettingSource,
-    json?: JSONSettings,
+    json?: JSONTextSettings,
     form?: FormSettings,
   }) {
     this.source = source;
@@ -264,7 +271,7 @@ export default class SettingData {
     return this.source;
   }
 
-  getJSON(): JSONSettings {
+  getJSON(): JSONTextSettings {
     if (!this.json) {
       throw new TypeError('json settings not set');
     }
@@ -283,7 +290,7 @@ export default class SettingData {
     case SettingSource.JSON:
       return {
         source: this.source,
-        json: (this.json as JSONSettings).toJSON(),
+        json: (this.json as JSONTextSettings).toJSONText(),
       };
     case SettingSource.Form:
       return {
@@ -313,8 +320,8 @@ export default class SettingData {
     case SettingSource.JSON:
       return new SettingData({
         source: o.source,
-        json: JSONSettings.valueOf(
-          o.json as ReturnType<JSONSettings['toJSON']>),
+        json: JSONTextSettings.fromText(
+          o.json as ReturnType<JSONTextSettings['toJSONText']>),
       });
     case SettingSource.Form:
       return new SettingData({

@@ -1,6 +1,6 @@
 import { injectable } from 'tsyringe';
 import MemoryStorage from '../infrastructures/MemoryStorage';
-import Settings from '../../shared/Settings';
+import Settings, { valueOf, toJSON } from '../../shared/Settings';
 import * as PropertyDefs from '../../shared/property-defs';
 
 const CACHED_SETTING_KEY = 'setting';
@@ -14,11 +14,13 @@ export default class SettingRepository {
   }
 
   get(): Promise<Settings> {
-    return Promise.resolve(this.cache.get(CACHED_SETTING_KEY));
+    let data = this.cache.get(CACHED_SETTING_KEY);
+    return Promise.resolve(valueOf(data));
   }
 
   update(value: Settings): void {
-    return this.cache.set(CACHED_SETTING_KEY, value);
+    let data = toJSON(value);
+    return this.cache.set(CACHED_SETTING_KEY, data);
   }
 
   async setProperty(

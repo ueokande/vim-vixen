@@ -1,18 +1,18 @@
 import * as actions from '../actions';
 import {
-  JSONSettings, FormSettings, SettingSource,
+  JSONTextSettings, FormSettings, SettingSource,
 } from '../../shared/SettingData';
 
 export interface State {
   source: SettingSource;
-  json?: JSONSettings;
+  json?: JSONTextSettings;
   form?: FormSettings;
   error: string;
 }
 
 const defaultState: State = {
   source: SettingSource.JSON,
-  json: JSONSettings.valueOf(''),
+  json: JSONTextSettings.fromText(''),
   error: '',
 };
 

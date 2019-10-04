@@ -1,7 +1,5 @@
-import * as operations from './operations';
 import * as PropertyDefs from './property-defs';
-
-export type Keymaps = {[key: string]: operations.Operation};
+import Keymaps from './settings/Keymaps';
 
 export interface Search {
   default: string;
@@ -20,14 +18,6 @@ export default interface Settings {
   properties: Properties;
   blacklist: string[];
 }
-
-export const keymapsValueOf = (o: any): Keymaps => {
-  return Object.keys(o).reduce((keymaps: Keymaps, key: string): Keymaps => {
-    let op = operations.valueOf(o[key]);
-    keymaps[key] = op;
-    return keymaps;
-  }, {});
-};
 
 export const searchValueOf = (o: any): Search => {
   if (typeof o.default !== 'string') {
@@ -97,7 +87,7 @@ export const valueOf = (o: any): Settings => {
   for (let key of Object.keys(o)) {
     switch (key) {
     case 'keymaps':
-      settings.keymaps = keymapsValueOf(o.keymaps);
+      settings.keymaps = Keymaps.fromJSON(o.keymaps);
       break;
     case 'search':
       settings.search = searchValueOf(o.search);
@@ -115,8 +105,17 @@ export const valueOf = (o: any): Settings => {
   return settings;
 };
 
+export const toJSON = (settings: Settings): any => {
+  return {
+    keymaps: settings.keymaps.toJSON(),
+    search: settings.search,
+    properties: settings.properties,
+    blacklist: settings.blacklist,
+  };
+};
+
 export const DefaultSetting: Settings = {
-  keymaps: {
+  keymaps: Keymaps.fromJSON({
     '0': { 'type': 'scroll.home' },
     ':': { 'type': 'command.show' },
     'o': { 'type': 'command.show.open', 'alter': false },
@@ -179,7 +178,7 @@ export const DefaultSetting: Settings = {
     'N': { 'type': 'find.prev' },
     '.': { 'type': 'repeat.last' },
     '<S-Esc>': { 'type': 'addon.toggle.enabled' }
-  },
+  }),
   search: {
     default: 'google',
     engines: {

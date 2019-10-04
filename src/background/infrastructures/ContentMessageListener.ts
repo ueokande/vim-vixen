@@ -8,6 +8,7 @@ import AddonEnabledController from '../controllers/AddonEnabledController';
 import LinkController from '../controllers/LinkController';
 import OperationController from '../controllers/OperationController';
 import MarkController from '../controllers/MarkController';
+import { toJSON } from '../../shared/Settings';
 
 @injectable()
 export default class ContentMessageListener {
@@ -101,8 +102,8 @@ export default class ContentMessageListener {
     return this.commandController.exec(text);
   }
 
-  onSettingsQuery(): Promise<any> {
-    return this.settingController.getSetting();
+  async onSettingsQuery(): Promise<any> {
+    return toJSON(await this.settingController.getSetting());
   }
 
   onFindGetKeyword(): Promise<string> {

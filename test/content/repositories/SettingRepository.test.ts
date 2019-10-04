@@ -1,12 +1,13 @@
 import { SettingRepositoryImpl } from '../../../src/content/repositories/SettingRepository';
 import { expect } from 'chai';
+import Keymaps from '../../../src/shared/settings/Keymaps';
 
 describe('SettingRepositoryImpl', () => {
   it('updates and gets current value', () => {
     let sut = new SettingRepositoryImpl();
 
     let settings = {
-      keymaps: {},
+      keymaps: Keymaps.fromJSON({}),
       search: {
         default: 'google',
         engines: {
@@ -19,7 +20,7 @@ describe('SettingRepositoryImpl', () => {
         complete: 'sbh',
       },
       blacklist: [],
-    }
+    };
 
     sut.set(settings);
 
@@ -27,4 +28,3 @@ describe('SettingRepositoryImpl', () => {
     expect(actual.properties.hintchars).to.equal('abcd1234');
   });
 });
-

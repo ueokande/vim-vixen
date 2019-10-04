@@ -8,7 +8,7 @@ import BlacklistForm from './form/BlacklistForm';
 import PropertiesForm from './form/PropertiesForm';
 import * as settingActions from '../../settings/actions/setting';
 import SettingData, {
-  JSONSettings, FormKeymaps, FormSearch, FormSettings,
+  JSONTextSettings, FormKeymaps, FormSearch, FormSettings,
 } from '../../shared/SettingData';
 import { State as AppState } from '../reducers/setting';
 import * as settings from '../../shared/Settings';
@@ -75,7 +75,7 @@ class SettingsComponent extends React.Component<Props> {
     </div>;
   }
 
-  renderJsonFields(json: JSONSettings, error: string) {
+  renderJsonFields(json: JSONTextSettings, error: string) {
     return <div>
       <Input
         type='textarea'
@@ -85,7 +85,7 @@ class SettingsComponent extends React.Component<Props> {
         error={error}
         onValueChange={this.bindJson.bind(this)}
         onBlur={this.save.bind(this)}
-        value={json.toJSON()}
+        value={json.toJSONText()}
       />
     </div>;
   }
@@ -97,7 +97,7 @@ class SettingsComponent extends React.Component<Props> {
       fields = this.renderFormFields(this.props.form);
     } else if (this.props.source === 'json') {
       fields = this.renderJsonFields(
-        this.props.json as JSONSettings, this.props.error);
+        this.props.json as JSONTextSettings, this.props.error);
     }
     return (
       <div>
@@ -165,7 +165,7 @@ class SettingsComponent extends React.Component<Props> {
   bindJson(_name: string, value: string) {
     let data = new SettingData({
       source: this.props.source,
-      json: JSONSettings.valueOf(value),
+      json: JSONTextSettings.fromText(value),
     });
     this.props.dispatch(settingActions.set(data));
   }
@@ -183,7 +183,7 @@ class SettingsComponent extends React.Component<Props> {
         return;
       }
       this.props.dispatch(
-        settingActions.switchToForm(this.props.json as JSONSettings));
+        settingActions.switchToForm(this.props.json as JSONTextSettings));
       this.save();
     }
   }

@@ -1,4 +1,4 @@
-import Settings from '../../shared/Settings';
+import Settings, { valueOf } from '../../shared/Settings';
 import * as messages from '../../shared/messages';
 
 export default interface SettingClient {
@@ -10,6 +10,6 @@ export class SettingClientImpl {
     let settings = await browser.runtime.sendMessage({
       type: messages.SETTINGS_QUERY,
     });
-    return settings as Settings;
+    return valueOf(settings);
   }
 }

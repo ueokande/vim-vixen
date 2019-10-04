@@ -1,31 +1,7 @@
 import * as settings from '../../src/shared/Settings';
-import { expect } from 'chai';
+import {expect} from 'chai';
 
 describe('Settings', () => {
-  describe('#keymapsValueOf', () => {
-    it('returns empty object by empty settings', () => {
-      let keymaps = settings.keymapsValueOf({});
-      expect(keymaps).to.be.empty;
-    });
-
-    it('returns keymaps by valid settings', () => {
-      let keymaps = settings.keymapsValueOf({
-        k: { type: "scroll.vertically", count: -1 },
-        j: { type: "scroll.vertically", count: 1 },
-      });
-
-      expect(keymaps['k']).to.deep.equal({ type: "scroll.vertically", count: -1 });
-      expect(keymaps['j']).to.deep.equal({ type: "scroll.vertically", count: 1 });
-    });
-
-    it('throws a TypeError by invalid settings', () => {
-      expect(() => settings.keymapsValueOf(null)).to.throw(TypeError);
-      expect(() => settings.keymapsValueOf({
-        k: { type: "invalid.operation" },
-      })).to.throw(TypeError);
-    });
-  });
-
   describe('#searchValueOf', () => {
     it('returns search settings by valid settings', () => {
       let search = settings.searchValueOf({
@@ -110,16 +86,6 @@ describe('Settings', () => {
         complete: "sbh"
       });
     });
-
-    it('throws a TypeError by invalid settings', () => {
-      expect(() => settings.keymapsValueOf(null)).to.throw(TypeError);
-      expect(() => settings.keymapsValueOf({
-        smoothscroll: 'false',
-      })).to.throw(TypeError);
-      expect(() => settings.keymapsValueOf({
-        unknown: 'xyz'
-      })).to.throw(TypeError);
-    });
   });
 
   describe('#blacklistValueOf', () => {
@@ -161,7 +127,12 @@ describe('Settings', () => {
         "blacklist": []
       });
 
-      expect(x).to.deep.equal({
+      expect({
+        keymaps: x.keymaps.toJSON(),
+        search: x.search,
+        properties: x.properties,
+        blacklist: x.blacklist,
+      }).to.deep.equal({
         keymaps: {},
         search: {
           default: "google",
@@ -180,7 +151,7 @@ describe('Settings', () => {
 
     it('sets default settings', () => {
       let value = settings.valueOf({});
-      expect(value.keymaps).to.not.be.empty;
+      expect(value.keymaps.toJSON()).to.not.be.empty;
       expect(value.properties).to.not.be.empty;
       expect(value.search.default).to.be.a('string');
       expect(value.search.engines).to.be.an('object');

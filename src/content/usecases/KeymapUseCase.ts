@@ -3,16 +3,16 @@ import KeymapRepository from '../repositories/KeymapRepository';
 import SettingRepository from '../repositories/SettingRepository';
 import AddonEnabledRepository from '../repositories/AddonEnabledRepository';
 import * as operations from '../../shared/operations';
-import { Keymaps } from '../../shared/Settings';
 import Key from '../domains/Key';
 import KeySequence from '../domains/KeySequence';
+import Keymaps from '../../shared/settings/Keymaps';
 
 type KeymapEntityMap = Map<KeySequence, operations.Operation>;
 
-const reservedKeymaps: Keymaps = {
+const reservedKeymaps = Keymaps.fromJSON({
   '<Esc>': { type: operations.CANCEL },
   '<C-[>': { type: operations.CANCEL },
-};
+});
 
 @injectable()
 export default class KeymapUseCase {
@@ -65,16 +65,11 @@ export default class KeymapUseCase {
   }
 
   private keymapEntityMap(): KeymapEntityMap {
-    let keymaps = {
-      ...this.settingRepository.get().keymaps,
-      ...reservedKeymaps,
-    };
-    let entries = Object.entries(keymaps).map((entry) => {
-      return [
-        KeySequence.fromMapKeys(entry[0]),
-        entry[1],
-      ];
-    }) as [KeySequence, operations.Operation][];
+    let keymaps = this.settingRepository.get().keymaps.combine(reservedKeymaps);
+    let entries = keymaps.entries().map(entry => [
+      KeySequence.fromMapKeys(entry[0]),
+      entry[1],
+    ]) as [KeySequence, operations.Operation][];
     return new Map<KeySequence, operations.Operation>(entries);
   }
 }
