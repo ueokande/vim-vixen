@@ -11,8 +11,8 @@ import SettingData, {
   FormKeymaps, FormSearch, FormSettings, JSONTextSettings,
 } from '../../shared/SettingData';
 import { State as AppState } from '../reducers/setting';
-import * as settings from '../../shared/Settings';
 import Properties from '../../shared/settings/Properties';
+import Blacklist from '../../shared/settings/Blacklist';
 
 const DO_YOU_WANT_TO_CONTINUE =
   'Some settings in JSON can be lost when migrating.  ' +
@@ -143,7 +143,7 @@ class SettingsComponent extends React.Component<Props> {
     let data = new SettingData({
       source: this.props.source,
       form: (this.props.form as FormSettings).buildWithBlacklist(
-        settings.blacklistValueOf(value)),
+        Blacklist.fromJSON(value)),
     });
     this.props.dispatch(settingActions.set(data));
   }

@@ -1,25 +1,14 @@
 import Keymaps from './settings/Keymaps';
 import Search from './settings/Search';
 import Properties from './settings/Properties';
+import Blacklist from './settings/Blacklist';
 
 export default interface Settings {
   keymaps: Keymaps;
   search: Search;
   properties: Properties;
-  blacklist: string[];
+  blacklist: Blacklist;
 }
-
-export const blacklistValueOf = (o: any): string[] => {
-  if (!Array.isArray(o)) {
-    throw new TypeError(`"blacklist" is not an array of string`);
-  }
-  for (let x of o) {
-    if (typeof x !== 'string') {
-      throw new TypeError(`"blacklist" is not an array of string`);
-    }
-  }
-  return o as string[];
-};
 
 export const valueOf = (o: any): Settings => {
   let settings = { ...DefaultSetting };
@@ -35,7 +24,7 @@ export const valueOf = (o: any): Settings => {
       settings.properties = Properties.fromJSON(o.properties);
       break;
     case 'blacklist':
-      settings.blacklist = blacklistValueOf(o.blacklist);
+      settings.blacklist = Blacklist.fromJSON(o.blacklist);
       break;
     default:
       throw new TypeError('unknown setting: ' + key);
@@ -49,7 +38,7 @@ export const toJSON = (settings: Settings): any => {
     keymaps: settings.keymaps.toJSON(),
     search: settings.search.toJSON(),
     properties: settings.properties.toJSON(),
-    blacklist: settings.blacklist,
+    blacklist: settings.blacklist.toJSON(),
   };
 };
 
@@ -134,5 +123,5 @@ export const DefaultSetting: Settings = {
     smoothscroll: false,
     complete: 'sbh'
   }),
-  blacklist: []
+  blacklist: Blacklist.fromJSON([]),
 };

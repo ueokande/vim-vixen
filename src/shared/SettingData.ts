@@ -3,6 +3,7 @@ import Settings, * as settings from './Settings';
 import Keymaps from './settings/Keymaps';
 import Search from './settings/Search';
 import Properties from './settings/Properties';
+import Blacklist from './settings/Blacklist';
 
 export class FormKeymaps {
   private data: {[op: string]: string};
@@ -146,13 +147,13 @@ export class FormSettings {
 
   private properties: Properties;
 
-  private blacklist: string[];
+  private blacklist: Blacklist;
 
   constructor(
     keymaps: FormKeymaps,
     search: FormSearch,
     properties: Properties,
-    blacklist: string[],
+    blacklist: Blacklist,
   ) {
     this.keymaps = keymaps;
     this.search = search;
@@ -187,7 +188,7 @@ export class FormSettings {
     );
   }
 
-  buildWithBlacklist(blacklist: string[]): FormSettings {
+  buildWithBlacklist(blacklist: Blacklist): FormSettings {
     return new FormSettings(
       this.keymaps,
       this.search,
@@ -201,7 +202,7 @@ export class FormSettings {
       keymaps: this.keymaps.toKeymaps().toJSON(),
       search: this.search.toSearchSettings().toJSON(),
       properties: this.properties.toJSON(),
-      blacklist: this.blacklist,
+      blacklist: this.blacklist.toJSON(),
     });
   }
 
@@ -215,7 +216,7 @@ export class FormSettings {
       keymaps: this.keymaps.toJSON(),
       search: this.search.toJSON(),
       properties: this.properties.toJSON(),
-      blacklist: this.blacklist,
+      blacklist: this.blacklist.toJSON(),
     };
   }
 
@@ -229,7 +230,7 @@ export class FormSettings {
       FormKeymaps.valueOf(o.keymaps),
       FormSearch.valueOf(o.search),
       Properties.fromJSON(o.properties),
-      settings.blacklistValueOf(o.blacklist),
+      Blacklist.fromJSON(o.blacklist),
     );
   }
 

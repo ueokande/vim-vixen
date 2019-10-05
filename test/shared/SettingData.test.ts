@@ -6,6 +6,7 @@ import { expect } from 'chai';
 import Keymaps from '../../src/shared/settings/Keymaps';
 import Search from '../../src/shared/settings/Search';
 import Properties from '../../src/shared/settings/Properties';
+import Blacklist from '../../src/shared/settings/Blacklist'
 
 describe('shared/SettingData', () => {
   describe('FormKeymaps', () => {
@@ -64,7 +65,7 @@ describe('shared/SettingData', () => {
           keymaps: settings.keymaps.toJSON(),
           search: settings.search.toJSON(),
           properties: settings.properties.toJSON(),
-          blacklist: settings.blacklist,
+          blacklist: settings.blacklist.toJSON(),
         }).to.deep.equal(JSON.parse(o));
       });
     });
@@ -84,7 +85,7 @@ describe('shared/SettingData', () => {
             smoothscroll: false,
             complete: "sbh"
           }),
-          blacklist: [],
+          blacklist: Blacklist.fromJSON([]),
         };
 
         let json = JSONTextSettings.fromSettings(o).toJSONText();
@@ -92,7 +93,7 @@ describe('shared/SettingData', () => {
           keymaps: o.keymaps.toJSON(),
           search: o.search.toJSON(),
           properties: o.properties.toJSON(),
-          blacklist: o.blacklist,
+          blacklist: o.blacklist.toJSON(),
         });
       });
     });
@@ -125,7 +126,7 @@ describe('shared/SettingData', () => {
           keymaps: settings.keymaps.toJSON(),
           search: settings.search.toJSON(),
           properties: settings.properties.toJSON(),
-          blacklist: settings.blacklist,
+          blacklist: settings.blacklist.toJSON(),
         }).to.deep.equal({
           keymaps: {
             'j': { type: 'scroll.vertically', count: 1 },
@@ -165,7 +166,7 @@ describe('shared/SettingData', () => {
             smoothscroll: false,
             complete: "sbh"
           }),
-          blacklist: []
+          blacklist: Blacklist.fromJSON([]),
         };
 
         let json = FormSettings.fromSettings(data).toJSON();

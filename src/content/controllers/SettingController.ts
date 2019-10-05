@@ -1,8 +1,6 @@
 import { injectable } from 'tsyringe';
 import AddonEnabledUseCase from '../usecases/AddonEnabledUseCase';
 import SettingUseCase from '../usecases/SettingUseCase';
-import * as blacklists from '../../shared/blacklists';
-
 import * as messages from '../../shared/messages';
 
 @injectable()
@@ -17,9 +15,7 @@ export default class SettingController {
   async initSettings(): Promise<void> {
     try {
       let current = await this.settingUseCase.reload();
-      let disabled = blacklists.includes(
-        current.blacklist, window.location.href,
-      );
+      let disabled = current.blacklist.includes(window.location.href);
       if (disabled) {
         this.addonEnabledUseCase.disable();
       } else {

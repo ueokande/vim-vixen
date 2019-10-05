@@ -2,32 +2,6 @@ import * as settings from '../../src/shared/Settings';
 import {expect} from 'chai';
 
 describe('Settings', () => {
-
-  describe('#blacklistValueOf', () => {
-    it('returns empty array by empty settings', () => {
-      let blacklist = settings.blacklistValueOf([]);
-      expect(blacklist).to.be.empty;
-    });
-
-    it('returns blacklist by valid settings', () => {
-      let blacklist = settings.blacklistValueOf([
-        "github.com",
-        "circleci.com",
-      ]);
-
-      expect(blacklist).to.deep.equal([
-        "github.com",
-        "circleci.com",
-      ]);
-    });
-
-    it('throws a TypeError by invalid settings', () => {
-      expect(() => settings.blacklistValueOf(null)).to.throw(TypeError);
-      expect(() => settings.blacklistValueOf({})).to.throw(TypeError);
-      expect(() => settings.blacklistValueOf([1,2,3])).to.throw(TypeError);
-    });
-  });
-
   describe('#valueOf', () => {
     it('returns settings by valid settings', () => {
       let x = settings.valueOf({
@@ -46,7 +20,7 @@ describe('Settings', () => {
         keymaps: x.keymaps.toJSON(),
         search: x.search.toJSON(),
         properties: x.properties.toJSON(),
-        blacklist: x.blacklist,
+        blacklist: x.blacklist.toJSON(),
       }).to.deep.equal({
         keymaps: {},
         search: {
@@ -70,7 +44,7 @@ describe('Settings', () => {
       expect(value.properties.toJSON()).to.not.be.empty;
       expect(value.search.defaultEngine).to.be.a('string');
       expect(value.search.engines).to.be.an('object');
-      expect(value.blacklist).to.be.empty;
+      expect(value.blacklist.toJSON()).to.be.empty;
     });
 
     it('throws a TypeError with an unknown field', () => {
