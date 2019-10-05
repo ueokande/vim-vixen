@@ -2,6 +2,7 @@ import * as actions from '../actions';
 import {
   JSONTextSettings, FormSettings, SettingSource,
 } from '../../shared/SettingData';
+import { DefaultSetting } from '../../shared/settings/Settings';
 
 export interface State {
   source: SettingSource;
@@ -13,6 +14,7 @@ export interface State {
 const defaultState: State = {
   source: SettingSource.JSON,
   json: JSONTextSettings.fromText(''),
+  form: FormSettings.fromSettings(DefaultSetting),
   error: '',
 };
 

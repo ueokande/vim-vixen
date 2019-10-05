@@ -32,7 +32,7 @@ class SettingsComponent extends React.Component<Props> {
     this.props.dispatch(settingActions.load());
   }
 
-  renderFormFields(form: any) {
+  renderFormFields(form: FormSettings) {
     return <div>
       <fieldset>
         <legend>Keybindings</legend>
@@ -53,7 +53,7 @@ class SettingsComponent extends React.Component<Props> {
       <fieldset>
         <legend>Blacklist</legend>
         <BlacklistForm
-          value={form.blacklist}
+          value={form.blacklist.toJSON()}
           onChange={this.bindBlacklistForm.bind(this)}
           onBlur={this.save.bind(this)}
         />
@@ -62,7 +62,7 @@ class SettingsComponent extends React.Component<Props> {
         <legend>Properties</legend>
         <PropertiesForm
           types={Properties.types()}
-          value={form.properties}
+          value={form.properties.toJSON()}
           onChange={this.bindPropertiesForm.bind(this)}
           onBlur={this.save.bind(this)}
         />
@@ -89,10 +89,9 @@ class SettingsComponent extends React.Component<Props> {
     let fields = null;
     let disabled = this.props.error.length > 0;
     if (this.props.source === 'form') {
-      fields = this.renderFormFields(this.props.form);
+      fields = this.renderFormFields(this.props.form!!);
     } else if (this.props.source === 'json') {
-      fields = this.renderJsonFields(
-        this.props.json as JSONTextSettings, this.props.error);
+      fields = this.renderJsonFields(this.props.json!!, this.props.error);
     }
     return (
       <div>

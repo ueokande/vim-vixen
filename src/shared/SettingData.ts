@@ -141,13 +141,13 @@ export class JSONTextSettings {
 }
 
 export class FormSettings {
-  private keymaps: FormKeymaps;
+  public readonly keymaps: FormKeymaps;
 
-  private search: FormSearch;
+  public readonly search: FormSearch;
 
-  private properties: Properties;
+  public readonly properties: Properties;
 
-  private blacklist: Blacklist;
+  public readonly blacklist: Blacklist;
 
   constructor(
     keymaps: FormKeymaps,
@@ -210,7 +210,7 @@ export class FormSettings {
     keymaps: ReturnType<FormKeymaps['toJSON']>;
     search: ReturnType<FormSearch['toJSON']>;
     properties: ReturnType<Properties['toJSON']>;
-    blacklist: string[];
+    blacklist: ReturnType<Blacklist['toJSON']>;
     } {
     return {
       keymaps: this.keymaps.toJSON(),

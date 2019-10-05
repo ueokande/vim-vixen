@@ -59,7 +59,7 @@ export default class Properties {
     hintchars?: string;
     smoothscroll?: boolean;
     complete?: string;
-  }) {
+  } = {}) {
     this.hintchars = hintchars || defaultValues.hintchars;
     this.smoothscroll = smoothscroll || defaultValues.smoothscroll;
     this.complete = complete || defaultValues.complete;
