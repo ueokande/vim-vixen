@@ -1,6 +1,7 @@
 import { SettingRepositoryImpl } from '../../../src/content/repositories/SettingRepository';
 import { expect } from 'chai';
 import Keymaps from '../../../src/shared/settings/Keymaps';
+import Search from '../../../src/shared/settings/Search';
 
 describe('SettingRepositoryImpl', () => {
   it('updates and gets current value', () => {
@@ -8,12 +9,12 @@ describe('SettingRepositoryImpl', () => {
 
     let settings = {
       keymaps: Keymaps.fromJSON({}),
-      search: {
+      search: Search.fromJSON({
         default: 'google',
         engines: {
           google: 'https://google.com/?q={}',
         }
-      },
+      }),
       properties: {
         hintchars: 'abcd1234',
         smoothscroll: false,

@@ -1,14 +1,16 @@
-import * as parsers from 'shared/urls';
+import * as parsers from '../../src/shared/urls';
+import { expect } from 'chai';
+import Search from '../../src/shared/settings/Search';
 
 describe("shared/commands/parsers", () => {
   describe('#searchUrl', () => {
-    const config = {
+    const config = Search.fromJSON({
       default: 'google',
       engines: {
         google: 'https://google.com/search?q={}',
         yahoo: 'https://yahoo.com/search?q={}',
       }
-    };
+    });
 
     it('convertes search url', () => {
       expect(parsers.searchUrl('google.com', config))

@@ -1,67 +1,7 @@
 import * as settings from '../../src/shared/Settings';
-import {expect} from 'chai';
+import { expect } from 'chai';
 
 describe('Settings', () => {
-  describe('#searchValueOf', () => {
-    it('returns search settings by valid settings', () => {
-      let search = settings.searchValueOf({
-        default: "google",
-        engines: {
-          "google": "https://google.com/search?q={}",
-          "yahoo": "https://search.yahoo.com/search?p={}",
-        }
-      });
-
-      expect(search).to.deep.equal({
-        default: "google",
-        engines: {
-          "google": "https://google.com/search?q={}",
-          "yahoo": "https://search.yahoo.com/search?p={}",
-        }
-      });
-    });
-
-    it('throws a TypeError by invalid settings', () => {
-      expect(() => settings.searchValueOf(null)).to.throw(TypeError);
-      expect(() => settings.searchValueOf({})).to.throw(TypeError);
-      expect(() => settings.searchValueOf([])).to.throw(TypeError);
-      expect(() => settings.searchValueOf({
-        default: 123,
-        engines: {}
-      })).to.throw(TypeError);
-      expect(() => settings.searchValueOf({
-        default: "google",
-        engines: {
-          "google": 123456,
-        }
-      })).to.throw(TypeError);
-      expect(() => settings.searchValueOf({
-        default: "wikipedia",
-        engines: {
-          "google": "https://google.com/search?q={}",
-          "yahoo": "https://search.yahoo.com/search?p={}",
-        }
-      })).to.throw(TypeError);
-      expect(() => settings.searchValueOf({
-        default: "g o o g l e",
-        engines: {
-          "g o o g l e": "https://google.com/search?q={}",
-        }
-      })).to.throw(TypeError);
-      expect(() => settings.searchValueOf({
-        default: "google",
-        engines: {
-          "google": "https://google.com/search",
-        }
-      })).to.throw(TypeError);
-      expect(() => settings.searchValueOf({
-        default: "google",
-        engines: {
-          "google": "https://google.com/search?q={}&r={}",
-        }
-      })).to.throw(TypeError);
-    });
-  });
 
   describe('#propertiesValueOf', () => {
     it('returns with default properties by empty settings', () => {
@@ -129,7 +69,7 @@ describe('Settings', () => {
 
       expect({
         keymaps: x.keymaps.toJSON(),
-        search: x.search,
+        search: x.search.toJSON(),
         properties: x.properties,
         blacklist: x.blacklist,
       }).to.deep.equal({
@@ -153,7 +93,7 @@ describe('Settings', () => {
       let value = settings.valueOf({});
       expect(value.keymaps.toJSON()).to.not.be.empty;
       expect(value.properties).to.not.be.empty;
-      expect(value.search.default).to.be.a('string');
+      expect(value.search.defaultEngine).to.be.a('string');
       expect(value.search.engines).to.be.an('object');
       expect(value.blacklist).to.be.empty;
     });

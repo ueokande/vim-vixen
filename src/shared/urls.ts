@@ -1,4 +1,4 @@
-import { Search } from './Settings';
+import Search from './settings/Search';
 
 const trimStart = (str: string): string => {
   // NOTE String.trimStart is available on Firefox 61
@@ -19,7 +19,7 @@ const searchUrl = (keywords: string, search: Search): string => {
   if (keywords.includes('.') && !keywords.includes(' ')) {
     return 'http://' + keywords;
   }
-  let template = search.engines[search.default];
+  let template = search.engines[search.defaultEngine];
   let query = keywords;
 
   let first = trimStart(keywords).split(' ')[0];

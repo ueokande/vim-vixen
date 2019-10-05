@@ -1,10 +1,6 @@
 import * as PropertyDefs from './property-defs';
 import Keymaps from './settings/Keymaps';
-
-export interface Search {
-  default: string;
-  engines: { [key: string]: string };
-}
+import Search from './settings/Search';
 
 export interface Properties {
   hintchars: string;
@@ -18,36 +14,6 @@ export default interface Settings {
   properties: Properties;
   blacklist: string[];
 }
-
-export const searchValueOf = (o: any): Search => {
-  if (typeof o.default !== 'string') {
-    throw new TypeError('string field "default" not set"');
-  }
-  for (let name of Object.keys(o.engines)) {
-    if ((/\s/).test(name)) {
-      throw new TypeError(
-        `While space in the search engine not allowed: "${name}"`);
-    }
-    let url = o.engines[name];
-    if (typeof url !== 'string') {
-      throw new TypeError('"engines" not an object of string');
-    }
-    let matches = url.match(/{}/g);
-    if (matches === null) {
-      throw new TypeError(`No {}-placeholders in URL of "${name}"`);
-    } else if (matches.length > 1) {
-      throw new TypeError(`Multiple {}-placeholders in URL of "${name}"`);
-    }
-
-  }
-  if (!Object.prototype.hasOwnProperty.call(o.engines, o.default)) {
-    throw new TypeError(`Default engine "${o.default}" not found`);
-  }
-  return {
-    default: o.default as string,
-    engines: { ...o.engines },
-  };
-};
 
 export const propertiesValueOf = (o: any): Properties => {
   let defNames = new Set(PropertyDefs.defs.map(def => def.name));
@@ -90,7 +56,7 @@ export const valueOf = (o: any): Settings => {
       settings.keymaps = Keymaps.fromJSON(o.keymaps);
       break;
     case 'search':
-      settings.search = searchValueOf(o.search);
+      settings.search = Search.fromJSON(o.search);
       break;
     case 'properties':
       settings.properties = propertiesValueOf(o.properties);
@@ -108,7 +74,7 @@ export const valueOf = (o: any): Settings => {
 export const toJSON = (settings: Settings): any => {
   return {
     keymaps: settings.keymaps.toJSON(),
-    search: settings.search,
+    search: settings.search.toJSON(),
     properties: settings.properties,
     blacklist: settings.blacklist,
   };
@@ -179,7 +145,7 @@ export const DefaultSetting: Settings = {
     '.': { 'type': 'repeat.last' },
     '<S-Esc>': { 'type': 'addon.toggle.enabled' }
   }),
-  search: {
+  search: Search.fromJSON({
     default: 'google',
     engines: {
       'google': 'https://google.com/search?q={}',
@@ -189,7 +155,7 @@ export const DefaultSetting: Settings = {
       'twitter': 'https://twitter.com/search?q={}',
       'wikipedia': 'https://en.wikipedia.org/w/index.php?search={}'
     }
-  },
+  }),
   properties: {
     hintchars: 'abcdefghijklmnopqrstuvwxyz',
     smoothscroll: false,

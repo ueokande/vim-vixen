@@ -4,6 +4,7 @@ import SettingData, {
 import Settings from '../../src/shared/Settings';
 import { expect } from 'chai';
 import Keymaps from '../../src/shared/settings/Keymaps';
+import Search from '../../src/shared/settings/Search';
 
 describe('shared/SettingData', () => {
   describe('FormKeymaps', () => {
@@ -60,7 +61,7 @@ describe('shared/SettingData', () => {
         let settings = JSONTextSettings.fromText(o).toSettings();
         expect({
           keymaps: settings.keymaps.toJSON(),
-          search: settings.search,
+          search: settings.search.toJSON(),
           properties: settings.properties,
           blacklist: settings.blacklist,
         }).to.deep.equal(JSON.parse(o));
@@ -71,12 +72,12 @@ describe('shared/SettingData', () => {
       it('create from a Settings and create a JSON string', () => {
         let o = {
           keymaps: Keymaps.fromJSON({}),
-          search: {
+          search: Search.fromJSON({
             default: "google",
             engines: {
               google: "https://google.com/search?q={}",
             },
-          },
+          }),
           properties: {
             hintchars: "abcdefghijklmnopqrstuvwxyz",
             smoothscroll: false,
@@ -88,7 +89,7 @@ describe('shared/SettingData', () => {
         let json = JSONTextSettings.fromSettings(o).toJSONText();
         expect(JSON.parse(json)).to.deep.equal({
           keymaps: o.keymaps.toJSON(),
-          search: o.search,
+          search: o.search.toJSON(),
           properties: o.properties,
           blacklist: o.blacklist,
         });
@@ -121,7 +122,7 @@ describe('shared/SettingData', () => {
         let settings = FormSettings.valueOf(data).toSettings();
         expect({
           keymaps: settings.keymaps.toJSON(),
-          search: settings.search,
+          search: settings.search.toJSON(),
           properties: settings.properties,
           blacklist: settings.blacklist,
         }).to.deep.equal({
@@ -152,12 +153,12 @@ describe('shared/SettingData', () => {
             'j': { type: 'scroll.vertically', count: 1 },
             '0': { type: 'scroll.home' },
           }),
-          search: {
+          search: Search.fromJSON({
             default: "google",
             engines: {
               "google": "https://google.com/search?q={}"
             }
-          },
+          }),
           properties: {
             hintchars: "abcdefghijklmnopqrstuvwxyz",
             smoothscroll: false,
@@ -278,7 +279,7 @@ describe('shared/SettingData', () => {
         };
 
         let settings = SettingData.valueOf(data).toSettings();
-        expect(settings.search.default).to.equal('google');
+        expect(settings.search.defaultEngine).to.equal('google');
       });
 
       it('parse object from form source', () => {
@@ -302,7 +303,7 @@ describe('shared/SettingData', () => {
         };
 
         let settings = SettingData.valueOf(data).toSettings();
-        expect(settings.search.default).to.equal('yahoo');
+        expect(settings.search.defaultEngine).to.equal('yahoo');
       });
     });
   });

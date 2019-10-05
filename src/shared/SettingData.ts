@@ -1,6 +1,7 @@
 import * as operations from './operations';
 import Settings, * as settings from './Settings';
 import Keymaps from './settings/Keymaps';
+import Search from './settings/Search';
 
 export class FormKeymaps {
   private data: {[op: string]: string};
@@ -71,15 +72,12 @@ export class FormSearch {
     this.engines = engines;
   }
 
-  toSearchSettings(): settings.Search {
-    return {
-      default: this.default,
-      engines: this.engines.reduce(
-        (o: {[key: string]: string}, [name, url]) => {
-          o[name] = url;
-          return o;
-        }, {}),
-    };
+  toSearchSettings(): Search {
+    let engines: { [name: string]: string } = {};
+    for (let entry of this.engines) {
+      engines[entry[0]] = entry[1];
+    }
+    return new Search(this.default, engines);
   }
 
   toJSON(): {
@@ -102,12 +100,12 @@ export class FormSearch {
     return new FormSearch(o.default, o.engines);
   }
 
-  static fromSearch(search: settings.Search): FormSearch {
+  static fromSearch(search: Search): FormSearch {
     let engines = Object.entries(search.engines).reduce(
       (o: string[][], [name, url]) => {
         return o.concat([[name, url]]);
       }, []);
-    return new FormSearch(search.default, engines);
+    return new FormSearch(search.defaultEngine, engines);
   }
 }
 
@@ -200,7 +198,7 @@ export class FormSettings {
   toSettings(): Settings {
     return settings.valueOf({
       keymaps: this.keymaps.toKeymaps().toJSON(),
-      search: this.search.toSearchSettings(),
+      search: this.search.toSearchSettings().toJSON(),
       properties: this.properties,
       blacklist: this.blacklist,
     });
