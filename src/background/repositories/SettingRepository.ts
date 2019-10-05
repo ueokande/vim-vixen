@@ -1,7 +1,7 @@
 import { injectable } from 'tsyringe';
 import MemoryStorage from '../infrastructures/MemoryStorage';
 import Settings, { valueOf, toJSON } from '../../shared/Settings';
-import * as PropertyDefs from '../../shared/property-defs';
+import Properties from '../../shared/settings/Properties';
 
 const CACHED_SETTING_KEY = 'setting';
 
@@ -26,7 +26,7 @@ export default class SettingRepository {
   async setProperty(
     name: string, value: string | number | boolean,
   ): Promise<void> {
-    let def = PropertyDefs.defs.find(d => name === d.name);
+    let def = Properties.def(name);
     if (!def) {
       throw new Error('unknown property: ' + name);
     }

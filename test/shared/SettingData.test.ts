@@ -5,6 +5,7 @@ import Settings from '../../src/shared/Settings';
 import { expect } from 'chai';
 import Keymaps from '../../src/shared/settings/Keymaps';
 import Search from '../../src/shared/settings/Search';
+import Properties from '../../src/shared/settings/Properties';
 
 describe('shared/SettingData', () => {
   describe('FormKeymaps', () => {
@@ -62,7 +63,7 @@ describe('shared/SettingData', () => {
         expect({
           keymaps: settings.keymaps.toJSON(),
           search: settings.search.toJSON(),
-          properties: settings.properties,
+          properties: settings.properties.toJSON(),
           blacklist: settings.blacklist,
         }).to.deep.equal(JSON.parse(o));
       });
@@ -78,11 +79,11 @@ describe('shared/SettingData', () => {
               google: "https://google.com/search?q={}",
             },
           }),
-          properties: {
+          properties: Properties.fromJSON({
             hintchars: "abcdefghijklmnopqrstuvwxyz",
             smoothscroll: false,
             complete: "sbh"
-          },
+          }),
           blacklist: [],
         };
 
@@ -90,7 +91,7 @@ describe('shared/SettingData', () => {
         expect(JSON.parse(json)).to.deep.equal({
           keymaps: o.keymaps.toJSON(),
           search: o.search.toJSON(),
-          properties: o.properties,
+          properties: o.properties.toJSON(),
           blacklist: o.blacklist,
         });
       });
@@ -123,7 +124,7 @@ describe('shared/SettingData', () => {
         expect({
           keymaps: settings.keymaps.toJSON(),
           search: settings.search.toJSON(),
-          properties: settings.properties,
+          properties: settings.properties.toJSON(),
           blacklist: settings.blacklist,
         }).to.deep.equal({
           keymaps: {
@@ -159,11 +160,11 @@ describe('shared/SettingData', () => {
               "google": "https://google.com/search?q={}"
             }
           }),
-          properties: {
+          properties: Properties.fromJSON({
             hintchars: "abcdefghijklmnopqrstuvwxyz",
             smoothscroll: false,
             complete: "sbh"
-          },
+          }),
           blacklist: []
         };
 

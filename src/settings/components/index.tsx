@@ -8,11 +8,11 @@ import BlacklistForm from './form/BlacklistForm';
 import PropertiesForm from './form/PropertiesForm';
 import * as settingActions from '../../settings/actions/setting';
 import SettingData, {
-  JSONTextSettings, FormKeymaps, FormSearch, FormSettings,
+  FormKeymaps, FormSearch, FormSettings, JSONTextSettings,
 } from '../../shared/SettingData';
 import { State as AppState } from '../reducers/setting';
 import * as settings from '../../shared/Settings';
-import * as PropertyDefs from '../../shared/property-defs';
+import Properties from '../../shared/settings/Properties';
 
 const DO_YOU_WANT_TO_CONTINUE =
   'Some settings in JSON can be lost when migrating.  ' +
@@ -33,11 +33,6 @@ class SettingsComponent extends React.Component<Props> {
   }
 
   renderFormFields(form: any) {
-    let types = PropertyDefs.defs.reduce(
-      (o: {[key: string]: string}, def) => {
-        o[def.name] = def.type;
-        return o;
-      }, {});
     return <div>
       <fieldset>
         <legend>Keybindings</legend>
@@ -66,7 +61,7 @@ class SettingsComponent extends React.Component<Props> {
       <fieldset>
         <legend>Properties</legend>
         <PropertiesForm
-          types={types}
+          types={Properties.types()}
           value={form.properties}
           onChange={this.bindPropertiesForm.bind(this)}
           onBlur={this.save.bind(this)}
@@ -157,7 +152,7 @@ class SettingsComponent extends React.Component<Props> {
     let data = new SettingData({
       source: this.props.source,
       form: (this.props.form as FormSettings).buildWithProperties(
-        settings.propertiesValueOf(value)),
+        Properties.fromJSON(value))
     });
     this.props.dispatch(settingActions.set(data));
   }

@@ -1,12 +1,6 @@
-import * as PropertyDefs from './property-defs';
 import Keymaps from './settings/Keymaps';
 import Search from './settings/Search';
-
-export interface Properties {
-  hintchars: string;
-  smoothscroll: boolean;
-  complete: string;
-}
+import Properties from './settings/Properties';
 
 export default interface Settings {
   keymaps: Keymaps;
@@ -14,27 +8,6 @@ export default interface Settings {
   properties: Properties;
   blacklist: string[];
 }
-
-export const propertiesValueOf = (o: any): Properties => {
-  let defNames = new Set(PropertyDefs.defs.map(def => def.name));
-  let unknownName = Object.keys(o).find(name => !defNames.has(name));
-  if (unknownName) {
-    throw new TypeError(`Unknown property name: "${unknownName}"`);
-  }
-
-  for (let def of PropertyDefs.defs) {
-    if (!Object.prototype.hasOwnProperty.call(o, def.name)) {
-      continue;
-    }
-    if (typeof o[def.name] !== def.type) {
-      throw new TypeError(`property "${def.name}" is not ${def.type}`);
-    }
-  }
-  return {
-    ...PropertyDefs.defaultValues,
-    ...o,
-  };
-};
 
 export const blacklistValueOf = (o: any): string[] => {
   if (!Array.isArray(o)) {
@@ -59,7 +32,7 @@ export const valueOf = (o: any): Settings => {
       settings.search = Search.fromJSON(o.search);
       break;
     case 'properties':
-      settings.properties = propertiesValueOf(o.properties);
+      settings.properties = Properties.fromJSON(o.properties);
       break;
     case 'blacklist':
       settings.blacklist = blacklistValueOf(o.blacklist);
@@ -75,7 +48,7 @@ export const toJSON = (settings: Settings): any => {
   return {
     keymaps: settings.keymaps.toJSON(),
     search: settings.search.toJSON(),
-    properties: settings.properties,
+    properties: settings.properties.toJSON(),
     blacklist: settings.blacklist,
   };
 };
@@ -156,10 +129,10 @@ export const DefaultSetting: Settings = {
       'wikipedia': 'https://en.wikipedia.org/w/index.php?search={}'
     }
   }),
-  properties: {
+  properties: Properties.fromJSON({
     hintchars: 'abcdefghijklmnopqrstuvwxyz',
     smoothscroll: false,
     complete: 'sbh'
-  },
+  }),
   blacklist: []
 };

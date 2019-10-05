@@ -5,7 +5,7 @@ import CompletionsRepository from '../repositories/CompletionsRepository';
 import * as filters from './filters';
 import SettingRepository from '../repositories/SettingRepository';
 import TabPresenter from '../presenters/TabPresenter';
-import * as PropertyDefs from '../../shared/property-defs';
+import Properties from '../../shared/settings/Properties';
 
 const COMPLETION_ITEM_LIMIT = 10;
 
@@ -129,7 +129,7 @@ export default class CompletionsUseCase {
   }
 
   querySet(name: string, keywords: string): Promise<CompletionGroup[]> {
-    let items = PropertyDefs.defs.map((def) => {
+    let items = Properties.defs().map((def) => {
       if (def.type === 'boolean') {
         return [
           {

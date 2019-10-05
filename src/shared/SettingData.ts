@@ -2,6 +2,7 @@ import * as operations from './operations';
 import Settings, * as settings from './Settings';
 import Keymaps from './settings/Keymaps';
 import Search from './settings/Search';
+import Properties from './settings/Properties';
 
 export class FormKeymaps {
   private data: {[op: string]: string};
@@ -143,14 +144,14 @@ export class FormSettings {
 
   private search: FormSearch;
 
-  private properties: settings.Properties;
+  private properties: Properties;
 
   private blacklist: string[];
 
   constructor(
     keymaps: FormKeymaps,
     search: FormSearch,
-    properties: settings.Properties,
+    properties: Properties,
     blacklist: string[],
   ) {
     this.keymaps = keymaps;
@@ -177,7 +178,7 @@ export class FormSettings {
     );
   }
 
-  buildWithProperties(props: settings.Properties): FormSettings {
+  buildWithProperties(props: Properties): FormSettings {
     return new FormSettings(
       this.keymaps,
       this.search,
@@ -199,7 +200,7 @@ export class FormSettings {
     return settings.valueOf({
       keymaps: this.keymaps.toKeymaps().toJSON(),
       search: this.search.toSearchSettings().toJSON(),
-      properties: this.properties,
+      properties: this.properties.toJSON(),
       blacklist: this.blacklist,
     });
   }
@@ -207,13 +208,13 @@ export class FormSettings {
   toJSON(): {
     keymaps: ReturnType<FormKeymaps['toJSON']>;
     search: ReturnType<FormSearch['toJSON']>;
-    properties: settings.Properties;
+    properties: ReturnType<Properties['toJSON']>;
     blacklist: string[];
     } {
     return {
       keymaps: this.keymaps.toJSON(),
       search: this.search.toJSON(),
-      properties: this.properties,
+      properties: this.properties.toJSON(),
       blacklist: this.blacklist,
     };
   }
@@ -227,7 +228,7 @@ export class FormSettings {
     return new FormSettings(
       FormKeymaps.valueOf(o.keymaps),
       FormSearch.valueOf(o.search),
-      settings.propertiesValueOf(o.properties),
+      Properties.fromJSON(o.properties),
       settings.blacklistValueOf(o.blacklist),
     );
   }

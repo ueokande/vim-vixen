@@ -1,32 +1,7 @@
 import * as settings from '../../src/shared/Settings';
-import { expect } from 'chai';
+import {expect} from 'chai';
 
 describe('Settings', () => {
-
-  describe('#propertiesValueOf', () => {
-    it('returns with default properties by empty settings', () => {
-      let props = settings.propertiesValueOf({});
-      expect(props).to.deep.equal({
-        hintchars: "abcdefghijklmnopqrstuvwxyz",
-        smoothscroll: false,
-        complete: "sbh"
-      })
-    });
-
-    it('returns properties by valid settings', () => {
-      let props = settings.propertiesValueOf({
-        hintchars: "abcdefgh",
-        smoothscroll: false,
-        complete: "sbh"
-      });
-
-      expect(props).to.deep.equal({
-        hintchars: "abcdefgh",
-        smoothscroll: false,
-        complete: "sbh"
-      });
-    });
-  });
 
   describe('#blacklistValueOf', () => {
     it('returns empty array by empty settings', () => {
@@ -70,7 +45,7 @@ describe('Settings', () => {
       expect({
         keymaps: x.keymaps.toJSON(),
         search: x.search.toJSON(),
-        properties: x.properties,
+        properties: x.properties.toJSON(),
         blacklist: x.blacklist,
       }).to.deep.equal({
         keymaps: {},
@@ -92,7 +67,7 @@ describe('Settings', () => {
     it('sets default settings', () => {
       let value = settings.valueOf({});
       expect(value.keymaps.toJSON()).to.not.be.empty;
-      expect(value.properties).to.not.be.empty;
+      expect(value.properties.toJSON()).to.not.be.empty;
       expect(value.search.defaultEngine).to.be.a('string');
       expect(value.search.engines).to.be.an('object');
       expect(value.blacklist).to.be.empty;
