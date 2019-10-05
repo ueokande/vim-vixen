@@ -1,7 +1,7 @@
 import { injectable } from 'tsyringe';
 import SettingUseCase from '../usecases/SettingUseCase';
 import ContentMessageClient from '../infrastructures/ContentMessageClient';
-import Settings from '../../shared/Settings';
+import Settings from '../../shared/settings/Settings';
 
 @injectable()
 export default class SettingController {

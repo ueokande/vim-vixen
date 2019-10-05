@@ -1,10 +1,10 @@
-import * as settings from '../../src/shared/Settings';
-import {expect} from 'chai';
+import Settings from '../../../src/shared/settings/Settings';
+import { expect } from 'chai';
 
 describe('Settings', () => {
   describe('#valueOf', () => {
     it('returns settings by valid settings', () => {
-      let x = settings.valueOf({
+      let x = Settings.fromJSON({
         keymaps: {},
         "search": {
           "default": "google",
@@ -39,7 +39,7 @@ describe('Settings', () => {
     });
 
     it('sets default settings', () => {
-      let value = settings.valueOf({});
+      let value = Settings.fromJSON({});
       expect(value.keymaps.toJSON()).to.not.be.empty;
       expect(value.properties.toJSON()).to.not.be.empty;
       expect(value.search.defaultEngine).to.be.a('string');
@@ -48,7 +48,7 @@ describe('Settings', () => {
     });
 
     it('throws a TypeError with an unknown field', () => {
-      expect(() => settings.valueOf({ name: 'alice' })).to.throw(TypeError)
+      expect(() => Settings.fromJSON({ name: 'alice' })).to.throw(TypeError)
     });
   });
 });

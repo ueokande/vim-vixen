@@ -1,49 +1,76 @@
-import Keymaps from './settings/Keymaps';
-import Search from './settings/Search';
-import Properties from './settings/Properties';
-import Blacklist from './settings/Blacklist';
+import Keymaps, { KeymapsJSON } from './Keymaps';
+import Search, { SearchJSON } from './Search';
+import Properties, { PropertiesJSON } from './Properties';
+import Blacklist, { BlacklistJSON } from './Blacklist';
 
-export default interface Settings {
-  keymaps: Keymaps;
-  search: Search;
-  properties: Properties;
-  blacklist: Blacklist;
+export type SettingsJSON = {
+  keymaps: KeymapsJSON,
+  search: SearchJSON,
+  properties: PropertiesJSON,
+  blacklist: BlacklistJSON,
+};
+
+export default class Settings {
+  public keymaps: Keymaps;
+
+  public search: Search;
+
+  public properties: Properties;
+
+  public blacklist: Blacklist;
+
+  constructor({
+    keymaps,
+    search,
+    properties,
+    blacklist,
+  }: {
+    keymaps: Keymaps;
+    search: Search;
+    properties: Properties;
+    blacklist: Blacklist;
+  }) {
+    this.keymaps = keymaps;
+    this.search = search;
+    this.properties = properties;
+    this.blacklist = blacklist;
+  }
+
+  static fromJSON(json: any): Settings {
+    let settings = { ...DefaultSetting };
+    for (let key of Object.keys(json)) {
+      switch (key) {
+      case 'keymaps':
+        settings.keymaps = Keymaps.fromJSON(json.keymaps);
+        break;
+      case 'search':
+        settings.search = Search.fromJSON(json.search);
+        break;
+      case 'properties':
+        settings.properties = Properties.fromJSON(json.properties);
+        break;
+      case 'blacklist':
+        settings.blacklist = Blacklist.fromJSON(json.blacklist);
+        break;
+      default:
+        throw new TypeError('unknown setting: ' + key);
+      }
+    }
+    return new Settings(settings);
+  }
+
+  toJSON(): SettingsJSON {
+    return {
+      keymaps: this.keymaps.toJSON(),
+      search: this.search.toJSON(),
+      properties: this.properties.toJSON(),
+      blacklist: this.blacklist.toJSON(),
+    };
+  }
 }
 
-export const valueOf = (o: any): Settings => {
-  let settings = { ...DefaultSetting };
-  for (let key of Object.keys(o)) {
-    switch (key) {
-    case 'keymaps':
-      settings.keymaps = Keymaps.fromJSON(o.keymaps);
-      break;
-    case 'search':
-      settings.search = Search.fromJSON(o.search);
-      break;
-    case 'properties':
-      settings.properties = Properties.fromJSON(o.properties);
-      break;
-    case 'blacklist':
-      settings.blacklist = Blacklist.fromJSON(o.blacklist);
-      break;
-    default:
-      throw new TypeError('unknown setting: ' + key);
-    }
-  }
-  return settings;
-};
-
-export const toJSON = (settings: Settings): any => {
-  return {
-    keymaps: settings.keymaps.toJSON(),
-    search: settings.search.toJSON(),
-    properties: settings.properties.toJSON(),
-    blacklist: settings.blacklist.toJSON(),
-  };
-};
-
-export const DefaultSetting: Settings = {
-  keymaps: Keymaps.fromJSON({
+export const DefaultSetting: Settings = Settings.fromJSON({
+  keymaps: {
     '0': { 'type': 'scroll.home' },
     ':': { 'type': 'command.show' },
     'o': { 'type': 'command.show.open', 'alter': false },
@@ -106,8 +133,8 @@ export const DefaultSetting: Settings = {
     'N': { 'type': 'find.prev' },
     '.': { 'type': 'repeat.last' },
     '<S-Esc>': { 'type': 'addon.toggle.enabled' }
-  }),
-  search: Search.fromJSON({
+  },
+  search: {
     default: 'google',
     engines: {
       'google': 'https://google.com/search?q={}',
@@ -117,11 +144,11 @@ export const DefaultSetting: Settings = {
       'twitter': 'https://twitter.com/search?q={}',
       'wikipedia': 'https://en.wikipedia.org/w/index.php?search={}'
     }
-  }),
-  properties: Properties.fromJSON({
+  },
+  properties: {
     hintchars: 'abcdefghijklmnopqrstuvwxyz',
     smoothscroll: false,
     complete: 'sbh'
-  }),
-  blacklist: Blacklist.fromJSON([]),
-};
+  },
+  blacklist: [],
+});

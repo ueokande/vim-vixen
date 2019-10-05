@@ -1,5 +1,5 @@
 import * as operations from './operations';
-import Settings, * as settings from './Settings';
+import Settings from './settings/Settings';
 import Keymaps from './settings/Keymaps';
 import Search from './settings/Search';
 import Properties from './settings/Properties';
@@ -118,7 +118,7 @@ export class JSONTextSettings {
   }
 
   toSettings(): Settings {
-    return settings.valueOf(JSON.parse(this.json));
+    return Settings.fromJSON(JSON.parse(this.json));
   }
 
   toJSONText(): string {
@@ -198,7 +198,7 @@ export class FormSettings {
   }
 
   toSettings(): Settings {
-    return settings.valueOf({
+    return Settings.fromJSON({
       keymaps: this.keymaps.toKeymaps().toJSON(),
       search: this.search.toSearchSettings().toJSON(),
       properties: this.properties.toJSON(),

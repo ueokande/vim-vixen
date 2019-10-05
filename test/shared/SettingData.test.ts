@@ -1,12 +1,9 @@
 import SettingData, {
   FormKeymaps, JSONTextSettings, FormSettings,
 } from '../../src/shared/SettingData';
-import Settings from '../../src/shared/Settings';
+import Settings from '../../src/shared/settings/Settings';
 import { expect } from 'chai';
 import Keymaps from '../../src/shared/settings/Keymaps';
-import Search from '../../src/shared/settings/Search';
-import Properties from '../../src/shared/settings/Properties';
-import Blacklist from '../../src/shared/settings/Blacklist'
 
 describe('shared/SettingData', () => {
   describe('FormKeymaps', () => {
@@ -72,21 +69,21 @@ describe('shared/SettingData', () => {
 
     describe('#fromSettings to #toJSON', () => {
       it('create from a Settings and create a JSON string', () => {
-        let o = {
-          keymaps: Keymaps.fromJSON({}),
-          search: Search.fromJSON({
+        let o = Settings.fromJSON({
+          keymaps: {},
+          search: {
             default: "google",
             engines: {
               google: "https://google.com/search?q={}",
             },
-          }),
-          properties: Properties.fromJSON({
+          },
+          properties: {
             hintchars: "abcdefghijklmnopqrstuvwxyz",
             smoothscroll: false,
             complete: "sbh"
-          }),
-          blacklist: Blacklist.fromJSON([]),
-        };
+          },
+          blacklist: [],
+        });
 
         let json = JSONTextSettings.fromSettings(o).toJSONText();
         expect(JSON.parse(json)).to.deep.equal({
@@ -150,24 +147,24 @@ describe('shared/SettingData', () => {
 
     describe('#fromSettings to #toJSON', () => {
       it('create from a Settings and create a JSON string', () => {
-        let data: Settings = {
-          keymaps: Keymaps.fromJSON({
+        let data: Settings = Settings.fromJSON({
+          keymaps: {
             'j': { type: 'scroll.vertically', count: 1 },
             '0': { type: 'scroll.home' },
-          }),
-          search: Search.fromJSON({
+          },
+          search: {
             default: "google",
             engines: {
               "google": "https://google.com/search?q={}"
             }
-          }),
-          properties: Properties.fromJSON({
+          },
+          properties: {
             hintchars: "abcdefghijklmnopqrstuvwxyz",
             smoothscroll: false,
             complete: "sbh"
-          }),
-          blacklist: Blacklist.fromJSON([]),
-        };
+          },
+          blacklist: [],
+        });
 
         let json = FormSettings.fromSettings(data).toJSON();
         expect(json).to.deep.equal({

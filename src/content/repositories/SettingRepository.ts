@@ -1,4 +1,4 @@
-import Settings, { DefaultSetting } from '../../shared/Settings';
+import Settings, { DefaultSetting } from '../../shared/settings/Settings';
 
 let current: Settings = DefaultSetting;
 
