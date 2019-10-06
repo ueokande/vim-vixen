@@ -6,6 +6,7 @@ import SearchForm from './form/SearchForm';
 import KeymapsForm from './form/KeymapsForm';
 import BlacklistForm from './form/BlacklistForm';
 import PropertiesForm from './form/PropertiesForm';
+import PartialBlacklistForm from './form/PartialBlacklistForm';
 import * as settingActions from '../../settings/actions/setting';
 import SettingData, {
   FormKeymaps, FormSearch, FormSettings, JSONTextSettings,
@@ -53,7 +54,15 @@ class SettingsComponent extends React.Component<Props> {
       <fieldset>
         <legend>Blacklist</legend>
         <BlacklistForm
-          value={form.blacklist.toJSON()}
+          value={form.blacklist}
+          onChange={this.bindBlacklistForm.bind(this)}
+          onBlur={this.save.bind(this)}
+        />
+      </fieldset>
+      <fieldset>
+        <legend>Partial blacklist</legend>
+        <PartialBlacklistForm
+          value={form.blacklist}
           onChange={this.bindBlacklistForm.bind(this)}
           onBlur={this.save.bind(this)}
         />
@@ -138,11 +147,10 @@ class SettingsComponent extends React.Component<Props> {
     this.props.dispatch(settingActions.set(data));
   }
 
-  bindBlacklistForm(value: any) {
+  bindBlacklistForm(blacklist: Blacklist) {
     let data = new SettingData({
       source: this.props.source,
-      form: (this.props.form as FormSettings).buildWithBlacklist(
-        Blacklist.fromJSON(value)),
+      form: (this.props.form as FormSettings).buildWithBlacklist(blacklist),
     });
     this.props.dispatch(settingActions.set(data));
   }

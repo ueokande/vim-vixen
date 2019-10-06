@@ -1,5 +1,6 @@
 import Blacklist, { BlacklistItem } from '../../../src/shared/settings/Blacklist';
 import { expect } from 'chai';
+import Key from '../../../src/shared/settings/Key';
 
 describe('BlacklistItem', () => {
   describe('#fromJSON', () => {
@@ -82,11 +83,13 @@ describe('BlacklistItem', () => {
 
   describe('#includesPartialKeys', () => {
     it('matches with partial keys', () => {
-      let item = BlacklistItem.fromJSON({url: 'google.com', keys: ['j', 'k']});
+      let item = BlacklistItem.fromJSON({url: 'google.com', keys: ['j', 'k', '<C-U>']});
 
-      expect(item.includeKey(new URL('http://google.com/maps'), 'j')).to.be.true;
-      expect(item.includeKey(new URL('http://google.com/maps'), 'z')).to.be.false;
-      expect(item.includeKey(new URL('http://maps.google.com/'), 'j')).to.be.false;
+      expect(item.includeKey(new URL('http://google.com/maps'), Key.fromMapKey('j'))).to.be.true;
+      expect(item.includeKey(new URL('http://google.com/maps'), Key.fromMapKey('<C-U>'))).to.be.true;
+      expect(item.includeKey(new URL('http://google.com/maps'), Key.fromMapKey('z'))).to.be.false;
+      expect(item.includeKey(new URL('http://google.com/maps'), Key.fromMapKey('u'))).to.be.false;
+      expect(item.includeKey(new URL('http://maps.google.com/'), Key.fromMapKey('j'))).to.be.false;
     })
   });
 });
@@ -147,9 +150,9 @@ describe('Blacklist', () => {
         { url: 'github.com', keys: ['j', 'k'] },
       ]);
 
-      expect(blacklist.includeKey(new URL('https://google.com'), 'j')).to.be.true;
-      expect(blacklist.includeKey(new URL('https://github.com'), 'j')).to.be.true;
-      expect(blacklist.includeKey(new URL('https://github.com'), 'a')).to.be.false;
+      expect(blacklist.includeKey(new URL('https://google.com'), Key.fromMapKey('j'))).to.be.true;
+      expect(blacklist.includeKey(new URL('https://github.com'), Key.fromMapKey('j'))).to.be.true;
+      expect(blacklist.includeKey(new URL('https://github.com'), Key.fromMapKey('a'))).to.be.false;
     });
   });
 });

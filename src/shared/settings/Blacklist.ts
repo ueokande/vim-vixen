@@ -1,3 +1,5 @@
+import Key from './Key';
+
 export type BlacklistItemJSON = string | {
   url: string,
   keys: string[],
@@ -31,7 +33,9 @@ export class BlacklistItem {
 
   public readonly keys: string[];
 
-  private constructor(
+  private readonly keyEntities: Key[];
+
+  constructor(
     pattern: string,
     partial: boolean,
     keys: string[]
@@ -40,6 +44,7 @@ export class BlacklistItem {
     this.regex = regexFromWildcard(pattern);
     this.partial = partial;
     this.keys = keys;
+    this.keyEntities = this.keys.map(Key.fromMapKey);
   }
 
   static fromJSON(raw: any): BlacklistItem {
@@ -81,17 +86,20 @@ export class BlacklistItem {
       : this.regex.test(url.host);
   }
 
-  includeKey(url: URL, keys: string): boolean {
+  includeKey(url: URL, key: Key): boolean {
     if (!this.matches(url)) {
       return false;
     }
-    return !this.partial || this.keys.includes(keys);
+    if (!this.partial) {
+      return true;
+    }
+    return this.keyEntities.some(k => k.equals(key));
   }
 }
 
 export default class Blacklist {
   constructor(
-    private blacklist: BlacklistItem[],
+    public readonly items: BlacklistItem[],
   ) {
   }
 
@@ -104,14 +112,14 @@ export default class Blacklist {
   }
 
   toJSON(): BlacklistJSON {
-    return this.blacklist.map(item => item.toJSON());
+    return this.items.map(item => item.toJSON());
   }
 
   includesEntireBlacklist(url: URL): boolean {
-    return this.blacklist.some(item => !item.partial && item.matches(url));
+    return this.items.some(item => !item.partial && item.matches(url));
   }
 
-  includeKey(url: URL, key: string) {
-    return this.blacklist.some(item => item.includeKey(url, key));
+  includeKey(url: URL, key: Key) {
+    return this.items.some(item => item.includeKey(url, key));
   }
 }

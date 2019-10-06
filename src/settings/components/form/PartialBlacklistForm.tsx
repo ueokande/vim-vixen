@@ -1,4 +1,4 @@
-import './BlacklistForm.scss';
+import './PartialBlacklistForm.scss';
 import AddButton from '../ui/AddButton';
 import DeleteButton from '../ui/DeleteButton';
 import React from 'react';
@@ -10,7 +10,7 @@ interface Props {
   onBlur: () => void;
 }
 
-class BlacklistForm extends React.Component<Props> {
+class PartialBlacklistForm extends React.Component<Props> {
   public static defaultProps: Props = {
     value: new Blacklist([]),
     onChange: () => {},
@@ -18,15 +18,24 @@ class BlacklistForm extends React.Component<Props> {
   };
 
   render() {
-    return <div className='form-blacklist-form'>
+    return <div className='form-partial-blacklist-form'>
+      <div className='form-partial-blacklist-form-header'>
+        <div className='column-url'>URL</div>
+        <div className='column-keys'>Keys</div>
+      </div>
       {
         this.props.value.items.map((item, index) => {
-          if (item.partial) {
+          if (!item.partial) {
             return null;
           }
-          return <div key={index} className='form-blacklist-form-row'>
+          return <div key={index} className='form-partial-blacklist-form-row'>
             <input data-index={index} type='text' name='url'
               className='column-url' value={item.pattern}
+              onChange={this.bindValue.bind(this)}
+              onBlur={this.props.onBlur}
+            />
+            <input data-index={index} type='text' name='keys'
+              className='column-keys' value={item.keys.join(',')}
               onChange={this.bindValue.bind(this)}
               onBlur={this.props.onBlur}
             />
@@ -48,9 +57,14 @@ class BlacklistForm extends React.Component<Props> {
     let items = this.props.value.items;
 
     if (name === 'url') {
-      items[index] = new BlacklistItem(e.target.value, false, []);
+      let current = items[index];
+      items[index] = new BlacklistItem(e.target.value, true, current.keys);
+    } else if (name === 'keys') {
+      let current = items[index];
+      items[index] = new BlacklistItem(
+        current.pattern, true, e.target.value.split(','));
     } else if (name === 'add') {
-      items.push(new BlacklistItem('', false, []));
+      items.push(new BlacklistItem('', true, []));
     } else if (name === 'delete') {
       items.splice(index, 1);
     }
@@ -62,4 +76,4 @@ class BlacklistForm extends React.Component<Props> {
   }
 }
 
-export default BlacklistForm;
+export default PartialBlacklistForm;

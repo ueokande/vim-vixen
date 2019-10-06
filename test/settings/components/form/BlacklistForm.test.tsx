@@ -2,13 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestRenderer from 'react-test-renderer';
 import ReactTestUtils from 'react-dom/test-utils';
-import BlacklistForm from 'settings/components/form/BlacklistForm'
+import { expect } from 'chai'
+
+import BlacklistForm from '../../../../src/settings/components/form/BlacklistForm'
+import Blacklist from '../../../../src/shared/settings/Blacklist';
 
 describe("settings/form/BlacklistForm", () => {
   describe('render', () => {
     it('renders BlacklistForm', () => {
       let root = ReactTestRenderer.create(
-        <BlacklistForm value={['*.slack.com', 'www.google.com/maps']} />,
+        <BlacklistForm value={Blacklist.fromJSON(['*.slack.com', 'www.google.com/maps'])} />,
       ).root;
 
       let children = root.children[0].children;
@@ -43,10 +46,10 @@ describe("settings/form/BlacklistForm", () => {
     it('invokes onChange event on edit', (done) => {
       ReactTestUtils.act(() => {
         ReactDOM.render(<BlacklistForm
-          value={['*.slack.com', 'www.google.com/maps*']}
+          value={Blacklist.fromJSON(['*.slack.com', 'www.google.com/maps*'])}
           onChange={value => {
-            expect(value).to.have.lengthOf(2);
-            expect(value).to.have.members(['gitter.im', 'www.google.com/maps*']);
+            let urls = value.items.map(item => item.pattern);
+            expect(urls).to.have.members(['gitter.im', 'www.google.com/maps*']);
             done();
           }}
         />, container)
@@ -60,10 +63,10 @@ describe("settings/form/BlacklistForm", () => {
     it('invokes onChange event on delete', (done) => {
       ReactTestUtils.act(() => {
         ReactDOM.render(<BlacklistForm
-          value={['*.slack.com', 'www.google.com/maps*']}
+          value={Blacklist.fromJSON(['*.slack.com', 'www.google.com/maps*'])}
           onChange={value => {
-            expect(value).to.have.lengthOf(1);
-            expect(value).to.have.members(['www.google.com/maps*']);
+            let urls = value.items.map(item => item.pattern);
+            expect(urls).to.have.members(['www.google.com/maps*']);
             done();
           }}
         />, container)
@@ -76,10 +79,10 @@ describe("settings/form/BlacklistForm", () => {
     it('invokes onChange event on add', (done) => {
       ReactTestUtils.act(() => {
         ReactDOM.render(<BlacklistForm
-          value={['*.slack.com']}
+          value={Blacklist.fromJSON(['*.slack.com'])}
           onChange={value => {
-            expect(value).to.have.lengthOf(2);
-            expect(value).to.have.members(['*.slack.com', '']);
+            let urls = value.items.map(item => item.pattern);
+            expect(urls).to.have.members(['*.slack.com', '']);
             done();
           }}
         />, container);
