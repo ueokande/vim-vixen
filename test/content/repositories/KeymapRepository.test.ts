@@ -1,7 +1,7 @@
 import KeymapRepository, { KeymapRepositoryImpl }
   from '../../../src/content/repositories/KeymapRepository';
-import Key from '../../../src/content/domains/Key'
 import { expect } from 'chai';
+import Key from "../../../src/shared/settings/Key";
 
 describe('KeymapRepositoryImpl', () => {
   let sut: KeymapRepository;

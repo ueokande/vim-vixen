@@ -1,4 +1,4 @@
-import Key from './Key';
+import Key from '../../shared/settings/Key';
 
 export default class KeySequence {
   constructor(

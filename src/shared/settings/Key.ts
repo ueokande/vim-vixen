@@ -1,15 +1,3 @@
-const modifiedKeyName = (name: string): string => {
-  if (name === ' ') {
-    return 'Space';
-  }
-  if (name.length === 1) {
-    return name;
-  } else if (name === 'Escape') {
-    return 'Esc';
-  }
-  return name;
-};
-
 export default class Key {
   public readonly key: string;
 
@@ -63,31 +51,11 @@ export default class Key {
     });
   }
 
-  static fromKeyboardEvent(e: KeyboardEvent): Key {
-    let key = modifiedKeyName(e.key);
-    let shift = e.shiftKey;
-    if (key.length === 1 && key.toUpperCase() === key.toLowerCase()) {
-      // make shift false for symbols to enable key bindings by symbold keys.
-      // But this limits key bindings by symbol keys with Shift
-      // (such as Shift+$>.
-      shift = false;
-    }
-
-    return new Key({
-      key: modifiedKeyName(e.key),
-      shift: shift,
-      ctrl: e.ctrlKey,
-      alt: e.altKey,
-      meta: e.metaKey,
-    });
-  }
-
   equals(key: Key) {
     return this.key === key.key &&
-        this.ctrl === key.ctrl &&
-        this.meta === key.meta &&
-        this.alt === key.alt &&
-        this.shift === key.shift;
+      this.ctrl === key.ctrl &&
+      this.meta === key.meta &&
+      this.alt === key.alt &&
+      this.shift === key.shift;
   }
 }
-

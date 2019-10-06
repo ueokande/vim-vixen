@@ -1,6 +1,6 @@
 import { injectable } from 'tsyringe';
 import FollowSlaveUseCase from '../usecases/FollowSlaveUseCase';
-import Key from '../domains/Key';
+import Key from '../../shared/settings/Key';
 
 @injectable()
 export default class FollowKeyController {

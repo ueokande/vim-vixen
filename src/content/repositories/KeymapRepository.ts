@@ -1,5 +1,5 @@
-import Key from '../domains/Key';
-import KeySequence from '../domains/KeySequence';
+import Key from '../../shared/settings/Key';
+import KeySequence from '../../shared/settings/KeySequence';
 
 export default interface KeymapRepository {
   enqueueKey(key: Key): KeySequence;

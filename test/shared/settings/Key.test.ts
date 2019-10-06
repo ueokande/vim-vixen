@@ -1,54 +1,7 @@
-import Key from '../../../src/content/domains/Key';
 import { expect } from 'chai'
+import Key from '../../../src/shared/settings/Key';
 
 describe("Key", () => {
-  describe('fromKeyboardEvent', () => {
-    it('returns from keyboard input Ctrl+X', () => {
-      let k = Key.fromKeyboardEvent(new KeyboardEvent('keydown', {
-        key: 'x', shiftKey: false, ctrlKey: true, altKey: false, metaKey: true,
-      }));
-      expect(k.key).to.equal('x');
-      expect(k.shift).to.be.false;
-      expect(k.ctrl).to.be.true;
-      expect(k.alt).to.be.false;
-      expect(k.meta).to.be.true;
-    });
-
-    it('returns from keyboard input Shift+Esc', () => {
-      let k = Key.fromKeyboardEvent(new KeyboardEvent('keydown', {
-        key: 'Escape', shiftKey: true, ctrlKey: false, altKey: false, metaKey: true
-      }));
-      expect(k.key).to.equal('Esc');
-      expect(k.shift).to.be.true;
-      expect(k.ctrl).to.be.false;
-      expect(k.alt).to.be.false;
-      expect(k.meta).to.be.true;
-    });
-
-    it('returns from keyboard input Ctrl+$', () => {
-      // $ required shift pressing on most keyboards
-      let k = Key.fromKeyboardEvent(new KeyboardEvent('keydown', {
-        key: '$', shiftKey: true, ctrlKey: true, altKey: false, metaKey: false
-      }));
-      expect(k.key).to.equal('$');
-      expect(k.shift).to.be.false;
-      expect(k.ctrl).to.be.true;
-      expect(k.alt).to.be.false;
-      expect(k.meta).to.be.false;
-    });
-
-    it('returns from keyboard input Crtl+Space', () => {
-      let k = Key.fromKeyboardEvent(new KeyboardEvent('keydown', {
-        key: ' ', shiftKey: false, ctrlKey: true, altKey: false, metaKey: false
-      }));
-      expect(k.key).to.equal('Space');
-      expect(k.shift).to.be.false;
-      expect(k.ctrl).to.be.true;
-      expect(k.alt).to.be.false;
-      expect(k.meta).to.be.false;
-    });
-  });
-
   describe('fromMapKey', () => {
     it('return for X', () => {
       let key = Key.fromMapKey('x');
@@ -125,7 +78,7 @@ describe("Key", () => {
 
   describe('equals', () => {
     expect(new Key({
-        key: 'x', shift: false, ctrl: true, alt: false, meta: false,
+      key: 'x', shift: false, ctrl: true, alt: false, meta: false,
     }).equals(new Key({
       key: 'x', shift: false, ctrl: true, alt: false, meta: false,
     }))).to.be.true;

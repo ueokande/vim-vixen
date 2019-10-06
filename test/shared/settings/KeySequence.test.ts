@@ -1,6 +1,6 @@
-import KeySequence from '../../../src/content/domains/KeySequence';
-import Key from '../../../src/content/domains/Key';
+import KeySequence from '../../../src/shared/settings/KeySequence';
 import { expect } from 'chai'
+import Key from "../../../src/shared/settings/Key";
 
 describe("KeySequence", () => {
   describe('#push', () => {

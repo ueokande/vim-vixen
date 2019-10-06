@@ -1,7 +1,7 @@
 import { injectable } from 'tsyringe';
 import MarkUseCase from '../usecases/MarkUseCase';
 import MarkKeyyUseCase from '../usecases/MarkKeyUseCase';
-import Key from '../domains/Key';
+import Key from '../../shared/settings/Key';
 
 @injectable()
 export default class MarkKeyController {

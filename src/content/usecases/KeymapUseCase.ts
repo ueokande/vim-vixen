@@ -3,9 +3,9 @@ import KeymapRepository from '../repositories/KeymapRepository';
 import SettingRepository from '../repositories/SettingRepository';
 import AddonEnabledRepository from '../repositories/AddonEnabledRepository';
 import * as operations from '../../shared/operations';
-import Key from '../domains/Key';
-import KeySequence from '../domains/KeySequence';
 import Keymaps from '../../shared/settings/Keymaps';
+import Key from '../../shared/settings/Key';
+import KeySequence from '../../shared/settings/KeySequence';
 
 type KeymapEntityMap = Map<KeySequence, operations.Operation>;
 
@@ -66,10 +66,9 @@ export default class KeymapUseCase {
 
   private keymapEntityMap(): KeymapEntityMap {
     let keymaps = this.settingRepository.get().keymaps.combine(reservedKeymaps);
-    let entries = keymaps.entries().map(entry => [
-      KeySequence.fromMapKeys(entry[0]),
-      entry[1],
-    ]) as [KeySequence, operations.Operation][];
+    let entries = keymaps.entries().map(
+      ([keys, op]) => [KeySequence.fromMapKeys(keys), op]
+    ) as [KeySequence, operations.Operation][];
     return new Map<KeySequence, operations.Operation>(entries);
   }
 }

@@ -1,6 +1,6 @@
-import InputDriver from '../../src/content/InputDriver';
+import InputDriver, {keyFromKeyboardEvent} from '../../src/content/InputDriver';
 import { expect } from 'chai';
-import Key from '../../src/content/domains/Key';
+import Key from '../../src/shared/settings/Key';
 
 describe('InputDriver', () => {
   let target: HTMLElement;
@@ -125,5 +125,52 @@ describe('InputDriver', () => {
 
     div.setAttribute('contenteditable', 'true');
     div.dispatchEvent(new KeyboardEvent('keydown', { key: 'x' }));
+  });
+});
+
+describe("#keyFromKeyboardEvent", () => {
+  it('returns from keyboard input Ctrl+X', () => {
+    let k = keyFromKeyboardEvent(new KeyboardEvent('keydown', {
+      key: 'x', shiftKey: false, ctrlKey: true, altKey: false, metaKey: true,
+    }));
+    expect(k.key).to.equal('x');
+    expect(k.shift).to.be.false;
+    expect(k.ctrl).to.be.true;
+    expect(k.alt).to.be.false;
+    expect(k.meta).to.be.true;
+  });
+
+  it('returns from keyboard input Shift+Esc', () => {
+    let k = keyFromKeyboardEvent(new KeyboardEvent('keydown', {
+      key: 'Escape', shiftKey: true, ctrlKey: false, altKey: false, metaKey: true
+    }));
+    expect(k.key).to.equal('Esc');
+    expect(k.shift).to.be.true;
+    expect(k.ctrl).to.be.false;
+    expect(k.alt).to.be.false;
+    expect(k.meta).to.be.true;
+  });
+
+  it('returns from keyboard input Ctrl+$', () => {
+    // $ required shift pressing on most keyboards
+    let k = keyFromKeyboardEvent(new KeyboardEvent('keydown', {
+      key: '$', shiftKey: true, ctrlKey: true, altKey: false, metaKey: false
+    }));
+    expect(k.key).to.equal('$');
+    expect(k.shift).to.be.false;
+    expect(k.ctrl).to.be.true;
+    expect(k.alt).to.be.false;
+    expect(k.meta).to.be.false;
+  });
+
+  it('returns from keyboard input Crtl+Space', () => {
+    let k = keyFromKeyboardEvent(new KeyboardEvent('keydown', {
+      key: ' ', shiftKey: false, ctrlKey: true, altKey: false, metaKey: false
+    }));
+    expect(k.key).to.equal('Space');
+    expect(k.shift).to.be.false;
+    expect(k.ctrl).to.be.true;
+    expect(k.alt).to.be.false;
+    expect(k.meta).to.be.false;
   });
 });

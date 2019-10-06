@@ -1,5 +1,5 @@
 import * as messages from '../../shared/messages';
-import Key from '../domains/Key';
+import Key from '../../shared/settings/Key';
 
 export default interface FollowMasterClient {
   startFollow(newTab: boolean, background: boolean): void;
