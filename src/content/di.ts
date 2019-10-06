@@ -2,6 +2,7 @@
 
 import { AddonEnabledRepositoryImpl } from './repositories/AddonEnabledRepository';
 import { AddonIndicatorClientImpl } from './client/AddonIndicatorClient';
+import { AddressRepositoryImpl } from './repositories/AddressRepository';
 import { ClipboardRepositoryImpl } from './repositories/ClipboardRepository';
 import { ConsoleClientImpl } from './client/ConsoleClient';
 import { ConsoleFramePresenterImpl } from './presenters/ConsoleFramePresenter';
@@ -31,6 +32,7 @@ import { container } from 'tsyringe';
 container.register('FollowMasterClient', { useValue: new FollowMasterClientImpl(window.top) });
 container.register('AddonEnabledRepository', { useClass: AddonEnabledRepositoryImpl });
 container.register('AddonIndicatorClient', { useClass: AddonIndicatorClientImpl });
+container.register('AddressRepository', { useClass: AddressRepositoryImpl });
 container.register('ClipboardRepository', { useClass: ClipboardRepositoryImpl });
 container.register('ConsoleClient', { useClass: ConsoleClientImpl });
 container.register('ConsoleFramePresenter', { useClass: ConsoleFramePresenterImpl });

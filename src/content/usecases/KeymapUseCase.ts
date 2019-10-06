@@ -6,6 +6,7 @@ import * as operations from '../../shared/operations';
 import Keymaps from '../../shared/settings/Keymaps';
 import Key from '../../shared/settings/Key';
 import KeySequence from '../../shared/settings/KeySequence';
+import AddressRepository from '../repositories/AddressRepository';
 
 type KeymapEntityMap = Map<KeySequence, operations.Operation>;
 
@@ -25,11 +26,19 @@ export default class KeymapUseCase {
 
     @inject('AddonEnabledRepository')
     private addonEnabledRepository: AddonEnabledRepository,
+
+    @inject('AddressRepository')
+    private addressRepository: AddressRepository,
   ) {
   }
 
   nextOp(key: Key): operations.Operation | null {
     let sequence = this.repository.enqueueKey(key);
+    if (sequence.length() === 1 && this.blacklistKey(key)) {
+      // ignore if the input starts with black list keys
+      this.repository.clear();
+      return null;
+    }
 
     let keymaps = this.keymapEntityMap();
     let matched = Array.from(keymaps.keys()).filter(
@@ -70,5 +79,11 @@ export default class KeymapUseCase {
       ([keys, op]) => [KeySequence.fromMapKeys(keys), op]
     ) as [KeySequence, operations.Operation][];
     return new Map<KeySequence, operations.Operation>(entries);
+  }
+
+  private blacklistKey(key: Key): boolean {
+    let url = this.addressRepository.getCurrentURL();
+    let blacklist = this.settingRepository.get().blacklist;
+    return blacklist.includeKey(url, key);
   }
 }
