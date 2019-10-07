@@ -14,7 +14,7 @@ describe('shared/SettingData', () => {
           'scroll.home': '0',
         };
 
-        let keymaps = FormKeymaps.valueOf(data).toKeymaps().toJSON();
+        let keymaps = FormKeymaps.fromJSON(data).toKeymaps().toJSON();
         expect(keymaps).to.deep.equal({
           'j': { type: 'scroll.vertically', count: 1 },
           '0': { type: 'scroll.home' },
@@ -118,7 +118,7 @@ describe('shared/SettingData', () => {
           blacklist: []
         };
 
-        let settings = FormSettings.valueOf(data).toSettings();
+        let settings = FormSettings.fromJSON(data).toSettings();
         expect({
           keymaps: settings.keymaps.toJSON(),
           search: settings.search.toJSON(),
@@ -211,7 +211,7 @@ describe('shared/SettingData', () => {
           }`,
         };
 
-        let j = SettingData.valueOf(data).toJSON();
+        let j = SettingData.fromJSON(data).toJSON();
         expect(j.source).to.equal('json');
         expect(j.json).to.be.a('string');
       });
@@ -236,7 +236,7 @@ describe('shared/SettingData', () => {
           },
         };
 
-        let j = SettingData.valueOf(data).toJSON();
+        let j = SettingData.fromJSON(data).toJSON();
         expect(j.source).to.equal('form');
         expect(j.form).to.deep.equal({
           keymaps: {},
@@ -277,7 +277,7 @@ describe('shared/SettingData', () => {
           }`,
         };
 
-        let settings = SettingData.valueOf(data).toSettings();
+        let settings = SettingData.fromJSON(data).toSettings();
         expect(settings.search.defaultEngine).to.equal('google');
       });
 
@@ -301,7 +301,7 @@ describe('shared/SettingData', () => {
           },
         };
 
-        let settings = SettingData.valueOf(data).toSettings();
+        let settings = SettingData.fromJSON(data).toSettings();
         expect(settings.search.defaultEngine).to.equal('yahoo');
       });
     });

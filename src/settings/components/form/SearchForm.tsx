@@ -12,7 +12,7 @@ interface Props {
 
 class SearchForm extends React.Component<Props> {
   public static defaultProps: Props = {
-    value: FormSearch.valueOf({ default: '', engines: []}),
+    value: FormSearch.fromJSON({ default: '', engines: []}),
     onChange: () => {},
     onBlur: () => {},
   };
@@ -81,7 +81,7 @@ class SearchForm extends React.Component<Props> {
       }
     }
 
-    this.props.onChange(FormSearch.valueOf(next));
+    this.props.onChange(FormSearch.fromJSON(next));
     if (name === 'delete' || name === 'default') {
       this.props.onBlur();
     }

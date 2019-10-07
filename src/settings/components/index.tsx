@@ -133,7 +133,7 @@ class SettingsComponent extends React.Component<Props> {
     let data = new SettingData({
       source: this.props.source,
       form: (this.props.form as FormSettings).buildWithSearch(
-        FormSearch.valueOf(value)),
+        FormSearch.fromJSON(value)),
     });
     this.props.dispatch(settingActions.set(data));
   }

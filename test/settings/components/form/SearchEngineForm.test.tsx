@@ -8,7 +8,7 @@ import { FormSearch } from 'shared/SettingData';
 describe("settings/form/SearchForm", () => {
   describe('render', () => {
     it('renders SearchForm', () => {
-      let root = ReactTestRenderer.create(<SearchForm value={FormSearch.valueOf({
+      let root = ReactTestRenderer.create(<SearchForm value={FormSearch.fromJSON({
         default: 'google',
         engines: [['google', 'google.com'], ['yahoo', 'yahoo.com']],
       })} />).root;
@@ -41,7 +41,7 @@ describe("settings/form/SearchForm", () => {
     it('invokes onChange event on edit', (done) => {
       ReactTestUtils.act(() => {
         ReactDOM.render(<SearchForm
-          value={FormSearch.valueOf({
+          value={FormSearch.fromJSON({
             default: 'google',
               engines: [['google', 'google.com'], ['yahoo', 'yahoo.com']]
           })}
@@ -67,7 +67,7 @@ describe("settings/form/SearchForm", () => {
 
     it('invokes onChange event on delete', (done) => {
       ReactTestUtils.act(() => {
-        ReactDOM.render(<SearchForm value={FormSearch.valueOf({
+        ReactDOM.render(<SearchForm value={FormSearch.fromJSON({
             default: 'yahoo',
             engines: [['louvre', 'google.com'], ['yahoo', 'yahoo.com']]
           })}
@@ -88,7 +88,7 @@ describe("settings/form/SearchForm", () => {
 
     it('invokes onChange event on add', (done) => {
       ReactTestUtils.act(() => {
-        ReactDOM.render(<SearchForm value={FormSearch.valueOf({
+        ReactDOM.render(<SearchForm value={FormSearch.fromJSON({
           default: 'yahoo',
             engines: [['google', 'google.com']]
           })}

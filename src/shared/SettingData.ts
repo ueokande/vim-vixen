@@ -6,9 +6,9 @@ import Properties from './settings/Properties';
 import Blacklist from './settings/Blacklist';
 
 export class FormKeymaps {
-  private data: {[op: string]: string};
+  private readonly data: {[op: string]: string};
 
-  constructor(data: {[op: string]: string}) {
+  private constructor(data: {[op: string]: string}) {
     this.data = data;
   }
 
@@ -38,7 +38,7 @@ export class FormKeymaps {
     return new FormKeymaps(newData);
   }
 
-  static valueOf(o: ReturnType<FormKeymaps['toJSON']>): FormKeymaps {
+  static fromJSON(o: ReturnType<FormKeymaps['toJSON']>): FormKeymaps {
     let data: {[op: string]: string} = {};
     for (let op of Object.keys(o)) {
       data[op] = o[op] as string;
@@ -65,9 +65,9 @@ export class FormKeymaps {
 }
 
 export class FormSearch {
-  private default: string;
+  private readonly default: string;
 
-  private engines: string[][];
+  private readonly engines: string[][];
 
   constructor(defaultEngine: string, engines: string[][]) {
     this.default = defaultEngine;
@@ -92,7 +92,7 @@ export class FormSearch {
     };
   }
 
-  static valueOf(o: ReturnType<FormSearch['toJSON']>): FormSearch {
+  static fromJSON(o: ReturnType<FormSearch['toJSON']>): FormSearch {
     if (!Object.prototype.hasOwnProperty.call(o, 'default')) {
       throw new TypeError(`"default" field not set`);
     }
@@ -220,15 +220,15 @@ export class FormSettings {
     };
   }
 
-  static valueOf(o: ReturnType<FormSettings['toJSON']>): FormSettings {
+  static fromJSON(o: ReturnType<FormSettings['toJSON']>): FormSettings {
     for (let name of ['keymaps', 'search', 'properties', 'blacklist']) {
       if (!Object.prototype.hasOwnProperty.call(o, name)) {
         throw new Error(`"${name}" field not set`);
       }
     }
     return new FormSettings(
-      FormKeymaps.valueOf(o.keymaps),
-      FormSearch.valueOf(o.search),
+      FormKeymaps.fromJSON(o.keymaps),
+      FormSearch.fromJSON(o.search),
       Properties.fromJSON(o.properties),
       Blacklist.fromJSON(o.blacklist),
     );
@@ -311,7 +311,7 @@ export default class SettingData {
     throw new Error(`unknown settings source: ${this.source}`);
   }
 
-  static valueOf(o: {
+  static fromJSON(o: {
     source: string;
     json?: string;
     form?: ReturnType<FormSettings['toJSON']>;
@@ -326,7 +326,7 @@ export default class SettingData {
     case SettingSource.Form:
       return new SettingData({
         source: o.source,
-        form: FormSettings.valueOf(
+        form: FormSettings.fromJSON(
           o.form as ReturnType<FormSettings['toJSON']>),
       });
     }
@@ -334,7 +334,7 @@ export default class SettingData {
   }
 }
 
-export const DefaultSettingData: SettingData = SettingData.valueOf({
+export const DefaultSettingData: SettingData = SettingData.fromJSON({
   source: 'json',
   json: DefaultSettingJSONText,
 });
