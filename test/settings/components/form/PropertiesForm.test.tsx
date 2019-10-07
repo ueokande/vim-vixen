@@ -13,14 +13,14 @@ describe("settings/form/PropertiesForm", () => {
         mybool: 'boolean',
         empty: 'string',
       }
-      let value = {
+      let values = {
         mystr: 'abc',
         mynum: 123,
         mybool: true,
       };
 
       let root = ReactTestRenderer.create(
-        <PropertiesForm types={types} value={value} />,
+        <PropertiesForm types={types} value={values} />,
       ).root
 
       let input = root.findByProps({ name: 'mystr' });

@@ -1,6 +1,6 @@
-import InputDriver from '../../src/content/InputDriver';
+import InputDriver, {keyFromKeyboardEvent} from '../../src/content/InputDriver';
 import { expect } from 'chai';
-import Key from '../../src/content/domains/Key';
+import Key from '../../src/shared/settings/Key';
 
 describe('InputDriver', () => {
   let target: HTMLElement;
@@ -21,10 +21,10 @@ describe('InputDriver', () => {
   it('register callbacks', (done) => {
     driver.onKey((key: Key): boolean => {
       expect(key.key).to.equal('a');
-      expect(key.ctrlKey).to.be.true;
-      expect(key.shiftKey).to.be.false;
-      expect(key.altKey).to.be.false;
-      expect(key.metaKey).to.be.false;
+      expect(key.ctrl).to.be.true;
+      expect(key.shift).to.be.false;
+      expect(key.alt).to.be.false;
+      expect(key.meta).to.be.false;
       done();
       return true;
     });
@@ -68,15 +68,15 @@ describe('InputDriver', () => {
 
   it('propagates and stop handler chain', () => {
     let a = 0, b = 0, c = 0;
-    driver.onKey((key: Key): boolean => {
+    driver.onKey((_key: Key): boolean => {
       a++;
       return false;
     });
-    driver.onKey((key: Key): boolean => {
+    driver.onKey((_key: Key): boolean => {
       b++;
       return true;
     });
-    driver.onKey((key: Key): boolean => {
+    driver.onKey((_key: Key): boolean => {
       c++;
       return true;
     });
@@ -89,7 +89,7 @@ describe('InputDriver', () => {
   })
 
   it('does not invoke only meta keys', () => {
-    driver.onKey((key: Key): boolean=> {
+    driver.onKey((_key: Key): boolean=> {
       expect.fail();
       return false;
     });
@@ -115,7 +115,7 @@ describe('InputDriver', () => {
   it('ignores events from contenteditable elements', () => {
     let div = window.document.createElement('div');
     let driver = new InputDriver(div);
-    driver.onKey((key: Key): boolean => {
+    driver.onKey((_key: Key): boolean => {
       expect.fail();
       return false;
     });
@@ -125,5 +125,52 @@ describe('InputDriver', () => {
 
     div.setAttribute('contenteditable', 'true');
     div.dispatchEvent(new KeyboardEvent('keydown', { key: 'x' }));
+  });
+});
+
+describe("#keyFromKeyboardEvent", () => {
+  it('returns from keyboard input Ctrl+X', () => {
+    let k = keyFromKeyboardEvent(new KeyboardEvent('keydown', {
+      key: 'x', shiftKey: false, ctrlKey: true, altKey: false, metaKey: true,
+    }));
+    expect(k.key).to.equal('x');
+    expect(k.shift).to.be.false;
+    expect(k.ctrl).to.be.true;
+    expect(k.alt).to.be.false;
+    expect(k.meta).to.be.true;
+  });
+
+  it('returns from keyboard input Shift+Esc', () => {
+    let k = keyFromKeyboardEvent(new KeyboardEvent('keydown', {
+      key: 'Escape', shiftKey: true, ctrlKey: false, altKey: false, metaKey: true
+    }));
+    expect(k.key).to.equal('Esc');
+    expect(k.shift).to.be.true;
+    expect(k.ctrl).to.be.false;
+    expect(k.alt).to.be.false;
+    expect(k.meta).to.be.true;
+  });
+
+  it('returns from keyboard input Ctrl+$', () => {
+    // $ required shift pressing on most keyboards
+    let k = keyFromKeyboardEvent(new KeyboardEvent('keydown', {
+      key: '$', shiftKey: true, ctrlKey: true, altKey: false, metaKey: false
+    }));
+    expect(k.key).to.equal('$');
+    expect(k.shift).to.be.false;
+    expect(k.ctrl).to.be.true;
+    expect(k.alt).to.be.false;
+    expect(k.meta).to.be.false;
+  });
+
+  it('returns from keyboard input Crtl+Space', () => {
+    let k = keyFromKeyboardEvent(new KeyboardEvent('keydown', {
+      key: ' ', shiftKey: false, ctrlKey: true, altKey: false, metaKey: false
+    }));
+    expect(k.key).to.equal('Space');
+    expect(k.shift).to.be.false;
+    expect(k.ctrl).to.be.true;
+    expect(k.alt).to.be.false;
+    expect(k.meta).to.be.false;
   });
 });

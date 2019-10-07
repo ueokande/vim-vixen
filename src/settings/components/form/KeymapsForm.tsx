@@ -12,7 +12,7 @@ interface Props {
 
 class KeymapsForm extends React.Component<Props> {
   public static defaultProps: Props = {
-    value: FormKeymaps.valueOf({}),
+    value: FormKeymaps.fromJSON({}),
     onChange: () => {},
     onBlur: () => {},
   };

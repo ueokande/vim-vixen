@@ -1,5 +1,5 @@
 import * as messages from '../../shared/messages';
-import Key from '../domains/Key';
+import Key from '../../shared/settings/Key';
 
 export default interface FollowMasterClient {
   startFollow(newTab: boolean, background: boolean): void;
@@ -35,7 +35,7 @@ export class FollowMasterClientImpl implements FollowMasterClient {
     this.postMessage({
       type: messages.FOLLOW_KEY_PRESS,
       key: key.key,
-      ctrlKey: key.ctrlKey || false,
+      ctrlKey: key.ctrl || false,
     });
   }
 

@@ -1,5 +1,5 @@
 import * as dom from '../shared/utils/dom';
-import Key, * as keys from './domains/Key';
+import Key from '../shared/settings/Key';
 
 const cancelKey = (e: KeyboardEvent): boolean => {
   if (e.key === 'Escape') {
@@ -9,6 +9,38 @@ const cancelKey = (e: KeyboardEvent): boolean => {
     return true;
   }
   return false;
+};
+
+const modifiedKeyName = (name: string): string => {
+  if (name === ' ') {
+    return 'Space';
+  }
+  if (name.length === 1) {
+    return name;
+  } else if (name === 'Escape') {
+    return 'Esc';
+  }
+  return name;
+};
+
+// visible for testing
+export const keyFromKeyboardEvent = (e: KeyboardEvent): Key => {
+  let key = modifiedKeyName(e.key);
+  let shift = e.shiftKey;
+  if (key.length === 1 && key.toUpperCase() === key.toLowerCase()) {
+    // make shift false for symbols to enable key bindings by symbold keys.
+    // But this limits key bindings by symbol keys with Shift
+    // (such as Shift+$>.
+    shift = false;
+  }
+
+  return new Key({
+    key: modifiedKeyName(e.key),
+    shift: shift,
+    ctrl: e.ctrlKey,
+    alt: e.altKey,
+    meta: e.metaKey,
+  });
 };
 
 export default class InputDriver {
@@ -66,7 +98,7 @@ export default class InputDriver {
       return;
     }
 
-    let key = keys.fromKeyboardEvent(e);
+    let key = keyFromKeyboardEvent(e);
     for (let listener of this.onKeyListeners) {
       let stop = listener(key);
       if (stop) {

@@ -1,7 +1,7 @@
 import * as actions from './index';
 import * as storages from '../storage';
 import SettingData, {
-  JSONSettings, FormSettings, SettingSource,
+  JSONTextSettings, FormSettings, SettingSource,
 } from '../../shared/SettingData';
 
 const load = async(): Promise<actions.SettingAction> => {
@@ -26,7 +26,7 @@ const save = async(data: SettingData): Promise<actions.SettingAction> => {
   return set(data);
 };
 
-const switchToForm = (json: JSONSettings): actions.SettingAction => {
+const switchToForm = (json: JSONTextSettings): actions.SettingAction => {
   try {
     // toSettings exercise validation
     let form = FormSettings.fromSettings(json.toSettings());
@@ -44,7 +44,7 @@ const switchToForm = (json: JSONSettings): actions.SettingAction => {
 };
 
 const switchToJson = (form: FormSettings): actions.SettingAction => {
-  let json = JSONSettings.fromSettings(form.toSettings());
+  let json = JSONTextSettings.fromSettings(form.toSettings());
   return {
     type: actions.SETTING_SWITCH_TO_JSON,
     json,

@@ -8,11 +8,11 @@ import BlacklistForm from './form/BlacklistForm';
 import PropertiesForm from './form/PropertiesForm';
 import * as settingActions from '../../settings/actions/setting';
 import SettingData, {
-  JSONSettings, FormKeymaps, FormSearch, FormSettings,
+  FormKeymaps, FormSearch, FormSettings, JSONTextSettings,
 } from '../../shared/SettingData';
 import { State as AppState } from '../reducers/setting';
-import * as settings from '../../shared/Settings';
-import * as PropertyDefs from '../../shared/property-defs';
+import Properties from '../../shared/settings/Properties';
+import Blacklist from '../../shared/settings/Blacklist';
 
 const DO_YOU_WANT_TO_CONTINUE =
   'Some settings in JSON can be lost when migrating.  ' +
@@ -32,12 +32,7 @@ class SettingsComponent extends React.Component<Props> {
     this.props.dispatch(settingActions.load());
   }
 
-  renderFormFields(form: any) {
-    let types = PropertyDefs.defs.reduce(
-      (o: {[key: string]: string}, def) => {
-        o[def.name] = def.type;
-        return o;
-      }, {});
+  renderFormFields(form: FormSettings) {
     return <div>
       <fieldset>
         <legend>Keybindings</legend>
@@ -58,7 +53,7 @@ class SettingsComponent extends React.Component<Props> {
       <fieldset>
         <legend>Blacklist</legend>
         <BlacklistForm
-          value={form.blacklist}
+          value={form.blacklist.toJSON()}
           onChange={this.bindBlacklistForm.bind(this)}
           onBlur={this.save.bind(this)}
         />
@@ -66,8 +61,8 @@ class SettingsComponent extends React.Component<Props> {
       <fieldset>
         <legend>Properties</legend>
         <PropertiesForm
-          types={types}
-          value={form.properties}
+          types={Properties.types()}
+          value={form.properties.toJSON()}
           onChange={this.bindPropertiesForm.bind(this)}
           onBlur={this.save.bind(this)}
         />
@@ -75,7 +70,7 @@ class SettingsComponent extends React.Component<Props> {
     </div>;
   }
 
-  renderJsonFields(json: JSONSettings, error: string) {
+  renderJsonFields(json: JSONTextSettings, error: string) {
     return <div>
       <Input
         type='textarea'
@@ -85,7 +80,7 @@ class SettingsComponent extends React.Component<Props> {
         error={error}
         onValueChange={this.bindJson.bind(this)}
         onBlur={this.save.bind(this)}
-        value={json.toJSON()}
+        value={json.toJSONText()}
       />
     </div>;
   }
@@ -94,10 +89,9 @@ class SettingsComponent extends React.Component<Props> {
     let fields = null;
     let disabled = this.props.error.length > 0;
     if (this.props.source === 'form') {
-      fields = this.renderFormFields(this.props.form);
+      fields = this.renderFormFields(this.props.form!!);
     } else if (this.props.source === 'json') {
-      fields = this.renderJsonFields(
-        this.props.json as JSONSettings, this.props.error);
+      fields = this.renderJsonFields(this.props.json!!, this.props.error);
     }
     return (
       <div>
@@ -139,7 +133,7 @@ class SettingsComponent extends React.Component<Props> {
     let data = new SettingData({
       source: this.props.source,
       form: (this.props.form as FormSettings).buildWithSearch(
-        FormSearch.valueOf(value)),
+        FormSearch.fromJSON(value)),
     });
     this.props.dispatch(settingActions.set(data));
   }
@@ -148,7 +142,7 @@ class SettingsComponent extends React.Component<Props> {
     let data = new SettingData({
       source: this.props.source,
       form: (this.props.form as FormSettings).buildWithBlacklist(
-        settings.blacklistValueOf(value)),
+        Blacklist.fromJSON(value)),
     });
     this.props.dispatch(settingActions.set(data));
   }
@@ -157,7 +151,7 @@ class SettingsComponent extends React.Component<Props> {
     let data = new SettingData({
       source: this.props.source,
       form: (this.props.form as FormSettings).buildWithProperties(
-        settings.propertiesValueOf(value)),
+        Properties.fromJSON(value))
     });
     this.props.dispatch(settingActions.set(data));
   }
@@ -165,7 +159,7 @@ class SettingsComponent extends React.Component<Props> {
   bindJson(_name: string, value: string) {
     let data = new SettingData({
       source: this.props.source,
-      json: JSONSettings.valueOf(value),
+      json: JSONTextSettings.fromText(value),
     });
     this.props.dispatch(settingActions.set(data));
   }
@@ -183,7 +177,7 @@ class SettingsComponent extends React.Component<Props> {
         return;
       }
       this.props.dispatch(
-        settingActions.switchToForm(this.props.json as JSONSettings));
+        settingActions.switchToForm(this.props.json as JSONTextSettings));
       this.save();
     }
   }

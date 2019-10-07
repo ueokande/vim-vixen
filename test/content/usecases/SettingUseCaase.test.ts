@@ -1,7 +1,7 @@
 import SettingRepository from '../../../src/content/repositories/SettingRepository';
 import SettingClient from '../../../src/content/client/SettingClient';
 import SettingUseCase from '../../../src/content/usecases/SettingUseCase';
-import Settings, { DefaultSetting } from '../../../src/shared/Settings';
+import Settings, { DefaultSetting } from '../../../src/shared/settings/Settings';
 import { expect } from 'chai';
 
 class MockSettingRepository implements SettingRepository {

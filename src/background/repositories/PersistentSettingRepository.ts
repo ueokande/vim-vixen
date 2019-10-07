@@ -8,7 +8,7 @@ export default class SettingRepository {
     if (!settings) {
       return null;
     }
-    return SettingData.valueOf(settings as any);
+    return SettingData.fromJSON(settings as any);
   }
 }
 

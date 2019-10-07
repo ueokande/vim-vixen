@@ -6,7 +6,7 @@ export const load = async(): Promise<SettingData> => {
     return DefaultSettingData;
   }
   try {
-    return SettingData.valueOf(settings as any);
+    return SettingData.fromJSON(settings as any);
   } catch (e) {
     console.error('unable to load settings', e);
     return DefaultSettingData;

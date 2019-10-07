@@ -1,13 +1,14 @@
 import { SettingRepositoryImpl } from '../../../src/content/repositories/SettingRepository';
 import { expect } from 'chai';
+import Settings from '../../../src/shared/settings/Settings';
 
 describe('SettingRepositoryImpl', () => {
   it('updates and gets current value', () => {
     let sut = new SettingRepositoryImpl();
 
-    let settings = {
+    let settings = Settings.fromJSON({
       keymaps: {},
-      search: {
+      search:{
         default: 'google',
         engines: {
           google: 'https://google.com/?q={}',
@@ -19,7 +20,7 @@ describe('SettingRepositoryImpl', () => {
         complete: 'sbh',
       },
       blacklist: [],
-    }
+    });
 
     sut.set(settings);
 
@@ -27,4 +28,3 @@ describe('SettingRepositoryImpl', () => {
     expect(actual.properties.hintchars).to.equal('abcd1234');
   });
 });
-

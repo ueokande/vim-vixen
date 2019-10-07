@@ -18,7 +18,7 @@ class PropertiesForm extends React.Component<Props> {
 
   render() {
     let types = this.props.types;
-    let value = this.props.value;
+    let values = this.props.value;
 
     return <div className='form-properties-form'>
       {
@@ -46,10 +46,10 @@ class PropertiesForm extends React.Component<Props> {
               <span className='column-name'>{name}</span>
               <input type={inputType} name={name}
                 className='column-input'
-                value={value[name] ? value[name] : ''}
+                value={values[name] ? values[name] : ''}
                 onChange={onChange}
                 onBlur={this.props.onBlur}
-                checked={value[name]}
+                checked={values[name]}
               />
             </label>
           </div>;

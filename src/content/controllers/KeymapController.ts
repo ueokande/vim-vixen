@@ -9,7 +9,7 @@ import ClipboardUseCase from '../usecases/ClipboardUseCase';
 import OperationClient from '../client/OperationClient';
 import MarkKeyyUseCase from '../usecases/MarkKeyUseCase';
 import FollowMasterClient from '../client/FollowMasterClient';
-import Key from '../domains/Key';
+import Key from '../../shared/settings/Key';
 
 @injectable()
 export default class KeymapController {

@@ -1,7 +1,7 @@
 import { injectable } from 'tsyringe';
 import MemoryStorage from '../infrastructures/MemoryStorage';
-import Settings from '../../shared/Settings';
-import * as PropertyDefs from '../../shared/property-defs';
+import Settings from '../../shared/settings/Settings';
+import Properties from '../../shared/settings/Properties';
 
 const CACHED_SETTING_KEY = 'setting';
 
@@ -14,17 +14,18 @@ export default class SettingRepository {
   }
 
   get(): Promise<Settings> {
-    return Promise.resolve(this.cache.get(CACHED_SETTING_KEY));
+    let data = this.cache.get(CACHED_SETTING_KEY);
+    return Promise.resolve(Settings.fromJSON(data));
   }
 
   update(value: Settings): void {
-    return this.cache.set(CACHED_SETTING_KEY, value);
+    return this.cache.set(CACHED_SETTING_KEY, value.toJSON());
   }
 
   async setProperty(
     name: string, value: string | number | boolean,
   ): Promise<void> {
-    let def = PropertyDefs.defs.find(d => name === d.name);
+    let def = Properties.def(name);
     if (!def) {
       throw new Error('unknown property: ' + name);
     }

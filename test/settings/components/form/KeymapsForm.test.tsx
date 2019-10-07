@@ -9,7 +9,7 @@ import { expect } from 'chai';
 describe("settings/form/KeymapsForm", () => {
   describe('render', () => {
     it('renders keymap fields', () => {
-      let root = ReactTestRenderer.create(<KeymapsForm value={FormKeymaps.valueOf({
+      let root = ReactTestRenderer.create(<KeymapsForm value={FormKeymaps.fromJSON({
         'scroll.vertically?{"count":1}': 'j',
         'scroll.vertically?{"count":-1}': 'k',
       })} />).root
@@ -48,7 +48,7 @@ describe("settings/form/KeymapsForm", () => {
     it('invokes onChange event on edit', (done) => {
       ReactTestUtils.act(() => {
         ReactDOM.render(<KeymapsForm
-          value={FormKeymaps.valueOf({
+          value={FormKeymaps.fromJSON({
             'scroll.vertically?{"count":1}': 'j',
             'scroll.vertically?{"count":-1}': 'k',
           })}

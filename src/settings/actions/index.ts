@@ -1,5 +1,5 @@
 import {
-  JSONSettings, FormSettings, SettingSource,
+  JSONTextSettings, FormSettings, SettingSource,
 } from '../../shared/SettingData';
 
 // Settings
@@ -11,14 +11,14 @@ export const SETTING_SWITCH_TO_JSON = 'setting.switch.to.json';
 interface SettingSetSettingsAcion {
   type: typeof SETTING_SET_SETTINGS;
   source: SettingSource;
-  json?: JSONSettings;
+  json?: JSONTextSettings;
   form?: FormSettings;
 }
 
 interface SettingShowErrorAction {
   type: typeof SETTING_SHOW_ERROR;
   error: string;
-  json: JSONSettings;
+  json: JSONTextSettings;
 }
 
 interface SettingSwitchToFormAction {
@@ -28,7 +28,7 @@ interface SettingSwitchToFormAction {
 
 interface SettingSwitchToJsonAction {
   type: typeof SETTING_SWITCH_TO_JSON;
-  json: JSONSettings,
+  json: JSONTextSettings,
 }
 
 export type SettingAction =

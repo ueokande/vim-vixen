@@ -1,4 +1,4 @@
-import * as PropertyDefs from '../../shared//property-defs';
+import Properties from '../../shared/settings/Properties';
 
 const mustNumber = (v: any): number => {
   let num = Number(v);
@@ -16,7 +16,7 @@ const parseSetOption = (
     value = !key.startsWith('no');
     key = value ? key : key.slice(2);
   }
-  let def = PropertyDefs.defs.find(d => d.name === key);
+  let def = Properties.def(key);
   if (!def) {
     throw new Error('Unknown property: ' + key);
   }

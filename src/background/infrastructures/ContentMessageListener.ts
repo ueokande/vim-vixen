@@ -101,8 +101,8 @@ export default class ContentMessageListener {
     return this.commandController.exec(text);
   }
 
-  onSettingsQuery(): Promise<any> {
-    return this.settingController.getSetting();
+  async onSettingsQuery(): Promise<any> {
+    return (await this.settingController.getSetting()).toJSON();
   }
 
   onFindGetKeyword(): Promise<string> {

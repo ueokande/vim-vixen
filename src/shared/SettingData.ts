@@ -1,15 +1,19 @@
 import * as operations from './operations';
-import Settings, * as settings from './Settings';
+import Settings, { DefaultSettingJSONText } from './settings/Settings';
+import Keymaps from './settings/Keymaps';
+import Search from './settings/Search';
+import Properties from './settings/Properties';
+import Blacklist from './settings/Blacklist';
 
 export class FormKeymaps {
-  private data: {[op: string]: string};
+  private readonly data: {[op: string]: string};
 
-  constructor(data: {[op: string]: string}) {
+  private constructor(data: {[op: string]: string}) {
     this.data = data;
   }
 
-  toKeymaps(): settings.Keymaps {
-    let keymaps: settings.Keymaps = {};
+  toKeymaps(): Keymaps {
+    let keymaps: { [key: string]: operations.Operation } = {};
     for (let name of Object.keys(this.data)) {
       let [type, argStr] = name.split('?');
       let args = {};
@@ -19,7 +23,7 @@ export class FormKeymaps {
       let key = this.data[name];
       keymaps[key] = operations.valueOf({ type, ...args });
     }
-    return keymaps;
+    return Keymaps.fromJSON(keymaps);
   }
 
   toJSON(): {[op: string]: string} {
@@ -34,7 +38,7 @@ export class FormKeymaps {
     return new FormKeymaps(newData);
   }
 
-  static valueOf(o: ReturnType<FormKeymaps['toJSON']>): FormKeymaps {
+  static fromJSON(o: ReturnType<FormKeymaps['toJSON']>): FormKeymaps {
     let data: {[op: string]: string} = {};
     for (let op of Object.keys(o)) {
       data[op] = o[op] as string;
@@ -42,10 +46,11 @@ export class FormKeymaps {
     return new FormKeymaps(data);
   }
 
-  static fromKeymaps(keymaps: settings.Keymaps): FormKeymaps {
+  static fromKeymaps(keymaps: Keymaps): FormKeymaps {
+    let json = keymaps.toJSON();
     let data: {[op: string]: string} = {};
-    for (let key of Object.keys(keymaps)) {
-      let op = keymaps[key];
+    for (let key of Object.keys(json)) {
+      let op = json[key];
       let args = { ...op };
       delete args.type;
 
@@ -60,24 +65,21 @@ export class FormKeymaps {
 }
 
 export class FormSearch {
-  private default: string;
+  private readonly default: string;
 
-  private engines: string[][];
+  private readonly engines: string[][];
 
   constructor(defaultEngine: string, engines: string[][]) {
     this.default = defaultEngine;
     this.engines = engines;
   }
 
-  toSearchSettings(): settings.Search {
-    return {
-      default: this.default,
-      engines: this.engines.reduce(
-        (o: {[key: string]: string}, [name, url]) => {
-          o[name] = url;
-          return o;
-        }, {}),
-    };
+  toSearchSettings(): Search {
+    let engines: { [name: string]: string } = {};
+    for (let entry of this.engines) {
+      engines[entry[0]] = entry[1];
+    }
+    return new Search(this.default, engines);
   }
 
   toJSON(): {
@@ -90,7 +92,7 @@ export class FormSearch {
     };
   }
 
-  static valueOf(o: ReturnType<FormSearch['toJSON']>): FormSearch {
+  static fromJSON(o: ReturnType<FormSearch['toJSON']>): FormSearch {
     if (!Object.prototype.hasOwnProperty.call(o, 'default')) {
       throw new TypeError(`"default" field not set`);
     }
@@ -100,53 +102,58 @@ export class FormSearch {
     return new FormSearch(o.default, o.engines);
   }
 
-  static fromSearch(search: settings.Search): FormSearch {
+  static fromSearch(search: Search): FormSearch {
     let engines = Object.entries(search.engines).reduce(
       (o: string[][], [name, url]) => {
         return o.concat([[name, url]]);
       }, []);
-    return new FormSearch(search.default, engines);
+    return new FormSearch(search.defaultEngine, engines);
   }
 }
 
-export class JSONSettings {
-  private json: string;
-
-  constructor(json: any) {
-    this.json = json;
+export class JSONTextSettings {
+  constructor(
+    private json: string,
+  ) {
   }
 
   toSettings(): Settings {
-    return settings.valueOf(JSON.parse(this.json));
+    return Settings.fromJSON(JSON.parse(this.json));
   }
 
-  toJSON(): string {
+  toJSONText(): string {
     return this.json;
   }
 
-  static valueOf(o: ReturnType<JSONSettings['toJSON']>): JSONSettings {
-    return new JSONSettings(o);
+  static fromText(o: string): JSONTextSettings {
+    return new JSONTextSettings(o);
   }
 
-  static fromSettings(data: Settings): JSONSettings {
-    return new JSONSettings(JSON.stringify(data, undefined, 2));
+  static fromSettings(data: Settings): JSONTextSettings {
+    let json = {
+      keymaps: data.keymaps.toJSON(),
+      search: data.search,
+      properties: data.properties,
+      blacklist: data.blacklist,
+    };
+    return new JSONTextSettings(JSON.stringify(json, undefined, 2));
   }
 }
 
 export class FormSettings {
-  private keymaps: FormKeymaps;
+  public readonly keymaps: FormKeymaps;
 
-  private search: FormSearch;
+  public readonly search: FormSearch;
 
-  private properties: settings.Properties;
+  public readonly properties: Properties;
 
-  private blacklist: string[];
+  public readonly blacklist: Blacklist;
 
   constructor(
     keymaps: FormKeymaps,
     search: FormSearch,
-    properties: settings.Properties,
-    blacklist: string[],
+    properties: Properties,
+    blacklist: Blacklist,
   ) {
     this.keymaps = keymaps;
     this.search = search;
@@ -172,7 +179,7 @@ export class FormSettings {
     );
   }
 
-  buildWithProperties(props: settings.Properties): FormSettings {
+  buildWithProperties(props: Properties): FormSettings {
     return new FormSettings(
       this.keymaps,
       this.search,
@@ -181,7 +188,7 @@ export class FormSettings {
     );
   }
 
-  buildWithBlacklist(blacklist: string[]): FormSettings {
+  buildWithBlacklist(blacklist: Blacklist): FormSettings {
     return new FormSettings(
       this.keymaps,
       this.search,
@@ -191,39 +198,39 @@ export class FormSettings {
   }
 
   toSettings(): Settings {
-    return settings.valueOf({
-      keymaps: this.keymaps.toKeymaps(),
-      search: this.search.toSearchSettings(),
-      properties: this.properties,
-      blacklist: this.blacklist,
+    return Settings.fromJSON({
+      keymaps: this.keymaps.toKeymaps().toJSON(),
+      search: this.search.toSearchSettings().toJSON(),
+      properties: this.properties.toJSON(),
+      blacklist: this.blacklist.toJSON(),
     });
   }
 
   toJSON(): {
     keymaps: ReturnType<FormKeymaps['toJSON']>;
     search: ReturnType<FormSearch['toJSON']>;
-    properties: settings.Properties;
-    blacklist: string[];
+    properties: ReturnType<Properties['toJSON']>;
+    blacklist: ReturnType<Blacklist['toJSON']>;
     } {
     return {
       keymaps: this.keymaps.toJSON(),
       search: this.search.toJSON(),
-      properties: this.properties,
-      blacklist: this.blacklist,
+      properties: this.properties.toJSON(),
+      blacklist: this.blacklist.toJSON(),
     };
   }
 
-  static valueOf(o: ReturnType<FormSettings['toJSON']>): FormSettings {
+  static fromJSON(o: ReturnType<FormSettings['toJSON']>): FormSettings {
     for (let name of ['keymaps', 'search', 'properties', 'blacklist']) {
       if (!Object.prototype.hasOwnProperty.call(o, name)) {
         throw new Error(`"${name}" field not set`);
       }
     }
     return new FormSettings(
-      FormKeymaps.valueOf(o.keymaps),
-      FormSearch.valueOf(o.search),
-      settings.propertiesValueOf(o.properties),
-      settings.blacklistValueOf(o.blacklist),
+      FormKeymaps.fromJSON(o.keymaps),
+      FormSearch.fromJSON(o.search),
+      Properties.fromJSON(o.properties),
+      Blacklist.fromJSON(o.blacklist),
     );
   }
 
@@ -244,7 +251,7 @@ export enum SettingSource {
 export default class SettingData {
   private source: SettingSource;
 
-  private json?: JSONSettings;
+  private json?: JSONTextSettings;
 
   private form?: FormSettings;
 
@@ -252,7 +259,7 @@ export default class SettingData {
     source, json, form
   }: {
     source: SettingSource,
-    json?: JSONSettings,
+    json?: JSONTextSettings,
     form?: FormSettings,
   }) {
     this.source = source;
@@ -264,7 +271,7 @@ export default class SettingData {
     return this.source;
   }
 
-  getJSON(): JSONSettings {
+  getJSON(): JSONTextSettings {
     if (!this.json) {
       throw new TypeError('json settings not set');
     }
@@ -283,7 +290,7 @@ export default class SettingData {
     case SettingSource.JSON:
       return {
         source: this.source,
-        json: (this.json as JSONSettings).toJSON(),
+        json: (this.json as JSONTextSettings).toJSONText(),
       };
     case SettingSource.Form:
       return {
@@ -304,7 +311,7 @@ export default class SettingData {
     throw new Error(`unknown settings source: ${this.source}`);
   }
 
-  static valueOf(o: {
+  static fromJSON(o: {
     source: string;
     json?: string;
     form?: ReturnType<FormSettings['toJSON']>;
@@ -313,13 +320,13 @@ export default class SettingData {
     case SettingSource.JSON:
       return new SettingData({
         source: o.source,
-        json: JSONSettings.valueOf(
-          o.json as ReturnType<JSONSettings['toJSON']>),
+        json: JSONTextSettings.fromText(
+          o.json as ReturnType<JSONTextSettings['toJSONText']>),
       });
     case SettingSource.Form:
       return new SettingData({
         source: o.source,
-        form: FormSettings.valueOf(
+        form: FormSettings.fromJSON(
           o.form as ReturnType<FormSettings['toJSON']>),
       });
     }
@@ -327,90 +334,7 @@ export default class SettingData {
   }
 }
 
-export const DefaultSettingData: SettingData = SettingData.valueOf({
+export const DefaultSettingData: SettingData = SettingData.fromJSON({
   source: 'json',
-  json: `{
-  "keymaps": {
-    "0": { "type": "scroll.home" },
-    ":": { "type": "command.show" },
-    "o": { "type": "command.show.open", "alter": false },
-    "O": { "type": "command.show.open", "alter": true },
-    "t": { "type": "command.show.tabopen", "alter": false },
-    "T": { "type": "command.show.tabopen", "alter": true },
-    "w": { "type": "command.show.winopen", "alter": false },
-    "W": { "type": "command.show.winopen", "alter": true },
-    "b": { "type": "command.show.buffer" },
-    "a": { "type": "command.show.addbookmark", "alter": true },
-    "k": { "type": "scroll.vertically", "count": -1 },
-    "j": { "type": "scroll.vertically", "count": 1 },
-    "h": { "type": "scroll.horizonally", "count": -1 },
-    "l": { "type": "scroll.horizonally", "count": 1 },
-    "<C-U>": { "type": "scroll.pages", "count": -0.5 },
-    "<C-D>": { "type": "scroll.pages", "count": 0.5 },
-    "<C-B>": { "type": "scroll.pages", "count": -1 },
-    "<C-F>": { "type": "scroll.pages", "count": 1 },
-    "gg": { "type": "scroll.top" },
-    "G": { "type": "scroll.bottom" },
-    "$": { "type": "scroll.end" },
-    "d": { "type": "tabs.close" },
-    "D": { "type": "tabs.close", "select": "left" },
-    "x$": { "type": "tabs.close.right" },
-    "!d": { "type": "tabs.close.force" },
-    "u": { "type": "tabs.reopen" },
-    "K": { "type": "tabs.prev" },
-    "J": { "type": "tabs.next" },
-    "gT": { "type": "tabs.prev" },
-    "gt": { "type": "tabs.next" },
-    "g0": { "type": "tabs.first" },
-    "g$": { "type": "tabs.last" },
-    "<C-6>": { "type": "tabs.prevsel" },
-    "r": { "type": "tabs.reload", "cache": false },
-    "R": { "type": "tabs.reload", "cache": true },
-    "zp": { "type": "tabs.pin.toggle" },
-    "zd": { "type": "tabs.duplicate" },
-    "zi": { "type": "zoom.in" },
-    "zo": { "type": "zoom.out" },
-    "zz": { "type": "zoom.neutral" },
-    "f": { "type": "follow.start", "newTab": false },
-    "F": { "type": "follow.start", "newTab": true, "background": false },
-    "m": { "type": "mark.set.prefix" },
-    "'": { "type": "mark.jump.prefix" },
-    "H": { "type": "navigate.history.prev" },
-    "L": { "type": "navigate.history.next" },
-    "[[": { "type": "navigate.link.prev" },
-    "]]": { "type": "navigate.link.next" },
-    "gu": { "type": "navigate.parent" },
-    "gU": { "type": "navigate.root" },
-    "gi": { "type": "focus.input" },
-    "gf": { "type": "page.source" },
-    "gh": { "type": "page.home" },
-    "gH": { "type": "page.home", "newTab": true },
-    "y": { "type": "urls.yank" },
-    "p": { "type": "urls.paste", "newTab": false },
-    "P": { "type": "urls.paste", "newTab": true },
-    "/": { "type": "find.start" },
-    "n": { "type": "find.next" },
-    "N": { "type": "find.prev" },
-    ".": { "type": "repeat.last" },
-    "<S-Esc>": { "type": "addon.toggle.enabled" }
-  },
-  "search": {
-    "default": "google",
-    "engines": {
-      "google": "https://google.com/search?q={}",
-      "yahoo": "https://search.yahoo.com/search?p={}",
-      "bing": "https://www.bing.com/search?q={}",
-      "duckduckgo": "https://duckduckgo.com/?q={}",
-      "twitter": "https://twitter.com/search?q={}",
-      "wikipedia": "https://en.wikipedia.org/w/index.php?search={}"
-    }
-  },
-  "properties": {
-    "hintchars": "abcdefghijklmnopqrstuvwxyz",
-    "smoothscroll": false,
-    "complete": "sbh"
-  },
-  "blacklist": [
-  ]
-}`,
+  json: DefaultSettingJSONText,
 });

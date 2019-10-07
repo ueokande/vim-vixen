@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import SettingRepository from '../repositories/SettingRepository';
 import SettingClient from '../client/SettingClient';
-import Settings from '../../shared/Settings';
+import Settings from '../../shared/settings/Settings';
 
 @injectable()
 export default class SettingUseCase {

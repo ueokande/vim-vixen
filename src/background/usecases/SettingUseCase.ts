@@ -3,7 +3,7 @@ import PersistentSettingRepository
   from '../repositories/PersistentSettingRepository';
 import SettingRepository from '../repositories/SettingRepository';
 import { DefaultSettingData } from '../../shared/SettingData';
-import Settings from '../../shared/Settings';
+import Settings from '../../shared/settings/Settings';
 import NotifyPresenter from '../presenters/NotifyPresenter';
 
 @injectable()

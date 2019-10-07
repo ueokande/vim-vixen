@@ -1,6 +1,7 @@
 import KeymapRepository, { KeymapRepositoryImpl }
   from '../../../src/content/repositories/KeymapRepository';
 import { expect } from 'chai';
+import Key from "../../../src/shared/settings/Key";
 
 describe('KeymapRepositoryImpl', () => {
   let sut: KeymapRepository;
@@ -11,24 +12,25 @@ describe('KeymapRepositoryImpl', () => {
 
   describe('#enqueueKey()', () => {
     it('enqueues keys', () => {
-      sut.enqueueKey({ key: 'a' });
-      sut.enqueueKey({ key: 'b' });
-      let sequence = sut.enqueueKey({ key: 'c' });
+      sut.enqueueKey(Key.fromMapKey('a');
+      sut.enqueueKey(Key.fromMapKey('b');
+      let sequence = sut.enqueueKey(Key.fromMapKey('c'));
 
-      expect(sequence.getKeyArray()).deep.equals([
-        { key: 'a' }, { key: 'b' }, { key: 'c' },
-      ]);
+      let keys = sequence.keys;
+      expect(keys[0].equals(Key.fromMapKey('a'))).to.be.true;
+      expect(keys[1].equals(Key.fromMapKey('b'))).to.be.true;
+      expect(keys[2].equals(Key.fromMapKey('c'))).to.be.true;
     });
   });
 
   describe('#clear()', () => {
     it('clears keys', () => {
-      sut.enqueueKey({ key: 'a' });
-      sut.enqueueKey({ key: 'b' });
-      sut.enqueueKey({ key: 'c' });
+      sut.enqueueKey(Key.fromMapKey('a'));
+      sut.enqueueKey(Key.fromMapKey('b'));
+      sut.enqueueKey(Key.fromMapKey('c'));
       sut.clear();
 
-      let sequence = sut.enqueueKey({ key: 'a' });
+      let sequence = sut.enqueueKey(Key.fromMapKey('a'));
       expect(sequence.length()).to.equal(1);
     });
   });
