@@ -58,12 +58,7 @@ describe('shared/SettingData', () => {
         }`;
 
         let settings = JSONTextSettings.fromText(o).toSettings();
-        expect({
-          keymaps: settings.keymaps.toJSON(),
-          search: settings.search.toJSON(),
-          properties: settings.properties.toJSON(),
-          blacklist: settings.blacklist.toJSON(),
-        }).to.deep.equal(JSON.parse(o));
+        expect(settings.toJSON()).to.deep.equal(JSON.parse(o));
       });
     });
 
@@ -86,12 +81,7 @@ describe('shared/SettingData', () => {
         });
 
         let json = JSONTextSettings.fromSettings(o).toJSONText();
-        expect(JSON.parse(json)).to.deep.equal({
-          keymaps: o.keymaps.toJSON(),
-          search: o.search.toJSON(),
-          properties: o.properties.toJSON(),
-          blacklist: o.blacklist.toJSON(),
-        });
+        expect(JSON.parse(json)).to.deep.equal(o.toJSON());
       });
     });
   });
@@ -119,12 +109,7 @@ describe('shared/SettingData', () => {
         };
 
         let settings = FormSettings.fromJSON(data).toSettings();
-        expect({
-          keymaps: settings.keymaps.toJSON(),
-          search: settings.search.toJSON(),
-          properties: settings.properties.toJSON(),
-          blacklist: settings.blacklist.toJSON(),
-        }).to.deep.equal({
+        expect(settings.toJSON()).to.deep.equal({
           keymaps: {
             'j': { type: 'scroll.vertically', count: 1 },
             '0': { type: 'scroll.home' },
