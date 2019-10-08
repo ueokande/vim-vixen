@@ -7,8 +7,8 @@ import { WebDriver, Key } from 'selenium-webdriver';
 import Page from './lib/Page';
 
 describe("console test", () => {
-  let server = new TestServer().receiveContent('/', 
-    `<!DOCTYPE html><html lang="en"><head><title>Hello, world!</title></head></html">`,
+  let server = new TestServer().receiveContent('/',
+    `<!DOCTYPE html><html lang="en"><head><title>Hello, world!</title></head></html>`,
   );
   let lanthan: Lanthan;
   let webdriver: WebDriver;

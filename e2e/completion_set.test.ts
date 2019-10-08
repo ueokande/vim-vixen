@@ -1,7 +1,6 @@
 import * as path from 'path';
 import * as assert from 'assert';
 
-import settings from './settings';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver } from 'selenium-webdriver';
@@ -10,7 +9,6 @@ import Page from './lib/Page';
 describe("completion on set commands", () => {
   let lanthan: Lanthan;
   let webdriver: WebDriver;
-  let browser: any;
   let page: Page;
 
   before(async() => {
@@ -19,11 +17,6 @@ describe("completion on set commands", () => {
       .spyAddon(path.join(__dirname, '..'))
       .build();
     webdriver = lanthan.getWebDriver();
-    browser = lanthan.getWebExtBrowser();
-
-    await browser.storage.local.set({
-      settings,
-    });
   });
 
   after(async() => {
@@ -44,9 +37,9 @@ describe("completion on set commands", () => {
       let items = await console.getCompletions();
       assert.strictEqual(items.length, 5);
       assert.deepStrictEqual(items[0], { type: 'title', text: 'Properties' });
-      assert.ok(items[1].text.startsWith('hintchars'))
-      assert.ok(items[2].text.startsWith('smoothscroll'))
-      assert.ok(items[3].text.startsWith('nosmoothscroll'))
+      assert.ok(items[1].text.startsWith('hintchars'));
+      assert.ok(items[2].text.startsWith('smoothscroll'));
+      assert.ok(items[3].text.startsWith('nosmoothscroll'));
       assert.ok(items[4].text.startsWith('complete'))
     });
   });

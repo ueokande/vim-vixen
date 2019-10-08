@@ -36,10 +36,10 @@ describe('bdelete/bdeletes command test', () => {
       await browser.tabs.remove(tab.id);
     }
     await browser.tabs.update(tabs[0].id, { url: server.url('/site1'), pinned: true });
-    await browser.tabs.create({ url: server.url('/site2'), pinned: true })
-    await browser.tabs.create({ url: server.url('/site3'), pinned: true })
-    await browser.tabs.create({ url: server.url('/site4'), })
-    await browser.tabs.create({ url: server.url('/site5'), })
+    await browser.tabs.create({ url: server.url('/site2'), pinned: true });
+    await browser.tabs.create({ url: server.url('/site3'), pinned: true });
+    await browser.tabs.create({ url: server.url('/site4'), });
+    await browser.tabs.create({ url: server.url('/site5'), });
 
     await eventually(async() => {
       let handles = await webdriver.getAllWindowHandles();

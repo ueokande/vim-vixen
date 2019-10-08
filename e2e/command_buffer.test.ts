@@ -16,7 +16,7 @@ describe('buffer command test', () => {
         <head>
           <title>my_${req.path.slice(1)}</title>
         </head>
-      </html">`);
+      </html>`);
   });
   let lanthan: Lanthan;
   let webdriver: WebDriver;

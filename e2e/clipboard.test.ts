@@ -4,10 +4,11 @@ import * as path from 'path';
 import TestServer from './lib/TestServer';
 import eventually from './eventually';
 import * as clipboard from './lib/clipboard';
-import settings from './settings';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver, Key } from 'selenium-webdriver';
 import Page from './lib/Page';
+import SettingRepository from "./lib/SettingRepository";
+import Settings from "../src/shared/settings/Settings";
 
 describe("clipboard test", () => {
   let server = new TestServer(12321).receiveContent('/happy', 'ok');
@@ -23,9 +24,14 @@ describe("clipboard test", () => {
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
 
-    await browser.storage.local.set({
-      settings,
-    });
+    await new SettingRepository(browser).saveJSON(Settings.fromJSON({
+      search: {
+        default: "google",
+        engines: {
+          "google": "http://127.0.0.1:12321/google?q={}",
+        },
+      },
+    }));
 
     await server.start();
   });
@@ -42,7 +48,7 @@ describe("clipboard test", () => {
     for (let tab of tabs.slice(1)) {
       await browser.tabs.remove(tab.id);
     }
-  })
+  });
 
   it('should copy current URL by y', async () => {
     let page = await Page.navigateTo(webdriver, server.url('/#should_copy_url'));

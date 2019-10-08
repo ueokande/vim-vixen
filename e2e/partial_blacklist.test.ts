@@ -5,6 +5,8 @@ import TestServer from './lib/TestServer';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
+import Settings from '../src/shared/settings/Settings';
+import SettingRepository from './lib/SettingRepository';
 
 describe("partial blacklist test", () => {
   let server = new TestServer().receiveContent('/*',
@@ -24,20 +26,15 @@ describe("partial blacklist test", () => {
     await server.start();
 
     let url = server.url().replace('http://', '');
-    await browser.storage.local.set({
-      settings: {
-        source: 'json',
-        json: `{
-        "keymaps": {
-          "j": { "type": "scroll.vertically", "count": 1 },
-          "k": { "type": "scroll.vertically", "count": -1 }
-        },
-        "blacklist": [
-          { "url": "${url}", "keys": ["k"] }
-        ]
-      }`,
+    await new SettingRepository(browser).saveJSON(Settings.fromJSON({
+      keymaps: {
+        j: { type: 'scroll.vertically', count: 1 },
+        k: { type: 'scroll.vertically', count: -1 },
       },
-    });
+      blacklist: [
+        { 'url': url, 'keys': ['k'] }
+      ]
+    }));
   });
 
   after(async() => {
@@ -50,11 +47,11 @@ describe("partial blacklist test", () => {
   it('should disable keys in the partial blacklist', async () => {
     let page = await Page.navigateTo(webdriver, server.url('/'));
 
-    await page.sendKeys('j')
+    await page.sendKeys('j');
     let scrollY = await page.getScrollY();
     assert.strictEqual(scrollY, 64);
 
-    await page.sendKeys('k')
+    await page.sendKeys('k');
     scrollY = await page.getScrollY();
     assert.strictEqual(scrollY, 64);
   });

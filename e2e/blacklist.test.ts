@@ -5,10 +5,12 @@ import TestServer from './lib/TestServer';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
+import SettingRepository from "./lib/SettingRepository";
+import Settings from "../src/shared/settings/Settings";
 
 describe("blacklist test", () => {
   let server = new TestServer().receiveContent('/*',
-    `<!DOCTYPE html><html lang="en"><body style="width:10000px; height:10000px"></body></html">`,
+    `<!DOCTYPE html><html lang="en"><body style="width:10000px; height:10000px"></body></html>`,
   );
   let lanthan: Lanthan;
   let webdriver: WebDriver;
@@ -24,17 +26,12 @@ describe("blacklist test", () => {
     await server.start();
 
     let url = server.url('/a').replace('http://', '');
-    await browser.storage.local.set({
-      settings: {
-        source: 'json',
-        json: `{
-        "keymaps": {
-          "j": { "type": "scroll.vertically", "count": 1 }
-        },
-        "blacklist": [ "${url}" ]
-      }`,
+    await new SettingRepository(browser).saveJSON(Settings.fromJSON({
+      keymaps: {
+        j: { type: "scroll.vertically", count: 1 },
       },
-    });
+      blacklist: [ url ],
+    }));
   });
 
   after(async() => {
@@ -46,7 +43,7 @@ describe("blacklist test", () => {
 
   it('should disable add-on if the URL is in the blacklist', async () => {
     let page = await Page.navigateTo(webdriver, server.url('/a'));
-    await page.sendKeys('j')
+    await page.sendKeys('j');
 
     let scrollY = await page.getScrollY();
     assert.strictEqual(scrollY, 0);

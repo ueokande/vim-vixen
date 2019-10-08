@@ -20,7 +20,7 @@ describe("zoom test", () => {
       .build();
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
-    tab = (await browser.tabs.query({}))[0]
+    tab = (await browser.tabs.query({}))[0];
     page = await Page.currentContext(webdriver);
   });
 

@@ -10,7 +10,7 @@ import OptionPage from './lib/OptionPage';
 
 describe("options page", () => {
   let server = new TestServer().receiveContent('/',
-    `<!DOCTYPE html><html lang="en"><body style="width:10000px; height:10000px"></body></html">`,
+    `<!DOCTYPE html><html lang="en"><body style="width:10000px; height:10000px"></body></html>`,
   );
   let lanthan: Lanthan;
   let webdriver: WebDriver;
@@ -39,22 +39,22 @@ describe("options page", () => {
     for (let tab of tabs.slice(1)) {
       await browser.tabs.remove(tab.id);
     }
-  })
+  });
 
   it('saves current config on blur', async () => {
     let page = await OptionPage.open(lanthan);
     let jsonPage = await page.asJSONOptionPage();
-    await jsonPage.updateSettings(`{ "blacklist": [ "https://example.com" ] }`)
+    await jsonPage.updateSettings(`{ "blacklist": [ "https://example.com" ] }`);
 
     let { settings } = await browser.storage.local.get('settings');
-    assert.strictEqual(settings.source, 'json')
-    assert.strictEqual(settings.json, '{ "blacklist": [ "https://example.com" ] } ')
+    assert.strictEqual(settings.source, 'json');
+    assert.strictEqual(settings.json, '{ "blacklist": [ "https://example.com" ] } ');
 
     await jsonPage.updateSettings(`invalid json`);
 
     settings = (await browser.storage.local.get('settings')).settings;
-    assert.strictEqual(settings.source, 'json')
-    assert.strictEqual(settings.json, '{ "blacklist": [ "https://example.com" ] } ')
+    assert.strictEqual(settings.source, 'json');
+    assert.strictEqual(settings.json, '{ "blacklist": [ "https://example.com" ] } ');
 
     let message = await jsonPage.getErrorMessage();
     assert.ok(message.startsWith('SyntaxError:'))
