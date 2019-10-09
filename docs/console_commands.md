@@ -10,6 +10,10 @@ Open the console with <kbd>:</kbd>. Or populate it with initial values using
 <kbd>o</kbd>/<kbd>O</kbd>, <kbd>t</kbd>/<kbd>T</kbd>, or
 <kbd>w</kbd>/<kbd>W</kbd>.
 
+## `:help`
+
+Open a [Vim Vixen official document](https://ueokande.github.io/vim-vixen/) in a new tab.
+
 ## `:open`
 
 The `:open` command operates two different ways, depending on the parameter.
