@@ -5,10 +5,10 @@ import TestServer from './lib/TestServer';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
-import SettingRepository from "./lib/SettingRepository";
-import Settings from "../src/shared/settings/Settings";
+import Settings from '../src/shared/settings/Settings';
+import SettingRepository from './lib/SettingRepository';
 
-describe("blacklist test", () => {
+describe("partial blacklist test", () => {
   let server = new TestServer().receiveContent('/*',
     `<!DOCTYPE html><html lang="en"><body style="width:10000px; height:10000px"></body></html>`,
   );
@@ -25,12 +25,15 @@ describe("blacklist test", () => {
     browser = lanthan.getWebExtBrowser();
     await server.start();
 
-    let url = server.url('/a').replace('http://', '');
+    let url = server.url().replace('http://', '');
     await new SettingRepository(browser).saveJSON(Settings.fromJSON({
       keymaps: {
-        j: { type: "scroll.vertically", count: 1 },
+        j: { type: 'scroll.vertically', count: 1 },
+        k: { type: 'scroll.vertically', count: -1 },
       },
-      blacklist: [ url ],
+      blacklist: [
+        { 'url': url, 'keys': ['k'] }
+      ]
     }));
   });
 
@@ -41,19 +44,15 @@ describe("blacklist test", () => {
     }
   });
 
-  it('should disable add-on if the URL is in the blacklist', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/a'));
+  it('should disable keys in the partial blacklist', async () => {
+    let page = await Page.navigateTo(webdriver, server.url('/'));
+
     await page.sendKeys('j');
-
     let scrollY = await page.getScrollY();
-    assert.strictEqual(scrollY, 0);
-  });
+    assert.strictEqual(scrollY, 64);
 
-  it('should enabled add-on if the URL is not in the blacklist', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/ab'));
-    await page.sendKeys('j');
-
-    let scrollY = await page.getScrollY();
+    await page.sendKeys('k');
+    scrollY = await page.getScrollY();
     assert.strictEqual(scrollY, 64);
   });
 });

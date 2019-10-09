@@ -16,7 +16,7 @@ const newApp = () => {
       <html lang="en">
         <a href="/pagenation-a/${Number(req.params.page) - 1}">prev</a>
         <a href="/pagenation-a/${Number(req.params.page) + 1}">next</a>
-      </html">`);
+      </html>`);
   });
 
   server.handle('/pagenation-link/:page', (req, res) => {
@@ -27,7 +27,7 @@ const newApp = () => {
           <link rel="prev" href="/pagenation-link/${Number(req.params.page) - 1}"></link>
           <link rel="next" href="/pagenation-link/${Number(req.params.page) + 1}"></link>
         </head>
-      </html">`);
+      </html>`);
   });
   server.receiveContent('/reload', `
     <!DOCTYPE html>
@@ -36,7 +36,7 @@ const newApp = () => {
         <script>window.location.hash = Date.now()</script>
       </head>
       <body style="width:10000px; height:10000px"></body>
-    </html">`);
+    </html>`);
 
   server.receiveContent('/*', `ok`);
 
@@ -75,7 +75,7 @@ describe("navigate test", () => {
     for (let tab of tabs.slice(1)) {
       await browser.tabs.remove(tab.id);
     }
-  })
+  });
 
   it('should go to parent path without hash by gu', async () => {
     let page = await Page.navigateTo(webdriver, server.url('/a/b/c'));
@@ -95,7 +95,7 @@ describe("navigate test", () => {
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
       let url = new URL(tab.url);
-      assert.strictEqual(url.hash, '')
+      assert.strictEqual(url.hash, '');
       assert.strictEqual(url.pathname, `/a/b/c`)
     });
   });
@@ -213,7 +213,7 @@ describe("navigate test", () => {
 
     await page.sendKeys('r');
 
-    let after
+    let after;
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
       after = Number(new URL(tab.url).hash.split('#')[1]);
@@ -239,7 +239,7 @@ describe("navigate test", () => {
 
     await page.sendKeys(Key.SHIFT, 'R');
 
-    let after
+    let after;
     await eventually(async() => {
       let tab = (await browser.tabs.query({}))[0];
       after = Number(new URL(tab.url).hash.split('#')[1]);

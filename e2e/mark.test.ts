@@ -9,7 +9,7 @@ import Page from './lib/Page';
 
 describe("mark test", () => {
   let server = new TestServer().receiveContent('/',
-    `<!DOCTYPE html><html lang="en"><body style="width:10000px; height:10000px"></body></html">`,
+    `<!DOCTYPE html><html lang="en"><body style="width:10000px; height:10000px"></body></html>`,
   );
   let lanthan: Lanthan;
   let webdriver: WebDriver;

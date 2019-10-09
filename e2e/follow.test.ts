@@ -14,13 +14,13 @@ const newApp = () => {
     <!DOCTYPE html>
     <html lang="en"><body>
       <a href="hello">hello</a>
-    </body></html">`);
+    </body></html>`);
 
   server.receiveContent('/follow-input', `
     <!DOCTYPE html>
     <html lang="en"><body>
       <input>
-    </body></html">`);
+    </body></html>`);
 
   server.receiveContent('/area', `
     <!DOCTYPE html>
@@ -34,8 +34,8 @@ const newApp = () => {
         <area shape="rect" coords="64,64,64,64" href="/">
         <area shape="rect" coords="128,128,64,64" href="/">
       </map>
-    </body></html">`);
-  
+    </body></html>`);
+
   /*
    * test case: link2 is out of the viewport
    * +-----------------+
@@ -52,7 +52,7 @@ const newApp = () => {
       <div><a href="link1">link1</a></div>
       <div style="min-height:3000px"></div>
       <div><a href="link2">link2</a></div>
-    </body></html">`);
+    </body></html>`);
 
 /*
  * test case 2: link2 and link3 are out of window of the frame
@@ -69,14 +69,14 @@ const newApp = () => {
     <!DOCTYPE html>
     <html lang="en"><body>
       <iframe height="5000" src='/test2-frame'>
-    </body></html">`);
+    </body></html>`);
   server.receiveContent('/test2-frame', `
     <!DOCTYPE html>
     <html lang="en"><body>
       <div><a href="link1">link1</a></div>
       <div style="min-height:3000px"></div>
       <div><a href="link2">link2</a></div>
-    </body></html">`);
+    </body></html>`);
 
 /* test case 3: link2 is out of window of the frame
  * +-----------------+
@@ -92,14 +92,14 @@ const newApp = () => {
     <!DOCTYPE html>
     <html lang="en"><body>
       <iframe src='/test3-frame'>
-    </body></html">`);
+    </body></html>`);
   server.receiveContent('/test3-frame', `
     <!DOCTYPE html>
     <html lang="en"><body>
       <div><a href="link1">link1</a></div>
       <div style="min-height:3000px"></div>
       <div><a href="link2">link2</a></div>
-    </body></html">`);
+    </body></html>`);
 
   return server;
 };

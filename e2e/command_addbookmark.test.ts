@@ -10,7 +10,7 @@ import Page from './lib/Page';
 describe('addbookmark command test', () => {
   let server = new TestServer().receiveContent('/happy', `
       <!DOCTYPE html>
-      <html lang="en"><head><title>how to be happy</title></head></html">`,
+      <html lang="en"><head><title>how to be happy</title></head></html>`,
   );
   let lanthan: Lanthan;
   let webdriver: WebDriver;

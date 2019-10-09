@@ -2,14 +2,15 @@ import * as path from 'path';
 import * as assert from 'assert';
 
 import TestServer from './lib/TestServer';
-import settings from './settings';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
+import SettingRepository from "./lib/SettingRepository";
+import Settings from "../src/shared/settings/Settings";
 
 describe("tabopen command test", () => {
-  let server = new TestServer(12321)
+  let server = new TestServer()
     .receiveContent('/google', 'google')
     .receiveContent('/yahoo', 'yahoo');
   let lanthan: Lanthan;
@@ -25,11 +26,16 @@ describe("tabopen command test", () => {
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
 
-    await browser.storage.local.set({
-      settings,
-    });
-
     await server.start();
+    await new SettingRepository(browser).saveJSON(Settings.fromJSON({
+      search: {
+        default: "google",
+        engines: {
+          "google": server.url('/google?q={}'),
+          "yahoo": server.url('/yahoo?q={}'),
+        },
+      },
+    }));
   });
 
   after(async() => {
@@ -46,7 +52,7 @@ describe("tabopen command test", () => {
     }
 
     page = await Page.navigateTo(webdriver, server.url());
-  })
+  });
 
   it('should open default search for keywords by tabopen command ', async() => {
     let console = await page.showConsole();

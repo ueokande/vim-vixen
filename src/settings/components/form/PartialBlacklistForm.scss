@@ -1,0 +1,28 @@
+.form-partial-blacklist-form {
+  @mixin row-base {
+    display: flex;
+
+    .column-url {
+      flex: 5;
+      min-width: 0;
+    }
+    .column-keys {
+      flex: 1;
+      min-width: 0;
+    }
+    .column-delete {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  &-header {
+    @include row-base;
+
+    font-weight: bold;
+  }
+
+  &-row {
+    @include row-base;
+  }
+}

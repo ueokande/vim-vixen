@@ -16,7 +16,7 @@ describe('follow properties test', () => {
       <a href="/">link3</a>
       <a href="/">link4</a>
       <a href="/">link5</a>
-    </body></html">`);
+    </body></html>`);
 
   let lanthan: Lanthan;
   let webdriver: WebDriver;

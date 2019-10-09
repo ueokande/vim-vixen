@@ -3,7 +3,6 @@ import * as path from 'path';
 
 import { Request, Response } from 'express'
 import TestServer from './lib/TestServer';
-import settings from './settings';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver } from 'selenium-webdriver';
@@ -17,7 +16,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
         <head>
           <title>title_${req.path.slice(1)}</title>
         </head>
-      </html">`);
+      </html>`);
   });
   let lanthan: Lanthan;
   let webdriver: WebDriver;
@@ -31,10 +30,6 @@ describe("completion on buffer/bdelete/bdeletes", () => {
       .build();
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
-
-    await browser.storage.local.set({
-      settings,
-    });
 
     await server.start();
   });
@@ -53,7 +48,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     }
 
     await browser.tabs.update(tabs[0].id, { url: server.url('/site1'), pinned: true });
-    await browser.tabs.create({ url:server.url('/site2'), pinned: true })
+    await browser.tabs.create({ url:server.url('/site2'), pinned: true });
     for (let i = 3; i <= 5; ++i) {
       await browser.tabs.create({ url: server.url('/site' + i) });
     }
@@ -84,7 +79,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
       assert.ok(items[3].text.includes('%'));
       assert.ok(items[5].text.includes('#'));
     });
-  })
+  });
 
   it('should filter items with URLs by keywords on "buffer" command', async() => {
     let console = await page.showConsole();
@@ -97,7 +92,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
       assert.ok(items[1].text.includes('title_site2'));
       assert.ok(items[1].text.includes(server.url('/site2')));
     });
-  })
+  });
 
   it('should filter items with titles by keywords on "buffer" command', async() => {
     let console = await page.showConsole();
@@ -108,7 +103,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
       assert.deepStrictEqual(items[0], { type: 'title', text: 'Buffers' });
       assert.ok(items[1].text.startsWith('2:'));
     });
-  })
+  });
 
   it('should show one item by number on "buffer" command', async() => {
     let console = await page.showConsole();
@@ -120,7 +115,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
       assert.deepStrictEqual(items[0], { type: 'title', text: 'Buffers' });
       assert.ok(items[1].text.startsWith('2:'));
     });
-  })
+  });
 
   it('should show unpinned tabs "bdelete" command', async() => {
     let console = await page.showConsole();
@@ -133,7 +128,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
       assert.ok(items[2].text.includes('site4'));
       assert.ok(items[3].text.includes('site5'));
     });
-  })
+  });
 
   it('should show unpinned tabs "bdeletes" command', async() => {
     let console = await page.showConsole();
@@ -146,7 +141,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
       assert.ok(items[2].text.includes('site4'));
       assert.ok(items[3].text.includes('site5'));
     });
-  })
+  });
 
   it('should show both pinned and unpinned tabs "bdelete!" command', async() => {
     let console = await page.showConsole();
@@ -161,7 +156,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
       assert.ok(items[4].text.includes('site4'));
       assert.ok(items[5].text.includes('site5'));
     });
-  })
+  });
 
   it('should show both pinned and unpinned tabs "bdeletes!" command', async() => {
     let console = await page.showConsole();
@@ -176,5 +171,5 @@ describe("completion on buffer/bdelete/bdeletes", () => {
       assert.ok(items[4].text.includes('site4'));
       assert.ok(items[5].text.includes('site5'));
     });
-  })
+  });
 });

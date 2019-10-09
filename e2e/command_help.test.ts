@@ -34,7 +34,7 @@ describe("help command test", () => {
 
   beforeEach(async() => {
     page = await Page.navigateTo(webdriver, server.url());
-  })
+  });
 
   it('should open help page by help command ', async() => {
     let console = await page.showConsole();

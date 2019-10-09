@@ -1,12 +1,13 @@
 import * as path from 'path';
 import * as assert from 'assert';
 
+import Settings from "../src/shared/settings/Settings";
 import TestServer from './lib/TestServer';
-import settings from './settings';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
+import SettingRepository from "./lib/SettingRepository";
 
 describe("completion on open/tabopen/winopen commands", () => {
   let server = new TestServer().receiveContent('/*', 'ok');
@@ -25,10 +26,6 @@ describe("completion on open/tabopen/winopen commands", () => {
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
 
-    await browser.storage.local.set({
-      settings,
-    });
-    
     // Add item into hitories
     await webdriver.navigate().to(('https://i-beam.org/404'));
   });
@@ -65,7 +62,7 @@ describe("completion on open/tabopen/winopen commands", () => {
       let items = completions.filter(x => x.type === 'item').map(x => x.text);
       assert.ok(items.every(x => x.includes('https://')));
     });
-  })
+  });
 
   it('should filter items with titles by keywords on "open" command', async() => {
     let console = await page.showConsole();
@@ -76,7 +73,7 @@ describe("completion on open/tabopen/winopen commands", () => {
       let items = completions.filter(x => x.type === 'item').map(x => x.text);
       assert.ok(items.every(x => x.toLowerCase().includes('getting')));
     });
-  })
+  });
 
   it('should filter items with titles by keywords on "tabopen" command', async() => {
     let console = await page.showConsole();
@@ -87,7 +84,7 @@ describe("completion on open/tabopen/winopen commands", () => {
       let items = completions.filter(x => x.type === 'item').map(x => x.text);
       assert.ok(items.every(x => x.includes('https://')));
     });
-  })
+  });
 
   it('should filter items with titles by keywords on "winopen" command', async() => {
     let console = await page.showConsole();
@@ -98,7 +95,7 @@ describe("completion on open/tabopen/winopen commands", () => {
       let items = completions.filter(x => x.type === 'item').map(x => x.text);
       assert.ok(items.every(x => x.includes('https://')));
     });
-  })
+  });
 
   it('should display only specified items in "complete" property by set command', async() => {
     let console = await page.showConsole();
@@ -127,24 +124,12 @@ describe("completion on open/tabopen/winopen commands", () => {
       let titles = completions.filter(x => x.type === 'title').map(x => x.text);
       assert.deepStrictEqual(titles, ['Bookmarks', 'Search Engines', 'Search Engines'])
     });
-  })
+  });
 
   it('should display only specified items in "complete" property by setting', async() => {
-    await browser.storage.local.set({ settings: {
-      source: 'json',
-      json: `{
-        "keymaps": {
-          ":": { "type": "command.show" }
-        },
-        "search": {
-          "default": "google",
-          "engines": { "google": "https://google.com/search?q={}" }
-        },
-        "properties": {
-          "complete": "sbh"
-        }
-      }`,
-    }});
+    new SettingRepository(browser).saveJSON(Settings.fromJSON({
+      properties: { complete: "sbh" },
+    }));
 
     let console = await page.showConsole();
     await console.inputKeys('open ');
@@ -158,21 +143,9 @@ describe("completion on open/tabopen/winopen commands", () => {
     await console.close();
     await (webdriver.switchTo() as any).parentFrame();
 
-    await browser.storage.local.set({ settings: {
-      source: 'json',
-      json: `{
-        "keymaps": {
-          ":": { "type": "command.show" }
-        },
-        "search": {
-          "default": "google",
-          "engines": { "google": "https://google.com/search?q={}" }
-        },
-        "properties": {
-          "complete": "bss"
-        }
-      }`,
-    }});
+    new SettingRepository(browser).saveJSON(Settings.fromJSON({
+      properties: { complete: "bss" },
+    }));
 
     console = await page.showConsole();
     await console.inputKeys('open ');
@@ -182,5 +155,5 @@ describe("completion on open/tabopen/winopen commands", () => {
       let titles = completions.filter(x => x.type === 'title').map(x => x.text);
       assert.deepStrictEqual(titles, ['Bookmarks', 'Search Engines', 'Search Engines'])
     });
-  })
+  });
 });

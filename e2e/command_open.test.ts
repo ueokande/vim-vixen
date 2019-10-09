@@ -2,14 +2,15 @@ import * as path from 'path';
 import * as assert from 'assert';
 
 import TestServer from './lib/TestServer';
-import settings from './settings';
 import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
+import SettingRepository from "./lib/SettingRepository";
+import Settings from "../src/shared/settings/Settings";
 
 describe("open command test", () => {
-  let server = new TestServer(12321)
+  let server = new TestServer()
     .receiveContent('/google', 'google')
     .receiveContent('/yahoo', 'yahoo');
   let lanthan: Lanthan;
@@ -25,11 +26,16 @@ describe("open command test", () => {
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
 
-    await browser.storage.local.set({
-      settings,
-    });
-
     await server.start();
+    await new SettingRepository(browser).saveJSON(Settings.fromJSON({
+      search: {
+        default: "google",
+        engines: {
+          "google": server.url('/google?q={}'),
+          "yahoo": server.url('/yahoo?q={}'),
+        },
+      },
+    }));
   });
 
   after(async() => {
@@ -42,7 +48,7 @@ describe("open command test", () => {
   beforeEach(async() => {
     await webdriver.switchTo().defaultContent();
     page = await Page.navigateTo(webdriver, server.url());
-  })
+  });
 
   it('should open default search for keywords by open command ', async() => {
     let console = await page.showConsole();
@@ -60,7 +66,7 @@ describe("open command test", () => {
     await console.execCommand('open yahoo an apple');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({ active: true })
+      let tabs = await browser.tabs.query({ active: true });
       let url = new URL(tabs[0].url);
       assert.strictEqual(url.href, server.url('/yahoo?q=an%20apple'))
     });
@@ -71,7 +77,7 @@ describe("open command test", () => {
     await console.execCommand('open');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({ active: true })
+      let tabs = await browser.tabs.query({ active: true });
       let url = new URL(tabs[0].url);
       assert.strictEqual(url.href, server.url('/google?q='))
     });
@@ -82,7 +88,7 @@ describe("open command test", () => {
     await console.execCommand('open yahoo');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({ active: true })
+      let tabs = await browser.tabs.query({ active: true });
       let url = new URL(tabs[0].url);
       assert.strictEqual(url.href, server.url('/yahoo?q='))
     });
@@ -93,7 +99,7 @@ describe("open command test", () => {
     await console.execCommand('open example.com');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({ active: true })
+      let tabs = await browser.tabs.query({ active: true });
       let url = new URL(tabs[0].url);
       assert.strictEqual(url.href, 'http://example.com/')
     });
@@ -104,7 +110,7 @@ describe("open command test", () => {
     await console.execCommand('open https://example.com/');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({ active: true })
+      let tabs = await browser.tabs.query({ active: true });
       let url = new URL(tabs[0].url);
       assert.strictEqual(url.href, 'https://example.com/')
     });

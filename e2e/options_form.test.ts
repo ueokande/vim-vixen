@@ -19,13 +19,13 @@ describe("options form page", () => {
     for (let tab of tabs.slice(1)) {
       await browser.tabs.remove(tab.id);
     }
-  })
+  });
 
   afterEach(async() => {
     if (lanthan) {
       await lanthan.quit();
     }
-  })
+  });
 
   it('switch to form settings', async () => {
     let page = await OptionPage.open(lanthan);
@@ -33,7 +33,7 @@ describe("options form page", () => {
 
     let { settings } = await browser.storage.local.get('settings');
     assert.strictEqual(settings.source, 'form')
-  })
+  });
 
   it('add blacklist', async () => {
     let page = await OptionPage.open(lanthan);
@@ -43,20 +43,20 @@ describe("options form page", () => {
 
     // assert default
     let settings = (await browser.storage.local.get('settings')).settings;
-    assert.deepStrictEqual(settings.form.blacklist, [])
+    assert.deepStrictEqual(settings.form.blacklist, []);
 
     // add blacklist items
     await forms.addBlacklist();
-    await forms.setBlacklist(0, 'google.com')
+    await forms.setBlacklist(0, 'google.com');
 
     settings = (await browser.storage.local.get('settings')).settings;
-    assert.deepStrictEqual(settings.form.blacklist, ['google.com'])
+    assert.deepStrictEqual(settings.form.blacklist, ['google.com']);
 
     await forms.addBlacklist();
-    await forms.setBlacklist(1, 'yahoo.com')
+    await forms.setBlacklist(1, 'yahoo.com');
 
     settings = (await browser.storage.local.get('settings')).settings;
-    assert.deepStrictEqual(settings.form.blacklist, ['google.com', 'yahoo.com'])
+    assert.deepStrictEqual(settings.form.blacklist, ['google.com', 'yahoo.com']);
 
     // delete first item
     await forms.removeBlackList(0);
