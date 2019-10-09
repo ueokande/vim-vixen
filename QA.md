@@ -4,10 +4,6 @@
 
 Test operations with default key maps.
 
-#### Console
-
-The behaviors of the console are tested in [Console section](#consoles).
-
 #### Misc
 
 - [ ] Toggle enabled/disabled of plugin bu <kbd>Shift</kbd>+<kbd>Esc</kbd>
@@ -26,10 +22,6 @@ The behaviors of the console are tested in [Console section](#consoles).
 ### Settings
 
 #### Form Settings
-
-##### `"blacklist"` section
-
-- [ ] `github.com/a` blocks `github.com/a`, and not blocks `github.com/aa`
 
 ##### Updating
 
