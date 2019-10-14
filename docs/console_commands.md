@@ -37,6 +37,8 @@ To use a search engine other than the default, specify the search engine to use 
 
 To adjust the default search-engine and add/remove search engines, see the [search engines](./search_engines.html) section.
 
+Use <kbd>Tab</kbd> to select from the autocomplete suggestions. To configure this, set the [`complete` property.](./properties.html#complete)
+
 ## `:tabopen`
 
 Open a URL or search-engine query in a new tab.
