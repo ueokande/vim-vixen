@@ -38,8 +38,6 @@ describe("options form page", () => {
   it('add blacklist item', async () => {
     let page = await OptionPage.open(lanthan);
     let forms = await page.switchToForm();
-    // Scroll is required to click a button on Firefox 60
-    await page.scrollTo(0, 1000);
 
     // assert default
     let settings = (await browser.storage.local.get('settings')).settings;
@@ -67,8 +65,6 @@ describe("options form page", () => {
   it('add a partial blacklist item', async () => {
     let page = await OptionPage.open(lanthan);
     let forms = await page.switchToForm();
-    // Scroll is required to click a button on Firefox 60
-    await page.scrollTo(0, 1000);
 
     // assert default
     let settings = (await browser.storage.local.get('settings')).settings;

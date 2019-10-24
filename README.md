@@ -16,7 +16,7 @@ For usage and more detailed information, check out our [documentations][document
 
 ## Compatibility
 
-- Firefox 60 ESR
+- Firefox 68 ESR
 
 ## Copyright
 
