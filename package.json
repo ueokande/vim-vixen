@@ -68,7 +68,7 @@
     "style-loader": "^1.0.0",
     "ts-loader": "^6.0.4",
     "ts-node": "^8.4.1",
-    "tsyringe": "^3.3.0",
+    "tsyringe": "^4.0.0",
     "typescript": "^3.6.2",
     "web-ext-types": "^3.2.1",
     "webextensions-api-fake": "^0.8.0",
