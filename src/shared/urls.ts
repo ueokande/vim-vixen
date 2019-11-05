@@ -5,7 +5,7 @@ const trimStart = (str: string): string => {
   return str.replace(/^\s+/, '');
 };
 
-const SUPPORTED_PROTOCOLS = ['http:', 'https:', 'ftp:', 'mailto:', 'about:'];
+const SUPPORTED_PROTOCOLS = ['http:', 'https:', 'ftp:', 'mailto:', 'about:', 'localhost:'];
 
 const searchUrl = (keywords: string, search: Search): string => {
   try {
