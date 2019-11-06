@@ -5,7 +5,16 @@ const trimStart = (str: string): string => {
   return str.replace(/^\s+/, '');
 };
 
-const SUPPORTED_PROTOCOLS = ['http:', 'https:', 'ftp:', 'mailto:', 'about:', 'localhost:'];
+const SUPPORTED_PROTOCOLS = ['http:', 'https:', 'ftp:', 'mailto:', 'about:'];
+
+const isLocalhost = (url: string): boolean => {
+  if (url === 'localhost') {
+    return true;
+  }
+
+  let [host, port] = url.split(':', 2);
+  return host === 'localhost' && !isNaN(Number(port));
+};
 
 const searchUrl = (keywords: string, search: Search): string => {
   try {
@@ -16,7 +25,8 @@ const searchUrl = (keywords: string, search: Search): string => {
   } catch (e) {
     // fallthrough
   }
-  if (keywords.includes('.') && !keywords.includes(' ')) {
+  if (isLocalhost(keywords) ||
+      (keywords.includes('.') && !keywords.includes(' '))) {
     return 'http://' + keywords;
   }
   let template = search.engines[search.defaultEngine];
