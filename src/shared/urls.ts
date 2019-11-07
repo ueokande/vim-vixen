@@ -16,6 +16,20 @@ const isLocalhost = (url: string): boolean => {
   return host === 'localhost' && !isNaN(Number(port));
 };
 
+const isMissingHttp = (keywords: string): boolean => {
+  if (keywords.includes('.') && !keywords.includes(' ')) {
+    return true;
+  }
+
+  try {
+    let u = new URL('http://' + keywords);
+    return isLocalhost(u.host)
+  } catch (e) {
+    // fallthrough
+  }
+  return false;
+};
+
 const searchUrl = (keywords: string, search: Search): string => {
   try {
     let u = new URL(keywords);
@@ -25,10 +39,11 @@ const searchUrl = (keywords: string, search: Search): string => {
   } catch (e) {
     // fallthrough
   }
-  if (isLocalhost(keywords) ||
-      (keywords.includes('.') && !keywords.includes(' '))) {
+
+  if (isMissingHttp(keywords)) {
     return 'http://' + keywords;
   }
+
   let template = search.engines[search.defaultEngine];
   let query = keywords;
 

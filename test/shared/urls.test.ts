@@ -41,13 +41,15 @@ describe("shared/commands/parsers", () => {
       expect(parsers.searchUrl('localhost', config))
 	.to.equal('http://localhost');
       expect(parsers.searchUrl('http://localhost', config))
-	.to.equal('http://localhost');
+	.to.equal('http://localhost/');
       expect(parsers.searchUrl('localhost:8080', config))
-	.to.equal('http://locahost:8080');
+	.to.equal('http://localhost:8080');
       expect(parsers.searchUrl('localhost:80nan', config))
-	.to.equal('https://google.com/search?q=localhost:80nan');
+	.to.equal('https://google.com/search?q=localhost%3A80nan');
       expect(parsers.searchUrl('localhost 8080', config))
 	.to.equal('https://google.com/search?q=localhost%208080');
+      expect(parsers.searchUrl('localhost:80/build', config))
+	.to.equal('http://localhost:80/build')
     })
   });
 
