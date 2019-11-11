@@ -36,6 +36,21 @@ describe("shared/commands/parsers", () => {
       expect(parsers.searchUrl('std::vector', config))
         .to.equal('https://google.com/search?q=std%3A%3Avector');
     });
+
+    it('localhost urls', () => {
+      expect(parsers.searchUrl('localhost', config))
+	.to.equal('http://localhost');
+      expect(parsers.searchUrl('http://localhost', config))
+	.to.equal('http://localhost/');
+      expect(parsers.searchUrl('localhost:8080', config))
+	.to.equal('http://localhost:8080');
+      expect(parsers.searchUrl('localhost:80nan', config))
+	.to.equal('https://google.com/search?q=localhost%3A80nan');
+      expect(parsers.searchUrl('localhost 8080', config))
+	.to.equal('https://google.com/search?q=localhost%208080');
+      expect(parsers.searchUrl('localhost:80/build', config))
+	.to.equal('http://localhost:80/build')
+    })
   });
 
   describe('#normalizeUrl', () => {
@@ -47,4 +62,3 @@ describe("shared/commands/parsers", () => {
     });
   });
 });
-
