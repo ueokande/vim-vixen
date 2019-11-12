@@ -23,7 +23,7 @@ const isMissingHttp = (keywords: string): boolean => {
 
   try {
     let u = new URL('http://' + keywords);
-    return isLocalhost(u.host)
+    return isLocalhost(u.host);
   } catch (e) {
     // fallthrough
   }
