@@ -71,7 +71,7 @@
     "tsyringe": "^4.0.0",
     "typescript": "^3.6.2",
     "web-ext-types": "^3.2.1",
-    "webextensions-api-fake": "^0.9.0",
+    "webextensions-api-fake": "^1.0.0",
     "webpack": "^4.39.2",
     "webpack-cli": "^3.3.7"
   }
