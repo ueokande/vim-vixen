@@ -27,7 +27,7 @@ describe("completion on open/tabopen/winopen commands", () => {
     browser = lanthan.getWebExtBrowser();
 
     // Add item into hitories
-    await webdriver.navigate().to(('https://i-beam.org/404'));
+    await webdriver.navigate().to(('https://example.com/'));
   });
 
   after(async() => {
