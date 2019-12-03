@@ -19,7 +19,6 @@ describe('Keymaps', () => {
     });
 
     it('throws a TypeError by invalid settings', () => {
-      expect(() => Keymaps.fromJSON(null)).to.throw(TypeError);
       expect(() => Keymaps.fromJSON({
         k: { type: "invalid.operation" },
       })).to.throw(TypeError);

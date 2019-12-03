@@ -63,13 +63,6 @@ jobs:
       - checkout
       - setup_npm
       - run: npm run lint
-      - run:
-          # NOTE: Karma loads ts-node automatically and treats karma.conf.js as a TypeScript.
-          # Karma does not starts by karma.conf.js transpile failure, and this hack removes
-          # ts-node module from the local before test.
-          # See: https://github.com/karma-runner/karma/issues/3329
-          name: Remove node-ts from node_modules
-          command: mv node_modules/ts-node node_modules/ts-node.orig
       - run: npm test
       - run: npm run package
 

@@ -16,16 +16,6 @@ describe('BlacklistItem', () => {
       expect(item.partial).to.be.true;
       expect(item.keys).to.deep.equal(['j', 'k']);
     });
-
-    it('throws a TypeError', () => {
-      expect(() => BlacklistItem.fromJSON(null)).to.throw(TypeError);
-      expect(() => BlacklistItem.fromJSON(100)).to.throw(TypeError);
-      expect(() => BlacklistItem.fromJSON({})).to.throw(TypeError);
-      expect(() => BlacklistItem.fromJSON({url: 'google.com'})).to.throw(TypeError);
-      expect(() => BlacklistItem.fromJSON({keys: ['a']})).to.throw(TypeError);
-      expect(() => BlacklistItem.fromJSON({url: 'google.com', keys: 10})).to.throw(TypeError);
-      expect(() => BlacklistItem.fromJSON({url: 'google.com', keys: ['a', 'b', 3]})).to.throw(TypeError);
-    });
   });
 
   describe('#matches', () => {
@@ -118,14 +108,6 @@ describe('Blacklist', () => {
       let blacklist = Blacklist.fromJSON([]);
       expect(blacklist.toJSON()).to.deep.equals([]);
     });
-
-    it('throws a TypeError', () => {
-      expect(() => Blacklist.fromJSON(null)).to.throw(TypeError);
-      expect(() => Blacklist.fromJSON(100)).to.throw(TypeError);
-      expect(() => Blacklist.fromJSON({})).to.throw(TypeError);
-      expect(() => Blacklist.fromJSON([100])).to.throw(TypeError);
-      expect(() => Blacklist.fromJSON([{}])).to.throw(TypeError);
-    })
   });
 
   describe('#includesEntireBlacklist', () => {

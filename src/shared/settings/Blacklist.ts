@@ -12,18 +12,6 @@ const regexFromWildcard = (pattern: string): RegExp => {
   return new RegExp(regexStr);
 };
 
-const isArrayOfString = (raw: any): boolean => {
-  if (!Array.isArray(raw)) {
-    return false;
-  }
-  for (let x of Array.from(raw)) {
-    if (typeof x !== 'string') {
-      return false;
-    }
-  }
-  return true;
-};
-
 export class BlacklistItem {
   public readonly pattern: string;
 
@@ -47,30 +35,10 @@ export class BlacklistItem {
     this.keyEntities = this.keys.map(Key.fromMapKey);
   }
 
-  static fromJSON(raw: any): BlacklistItem {
-    if (typeof raw === 'string') {
-      return new BlacklistItem(raw, false, []);
-    } else if (typeof raw === 'object' && raw !== null) {
-      if (!('url' in raw)) {
-        throw new TypeError(
-          `missing field "url" of blacklist item: ${JSON.stringify(raw)}`);
-      }
-      if (typeof raw.url !== 'string') {
-        throw new TypeError(
-          `invalid field "url" of blacklist item: ${JSON.stringify(raw)}`);
-      }
-      if (!('keys' in raw)) {
-        throw new TypeError(
-          `missing field "keys" of blacklist item: ${JSON.stringify(raw)}`);
-      }
-      if (!isArrayOfString(raw.keys)) {
-        throw new TypeError(
-          `invalid field "keys" of blacklist item: ${JSON.stringify(raw)}`);
-      }
-      return new BlacklistItem(raw.url as string, true, raw.keys as string[]);
-    }
-    throw new TypeError(
-      `invalid format of blacklist item: ${JSON.stringify(raw)}`);
+  static fromJSON(json: BlacklistItemJSON): BlacklistItem {
+    return typeof json === 'string'
+      ? new BlacklistItem(json, false, [])
+      : new BlacklistItem(json.url, true, json.keys);
   }
 
   toJSON(): BlacklistItemJSON {
@@ -103,11 +71,8 @@ export default class Blacklist {
   ) {
   }
 
-  static fromJSON(json: any): Blacklist {
-    if (!Array.isArray(json)) {
-      throw new TypeError('blacklist is not an array: ' + JSON.stringify(json));
-    }
-    let items = Array.from(json).map(item => BlacklistItem.fromJSON(item));
+  static fromJSON(json: BlacklistJSON): Blacklist {
+    let items = json.map(o => BlacklistItem.fromJSON(o));
     return new Blacklist(items);
   }
 

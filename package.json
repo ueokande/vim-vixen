@@ -2,10 +2,11 @@
   "name": "vim-vixen",
   "description": "Vim vixen",
   "scripts": {
+    "schema": "ajv compile -s src/shared/settings/schema.json -o src/shared/settings/validate.js",
     "start": "webpack --mode development -w --debug --devtool inline-source-map",
     "build": "NODE_ENV=production webpack --mode production --progress --display-error-details --devtool inline-source-map",
     "package": "npm run build && script/package",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
+    "lint": "eslint --ext .ts,.tsx src",
     "type-checks": "tsc --noEmit",
     "test": "karma start",
     "test:e2e": "mocha --timeout 10000 --retries 10 --require ts-node/register --extension ts e2e"
@@ -35,6 +36,8 @@
     "@types/sinon": "^7.0.13",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
+    "ajv": "^6.10.2",
+    "ajv-cli": "^3.0.0",
     "chai": "^4.2.0",
     "css-loader": "^3.2.0",
     "eslint": "^6.2.2",

@@ -1,13 +1,16 @@
+import Ajv from 'ajv';
+
 import Keymaps, { KeymapsJSON } from './Keymaps';
 import Search, { SearchJSON } from './Search';
 import Properties, { PropertiesJSON } from './Properties';
 import Blacklist, { BlacklistJSON } from './Blacklist';
+import validate from './validate';
 
 export type SettingsJSON = {
-  keymaps: KeymapsJSON,
-  search: SearchJSON,
-  properties: PropertiesJSON,
-  blacklist: BlacklistJSON,
+  keymaps?: KeymapsJSON,
+  search?: SearchJSON,
+  properties?: PropertiesJSON,
+  blacklist?: BlacklistJSON,
 };
 
 export default class Settings {
@@ -36,25 +39,30 @@ export default class Settings {
     this.blacklist = blacklist;
   }
 
-  static fromJSON(json: any): Settings {
+  static fromJSON(json: unknown): Settings {
+    let valid = validate(json);
+    if (!valid) {
+      let message = (validate as any).errors!!
+        .map((err: Ajv.ErrorObject) => {
+          return `'${err.dataPath}' ${err.message}`;
+        })
+        .join('; ');
+      throw new TypeError(message);
+    }
+
+    let obj = json as SettingsJSON;
     let settings = { ...DefaultSetting };
-    for (let key of Object.keys(json)) {
-      switch (key) {
-      case 'keymaps':
-        settings.keymaps = Keymaps.fromJSON(json.keymaps);
-        break;
-      case 'search':
-        settings.search = Search.fromJSON(json.search);
-        break;
-      case 'properties':
-        settings.properties = Properties.fromJSON(json.properties);
-        break;
-      case 'blacklist':
-        settings.blacklist = Blacklist.fromJSON(json.blacklist);
-        break;
-      default:
-        throw new TypeError('unknown setting: ' + key);
-      }
+    if (obj.keymaps) {
+      settings.keymaps = Keymaps.fromJSON(obj.keymaps);
+    }
+    if (obj.search) {
+      settings.search = Search.fromJSON(obj.search);
+    }
+    if (obj.properties) {
+      settings.properties = Properties.fromJSON(obj.properties);
+    }
+    if (obj.blacklist) {
+      settings.blacklist = Blacklist.fromJSON(obj.blacklist);
     }
     return new Settings(settings);
   }

@@ -1,23 +1,25 @@
 import * as operations from '../operations';
 
-export type KeymapsJSON = { [key: string]: operations.Operation };
+type OperationJson = {
+  type: string
+} | {
+  type: string;
+  [prop: string]: string | number | boolean;
+};
+export type KeymapsJSON = { [key: string]: OperationJson };
 
 export default class Keymaps {
   constructor(
-    private readonly data: KeymapsJSON,
+    private readonly data: { [key: string]: operations.Operation },
   ) {
   }
 
-  static fromJSON(json: any): Keymaps {
-    if (typeof json !== 'object' || json === null) {
-      throw new TypeError('invalid keymaps type: ' + JSON.stringify(json));
-    }
-
-    let data: KeymapsJSON = {};
+  static fromJSON(json: KeymapsJSON): Keymaps {
+    let entries: { [key: string]: operations.Operation } = {};
     for (let key of Object.keys(json)) {
-      data[key] = operations.valueOf(json[key]);
+      entries[key] = operations.valueOf(json[key]);
     }
-    return new Keymaps(data);
+    return new Keymaps(entries);
   }
 
   combine(other: Keymaps): Keymaps {

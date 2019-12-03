@@ -1,0 +1,84 @@
+{
+  "type": "object",
+  "properties": {
+    "keymaps": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ]
+        }
+      }
+    },
+    "search": {
+      "type": "object",
+      "properties": {
+        "default": {
+          "type": "string"
+        },
+        "engines": {
+          "type": "object",
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "required": [
+        "default",
+        "engines"
+      ]
+    },
+    "properties": {
+      "type": "object",
+      "properties": {
+        "hintchars": {
+          "type": "string"
+        },
+        "smoothscroll": {
+          "type": "boolean"
+        },
+        "complete": {
+          "type": "string"
+        }
+      }
+    },
+    "blacklist": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string"
+              },
+              "keys": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "url",
+              "keys"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "additionalProperties": false
+}

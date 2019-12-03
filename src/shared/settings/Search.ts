@@ -12,18 +12,10 @@ export default class Search {
   ) {
   }
 
-  static fromJSON(json: any): Search {
-    let defaultEngine = Search.getStringField(json, 'default');
-    let engines = Search.getObjectField(json, 'engines');
-
-    for (let [name, url] of Object.entries(engines)) {
-      if ((/\s/).test(name)) {
-        throw new TypeError(
-          `While space in the search engine not allowed: "${name}"`);
-      }
-      if (typeof url !== 'string') {
-        throw new TypeError(
-          `Invalid type of value in filed "engines": ${JSON.stringify(json)}`);
+  static fromJSON(json: SearchJSON): Search {
+    for (let [name, url] of Object.entries(json.engines)) {
+      if (!(/^[a-zA-Z0-9]+$/).test(name)) {
+        throw new TypeError('Search engine\'s name must be [a-zA-Z0-9]+');
       }
       let matches = url.match(/{}/g);
       if (matches === null) {
@@ -32,15 +24,11 @@ export default class Search {
         throw new TypeError(`Multiple {}-placeholders in URL of "${name}"`);
       }
     }
-
-    if (!Object.keys(engines).includes(defaultEngine)) {
-      throw new TypeError(`Default engine "${defaultEngine}" not found`);
+    if (!Object.keys(json.engines).includes(json.default)) {
+      throw new TypeError(`Default engine "${json.default}" not found`);
     }
 
-    return new Search(
-      json.default as string,
-      json.engines,
-    );
+    return new Search(json.default, json.engines);
   }
 
   toJSON(): SearchJSON {
@@ -48,29 +36,5 @@ export default class Search {
       default: this.defaultEngine,
       engines: this.engines,
     };
-  }
-
-  private static getStringField(json: any, name: string): string {
-    if (!Object.prototype.hasOwnProperty.call(json, name)) {
-      throw new TypeError(
-        `missing field "${name}" on search: ${JSON.stringify(json)}`);
-    }
-    if (typeof json[name] !== 'string') {
-      throw new TypeError(
-        `invalid type of filed "${name}" on search: ${JSON.stringify(json)}`);
-    }
-    return json[name];
-  }
-
-  private static getObjectField(json: any, name: string): Object {
-    if (!Object.prototype.hasOwnProperty.call(json, name)) {
-      throw new TypeError(
-        `missing field "${name}" on search: ${JSON.stringify(json)}`);
-    }
-    if (typeof json[name] !== 'object' || json[name] === null) {
-      throw new TypeError(
-        `invalid type of filed "${name}" on search: ${JSON.stringify(json)}`);
-    }
-    return json[name];
   }
 }
