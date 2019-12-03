@@ -2,6 +2,7 @@
   "name": "vim-vixen",
   "description": "Vim vixen",
   "scripts": {
+    "schema": "ajv compile -s src/shared/settings/schema.json -o src/shared/settings/validate.js",
     "start": "webpack --mode development -w --debug --devtool inline-source-map",
     "build": "NODE_ENV=production webpack --mode production --progress --display-error-details --devtool inline-source-map",
     "package": "npm run build && script/package",
