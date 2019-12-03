@@ -4,7 +4,7 @@
     "module": "commonjs",
     "lib": ["es6", "dom", "es2017"],
     "allowJs": true,
-    "checkJs": true,
+    "checkJs": false,
     "jsx": "react",
     "sourceMap": true,
     "outDir": "./build",

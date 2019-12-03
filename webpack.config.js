@@ -4,7 +4,7 @@ const path = require('path');
 const src = path.resolve(__dirname, 'src');
 const dist = path.resolve(__dirname, 'build');
 
-config = {
+const config = {
   entry: {
     content: path.join(src, 'content'),
     settings: path.join(src, 'settings'),
