@@ -143,7 +143,17 @@ var validate = (function() {
                 if (valid2) {
                   var data2 = data1.engines;
                   if (data2 === undefined) {
-                    valid2 = true;
+                    valid2 = false;
+                    validate.errors = [{
+                      keyword: 'required',
+                      dataPath: (dataPath || '') + '.search',
+                      schemaPath: '#/properties/search/required',
+                      params: {
+                        missingProperty: 'engines'
+                      },
+                      message: 'should have required property \'engines\''
+                    }];
+                    return false;
                   } else {
                     var errs_2 = errors;
                     if ((data2 && typeof data2 === "object" && !Array.isArray(data2))) {
@@ -512,7 +522,7 @@ validate.schema = {
           }
         }
       },
-      "required": ["default"]
+      "required": ["default", "engines"]
     },
     "properties": {
       "type": "object",

@@ -44,7 +44,7 @@ export default class Settings {
     if (!valid) {
       let message = (validate as any).errors!!
         .map((err: Ajv.ErrorObject) => {
-          return `'${err.dataPath}' of ${err.keyword} ${err.message}`;
+          return `'${err.dataPath}' ${err.message}`;
         })
         .join('; ');
       throw new TypeError(message);

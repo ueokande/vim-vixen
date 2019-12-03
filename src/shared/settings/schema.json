@@ -33,7 +33,8 @@
         }
       },
       "required": [
-        "default"
+        "default",
+        "engines"
       ]
     },
     "properties": {
