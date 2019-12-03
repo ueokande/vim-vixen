@@ -1,4 +1,18 @@
 import * as operations from '../operations';
+import Validator from './Validator';
+
+const Schema = {
+  type: 'object',
+  patternProperties: {
+    '.*': {
+      type: 'object',
+      properties: {
+        type: { type: 'string' },
+      },
+      required: ['type'],
+    },
+  }
+};
 
 export type KeymapsJSON = { [key: string]: operations.Operation };
 
@@ -8,16 +22,13 @@ export default class Keymaps {
   ) {
   }
 
-  static fromJSON(json: any): Keymaps {
-    if (typeof json !== 'object' || json === null) {
-      throw new TypeError('invalid keymaps type: ' + JSON.stringify(json));
+  static fromJSON(json: unknown): Keymaps {
+    let obj = new Validator<KeymapsJSON>(Schema).validate(json);
+    let entries: KeymapsJSON = {};
+    for (let key of Object.keys(obj)) {
+      entries[key] = operations.valueOf(obj[key]);
     }
-
-    let data: KeymapsJSON = {};
-    for (let key of Object.keys(json)) {
-      data[key] = operations.valueOf(json[key]);
-    }
-    return new Keymaps(data);
+    return new Keymaps(entries);
   }
 
   combine(other: Keymaps): Keymaps {

@@ -1,4 +1,23 @@
 import Key from './Key';
+import Validator from './Validator';
+
+const ItemSchema = {
+  anyOf: [
+    { type: 'string' },
+    {
+      type: 'object',
+      properties: {
+        url: { type: 'string' },
+        keys: {
+          type: 'array',
+          items: { type: 'string', minLength: 1 },
+          minItems: 1,
+        }
+      },
+      required: ['url', 'keys'],
+    }
+  ],
+};
 
 export type BlacklistItemJSON = string | {
   url: string,
@@ -10,18 +29,6 @@ export type BlacklistJSON = BlacklistItemJSON[];
 const regexFromWildcard = (pattern: string): RegExp => {
   let regexStr = '^' + pattern.replace(/\*/g, '.*') + '$';
   return new RegExp(regexStr);
-};
-
-const isArrayOfString = (raw: any): boolean => {
-  if (!Array.isArray(raw)) {
-    return false;
-  }
-  for (let x of Array.from(raw)) {
-    if (typeof x !== 'string') {
-      return false;
-    }
-  }
-  return true;
 };
 
 export class BlacklistItem {
@@ -47,30 +54,11 @@ export class BlacklistItem {
     this.keyEntities = this.keys.map(Key.fromMapKey);
   }
 
-  static fromJSON(raw: any): BlacklistItem {
-    if (typeof raw === 'string') {
-      return new BlacklistItem(raw, false, []);
-    } else if (typeof raw === 'object' && raw !== null) {
-      if (!('url' in raw)) {
-        throw new TypeError(
-          `missing field "url" of blacklist item: ${JSON.stringify(raw)}`);
-      }
-      if (typeof raw.url !== 'string') {
-        throw new TypeError(
-          `invalid field "url" of blacklist item: ${JSON.stringify(raw)}`);
-      }
-      if (!('keys' in raw)) {
-        throw new TypeError(
-          `missing field "keys" of blacklist item: ${JSON.stringify(raw)}`);
-      }
-      if (!isArrayOfString(raw.keys)) {
-        throw new TypeError(
-          `invalid field "keys" of blacklist item: ${JSON.stringify(raw)}`);
-      }
-      return new BlacklistItem(raw.url as string, true, raw.keys as string[]);
-    }
-    throw new TypeError(
-      `invalid format of blacklist item: ${JSON.stringify(raw)}`);
+  static fromJSON(json: unknown): BlacklistItem {
+    let obj = new Validator<BlacklistItemJSON>(ItemSchema).validate(json);
+    return typeof obj === 'string'
+      ? new BlacklistItem(obj, false, [])
+      : new BlacklistItem(obj.url, true, obj.keys);
   }
 
   toJSON(): BlacklistItemJSON {
@@ -103,11 +91,11 @@ export default class Blacklist {
   ) {
   }
 
-  static fromJSON(json: any): Blacklist {
+  static fromJSON(json: unknown): Blacklist {
     if (!Array.isArray(json)) {
-      throw new TypeError('blacklist is not an array: ' + JSON.stringify(json));
+      throw new TypeError('blacklist is not an array');
     }
-    let items = Array.from(json).map(item => BlacklistItem.fromJSON(item));
+    let items = json.map(o => BlacklistItem.fromJSON(o));
     return new Blacklist(items);
   }
 

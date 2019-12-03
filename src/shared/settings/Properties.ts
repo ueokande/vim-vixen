@@ -1,3 +1,20 @@
+import Validator from './Validator';
+
+const Schema = {
+  type: 'object',
+  properties: {
+    hintchars: {
+      type: 'string',
+    },
+    smoothscroll: {
+      type: 'boolean',
+    },
+    complete: {
+      type: 'string',
+    },
+  },
+};
+
 export type PropertiesJSON = {
   hintchars?: string;
   smoothscroll?: boolean;
@@ -65,23 +82,9 @@ export default class Properties {
     this.complete = complete || defaultValues.complete;
   }
 
-  static fromJSON(json: any): Properties {
-    let defNames: Set<string> = new Set(defs.map(def => def.name));
-    let unknownName = Object.keys(json).find(name => !defNames.has(name));
-    if (unknownName) {
-      throw new TypeError(`Unknown property name: "${unknownName}"`);
-    }
-
-    for (let def of defs) {
-      if (!Object.prototype.hasOwnProperty.call(json, def.name)) {
-        continue;
-      }
-      if (typeof json[def.name] !== def.type) {
-        throw new TypeError(
-          `property "${def.name}" is not ${def.type}`);
-      }
-    }
-    return new Properties(json);
+  static fromJSON(json: unknown): Properties {
+    let obj = new Validator<PropertiesJSON>(Schema).validate(json);
+    return new Properties(obj);
   }
 
   static types(): PropertyTypes {
