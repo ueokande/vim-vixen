@@ -1,32 +1,23 @@
 import * as operations from '../operations';
-import Validator from './Validator';
 
-const Schema = {
-  type: 'object',
-  patternProperties: {
-    '.*': {
-      type: 'object',
-      properties: {
-        type: { type: 'string' },
-      },
-      required: ['type'],
-    },
-  }
+type OperationJson = {
+  type: string
+} | {
+  type: string;
+  [prop: string]: string | number | boolean;
 };
-
-export type KeymapsJSON = { [key: string]: operations.Operation };
+export type KeymapsJSON = { [key: string]: OperationJson };
 
 export default class Keymaps {
   constructor(
-    private readonly data: KeymapsJSON,
+    private readonly data: { [key: string]: operations.Operation },
   ) {
   }
 
-  static fromJSON(json: unknown): Keymaps {
-    let obj = new Validator<KeymapsJSON>(Schema).validate(json);
-    let entries: KeymapsJSON = {};
-    for (let key of Object.keys(obj)) {
-      entries[key] = operations.valueOf(obj[key]);
+  static fromJSON(json: KeymapsJSON): Keymaps {
+    let entries: { [key: string]: operations.Operation } = {};
+    for (let key of Object.keys(json)) {
+      entries[key] = operations.valueOf(json[key]);
     }
     return new Keymaps(entries);
   }

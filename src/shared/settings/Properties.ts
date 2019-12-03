@@ -1,19 +1,3 @@
-import Validator from './Validator';
-
-const Schema = {
-  type: 'object',
-  properties: {
-    hintchars: {
-      type: 'string',
-    },
-    smoothscroll: {
-      type: 'boolean',
-    },
-    complete: {
-      type: 'string',
-    },
-  },
-};
 
 export type PropertiesJSON = {
   hintchars?: string;
@@ -82,9 +66,8 @@ export default class Properties {
     this.complete = complete || defaultValues.complete;
   }
 
-  static fromJSON(json: unknown): Properties {
-    let obj = new Validator<PropertiesJSON>(Schema).validate(json);
-    return new Properties(obj);
+  static fromJSON(json: PropertiesJSON): Properties {
+    return new Properties(json);
   }
 
   static types(): PropertyTypes {

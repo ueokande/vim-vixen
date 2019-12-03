@@ -26,19 +26,6 @@ describe('Search', () => {
   });
 
   it('throws a TypeError by invalid settings', () => {
-    expect(() => Search.fromJSON(null)).to.throw(TypeError);
-    expect(() => Search.fromJSON({})).to.throw(TypeError);
-    expect(() => Search.fromJSON([])).to.throw(TypeError);
-    expect(() => Search.fromJSON({
-      default: 123,
-      engines: {}
-    })).to.throw(TypeError);
-    expect(() => Search.fromJSON({
-      default: 'google',
-      engines: {
-        'google': 123456,
-      }
-    })).to.throw(TypeError);
     expect(() => Search.fromJSON({
       default: 'wikipedia',
       engines: {

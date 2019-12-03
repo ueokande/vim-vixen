@@ -1,23 +1,4 @@
 import Key from './Key';
-import Validator from './Validator';
-
-const ItemSchema = {
-  anyOf: [
-    { type: 'string' },
-    {
-      type: 'object',
-      properties: {
-        url: { type: 'string' },
-        keys: {
-          type: 'array',
-          items: { type: 'string', minLength: 1 },
-          minItems: 1,
-        }
-      },
-      required: ['url', 'keys'],
-    }
-  ],
-};
 
 export type BlacklistItemJSON = string | {
   url: string,
@@ -54,11 +35,10 @@ export class BlacklistItem {
     this.keyEntities = this.keys.map(Key.fromMapKey);
   }
 
-  static fromJSON(json: unknown): BlacklistItem {
-    let obj = new Validator<BlacklistItemJSON>(ItemSchema).validate(json);
-    return typeof obj === 'string'
-      ? new BlacklistItem(obj, false, [])
-      : new BlacklistItem(obj.url, true, obj.keys);
+  static fromJSON(json: BlacklistItemJSON): BlacklistItem {
+    return typeof json === 'string'
+      ? new BlacklistItem(json, false, [])
+      : new BlacklistItem(json.url, true, json.keys);
   }
 
   toJSON(): BlacklistItemJSON {
@@ -91,10 +71,7 @@ export default class Blacklist {
   ) {
   }
 
-  static fromJSON(json: unknown): Blacklist {
-    if (!Array.isArray(json)) {
-      throw new TypeError('blacklist is not an array');
-    }
+  static fromJSON(json: BlacklistJSON): Blacklist {
     let items = json.map(o => BlacklistItem.fromJSON(o));
     return new Blacklist(items);
   }
