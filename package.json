@@ -31,6 +31,7 @@
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
     "@types/react-redux": "^7.1.2",
+    "@types/react-test-renderer": "^16.9.0",
     "@types/redux-promise": "^0.5.28",
     "@types/selenium-webdriver": "^4.0.2",
     "@types/sinon": "^7.0.13",
