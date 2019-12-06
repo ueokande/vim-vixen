@@ -8,12 +8,15 @@ import Key from '../../shared/settings/Key';
 import KeySequence from '../domains/KeySequence';
 import AddressRepository from '../repositories/AddressRepository';
 
-type KeymapEntityMap = Map<KeySequence, operations.Operation>;
-
 const reservedKeymaps = Keymaps.fromJSON({
   '<Esc>': { type: operations.CANCEL },
   '<C-[>': { type: operations.CANCEL },
 });
+
+const enableAddonOps = [
+  operations.ADDON_ENABLE,
+  operations.ADDON_TOGGLE_ENABLED,
+];
 
 @injectable()
 export default class KeymapUseCase {
@@ -32,53 +35,54 @@ export default class KeymapUseCase {
   ) {
   }
 
-  nextOp(key: Key): operations.Operation | null {
+  // eslint-disable-next-line max-statements
+  nextOps(key: Key): operations.Operation[] {
     let sequence = this.repository.enqueueKey(key);
-    if (sequence.length() === 1 && this.blacklistKey(key)) {
+    let baseSequence = sequence.trimNumericPrefix();
+    if (baseSequence.length() === 1 && this.blacklistKey(key)) {
       // ignore if the input starts with black list keys
       this.repository.clear();
-      return null;
+      return [];
     }
 
     let keymaps = this.keymapEntityMap();
-    let matched = Array.from(keymaps.keys()).filter(
-      (mapping: KeySequence) => {
-        return mapping.startsWith(sequence);
-      });
-    if (!this.addonEnabledRepository.get()) {
-      // available keymaps are only ADDON_ENABLE and ADDON_TOGGLE_ENABLED if
-      // the addon disabled
-      matched = matched.filter((keymap) => {
-        let type = (keymaps.get(keymap) as operations.Operation).type;
-        return type === operations.ADDON_ENABLE ||
-          type === operations.ADDON_TOGGLE_ENABLED;
-      });
-    }
-    if (matched.length === 0) {
-      // No operations to match with inputs
+    let matched = keymaps.filter(([seq]) => seq.startsWith(sequence));
+    let baseMatched = keymaps.filter(([seq]) => seq.startsWith(baseSequence));
+
+    if (matched.length === 1 &&
+        sequence.length() === matched[0][0].length()) {
+      // keys are matched with an operation
       this.repository.clear();
-      return null;
-    } else if (matched.length > 1 ||
-      matched.length === 1 && sequence.length() < matched[0].length()) {
-      // More than one operations are matched
-      return null;
+      return [matched[0][1]];
+    } else if (
+      baseMatched.length === 1 &&
+        baseSequence.length() === baseMatched[0][0].length()) {
+      // keys are matched with an operation with a numeric prefix
+      this.repository.clear();
+      return Array(sequence.repeatCount()).fill(baseMatched[0][1]);
+    } else if (matched.length >= 1 || baseMatched.length >= 1) {
+      // keys are matched with an operation's prefix
+      return [];
     }
-    // Exactly one operation is matched
-    let operation = keymaps.get(matched[0]) as operations.Operation;
+
+    // matched with no operations
     this.repository.clear();
-    return operation;
+    return [];
   }
 
-  clear(): void {
-    this.repository.clear();
-  }
-
-  private keymapEntityMap(): KeymapEntityMap {
+  private keymapEntityMap(): [KeySequence, operations.Operation][] {
     let keymaps = this.settingRepository.get().keymaps.combine(reservedKeymaps);
     let entries = keymaps.entries().map(
       ([keys, op]) => [KeySequence.fromMapKeys(keys), op]
     ) as [KeySequence, operations.Operation][];
-    return new Map<KeySequence, operations.Operation>(entries);
+    if (!this.addonEnabledRepository.get()) {
+      // available keymaps are only ADDON_ENABLE and ADDON_TOGGLE_ENABLED if
+      // the addon disabled
+      entries = entries.filter(
+        ([_seq, { type }]) => enableAddonOps.includes(type)
+      );
+    }
+    return entries;
   }
 
   private blacklistKey(key: Key): boolean {

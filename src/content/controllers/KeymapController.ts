@@ -32,71 +32,75 @@ export default class KeymapController {
 
   // eslint-disable-next-line complexity, max-lines-per-function
   press(key: Key): boolean {
-    let op = this.keymapUseCase.nextOp(key);
-    if (op === null) {
+    let ops = this.keymapUseCase.nextOps(key);
+    if (ops.length === 0) {
       return false;
     }
 
-    // do not await due to return a boolean immediately
-    switch (op.type) {
-    case operations.ADDON_ENABLE:
-      this.addonEnabledUseCase.enable();
-      break;
-    case operations.ADDON_DISABLE:
-      this.addonEnabledUseCase.disable();
-      break;
-    case operations.ADDON_TOGGLE_ENABLED:
-      this.addonEnabledUseCase.toggle();
-      break;
-    case operations.FIND_NEXT:
-      this.findSlaveUseCase.findNext();
-      break;
-    case operations.FIND_PREV:
-      this.findSlaveUseCase.findPrev();
-      break;
-    case operations.SCROLL_VERTICALLY:
-      this.scrollUseCase.scrollVertically(op.count);
-      break;
-    case operations.SCROLL_HORIZONALLY:
-      this.scrollUseCase.scrollHorizonally(op.count);
-      break;
-    case operations.SCROLL_PAGES:
-      this.scrollUseCase.scrollPages(op.count);
-      break;
-    case operations.SCROLL_TOP:
-      this.scrollUseCase.scrollToTop();
-      break;
-    case operations.SCROLL_BOTTOM:
-      this.scrollUseCase.scrollToBottom();
-      break;
-    case operations.SCROLL_HOME:
-      this.scrollUseCase.scrollToHome();
-      break;
-    case operations.SCROLL_END:
-      this.scrollUseCase.scrollToEnd();
-      break;
-    case operations.FOLLOW_START:
-      this.followMasterClient.startFollow(op.newTab, op.background);
-      break;
-    case operations.MARK_SET_PREFIX:
-      this.markKeyUseCase.enableSetMode();
-      break;
-    case operations.MARK_JUMP_PREFIX:
-      this.markKeyUseCase.enableJumpMode();
-      break;
-    case operations.FOCUS_INPUT:
-      this.focusUseCase.focusFirstInput();
-      break;
-    case operations.URLS_YANK:
-      this.clipbaordUseCase.yankCurrentURL();
-      break;
-    case operations.URLS_PASTE:
-      this.clipbaordUseCase.openOrSearch(
-        op.newTab ? op.newTab : false,
-      );
-      break;
-    default:
-      this.backgroundClient.execBackgroundOp(op);
+    // Do not await asynchronous methods to return a boolean immidiately. The
+    // caller requires the synchronous response from the callback to identify
+    // to continue of abandon the event propagations.
+    for (let op of ops) {
+      switch (op.type) {
+      case operations.ADDON_ENABLE:
+        this.addonEnabledUseCase.enable();
+        break;
+      case operations.ADDON_DISABLE:
+        this.addonEnabledUseCase.disable();
+        break;
+      case operations.ADDON_TOGGLE_ENABLED:
+        this.addonEnabledUseCase.toggle();
+        break;
+      case operations.FIND_NEXT:
+        this.findSlaveUseCase.findNext();
+        break;
+      case operations.FIND_PREV:
+        this.findSlaveUseCase.findPrev();
+        break;
+      case operations.SCROLL_VERTICALLY:
+        this.scrollUseCase.scrollVertically(op.count);
+        break;
+      case operations.SCROLL_HORIZONALLY:
+        this.scrollUseCase.scrollHorizonally(op.count);
+        break;
+      case operations.SCROLL_PAGES:
+        this.scrollUseCase.scrollPages(op.count);
+        break;
+      case operations.SCROLL_TOP:
+        this.scrollUseCase.scrollToTop();
+        break;
+      case operations.SCROLL_BOTTOM:
+        this.scrollUseCase.scrollToBottom();
+        break;
+      case operations.SCROLL_HOME:
+        this.scrollUseCase.scrollToHome();
+        break;
+      case operations.SCROLL_END:
+        this.scrollUseCase.scrollToEnd();
+        break;
+      case operations.FOLLOW_START:
+        this.followMasterClient.startFollow(op.newTab, op.background);
+        break;
+      case operations.MARK_SET_PREFIX:
+        this.markKeyUseCase.enableSetMode();
+        break;
+      case operations.MARK_JUMP_PREFIX:
+        this.markKeyUseCase.enableJumpMode();
+        break;
+      case operations.FOCUS_INPUT:
+        this.focusUseCase.focusFirstInput();
+        break;
+      case operations.URLS_YANK:
+        this.clipbaordUseCase.yankCurrentURL();
+        break;
+      case operations.URLS_PASTE:
+        this.clipbaordUseCase.openOrSearch(
+          op.newTab ? op.newTab : false,
+        );
+        break;
+      default:
+        this.backgroundClient.execBackgroundOp(op);
+      }
     }
     return true;
   }
