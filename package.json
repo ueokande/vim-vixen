@@ -7,6 +7,7 @@
     "build": "NODE_ENV=production webpack --mode production --progress --display-error-details --devtool inline-source-map",
     "package": "npm run build && script/package",
     "lint": "eslint --ext .ts,.tsx src",
+    "lint:fix": "eslint --ext .ts,.tsx src --fix",
     "type-checks": "tsc --noEmit",
     "test": "karma start",
     "test:e2e": "mocha --timeout 10000 --retries 10 --require ts-node/register --extension ts e2e"
