@@ -48,6 +48,37 @@ describe("KeySequence", () => {
     })
   });
 
+  describe('#isDigitOnly', () => {
+      it('returns true the keys are only digits', () => {
+        expect(new KeySequence([
+          new Key({ key: '4' }),
+          new Key({ key: '0' }),
+        ]).isDigitOnly()).to.be.true;
+        expect(new KeySequence([
+          new Key({ key: '4' }),
+          new Key({ key: '0' }),
+          new Key({ key: 'z' }),
+        ]).isDigitOnly()).to.be.false;
+      })
+  });
+
+  describe('#splitNumericPrefix', () => {
+      it('splits numeric prefix', () => {
+        expect(KeySequence.fromMapKeys('10gg').splitNumericPrefix()).to.deep.equal([
+          KeySequence.fromMapKeys('10'),
+          KeySequence.fromMapKeys('gg'),
+        ]);
+        expect(KeySequence.fromMapKeys('10').splitNumericPrefix()).to.deep.equal([
+          KeySequence.fromMapKeys('10'),
+          new KeySequence([]),
+        ]);
+        expect(KeySequence.fromMapKeys('gg').splitNumericPrefix()).to.deep.equal([
+          new KeySequence([]),
+          KeySequence.fromMapKeys('gg'),
+        ]);
+      });
+  });
+
   describe('#fromMapKeys', () => {
     it('returns mapped keys for Shift+Esc', () => {
       let keys = KeySequence.fromMapKeys('<S-Esc>').keys;

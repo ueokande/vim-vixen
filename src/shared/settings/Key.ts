@@ -1,3 +1,5 @@
+const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
 export default class Key {
   public readonly key: string;
 
@@ -9,12 +11,18 @@ export default class Key {
 
   public readonly meta: boolean;
 
-  constructor({ key, shift, ctrl, alt, meta }: {
+  constructor({
+    key,
+    shift = false,
+    ctrl = false,
+    alt = false,
+    meta = false,
+  }: {
     key: string;
-    shift: boolean;
-    ctrl: boolean;
-    alt: boolean;
-    meta: boolean;
+    shift?: boolean;
+    ctrl?: boolean;
+    alt?: boolean;
+    meta?: boolean;
   }) {
     this.key = key;
     this.shift = shift;
@@ -49,6 +57,10 @@ export default class Key {
       alt: false,
       meta: false,
     });
+  }
+
+  isDigit(): boolean {
+    return digits.includes(this.key);
   }
 
   equals(key: Key) {

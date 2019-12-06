@@ -26,6 +26,21 @@ export default class KeySequence {
     return true;
   }
 
+  isDigitOnly(): boolean {
+    return this.keys.every(key => key.isDigit());
+  }
+
+  splitNumericPrefix(): [KeySequence, KeySequence] {
+    let nonDigitIndex = this.keys.findIndex(key => !key.isDigit());
+    if (nonDigitIndex === -1) {
+      return [this, new KeySequence([])];
+    }
+    return [
+      new KeySequence(this.keys.slice(0, nonDigitIndex)),
+      new KeySequence(this.keys.slice(nonDigitIndex)),
+    ];
+  }
+
   static fromMapKeys(keys: string): KeySequence {
     const fromMapKeysRecursive = (
       remaining: string, mappedKeys: Key[],

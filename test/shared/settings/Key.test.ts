@@ -76,17 +76,30 @@ describe("Key", () => {
     });
   });
 
-  describe('equals', () => {
-    expect(new Key({
-      key: 'x', shift: false, ctrl: true, alt: false, meta: false,
-    }).equals(new Key({
-      key: 'x', shift: false, ctrl: true, alt: false, meta: false,
-    }))).to.be.true;
+  describe('idDigit', () => {
+    it('returns true if the key is a digit', () => {
+        expect(new Key({ key: '0' }).isDigit()).to.be.true;
+      expect(new Key({ key: '9' }).isDigit()).to.be.true;
+      expect(new Key({ key: '9', shift: true }).isDigit()).to.be.true;
 
-    expect(new Key({
-      key: 'x', shift: false, ctrl: false, alt: false, meta: false,
-    }).equals(new Key({
-      key: 'X', shift: true, ctrl: false, alt: false, meta: false,
-    }))).to.be.false;
+      expect(new Key({ key: 'a' }).isDigit()).to.be.false;
+      expect(new Key({ key: '０' }).isDigit()).to.be.false;
+    })
+  });
+
+  describe('equals', () => {
+    it('returns true if the keys are equivalent', () => {
+      expect(new Key({
+        key: 'x', shift: false, ctrl: true, alt: false, meta: false,
+      }).equals(new Key({
+        key: 'x', shift: false, ctrl: true, alt: false, meta: false,
+      }))).to.be.true;
+
+      expect(new Key({
+        key: 'x', shift: false, ctrl: false, alt: false, meta: false,
+      }).equals(new Key({
+        key: 'X', shift: true, ctrl: false, alt: false, meta: false,
+      }))).to.be.false;
+    })
   });
 });
