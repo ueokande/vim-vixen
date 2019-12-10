@@ -5,7 +5,7 @@ import AddonEnabledRepository from '../repositories/AddonEnabledRepository';
 import * as operations from '../../shared/operations';
 import Keymaps from '../../shared/settings/Keymaps';
 import Key from '../../shared/settings/Key';
-import KeySequence from '../../shared/settings/KeySequence';
+import KeySequence from '../domains/KeySequence';
 import AddressRepository from '../repositories/AddressRepository';
 
 type KeymapEntityMap = Map<KeySequence, operations.Operation>;

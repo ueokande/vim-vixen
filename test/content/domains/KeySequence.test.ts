@@ -1,4 +1,4 @@
-import KeySequence from '../../../src/shared/settings/KeySequence';
+import KeySequence from '../../../src/content/domains/KeySequence';
 import { expect } from 'chai'
 import Key from "../../../src/shared/settings/Key";
 
@@ -60,6 +60,69 @@ describe("KeySequence", () => {
           new Key({ key: 'z' }),
         ]).isDigitOnly()).to.be.false;
       })
+  });
+
+  describe('#repeatCount', () => {
+    it('returns repeat count with a numeric prefix', () => {
+      let seq = new KeySequence([
+        new Key({ key: '1' }), new Key({ key: '0' })  ,
+        new Key({ key: 'g' }), new Key({ key: 'g' })  ,
+      ]);
+      expect(seq.repeatCount()).to.equal(10);
+
+      seq = new KeySequence([
+        new Key({ key: '0' }), new Key({ key: '5' })  ,
+        new Key({ key: 'g' }), new Key({ key: 'g' })  ,
+      ]);
+      expect(seq.repeatCount()).to.equal(5);
+    });
+
+    it('returns 1 if no numeric prefix', () => {
+      let seq = new KeySequence([
+        new Key({ key: 'g' }), new Key({ key: 'g' })  ,
+      ]);
+      expect(seq.repeatCount()).to.equal(1);
+
+      seq = new KeySequence([]);
+      expect(seq.repeatCount()).to.equal(1);
+    });
+
+    it('returns whole keys if digits only sequence', () => {
+      let seq = new KeySequence([
+        new Key({ key: '1' }), new Key({ key: '0' })  ,
+      ]);
+      expect(seq.repeatCount()).to.equal(10);
+
+      seq = new KeySequence([
+        new Key({ key: '0' }), new Key({ key: '5' })  ,
+      ]);
+      expect(seq.repeatCount()).to.equal(5);
+    });
+  });
+
+  describe('#trimNumericPrefix', () => {
+    it('removes numeric prefix', () => {
+      let seq = new KeySequence([
+        new Key({ key: '1' }), new Key({ key: '0' }) ,
+        new Key({ key: 'g' }), new Key({ key: 'g' }) , new Key({ key: '3' })  ,
+      ]).trimNumericPrefix();
+      expect(seq.keys.map(key => key.key)).to.deep.equal(['g', 'g', '3']);
+    });
+
+    it('returns empty if keys contains only digis', () => {
+      let seq = new KeySequence([
+        new Key({ key: '1' }), new Key({ key: '0' })  ,
+      ]).trimNumericPrefix();
+      expect(seq.trimNumericPrefix().keys).to.be.empty;
+    });
+
+    it('returns itself if no numeric prefix', () => {
+      let seq = new KeySequence([
+        new Key({ key: 'g' }), new Key({ key: 'g' }) , new Key({ key: '3' })  ,
+      ]).trimNumericPrefix();
+
+      expect(seq.keys.map(key => key.key)).to.deep.equal(['g', 'g', '3']);
+    });
   });
 
   describe('#splitNumericPrefix', () => {
