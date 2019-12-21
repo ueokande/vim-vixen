@@ -80,7 +80,7 @@ export default class ContentMessageListener {
         senderTab.id as number,
         message.background);
     case messages.BACKGROUND_OPERATION:
-      return this.onBackgroundOperation(message.count, message.operation);
+      return this.onBackgroundOperation(message.repeat, message.operation);
     case messages.MARK_SET_GLOBAL:
       return this.onMarkSetGlobal(message.key, message.x, message.y);
     case messages.MARK_JUMP_GLOBAL:

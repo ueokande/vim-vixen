@@ -21,8 +21,8 @@ export default class OperationController {
   ) {
   }
 
-  async exec(count: number, op: operations.Operation): Promise<any> {
-    await this.doOperation(count, op);
+  async exec(repeat: number, op: operations.Operation): Promise<any> {
+    await this.doOperation(repeat, op);
     if (this.repeatUseCase.isRepeatable(op)) {
       this.repeatUseCase.storeLastOperation(op);
     }
@@ -30,7 +30,7 @@ export default class OperationController {
 
   // eslint-disable-next-line complexity, max-lines-per-function
   async doOperation(
-    count: number,
+    repeat: number,
     operation: operations.Operation,
   ): Promise<any> {
     // eslint-disable-next-line complexity, max-lines-per-function
@@ -119,7 +119,7 @@ export default class OperationController {
       }
     })();
 
-    for (let i = 0; i < count; ++i) {
+    for (let i = 0; i < repeat; ++i) {
       // eslint-disable-next-line no-await-in-loop
       await opFunc();
     }

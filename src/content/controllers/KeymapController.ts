@@ -38,7 +38,7 @@ export default class KeymapController {
     }
 
     if (!operations.isNRepeatable(nextOp.op.type)) {
-      nextOp.count = 1;
+      nextOp.repeat = 1;
     }
 
     const doFunc = ((op: operations.Operation) => {
@@ -91,9 +91,9 @@ export default class KeymapController {
       // Do not await asynchronous methods to return a boolean immidiately. The
       // caller requires the synchronous response from the callback to identify
       // to continue of abandon the event propagations.
-      this.operationClient.execBackgroundOp(nextOp.count, nextOp.op);
+      this.operationClient.execBackgroundOp(nextOp.repeat, nextOp.op);
     } else {
-      for (let i = 0; i < nextOp.count; ++i) {
+      for (let i = 0; i < nextOp.repeat; ++i) {
         doFunc();
       }
     }

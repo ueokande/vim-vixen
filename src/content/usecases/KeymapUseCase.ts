@@ -36,7 +36,7 @@ export default class KeymapUseCase {
   }
 
   // eslint-disable-next-line max-statements
-  nextOps(key: Key): { count: number, op: operations.Operation } | null {
+  nextOps(key: Key): { repeat: number, op: operations.Operation } | null {
     let sequence = this.repository.enqueueKey(key);
     let baseSequence = sequence.trimNumericPrefix();
     if (baseSequence.length() === 1 && this.blacklistKey(key)) {
@@ -53,13 +53,13 @@ export default class KeymapUseCase {
         sequence.length() === matched[0][0].length()) {
       // keys are matched with an operation
       this.repository.clear();
-      return { count: 1, op: matched[0][1] };
+      return { repeat: 1, op: matched[0][1] };
     } else if (
       baseMatched.length === 1 &&
         baseSequence.length() === baseMatched[0][0].length()) {
       // keys are matched with an operation with a numeric prefix
       this.repository.clear();
-      return { count: sequence.repeatCount(), op: baseMatched[0][1] };
+      return { repeat: sequence.repeatCount(), op: baseMatched[0][1] };
     } else if (matched.length >= 1 || baseMatched.length >= 1) {
       // keys are matched with an operation's prefix
       return null;

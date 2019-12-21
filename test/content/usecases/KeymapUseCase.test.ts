@@ -72,10 +72,10 @@ describe('KeymapUseCase', () => {
     });
 
     it('returns matched operation', () => {
-      expect(sut.nextOps(Key.fromMapKey('k'))).to.deep.equal({ count: 1, op: {type: 'scroll.vertically', count: -1}});
-      expect(sut.nextOps(Key.fromMapKey('j'))).to.deep.equal({ count: 1, op: {type: 'scroll.vertically', count: 1}});
+      expect(sut.nextOps(Key.fromMapKey('k'))).to.deep.equal({ repeat: 1, op: {type: 'scroll.vertically', count: -1}});
+      expect(sut.nextOps(Key.fromMapKey('j'))).to.deep.equal({ repeat: 1, op: {type: 'scroll.vertically', count: 1}});
       expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
-      expect(sut.nextOps(Key.fromMapKey('g'))).to.deep.equal({ count: 1, op: {type: 'scroll.top'}});
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.deep.equal({ repeat: 1, op: {type: 'scroll.top'}});
       expect(sut.nextOps(Key.fromMapKey('z'))).to.be.null;
     });
 
@@ -83,7 +83,7 @@ describe('KeymapUseCase', () => {
       expect(sut.nextOps(Key.fromMapKey('1'))).to.be.null;
       expect(sut.nextOps(Key.fromMapKey('0'))).to.be.null;
       expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
-      expect(sut.nextOps(Key.fromMapKey('g'))).to.deep.equal({ count: 10, op: {type: "scroll.top"}});
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.deep.equal({ repeat: 10, op: {type: "scroll.top"}});
     });
   });
 
@@ -108,18 +108,18 @@ describe('KeymapUseCase', () => {
 
     it('returns the matched operation ends with digit', () => {
       expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
-      expect(sut.nextOps(Key.fromMapKey('5'))).to.be.deep.equal({ count: 1, op: { type: 'scroll.bottom'}});
+      expect(sut.nextOps(Key.fromMapKey('5'))).to.be.deep.equal({ repeat: 1, op: { type: 'scroll.bottom'}});
     });
 
     it('returns an operation matched the operation with digit keymaps', () => {
       expect(sut.nextOps(Key.fromMapKey('2'))).to.be.null;
-      expect(sut.nextOps(Key.fromMapKey('0'))).to.be.deep.equal({ count: 1, op: { type: 'scroll.top'}});
+      expect(sut.nextOps(Key.fromMapKey('0'))).to.be.deep.equal({ repeat: 1, op: { type: 'scroll.top'}});
     });
 
     it('returns operations repeated by numeric prefix', () => {
       expect(sut.nextOps(Key.fromMapKey('2'))).to.be.null;
       expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
-      expect(sut.nextOps(Key.fromMapKey('5'))).to.be.deep.equal({ count: 2, op: { type: 'scroll.bottom'}});
+      expect(sut.nextOps(Key.fromMapKey('5'))).to.be.deep.equal({ repeat: 2, op: { type: 'scroll.bottom'}});
     });
 
     it('does not matches with digit operation with numeric prefix', () => {
@@ -127,7 +127,7 @@ describe('KeymapUseCase', () => {
       expect(sut.nextOps(Key.fromMapKey('2'))).to.be.null;
       expect(sut.nextOps(Key.fromMapKey('0'))).to.be.null;
       expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
-      expect(sut.nextOps(Key.fromMapKey('5'))).to.be.deep.equal({ count: 320, op: { type: 'scroll.bottom'}});
+      expect(sut.nextOps(Key.fromMapKey('5'))).to.be.deep.equal({ repeat: 320, op: { type: 'scroll.bottom'}});
     });
   });
 
@@ -154,7 +154,7 @@ describe('KeymapUseCase', () => {
       expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
       expect(sut.nextOps(Key.fromMapKey('x'))).to.be.null; // clear
       expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
-      expect(sut.nextOps(Key.fromMapKey('g'))).to.deep.equal({count: 1, op: {type: "scroll.top"}});
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.deep.equal({repeat: 1, op: {type: "scroll.top"}});
     });
 
     it('clears input keys and the prefix with no-matched operations', () => {
@@ -165,7 +165,7 @@ describe('KeymapUseCase', () => {
       expect(sut.nextOps(Key.fromMapKey('1'))).to.be.null;
       expect(sut.nextOps(Key.fromMapKey('0'))).to.be.null;
       expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
-      expect(sut.nextOps(Key.fromMapKey('g'))).to.deep.equal({ count: 10, op: {type: "scroll.top"}});
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.deep.equal({ repeat: 10, op: {type: "scroll.top"}});
     });
   });
 
@@ -191,8 +191,8 @@ describe('KeymapUseCase', () => {
 
     it('returns only ADDON_ENABLE and ADDON_TOGGLE_ENABLED operation', () => {
       expect(sut.nextOps(Key.fromMapKey('k'))).to.be.null;
-      expect(sut.nextOps(Key.fromMapKey('a'))).to.deep.equal({ count: 1, op: {type: 'addon.enable'}});
-      expect(sut.nextOps(Key.fromMapKey('b'))).to.deep.equal({ count: 1, op: {type: 'addon.toggle.enabled'}});
+      expect(sut.nextOps(Key.fromMapKey('a'))).to.deep.equal({ repeat: 1, op: {type: 'addon.enable'}});
+      expect(sut.nextOps(Key.fromMapKey('b'))).to.deep.equal({ repeat: 1, op: {type: 'addon.toggle.enabled'}});
     });
   });
 
@@ -218,11 +218,11 @@ describe('KeymapUseCase', () => {
           new MockAddressRepository(new URL('https://example.com')),
       );
 
-      expect(sut.nextOps(Key.fromMapKey('k'))).to.deep.equal({ count: 1, op: {type: 'scroll.vertically', count: -1}});
-      expect(sut.nextOps(Key.fromMapKey('j'))).to.deep.equal({ count: 1, op: {type: 'scroll.vertically', count: 1}});
+      expect(sut.nextOps(Key.fromMapKey('k'))).to.deep.equal({ repeat: 1, op: {type: 'scroll.vertically', count: -1}});
+      expect(sut.nextOps(Key.fromMapKey('j'))).to.deep.equal({ repeat: 1, op: {type: 'scroll.vertically', count: 1}});
       expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
       expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
-      expect(sut.nextOps(Key.fromMapKey('G'))).to.deep.equal({ count: 1, op: {type: 'scroll.bottom'}});
+      expect(sut.nextOps(Key.fromMapKey('G'))).to.deep.equal({ repeat: 1, op: {type: 'scroll.bottom'}});
 
       sut = new KeymapUseCase(
           new KeymapRepositoryImpl(),
@@ -232,7 +232,7 @@ describe('KeymapUseCase', () => {
       );
 
       expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
-      expect(sut.nextOps(Key.fromMapKey('g'))).to.deep.equal({ count: 1, op: {type: 'scroll.top'}});
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.deep.equal({ repeat: 1, op: {type: 'scroll.top'}});
       expect(sut.nextOps(Key.fromMapKey('G'))).to.be.null;
     });
   });
