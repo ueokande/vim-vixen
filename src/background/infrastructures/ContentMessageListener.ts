@@ -1,5 +1,6 @@
 import { injectable } from 'tsyringe';
 import * as messages from '../../shared/messages';
+import * as operations from '../../shared/operations';
 import CompletionGroup from '../domains/CompletionGroup';
 import CommandController from '../controllers/CommandController';
 import SettingController from '../controllers/SettingController';
@@ -19,7 +20,7 @@ export default class ContentMessageListener {
     private findController: FindController,
     private addonEnabledController: AddonEnabledController,
     private linkController: LinkController,
-    private backgroundOperationController: OperationController,
+    private operationController: OperationController,
     private markController: MarkController,
   ) {
     this.consolePorts = {};
@@ -79,7 +80,7 @@ export default class ContentMessageListener {
         senderTab.id as number,
         message.background);
     case messages.BACKGROUND_OPERATION:
-      return this.onBackgroundOperation(message.operation);
+      return this.onBackgroundOperation(message.count, message.operation);
     case messages.MARK_SET_GLOBAL:
       return this.onMarkSetGlobal(message.key, message.x, message.y);
     case messages.MARK_JUMP_GLOBAL:
@@ -126,8 +127,8 @@ export default class ContentMessageListener {
     return this.linkController.openToTab(url, openerId);
   }
 
-  onBackgroundOperation(operation: any): Promise<any> {
-    return this.backgroundOperationController.exec(operation);
+  onBackgroundOperation(count: number, op: operations.Operation): Promise<any> {
+    return this.operationController.exec(count, op);
   }
 
   onMarkSetGlobal(key: string, x: number, y: number): Promise<any> {

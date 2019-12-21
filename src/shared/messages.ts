@@ -49,6 +49,7 @@ export const NAVIGATE_LINK_PREV = 'navigate.link.prev';
 
 export interface BackgroundOperationMessage {
   type: typeof BACKGROUND_OPERATION;
+  count: number;
   operation: operations.Operation;
 }
 

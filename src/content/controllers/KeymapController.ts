@@ -23,7 +23,7 @@ export default class KeymapController {
     private markKeyUseCase: MarkKeyyUseCase,
 
     @inject('OperationClient')
-    private backgroundClient: OperationClient,
+    private operationClient: OperationClient,
 
     @inject('FollowMasterClient')
     private followMasterClient: FollowMasterClient,
@@ -32,74 +32,69 @@ export default class KeymapController {
 
   // eslint-disable-next-line complexity, max-lines-per-function
   press(key: Key): boolean {
-    let ops = this.keymapUseCase.nextOps(key);
-    if (ops.length === 0) {
+    let nextOp = this.keymapUseCase.nextOps(key);
+    if (nextOp === null) {
       return false;
     }
 
-    // Do not await asynchronous methods to return a boolean immidiately. The
-    // caller requires the synchronous response from the callback to identify
-    // to continue of abandon the event propagations.
-    for (let op of ops) {
+    if (!operations.isNRepeatable(nextOp.op.type)) {
+      nextOp.count = 1;
+    }
+
+    const doFunc = ((op: operations.Operation) => {
       switch (op.type) {
       case operations.ADDON_ENABLE:
-        this.addonEnabledUseCase.enable();
-        break;
+        return () => this.addonEnabledUseCase.enable();
       case operations.ADDON_DISABLE:
-        this.addonEnabledUseCase.disable();
-        break;
+        return () => this.addonEnabledUseCase.disable();
       case operations.ADDON_TOGGLE_ENABLED:
-        this.addonEnabledUseCase.toggle();
-        break;
+        return () => this.addonEnabledUseCase.toggle();
       case operations.FIND_NEXT:
-        this.findSlaveUseCase.findNext();
-        break;
+        return () => this.findSlaveUseCase.findNext();
       case operations.FIND_PREV:
-        this.findSlaveUseCase.findPrev();
-        break;
+        return () => this.findSlaveUseCase.findPrev();
       case operations.SCROLL_VERTICALLY:
-        this.scrollUseCase.scrollVertically(op.count);
-        break;
+        return () => this.scrollUseCase.scrollVertically(op.count);
       case operations.SCROLL_HORIZONALLY:
-        this.scrollUseCase.scrollHorizonally(op.count);
-        break;
+        return () => this.scrollUseCase.scrollHorizonally(op.count);
       case operations.SCROLL_PAGES:
-        this.scrollUseCase.scrollPages(op.count);
-        break;
+        return () => this.scrollUseCase.scrollPages(op.count);
       case operations.SCROLL_TOP:
-        this.scrollUseCase.scrollToTop();
-        break;
+        return () => this.scrollUseCase.scrollToTop();
       case operations.SCROLL_BOTTOM:
-        this.scrollUseCase.scrollToBottom();
-        break;
+        return () => this.scrollUseCase.scrollToBottom();
       case operations.SCROLL_HOME:
-        this.scrollUseCase.scrollToHome();
-        break;
+        return () => this.scrollUseCase.scrollToHome();
       case operations.SCROLL_END:
-        this.scrollUseCase.scrollToEnd();
-        break;
+        return () => this.scrollUseCase.scrollToEnd();
       case operations.FOLLOW_START:
-        this.followMasterClient.startFollow(op.newTab, op.background);
-        break;
+        return () => this.followMasterClient.startFollow(
+          op.newTab, op.background);
       case operations.MARK_SET_PREFIX:
-        this.markKeyUseCase.enableSetMode();
-        break;
+        return () => this.markKeyUseCase.enableSetMode();
       case operations.MARK_JUMP_PREFIX:
-        this.markKeyUseCase.enableJumpMode();
-        break;
+        return () => this.markKeyUseCase.enableJumpMode();
       case operations.FOCUS_INPUT:
-        this.focusUseCase.focusFirstInput();
-        break;
+        return () => this.focusUseCase.focusFirstInput();
       case operations.URLS_YANK:
-        this.clipbaordUseCase.yankCurrentURL();
-        break;
+        return () => this.clipbaordUseCase.yankCurrentURL();
       case operations.URLS_PASTE:
-        this.clipbaordUseCase.openOrSearch(
+        return () => this.clipbaordUseCase.openOrSearch(
           op.newTab ? op.newTab : false,
         );
-        break;
       default:
-        this.backgroundClient.execBackgroundOp(op);
+        return null;
+      }
+    })(nextOp.op);
+
+    if (doFunc === null) {
+      // Do not await asynchronous methods to return a boolean immidiately. The
+      // caller requires the synchronous response from the callback to identify
+      // to continue of abandon the event propagations.
+      this.operationClient.execBackgroundOp(nextOp.count, nextOp.op);
+    } else {
+      for (let i = 0; i < nextOp.count; ++i) {
+        doFunc();
       }
     }
     return true;
