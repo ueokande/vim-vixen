@@ -105,7 +105,7 @@ export default class OperationController {
         return () => this.navigateUseCase.openRoot();
       case operations.REPEAT_LAST:
         return () => {
-          let last = this.repeatUseCase.getLastOperation();
+          const last = this.repeatUseCase.getLastOperation();
           if (typeof last !== 'undefined') {
             return this.doOperation(1, last);
           }

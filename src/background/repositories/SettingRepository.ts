@@ -14,7 +14,7 @@ export default class SettingRepository {
   }
 
   get(): Promise<Settings> {
-    let data = this.cache.get(CACHED_SETTING_KEY);
+    const data = this.cache.get(CACHED_SETTING_KEY);
     return Promise.resolve(Settings.fromJSON(data));
   }
 
@@ -25,7 +25,7 @@ export default class SettingRepository {
   async setProperty(
     name: string, value: string | number | boolean,
   ): Promise<void> {
-    let def = Properties.def(name);
+    const def = Properties.def(name);
     if (!def) {
       throw new Error('unknown property: ' + name);
     }
@@ -37,7 +37,7 @@ export default class SettingRepository {
       newValue = def.defaultValue;
     }
 
-    let current = await this.get();
+    const current = await this.get();
     switch (name) {
     case 'hintchars':
       current.properties.hintchars = newValue as string;

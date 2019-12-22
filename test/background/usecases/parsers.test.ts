@@ -3,13 +3,13 @@ import * as parsers from 'background/usecases/parsers';
 describe("shared/commands/parsers", () => {
   describe("#parsers.parseSetOption", () => {
     it('parse set string', () => {
-      let [key, value] = parsers.parseSetOption('hintchars=abcdefgh');
+      const [key, value] = parsers.parseSetOption('hintchars=abcdefgh');
       expect(key).to.equal('hintchars');
       expect(value).to.equal('abcdefgh');
     });
 
     it('parse set empty string', () => {
-      let [key, value] = parsers.parseSetOption('hintchars=');
+      const [key, value] = parsers.parseSetOption('hintchars=');
       expect(key).to.equal('hintchars');
       expect(value).to.equal('');
     });

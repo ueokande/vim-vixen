@@ -22,8 +22,8 @@ export default class CompletionsUseCase {
   }
 
   queryConsoleCommand(prefix: string): Promise<CompletionGroup[]> {
-    let keys = Object.keys(CommandDocs);
-    let items = keys
+    const keys = Object.keys(CommandDocs);
+    const items = keys
       .filter(name => name.startsWith(prefix))
       .map(name => ({
         caption: name,
@@ -41,28 +41,28 @@ export default class CompletionsUseCase {
     // TODO This logic contains view entities.  They should be defined on
     // content script
 
-    let settings = await this.settingRepository.get();
-    let groups: CompletionGroup[] = [];
+    const settings = await this.settingRepository.get();
+    const groups: CompletionGroup[] = [];
 
-    let complete = settings.properties.complete;
-    for (let c of complete) {
+    const complete = settings.properties.complete;
+    for (const c of complete) {
       if (c === 's') {
         // eslint-disable-next-line no-await-in-loop
-        let engines = await this.querySearchEngineItems(name, keywords);
+        const engines = await this.querySearchEngineItems(name, keywords);
         if (engines.length > 0) {
           groups.push({ name: 'Search Engines', items: engines });
         }
         // browser.history not supported on Android
       } else if (c === 'h' && typeof browser.history === 'object') {
         // eslint-disable-next-line no-await-in-loop
-        let histories = await this.queryHistoryItems(name, keywords);
+        const histories = await this.queryHistoryItems(name, keywords);
         if (histories.length > 0) {
           groups.push({ name: 'History', items: histories });
         }
         // browser.bookmarks not supported on Android
       } else if (c === 'b' && typeof browser.bookmarks === 'object') {
         // eslint-disable-next-line no-await-in-loop
-        let bookmarks = await this.queryBookmarkItems(name, keywords);
+        const bookmarks = await this.queryBookmarkItems(name, keywords);
         if (bookmarks.length > 0) {
           groups.push({ name: 'Bookmarks', items: bookmarks });
         }
@@ -76,23 +76,23 @@ export default class CompletionsUseCase {
     name: string,
     keywords: string,
   ): Promise<CompletionGroup[]> {
-    let lastId = await this.tabPresenter.getLastSelectedId();
-    let trimmed = keywords.trim();
+    const lastId = await this.tabPresenter.getLastSelectedId();
+    const trimmed = keywords.trim();
     let tabs: Tab[] = [];
     if (trimmed.length > 0 && !isNaN(Number(trimmed))) {
-      let all = await this.tabPresenter.getAll();
-      let index = parseInt(trimmed, 10) - 1;
+      const all = await this.tabPresenter.getAll();
+      const index = parseInt(trimmed, 10) - 1;
       if (index >= 0 && index < all.length) {
         tabs = [all[index]];
       }
     } else if (trimmed === '%') {
-      let all = await this.tabPresenter.getAll();
-      let tab = all.find(t => t.active) as Tab;
+      const all = await this.tabPresenter.getAll();
+      const tab = all.find(t => t.active) as Tab;
       tabs = [tab];
     } else if (trimmed === '#') {
       if (typeof lastId !== 'undefined' && lastId !== null) {
-        let all = await this.tabPresenter.getAll();
-        let tab = all.find(t => t.id === lastId) as Tab;
+        const all = await this.tabPresenter.getAll();
+        const tab = all.find(t => t.id === lastId) as Tab;
         tabs = [tab];
       }
     } else {
@@ -106,7 +106,7 @@ export default class CompletionsUseCase {
       }
       return ' ';
     };
-    let items = tabs.map(tab => ({
+    const items = tabs.map(tab => ({
       caption: tab.index + 1 + ': ' + flag(tab) + ' ' + tab.title,
       content: name + ' ' + tab.title,
       url: tab.url,
@@ -129,7 +129,7 @@ export default class CompletionsUseCase {
   }
 
   querySet(name: string, keywords: string): Promise<CompletionGroup[]> {
-    let items = Properties.defs().map((def) => {
+    const items = Properties.defs().map((def) => {
       if (def.type === 'boolean') {
         return [
           {
@@ -166,8 +166,8 @@ export default class CompletionsUseCase {
   async queryTabs(
     name: string, excludePinned: boolean, args: string,
   ): Promise<CompletionGroup[]> {
-    let tabs = await this.completionsRepository.queryTabs(args, excludePinned);
-    let items = tabs.map(tab => ({
+    const tabs = await this.completionsRepository.queryTabs(args, excludePinned);
+    const items = tabs.map(tab => ({
       caption: tab.title,
       content: name + ' ' + tab.title,
       url: tab.url,
@@ -180,8 +180,8 @@ export default class CompletionsUseCase {
   }
 
   async querySearchEngineItems(name: string, keywords: string) {
-    let settings = await this.settingRepository.get();
-    let engines = Object.keys(settings.search.engines)
+    const settings = await this.settingRepository.get();
+    const engines = Object.keys(settings.search.engines)
       .filter(key => key.startsWith(keywords));
     return engines.map(key => ({
       caption: key,
@@ -209,7 +209,7 @@ export default class CompletionsUseCase {
   }
 
   async queryBookmarkItems(name: string, keywords: string) {
-    let bookmarks = await this.completionsRepository.queryBookmarks(keywords);
+    const bookmarks = await this.completionsRepository.queryBookmarks(keywords);
     return bookmarks.slice(0, COMPLETION_ITEM_LIMIT)
       .map(page => ({
         caption: page.title,

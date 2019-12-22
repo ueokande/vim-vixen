@@ -17,13 +17,13 @@ class PropertiesForm extends React.Component<Props> {
   };
 
   render() {
-    let types = this.props.types;
-    let values = this.props.value;
+    const types = this.props.types;
+    const values = this.props.value;
 
     return <div className='form-properties-form'>
       {
         Object.keys(types).map((name) => {
-          let type = types[name];
+          const type = types[name];
           let inputType = '';
           let onChange = this.bindValue.bind(this);
           if (type === 'string') {
@@ -59,8 +59,8 @@ class PropertiesForm extends React.Component<Props> {
   }
 
   bindValue(e: React.ChangeEvent<HTMLInputElement>) {
-    let name = e.target.name;
-    let next = { ...this.props.value };
+    const name = e.target.name;
+    const next = { ...this.props.value };
     if (e.target.type.toLowerCase() === 'checkbox') {
       next[name] = e.target.checked;
     } else if (e.target.type.toLowerCase() === 'number') {

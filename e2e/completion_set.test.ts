@@ -30,11 +30,11 @@ describe("completion on set commands", () => {
   });
 
   it('should show all property names by "set" command with empty params', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.inputKeys('set ');
 
     await eventually(async() => {
-      let items = await console.getCompletions();
+      const items = await console.getCompletions();
       assert.strictEqual(items.length, 5);
       assert.deepStrictEqual(items[0], { type: 'title', text: 'Properties' });
       assert.ok(items[1].text.startsWith('hintchars'));
@@ -45,11 +45,11 @@ describe("completion on set commands", () => {
   });
 
   it('should show filtered property names by "set" command', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.inputKeys('set no');
 
     await eventually(async() => {
-      let items = await console.getCompletions();
+      const items = await console.getCompletions();
       assert.strictEqual(items.length, 2);
       assert.ok(items[1].text.includes('nosmoothscroll'))
     });

@@ -18,14 +18,14 @@ class KeymapsForm extends React.Component<Props> {
   };
 
   render() {
-    let values = this.props.value.toJSON();
+    const values = this.props.value.toJSON();
     return <div className='form-keymaps-form'>
       {
         keymaps.fields.map((group, index) => {
           return <div key={index} className='form-keymaps-form-field-group'>
             {
               group.map(([name, label]) => {
-                let value = values[name] || '';
+                const value = values[name] || '';
                 return <Input
                   type='text' id={name} name={name} key={name}
                   label={label} value={value}

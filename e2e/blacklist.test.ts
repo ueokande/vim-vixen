@@ -9,7 +9,7 @@ import SettingRepository from "./lib/SettingRepository";
 import Settings from "../src/shared/settings/Settings";
 
 describe("blacklist test", () => {
-  let server = new TestServer().receiveContent('/*',
+  const server = new TestServer().receiveContent('/*',
     `<!DOCTYPE html><html lang="en"><body style="width:10000px; height:10000px"></body></html>`,
   );
   let lanthan: Lanthan;
@@ -25,7 +25,7 @@ describe("blacklist test", () => {
     browser = lanthan.getWebExtBrowser();
     await server.start();
 
-    let url = server.url('/a').replace('http://', '');
+    const url = server.url('/a').replace('http://', '');
     await new SettingRepository(browser).saveJSON(Settings.fromJSON({
       keymaps: {
         j: { type: "scroll.vertically", count: 1 },
@@ -42,18 +42,18 @@ describe("blacklist test", () => {
   });
 
   it('should disable add-on if the URL is in the blacklist', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/a'));
+    const page = await Page.navigateTo(webdriver, server.url('/a'));
     await page.sendKeys('j');
 
-    let scrollY = await page.getScrollY();
+    const scrollY = await page.getScrollY();
     assert.strictEqual(scrollY, 0);
   });
 
   it('should enabled add-on if the URL is not in the blacklist', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/ab'));
+    const page = await Page.navigateTo(webdriver, server.url('/ab'));
     await page.sendKeys('j');
 
-    let scrollY = await page.getScrollY();
+    const scrollY = await page.getScrollY();
     assert.strictEqual(scrollY, 64);
   });
 });

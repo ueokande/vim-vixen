@@ -12,12 +12,12 @@ export default class ConsoleUseCase {
   }
 
   async showCommand(): Promise<any> {
-    let tab = await this.tabPresenter.getCurrent();
+    const tab = await this.tabPresenter.getCurrent();
     return this.consoleClient.showCommand(tab.id as number, '');
   }
 
   async showOpenCommand(alter: boolean): Promise<any> {
-    let tab = await this.tabPresenter.getCurrent();
+    const tab = await this.tabPresenter.getCurrent();
     let command = 'open ';
     if (alter) {
       command += tab.url || '';
@@ -26,7 +26,7 @@ export default class ConsoleUseCase {
   }
 
   async showTabopenCommand(alter: boolean): Promise<any> {
-    let tab = await this.tabPresenter.getCurrent();
+    const tab = await this.tabPresenter.getCurrent();
     let command = 'tabopen ';
     if (alter) {
       command += tab.url || '';
@@ -35,7 +35,7 @@ export default class ConsoleUseCase {
   }
 
   async showWinopenCommand(alter: boolean): Promise<any> {
-    let tab = await this.tabPresenter.getCurrent();
+    const tab = await this.tabPresenter.getCurrent();
     let command = 'winopen ';
     if (alter) {
       command += tab.url || '';
@@ -44,13 +44,13 @@ export default class ConsoleUseCase {
   }
 
   async showBufferCommand(): Promise<any> {
-    let tab = await this.tabPresenter.getCurrent();
-    let command = 'buffer ';
+    const tab = await this.tabPresenter.getCurrent();
+    const command = 'buffer ';
     return this.consoleClient.showCommand(tab.id as number, command);
   }
 
   async showAddbookmarkCommand(alter: boolean): Promise<any> {
-    let tab = await this.tabPresenter.getCurrent();
+    const tab = await this.tabPresenter.getCurrent();
     let command = 'addbookmark ';
     if (alter) {
       command += tab.title || '';
@@ -59,7 +59,7 @@ export default class ConsoleUseCase {
   }
 
   async hideConsole(): Promise<any> {
-    let tab = await this.tabPresenter.getCurrent();
+    const tab = await this.tabPresenter.getCurrent();
     return this.consoleClient.hide(tab.id as number);
   }
 }

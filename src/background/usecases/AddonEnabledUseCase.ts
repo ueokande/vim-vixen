@@ -27,7 +27,7 @@ export default class AddonEnabledUseCase {
   }
 
   async onTabSelected(tabId: number): Promise<void> {
-    let enabled = await this.contentMessageClient.getAddonEnabled(tabId);
+    const enabled = await this.contentMessageClient.getAddonEnabled(tabId);
     return this.indicatorPresentor.indicate(enabled);
   }
 }

@@ -6,7 +6,7 @@ export default interface ClipboardRepository {
 
 export class ClipboardRepositoryImpl {
   read(): string {
-    let textarea = window.document.createElement('textarea');
+    const textarea = window.document.createElement('textarea');
     window.document.body.append(textarea);
 
     textarea.style.position = 'fixed';
@@ -14,8 +14,8 @@ export class ClipboardRepositoryImpl {
     textarea.contentEditable = 'true';
     textarea.focus();
 
-    let ok = window.document.execCommand('paste');
-    let value = textarea.textContent!!;
+    const ok = window.document.execCommand('paste');
+    const value = textarea.textContent!!;
     textarea.remove();
 
     if (!ok) {
@@ -26,7 +26,7 @@ export class ClipboardRepositoryImpl {
   }
 
   write(text: string): void {
-    let input = window.document.createElement('input');
+    const input = window.document.createElement('input');
     window.document.body.append(input);
 
     input.style.position = 'fixed';
@@ -34,7 +34,7 @@ export class ClipboardRepositoryImpl {
     input.value = text;
     input.select();
 
-    let ok = window.document.execCommand('copy');
+    const ok = window.document.execCommand('copy');
     input.remove();
 
     if (!ok) {

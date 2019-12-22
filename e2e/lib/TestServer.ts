@@ -28,12 +28,12 @@ export default class TestServer {
     return this;
   }
   
-  url(path: string = '/'): string {
+  url(path = '/'): string {
     if (!this.http) {
       throw new Error('http server not started');
     }
 
-    let addr = this.http.address() as net.AddressInfo;
+    const addr = this.http.address() as net.AddressInfo;
     return `http://${addr.address}:${addr.port}${path}`
   }
 

@@ -11,8 +11,8 @@ export default class VersionUseCase {
   }
 
   notify(): Promise<void> {
-    let manifest = browser.runtime.getManifest();
-    let url = this.releaseNoteUrl(manifest.version);
+    const manifest = browser.runtime.getManifest();
+    const url = this.releaseNoteUrl(manifest.version);
     return this.notifyPresenter.notifyUpdated(manifest.version, () => {
       this.tabPresenter.create(url);
     });

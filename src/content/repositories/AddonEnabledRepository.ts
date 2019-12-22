@@ -1,4 +1,4 @@
-let enabled: boolean = false;
+let enabled = false;
 
 export default interface AddonEnabledRepository {
   set(on: boolean): void;

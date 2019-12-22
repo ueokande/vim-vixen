@@ -32,7 +32,7 @@ class MockFindPresenter implements FindPresenter {
   }
 
   find(keyword: string, _backward: boolean): boolean {
-    let found = this.document.includes(keyword);
+    const found = this.document.includes(keyword);
     this.highlighted = found;
     return found;
   }

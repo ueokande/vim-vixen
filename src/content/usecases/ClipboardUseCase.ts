@@ -16,16 +16,16 @@ export default class ClipboardUseCase {
   }
 
   async yankCurrentURL(): Promise<string> {
-    let url = window.location.href;
+    const url = window.location.href;
     this.repository.write(url);
     await this.consoleClient.info('Yanked ' + url);
     return Promise.resolve(url);
   }
 
   async openOrSearch(newTab: boolean): Promise<void> {
-    let search = this.settingRepository.get().search;
-    let text = this.repository.read();
-    let url = urls.searchUrl(text, search);
+    const search = this.settingRepository.get().search;
+    const text = this.repository.read();
+    const url = urls.searchUrl(text, search);
 
     // TODO: Repeat pasting from clipboard instead of opening a certain url.
     // 'Repeat last' command is implemented in the background script and cannot

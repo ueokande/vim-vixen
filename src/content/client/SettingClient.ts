@@ -7,7 +7,7 @@ export default interface SettingClient {
 
 export class SettingClientImpl {
   async load(): Promise<Settings> {
-    let settings = await browser.runtime.sendMessage({
+    const settings = await browser.runtime.sendMessage({
       type: messages.SETTINGS_QUERY,
     });
     return Settings.fromJSON(settings);

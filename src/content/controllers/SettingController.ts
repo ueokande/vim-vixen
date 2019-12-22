@@ -14,9 +14,9 @@ export default class SettingController {
 
   async initSettings(): Promise<void> {
     try {
-      let current = await this.settingUseCase.reload();
-      let url = new URL(window.location.href);
-      let disabled = current.blacklist.includesEntireBlacklist(url);
+      const current = await this.settingUseCase.reload();
+      const url = new URL(window.location.href);
+      const disabled = current.blacklist.includesEntireBlacklist(url);
       if (disabled) {
         this.addonEnabledUseCase.disable();
       } else {

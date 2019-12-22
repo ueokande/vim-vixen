@@ -4,12 +4,12 @@ import { expect } from 'chai';
 describe('Keymaps', () => {
   describe('#valueOf', () => {
     it('returns empty object by empty settings', () => {
-      let keymaps = Keymaps.fromJSON({}).toJSON();
+      const keymaps = Keymaps.fromJSON({}).toJSON();
       expect(keymaps).to.be.empty;
     });
 
     it('returns keymaps by valid settings', () => {
-      let keymaps = Keymaps.fromJSON({
+      const keymaps = Keymaps.fromJSON({
         k: { type: "scroll.vertically", count: -1 },
         j: { type: "scroll.vertically", count: 1 },
       }).toJSON();
@@ -27,7 +27,7 @@ describe('Keymaps', () => {
 
   describe('#combine', () => {
     it('returns combined keymaps', () => {
-      let keymaps = Keymaps.fromJSON({
+      const keymaps = Keymaps.fromJSON({
         k: { type: "scroll.vertically", count: -1 },
         j: { type: "scroll.vertically", count: 1 },
       }).combine(Keymaps.fromJSON({
@@ -35,7 +35,7 @@ describe('Keymaps', () => {
         N: { type: "find.prev" },
       }));
 
-      let entries = keymaps.entries().sort(([name1], [name2]) => name1.localeCompare(name2));
+      const entries = keymaps.entries().sort(([name1], [name2]) => name1.localeCompare(name2));
       expect(entries).deep.equals([
         ['j', { type: "scroll.vertically", count: 1 }],
         ['k', { type: "scroll.vertically", count: -1 }],
@@ -45,7 +45,7 @@ describe('Keymaps', () => {
     });
 
     it('overrides current keymaps', () => {
-      let keymaps = Keymaps.fromJSON({
+      const keymaps = Keymaps.fromJSON({
         k: { type: "scroll.vertically", count: -1 },
         j: { type: "scroll.vertically", count: 1 },
       }).combine(Keymaps.fromJSON({
@@ -53,7 +53,7 @@ describe('Keymaps', () => {
         j: { type: "find.prev" },
       }));
 
-      let entries = keymaps.entries().sort(([name1], [name2]) => name1.localeCompare(name2));
+      const entries = keymaps.entries().sort(([name1], [name2]) => name1.localeCompare(name2));
       expect(entries).deep.equals([
         ['j', { type: "find.prev" }],
         ['k', { type: "scroll.vertically", count: -1 }],

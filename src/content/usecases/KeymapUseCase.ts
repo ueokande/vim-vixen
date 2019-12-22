@@ -37,17 +37,17 @@ export default class KeymapUseCase {
 
   // eslint-disable-next-line max-statements
   nextOps(key: Key): { repeat: number, op: operations.Operation } | null {
-    let sequence = this.repository.enqueueKey(key);
-    let baseSequence = sequence.trimNumericPrefix();
+    const sequence = this.repository.enqueueKey(key);
+    const baseSequence = sequence.trimNumericPrefix();
     if (baseSequence.length() === 1 && this.blacklistKey(key)) {
       // ignore if the input starts with black list keys
       this.repository.clear();
       return null;
     }
 
-    let keymaps = this.keymapEntityMap();
-    let matched = keymaps.filter(([seq]) => seq.startsWith(sequence));
-    let baseMatched = keymaps.filter(([seq]) => seq.startsWith(baseSequence));
+    const keymaps = this.keymapEntityMap();
+    const matched = keymaps.filter(([seq]) => seq.startsWith(sequence));
+    const baseMatched = keymaps.filter(([seq]) => seq.startsWith(baseSequence));
 
     if (matched.length === 1 &&
         sequence.length() === matched[0][0].length()) {
@@ -71,7 +71,7 @@ export default class KeymapUseCase {
   }
 
   private keymapEntityMap(): [KeySequence, operations.Operation][] {
-    let keymaps = this.settingRepository.get().keymaps.combine(reservedKeymaps);
+    const keymaps = this.settingRepository.get().keymaps.combine(reservedKeymaps);
     let entries = keymaps.entries().map(
       ([keys, op]) => [KeySequence.fromMapKeys(keys), op]
     ) as [KeySequence, operations.Operation][];
@@ -86,8 +86,8 @@ export default class KeymapUseCase {
   }
 
   private blacklistKey(key: Key): boolean {
-    let url = this.addressRepository.getCurrentURL();
-    let blacklist = this.settingRepository.get().blacklist;
+    const url = this.addressRepository.getCurrentURL();
+    const blacklist = this.settingRepository.get().blacklist;
     return blacklist.includeKey(url, key);
   }
 }

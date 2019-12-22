@@ -8,7 +8,7 @@ import { WebDriver, Key } from 'selenium-webdriver';
 import Page from './lib/Page';
 
 const newApp = () => {
-  let server = new TestServer();
+  const server = new TestServer();
 
   server.receiveContent('/', `
     <!DOCTYPE html>
@@ -105,7 +105,7 @@ const newApp = () => {
 };
 
 describe('follow test', () => {
-  let server = newApp();
+  const server = newApp();
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
@@ -128,52 +128,52 @@ describe('follow test', () => {
   });
 
   afterEach(async() => {
-    let tabs = await browser.tabs.query({});
-    for (let tab of tabs.slice(1)) {
+    const tabs = await browser.tabs.query({});
+    for (const tab of tabs.slice(1)) {
       await browser.tabs.remove(tab.id);
     }
   });
 
   it('should focus an input by f', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/follow-input'));
+    const page = await Page.navigateTo(webdriver, server.url('/follow-input'));
     await page.sendKeys('f');
     await page.waitAndGetHints();
     await page.sendKeys('a');
 
-    let tagName = await webdriver.executeScript(() => document.activeElement!!.tagName) as string;
+    const tagName = await webdriver.executeScript(() => document.activeElement!!.tagName) as string;
     assert.strictEqual(tagName.toLowerCase(), 'input');
   });
 
   it('should open a link by f', async () => {
-    let page = await Page.navigateTo(webdriver, server.url());
+    const page = await Page.navigateTo(webdriver, server.url());
     await page.sendKeys('f');
     await page.waitAndGetHints();
     await page.sendKeys('a');
 
     await eventually(async() => {
-      let hash = await webdriver.executeScript('return location.pathname');
+      const hash = await webdriver.executeScript('return location.pathname');
       assert.strictEqual(hash, '/hello');
     });
   });
 
   it('should focus an input by F', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/follow-input'));
+    const page = await Page.navigateTo(webdriver, server.url('/follow-input'));
     await page.sendKeys(Key.SHIFT, 'f');
     await page.waitAndGetHints();
     await page.sendKeys('a');
 
-    let tagName = await webdriver.executeScript(() => document.activeElement!!.tagName) as string;
+    const tagName = await webdriver.executeScript(() => document.activeElement!!.tagName) as string;
     assert.strictEqual(tagName.toLowerCase(), 'input');
   });
 
   it('should open a link to new tab by F', async () => {
-    let page = await Page.navigateTo(webdriver, server.url());
+    const page = await Page.navigateTo(webdriver, server.url());
     await page.sendKeys(Key.SHIFT, 'f');
     await page.waitAndGetHints();
     await page.sendKeys('a');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({});
+      const tabs = await browser.tabs.query({});
       assert.strictEqual(tabs.length, 2);
       assert.strictEqual(new URL(tabs[1].url).pathname, '/hello');
       assert.strictEqual(tabs[1].openerTabId, tabs[0].id);
@@ -181,36 +181,36 @@ describe('follow test', () => {
   });
 
   it('should show hints of links in area', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/area'));
+    const page = await Page.navigateTo(webdriver, server.url('/area'));
     await page.sendKeys(Key.SHIFT, 'f');
 
-    let hints = await page.waitAndGetHints();
+    const hints = await page.waitAndGetHints();
     assert.strictEqual(hints.length, 3);
   });
 
   it('should shows hints only in viewport', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/test1'));
+    const page = await Page.navigateTo(webdriver, server.url('/test1'));
     await page.sendKeys(Key.SHIFT, 'f');
 
-    let hints = await page.waitAndGetHints();
+    const hints = await page.waitAndGetHints();
     assert.strictEqual(hints.length, 1);
   });
 
   it('should shows hints only in window of the frame', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/test2'));
+    const page = await Page.navigateTo(webdriver, server.url('/test2'));
     await page.sendKeys(Key.SHIFT, 'f');
 
     await webdriver.switchTo().frame(0);
-    let hints = await page.waitAndGetHints();
+    const hints = await page.waitAndGetHints();
     assert.strictEqual(hints.length, 1);
   });
 
   it('should shows hints only in the frame', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/test3'));
+    const page = await Page.navigateTo(webdriver, server.url('/test3'));
     await page.sendKeys(Key.SHIFT, 'f');
 
     await webdriver.switchTo().frame(0);
-    let hints = await page.waitAndGetHints();
+    const hints = await page.waitAndGetHints();
     assert.strictEqual(hints.length, 1);
   });
 });

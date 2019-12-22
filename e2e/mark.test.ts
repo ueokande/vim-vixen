@@ -8,7 +8,7 @@ import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
 
 describe("mark test", () => {
-  let server = new TestServer().receiveContent('/',
+  const server = new TestServer().receiveContent('/',
     `<!DOCTYPE html><html lang="en"><body style="width:10000px; height:10000px"></body></html>`,
   );
   let lanthan: Lanthan;
@@ -34,7 +34,7 @@ describe("mark test", () => {
   });
 
   it('should set a local mark and jump to it', async () => {
-    let page = await Page.navigateTo(webdriver, server.url());
+    const page = await Page.navigateTo(webdriver, server.url());
     await page.scrollTo(200, 200);
     await page.sendKeys('m', 'a');
     await page.scrollTo(500, 500);
@@ -63,8 +63,8 @@ describe("mark test", () => {
     await page.sendKeys('\'', 'A');
 
     await eventually(async() => {
-      let tab = (await browser.tabs.query({ active: true }))[0];
-      let url = new URL(tab.url);
+      const tab = (await browser.tabs.query({ active: true }))[0];
+      const url = new URL(tab.url);
       assert.strictEqual(url.hash, '#first');
 
       assert.strictEqual(await page.getScrollX(), 200);
@@ -77,7 +77,7 @@ describe("mark test", () => {
     await page.scrollTo(500, 500);
     await page.sendKeys('m', 'A');
 
-    let tab = (await browser.tabs.query({ active: true }))[0];
+    const tab = (await browser.tabs.query({ active: true }))[0];
     await browser.tabs.create({ url: server.url('/#second') });
     await browser.tabs.remove(tab.id);
 
@@ -92,8 +92,8 @@ describe("mark test", () => {
     await page.sendKeys('\'', 'A');
 
     await eventually(async() => {
-      let tab = (await browser.tabs.query({ active: true }))[0];
-      let url = new URL(tab.url);
+      const tab = (await browser.tabs.query({ active: true }))[0];
+      const url = new URL(tab.url);
       assert.strictEqual(url.hash, '#first');
     });
   });

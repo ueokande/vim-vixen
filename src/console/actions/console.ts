@@ -69,7 +69,7 @@ const setConsoleText = (consoleText: string): actions.ConsoleAction => {
 };
 
 const getCompletions = async(text: string): Promise<actions.ConsoleAction> => {
-  let completions = await browser.runtime.sendMessage({
+  const completions = await browser.runtime.sendMessage({
     type: messages.CONSOLE_QUERY_COMPLETIONS,
     text,
   });

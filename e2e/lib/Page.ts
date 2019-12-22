@@ -22,7 +22,7 @@ export default class Page {
   }
 
   async sendKeys(...keys: Array<string|number|Promise<string|number>>): Promise<void> {
-    let body = await this.webdriver.findElement(By.css('body'));
+    const body = await this.webdriver.findElement(By.css('body'));
     await body.sendKeys(...keys);
   }
 
@@ -33,7 +33,7 @@ export default class Page {
   }
 
   async showConsole(): Promise<Console> {
-    let iframe = this.webdriver.findElement(By.css('#vimvixen-console-frame'));
+    const iframe = this.webdriver.findElement(By.css('#vimvixen-console-frame'));
 
     await this.sendKeys(':');
     await this.webdriver.wait(until.elementIsVisible(iframe));
@@ -43,7 +43,7 @@ export default class Page {
   }
 
   async getConsole(): Promise<Console> {
-    let iframe = this.webdriver.findElement(By.css('#vimvixen-console-frame'));
+    const iframe = this.webdriver.findElement(By.css('#vimvixen-console-frame'));
 
     await this.webdriver.wait(until.elementIsVisible(iframe));
     await this.webdriver.switchTo().frame(0);
@@ -69,11 +69,11 @@ export default class Page {
   async waitAndGetHints(): Promise<Hint[]> {
     await this.webdriver.wait(until.elementsLocated(By.css('.vimvixen-hint')));
 
-    let elements = await this.webdriver.findElements(By.css(`.vimvixen-hint`));
-    let hints = [];
-    for (let e of elements) {
-      let display = await e.getCssValue('display');
-      let text = await e.getText();
+    const elements = await this.webdriver.findElements(By.css(`.vimvixen-hint`));
+    const hints = [];
+    for (const e of elements) {
+      const display = await e.getCssValue('display');
+      const text = await e.getText();
       hints.push({
         displayed: display !== 'none',
         text: text,
@@ -83,7 +83,7 @@ export default class Page {
   }
 
   private static async waitForConsoleLoaded(webdriver: WebDriver) {
-    let topFrame = await webdriver.executeScript(() => window.top === window);
+    const topFrame = await webdriver.executeScript(() => window.top === window);
     if (!topFrame) {
       return;
     }

@@ -4,7 +4,7 @@ import { expect } from 'chai';
 describe('Settings', () => {
   describe('#valueOf', () => {
     it('returns settings by valid settings', () => {
-      let x = Settings.fromJSON({
+      const x = Settings.fromJSON({
         keymaps: {},
         "search": {
           "default": "google",
@@ -39,7 +39,7 @@ describe('Settings', () => {
     });
 
     it('sets default settings', () => {
-      let value = Settings.fromJSON({});
+      const value = Settings.fromJSON({});
       expect(value.keymaps.toJSON()).to.not.be.empty;
       expect(value.properties.toJSON()).to.not.be.empty;
       expect(value.search.defaultEngine).to.be.a('string');

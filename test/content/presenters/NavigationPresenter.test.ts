@@ -1,9 +1,8 @@
-import NavigationPresenter, { NavigationPresenterImpl }
-  from '../../../src/content/presenters/NavigationPresenter';
+import { NavigationPresenterImpl } from '../../../src/content/presenters/NavigationPresenter';
 import { expect } from 'chai';
 
-describe('NavigationPresenter', () => {
-  let sut;
+describe('NavigationPresenterImpl', () => {
+  let sut: NavigationPresenterImpl;
 
   const testRel = (done, rel, html) => {
     const method = rel === 'prev' ? sut.openLinkPrev.bind(sut) : sut.openLinkNext.bind(sut);

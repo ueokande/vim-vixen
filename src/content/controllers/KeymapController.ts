@@ -32,7 +32,7 @@ export default class KeymapController {
 
   // eslint-disable-next-line complexity, max-lines-per-function
   press(key: Key): boolean {
-    let nextOp = this.keymapUseCase.nextOps(key);
+    const nextOp = this.keymapUseCase.nextOps(key);
     if (nextOp === null) {
       return false;
     }

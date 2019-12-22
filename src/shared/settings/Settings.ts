@@ -40,9 +40,9 @@ export default class Settings {
   }
 
   static fromJSON(json: unknown): Settings {
-    let valid = validate(json);
+    const valid = validate(json);
     if (!valid) {
-      let message = (validate as any).errors!!
+      const message = (validate as any).errors!!
         .map((err: Ajv.ErrorObject) => {
           return `'${err.dataPath}' ${err.message}`;
         })
@@ -50,8 +50,8 @@ export default class Settings {
       throw new TypeError(message);
     }
 
-    let obj = json as SettingsJSON;
-    let settings = { ...DefaultSetting };
+    const obj = json as SettingsJSON;
+    const settings = { ...DefaultSetting };
     if (obj.keymaps) {
       settings.keymaps = Keymaps.fromJSON(obj.keymaps);
     }

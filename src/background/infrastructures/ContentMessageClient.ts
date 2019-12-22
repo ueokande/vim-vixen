@@ -4,8 +4,8 @@ import * as messages from '../../shared/messages';
 @injectable()
 export default class ContentMessageClient {
   async broadcastSettingsChanged(): Promise<void> {
-    let tabs = await browser.tabs.query({});
-    for (let tab of tabs) {
+    const tabs = await browser.tabs.query({});
+    for (const tab of tabs) {
       if (!tab.id || tab.url && tab.url.startsWith('about:')) {
         continue;
       }
@@ -16,7 +16,7 @@ export default class ContentMessageClient {
   }
 
   async getAddonEnabled(tabId: number): Promise<boolean> {
-    let enabled = await browser.tabs.sendMessage(tabId, {
+    const enabled = await browser.tabs.sendMessage(tabId, {
       type: messages.ADDON_ENABLED_QUERY,
     });
     return enabled as any as boolean;

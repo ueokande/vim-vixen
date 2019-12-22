@@ -11,7 +11,7 @@ import SettingRepository from "./lib/SettingRepository";
 import Settings from "../src/shared/settings/Settings";
 
 describe("clipboard test", () => {
-  let server = new TestServer(12321).receiveContent('/happy', 'ok');
+  const server = new TestServer(12321).receiveContent('/happy', 'ok');
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
@@ -44,18 +44,18 @@ describe("clipboard test", () => {
   });
 
   beforeEach(async() => {
-    let tabs = await browser.tabs.query({});
-    for (let tab of tabs.slice(1)) {
+    const tabs = await browser.tabs.query({});
+    for (const tab of tabs.slice(1)) {
       await browser.tabs.remove(tab.id);
     }
   });
 
   it('should copy current URL by y', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/#should_copy_url'));
+    const page = await Page.navigateTo(webdriver, server.url('/#should_copy_url'));
     await page.sendKeys('y');
 
     await eventually(async() => {
-      let data = await clipboard.read();
+      const data = await clipboard.read();
       assert.strictEqual(data, server.url('/#should_copy_url'));
     });
   });
@@ -63,11 +63,11 @@ describe("clipboard test", () => {
   it('should open an URL from clipboard by p', async () => {
     await clipboard.write(server.url('/#open_from_clipboard'));
 
-    let page = await Page.navigateTo(webdriver, server.url());
+    const page = await Page.navigateTo(webdriver, server.url());
     await page.sendKeys('p');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({ active: true });
+      const tabs = await browser.tabs.query({ active: true });
       assert.strictEqual(tabs[0].url, server.url('/#open_from_clipboard'));
     });
   });
@@ -75,11 +75,11 @@ describe("clipboard test", () => {
   it('should open an URL from clipboard to new tab by P', async () => {
     await clipboard.write(server.url('/#open_to_new_tab'));
 
-    let page = await Page.navigateTo(webdriver, server.url());
+    const page = await Page.navigateTo(webdriver, server.url());
     await page.sendKeys(Key.SHIFT, 'p');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({});
+      const tabs = await browser.tabs.query({});
       assert.deepStrictEqual(tabs.map((t: any) => t.url), [
         server.url(),
         server.url('/#open_to_new_tab'),
@@ -90,11 +90,11 @@ describe("clipboard test", () => {
   it('should open search result with keywords in clipboard by p', async () => {
     await clipboard.write(`an apple`);
 
-    let page = await Page.navigateTo(webdriver, server.url());
+    const page = await Page.navigateTo(webdriver, server.url());
     await page.sendKeys(Key.SHIFT, 'p');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({ active: true });
+      const tabs = await browser.tabs.query({ active: true });
       assert.strictEqual(tabs[0].url, server.url('/google?q=an%20apple'));
     });
   });
@@ -102,11 +102,11 @@ describe("clipboard test", () => {
   it('should open search result with keywords in clipboard to new tabby P', async () => {
     await clipboard.write(`an apple`);
 
-    let page = await Page.navigateTo(webdriver, server.url());
+    const page = await Page.navigateTo(webdriver, server.url());
     await page.sendKeys(Key.SHIFT, 'p');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({});
+      const tabs = await browser.tabs.query({});
       assert.deepStrictEqual(tabs.map((t: any) => t.url), [
         server.url(),
         server.url('/google?q=an%20apple'),

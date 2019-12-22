@@ -43,9 +43,9 @@ class BlacklistForm extends React.Component<Props> {
   }
 
   bindValue(e: any) {
-    let name = e.target.name;
-    let index = e.target.getAttribute('data-index');
-    let items = this.props.value.items;
+    const name = e.target.name;
+    const index = e.target.getAttribute('data-index');
+    const items = this.props.value.items;
 
     if (name === 'url') {
       items[index] = new BlacklistItem(e.target.value, false, []);

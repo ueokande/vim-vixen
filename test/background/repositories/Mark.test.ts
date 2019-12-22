@@ -1,15 +1,14 @@
 import MarkRepository from 'background/repositories/MarkRepository';
-import GlobalMark from 'background/domains/GlobalMark';
 
 describe('background/repositories/mark', () => {
-  let repository;
+  let repository: MarkRepository;
 
   beforeEach(() => {
-    repository = new MarkRepository;
+    repository = new MarkRepository();
   });
 
   it('get and set', async() => {
-    let mark = { tabId: 1, url: 'http://example.com', x: 10, y: 30 };
+    const mark = { tabId: 1, url: 'http://example.com', x: 10, y: 30 };
 
     repository.setMark('A', mark);
 

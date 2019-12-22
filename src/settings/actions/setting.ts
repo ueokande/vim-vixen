@@ -5,7 +5,7 @@ import SettingData, {
 } from '../../shared/SettingData';
 
 const load = async(): Promise<actions.SettingAction> => {
-  let data = await storages.load();
+  const data = await storages.load();
   return set(data);
 };
 
@@ -29,7 +29,7 @@ const save = async(data: SettingData): Promise<actions.SettingAction> => {
 const switchToForm = (json: JSONTextSettings): actions.SettingAction => {
   try {
     // toSettings exercise validation
-    let form = FormSettings.fromSettings(json.toSettings());
+    const form = FormSettings.fromSettings(json.toSettings());
     return {
       type: actions.SETTING_SWITCH_TO_FORM,
       form,
@@ -44,7 +44,7 @@ const switchToForm = (json: JSONTextSettings): actions.SettingAction => {
 };
 
 const switchToJson = (form: FormSettings): actions.SettingAction => {
-  let json = JSONTextSettings.fromSettings(form.toSettings());
+  const json = JSONTextSettings.fromSettings(form.toSettings());
   return {
     type: actions.SETTING_SWITCH_TO_JSON,
     json,
@@ -52,7 +52,7 @@ const switchToJson = (form: FormSettings): actions.SettingAction => {
 };
 
 const set = (data: SettingData): actions.SettingAction => {
-  let source = data.getSource();
+  const source = data.getSource();
   switch (source) {
   case SettingSource.JSON:
     return {

@@ -12,7 +12,7 @@ export default class SettingUseCase {
   }
 
   async reload(): Promise<Settings> {
-    let settings = await this.client.load();
+    const settings = await this.client.load();
     this.repository.set(settings);
     return settings;
   }

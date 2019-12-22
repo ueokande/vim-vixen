@@ -15,8 +15,8 @@ export default class Keymaps {
   }
 
   static fromJSON(json: KeymapsJSON): Keymaps {
-    let entries: { [key: string]: operations.Operation } = {};
-    for (let key of Object.keys(json)) {
+    const entries: { [key: string]: operations.Operation } = {};
+    for (const key of Object.keys(json)) {
       entries[key] = operations.valueOf(json[key]);
     }
     return new Keymaps(entries);

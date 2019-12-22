@@ -9,12 +9,12 @@ describe('shared/SettingData', () => {
   describe('FormKeymaps', () => {
     describe('#valueOF to #toKeymaps', () => {
       it('parses form keymaps and convert to operations', () => {
-        let data = {
+        const data = {
           'scroll.vertically?{"count":1}': 'j',
           'scroll.home': '0',
         };
 
-        let keymaps = FormKeymaps.fromJSON(data).toKeymaps().toJSON();
+        const keymaps = FormKeymaps.fromJSON(data).toKeymaps().toJSON();
         expect(keymaps).to.deep.equal({
           'j': { type: 'scroll.vertically', count: 1 },
           '0': { type: 'scroll.home' },
@@ -24,12 +24,12 @@ describe('shared/SettingData', () => {
 
     describe('#fromKeymaps to #toJSON', () => {
       it('create from a Keymaps and create a JSON object', () => {
-        let keymaps: Keymaps = Keymaps.fromJSON({
+        const keymaps: Keymaps = Keymaps.fromJSON({
           'j': { type: 'scroll.vertically', count: 1 },
           '0': { type: 'scroll.home' },
         });
 
-        let form = FormKeymaps.fromKeymaps(keymaps).toJSON();
+        const form = FormKeymaps.fromKeymaps(keymaps).toJSON();
         expect(form).to.deep.equal({
           'scroll.vertically?{"count":1}': 'j',
           'scroll.home': '0',
@@ -41,7 +41,7 @@ describe('shared/SettingData', () => {
   describe('JSONSettings', () => {
     describe('#valueOf to #toSettings', () => {
       it('parse object and create a Settings', () => {
-        let o = `{
+        const o = `{
           "keymaps": {},
           "search": {
             "default": "google",
@@ -57,14 +57,14 @@ describe('shared/SettingData', () => {
           "blacklist": []
         }`;
 
-        let settings = JSONTextSettings.fromText(o).toSettings();
+        const settings = JSONTextSettings.fromText(o).toSettings();
         expect(settings.toJSON()).to.deep.equal(JSON.parse(o));
       });
     });
 
     describe('#fromSettings to #toJSON', () => {
       it('create from a Settings and create a JSON string', () => {
-        let o = Settings.fromJSON({
+        const o = Settings.fromJSON({
           keymaps: {},
           search: {
             default: "google",
@@ -80,7 +80,7 @@ describe('shared/SettingData', () => {
           blacklist: [],
         });
 
-        let json = JSONTextSettings.fromSettings(o).toJSONText();
+        const json = JSONTextSettings.fromSettings(o).toJSONText();
         expect(JSON.parse(json)).to.deep.equal(o.toJSON());
       });
     });
@@ -89,7 +89,7 @@ describe('shared/SettingData', () => {
   describe('FormSettings', () => {
     describe('#valueOf to #toSettings', () => {
       it('parse object and create a Settings', () => {
-        let data = {
+        const data = {
           keymaps: {
             'scroll.vertically?{"count":1}': 'j',
             'scroll.home': '0',
@@ -108,7 +108,7 @@ describe('shared/SettingData', () => {
           blacklist: []
         };
 
-        let settings = FormSettings.fromJSON(data).toSettings();
+        const settings = FormSettings.fromJSON(data).toSettings();
         expect(settings.toJSON()).to.deep.equal({
           keymaps: {
             'j': { type: 'scroll.vertically', count: 1 },
@@ -132,7 +132,7 @@ describe('shared/SettingData', () => {
 
     describe('#fromSettings to #toJSON', () => {
       it('create from a Settings and create a JSON string', () => {
-        let data: Settings = Settings.fromJSON({
+        const data: Settings = Settings.fromJSON({
           keymaps: {
             'j': { type: 'scroll.vertically', count: 1 },
             '0': { type: 'scroll.home' },
@@ -151,7 +151,7 @@ describe('shared/SettingData', () => {
           blacklist: [],
         });
 
-        let json = FormSettings.fromSettings(data).toJSON();
+        const json = FormSettings.fromSettings(data).toJSON();
         expect(json).to.deep.equal({
           keymaps: {
             'scroll.vertically?{"count":1}': 'j',
@@ -177,7 +177,7 @@ describe('shared/SettingData', () => {
   describe('SettingData', () => {
     describe('#valueOf to #toJSON', () => {
       it('parse object from json source', () => {
-        let data = {
+        const data = {
           source: 'json',
           json: `{
             "keymaps": {},
@@ -196,13 +196,13 @@ describe('shared/SettingData', () => {
           }`,
         };
 
-        let j = SettingData.fromJSON(data).toJSON();
+        const j = SettingData.fromJSON(data).toJSON();
         expect(j.source).to.equal('json');
         expect(j.json).to.be.a('string');
       });
 
       it('parse object from form source', () => {
-        let data = {
+        const data = {
           source: 'form',
           form: {
             keymaps: {},
@@ -221,7 +221,7 @@ describe('shared/SettingData', () => {
           },
         };
 
-        let j = SettingData.fromJSON(data).toJSON();
+        const j = SettingData.fromJSON(data).toJSON();
         expect(j.source).to.equal('form');
         expect(j.form).to.deep.equal({
           keymaps: {},
@@ -243,7 +243,7 @@ describe('shared/SettingData', () => {
 
     describe('#toSettings', () => {
       it('parse object from json source', () => {
-        let data = {
+        const data = {
           source: 'json',
           json: `{
             "keymaps": {},
@@ -262,12 +262,12 @@ describe('shared/SettingData', () => {
           }`,
         };
 
-        let settings = SettingData.fromJSON(data).toSettings();
+        const settings = SettingData.fromJSON(data).toSettings();
         expect(settings.search.defaultEngine).to.equal('google');
       });
 
       it('parse object from form source', () => {
-        let data = {
+        const data = {
           source: 'form',
           form: {
             keymaps: {},
@@ -286,7 +286,7 @@ describe('shared/SettingData', () => {
           },
         };
 
-        let settings = SettingData.fromJSON(data).toSettings();
+        const settings = SettingData.fromJSON(data).toSettings();
         expect(settings.search.defaultEngine).to.equal('yahoo');
       });
     });

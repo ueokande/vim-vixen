@@ -25,7 +25,7 @@ describe('FollowMasterRepositoryImpl', () => {
 
   describe('#getTagsByPrefix', () => {
     it('gets tags matched by prefix', () => {
-      for (let tag of ['a', 'aa', 'ab', 'b', 'ba', 'bb']) {
+      for (const tag of ['a', 'aa', 'ab', 'b', 'ba', 'bb']) {
         sut.addTag(tag);
       }
       expect(sut.getTagsByPrefix('a')).to.deep.equal(['a', 'aa', 'ab']);

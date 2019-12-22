@@ -34,7 +34,7 @@ export default class FollowSlaveUseCase {
   }
 
   countTargets(viewSize: Size, framePosition: Point): void {
-    let count = this.presenter.getTargetCount(viewSize, framePosition);
+    const count = this.presenter.getTargetCount(viewSize, framePosition);
     this.followMasterClient.responseHintCount(count);
   }
 
@@ -56,13 +56,13 @@ export default class FollowSlaveUseCase {
   }
 
   async activate(tag: string, newTab: boolean, background: boolean) {
-    let hint = this.presenter.getHint(tag);
+    const hint = this.presenter.getHint(tag);
     if (!hint) {
       return;
     }
 
     if (hint instanceof LinkHint) {
-      let url = hint.getLink();
+      const url = hint.getLink();
       let openNewTab = newTab;
       // Open link by background script in order to prevent a popup block
       if (hint.getLinkTarget() === '_blank') {

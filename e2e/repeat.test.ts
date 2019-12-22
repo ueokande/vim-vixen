@@ -8,7 +8,7 @@ import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
 
 describe("tab test", () => {
-  let server = new TestServer().receiveContent('/*', 'ok');
+  const server = new TestServer().receiveContent('/*', 'ok');
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
@@ -32,11 +32,11 @@ describe("tab test", () => {
 
   it('repeats last command', async () => {
     let page = await Page.navigateTo(webdriver, server.url());
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.execCommand(`tabopen ${server.url('/newtab')}`);
 
     await eventually(async() => {
-      let current = await browser.tabs.query({ url: `*://*/newtab` });
+      const current = await browser.tabs.query({ url: `*://*/newtab` });
       assert.strictEqual(current.length, 1);
     });
 
@@ -44,7 +44,7 @@ describe("tab test", () => {
     await page.sendKeys('.');
 
     await eventually(async() => {
-      let current = await browser.tabs.query({ url: `*://*/newtab` });
+      const current = await browser.tabs.query({ url: `*://*/newtab` });
       assert.strictEqual(current.length, 2);
     });
   });
@@ -53,13 +53,13 @@ describe("tab test", () => {
     for (let i = 1; i < 5; ++i) {
       await browser.tabs.create({ url: server.url('/#' + i) });
     }
-    let before = await browser.tabs.query({});
+    const before = await browser.tabs.query({});
 
     let page = await Page.currentContext(webdriver);
     await page.sendKeys('d');
 
     await eventually(async() => {
-      let current = await browser.tabs.query({});
+      const current = await browser.tabs.query({});
       assert.strictEqual(current.length,  before.length - 1);
     });
 
@@ -68,7 +68,7 @@ describe("tab test", () => {
     await page.sendKeys('.');
 
     await eventually(async() => {
-      let current = await browser.tabs.query({});
+      const current = await browser.tabs.query({});
       assert.strictEqual(current.length, before.length - 2);
     });
   });

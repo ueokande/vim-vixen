@@ -14,27 +14,27 @@ export default class ZoomUseCase {
   }
 
   async zoomIn(): Promise<any> {
-    let tab = await this.tabPresenter.getCurrent();
-    let tabId = tab.id as number;
-    let current = await this.tabPresenter.getZoom(tabId);
-    let factor = ZOOM_SETTINGS.find(f => f > current);
+    const tab = await this.tabPresenter.getCurrent();
+    const tabId = tab.id as number;
+    const current = await this.tabPresenter.getZoom(tabId);
+    const factor = ZOOM_SETTINGS.find(f => f > current);
     if (factor) {
       return this.tabPresenter.setZoom(tabId as number, factor);
     }
   }
 
   async zoomOut(): Promise<any> {
-    let tab = await this.tabPresenter.getCurrent();
-    let tabId = tab.id as number;
-    let current = await this.tabPresenter.getZoom(tabId);
-    let factor = ZOOM_SETTINGS.slice(0).reverse().find(f => f < current);
+    const tab = await this.tabPresenter.getCurrent();
+    const tabId = tab.id as number;
+    const current = await this.tabPresenter.getZoom(tabId);
+    const factor = ZOOM_SETTINGS.slice(0).reverse().find(f => f < current);
     if (factor) {
       return this.tabPresenter.setZoom(tabId as number, factor);
     }
   }
 
   async zoomNutoral(): Promise<any> {
-    let tab = await this.tabPresenter.getCurrent();
+    const tab = await this.tabPresenter.getCurrent();
     return this.tabPresenter.setZoom(tab.id as number, 1);
   }
 }

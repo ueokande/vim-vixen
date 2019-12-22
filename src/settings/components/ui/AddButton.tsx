@@ -1,8 +1,7 @@
 import './AddButton.scss';
 import React from 'react';
 
-interface Props extends React.AllHTMLAttributes<HTMLInputElement> {
-}
+type Props = React.AllHTMLAttributes<HTMLInputElement>;
 
 class AddButton extends React.Component<Props> {
   render() {

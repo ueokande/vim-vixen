@@ -17,7 +17,7 @@ export default class MarkUseCase {
   }
 
   async set(key: string): Promise<void> {
-    let pos = this.scrollPresenter.getScroll();
+    const pos = this.scrollPresenter.getScroll();
     if (this.globalKey(key)) {
       this.client.setGloablMark(key, pos);
       await this.consoleClient.info(`Set global mark to '${key}'`);
@@ -31,7 +31,7 @@ export default class MarkUseCase {
     if (this.globalKey(key)) {
       await this.client.jumpGlobalMark(key);
     } else {
-      let pos = this.repository.get(key);
+      const pos = this.repository.get(key);
       if (!pos) {
         throw new Error('Mark is not set');
       }
@@ -40,7 +40,7 @@ export default class MarkUseCase {
   }
 
   scroll(x: number, y: number): void {
-    let smooth = this.settingRepository.get().properties.smoothscroll;
+    const smooth = this.settingRepository.get().properties.smoothscroll;
     this.scrollPresenter.scrollTo(x, y, smooth);
   }
 

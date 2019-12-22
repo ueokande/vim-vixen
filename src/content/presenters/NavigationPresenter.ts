@@ -49,7 +49,7 @@ export class NavigationPresenterImpl implements NavigationPresenter {
 
   // Code common to linkPrev and linkNext which navigates to the specified page.
   private linkRel(rel: 'prev' | 'next'): void {
-    let link = selectLast<HTMLLinkElement>(`link[rel~=${rel}][href]`);
+    const link = selectLast<HTMLLinkElement>(`link[rel~=${rel}][href]`);
     if (link) {
       window.location.href = link.href;
       return;
@@ -57,7 +57,7 @@ export class NavigationPresenterImpl implements NavigationPresenter {
 
     const pattern = REL_PATTERN[rel];
 
-    let a = selectLast<HTMLAnchorElement>(`a[rel~=${rel}][href]`) ||
+    const a = selectLast<HTMLAnchorElement>(`a[rel~=${rel}][href]`) ||
     // `innerText` is much slower than `textContent`, but produces much better
     // (i.e. less unexpected) results
     selectLast('a[href]', lnk => pattern.test(lnk.innerText));

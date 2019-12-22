@@ -28,7 +28,7 @@ const nextSelection = (state: State): number => {
     return 0;
   }
 
-  let length = state.completions
+  const length = state.completions
     .map(g => g.items.length)
     .reduce((x, y) => x + y);
   if (state.select + 1 < length) {
@@ -38,7 +38,7 @@ const nextSelection = (state: State): number => {
 };
 
 const prevSelection = (state: State): number => {
-  let length = state.completions
+  const length = state.completions
     .map(g => g.items.length)
     .reduce((x, y) => x + y);
   if (state.select < 0) {
@@ -51,7 +51,7 @@ const nextConsoleText = (completions: any[], select: number, defaults: any) => {
   if (select < 0) {
     return defaults;
   }
-  let items = completions.map(g => g.items).reduce((g1, g2) => g1.concat(g2));
+  const items = completions.map(g => g.items).reduce((g1, g2) => g1.concat(g2));
   return items[select].content;
 };
 
@@ -96,14 +96,14 @@ export default function reducer(
       completionSource: action.completionSource,
       select: -1 };
   case actions.CONSOLE_COMPLETION_NEXT: {
-    let select = nextSelection(state);
+    const select = nextSelection(state);
     return { ...state,
       select: select,
       consoleText: nextConsoleText(
         state.completions, select, state.completionSource) };
   }
   case actions.CONSOLE_COMPLETION_PREV: {
-    let select = prevSelection(state);
+    const select = prevSelection(state);
     return { ...state,
       select: select,
       consoleText: nextConsoleText(

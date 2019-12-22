@@ -38,7 +38,7 @@ export default class KeySequence {
     if (nonDigitAt === -1) {
       nonDigitAt = this.keys.length;
     }
-    let digits = this.keys.slice(0, nonDigitAt)
+    const digits = this.keys.slice(0, nonDigitAt)
       .map(key => key.key)
       .join('');
     return Number(digits);
@@ -53,7 +53,7 @@ export default class KeySequence {
   }
 
   splitNumericPrefix(): [KeySequence, KeySequence] {
-    let nonDigitIndex = this.keys.findIndex(key => !key.isDigit());
+    const nonDigitIndex = this.keys.findIndex(key => !key.isDigit());
     if (nonDigitIndex === -1) {
       return [this, new KeySequence([])];
     }
@@ -73,7 +73,7 @@ export default class KeySequence {
 
       let nextPos = 1;
       if (remaining.startsWith('<')) {
-        let ltPos = remaining.indexOf('>');
+        const ltPos = remaining.indexOf('>');
         if (ltPos > 0) {
           nextPos = ltPos + 1;
         }
@@ -85,7 +85,7 @@ export default class KeySequence {
       );
     };
 
-    let data = fromMapKeysRecursive(keys, []);
+    const data = fromMapKeysRecursive(keys, []);
     return new KeySequence(data);
   }
 }

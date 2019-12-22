@@ -12,7 +12,7 @@ const isLocalhost = (url: string): boolean => {
     return true;
   }
 
-  let [host, port] = url.split(':', 2);
+  const [host, port] = url.split(':', 2);
   return host === 'localhost' && !isNaN(Number(port));
 };
 
@@ -22,7 +22,7 @@ const isMissingHttp = (keywords: string): boolean => {
   }
 
   try {
-    let u = new URL('http://' + keywords);
+    const u = new URL('http://' + keywords);
     return isLocalhost(u.host);
   } catch (e) {
     // fallthrough
@@ -32,7 +32,7 @@ const isMissingHttp = (keywords: string): boolean => {
 
 const searchUrl = (keywords: string, search: Search): string => {
   try {
-    let u = new URL(keywords);
+    const u = new URL(keywords);
     if (SUPPORTED_PROTOCOLS.includes(u.protocol.toLowerCase())) {
       return u.href;
     }
@@ -47,7 +47,7 @@ const searchUrl = (keywords: string, search: Search): string => {
   let template = search.engines[search.defaultEngine];
   let query = keywords;
 
-  let first = trimStart(keywords).split(' ')[0];
+  const first = trimStart(keywords).split(' ')[0];
   if (Object.keys(search.engines).includes(first)) {
     template = search.engines[first];
     query = trimStart(trimStart(keywords).slice(first.length));
@@ -57,7 +57,7 @@ const searchUrl = (keywords: string, search: Search): string => {
 
 const normalizeUrl = (url: string): string => {
   try {
-    let u = new URL(url);
+    const u = new URL(url);
     if (SUPPORTED_PROTOCOLS.includes(u.protocol.toLowerCase())) {
       return u.href;
     }

@@ -11,10 +11,10 @@ if (window.self === window.top) {
 }
 
 try {
-  let app = container.resolve(Application);
+  const app = container.resolve(Application);
   app.run();
 } catch (e) { console.error(e); }
 
-let style = window.document.createElement('style');
+const style = window.document.createElement('style');
 style.textContent = consoleFrameStyle;
 window.document.head.appendChild(style);

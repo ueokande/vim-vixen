@@ -12,8 +12,8 @@ const eventually = async (
   timeout = defaultTimeout,
   interval = defaultInterval,
 ): Promise<void> => {
-  let start = Date.now();
-  let loop = async() => {
+  const start = Date.now();
+  const loop = async() => {
     try {
       await fn();
     } catch (err) {

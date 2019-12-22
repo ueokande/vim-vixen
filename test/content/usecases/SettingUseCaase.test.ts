@@ -38,7 +38,7 @@ describe('AddonEnabledUseCase', () => {
   let sut: SettingUseCase;
 
   beforeEach(() => {
-    let testSettings = {
+    const testSettings = {
       keymaps: {},
       search: {
         default: 'google',
@@ -61,10 +61,10 @@ describe('AddonEnabledUseCase', () => {
 
   describe('#reload', () => {
     it('loads settings and store to repository', async() => {
-      let settings = await sut.reload();
+      const settings = await sut.reload();
       expect(settings.properties.hintchars).to.equal('abcd1234');
 
-      let saved = repository.get();
+      const saved = repository.get();
       expect(saved.properties.hintchars).to.equal('abcd1234');
     });
   });

@@ -1,5 +1,5 @@
 const isContentEditable = (element: Element): boolean => {
-  let value = element.getAttribute('contenteditable');
+  const value = element.getAttribute('contenteditable');
   if (value === null) {
     return false;
   }
@@ -14,12 +14,12 @@ interface Rect {
 }
 
 const rectangleCoordsRect = (coords: string): Rect => {
-  let [left, top, right, bottom] = coords.split(',').map(n => Number(n));
+  const [left, top, right, bottom] = coords.split(',').map(n => Number(n));
   return { left, top, right, bottom };
 };
 
 const circleCoordsRect = (coords: string): Rect => {
-  let [x, y, r] = coords.split(',').map(n => Number(n));
+  const [x, y, r] = coords.split(',').map(n => Number(n));
   return {
     left: x - r,
     top: y - r,
@@ -29,14 +29,14 @@ const circleCoordsRect = (coords: string): Rect => {
 };
 
 const polygonCoordsRect = (coords: string): Rect => {
-  let params = coords.split(',');
+  const params = coords.split(',');
   let minx = Number(params[0]),
     maxx = Number(params[0]),
     miny = Number(params[1]),
     maxy = Number(params[1]);
-  let len = Math.floor(params.length / 2);
+  const len = Math.floor(params.length / 2);
   for (let i = 2; i < len; i += 2) {
-    let x = Number(params[i]),
+    const x = Number(params[i]),
       y = Number(params[i + 1]);
     if (x < minx) {
       minx = x;
@@ -59,15 +59,15 @@ const viewportRect = (e: Element): Rect => {
     return e.getBoundingClientRect();
   }
 
-  let mapElement = e.parentNode as HTMLMapElement;
-  let imgElement = document.querySelector(
+  const mapElement = e.parentNode as HTMLMapElement;
+  const imgElement = document.querySelector(
     `img[usemap="#${mapElement.name}"]`
   ) as HTMLImageElement;
-  let {
+  const {
     left: mapLeft,
     top: mapTop
   } = imgElement.getBoundingClientRect();
-  let coords = e.getAttribute('coords');
+  const coords = e.getAttribute('coords');
   if (!coords) {
     return e.getBoundingClientRect();
   }
@@ -96,8 +96,8 @@ const viewportRect = (e: Element): Rect => {
 };
 
 const isVisible = (element: Element): boolean => {
-  let rect = element.getBoundingClientRect();
-  let style = window.getComputedStyle(element);
+  const rect = element.getBoundingClientRect();
+  const style = window.getComputedStyle(element);
 
   if (style.overflow !== 'visible' && (rect.width === 0 || rect.height === 0)) {
     return false;
@@ -113,7 +113,7 @@ const isVisible = (element: Element): boolean => {
     return false;
   }
 
-  let { display, visibility } = window.getComputedStyle(element);
+  const { display, visibility } = window.getComputedStyle(element);
   if (display === 'none' || visibility === 'hidden') {
     return false;
   }

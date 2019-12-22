@@ -12,11 +12,11 @@ describe('KeymapRepositoryImpl', () => {
 
   describe('#enqueueKey()', () => {
     it('enqueues keys', () => {
-      sut.enqueueKey(Key.fromMapKey('a');
-      sut.enqueueKey(Key.fromMapKey('b');
-      let sequence = sut.enqueueKey(Key.fromMapKey('c'));
+      sut.enqueueKey(Key.fromMapKey('a'));
+      sut.enqueueKey(Key.fromMapKey('b'));
+      const sequence = sut.enqueueKey(Key.fromMapKey('c'));
 
-      let keys = sequence.keys;
+      const keys = sequence.keys;
       expect(keys[0].equals(Key.fromMapKey('a'))).to.be.true;
       expect(keys[1].equals(Key.fromMapKey('b'))).to.be.true;
       expect(keys[2].equals(Key.fromMapKey('c'))).to.be.true;
@@ -30,7 +30,7 @@ describe('KeymapRepositoryImpl', () => {
       sut.enqueueKey(Key.fromMapKey('c'));
       sut.clear();
 
-      let sequence = sut.enqueueKey(Key.fromMapKey('a'));
+      const sequence = sut.enqueueKey(Key.fromMapKey('a'));
       expect(sequence.length()).to.equal(1);
     });
   });

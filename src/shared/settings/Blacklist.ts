@@ -8,7 +8,7 @@ export type BlacklistItemJSON = string | {
 export type BlacklistJSON = BlacklistItemJSON[];
 
 const regexFromWildcard = (pattern: string): RegExp => {
-  let regexStr = '^' + pattern.replace(/\*/g, '.*') + '$';
+  const regexStr = '^' + pattern.replace(/\*/g, '.*') + '$';
   return new RegExp(regexStr);
 };
 
@@ -72,7 +72,7 @@ export default class Blacklist {
   }
 
   static fromJSON(json: BlacklistJSON): Blacklist {
-    let items = json.map(o => BlacklistItem.fromJSON(o));
+    const items = json.map(o => BlacklistItem.fromJSON(o));
     return new Blacklist(items);
   }
 

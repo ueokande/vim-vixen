@@ -376,7 +376,7 @@ const assertOptionalBoolean = (obj: any, name: string) => {
 
 const assertOptionalString = (obj: any, name: string, values?: string[]) => {
   if (Object.prototype.hasOwnProperty.call(obj, name)) {
-    let value = obj[name];
+    const value = obj[name];
     if (typeof value !== 'string') {
       throw new TypeError(
         `Not a string parameter: '${name}' (${typeof value})`,

@@ -14,7 +14,7 @@ const store = createStore(
 );
 
 window.addEventListener('load', () => {
-  let wrapper = document.getElementById('vimvixen-console');
+  const wrapper = document.getElementById('vimvixen-console');
   ReactDOM.render(
     <Provider store={store} >
       <Console></Console>
@@ -23,7 +23,7 @@ window.addEventListener('load', () => {
 });
 
 const onMessage = (message: any): any => {
-  let msg = messages.valueOf(message);
+  const msg = messages.valueOf(message);
   switch (msg.type) {
   case messages.CONSOLE_SHOW_COMMAND:
     return store.dispatch(consoleActions.showCommand(msg.command));
@@ -39,5 +39,5 @@ const onMessage = (message: any): any => {
 };
 
 browser.runtime.onMessage.addListener(onMessage);
-let port = browser.runtime.connect(undefined, { name: 'vimvixen-console' });
+const port = browser.runtime.connect(undefined, { name: 'vimvixen-console' });
 port.onMessage.addListener(onMessage);

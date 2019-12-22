@@ -8,7 +8,7 @@ let scrolling = false;
 let lastTimeoutId: number | null = null;
 
 const isScrollableStyle = (element: Element): boolean => {
-  let { overflowX, overflowY } = window.getComputedStyle(element);
+  const { overflowX, overflowY } = window.getComputedStyle(element);
   return !(overflowX !== 'scroll' && overflowX !== 'auto' &&
     overflowY !== 'scroll' && overflowY !== 'auto');
 };
@@ -27,9 +27,9 @@ const findScrollable = (element: Element): Element | null => {
     return element;
   }
 
-  let children = Array.from(element.children).filter(doms.isVisible);
-  for (let child of children) {
-    let scrollable = findScrollable(child);
+  const children = Array.from(element.children).filter(doms.isVisible);
+  for (const child of children) {
+    const scrollable = findScrollable(child);
     if (scrollable) {
       return scrollable;
     }
@@ -44,7 +44,7 @@ const scrollTarget = () => {
   if (isOverflowed(window.document.body)) {
     return window.document.body;
   }
-  let target = findScrollable(window.document.documentElement);
+  const target = findScrollable(window.document.documentElement);
   if (target) {
     return target;
   }
@@ -79,8 +79,8 @@ class Scroller {
   }
 
   scrollBy(x: number, y: number): void {
-    let left = this.element.scrollLeft + x;
-    let top = this.element.scrollTop + y;
+    const left = this.element.scrollLeft + x;
+    const top = this.element.scrollTop + y;
     this.scrollTo(left, top);
   }
 
@@ -110,12 +110,12 @@ export default interface ScrollPresenter {
 
 export class ScrollPresenterImpl {
   getScroll(): Point {
-    let target = scrollTarget();
+    const target = scrollTarget();
     return { x: target.scrollLeft, y: target.scrollTop };
   }
 
   scrollVertically(count: number, smooth: boolean): void {
-    let target = scrollTarget();
+    const target = scrollTarget();
     let delta = SCROLL_DELTA_Y * count;
     if (scrolling) {
       delta = SCROLL_DELTA_Y * count * 4;
@@ -124,7 +124,7 @@ export class ScrollPresenterImpl {
   }
 
   scrollHorizonally(count: number, smooth: boolean): void {
-    let target = scrollTarget();
+    const target = scrollTarget();
     let delta = SCROLL_DELTA_X * count;
     if (scrolling) {
       delta = SCROLL_DELTA_X * count * 4;
@@ -133,8 +133,8 @@ export class ScrollPresenterImpl {
   }
 
   scrollPages(count: number, smooth: boolean): void {
-    let target = scrollTarget();
-    let height = target.clientHeight;
+    const target = scrollTarget();
+    const height = target.clientHeight;
     let delta = height * count;
     if (scrolling) {
       delta = height * count;
@@ -143,35 +143,35 @@ export class ScrollPresenterImpl {
   }
 
   scrollTo(x: number, y: number, smooth: boolean): void {
-    let target = scrollTarget();
+    const target = scrollTarget();
     new Scroller(target, smooth).scrollTo(x, y);
   }
 
   scrollToTop(smooth: boolean): void {
-    let target = scrollTarget();
-    let x = target.scrollLeft;
-    let y = 0;
+    const target = scrollTarget();
+    const x = target.scrollLeft;
+    const y = 0;
     new Scroller(target, smooth).scrollTo(x, y);
   }
 
   scrollToBottom(smooth: boolean): void {
-    let target = scrollTarget();
-    let x = target.scrollLeft;
-    let y = target.scrollHeight;
+    const target = scrollTarget();
+    const x = target.scrollLeft;
+    const y = target.scrollHeight;
     new Scroller(target, smooth).scrollTo(x, y);
   }
 
   scrollToHome(smooth: boolean): void {
-    let target = scrollTarget();
-    let x = 0;
-    let y = target.scrollTop;
+    const target = scrollTarget();
+    const x = 0;
+    const y = target.scrollTop;
     new Scroller(target, smooth).scrollTo(x, y);
   }
 
   scrollToEnd(smooth: boolean): void {
-    let target = scrollTarget();
-    let x = target.scrollWidth;
-    let y = target.scrollTop;
+    const target = scrollTarget();
+    const x = target.scrollWidth;
+    const y = target.scrollTop;
     new Scroller(target, smooth).scrollTo(x, y);
   }
 }

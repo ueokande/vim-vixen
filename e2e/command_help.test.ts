@@ -8,7 +8,7 @@ import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
 
 describe("help command test", () => {
-  let server = new TestServer();
+  const server = new TestServer();
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
@@ -37,11 +37,11 @@ describe("help command test", () => {
   });
 
   it('should open help page by help command ', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.execCommand('help');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({ active: true });
+      const tabs = await browser.tabs.query({ active: true });
       assert.strictEqual(tabs[0].url, 'https://ueokande.github.io/vim-vixen/')
     });
   });

@@ -11,43 +11,43 @@ describe('Hint', () => {
 
   describe('#constructor', () => {
     it('creates a hint element with tag name', () => {
-      let link = document.getElementById('test-link');
-      let hint = new Hint(link, 'abc');
+      const link = document.getElementById('test-link');
+      new Hint(link, 'abc');
 
-      let elem = document.querySelector('.vimvixen-hint');
+      const elem = document.querySelector('.vimvixen-hint');
       expect(elem.textContent.trim()).to.be.equal('abc');
     });
   });
 
   describe('#show', () => {
     it('shows an element', () => {
-      let link = document.getElementById('test-link');
-      let hint = new Hint(link, 'abc');
+      const link = document.getElementById('test-link');
+      const hint = new Hint(link, 'abc');
       hint.hide();
       hint.show();
 
-      let elem = document.querySelector('.vimvixen-hint') as HTMLElement;
+      const elem = document.querySelector('.vimvixen-hint') as HTMLElement;
       expect(elem.style.display).to.not.equal('none');
     });
   });
 
   describe('#hide', () => {
     it('hides an element', () => {
-      let link = document.getElementById('test-link') as HTMLElement;
-      let hint = new Hint(link, 'abc');
+      const link = document.getElementById('test-link') as HTMLElement;
+      const hint = new Hint(link, 'abc');
       hint.hide();
 
-      let elem = document.querySelector('.vimvixen-hint') as HTMLElement;
+      const elem = document.querySelector('.vimvixen-hint') as HTMLElement;
       expect(elem.style.display).to.equal('none');
     });
   });
 
   describe('#remove', () => {
     it('removes an element', () => {
-      let link = document.getElementById('test-link');
-      let hint = new Hint(link, 'abc');
+      const link = document.getElementById('test-link');
+      const hint = new Hint(link, 'abc');
 
-      let elem = document.querySelector('.vimvixen-hint');
+      const elem = document.querySelector('.vimvixen-hint');
       expect(elem.parentElement).to.not.be.null;
       hint.remove();
       expect(elem.parentElement).to.be.null;
@@ -66,8 +66,8 @@ describe('LinkHint', () => {
 
   describe('#getLink()', () => {
     it('returns value of "href" attribute', () => {
-      let link = document.getElementById('test-link1') as HTMLAnchorElement;
-      let hint = new LinkHint(link, 'abc');
+      const link = document.getElementById('test-link1') as HTMLAnchorElement;
+      const hint = new LinkHint(link, 'abc');
 
       expect(hint.getLink()).to.equal('https://google.com/');
     });
@@ -89,8 +89,8 @@ describe('LinkHint', () => {
 
   describe('#click()', () => {
     it('clicks a element', (done) => {
-      let link = document.getElementById('test-link3') as HTMLAnchorElement;
-      let hint = new LinkHint(link, 'abc');
+      const link = document.getElementById('test-link3') as HTMLAnchorElement;
+      const hint = new LinkHint(link, 'abc');
       link.onclick = () => { done() };
 
       hint.click();
@@ -106,8 +106,8 @@ describe('InputHint', () => {
       });
 
       it('focuses to the input', () => {
-        let input = document.getElementById('test-input') as HTMLInputElement;
-        let hint = new InputHint(input, 'abc');
+        const input = document.getElementById('test-input') as HTMLInputElement;
+        const hint = new InputHint(input, 'abc');
         hint.activate();
 
         expect(document.activeElement).to.equal(input);
@@ -120,8 +120,8 @@ describe('InputHint', () => {
       });
 
       it('checks and focuses to the input', () => {
-        let input = document.getElementById('test-input') as HTMLInputElement;
-        let hint = new InputHint(input, 'abc');
+        const input = document.getElementById('test-input') as HTMLInputElement;
+        const hint = new InputHint(input, 'abc');
         hint.activate();
 
         expect(input.checked).to.be.true;
@@ -133,8 +133,8 @@ describe('InputHint', () => {
       });
 
       it('focuses to the textarea', () => {
-        let textarea = document.getElementById('test-textarea') as HTMLTextAreaElement;
-        let hint = new InputHint(textarea, 'abc');
+        const textarea = document.getElementById('test-textarea') as HTMLTextAreaElement;
+        const hint = new InputHint(textarea, 'abc');
         hint.activate();
 
         expect(document.activeElement).to.equal(textarea);
@@ -147,10 +147,10 @@ describe('InputHint', () => {
       });
 
       it('clicks the button', (done) => {
-        let button = document.getElementById('test-button') as HTMLButtonElement;
+        const button = document.getElementById('test-button') as HTMLButtonElement;
         button.onclick = () => { done() };
 
-        let hint = new InputHint(button, 'abc');
+        const hint = new InputHint(button, 'abc');
         hint.activate();
       });
     });

@@ -12,7 +12,7 @@ const store = createStore(
 );
 
 document.addEventListener('DOMContentLoaded', () => {
-  let wrapper = document.getElementById('vimvixen-settings');
+  const wrapper = document.getElementById('vimvixen-settings');
   ReactDOM.render(
     <Provider store={store}>
       <SettingsComponent store={store} />

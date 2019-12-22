@@ -1,90 +1,38 @@
 {
   "env": {
     "es6": true,
-    "node" : true,
+    "node": true,
     "browser" : true,
     "webextensions": true
   },
-  "plugins": [
-    "react",
-    "@typescript-eslint"
+
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "prettier",
+    "prettier/@typescript-eslint",
+    "prettier/react",
+    "prettier/standard"
   ],
-  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "react",
+    "standard"
+  ],
   "parserOptions": {
+    "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
-    },
-    "sourceType": "module",
-    "project": "./tsconfig.json"
+    }
   },
-  "extends": [ "eslint:all", "plugin:react/recommended" ],
   "rules": {
-    "array-bracket-newline": ["error", { "multiline": true }],
-    "array-element-newline": "off",
-    "arrow-body-style": "off",
-    "arrow-parens": ["error", "as-needed", { "requireForBlockBody": true }],
-    "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
-    "capitalized-comments": "off",
-    "class-methods-use-this": "off",
-    "comma-dangle": "off",
-    "consistent-return": "off",
-    "default-case": "off",
-    "dot-location": ["error", "property"],
-    "function-paren-newline": "off",
-    "function-call-argument-newline": ["error", "consistent"],
-    "id-length": "off",
-    "indent": ["error", 2],
-    "init-declarations": "off",
-    "jsx-quotes": ["error", "prefer-single"],
-    "max-classes-per-file": "off",
-    "max-lines": "off",
-    "max-params": ["error", 10],
-    "max-statements": ["error", 15],
-    "multiline-comment-style": "off",
-    "multiline-ternary": "off",
-    "newline-after-var": "off",
-    "newline-before-return": "off",
-    "newline-per-chained-call": "off",
-    "no-alert": "off",
-    "no-bitwise": "off",
-    "no-console": ["error", { "allow": ["warn", "error"] }],
-    "no-continue": "off",
-    "no-empty-function": "off",
-    "no-extra-parens": "off",
-    "no-magic-numbers": "off",
-    "no-mixed-operators": "off",
-    "no-plusplus": "off",
-    "no-ternary": "off",
-    "no-undefined": "off",
-    "no-undef-init": "off",
-    "no-unused-vars": "off",
-    "no-use-before-define": "off",
-    "no-useless-constructor": "off",
-    "no-warning-comments": "off",
-    "object-curly-newline": ["error", { "consistent": true }],
-    "object-curly-spacing": ["error", "always", { "arraysInObjects": false, "objectsInObjects": false }],
-    "object-property-newline": ["error", { "allowMultiplePropertiesPerLine": true }],
-    "object-shorthand": "off",
-    "one-var": "off",
-    "padded-blocks": "off",
-    "prefer-const": "off",
-    "prefer-destructuring": ["error", { "AssignmentExpression": {"array": false}}],
-    "prefer-template": "off",
-    "quote-props": "off",
-    "quotes": ["error", "single", { "allowTemplateLiterals": true }],
-    "require-jsdoc": "off",
-    "require-unicode-regexp": "off",
-    "semi": "off",
-    "sort-imports": "off",
-    "sort-keys": "off",
-    "sort-vars": "off",
-    "space-before-function-paren": ["error", "never"],
-
-    "react/jsx-indent": ["error", 2],
-    "react/prop-types": "off",
-    "react/react-in-jsx-scope": "off",
-
-    "@typescript-eslint/no-unused-vars": ["error", { args: "none" }],
-    "@typescript-eslint/semi": ["error"]
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-use-before-define": "off"
   }
 }

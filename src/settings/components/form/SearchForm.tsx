@@ -18,7 +18,7 @@ class SearchForm extends React.Component<Props> {
   };
 
   render() {
-    let value = this.props.value.toJSON();
+    const value = this.props.value.toJSON();
     return <div className='form-search-form'>
       <div className='form-search-form-header'>
         <div className='column-name'>Name</div>
@@ -56,10 +56,10 @@ class SearchForm extends React.Component<Props> {
 
   // eslint-disable-next-line max-statements
   bindValue(e: any) {
-    let value = this.props.value.toJSON();
-    let name = e.target.name;
-    let index = Number(e.target.getAttribute('data-index'));
-    let next: typeof value = {
+    const value = this.props.value.toJSON();
+    const name = e.target.name;
+    const index = Number(e.target.getAttribute('data-index'));
+    const next: typeof value = {
       default: value.default,
       engines: value.engines.slice(),
     };
@@ -76,7 +76,7 @@ class SearchForm extends React.Component<Props> {
     } else if (name === 'delete' && value.engines.length > 1) {
       next.engines.splice(index, 1);
       if (value.engines[index][0] === value.default) {
-        let nextIndex = Math.min(index, next.engines.length - 1);
+        const nextIndex = Math.min(index, next.engines.length - 1);
         next.default = next.engines[nextIndex][0];
       }
     }

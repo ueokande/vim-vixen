@@ -9,7 +9,7 @@ import { Options as FirefoxOptions } from 'selenium-webdriver/firefox';
 import Page from './lib/Page';
 
 const newApp = () => {
-  let server = new TestServer();
+  const server = new TestServer();
   server.handle('/pagenation-a/:page', (req, res) => {
     res.status(200).send(`
       <!DOCTYPE html>
@@ -44,7 +44,7 @@ const newApp = () => {
 };
 
 describe("navigate test", () => {
-  let server = newApp();
+  const server = newApp();
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
@@ -52,7 +52,7 @@ describe("navigate test", () => {
   before(async() => {
     await server.start();
 
-    let opts = (new FirefoxOptions() as any)
+    const opts = (new FirefoxOptions() as any)
       .setPreference('browser.startup.homepage', server.url('/#home'));
     lanthan = await Builder
       .forBrowser('firefox')
@@ -71,42 +71,42 @@ describe("navigate test", () => {
   });
 
   beforeEach(async() => {
-    let tabs = await browser.tabs.query({});
-    for (let tab of tabs.slice(1)) {
+    const tabs = await browser.tabs.query({});
+    for (const tab of tabs.slice(1)) {
       await browser.tabs.remove(tab.id);
     }
   });
 
   it('should go to parent path without hash by gu', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/a/b/c'));
+    const page = await Page.navigateTo(webdriver, server.url('/a/b/c'));
     await page.sendKeys('g', 'u');
 
     await eventually(async() => {
-      let tab = (await browser.tabs.query({}))[0];
-      let url = new URL(tab.url);
+      const tab = (await browser.tabs.query({}))[0];
+      const url = new URL(tab.url);
       assert.strictEqual(url.pathname, `/a/b/`)
     });
   });
 
   it('should remove hash by gu', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/a/b/c#hash'));
+    const page = await Page.navigateTo(webdriver, server.url('/a/b/c#hash'));
     await page.sendKeys('g', 'u');
 
     await eventually(async() => {
-      let tab = (await browser.tabs.query({}))[0];
-      let url = new URL(tab.url);
+      const tab = (await browser.tabs.query({}))[0];
+      const url = new URL(tab.url);
       assert.strictEqual(url.hash, '');
       assert.strictEqual(url.pathname, `/a/b/c`)
     });
   });
 
   it('should go to root path by gU', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/a/b/c#hash'));
+    const page = await Page.navigateTo(webdriver, server.url('/a/b/c#hash'));
     await page.sendKeys('g', Key.SHIFT, 'u');
 
     await eventually(async() => {
-      let tab = (await browser.tabs.query({}))[0];
-      let url = new URL(tab.url);
+      const tab = (await browser.tabs.query({}))[0];
+      const url = new URL(tab.url);
       assert.strictEqual(url.pathname, `/`)
     });
   });
@@ -117,8 +117,8 @@ describe("navigate test", () => {
     await page.sendKeys(Key.SHIFT, 'h');
 
     await eventually(async() => {
-      let tab = (await browser.tabs.query({}))[0];
-      let url = new URL(tab.url);
+      const tab = (await browser.tabs.query({}))[0];
+      const url = new URL(tab.url);
       assert.strictEqual(url.pathname, `/first`)
     });
 
@@ -126,73 +126,73 @@ describe("navigate test", () => {
     page.sendKeys(Key.SHIFT, 'l');
 
     await eventually(async() => {
-      let tab = (await browser.tabs.query({}))[0];
-      let url = new URL(tab.url);
+      const tab = (await browser.tabs.query({}))[0];
+      const url = new URL(tab.url);
       assert.strictEqual(url.pathname, `/second`)
     });
   });
 
   it('should go previous and next page in <a> by [[ and ]]', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/pagenation-a/10'));
+    const page = await Page.navigateTo(webdriver, server.url('/pagenation-a/10'));
     await page.sendKeys('[', '[');
 
     await eventually(async() => {
-      let tab = (await browser.tabs.query({}))[0];
-      let url = new URL(tab.url);
+      const tab = (await browser.tabs.query({}))[0];
+      const url = new URL(tab.url);
       assert.strictEqual(url.pathname, '/pagenation-a/9');
     });
   });
 
   it('should go next page in <a> by ]]', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/pagenation-a/10'));
+    const page = await Page.navigateTo(webdriver, server.url('/pagenation-a/10'));
     await page.sendKeys(']', ']');
 
     await eventually(async() => {
-      let tab = (await browser.tabs.query({}))[0];
-      let url = new URL(tab.url);
+      const tab = (await browser.tabs.query({}))[0];
+      const url = new URL(tab.url);
       assert.strictEqual(url.pathname, '/pagenation-a/11');
     });
   });
 
   it('should go previous page in <link> by ]]', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/pagenation-link/10'));
+    const page = await Page.navigateTo(webdriver, server.url('/pagenation-link/10'));
     await page.sendKeys('[', '[');
 
     await eventually(async() => {
-      let tab = (await browser.tabs.query({}))[0];
-      let url = new URL(tab.url);
+      const tab = (await browser.tabs.query({}))[0];
+      const url = new URL(tab.url);
       assert.strictEqual(url.pathname, '/pagenation-link/9');
     });
   });
 
   it('should go next page by in <link> by [[', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/pagenation-link/10'));
+    const page = await Page.navigateTo(webdriver, server.url('/pagenation-link/10'));
     await page.sendKeys(']', ']');
 
     await eventually(async() => {
-      let tab = (await browser.tabs.query({}))[0];
-      let url = new URL(tab.url);
+      const tab = (await browser.tabs.query({}))[0];
+      const url = new URL(tab.url);
       assert.strictEqual(url.pathname, '/pagenation-link/11');
     });
   });
 
   it('should go to home page into current tab by gh', async () => {
-    let page = await Page.navigateTo(webdriver, server.url());
+    const page = await Page.navigateTo(webdriver, server.url());
     await page.sendKeys('g', 'h');
 
     await eventually(async() => {
-      let tab = (await browser.tabs.query({}))[0];
-      let url = new URL(tab.url);
+      const tab = (await browser.tabs.query({}))[0];
+      const url = new URL(tab.url);
       assert.strictEqual(url.hash, '#home');
     });
   });
 
   it('should go to home page into current tab by gH', async () => {
-    let page = await Page.navigateTo(webdriver, server.url());
+    const page = await Page.navigateTo(webdriver, server.url());
     await page.sendKeys('g', Key.SHIFT, 'H');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({});
+      const tabs = await browser.tabs.query({});
       assert.strictEqual(tabs.length, 2);
       assert.strictEqual(new URL(tabs[0].url).hash, '');
       assert.strictEqual(new URL(tabs[1].url).hash, '#home');
@@ -201,12 +201,12 @@ describe("navigate test", () => {
   });
 
   it('should reload current tab by r', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/reload'));
+    const page = await Page.navigateTo(webdriver, server.url('/reload'));
     await page.scrollTo(500, 500);
 
     let before: number;
     await eventually(async() => {
-      let tab = (await browser.tabs.query({}))[0];
+      const tab = (await browser.tabs.query({}))[0];
       before = Number(new URL(tab.url).hash.split('#')[1]);
       assert.ok(before > 0);
     });
@@ -215,24 +215,24 @@ describe("navigate test", () => {
 
     let after;
     await eventually(async() => {
-      let tab = (await browser.tabs.query({}))[0];
+      const tab = (await browser.tabs.query({}))[0];
       after = Number(new URL(tab.url).hash.split('#')[1]);
       assert.ok(after > before);
     });
 
     await eventually(async() => {
-      let page = await Page.currentContext(webdriver);
+      const page = await Page.currentContext(webdriver);
       assert.strictEqual(await page.getScrollX(), 500);
     });
   });
 
   it('should reload current tab without cache by R', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/reload'));
+    const page = await Page.navigateTo(webdriver, server.url('/reload'));
     await page.scrollTo(500, 500);
 
     let before: number;
     await eventually(async() => {
-      let tab = (await browser.tabs.query({}))[0];
+      const tab = (await browser.tabs.query({}))[0];
       before = Number(new URL(tab.url).hash.split('#')[1]);
       assert.ok(before > 0);
     });
@@ -241,13 +241,13 @@ describe("navigate test", () => {
 
     let after;
     await eventually(async() => {
-      let tab = (await browser.tabs.query({}))[0];
+      const tab = (await browser.tabs.query({}))[0];
       after = Number(new URL(tab.url).hash.split('#')[1]);
       assert.ok(after > before);
     });
 
     await eventually(async() => {
-      let page = await Page.currentContext(webdriver);
+      const page = await Page.currentContext(webdriver);
       assert.strictEqual(await page.getScrollY(), 0);
     });
   });
