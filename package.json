@@ -76,7 +76,7 @@
     "sinon": "^7.4.1",
     "sinon-chrome": "^3.0.1",
     "style-loader": "^1.0.0",
-    "ts-loader": "^6.0.4",
+    "ts-loader": "^6.2.1",
     "ts-node": "^8.4.1",
     "tsyringe": "^4.0.0",
     "typescript": "^3.6.2",
