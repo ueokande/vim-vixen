@@ -39,15 +39,15 @@ export default class KeymapUseCase {
   nextOps(key: Key): { repeat: number, op: operations.Operation } | null {
     const sequence = this.repository.enqueueKey(key);
     const baseSequence = sequence.trimNumericPrefix();
+    const keymaps = this.keymapEntityMap();
+    const matched = keymaps.filter(([seq]) => seq.startsWith(sequence));
+    const baseMatched = keymaps.filter(([seq]) => seq.startsWith(baseSequence));
+
     if (baseSequence.length() === 1 && this.blacklistKey(key)) {
       // ignore if the input starts with black list keys
       this.repository.clear();
       return null;
     }
-
-    const keymaps = this.keymapEntityMap();
-    const matched = keymaps.filter(([seq]) => seq.startsWith(sequence));
-    const baseMatched = keymaps.filter(([seq]) => seq.startsWith(baseSequence));
 
     if (matched.length === 1 &&
         sequence.length() === matched[0][0].length()) {

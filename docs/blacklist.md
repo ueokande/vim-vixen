@@ -7,20 +7,22 @@ title: Blacklist
 ## Blacklist
 
 The blacklist allows you to disable the plugin for certain pages by URL patterns.
-For instance, you could use `"*.slack.com"` to disable the plugin on all Slack channels.
-In addition, you can also specify path patterns, such as `"example.com/mail/*"`.
+For instance, `"*.slack.com"` blocks the add-on on any Slack channels.
+It also allows you to disable on localhost by `localhost:8000` (port is necessary).
+
+You can also specify path patterns to disable sites on the URL matched with the patterns.
 
 ```json
 {
   "blacklist": [
     "*.slack.com",
+    "localhost:8000",
     "example.com/mail/*"
   ]
 }
 ```
 
-You can toggle Vim Vixen between disabled and enabled with
-<kbd>shift</kbd>+<kbd>Esc</kbd>.
+You can toggle Vim Vixen between disabled and enabled with <kbd>shift</kbd>+<kbd>Esc</kbd>.
 
 ## Partial Blacklist
 

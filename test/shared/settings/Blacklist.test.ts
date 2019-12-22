@@ -132,7 +132,7 @@ describe('Blacklist', () => {
         { url: 'github.com', keys: ['j', 'k'] },
       ]);
 
-      expect(blacklist.includeKey(new URL('https://google.com'), Key.fromMapKey('j'))).to.be.true;
+      expect(blacklist.includeKey(new URL('https://google.com'), Key.fromMapKey('j'))).to.be.false;
       expect(blacklist.includeKey(new URL('https://github.com'), Key.fromMapKey('j'))).to.be.true;
       expect(blacklist.includeKey(new URL('https://github.com'), Key.fromMapKey('a'))).to.be.false;
     });

@@ -55,11 +55,8 @@ export class BlacklistItem {
   }
 
   includeKey(url: URL, key: Key): boolean {
-    if (!this.matches(url)) {
+    if (!this.matches(url) || !this.partial) {
       return false;
-    }
-    if (!this.partial) {
-      return true;
     }
     return this.keyEntities.some(k => k.equals(key));
   }
