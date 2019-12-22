@@ -8,7 +8,7 @@ The following descriptions are the default keymaps.
 You can configure keymaps in the add-on's preferences by navigating to `about:addons` and selecting "Extensions".
 
 In the following descriptions, <kbd>Ctrl</kbd>+<kbd>x</kbd> means "press <kbd>x</kbd> with <kbd>Ctrl</kbd>", and <kbd>g</kbd><kbd>x</kbd> means "press <kbd>g</kbd>, then press <kbd>x</kbd>".
-Some commands may be preceded by a decimal number, such as <kbd>3</kbd><kbd>d</kbd> deltes three tabs.
+Some commands may be preceded by a decimal number, such as <kbd>3</kbd><kbd>d</kbd> deletes three tabs.
 
 ## Scrolling
 
