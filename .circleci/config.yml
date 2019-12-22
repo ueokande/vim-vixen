@@ -3,7 +3,7 @@ version: 2.1
 executors:
   default:
     docker:
-      - image: circleci/node:10-stretch-browsers
+      - image: circleci/node:12.14.0-stretch-browsers
     environment:
       - FIREFOX_VERSION: "68.0esr"
       - GECKODRIVER_VERSION: "0.24.0"
