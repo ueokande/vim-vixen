@@ -1,8 +1,7 @@
 import './DeleteButton.scss';
 import React from 'react';
 
-interface Props extends React.AllHTMLAttributes<HTMLInputElement> {
-}
+type Props = React.AllHTMLAttributes<HTMLInputElement>;
 
 class DeleteButton extends React.Component<Props> {
   render() {
