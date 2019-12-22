@@ -11,28 +11,28 @@ export default class NavigateUseCase {
   }
 
   async openHistoryNext(): Promise<void> {
-    let tab = await this.tabPresenter.getCurrent();
+    const tab = await this.tabPresenter.getCurrent();
     await this.navigateClient.historyNext(tab.id!!);
   }
 
   async openHistoryPrev(): Promise<void> {
-    let tab = await this.tabPresenter.getCurrent();
+    const tab = await this.tabPresenter.getCurrent();
     await this.navigateClient.historyPrev(tab.id!!);
   }
 
   async openLinkNext(): Promise<void> {
-    let tab = await this.tabPresenter.getCurrent();
+    const tab = await this.tabPresenter.getCurrent();
     await this.navigateClient.linkNext(tab.id!!);
   }
 
   async openLinkPrev(): Promise<void> {
-    let tab = await this.tabPresenter.getCurrent();
+    const tab = await this.tabPresenter.getCurrent();
     await this.navigateClient.linkPrev(tab.id!!);
   }
 
   async openParent(): Promise<void> {
-    let tab = await this.tabPresenter.getCurrent();
-    let url = new URL(tab.url!!);
+    const tab = await this.tabPresenter.getCurrent();
+    const url = new URL(tab.url!!);
     if (url.hash.length > 0) {
       url.hash = '';
     } else if (url.search.length > 0) {
@@ -50,8 +50,8 @@ export default class NavigateUseCase {
   }
 
   async openRoot(): Promise<void> {
-    let tab = await this.tabPresenter.getCurrent();
-    let url = new URL(tab.url!!);
+    const tab = await this.tabPresenter.getCurrent();
+    const url = new URL(tab.url!!);
     await this.tabPresenter.open(url.origin);
   }
 }

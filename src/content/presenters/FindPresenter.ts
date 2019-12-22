@@ -26,13 +26,13 @@ declare var window: MyWindow;
 
 export class FindPresenterImpl implements FindPresenter {
   find(keyword: string, backwards: boolean): boolean {
-    let caseSensitive = false;
-    let wrapScan = true;
+    const caseSensitive = false;
+    const wrapScan = true;
 
 
     // NOTE: aWholeWord dows not implemented, and aSearchInFrames does not work
     // because of same origin policy
-    let found = window.find(keyword, caseSensitive, backwards, wrapScan);
+    const found = window.find(keyword, caseSensitive, backwards, wrapScan);
     if (found) {
       return found;
     }
@@ -42,7 +42,7 @@ export class FindPresenterImpl implements FindPresenter {
   }
 
   clearSelection(): void {
-    let sel = window.getSelection();
+    const sel = window.getSelection();
     if (sel) {
       sel.removeAllRanges();
     }

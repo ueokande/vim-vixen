@@ -6,7 +6,7 @@ interface Point {
 }
 
 const hintPosition = (element: Element): Point => {
-  let { left, top, right, bottom } = doms.viewportRect(element);
+  const { left, top, right, bottom } = doms.viewportRect(element);
 
   if (element.tagName !== 'AREA') {
     return { x: left, y: top };
@@ -26,15 +26,15 @@ export default abstract class Hint {
   constructor(target: HTMLElement, tag: string) {
     this.tag = tag;
 
-    let doc = target.ownerDocument;
+    const doc = target.ownerDocument;
     if (doc === null) {
       throw new TypeError('ownerDocument is null');
     }
 
-    let { x, y } = hintPosition(target);
-    let { scrollX, scrollY } = window;
+    const { x, y } = hintPosition(target);
+    const { scrollX, scrollY } = window;
 
-    let hint = doc.createElement('span');
+    const hint = doc.createElement('span');
     hint.className = 'vimvixen-hint';
     hint.textContent = tag;
     hint.style.left = x + scrollX + 'px';
@@ -95,7 +95,7 @@ export class InputHint extends Hint {
   }
 
   activate(): void {
-    let target = this.target;
+    const target = this.target;
     switch (target.tagName.toLowerCase()) {
     case 'input':
       switch ((target as HTMLInputElement).type) {

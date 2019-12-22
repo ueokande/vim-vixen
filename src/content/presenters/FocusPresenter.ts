@@ -6,10 +6,10 @@ export default interface FocusPresenter {
 
 export class FocusPresenterImpl implements FocusPresenter {
   focusFirstElement(): boolean {
-    let inputTypes = ['email', 'number', 'search', 'tel', 'text', 'url'];
-    let inputSelector = inputTypes.map(type => `input[type=${type}]`).join(',');
-    let targets = window.document.querySelectorAll(inputSelector + ',textarea');
-    let target = Array.from(targets).find(doms.isVisible);
+    const inputTypes = ['email', 'number', 'search', 'tel', 'text', 'url'];
+    const inputSelector = inputTypes.map(type => `input[type=${type}]`).join(',');
+    const targets = window.document.querySelectorAll(inputSelector + ',textarea');
+    const target = Array.from(targets).find(doms.isVisible);
     if (target instanceof HTMLInputElement) {
       target.focus();
       return true;

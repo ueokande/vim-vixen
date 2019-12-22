@@ -23,12 +23,12 @@ const inViewport = (
   viewSize: Size,
   framePosition: Point,
 ): boolean => {
-  let {
+  const {
     top, left, bottom, right
   } = doms.viewportRect(element);
-  let doc = win.document;
-  let frameWidth = doc.documentElement.clientWidth;
-  let frameHeight = doc.documentElement.clientHeight;
+  const doc = win.document;
+  const frameWidth = doc.documentElement.clientWidth;
+  const frameHeight = doc.documentElement.clientHeight;
 
   if (right < 0 || bottom < 0 || top > frameHeight || left > frameWidth) {
     // out of frame
@@ -47,10 +47,10 @@ const isAriaHiddenOrAriaDisabled = (win: Window, element: Element): boolean => {
   if (!element || win.document.documentElement === element) {
     return false;
   }
-  for (let attr of ['aria-hidden', 'aria-disabled']) {
-    let value = element.getAttribute(attr);
+  for (const attr of ['aria-hidden', 'aria-disabled']) {
+    const value = element.getAttribute(attr);
     if (value !== null) {
-      let hidden = value.toLowerCase();
+      const hidden = value.toLowerCase();
       if (hidden === '' || hidden === 'true') {
         return true;
       }
@@ -79,15 +79,15 @@ export class FollowPresenterImpl implements FollowPresenter {
   }
 
   getTargetCount(viewSize: Size, framePosition: Point): number {
-    let targets = this.getTargets(viewSize, framePosition);
+    const targets = this.getTargets(viewSize, framePosition);
     return targets.length;
   }
 
   createHints(viewSize: Size, framePosition: Point, tags: string[]): void {
-    let targets = this.getTargets(viewSize, framePosition);
-    let min = Math.min(targets.length, tags.length);
+    const targets = this.getTargets(viewSize, framePosition);
+    const min = Math.min(targets.length, tags.length);
     for (let i = 0; i < min; ++i) {
-      let target = targets[i];
+      const target = targets[i];
       if (target instanceof HTMLAnchorElement ||
         target instanceof HTMLAreaElement) {
         this.hints.push(new LinkHint(target, tags[i]));
@@ -98,8 +98,8 @@ export class FollowPresenterImpl implements FollowPresenter {
   }
 
   filterHints(prefix: string): void {
-    let shown = this.hints.filter(h => h.getTag().startsWith(prefix));
-    let hidden = this.hints.filter(h => !h.getTag().startsWith(prefix));
+    const shown = this.hints.filter(h => h.getTag().startsWith(prefix));
+    const hidden = this.hints.filter(h => !h.getTag().startsWith(prefix));
 
     shown.forEach(h => h.show());
     hidden.forEach(h => h.hide());
@@ -115,9 +115,9 @@ export class FollowPresenterImpl implements FollowPresenter {
   }
 
   private getTargets(viewSize: Size, framePosition: Point): HTMLElement[] {
-    let all = window.document.querySelectorAll(TARGET_SELECTOR);
-    let filtered = Array.prototype.filter.call(all, (element: HTMLElement) => {
-      let style = window.getComputedStyle(element);
+    const all = window.document.querySelectorAll(TARGET_SELECTOR);
+    const filtered = Array.prototype.filter.call(all, (element: HTMLElement) => {
+      const style = window.getComputedStyle(element);
 
       // AREA's 'display' in Browser style is 'none'
       return (element.tagName === 'AREA' || style.display !== 'none') &&

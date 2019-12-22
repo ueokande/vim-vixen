@@ -2,7 +2,7 @@ const db: {[key: string]: any} = {};
 
 export default class MemoryStorage {
   set(name: string, value: any): void {
-    let data = JSON.stringify(value);
+    const data = JSON.stringify(value);
     if (typeof data === 'undefined') {
       throw new Error('value is not serializable');
     }
@@ -10,7 +10,7 @@ export default class MemoryStorage {
   }
 
   get(name: string): any {
-    let data = db[name];
+    const data = db[name];
     if (!data) {
       return undefined;
     }

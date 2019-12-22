@@ -1,7 +1,7 @@
 import Properties from '../../shared/settings/Properties';
 
 const mustNumber = (v: any): number => {
-  let num = Number(v);
+  const num = Number(v);
   if (isNaN(num)) {
     throw new Error('Not number: ' + v);
   }
@@ -16,7 +16,7 @@ const parseSetOption = (
     value = !key.startsWith('no');
     key = value ? key : key.slice(2);
   }
-  let def = Properties.def(key);
+  const def = Properties.def(key);
   if (!def) {
     throw new Error('Unknown property: ' + key);
   }

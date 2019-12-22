@@ -35,11 +35,11 @@ class Completion extends React.Component<Props, State> {
       return null;
     }
 
-    let viewSelect = (() => {
+    const viewSelect = (() => {
       let index = 0;
       for (let i = 0; i < nextProps.completions.length; ++i) {
         ++index;
-        let g = nextProps.completions[i];
+        const g = nextProps.completions[i];
         if (nextProps.select + i + 1 < index + g.items.length) {
           return nextProps.select + i + 1;
         }
@@ -64,12 +64,12 @@ class Completion extends React.Component<Props, State> {
     let eles = [];
     let index = 0;
 
-    for (let group of this.props.completions) {
+    for (const group of this.props.completions) {
       eles.push(<CompletionTitle
         key={`group-${index}`}
         title={ group.name }
       />);
-      for (let item of group.items) {
+      for (const item of group.items) {
         eles.push(<CompletionItem
           key={`item-${index}`}
           icon={item.icon}
@@ -81,7 +81,7 @@ class Completion extends React.Component<Props, State> {
       }
     }
 
-    let viewOffset = this.state.viewOffset;
+    const viewOffset = this.state.viewOffset;
     eles = eles.slice(viewOffset, viewOffset + this.props.size);
 
     return (

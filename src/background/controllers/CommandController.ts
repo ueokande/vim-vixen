@@ -17,13 +17,13 @@ export default class CommandController {
   }
 
   getCompletions(line: string): Promise<CompletionGroup[]> {
-    let trimmed = trimStart(line);
-    let words = trimmed.split(/ +/);
-    let name = words[0];
+    const trimmed = trimStart(line);
+    const words = trimmed.split(/ +/);
+    const name = words[0];
     if (words.length === 1) {
       return this.completionsUseCase.queryConsoleCommand(name);
     }
-    let keywords = trimStart(trimmed.slice(name.length));
+    const keywords = trimStart(trimmed.slice(name.length));
     switch (words[0]) {
     case 'o':
     case 'open':
@@ -53,14 +53,14 @@ export default class CommandController {
 
   // eslint-disable-next-line complexity
   exec(line: string): Promise<any> {
-    let trimmed = trimStart(line);
-    let words = trimmed.split(/ +/);
-    let name = words[0];
+    const trimmed = trimStart(line);
+    const words = trimmed.split(/ +/);
+    const name = words[0];
     if (words[0].length === 0) {
       return Promise.resolve();
     }
 
-    let keywords = trimStart(trimmed.slice(name.length));
+    const keywords = trimStart(trimmed.slice(name.length));
     switch (words[0]) {
     case 'o':
     case 'open':

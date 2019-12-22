@@ -20,7 +20,7 @@ declare namespace browser.browserSettings.homepageOverride {
 @injectable()
 export default class BrowserSettingRepository {
   async getHomepageUrls(): Promise<string[]> {
-    let { value } = await browser.browserSettings.homepageOverride.get({});
+    const { value } = await browser.browserSettings.homepageOverride.get({});
     return value.split('|').map(urls.normalizeUrl);
   }
 }

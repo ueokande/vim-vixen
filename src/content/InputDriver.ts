@@ -25,7 +25,7 @@ const modifiedKeyName = (name: string): string => {
 
 // visible for testing
 export const keyFromKeyboardEvent = (e: KeyboardEvent): Key => {
-  let key = modifiedKeyName(e.key);
+  const key = modifiedKeyName(e.key);
   let shift = e.shiftKey;
   if (key.length === 1 && key.toUpperCase() === key.toLowerCase()) {
     // make shift false for symbols to enable key bindings by symbold keys.
@@ -83,7 +83,7 @@ export default class InputDriver {
 
   // eslint-disable-next-line max-statements
   private capture(e: KeyboardEvent) {
-    let target = e.target;
+    const target = e.target;
     if (!(target instanceof HTMLElement)) {
       return;
     }
@@ -98,9 +98,9 @@ export default class InputDriver {
       return;
     }
 
-    let key = keyFromKeyboardEvent(e);
-    for (let listener of this.onKeyListeners) {
-      let stop = listener(key);
+    const key = keyFromKeyboardEvent(e);
+    for (const listener of this.onKeyListeners) {
+      const stop = listener(key);
       if (stop) {
         e.preventDefault();
         e.stopPropagation();

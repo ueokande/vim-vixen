@@ -3,7 +3,7 @@ import { injectable } from 'tsyringe';
 @injectable()
 export default class IndicatorPresenter {
   indicate(enabled: boolean): Promise<void> {
-    let path = enabled
+    const path = enabled
       ? 'resources/enabled_32x32.png'
       : 'resources/disabled_32x32.png';
     if (typeof browser.browserAction.setIcon === 'function') {

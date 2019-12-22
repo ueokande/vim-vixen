@@ -1,7 +1,7 @@
 import SettingData, { DefaultSettingData } from '../shared/SettingData';
 
 export const load = async(): Promise<SettingData> => {
-  let { settings } = await browser.storage.local.get('settings');
+  const { settings } = await browser.storage.local.get('settings');
   if (!settings) {
     return DefaultSettingData;
   }

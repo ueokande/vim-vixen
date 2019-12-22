@@ -13,11 +13,11 @@ export default class Search {
   }
 
   static fromJSON(json: SearchJSON): Search {
-    for (let [name, url] of Object.entries(json.engines)) {
+    for (const [name, url] of Object.entries(json.engines)) {
       if (!(/^[a-zA-Z0-9]+$/).test(name)) {
         throw new TypeError('Search engine\'s name must be [a-zA-Z0-9]+');
       }
-      let matches = url.match(/{}/g);
+      const matches = url.match(/{}/g);
       if (matches === null) {
         throw new TypeError(`No {}-placeholders in URL of "${name}"`);
       } else if (matches.length > 1) {

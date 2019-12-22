@@ -52,15 +52,15 @@ class PartialBlacklistForm extends React.Component<Props> {
   }
 
   bindValue(e: any) {
-    let name = e.target.name;
-    let index = e.target.getAttribute('data-index');
-    let items = this.props.value.items;
+    const name = e.target.name;
+    const index = e.target.getAttribute('data-index');
+    const items = this.props.value.items;
 
     if (name === 'url') {
-      let current = items[index];
+      const current = items[index];
       items[index] = new BlacklistItem(e.target.value, true, current.keys);
     } else if (name === 'keys') {
-      let current = items[index];
+      const current = items[index];
       items[index] = new BlacklistItem(
         current.pattern, true, e.target.value.split(','));
     } else if (name === 'add') {

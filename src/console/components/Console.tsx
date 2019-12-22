@@ -34,7 +34,7 @@ class Console extends React.Component<Props> {
     e.stopPropagation();
     e.preventDefault();
 
-    let value = (e.target as HTMLInputElement).value;
+    const value = (e.target as HTMLInputElement).value;
     if (this.props.mode === 'command') {
       return this.props.dispatch(consoleActions.enterCommand(value));
     } else if (this.props.mode === 'find') {
@@ -101,7 +101,7 @@ class Console extends React.Component<Props> {
   }
 
   onChange(e: React.ChangeEvent<HTMLInputElement>) {
-    let text = e.target.value;
+    const text = e.target.value;
     this.props.dispatch(consoleActions.setConsoleText(text));
     if (this.props.mode === 'command') {
       this.props.dispatch(consoleActions.getCompletions(text));

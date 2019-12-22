@@ -23,7 +23,7 @@ export default class AddonEnabledUseCase {
   }
 
   async toggle(): Promise<void> {
-    let current = this.repository.get();
+    const current = this.repository.get();
     await this.setEnabled(!current);
   }
 

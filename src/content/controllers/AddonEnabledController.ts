@@ -12,7 +12,7 @@ export default class AddonEnabledController {
   getAddonEnabled(
     _message: messages.AddonEnabledQueryMessage,
   ): Promise<boolean> {
-    let enabled = this.addonEnabledUseCase.getEnabled();
+    const enabled = this.addonEnabledUseCase.getEnabled();
     return Promise.resolve(enabled);
   }
 }

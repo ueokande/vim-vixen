@@ -15,9 +15,9 @@ export default class LinkUseCase {
   async openNewTab(
     url: string, openerId: number, background: boolean,
   ): Promise<any> {
-    let properties: any = { active: !background };
+    const properties: any = { active: !background };
 
-    let platform = await browser.runtime.getPlatformInfo();
+    const platform = await browser.runtime.getPlatformInfo();
     if (platform.os !== 'android') {
       // openerTabId not supported on Android
       properties.openerTabId = openerId;

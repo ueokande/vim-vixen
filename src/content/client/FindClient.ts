@@ -8,7 +8,7 @@ export default interface FindClient {
 
 export class FindClientImpl implements FindClient {
   async getGlobalLastKeyword(): Promise<string | null> {
-    let keyword = await browser.runtime.sendMessage({
+    const keyword = await browser.runtime.sendMessage({
       type: messages.FIND_GET_KEYWORD,
     });
     return keyword as string;

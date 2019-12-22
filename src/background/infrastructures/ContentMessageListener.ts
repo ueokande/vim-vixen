@@ -31,7 +31,7 @@ export default class ContentMessageListener {
       message: any, sender: browser.runtime.MessageSender,
     ) => {
       try {
-        let ret = this.onMessage(message, sender.tab as browser.tabs.Tab);
+        const ret = this.onMessage(message, sender.tab as browser.tabs.Tab);
         if (!(ret instanceof Promise)) {
           return {};
         }
@@ -94,7 +94,7 @@ export default class ContentMessageListener {
   }
 
   async onConsoleQueryCompletions(line: string): Promise<CompletionGroup[]> {
-    let completions = await this.commandController.getCompletions(line);
+    const completions = await this.commandController.getCompletions(line);
     return Promise.resolve(completions);
   }
 
@@ -140,7 +140,7 @@ export default class ContentMessageListener {
   }
 
   onConsoleFrameMessage(tabId: number, message: any): void {
-    let port = this.consolePorts[tabId];
+    const port = this.consolePorts[tabId];
     if (!port) {
       return;
     }
@@ -153,7 +153,7 @@ export default class ContentMessageListener {
     }
 
     if (port.sender && port.sender.tab && port.sender.tab.id) {
-      let id = port.sender.tab.id;
+      const id = port.sender.tab.id;
       this.consolePorts[id] = port;
     }
   }

@@ -14,7 +14,7 @@ export class MarkRepositoryImpl implements MarkRepository {
   }
 
   get(key: string): Mark | null {
-    let v = saved[key];
+    const v = saved[key];
     if (!v) {
       return null;
     }

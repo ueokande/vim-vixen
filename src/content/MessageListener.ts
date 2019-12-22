@@ -9,7 +9,7 @@ export default class MessageListener {
     listener: (msg: Message, sender: Window) => void,
   ) {
     window.addEventListener('message', (event: MessageEvent) => {
-      let sender = event.source;
+      const sender = event.source;
       if (!(sender instanceof Window)) {
         return;
       }

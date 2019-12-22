@@ -26,7 +26,7 @@ export default class CommandIndicator {
   }
 
   async open(keywords: string): Promise<browser.tabs.Tab> {
-    let url = await this.urlOrSearch(keywords);
+    const url = await this.urlOrSearch(keywords);
     this.repeatUseCase.storeLastOperation({
       type: operations.INTERNAL_OPEN_URL,
       url,
@@ -35,7 +35,7 @@ export default class CommandIndicator {
   }
 
   async tabopen(keywords: string): Promise<browser.tabs.Tab> {
-    let url = await this.urlOrSearch(keywords);
+    const url = await this.urlOrSearch(keywords);
     this.repeatUseCase.storeLastOperation({
       type: operations.INTERNAL_OPEN_URL,
       url,
@@ -45,7 +45,7 @@ export default class CommandIndicator {
   }
 
   async winopen(keywords: string): Promise<browser.windows.Window> {
-    let url = await this.urlOrSearch(keywords);
+    const url = await this.urlOrSearch(keywords);
     this.repeatUseCase.storeLastOperation({
       type: operations.INTERNAL_OPEN_URL,
       url,
@@ -61,8 +61,8 @@ export default class CommandIndicator {
     }
 
     if (!isNaN(Number(keywords))) {
-      let tabs = await this.tabPresenter.getAll();
-      let index = parseInt(keywords, 10) - 1;
+      const tabs = await this.tabPresenter.getAll();
+      const index = parseInt(keywords, 10) - 1;
       if (index < 0 || tabs.length <= index) {
         throw new RangeError(`tab ${index + 1} does not exist`);
       }
@@ -72,19 +72,19 @@ export default class CommandIndicator {
       return;
     } else if (keywords.trim() === '#') {
       // Select last selected window
-      let lastId = await this.tabPresenter.getLastSelectedId();
+      const lastId = await this.tabPresenter.getLastSelectedId();
       if (typeof lastId === 'undefined' || lastId === null) {
         throw new Error('No last selected tab');
       }
       return this.tabPresenter.select(lastId);
     }
 
-    let current = await this.tabPresenter.getCurrent();
-    let tabs = await this.tabPresenter.getByKeyword(keywords);
+    const current = await this.tabPresenter.getCurrent();
+    const tabs = await this.tabPresenter.getByKeyword(keywords);
     if (tabs.length === 0) {
       throw new RangeError('No matching buffer for ' + keywords);
     }
-    for (let tab of tabs) {
+    for (const tab of tabs) {
       if (tab.index > current.index) {
         return this.tabPresenter.select(tab.id as number);
       }
@@ -93,8 +93,8 @@ export default class CommandIndicator {
   }
 
   async bdelete(force: boolean, keywords: string): Promise<any> {
-    let excludePinned = !force;
-    let tabs = await this.tabPresenter.getByKeyword(keywords, excludePinned);
+    const excludePinned = !force;
+    const tabs = await this.tabPresenter.getByKeyword(keywords, excludePinned);
     if (tabs.length === 0) {
       throw new Error('No matching buffer for ' + keywords);
     } else if (tabs.length > 1) {
@@ -104,27 +104,27 @@ export default class CommandIndicator {
   }
 
   async bdeletes(force: boolean, keywords: string): Promise<any> {
-    let excludePinned = !force;
-    let tabs = await this.tabPresenter.getByKeyword(keywords, excludePinned);
-    let ids = tabs.map(tab => tab.id as number);
+    const excludePinned = !force;
+    const tabs = await this.tabPresenter.getByKeyword(keywords, excludePinned);
+    const ids = tabs.map(tab => tab.id as number);
     return this.tabPresenter.remove(ids);
   }
 
   async quit(): Promise<any> {
-    let tab = await this.tabPresenter.getCurrent();
+    const tab = await this.tabPresenter.getCurrent();
     return this.tabPresenter.remove([tab.id as number]);
   }
 
   async quitAll(): Promise<any> {
-    let tabs = await this.tabPresenter.getAll();
-    let ids = tabs.map(tab => tab.id as number);
+    const tabs = await this.tabPresenter.getAll();
+    const ids = tabs.map(tab => tab.id as number);
     this.tabPresenter.remove(ids);
   }
 
   async addbookmark(title: string): Promise<any> {
-    let tab = await this.tabPresenter.getCurrent();
-    let item = await this.bookmarkRepository.create(title, tab.url as string);
-    let message = 'Saved current page: ' + item.url;
+    const tab = await this.tabPresenter.getCurrent();
+    const item = await this.bookmarkRepository.create(title, tab.url as string);
+    const message = 'Saved current page: ' + item.url;
     return this.consoleClient.showInfo(tab.id as number, message);
   }
 
@@ -132,7 +132,7 @@ export default class CommandIndicator {
     if (keywords.length === 0) {
       return;
     }
-    let [name, value] = parsers.parseSetOption(keywords);
+    const [name, value] = parsers.parseSetOption(keywords);
     await this.settingRepository.setProperty(name, value);
 
     return this.contentMessageClient.broadcastSettingsChanged();
@@ -143,7 +143,7 @@ export default class CommandIndicator {
   }
 
   private async urlOrSearch(keywords: string): Promise<any> {
-    let settings = await this.settingRepository.get();
+    const settings = await this.settingRepository.get();
     return urls.searchUrl(keywords, settings.search);
   }
 }

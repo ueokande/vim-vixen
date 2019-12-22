@@ -17,7 +17,7 @@ export default class TabPresenter {
   }
 
   async getCurrent(): Promise<Tab> {
-    let tabs = await browser.tabs.query({
+    const tabs = await browser.tabs.query({
       active: true, currentWindow: true
     });
     return tabs[0];
@@ -28,8 +28,8 @@ export default class TabPresenter {
   }
 
   async getLastSelectedId(): Promise<number | undefined> {
-    let cache = new MemoryStorage();
-    let tabId = await cache.get(LAST_SELECTED_KEY);
+    const cache = new MemoryStorage();
+    const tabId = await cache.get(LAST_SELECTED_KEY);
     if (tabId === null || typeof tabId === 'undefined') {
       return;
     }
@@ -37,9 +37,9 @@ export default class TabPresenter {
   }
 
   async getByKeyword(
-    keyword: string, excludePinned: boolean = false,
+    keyword: string, excludePinned = false,
   ): Promise<Tab[]> {
-    let tabs = await browser.tabs.query({ currentWindow: true });
+    const tabs = await browser.tabs.query({ currentWindow: true });
     return tabs.filter((t) => {
       return t.url && t.url.toLowerCase().includes(keyword.toLowerCase()) ||
         t.title && t.title.toLowerCase().includes(keyword.toLowerCase());
@@ -57,9 +57,9 @@ export default class TabPresenter {
   }
 
   async reopen(): Promise<any> {
-    let window = await browser.windows.getCurrent();
-    let sessions = await browser.sessions.getRecentlyClosed();
-    let session = sessions.find((s) => {
+    const window = await browser.windows.getCurrent();
+    const sessions = await browser.sessions.getRecentlyClosed();
+    const session = sessions.find((s) => {
       return s.tab && s.tab.windowId === window.id;
     });
     if (!session) {
@@ -100,11 +100,11 @@ export default class TabPresenter {
   }
 }
 
-let tabPresenter = new TabPresenter();
+const tabPresenter = new TabPresenter();
 tabPresenter.onSelected((tab: any) => {
-  let cache = new MemoryStorage();
+  const cache = new MemoryStorage();
 
-  let lastId = cache.get(CURRENT_SELECTED_KEY);
+  const lastId = cache.get(CURRENT_SELECTED_KEY);
   if (lastId) {
     cache.set(LAST_SELECTED_KEY, lastId);
   }

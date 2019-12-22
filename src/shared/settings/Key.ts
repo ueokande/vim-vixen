@@ -33,8 +33,8 @@ export default class Key {
 
   static fromMapKey(str: string): Key {
     if (str.startsWith('<') && str.endsWith('>')) {
-      let inner = str.slice(1, -1);
-      let shift = inner.includes('S-');
+      const inner = str.slice(1, -1);
+      const shift = inner.includes('S-');
       let base = inner.slice(inner.lastIndexOf('-') + 1);
       if (shift && base.length === 1) {
         base = base.toUpperCase();

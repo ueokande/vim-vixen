@@ -13,14 +13,14 @@ export class FormKeymaps {
   }
 
   toKeymaps(): Keymaps {
-    let keymaps: { [key: string]: operations.Operation } = {};
-    for (let name of Object.keys(this.data)) {
-      let [type, argStr] = name.split('?');
+    const keymaps: { [key: string]: operations.Operation } = {};
+    for (const name of Object.keys(this.data)) {
+      const [type, argStr] = name.split('?');
       let args = {};
       if (argStr) {
         args = JSON.parse(argStr);
       }
-      let key = this.data[name];
+      const key = this.data[name];
       keymaps[key] = operations.valueOf({ type, ...args });
     }
     return Keymaps.fromJSON(keymaps);
@@ -31,7 +31,7 @@ export class FormKeymaps {
   }
 
   buildWithOverride(op: string, keys: string): FormKeymaps {
-    let newData = {
+    const newData = {
       ...this.data,
       [op]: keys,
     };
@@ -39,19 +39,19 @@ export class FormKeymaps {
   }
 
   static fromJSON(o: ReturnType<FormKeymaps['toJSON']>): FormKeymaps {
-    let data: {[op: string]: string} = {};
-    for (let op of Object.keys(o)) {
+    const data: {[op: string]: string} = {};
+    for (const op of Object.keys(o)) {
       data[op] = o[op] as string;
     }
     return new FormKeymaps(data);
   }
 
   static fromKeymaps(keymaps: Keymaps): FormKeymaps {
-    let json = keymaps.toJSON();
-    let data: {[op: string]: string} = {};
-    for (let key of Object.keys(json)) {
-      let op = json[key];
-      let args = { ...op };
+    const json = keymaps.toJSON();
+    const data: {[op: string]: string} = {};
+    for (const key of Object.keys(json)) {
+      const op = json[key];
+      const args = { ...op };
       delete args.type;
 
       let name = op.type;
@@ -75,8 +75,8 @@ export class FormSearch {
   }
 
   toSearchSettings(): Search {
-    let engines: { [name: string]: string } = {};
-    for (let entry of this.engines) {
+    const engines: { [name: string]: string } = {};
+    for (const entry of this.engines) {
       engines[entry[0]] = entry[1];
     }
     return new Search(this.default, engines);
@@ -103,7 +103,7 @@ export class FormSearch {
   }
 
   static fromSearch(search: Search): FormSearch {
-    let engines = Object.entries(search.engines).reduce(
+    const engines = Object.entries(search.engines).reduce(
       (o: string[][], [name, url]) => {
         return o.concat([[name, url]]);
       }, []);
@@ -130,7 +130,7 @@ export class JSONTextSettings {
   }
 
   static fromSettings(data: Settings): JSONTextSettings {
-    let json = {
+    const json = {
       keymaps: data.keymaps.toJSON(),
       search: data.search,
       properties: data.properties,
@@ -221,7 +221,7 @@ export class FormSettings {
   }
 
   static fromJSON(o: ReturnType<FormSettings['toJSON']>): FormSettings {
-    for (let name of ['keymaps', 'search', 'properties', 'blacklist']) {
+    for (const name of ['keymaps', 'search', 'properties', 'blacklist']) {
       if (!Object.prototype.hasOwnProperty.call(o, name)) {
         throw new Error(`"${name}" field not set`);
       }

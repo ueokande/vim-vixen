@@ -6,7 +6,7 @@ export default interface ConsoleFramePresenter {
 
 export class ConsoleFramePresenterImpl implements ConsoleFramePresenter {
   initialize(): void {
-    let iframe = document.createElement('iframe');
+    const iframe = document.createElement('iframe');
     iframe.src = browser.runtime.getURL('build/console.html');
     iframe.id = 'vimvixen-console-frame';
     iframe.className = 'vimvixen-console-frame';
@@ -14,7 +14,7 @@ export class ConsoleFramePresenterImpl implements ConsoleFramePresenter {
   }
 
   blur(): void {
-    let ele = document.getElementById('vimvixen-console-frame');
+    const ele = document.getElementById('vimvixen-console-frame');
     if (!ele) {
       throw new Error('console frame not created');
     }

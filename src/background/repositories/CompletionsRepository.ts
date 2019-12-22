@@ -6,7 +6,7 @@ type BookmarkTreeNode = browser.bookmarks.BookmarkTreeNode;
 @injectable()
 export default class CompletionsRepository {
   async queryBookmarks(keywords: string): Promise<BookmarkTreeNode[]> {
-    let items = await browser.bookmarks.search({ query: keywords });
+    const items = await browser.bookmarks.search({ query: keywords });
     return items.filter((item) => {
       if (!item.url) {
         return false;
@@ -29,7 +29,7 @@ export default class CompletionsRepository {
   }
 
   async queryTabs(keywords: string, excludePinned: boolean): Promise<Tab[]> {
-    let tabs = await browser.tabs.query({ currentWindow: true });
+    const tabs = await browser.tabs.query({ currentWindow: true });
     return tabs.filter((t) => {
       return t.url && t.url.toLowerCase().includes(keywords.toLowerCase()) ||
         t.title && t.title.toLowerCase().includes(keywords.toLowerCase());

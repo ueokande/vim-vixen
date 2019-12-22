@@ -15,15 +15,15 @@ export default class MarkUseCase {
   }
 
   async setGlobal(key: string, x: number, y: number): Promise<any> {
-    let tab = await this.tabPresenter.getCurrent();
-    let mark = { tabId: tab.id as number, url: tab.url as string, x, y };
+    const tab = await this.tabPresenter.getCurrent();
+    const mark = { tabId: tab.id as number, url: tab.url as string, x, y };
     return this.markRepository.setMark(key, mark);
   }
 
   async jumpGlobal(key: string): Promise<any> {
-    let current = await this.tabPresenter.getCurrent();
+    const current = await this.tabPresenter.getCurrent();
 
-    let mark = await this.markRepository.getMark(key);
+    const mark = await this.markRepository.getMark(key);
     if (!mark) {
       return this.consoleClient.showError(
         current.id as number, 'Mark is not set');
@@ -32,7 +32,7 @@ export default class MarkUseCase {
       await this.contentMessageClient.scrollTo(mark.tabId, mark.x, mark.y);
       return this.tabPresenter.select(mark.tabId);
     } catch (e) {
-      let tab = await this.tabPresenter.create(mark.url);
+      const tab = await this.tabPresenter.create(mark.url);
       return this.markRepository.setMark(key, {
         tabId: tab.id as number, url: mark.url, x: mark.x, y: mark.y,
       });

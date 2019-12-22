@@ -111,7 +111,7 @@ export default class Application {
       }
     });
 
-    let inputDriver = new InputDriver(window.document.body);
+    const inputDriver = new InputDriver(window.document.body);
     inputDriver.onKey(key => this.followKeyController.press(key));
     inputDriver.onKey(key => this.markKeyController.press(key));
     inputDriver.onKey(key => this.keymapController.press(key));

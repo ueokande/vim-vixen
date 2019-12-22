@@ -19,7 +19,7 @@ export default class FindUseCase {
     if (keyword) {
       this.saveKeyword(keyword);
     } else {
-      let lastKeyword = await this.getKeyword();
+      const lastKeyword = await this.getKeyword();
       if (!lastKeyword) {
         return this.showNoLastKeywordError();
       }
@@ -39,11 +39,11 @@ export default class FindUseCase {
   private async findNextPrev(
     backwards: boolean,
   ): Promise<void> {
-    let keyword = await this.getKeyword();
+    const keyword = await this.getKeyword();
     if (!keyword) {
       return this.showNoLastKeywordError();
     }
-    let found = this.presenter.find(keyword, backwards);
+    const found = this.presenter.find(keyword, backwards);
     if (found) {
       this.consoleClient.info('Pattern found: ' + keyword);
     } else {

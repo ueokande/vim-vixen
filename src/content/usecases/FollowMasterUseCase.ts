@@ -28,24 +28,24 @@ export default class FollowMasterUseCase {
   }
 
   startFollow(newTab: boolean, background: boolean): void {
-    let hintchars = this.settingRepository.get().properties.hintchars;
+    const hintchars = this.settingRepository.get().properties.hintchars;
     this.producer = new HintKeyProducer(hintchars);
 
     this.followKeyRepository.clearKeys();
     this.followMasterRepository.setCurrentFollowMode(newTab, background);
 
-    let viewWidth = window.top.innerWidth;
-    let viewHeight = window.top.innerHeight;
+    const viewWidth = window.top.innerWidth;
+    const viewHeight = window.top.innerHeight;
     this.followSlaveClientFactory.create(window.top).requestHintCount(
       { width: viewWidth, height: viewHeight },
       { x: 0, y: 0 },
     );
 
-    let frameElements = window.document.querySelectorAll('iframe');
+    const frameElements = window.document.querySelectorAll('iframe');
     for (let i = 0; i < frameElements.length; ++i) {
-      let ele = frameElements[i] as HTMLFrameElement | HTMLIFrameElement;
-      let { left: frameX, top: frameY } = ele.getBoundingClientRect();
-      let client = this.followSlaveClientFactory.create(ele.contentWindow!!);
+      const ele = frameElements[i] as HTMLFrameElement | HTMLIFrameElement;
+      const { left: frameX, top: frameY } = ele.getBoundingClientRect();
+      const client = this.followSlaveClientFactory.create(ele.contentWindow!!);
       client.requestHintCount(
         { width: viewWidth, height: viewHeight },
         { x: frameX, y: frameY },
@@ -55,28 +55,28 @@ export default class FollowMasterUseCase {
 
   // eslint-disable-next-line max-statements
   createSlaveHints(count: number, sender: Window): void {
-    let produced = [];
+    const produced = [];
     for (let i = 0; i < count; ++i) {
-      let tag = this.producer!!.produce();
+      const tag = this.producer!!.produce();
       produced.push(tag);
       this.followMasterRepository.addTag(tag);
     }
 
-    let doc = window.document;
-    let viewWidth = window.innerWidth || doc.documentElement.clientWidth;
-    let viewHeight = window.innerHeight || doc.documentElement.clientHeight;
+    const doc = window.document;
+    const viewWidth = window.innerWidth || doc.documentElement.clientWidth;
+    const viewHeight = window.innerHeight || doc.documentElement.clientHeight;
     let pos = { x: 0, y: 0 };
     if (sender !== window) {
-      let frameElements = window.document.querySelectorAll('iframe');
-      let ele = Array.from(frameElements).find(e => e.contentWindow === sender);
+      const frameElements = window.document.querySelectorAll('iframe');
+      const ele = Array.from(frameElements).find(e => e.contentWindow === sender);
       if (!ele) {
         // elements of the sender is gone
         return;
       }
-      let { left: frameX, top: frameY } = ele.getBoundingClientRect();
+      const { left: frameX, top: frameY } = ele.getBoundingClientRect();
       pos = { x: frameX, y: frameY };
     }
-    let client = this.followSlaveClientFactory.create(sender);
+    const client = this.followSlaveClientFactory.create(sender);
     client.createHints(
       { width: viewWidth, height: viewHeight },
       pos,
@@ -100,8 +100,8 @@ export default class FollowMasterUseCase {
   activate(tag: string): void {
     this.followMasterRepository.clearTags();
 
-    let newTab = this.followMasterRepository.getCurrentNewTabMode();
-    let background = this.followMasterRepository.getCurrentBackgroundMode();
+    const newTab = this.followMasterRepository.getCurrentNewTabMode();
+    const background = this.followMasterRepository.getCurrentBackgroundMode();
     this.broadcastToSlaves((client) => {
       client.activateIfExists(tag, newTab, background);
       client.clearHints();
@@ -125,8 +125,8 @@ export default class FollowMasterUseCase {
 
     this.followKeyRepository.pushKey(key);
 
-    let tag = this.getCurrentTag();
-    let matched = this.followMasterRepository.getTagsByPrefix(tag);
+    const tag = this.getCurrentTag();
+    const matched = this.followMasterRepository.getTagsByPrefix(tag);
     if (matched.length === 0) {
       this.cancelFollow();
     } else if (matched.length === 1) {
@@ -137,9 +137,9 @@ export default class FollowMasterUseCase {
   }
 
   private broadcastToSlaves(handler: (client: FollowSlaveClient) => void) {
-    let allFrames = [window.self].concat(Array.from(window.frames as any));
-    let clients = allFrames.map(w => this.followSlaveClientFactory.create(w));
-    for (let client of clients) {
+    const allFrames = [window.self].concat(Array.from(window.frames as any));
+    const clients = allFrames.map(w => this.followSlaveClientFactory.create(w));
+    for (const client of clients) {
       handler(client);
     }
   }

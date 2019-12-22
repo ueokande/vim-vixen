@@ -21,7 +21,7 @@ export default class FindUseCase {
   }
 
   async findStart(): Promise<any> {
-    let tab = await this.tabPresenter.getCurrent();
+    const tab = await this.tabPresenter.getCurrent();
     return this.consoleClient.showFind(tab.id as number);
   }
 }

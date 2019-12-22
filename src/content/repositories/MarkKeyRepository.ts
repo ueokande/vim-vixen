@@ -17,7 +17,7 @@ interface Mode {
   jumpMode: boolean;
 }
 
-let current: Mode = {
+const current: Mode = {
   setMode: false,
   jumpMode: false,
 };

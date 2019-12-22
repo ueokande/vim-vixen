@@ -13,8 +13,8 @@ interface Props extends React.AllHTMLAttributes<HTMLElement> {
 
 class Input extends React.Component<Props> {
   renderText(props: Props) {
-    let inputClassName = props.error ? 'input-error' : '';
-    let pp = { ...props };
+    const inputClassName = props.error ? 'input-error' : '';
+    const pp = { ...props };
     delete pp.onValueChange;
     return <div className='settings-ui-input'>
       <label htmlFor={props.id}>{ props.label }</label>
@@ -26,8 +26,8 @@ class Input extends React.Component<Props> {
   }
 
   renderRadio(props: Props) {
-    let inputClassName = props.error ? 'input-error' : '';
-    let pp = { ...props };
+    const inputClassName = props.error ? 'input-error' : '';
+    const pp = { ...props };
     delete pp.onValueChange;
     return <div className='settings-ui-input'>
       <label>
@@ -41,8 +41,8 @@ class Input extends React.Component<Props> {
   }
 
   renderTextArea(props: Props) {
-    let inputClassName = props.error ? 'input-error' : '';
-    let pp = { ...props };
+    const inputClassName = props.error ? 'input-error' : '';
+    const pp = { ...props };
     delete pp.onValueChange;
     return <div className='settings-ui-input'>
       <label
@@ -57,7 +57,7 @@ class Input extends React.Component<Props> {
   }
 
   render() {
-    let { type } = this.props;
+    const { type } = this.props;
 
     switch (this.props.type) {
     case 'text':

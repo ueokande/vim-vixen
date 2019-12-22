@@ -96,7 +96,7 @@ class SettingsComponent extends React.Component<Props> {
 
   render() {
     let fields = null;
-    let disabled = this.props.error.length > 0;
+    const disabled = this.props.error.length > 0;
     if (this.props.source === 'form') {
       fields = this.renderFormFields(this.props.form!!);
     } else if (this.props.source === 'json') {
@@ -131,7 +131,7 @@ class SettingsComponent extends React.Component<Props> {
   }
 
   bindKeymapsForm(value: FormKeymaps) {
-    let data = new SettingData({
+    const data = new SettingData({
       source: this.props.source,
       form: (this.props.form as FormSettings).buildWithKeymaps(value),
     });
@@ -139,7 +139,7 @@ class SettingsComponent extends React.Component<Props> {
   }
 
   bindSearchForm(value: any) {
-    let data = new SettingData({
+    const data = new SettingData({
       source: this.props.source,
       form: (this.props.form as FormSettings).buildWithSearch(
         FormSearch.fromJSON(value)),
@@ -148,7 +148,7 @@ class SettingsComponent extends React.Component<Props> {
   }
 
   bindBlacklistForm(blacklist: Blacklist) {
-    let data = new SettingData({
+    const data = new SettingData({
       source: this.props.source,
       form: (this.props.form as FormSettings).buildWithBlacklist(blacklist),
     });
@@ -156,7 +156,7 @@ class SettingsComponent extends React.Component<Props> {
   }
 
   bindPropertiesForm(value: any) {
-    let data = new SettingData({
+    const data = new SettingData({
       source: this.props.source,
       form: (this.props.form as FormSettings).buildWithProperties(
         Properties.fromJSON(value))
@@ -165,7 +165,7 @@ class SettingsComponent extends React.Component<Props> {
   }
 
   bindJson(_name: string, value: string) {
-    let data = new SettingData({
+    const data = new SettingData({
       source: this.props.source,
       json: JSONTextSettings.fromText(value),
     });
@@ -173,13 +173,13 @@ class SettingsComponent extends React.Component<Props> {
   }
 
   bindSource(_name: string, value: string) {
-    let from = this.props.source;
+    const from = this.props.source;
     if (from === 'form' && value === 'json') {
       this.props.dispatch(settingActions.switchToJson(
         this.props.form as FormSettings));
       this.save();
     } else if (from === 'json' && value === 'form') {
-      let b = window.confirm(DO_YOU_WANT_TO_CONTINUE);
+      const b = window.confirm(DO_YOU_WANT_TO_CONTINUE);
       if (!b) {
         this.forceUpdate();
         return;
@@ -191,7 +191,7 @@ class SettingsComponent extends React.Component<Props> {
   }
 
   save() {
-    let { source, json, form } = this.props.store.getState();
+    const { source, json, form } = this.props.store.getState();
     this.props.dispatch(settingActions.save(
       new SettingData({ source, json, form }),
     ));
