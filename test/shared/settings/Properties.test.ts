@@ -4,7 +4,7 @@ import { expect } from 'chai';
 describe('Properties', () => {
   describe('#propertiesValueOf', () => {
     it('returns with default properties by empty settings', () => {
-      let props = Properties.fromJSON({});
+      const props = Properties.fromJSON({});
       expect(props).to.deep.equal({
         hintchars: "abcdefghijklmnopqrstuvwxyz",
         smoothscroll: false,
@@ -13,7 +13,7 @@ describe('Properties', () => {
     });
 
     it('returns properties by valid settings', () => {
-      let props = Properties.fromJSON({
+      const props = Properties.fromJSON({
         hintchars: "abcdefgh",
         smoothscroll: false,
         complete: "sbh"

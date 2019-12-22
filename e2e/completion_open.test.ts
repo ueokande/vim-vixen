@@ -10,7 +10,7 @@ import Page from './lib/Page';
 import SettingRepository from "./lib/SettingRepository";
 
 describe("completion on open/tabopen/winopen commands", () => {
-  let server = new TestServer().receiveContent('/*', 'ok');
+  const server = new TestServer().receiveContent('/*', 'ok');
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
@@ -42,11 +42,11 @@ describe("completion on open/tabopen/winopen commands", () => {
   });
 
   it('should show completions from search engines, bookmarks, and histories by "open" command', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.inputKeys('open ');
 
     await eventually(async() => {
-      let completions = await console.getCompletions();
+      const completions = await console.getCompletions();
       assert.ok(completions.find(x => x.type === 'title' && x.text === 'Search Engines'));
       assert.ok(completions.find(x => x.type === 'title' && x.text === 'Bookmarks'));
       assert.ok(completions.find(x => x.type === 'title' && x.text === 'History'));
@@ -54,45 +54,45 @@ describe("completion on open/tabopen/winopen commands", () => {
   });
 
   it('should filter items with URLs by keywords on "open" command', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.inputKeys('open https://');
 
     await eventually(async() => {
-      let completions = await console.getCompletions();
-      let items = completions.filter(x => x.type === 'item').map(x => x.text);
+      const completions = await console.getCompletions();
+      const items = completions.filter(x => x.type === 'item').map(x => x.text);
       assert.ok(items.every(x => x.includes('https://')));
     });
   });
 
   it('should filter items with titles by keywords on "open" command', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.inputKeys('open getting');
 
     await eventually(async() => {
-      let completions = await console.getCompletions();
-      let items = completions.filter(x => x.type === 'item').map(x => x.text);
+      const completions = await console.getCompletions();
+      const items = completions.filter(x => x.type === 'item').map(x => x.text);
       assert.ok(items.every(x => x.toLowerCase().includes('getting')));
     });
   });
 
   it('should filter items with titles by keywords on "tabopen" command', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.inputKeys('tabopen getting');
 
     await eventually(async() => {
-      let completions = await console.getCompletions();
-      let items = completions.filter(x => x.type === 'item').map(x => x.text);
+      const completions = await console.getCompletions();
+      const items = completions.filter(x => x.type === 'item').map(x => x.text);
       assert.ok(items.every(x => x.includes('https://')));
     });
   });
 
   it('should filter items with titles by keywords on "winopen" command', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.inputKeys('winopen https://');
 
     await eventually(async() => {
-      let completions = await console.getCompletions();
-      let items = completions.filter(x => x.type === 'item').map(x => x.text);
+      const completions = await console.getCompletions();
+      const items = completions.filter(x => x.type === 'item').map(x => x.text);
       assert.ok(items.every(x => x.includes('https://')));
     });
   });
@@ -106,8 +106,8 @@ describe("completion on open/tabopen/winopen commands", () => {
     await console.inputKeys('open ');
 
     await eventually(async() => {
-      let completions = await console.getCompletions();
-      let titles = completions.filter(x => x.type === 'title').map(x => x.text);
+      const completions = await console.getCompletions();
+      const titles = completions.filter(x => x.type === 'title').map(x => x.text);
       assert.deepStrictEqual(titles, ['Search Engines', 'Bookmarks', 'History'])
     });
 
@@ -120,8 +120,8 @@ describe("completion on open/tabopen/winopen commands", () => {
     await console.inputKeys('open ');
 
     await eventually(async() => {
-      let completions = await console.getCompletions();
-      let titles = completions.filter(x => x.type === 'title').map(x => x.text);
+      const completions = await console.getCompletions();
+      const titles = completions.filter(x => x.type === 'title').map(x => x.text);
       assert.deepStrictEqual(titles, ['Bookmarks', 'Search Engines', 'Search Engines'])
     });
   });
@@ -135,8 +135,8 @@ describe("completion on open/tabopen/winopen commands", () => {
     await console.inputKeys('open ');
 
     await eventually(async() => {
-      let completions = await console.getCompletions();
-      let titles = completions.filter(x => x.type === 'title').map(x => x.text);
+      const completions = await console.getCompletions();
+      const titles = completions.filter(x => x.type === 'title').map(x => x.text);
       assert.deepStrictEqual(titles, ['Search Engines', 'Bookmarks', 'History'])
     });
 
@@ -151,8 +151,8 @@ describe("completion on open/tabopen/winopen commands", () => {
     await console.inputKeys('open ');
 
     await eventually(async() => {
-      let completions = await console.getCompletions();
-      let titles = completions.filter(x => x.type === 'title').map(x => x.text);
+      const completions = await console.getCompletions();
+      const titles = completions.filter(x => x.type === 'title').map(x => x.text);
       assert.deepStrictEqual(titles, ['Bookmarks', 'Search Engines', 'Search Engines'])
     });
   });

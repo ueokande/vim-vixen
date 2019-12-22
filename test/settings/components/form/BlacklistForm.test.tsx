@@ -10,11 +10,11 @@ import Blacklist from '../../../../src/shared/settings/Blacklist';
 describe("settings/form/BlacklistForm", () => {
   describe('render', () => {
     it('renders BlacklistForm', () => {
-      let root = ReactTestRenderer.create(
+      const root = ReactTestRenderer.create(
         <BlacklistForm value={Blacklist.fromJSON(['*.slack.com', 'www.google.com/maps'])} />,
       ).root;
 
-      let children = root.children[0].children;
+      const children = root.children[0].children;
       expect(children).to.have.lengthOf(3);
       expect(children[0].children[0].props.value).to.equal('*.slack.com');
       expect(children[1].children[0].props.value).to.equal('www.google.com/maps');
@@ -22,9 +22,9 @@ describe("settings/form/BlacklistForm", () => {
     });
 
     it('renders blank value', () => {
-      let root = ReactTestRenderer.create(<BlacklistForm />).root;
+      const root = ReactTestRenderer.create(<BlacklistForm />).root;
 
-      let children = root.children[0].children;
+      const children = root.children[0].children;
       expect(children).to.have.lengthOf(1);
       expect(children[0].props.name).to.equal('add');
     });
@@ -48,14 +48,14 @@ describe("settings/form/BlacklistForm", () => {
         ReactDOM.render(<BlacklistForm
           value={Blacklist.fromJSON(['*.slack.com', 'www.google.com/maps*'])}
           onChange={value => {
-            let urls = value.items.map(item => item.pattern);
+            const urls = value.items.map(item => item.pattern);
             expect(urls).to.have.members(['gitter.im', 'www.google.com/maps*']);
             done();
           }}
         />, container)
       });
 
-      let input = document.querySelectorAll('input[type=text]')[0];
+      const input = document.querySelectorAll('input[type=text]')[0];
       input.value = 'gitter.im';
       ReactTestUtils.Simulate.change(input);
     });
@@ -65,14 +65,14 @@ describe("settings/form/BlacklistForm", () => {
         ReactDOM.render(<BlacklistForm
           value={Blacklist.fromJSON(['*.slack.com', 'www.google.com/maps*'])}
           onChange={value => {
-            let urls = value.items.map(item => item.pattern);
+            const urls = value.items.map(item => item.pattern);
             expect(urls).to.have.members(['www.google.com/maps*']);
             done();
           }}
         />, container)
       });
 
-      let button = document.querySelectorAll('input[type=button]')[0];
+      const button = document.querySelectorAll('input[type=button]')[0];
       ReactTestUtils.Simulate.click(button);
     });
 
@@ -81,14 +81,14 @@ describe("settings/form/BlacklistForm", () => {
         ReactDOM.render(<BlacklistForm
           value={Blacklist.fromJSON(['*.slack.com'])}
           onChange={value => {
-            let urls = value.items.map(item => item.pattern);
+            const urls = value.items.map(item => item.pattern);
             expect(urls).to.have.members(['*.slack.com', '']);
             done();
           }}
         />, container);
       });
 
-      let button = document.querySelector('input[type=button].ui-add-button');
+      const button = document.querySelector('input[type=button].ui-add-button');
       ReactTestUtils.Simulate.click(button);
     });
   });

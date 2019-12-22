@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 describe('Search', () => {
   it('returns search settings by valid settings', () => {
-    let search = Search.fromJSON({
+    const search = Search.fromJSON({
       default: 'google',
       engines: {
         'google': 'https://google.com/search?q={}',

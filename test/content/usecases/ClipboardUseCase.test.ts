@@ -14,7 +14,7 @@ describe('ClipboardUseCase', () => {
   let sut: ClipboardUseCase;
 
   beforeEach(() => {
-    var modal = <ConsoleClient>{};
+    const modal = <ConsoleClient>{};
 
     clipboardRepository = <ClipboardRepository>{ read() {}, write(_) {} };
     operationClient = <OperationClient>{ internalOpenUrl(_) {} };
@@ -29,13 +29,13 @@ describe('ClipboardUseCase', () => {
 
   describe('#yankCurrentURL', () => {
     it('yanks current url', async () => {
-      let href = window.location.href;
-      var mockRepository = sinon.mock(clipboardRepository);
+      const href = window.location.href;
+      const mockRepository = sinon.mock(clipboardRepository);
       mockRepository.expects('write').withArgs(href);
-      var mockConsoleClient = sinon.mock(consoleClient);
+      const mockConsoleClient = sinon.mock(consoleClient);
       mockConsoleClient.expects('info').withArgs('Yanked ' + href);
 
-      let yanked = await sut.yankCurrentURL();
+      const yanked = await sut.yankCurrentURL();
 
       expect(yanked).to.equal(href);
       mockRepository.verify();
@@ -45,9 +45,9 @@ describe('ClipboardUseCase', () => {
 
   describe('#openOrSearch', () => {
     it('opens url from the clipboard', async () => {
-      let url = 'https://github.com/ueokande/vim-vixen'
+      const url = 'https://github.com/ueokande/vim-vixen'
       sinon.stub(clipboardRepository, 'read').returns(url);
-      let mockOperationClient = sinon.mock(operationClient);
+      const mockOperationClient = sinon.mock(operationClient);
       mockOperationClient.expects('internalOpenUrl').withArgs(url, true);
 
       await sut.openOrSearch(true);
@@ -56,9 +56,9 @@ describe('ClipboardUseCase', () => {
     });
 
     it('opens search results from the clipboard', async () => {
-      let url = 'https://google.com/search?q=banana';
+      const url = 'https://google.com/search?q=banana';
       sinon.stub(clipboardRepository, 'read').returns('banana');
-      let mockOperationClient = sinon.mock(operationClient);
+      const mockOperationClient = sinon.mock(operationClient);
       mockOperationClient.expects('internalOpenUrl').withArgs(url, true);
 
       await sut.openOrSearch(true);

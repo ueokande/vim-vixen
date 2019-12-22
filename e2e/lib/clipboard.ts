@@ -3,7 +3,7 @@ import { spawn } from 'child_process';
 const readLinux = (): Promise<string> => {
   let stdout = '', stderr = '';
   return new Promise((resolve) => {
-    let xsel = spawn('xsel', ['--clipboard', '--output']);
+    const xsel = spawn('xsel', ['--clipboard', '--output']);
     xsel.stdout.on('data', (data) => {
       stdout += data;
     });
@@ -22,7 +22,7 @@ const readLinux = (): Promise<string> => {
 const writeLinux = (data: string): Promise<string> => {
   let stderr = '';
   return new Promise((resolve) => {
-    let xsel = spawn('xsel', ['--clipboard', '--input']);
+    const xsel = spawn('xsel', ['--clipboard', '--input']);
     xsel.stderr.on('data', (data) => {
       stderr += data;
     });
@@ -40,7 +40,7 @@ const writeLinux = (data: string): Promise<string> => {
 const readDarwin = (): Promise<string> => {
   let stdout = '', stderr = '';
   return new Promise((resolve) => {
-    let pbpaste = spawn('pbpaste');
+    const pbpaste = spawn('pbpaste');
     pbpaste.stdout.on('data', (data) => {
       stdout += data;
     });
@@ -59,7 +59,7 @@ const readDarwin = (): Promise<string> => {
 const writeDarwin = (data: string): Promise<string> => {
   let stderr = '';
   return new Promise((resolve) => {
-    let pbcopy = spawn('pbcopy');
+    const pbcopy = spawn('pbcopy');
     pbcopy.stderr.on('data', (data) => {
       stderr += data;
     });

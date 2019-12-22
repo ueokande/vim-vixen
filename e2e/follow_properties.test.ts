@@ -8,7 +8,7 @@ import { WebDriver, Key } from 'selenium-webdriver';
 import Page from './lib/Page';
 
 describe('follow properties test', () => {
-  let server = new TestServer().receiveContent('/', `
+  const server = new TestServer().receiveContent('/', `
     <!DOCTYPE html>
     <html lang="en"><body>
       <a href="/">link1</a>
@@ -65,8 +65,8 @@ describe('follow properties test', () => {
   });
 
   afterEach(async() => {
-    let tabs = await browser.tabs.query({});
-    for (let tab of tabs.slice(1)) {
+    const tabs = await browser.tabs.query({});
+    for (const tab of tabs.slice(1)) {
       await browser.tabs.remove(tab.id);
     }
   });
@@ -99,7 +99,7 @@ describe('follow properties test', () => {
     await page.sendKeys('jj');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({});
+      const tabs = await browser.tabs.query({});
       assert.strictEqual(tabs[0].active, false);
       assert.strictEqual(tabs[1].active, true);
     });
@@ -111,14 +111,14 @@ describe('follow properties test', () => {
     await page.sendKeys('jj');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({});
+      const tabs = await browser.tabs.query({});
       assert.strictEqual(tabs[0].active, true);
       assert.strictEqual(tabs[1].active, false);
     });
   });
 
   it('should show hints with hintchars by settings', async () => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.execCommand('set hintchars=abc');
     await (webdriver.switchTo() as any).parentFrame();
 

@@ -5,7 +5,7 @@ import Key from "../../../src/shared/settings/Key";
 describe("KeySequence", () => {
   describe('#push', () => {
     it('append a key to the sequence', () => {
-      let seq = new KeySequence([]);
+      const seq = new KeySequence([]);
       seq.push(Key.fromMapKey('g'));
       seq.push(Key.fromMapKey('<S-U>'));
 
@@ -17,7 +17,7 @@ describe("KeySequence", () => {
 
   describe('#startsWith', () => {
     it('returns true if the key sequence starts with param', () => {
-      let seq = new KeySequence([
+      const seq = new KeySequence([
         Key.fromMapKey('g'),
         Key.fromMapKey('<S-U>'),
       ]);
@@ -39,7 +39,7 @@ describe("KeySequence", () => {
     });
 
     it('returns true if the empty sequence starts with an empty sequence', () => {
-      let seq = new KeySequence([]);
+      const seq = new KeySequence([]);
 
       expect(seq.startsWith(new KeySequence([]))).to.be.true;
       expect(seq.startsWith(new KeySequence([
@@ -102,7 +102,7 @@ describe("KeySequence", () => {
 
   describe('#trimNumericPrefix', () => {
     it('removes numeric prefix', () => {
-      let seq = new KeySequence([
+      const seq = new KeySequence([
         new Key({ key: '1' }), new Key({ key: '0' }) ,
         new Key({ key: 'g' }), new Key({ key: 'g' }) , new Key({ key: '3' })  ,
       ]).trimNumericPrefix();
@@ -110,14 +110,14 @@ describe("KeySequence", () => {
     });
 
     it('returns empty if keys contains only digis', () => {
-      let seq = new KeySequence([
+      const seq = new KeySequence([
         new Key({ key: '1' }), new Key({ key: '0' })  ,
       ]).trimNumericPrefix();
       expect(seq.trimNumericPrefix().keys).to.be.empty;
     });
 
     it('returns itself if no numeric prefix', () => {
-      let seq = new KeySequence([
+      const seq = new KeySequence([
         new Key({ key: 'g' }), new Key({ key: 'g' }) , new Key({ key: '3' })  ,
       ]).trimNumericPrefix();
 
@@ -144,14 +144,14 @@ describe("KeySequence", () => {
 
   describe('#fromMapKeys', () => {
     it('returns mapped keys for Shift+Esc', () => {
-      let keys = KeySequence.fromMapKeys('<S-Esc>').keys;
+      const keys = KeySequence.fromMapKeys('<S-Esc>').keys;
       expect(keys).to.have.lengthOf(1);
       expect(keys[0].key).to.equal('Esc');
       expect(keys[0].shift).to.be.true;
     });
 
     it('returns mapped keys for a<C-B><A-C>d<M-e>', () => {
-      let keys = KeySequence.fromMapKeys('a<C-B><A-C>d<M-e>').keys;
+      const keys = KeySequence.fromMapKeys('a<C-B><A-C>d<M-e>').keys;
       expect(keys).to.have.lengthOf(5);
       expect(keys[0].key).to.equal('a');
       expect(keys[1].ctrl).to.be.true;

@@ -8,7 +8,7 @@ import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
 
 describe("tab test", () => {
-  let server = new TestServer().receiveContent('/',
+  const server = new TestServer().receiveContent('/',
     `<!DOCTYPE html><html lang="en"><body style="width:10000px; height:10000px"></body></html>`,
   );
   let lanthan: Lanthan;
@@ -35,25 +35,25 @@ describe("tab test", () => {
   });
 
   it('repeats scroll 3-times', async () => {
-    let page = await Page.navigateTo(webdriver, server.url());
+    const page = await Page.navigateTo(webdriver, server.url());
     await page.sendKeys('3', 'j');
 
-    let scrollY = await page.getScrollY();
+    const scrollY = await page.getScrollY();
     assert.strictEqual(scrollY, 64 * 3);
   });
 
   it('repeats tab deletion 3-times', async () => {
-    let win = await browser.windows.create({ url: server.url('/#0') });
+    const win = await browser.windows.create({ url: server.url('/#0') });
     for (let i = 1; i < 5; ++i) {
       await browser.tabs.create({ url: server.url('/#' + i), windowId: win.id });
       await webdriver.navigate().to(server.url('/#' + i));
     }
 
-    let page = await Page.navigateTo(webdriver, server.url());
+    const page = await Page.navigateTo(webdriver, server.url());
     await page.sendKeys('3', 'd');
 
     await eventually(async() => {
-      let current = await browser.tabs.query({ windowId: win.id });
+      const current = await browser.tabs.query({ windowId: win.id });
       assert.strictEqual(current.length, 2);
     });
   });

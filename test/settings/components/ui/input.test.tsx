@@ -24,8 +24,8 @@ describe("settings/ui/Input", () => {
           container);
       });
 
-      let label = document.querySelector('label');
-      let input = document.querySelector('input');
+      const label = document.querySelector('label');
+      const input = document.querySelector('input');
       expect(label.textContent).to.contain('myfield');
       expect(input.type).to.contain('text');
       expect(input.name).to.contain('myname');
@@ -40,7 +40,7 @@ describe("settings/ui/Input", () => {
         }}/>, container);
       });
 
-      let input = document.querySelector('input');
+      const input = document.querySelector('input');
       input.value = 'newvalue';
       ReactTestUtils.Simulate.change(input);
     });
@@ -54,8 +54,8 @@ describe("settings/ui/Input", () => {
           container);
       });
 
-      let label = document.querySelector('label');
-      let input = document.querySelector('input');
+      const label = document.querySelector('label');
+      const input = document.querySelector('input');
       expect(label.textContent).to.contain('myfield');
       expect(input.type).to.contain('radio');
       expect(input.name).to.contain('myname');
@@ -71,7 +71,7 @@ describe("settings/ui/Input", () => {
         container);
       });
 
-      let input = document.querySelector('input');
+      const input = document.querySelector('input');
       input.checked = true;
       ReactTestUtils.Simulate.change(input);
     });
@@ -85,9 +85,9 @@ describe("settings/ui/Input", () => {
           container);
       });
 
-      let label = document.querySelector('label');
-      let textarea = document.querySelector('textarea');
-      let error = document.querySelector('.settings-ui-input-error');
+      const label = document.querySelector('label');
+      const textarea = document.querySelector('textarea');
+      const error = document.querySelector('.settings-ui-input-error');
       expect(label.textContent).to.contain('myfield');
       expect(textarea.nodeName).to.contain('TEXTAREA');
       expect(textarea.name).to.contain('myname');
@@ -103,7 +103,7 @@ describe("settings/ui/Input", () => {
         }}/>, container);
       });
 
-      let input = document.querySelector('textarea');
+      const input = document.querySelector('textarea');
       input.value = 'newvalue'
       ReactTestUtils.Simulate.change(input);
     });

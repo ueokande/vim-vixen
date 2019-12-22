@@ -9,7 +9,7 @@ import Page from './lib/Page';
 import OptionPage from './lib/OptionPage';
 
 describe("options page", () => {
-  let server = new TestServer().receiveContent('/',
+  const server = new TestServer().receiveContent('/',
     `<!DOCTYPE html><html lang="en"><body style="width:10000px; height:10000px"></body></html>`,
   );
   let lanthan: Lanthan;
@@ -35,15 +35,15 @@ describe("options page", () => {
   });
 
   beforeEach(async() => {
-    let tabs = await browser.tabs.query({});
-    for (let tab of tabs.slice(1)) {
+    const tabs = await browser.tabs.query({});
+    for (const tab of tabs.slice(1)) {
       await browser.tabs.remove(tab.id);
     }
   });
 
   it('saves current config on blur', async () => {
-    let page = await OptionPage.open(lanthan);
-    let jsonPage = await page.asJSONOptionPage();
+    const page = await OptionPage.open(lanthan);
+    const jsonPage = await page.asJSONOptionPage();
     await jsonPage.updateSettings(`{ "blacklist": [ "https://example.com" ] }`);
 
     let { settings } = await browser.storage.local.get('settings');
@@ -56,25 +56,25 @@ describe("options page", () => {
     assert.strictEqual(settings.source, 'json');
     assert.strictEqual(settings.json, '{ "blacklist": [ "https://example.com" ] } ');
 
-    let message = await jsonPage.getErrorMessage();
+    const message = await jsonPage.getErrorMessage();
     assert.ok(message.startsWith('SyntaxError:'))
   });
 
   it('updates keymaps without reloading', async () => {
-    let optionPage = await OptionPage.open(lanthan);
-    let jsonPage = await optionPage.asJSONOptionPage();
+    const optionPage = await OptionPage.open(lanthan);
+    const jsonPage = await optionPage.asJSONOptionPage();
     await jsonPage.updateSettings(`{ "keymaps": { "zz": { "type": "scroll.vertically", "count": 10 } } }`);
 
     await browser.tabs.create({ url: server.url(), active: false });
     await new Promise((resolve) => setTimeout(resolve, 100));
-    let handles = await webdriver.getAllWindowHandles();
+    const handles = await webdriver.getAllWindowHandles();
     await webdriver.switchTo().window(handles[1]);
 
-    let page = await Page.currentContext(webdriver);
+    const page = await Page.currentContext(webdriver);
     await page.sendKeys('zz');
 
     await eventually(async() => {
-      let y = await page.getScrollY();
+      const y = await page.getScrollY();
       assert.strictEqual(y, 640);
     });
   })

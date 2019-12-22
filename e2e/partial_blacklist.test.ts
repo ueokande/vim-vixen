@@ -9,7 +9,7 @@ import Settings from '../src/shared/settings/Settings';
 import SettingRepository from './lib/SettingRepository';
 
 describe("partial blacklist test", () => {
-  let server = new TestServer().receiveContent('/*',
+  const server = new TestServer().receiveContent('/*',
     `<!DOCTYPE html><html lang="en"><body style="width:10000px; height:10000px"></body></html>`,
   );
   let lanthan: Lanthan;
@@ -25,7 +25,7 @@ describe("partial blacklist test", () => {
     browser = lanthan.getWebExtBrowser();
     await server.start();
 
-    let url = server.url().replace('http://', '');
+    const url = server.url().replace('http://', '');
     await new SettingRepository(browser).saveJSON(Settings.fromJSON({
       keymaps: {
         j: { type: 'scroll.vertically', count: 1 },
@@ -45,7 +45,7 @@ describe("partial blacklist test", () => {
   });
 
   it('should disable keys in the partial blacklist', async () => {
-    let page = await Page.navigateTo(webdriver, server.url('/'));
+    const page = await Page.navigateTo(webdriver, server.url('/'));
 
     await page.sendKeys('j');
     let scrollY = await page.getScrollY();

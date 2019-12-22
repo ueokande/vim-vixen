@@ -9,8 +9,8 @@ export default class FormOptionPage {
   }
 
   async setBlacklist(nth: number, url: string): Promise<void> {
-    let selector = '.form-blacklist-form-row > .column-url';
-    let inputs = await this.webdriver.findElements(By.css(selector));
+    const selector = '.form-blacklist-form-row > .column-url';
+    const inputs = await this.webdriver.findElements(By.css(selector));
     if (inputs.length <= nth) {
       throw new RangeError('Index out of range to set a blacklist')
     }
@@ -55,21 +55,21 @@ export default class FormOptionPage {
   }
 
   async addBlacklist(): Promise<void> {
-    let rows = await this.webdriver.findElements(By.css(`.form-blacklist-form-row`));
-    let button = await this.webdriver.findElement(By.css('.form-blacklist-form .ui-add-button'))
+    const rows = await this.webdriver.findElements(By.css(`.form-blacklist-form-row`));
+    const button = await this.webdriver.findElement(By.css('.form-blacklist-form .ui-add-button'))
     await button.click();
     await this.webdriver.wait(until.elementLocated(By.css(`.form-blacklist-form-row:nth-child(${rows.length + 1})`)));
   }
 
   async addPartialBlacklist(): Promise<void> {
-    let rows = await this.webdriver.findElements(By.css(`.form-partial-blacklist-form-row`));
-    let button = await this.webdriver.findElement(By.css('.form-partial-blacklist-form .ui-add-button'))
+    const rows = await this.webdriver.findElements(By.css(`.form-partial-blacklist-form-row`));
+    const button = await this.webdriver.findElement(By.css('.form-partial-blacklist-form .ui-add-button'))
     await button.click();
     await this.webdriver.wait(until.elementLocated(By.css(`.form-partial-blacklist-form-row:nth-child(${rows.length + 2})`)));
   }
 
   async removeBlackList(nth: number): Promise<void> {
-    let buttons = await this.webdriver.findElements(By.css('.form-blacklist-form-row .ui-delete-button'));
+    const buttons = await this.webdriver.findElements(By.css('.form-blacklist-form-row .ui-delete-button'));
     if (buttons.length <= nth) {
       throw new RangeError('Index out of range to remove blacklist')
     }
@@ -77,7 +77,7 @@ export default class FormOptionPage {
   }
 
   async removePartialBlackList(nth: number): Promise<void> {
-    let buttons = await this.webdriver.findElements(By.css('.form-partial-blacklist-form-row .ui-delete-button'));
+    const buttons = await this.webdriver.findElements(By.css('.form-partial-blacklist-form-row .ui-delete-button'));
     if (buttons.length <= nth) {
       throw new RangeError('Index out of range to remove partial blacklist')
     }
@@ -85,14 +85,14 @@ export default class FormOptionPage {
   }
 
   async addSearchEngine(): Promise<void> {
-    let rows = await this.webdriver.findElements(By.css(`.form-search-form-row > .column-name`));
-    let button = await this.webdriver.findElement(By.css('.form-search-form > .ui-add-button'))
+    const rows = await this.webdriver.findElements(By.css(`.form-search-form-row > .column-name`));
+    const button = await this.webdriver.findElement(By.css('.form-search-form > .ui-add-button'))
     await button.click();
     await this.webdriver.wait(until.elementLocated(By.css(`.form-search-form-row:nth-child(${rows.length + 1})`)));
   }
 
   async setDefaultSearchEngine(nth: number): Promise<void> {
-    let radios = await this.webdriver.findElements(By.css('.form-search-form-row input[type=radio]'));
+    const radios = await this.webdriver.findElements(By.css('.form-search-form-row input[type=radio]'));
     if (radios.length <= nth) {
       throw new RangeError('Index out of range to set a default search engine');
     }

@@ -33,21 +33,21 @@ describe("zoom test", () => {
   });
 
   it('should zoom in by zi', async () => {
-    let before = await browser.tabs.getZoom(tab.id);
+    const before = await browser.tabs.getZoom(tab.id);
     await page.sendKeys('zi');
 
     await eventually(async() => {
-      let actual = await browser.tabs.getZoom(tab.id);
+      const actual = await browser.tabs.getZoom(tab.id);
       assert.ok(before < actual);
     });
   });
 
   it('should zoom out by zo', async () => {
-    let before = await browser.tabs.getZoom(tab.id);
+    const before = await browser.tabs.getZoom(tab.id);
     await page.sendKeys('zo');
 
     await eventually(async() => {
-      let actual = await browser.tabs.getZoom(tab.id);
+      const actual = await browser.tabs.getZoom(tab.id);
       assert.ok(before > actual);
     });
   });
@@ -57,7 +57,7 @@ describe("zoom test", () => {
     await page.sendKeys('zz');
 
     await eventually(async() => {
-      let actual = await browser.tabs.getZoom(tab.id);
+      const actual = await browser.tabs.getZoom(tab.id);
       assert.strictEqual(actual, 1);
     });
   });

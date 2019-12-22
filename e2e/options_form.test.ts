@@ -15,8 +15,8 @@ describe("options form page", () => {
       .build();
     browser = lanthan.getWebExtBrowser();
 
-    let tabs = await browser.tabs.query({});
-    for (let tab of tabs.slice(1)) {
+    const tabs = await browser.tabs.query({});
+    for (const tab of tabs.slice(1)) {
       await browser.tabs.remove(tab.id);
     }
   });
@@ -28,16 +28,16 @@ describe("options form page", () => {
   });
 
   it('switch to form settings', async () => {
-    let page = await OptionPage.open(lanthan);
+    const page = await OptionPage.open(lanthan);
     await page.switchToForm();
 
-    let { settings } = await browser.storage.local.get('settings');
+    const { settings } = await browser.storage.local.get('settings');
     assert.strictEqual(settings.source, 'form')
   });
 
   it('add blacklist item', async () => {
-    let page = await OptionPage.open(lanthan);
-    let forms = await page.switchToForm();
+    const page = await OptionPage.open(lanthan);
+    const forms = await page.switchToForm();
 
     // assert default
     let settings = (await browser.storage.local.get('settings')).settings;
@@ -63,8 +63,8 @@ describe("options form page", () => {
   });
 
   it('add a partial blacklist item', async () => {
-    let page = await OptionPage.open(lanthan);
-    let forms = await page.switchToForm();
+    const page = await OptionPage.open(lanthan);
+    const forms = await page.switchToForm();
 
     // assert default
     let settings = (await browser.storage.local.get('settings')).settings;
@@ -108,8 +108,8 @@ describe("options form page", () => {
   });
 
   it('add search engines', async () => {
-    let page = await OptionPage.open(lanthan);
-    let forms = await page.switchToForm();
+    const page = await OptionPage.open(lanthan);
+    const forms = await page.switchToForm();
 
     // assert default
     let settings = (await browser.storage.local.get('settings')).settings;

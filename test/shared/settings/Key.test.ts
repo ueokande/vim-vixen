@@ -4,7 +4,7 @@ import Key from '../../../src/shared/settings/Key';
 describe("Key", () => {
   describe('fromMapKey', () => {
     it('return for X', () => {
-      let key = Key.fromMapKey('x');
+      const key = Key.fromMapKey('x');
       expect(key.key).to.equal('x');
       expect(key.shift).to.be.false;
       expect(key.ctrl).to.be.false;
@@ -13,7 +13,7 @@ describe("Key", () => {
     });
 
     it('return for Shift+X', () => {
-      let key = Key.fromMapKey('X');
+      const key = Key.fromMapKey('X');
       expect(key.key).to.equal('X');
       expect(key.shift).to.be.true;
       expect(key.ctrl).to.be.false;
@@ -22,7 +22,7 @@ describe("Key", () => {
     });
 
     it('return for Ctrl+X', () => {
-      let key = Key.fromMapKey('<C-X>');
+      const key = Key.fromMapKey('<C-X>');
       expect(key.key).to.equal('x');
       expect(key.shift).to.be.false;
       expect(key.ctrl).to.be.true;
@@ -31,7 +31,7 @@ describe("Key", () => {
     });
 
     it('returns for Ctrl+Meta+X', () => {
-      let key = Key.fromMapKey('<C-M-X>');
+      const key = Key.fromMapKey('<C-M-X>');
       expect(key.key).to.equal('x');
       expect(key.shift).to.be.false;
       expect(key.ctrl).to.be.true;
@@ -40,7 +40,7 @@ describe("Key", () => {
     });
 
     it('returns for Ctrl+Shift+x', () => {
-      let key = Key.fromMapKey('<C-S-x>');
+      const key = Key.fromMapKey('<C-S-x>');
       expect(key.key).to.equal('X');
       expect(key.shift).to.be.true;
       expect(key.ctrl).to.be.true;
@@ -49,7 +49,7 @@ describe("Key", () => {
     });
 
     it('returns for Shift+Esc', () => {
-      let key = Key.fromMapKey('<S-Esc>');
+      const key = Key.fromMapKey('<S-Esc>');
       expect(key.key).to.equal('Esc');
       expect(key.shift).to.be.true;
       expect(key.ctrl).to.be.false;
@@ -58,7 +58,7 @@ describe("Key", () => {
     });
 
     it('returns for Ctrl+Esc', () => {
-      let key = Key.fromMapKey('<C-Esc>');
+      const key = Key.fromMapKey('<C-Esc>');
       expect(key.key).to.equal('Esc');
       expect(key.shift).to.be.false;
       expect(key.ctrl).to.be.true;
@@ -67,7 +67,7 @@ describe("Key", () => {
     });
 
     it('returns for Ctrl+Esc', () => {
-      let key = Key.fromMapKey('<C-Space>');
+      const key = Key.fromMapKey('<C-Space>');
       expect(key.key).to.equal('Space');
       expect(key.shift).to.be.false;
       expect(key.ctrl).to.be.true;

@@ -16,10 +16,10 @@ describe('NavigateUseCase', () => {
 
   describe('#openParent()', async () => {
     it('opens parent directory of file', async() => {
-      var stub = sinon.stub(tabPresenter, 'getCurrent');
+      const stub = sinon.stub(tabPresenter, 'getCurrent');
       stub.returns(Promise.resolve({ url: 'https://google.com/fruits/yellow/banana' }))
 
-      var mock = sinon.mock(tabPresenter);
+      const mock = sinon.mock(tabPresenter);
       mock.expects('open').withArgs('https://google.com/fruits/yellow/');
 
       await sut.openParent();
@@ -28,10 +28,10 @@ describe('NavigateUseCase', () => {
     });
 
     it('opens parent directory of directory', async() => {
-      var stub = sinon.stub(tabPresenter, 'getCurrent');
+      const stub = sinon.stub(tabPresenter, 'getCurrent');
       stub.returns(Promise.resolve({ url: 'https://google.com/fruits/yellow/' }))
 
-      var mock = sinon.mock(tabPresenter);
+      const mock = sinon.mock(tabPresenter);
       mock.expects('open').withArgs('https://google.com/fruits/');
 
       await sut.openParent();
@@ -40,10 +40,10 @@ describe('NavigateUseCase', () => {
     });
 
     it('removes hash', async() => {
-      var stub = sinon.stub(tabPresenter, 'getCurrent');
+      const stub = sinon.stub(tabPresenter, 'getCurrent');
       stub.returns(Promise.resolve({ url: 'https://google.com/#top' }))
 
-      var mock = sinon.mock(tabPresenter);
+      const mock = sinon.mock(tabPresenter);
       mock.expects('open').withArgs('https://google.com/');
 
       await sut.openParent();
@@ -52,10 +52,10 @@ describe('NavigateUseCase', () => {
     });
 
     it('removes search query', async() => {
-      var stub = sinon.stub(tabPresenter, 'getCurrent');
+      const stub = sinon.stub(tabPresenter, 'getCurrent');
       stub.returns(Promise.resolve({ url: 'https://google.com/search?q=apple' }))
 
-      var mock = sinon.mock(tabPresenter);
+      const mock = sinon.mock(tabPresenter);
       mock.expects('open').withArgs('https://google.com/search');
 
       await sut.openParent();
@@ -66,12 +66,12 @@ describe('NavigateUseCase', () => {
 
   describe('#openRoot()', () => {
     it('opens root direectory', async() => {
-      var stub = sinon.stub(tabPresenter, 'getCurrent');
+      const stub = sinon.stub(tabPresenter, 'getCurrent');
       stub.returns(Promise.resolve({
         url: 'https://google.com/seach?q=apple',
       }))
 
-      var mock = sinon.mock(tabPresenter);
+      const mock = sinon.mock(tabPresenter);
       mock.expects('open').withArgs('https://google.com');
 
       await sut.openRoot();

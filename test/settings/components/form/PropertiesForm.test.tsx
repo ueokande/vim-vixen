@@ -7,19 +7,19 @@ import PropertiesForm from 'settings/components/form/PropertiesForm'
 describe("settings/form/PropertiesForm", () => {
   describe('render', () => {
     it('renders PropertiesForm', () => {
-      let types = {
+      const types = {
         mystr: 'string',
         mynum: 'number',
         mybool: 'boolean',
         empty: 'string',
       }
-      let values = {
+      const values = {
         mystr: 'abc',
         mynum: 123,
         mybool: true,
       };
 
-      let root = ReactTestRenderer.create(
+      const root = ReactTestRenderer.create(
         <PropertiesForm types={types} value={values} />,
       ).root
 
@@ -62,7 +62,7 @@ describe("settings/form/PropertiesForm", () => {
         />, container);
       });
 
-      let input = document.querySelector('input[name=myvalue]');
+      const input = document.querySelector('input[name=myvalue]');
       input.value = 'abcd'
       ReactTestUtils.Simulate.change(input);
     });
@@ -79,7 +79,7 @@ describe("settings/form/PropertiesForm", () => {
         />, container);
       });
 
-      let input = document.querySelector('input[name=myvalue]');
+      const input = document.querySelector('input[name=myvalue]');
       input.value = '1234'
       ReactTestUtils.Simulate.change(input);
     });
@@ -96,7 +96,7 @@ describe("settings/form/PropertiesForm", () => {
         />, container);
       });
 
-      let input = document.querySelector('input[name=myvalue]');
+      const input = document.querySelector('input[name=myvalue]');
       input.checked = true;
       ReactTestUtils.Simulate.change(input);
     });

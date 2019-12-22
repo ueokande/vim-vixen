@@ -9,14 +9,14 @@ export default class JSONOptionPage {
   }
 
   async updateSettings(value: string): Promise<void> {
-    let textarea = await this.webdriver.findElement(By.css('textarea'));
+    const textarea = await this.webdriver.findElement(By.css('textarea'));
     await this.webdriver.executeScript(`document.querySelector('textarea').value = '${value}'`)
     await textarea.sendKeys(' ');
     await this.webdriver.executeScript(() => document.querySelector('textarea')!!.blur());
   }
 
   async getErrorMessage(): Promise<string> {
-    let error = await this.webdriver.findElement(By.css('.settings-ui-input-error'));
+    const error = await this.webdriver.findElement(By.css('.settings-ui-input-error'));
     return error.getText();
   }
 }

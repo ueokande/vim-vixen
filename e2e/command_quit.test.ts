@@ -8,7 +8,7 @@ import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
 
 describe('quit/quitall command test', () => {
-  let server = new TestServer().receiveContent('/*', 'ok');
+  const server = new TestServer().receiveContent('/*', 'ok');
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
@@ -31,8 +31,8 @@ describe('quit/quitall command test', () => {
   });
 
   beforeEach(async() => {
-    let tabs = await browser.tabs.query({});
-    for (let tab of tabs.slice(1)) {
+    const tabs = await browser.tabs.query({});
+    for (const tab of tabs.slice(1)) {
       await browser.tabs.remove(tab.id);
     }
     await browser.tabs.update(tabs[0].id, { url: server.url('/site1') });
@@ -41,52 +41,52 @@ describe('quit/quitall command test', () => {
     }
 
     await eventually(async() => {
-      let handles = await webdriver.getAllWindowHandles();
+      const handles = await webdriver.getAllWindowHandles();
       assert.strictEqual(handles.length, 5);
       await webdriver.switchTo().window(handles[2]);
     });
   });
 
   it('should current tab by q command', async() => {
-    let page = await Page.currentContext(webdriver);
-    let console = await page.showConsole();
+    const page = await Page.currentContext(webdriver);
+    const console = await page.showConsole();
     await console.execCommand('q');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({});
+      const tabs = await browser.tabs.query({});
       assert.strictEqual(tabs.length, 4)
     });
   });
 
   it('should current tab by quit command', async() => {
-    let page = await Page.currentContext(webdriver);
-    let console = await page.showConsole();
+    const page = await Page.currentContext(webdriver);
+    const console = await page.showConsole();
     await console.execCommand('quit');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({});
+      const tabs = await browser.tabs.query({});
       assert.strictEqual(tabs.length, 4)
     });
   });
 
   it('should current tab by qa command', async() => {
-    let page = await Page.currentContext(webdriver);
-    let console = await page.showConsole();
+    const page = await Page.currentContext(webdriver);
+    const console = await page.showConsole();
     await console.execCommand('qa');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({});
+      const tabs = await browser.tabs.query({});
       assert.strictEqual(tabs.length, 1)
     });
   });
 
   it('should current tab by quitall command', async() => {
-    let page = await Page.currentContext(webdriver);
-    let console = await page.showConsole();
+    const page = await Page.currentContext(webdriver);
+    const console = await page.showConsole();
     await console.execCommand('quitall');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({});
+      const tabs = await browser.tabs.query({});
       assert.strictEqual(tabs.length, 1)
     });
   });

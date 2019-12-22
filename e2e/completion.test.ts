@@ -30,9 +30,9 @@ describe("general completion test", () => {
   });
 
   it('should all commands on empty line', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
 
-    let items = await console.getCompletions();
+    const items = await console.getCompletions();
     assert.strictEqual(items.length, 11);
     assert.deepStrictEqual(items[0], { type: 'title', text: 'Console Command' });
     assert.ok(items[1].text.startsWith('set'));
@@ -41,10 +41,10 @@ describe("general completion test", () => {
   });
 
   it('should only commands filtered by prefix', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.inputKeys('b');
 
-    let items = await console.getCompletions();
+    const items = await console.getCompletions();
     assert.strictEqual(items.length, 4);
     assert.deepStrictEqual(items[0], { type: 'title', text: 'Console Command' });
     assert.ok(items[1].text.startsWith('buffer'));
@@ -57,23 +57,23 @@ describe("general completion test", () => {
   // > bdeletes
   // : b
   it('selects completion items by <Tab>/<S-Tab> keys', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.inputKeys('b');
     await eventually(async() => {
-      let items = await console.getCompletions();
+      const items = await console.getCompletions();
       assert.strictEqual(items.length, 4);
     });
 
     await console.sendKeys(Key.TAB);
     await eventually(async() => {
-      let items = await console.getCompletions();
+      const items = await console.getCompletions();
       assert.ok(items[1].highlight);
       assert.strictEqual(await console.currentValue(), 'buffer');
     });
 
     await console.sendKeys(Key.TAB, Key.TAB);
     await eventually(async() => {
-      let items = await console.getCompletions();
+      const items = await console.getCompletions();
       assert.ok(items[3].highlight);
       assert.strictEqual(await console.currentValue(), 'bdeletes');
     });
@@ -85,7 +85,7 @@ describe("general completion test", () => {
 
     await console.sendKeys(Key.SHIFT, Key.TAB);
     await eventually(async() => {
-      let items = await console.getCompletions();
+      const items = await console.getCompletions();
       assert.ok(items[3].highlight);
       assert.strictEqual(await console.currentValue(), 'bdeletes');
     });

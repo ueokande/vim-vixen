@@ -3,7 +3,7 @@ import * as operations from 'shared/operations';
 describe('operations', () => {
   describe('#valueOf', () => {
     it('returns an Operation', () => {
-      let op: operations.Operation = operations.valueOf({
+      const op: operations.Operation = operations.valueOf({
         type: operations.SCROLL_VERTICALLY,
         count: 10,
       });
@@ -18,7 +18,7 @@ describe('operations', () => {
     });
 
     it('fills default valus of optional parameter', () => {
-      let op: operations.Operation = operations.valueOf({
+      const op: operations.Operation = operations.valueOf({
         type: operations.COMMAND_SHOW_OPEN,
       });
 

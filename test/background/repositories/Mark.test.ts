@@ -9,7 +9,7 @@ describe('background/repositories/mark', () => {
   });
 
   it('get and set', async() => {
-    let mark = { tabId: 1, url: 'http://example.com', x: 10, y: 30 };
+    const mark = { tabId: 1, url: 'http://example.com', x: 10, y: 30 };
 
     repository.setMark('A', mark);
 

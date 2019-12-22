@@ -50,7 +50,7 @@ describe('InputDriver', () => {
       return true;
     });
 
-    let events = [
+    const events = [
       new KeyboardEvent('keydown', { key: 'a' }),
       new KeyboardEvent('keydown', { key: 'b' }),
       new KeyboardEvent('keypress', { key: 'a' }),
@@ -58,7 +58,7 @@ describe('InputDriver', () => {
       new KeyboardEvent('keypress', { key: 'b' }),
       new KeyboardEvent('keyup', { key: 'b' }),
     ];
-    for (let e of events) {
+    for (const e of events) {
       target.dispatchEvent(e);
     }
 
@@ -102,8 +102,8 @@ describe('InputDriver', () => {
 
   it('ignores events from input elements', () => {
     ['input', 'textarea', 'select'].forEach((name) => {
-      let input = window.document.createElement(name);
-      let driver = new InputDriver(input);
+      const input = window.document.createElement(name);
+      const driver = new InputDriver(input);
       driver.onKey((key: Key): boolean => {
         expect.fail();
         return false;
@@ -113,8 +113,8 @@ describe('InputDriver', () => {
   });
 
   it('ignores events from contenteditable elements', () => {
-    let div = window.document.createElement('div');
-    let driver = new InputDriver(div);
+    const div = window.document.createElement('div');
+    const driver = new InputDriver(div);
     driver.onKey((_key: Key): boolean => {
       expect.fail();
       return false;
@@ -130,7 +130,7 @@ describe('InputDriver', () => {
 
 describe("#keyFromKeyboardEvent", () => {
   it('returns from keyboard input Ctrl+X', () => {
-    let k = keyFromKeyboardEvent(new KeyboardEvent('keydown', {
+    const k = keyFromKeyboardEvent(new KeyboardEvent('keydown', {
       key: 'x', shiftKey: false, ctrlKey: true, altKey: false, metaKey: true,
     }));
     expect(k.key).to.equal('x');
@@ -141,7 +141,7 @@ describe("#keyFromKeyboardEvent", () => {
   });
 
   it('returns from keyboard input Shift+Esc', () => {
-    let k = keyFromKeyboardEvent(new KeyboardEvent('keydown', {
+    const k = keyFromKeyboardEvent(new KeyboardEvent('keydown', {
       key: 'Escape', shiftKey: true, ctrlKey: false, altKey: false, metaKey: true
     }));
     expect(k.key).to.equal('Esc');
@@ -153,7 +153,7 @@ describe("#keyFromKeyboardEvent", () => {
 
   it('returns from keyboard input Ctrl+$', () => {
     // $ required shift pressing on most keyboards
-    let k = keyFromKeyboardEvent(new KeyboardEvent('keydown', {
+    const k = keyFromKeyboardEvent(new KeyboardEvent('keydown', {
       key: '$', shiftKey: true, ctrlKey: true, altKey: false, metaKey: false
     }));
     expect(k.key).to.equal('$');
@@ -164,7 +164,7 @@ describe("#keyFromKeyboardEvent", () => {
   });
 
   it('returns from keyboard input Crtl+Space', () => {
-    let k = keyFromKeyboardEvent(new KeyboardEvent('keydown', {
+    const k = keyFromKeyboardEvent(new KeyboardEvent('keydown', {
       key: ' ', shiftKey: false, ctrlKey: true, altKey: false, metaKey: false
     }));
     expect(k.key).to.equal('Space');

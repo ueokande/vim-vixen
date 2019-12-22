@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 describe('AddonEnabledRepositoryImpl', () => {
   it('updates and gets current value', () => {
-    let sut = new AddonEnabledRepositoryImpl();
+    const sut = new AddonEnabledRepositoryImpl();
 
     sut.set(true);
     expect(sut.get()).to.be.true;

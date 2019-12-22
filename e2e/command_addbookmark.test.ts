@@ -8,7 +8,7 @@ import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
 
 describe('addbookmark command test', () => {
-  let server = new TestServer().receiveContent('/happy', `
+  const server = new TestServer().receiveContent('/happy', `
       <!DOCTYPE html>
       <html lang="en"><head><title>how to be happy</title></head></html>`,
   );
@@ -38,12 +38,12 @@ describe('addbookmark command test', () => {
   });
 
   it('should add a bookmark from the current page', async() => {
-    let page = await Page.currentContext(webdriver);
-    let console = await page.showConsole();
+    const page = await Page.currentContext(webdriver);
+    const console = await page.showConsole();
     await console.execCommand('addbookmark how to be happy');
 
     await eventually(async() => {
-      var bookmarks = await browser.bookmarks.search({ title: 'how to be happy' });
+      const bookmarks = await browser.bookmarks.search({ title: 'how to be happy' });
       assert.strictEqual(bookmarks.length, 1);
       assert.strictEqual(bookmarks[0].url, server.url('/happy'));
     });

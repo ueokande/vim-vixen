@@ -52,7 +52,7 @@ class MockAddressRepository implements AddressRepository {
 
 describe('KeymapUseCase', () => {
   context('with no-digis keymaps', () => {
-    let settings = Settings.fromJSON({
+    const settings = Settings.fromJSON({
       keymaps: {
         k: {type: 'scroll.vertically', count: -1},
         j: {type: 'scroll.vertically', count: 1},
@@ -88,7 +88,7 @@ describe('KeymapUseCase', () => {
   });
 
   context('when keymaps containing numeric mappings', () => {
-    let settings = Settings.fromJSON({
+    const settings = Settings.fromJSON({
       keymaps: {
         20: {type: "scroll.top"},
         g5: {type: 'scroll.bottom'},
@@ -132,7 +132,7 @@ describe('KeymapUseCase', () => {
   });
 
   context('when the keys are mismatched with the operations', () => {
-    let settings = Settings.fromJSON({
+    const settings = Settings.fromJSON({
       keymaps: {
         gg: {type: "scroll.top"},
         G: {type: "scroll.bottom"},
@@ -170,7 +170,7 @@ describe('KeymapUseCase', () => {
   });
 
   context('when the site matches to the blacklist', () => {
-    let settings = Settings.fromJSON({
+    const settings = Settings.fromJSON({
       keymaps: {
         k: {type: 'scroll.vertically', count: -1},
         a: {type: 'addon.enable'},
@@ -197,7 +197,7 @@ describe('KeymapUseCase', () => {
   });
 
   context('when the site matches to the partial blacklist', () => {
-    let settings = Settings.fromJSON({
+    const settings = Settings.fromJSON({
       keymaps: {
         k: {type: 'scroll.vertically', count: -1},
         j: {type: 'scroll.vertically', count: 1},

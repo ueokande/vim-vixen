@@ -7,7 +7,7 @@ import { WebDriver, Key } from 'selenium-webdriver';
 import Page from './lib/Page';
 
 describe("scroll test", () => {
-  let server = new TestServer().receiveContent('/',
+  const server = new TestServer().receiveContent('/',
     `<!DOCTYPE html><html lang="en"><body style="width:10000px; height:10000px"></body></html>`,
   );
   let lanthan: Lanthan;
@@ -39,7 +39,7 @@ describe("scroll test", () => {
   it('scrolls up by j', async () => {
     await page.sendKeys('j');
 
-    let scrollY = await page.getScrollY();
+    const scrollY = await page.getScrollY();
     assert.strictEqual(scrollY, 64);
   });
 
@@ -47,7 +47,7 @@ describe("scroll test", () => {
     await webdriver.executeScript(() => window.scrollTo(0, 200));
     await page.sendKeys('k');
 
-    let scrollY = await page.getScrollY();
+    const scrollY = await page.getScrollY();
     assert.strictEqual(scrollY, 136);
   });
 
@@ -55,7 +55,7 @@ describe("scroll test", () => {
     await webdriver.executeScript(() => window.scrollTo(100, 100));
     await page.sendKeys('h');
 
-    let pageXOffset = await webdriver.executeScript(() => window.pageXOffset) as number;
+    const pageXOffset = await webdriver.executeScript(() => window.pageXOffset) as number;
     assert.strictEqual(pageXOffset, 36);
   });
 
@@ -63,7 +63,7 @@ describe("scroll test", () => {
     await webdriver.executeScript(() => window.scrollTo(100, 100));
     await page.sendKeys('l');
 
-    let pageXOffset = await webdriver.executeScript(() => window.pageXOffset) as number;
+    const pageXOffset = await webdriver.executeScript(() => window.pageXOffset) as number;
     assert.strictEqual(pageXOffset, 164);
   });
 
@@ -71,7 +71,7 @@ describe("scroll test", () => {
     await webdriver.executeScript(() => window.scrollTo(0, 100));
     await page.sendKeys('g', 'g');
 
-    let scrollY = await page.getScrollY();
+    const scrollY = await page.getScrollY();
     assert.strictEqual(scrollY, 0);
   });
 
@@ -79,7 +79,7 @@ describe("scroll test", () => {
     await webdriver.executeScript(() => window.scrollTo(0, 100));
     await page.sendKeys(Key.SHIFT, 'g');
 
-    let scrollY = await page.getScrollY();
+    const scrollY = await page.getScrollY();
     assert.ok(scrollY > 5000);
   });
 
@@ -87,7 +87,7 @@ describe("scroll test", () => {
     await webdriver.executeScript(() => window.scrollTo(0, 100));
     await page.sendKeys(Key.SHIFT, '0');
 
-    let pageXOffset = await webdriver.executeScript(() => window.pageXOffset) as number;
+    const pageXOffset = await webdriver.executeScript(() => window.pageXOffset) as number;
     assert.ok(pageXOffset === 0);
   });
 
@@ -95,7 +95,7 @@ describe("scroll test", () => {
     await webdriver.executeScript(() => window.scrollTo(0, 100));
     await page.sendKeys(Key.SHIFT, '$');
 
-    let pageXOffset = await webdriver.executeScript(() => window.pageXOffset) as number;
+    const pageXOffset = await webdriver.executeScript(() => window.pageXOffset) as number;
     assert.ok(pageXOffset > 5000);
   });
 
@@ -103,8 +103,8 @@ describe("scroll test", () => {
     await webdriver.executeScript(() => window.scrollTo(0, 1000));
     await page.sendKeys(Key.CONTROL, 'u');
 
-    let pageHeight = await page.pageHeight();
-    let scrollY = await page.getScrollY();
+    const pageHeight = await page.pageHeight();
+    const scrollY = await page.getScrollY();
     assert.ok(Math.abs(scrollY - (1000 - Math.floor(pageHeight / 2))) < 5);
   });
 
@@ -112,8 +112,8 @@ describe("scroll test", () => {
     await webdriver.executeScript(() => window.scrollTo(0, 1000));
     await page.sendKeys(Key.CONTROL, 'd');
 
-    let pageHeight = await page.pageHeight();
-    let scrollY = await page.getScrollY();
+    const pageHeight = await page.pageHeight();
+    const scrollY = await page.getScrollY();
     assert.ok(Math.abs(scrollY - (1000 + Math.floor(pageHeight / 2))) < 5);
   });
 
@@ -121,8 +121,8 @@ describe("scroll test", () => {
     await webdriver.executeScript(() => window.scrollTo(0, 1000));
     await page.sendKeys(Key.CONTROL, 'b');
 
-    let pageHeight = await page.pageHeight();
-    let scrollY = await page.getScrollY();
+    const pageHeight = await page.pageHeight();
+    const scrollY = await page.getScrollY();
     assert.ok(Math.abs(scrollY - (1000 - pageHeight)) < 5);
   });
 
@@ -130,8 +130,8 @@ describe("scroll test", () => {
     await webdriver.executeScript(() => window.scrollTo(0, 1000));
     await page.sendKeys(Key.CONTROL, 'f');
 
-    let pageHeight = await page.pageHeight();
-    let scrollY = await page.getScrollY();
+    const pageHeight = await page.pageHeight();
+    const scrollY = await page.getScrollY();
     assert.ok(Math.abs(scrollY - (1000 + pageHeight)) < 5);
   });
 });

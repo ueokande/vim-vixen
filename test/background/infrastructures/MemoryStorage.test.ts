@@ -2,7 +2,7 @@ import MemoryStorage from 'background/infrastructures/MemoryStorage';
 
 describe("background/infrastructures/memory-storage", () => {
   it('stores values', () => {
-    let cache = new MemoryStorage();
+    const cache = new MemoryStorage();
     cache.set('number', 123);
     expect(cache.get('number')).to.equal(123);
 
@@ -14,7 +14,7 @@ describe("background/infrastructures/memory-storage", () => {
   });
 
   it('returns undefined if no keys', () => {
-    let cache = new MemoryStorage();
+    const cache = new MemoryStorage();
     expect(cache.get('no-keys')).to.be.undefined;
   })
 
@@ -23,22 +23,22 @@ describe("background/infrastructures/memory-storage", () => {
     cache.set('red', 'apple');
 
     cache = new MemoryStorage();
-    let got = cache.get('red');
+    const got = cache.get('red');
     expect(got).to.equal('apple');
   });
 
   it('stored cloned objects', () => {
-    let cache = new MemoryStorage();
-    let recipe = { sugar: '300g' };
+    const cache = new MemoryStorage();
+    const recipe = { sugar: '300g' };
     cache.set('recipe', recipe);
 
     recipe.salt = '20g'
-    let got = cache.get('recipe', recipe);
+    const got = cache.get('recipe', recipe);
     expect(got).to.deep.equal({ sugar: '300g' });
   });
 
   it('throws an error with unserializable objects', () => {
-    let cache = new MemoryStorage();
+    const cache = new MemoryStorage();
     expect(() => cache.set('fn', setTimeout)).to.throw();
   })
 });

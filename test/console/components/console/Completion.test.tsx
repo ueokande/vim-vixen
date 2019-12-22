@@ -3,7 +3,7 @@ import Completion from 'console/components/console/Completion'
 import ReactTestRenderer from 'react-test-renderer';
 
 describe("console/components/console/completion", () => {
-  let completions = [{
+  const completions = [{
     name: "Fruit",
     items: [{ caption: "apple" }, { caption: "banana" }, { caption: "cherry" }],
   }, {
@@ -12,14 +12,14 @@ describe("console/components/console/completion", () => {
   }];
 
   it('renders Completion component', () => {
-    let root = ReactTestRenderer.create(<Completion
+    const root = ReactTestRenderer.create(<Completion
       completions={completions}
       size={30}
       />).root;
 
     expect(root.children).to.have.lengthOf(1);
 
-    let children = root.children[0].children;
+    const children = root.children[0].children;
     expect(children).to.have.lengthOf(8);
     expect(children[0].props.title).to.equal('Fruit');
     expect(children[1].props.caption).to.equal('apple');
@@ -32,25 +32,25 @@ describe("console/components/console/completion", () => {
   });
 
   it('highlight current item', () => {
-    let root = ReactTestRenderer.create(<Completion
+    const root = ReactTestRenderer.create(<Completion
       completions={completions}
       size={30}
       select={3}
       />).root;
 
-    let children = root.children[0].children;
+    const children = root.children[0].children;
     expect(children[5].props.highlight).to.be.true;
   });
 
   it('does not highlight any items', () => {
-    let root = ReactTestRenderer.create(<Completion
+    const root = ReactTestRenderer.create(<Completion
       completions={completions}
       size={30}
       select={-1}
       />).root;
 
-    let children = root.children[0].children;
-    for (let li of children[0].children) {
+    const children = root.children[0].children;
+    for (const li of children[0].children) {
       expect(li.props.highlight).not.to.be.ok;
     }
   });
@@ -79,13 +79,13 @@ describe("console/components/console/completion", () => {
   })
 
   it('scrolls up to down with select', () => {
-    let component = ReactTestRenderer.create(<Completion
+    const component = ReactTestRenderer.create(<Completion
       completions={completions}
       size={3}
       select={1}
       />);
-    let instance = component.getInstance();
-    let root = component.root;
+    const instance = component.getInstance();
+    const root = component.root;
 
     let children = root.children[0].children;
     expect(children).to.have.lengthOf(3);
@@ -121,13 +121,13 @@ describe("console/components/console/completion", () => {
   });
 
   it('scrolls down to up with select', () => {
-    let component = ReactTestRenderer.create(<Completion
+    const component = ReactTestRenderer.create(<Completion
       completions={completions}
       size={3}
       select={5}
       />);
-    let root = component.root;
-    let instance = component.getInstance();
+    const root = component.root;
+    const instance = component.getInstance();
 
     let children = root.children[0].children;
     expect(children).to.have.lengthOf(3);

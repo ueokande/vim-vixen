@@ -10,13 +10,13 @@ describe('HintKeyProducer class', () => {
 
   describe('#produce', () => {
     it('produce incremented keys', () => {
-      let charset = 'abc';
-      let sequences = [
+      const charset = 'abc';
+      const sequences = [
         'a', 'b', 'c',
         'aa', 'ab', 'ac', 'ba', 'bb', 'bc', 'ca', 'cb', 'cc',
         'aaa', 'aab', 'aac', 'aba']
 
-      let producer = new HintKeyProducer(charset);
+      const producer = new HintKeyProducer(charset);
       for (let i = 0; i < sequences.length; ++i) {
         expect(producer.produce()).to.equal(sequences[i]);
       }

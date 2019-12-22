@@ -8,7 +8,7 @@ import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
 
 describe('bdelete/bdeletes command test', () => {
-  let server = new TestServer().receiveContent('/*', 'ok');
+  const server = new TestServer().receiveContent('/*', 'ok');
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
@@ -31,8 +31,8 @@ describe('bdelete/bdeletes command test', () => {
   });
 
   beforeEach(async() => {
-    let tabs = await browser.tabs.query({});
-    for (let tab of tabs.slice(1)) {
+    const tabs = await browser.tabs.query({});
+    for (const tab of tabs.slice(1)) {
       await browser.tabs.remove(tab.id);
     }
     await browser.tabs.update(tabs[0].id, { url: server.url('/site1'), pinned: true });
@@ -42,19 +42,19 @@ describe('bdelete/bdeletes command test', () => {
     await browser.tabs.create({ url: server.url('/site5'), });
 
     await eventually(async() => {
-      let handles = await webdriver.getAllWindowHandles();
+      const handles = await webdriver.getAllWindowHandles();
       assert.strictEqual(handles.length, 5);
       await webdriver.switchTo().window(handles[2]);
     });
   });
 
   it('should delete an unpinned tab by bdelete command', async() => {
-    let page = await Page.currentContext(webdriver);
-    let console = await page.showConsole();
+    const page = await Page.currentContext(webdriver);
+    const console = await page.showConsole();
     await console.execCommand('bdelete site5');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({});
+      const tabs = await browser.tabs.query({});
       assert.deepStrictEqual(tabs.map((t: any) => t.url), [
         server.url('/site1'),
         server.url('/site2'),
@@ -65,45 +65,45 @@ describe('bdelete/bdeletes command test', () => {
   });
 
   it('should not delete an pinned tab by bdelete command by bdelete command', async() => {
-    let page = await Page.currentContext(webdriver);
-    let console = await page.showConsole();
+    const page = await Page.currentContext(webdriver);
+    const console = await page.showConsole();
     await console.execCommand('bdelete site1');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({});
+      const tabs = await browser.tabs.query({});
       assert.strictEqual(tabs.length, 5);
     });
   });
 
   it('should show an error when no tabs are matched by bdelete command', async() => {
-    let page = await Page.currentContext(webdriver);
-    let console = await page.showConsole();
+    const page = await Page.currentContext(webdriver);
+    const console = await page.showConsole();
     await console.execCommand('bdelete xyz');
 
     await eventually(async() => {
-      let text = await console.getErrorMessage();
+      const text = await console.getErrorMessage();
       assert.strictEqual(text, 'No matching buffer for xyz');
     });
   });
 
   it('should show an error when more than one tabs are matched by bdelete command', async() => {
-    let page = await Page.currentContext(webdriver);
-    let console = await page.showConsole();
+    const page = await Page.currentContext(webdriver);
+    const console = await page.showConsole();
     await console.execCommand('bdelete site');
 
     await eventually(async() => {
-      let text = await console.getErrorMessage();
+      const text = await console.getErrorMessage();
       assert.strictEqual(text, 'More than one match for site');
     });
   });
 
   it('should delete an unpinned tab by bdelete! command', async() => {
-    let page = await Page.currentContext(webdriver);
-    let console = await page.showConsole();
+    const page = await Page.currentContext(webdriver);
+    const console = await page.showConsole();
     await console.execCommand('bdelete! site5');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({});
+      const tabs = await browser.tabs.query({});
       assert.deepStrictEqual(tabs.map((t: any) => t.url), [
         server.url('/site1'),
         server.url('/site2'),
@@ -114,12 +114,12 @@ describe('bdelete/bdeletes command test', () => {
   });
 
   it('should delete an pinned tab by bdelete! command', async() => {
-    let page = await Page.currentContext(webdriver);
-    let console = await page.showConsole();
+    const page = await Page.currentContext(webdriver);
+    const console = await page.showConsole();
     await console.execCommand('bdelete! site1');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({});
+      const tabs = await browser.tabs.query({});
       assert.deepStrictEqual(tabs.map((t: any) => t.url), [
         server.url('/site2'),
         server.url('/site3'),
@@ -130,12 +130,12 @@ describe('bdelete/bdeletes command test', () => {
   });
 
   it('should delete unpinned tabs by bdeletes command', async() => {
-    let page = await Page.currentContext(webdriver);
-    let console = await page.showConsole();
+    const page = await Page.currentContext(webdriver);
+    const console = await page.showConsole();
     await console.execCommand('bdeletes site');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({});
+      const tabs = await browser.tabs.query({});
       assert.deepStrictEqual(tabs.map((t: any) => t.url), [
         server.url('/site1'),
         server.url('/site2'),
@@ -145,12 +145,12 @@ describe('bdelete/bdeletes command test', () => {
   });
 
   it('should delete both pinned and unpinned tabs by bdeletes! command', async() => {
-    let page = await Page.currentContext(webdriver);
-    let console = await page.showConsole();
+    const page = await Page.currentContext(webdriver);
+    const console = await page.showConsole();
     await console.execCommand('bdeletes! site');
 
     await eventually(async() => {
-      let tabs = await browser.tabs.query({});
+      const tabs = await browser.tabs.query({});
       assert.strictEqual(tabs.length, 1);
     });
   });

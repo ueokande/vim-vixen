@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 describe('FindRepositoryImpl', () => {
   it('updates and gets last keyword', () => {
-    let sut = new FindRepositoryImpl();
+    const sut = new FindRepositoryImpl();
 
     expect(sut.getLastKeyword()).to.be.null;
 

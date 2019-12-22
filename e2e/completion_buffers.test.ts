@@ -9,7 +9,7 @@ import { WebDriver } from 'selenium-webdriver';
 import Page from './lib/Page';
 
 describe("completion on buffer/bdelete/bdeletes", () => {
-  let server = new TestServer().handle('/*', (req: Request, res: Response) => {
+  const server = new TestServer().handle('/*', (req: Request, res: Response) => {
     res.send(`
       <!DOCTYPE html>
       <html lang="en">
@@ -42,8 +42,8 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   });
 
   beforeEach(async() => {
-    let tabs = await browser.tabs.query({});
-    for (let tab of tabs.slice(1)) {
+    const tabs = await browser.tabs.query({});
+    for (const tab of tabs.slice(1)) {
       await browser.tabs.remove(tab.id);
     }
 
@@ -54,7 +54,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     }
 
     await eventually(async() => {
-      let handles = await webdriver.getAllWindowHandles();
+      const handles = await webdriver.getAllWindowHandles();
       assert.strictEqual(handles.length, 5);
       await webdriver.switchTo().window(handles[2]);
     });
@@ -63,11 +63,11 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   });
 
   it('should all tabs by "buffer" command with empty params', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.inputKeys('buffer ');
 
     await eventually(async() => {
-      let items = await console.getCompletions();
+      const items = await console.getCompletions();
       assert.strictEqual(items.length, 6);
       assert.deepStrictEqual(items[0], { type: 'title', text: 'Buffers' });
       assert.ok(items[1].text.startsWith('1:'));
@@ -82,11 +82,11 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   });
 
   it('should filter items with URLs by keywords on "buffer" command', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.inputKeys('buffer title_site2');
 
     await eventually(async() => {
-      let items = await console.getCompletions();
+      const items = await console.getCompletions();
       assert.deepStrictEqual(items[0], { type: 'title', text: 'Buffers' });
       assert.ok(items[1].text.startsWith('2:'));
       assert.ok(items[1].text.includes('title_site2'));
@@ -95,22 +95,22 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   });
 
   it('should filter items with titles by keywords on "buffer" command', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.inputKeys('buffer /site2');
 
     await eventually(async() => {
-      let items = await console.getCompletions();
+      const items = await console.getCompletions();
       assert.deepStrictEqual(items[0], { type: 'title', text: 'Buffers' });
       assert.ok(items[1].text.startsWith('2:'));
     });
   });
 
   it('should show one item by number on "buffer" command', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.inputKeys('buffer 2');
 
     await eventually(async() => {
-      let items = await console.getCompletions();
+      const items = await console.getCompletions();
       assert.strictEqual(items.length, 2);
       assert.deepStrictEqual(items[0], { type: 'title', text: 'Buffers' });
       assert.ok(items[1].text.startsWith('2:'));
@@ -118,11 +118,11 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   });
 
   it('should show unpinned tabs "bdelete" command', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.inputKeys('bdelete site');
 
     await eventually(async() => {
-      let items = await console.getCompletions();
+      const items = await console.getCompletions();
       assert.strictEqual(items.length, 4);
       assert.ok(items[1].text.includes('site3'));
       assert.ok(items[2].text.includes('site4'));
@@ -131,11 +131,11 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   });
 
   it('should show unpinned tabs "bdeletes" command', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.inputKeys('bdeletes site');
 
     await eventually(async() => {
-      let items = await console.getCompletions();
+      const items = await console.getCompletions();
       assert.strictEqual(items.length, 4);
       assert.ok(items[1].text.includes('site3'));
       assert.ok(items[2].text.includes('site4'));
@@ -144,11 +144,11 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   });
 
   it('should show both pinned and unpinned tabs "bdelete!" command', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.inputKeys('bdelete! site');
 
     await eventually(async() => {
-      let items = await console.getCompletions();
+      const items = await console.getCompletions();
       assert.strictEqual(items.length, 6);
       assert.ok(items[1].text.includes('site1'));
       assert.ok(items[2].text.includes('site2'));
@@ -159,11 +159,11 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   });
 
   it('should show both pinned and unpinned tabs "bdeletes!" command', async() => {
-    let console = await page.showConsole();
+    const console = await page.showConsole();
     await console.inputKeys('bdeletes! site');
 
     await eventually(async() => {
-      let items = await console.getCompletions();
+      const items = await console.getCompletions();
       assert.strictEqual(items.length, 6);
       assert.ok(items[1].text.includes('site1'));
       assert.ok(items[2].text.includes('site2'));

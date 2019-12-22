@@ -4,9 +4,9 @@ import Settings from '../../../src/shared/settings/Settings';
 
 describe('SettingRepositoryImpl', () => {
   it('updates and gets current value', () => {
-    let sut = new SettingRepositoryImpl();
+    const sut = new SettingRepositoryImpl();
 
-    let settings = Settings.fromJSON({
+    const settings = Settings.fromJSON({
       keymaps: {},
       search:{
         default: 'google',
@@ -24,7 +24,7 @@ describe('SettingRepositoryImpl', () => {
 
     sut.set(settings);
 
-    let actual = sut.get();
+    const actual = sut.get();
     expect(actual.properties.hintchars).to.equal('abcd1234');
   });
 });

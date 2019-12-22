@@ -8,17 +8,17 @@ import { FormSearch } from 'shared/SettingData';
 describe("settings/form/SearchForm", () => {
   describe('render', () => {
     it('renders SearchForm', () => {
-      let root = ReactTestRenderer.create(<SearchForm value={FormSearch.fromJSON({
+      const root = ReactTestRenderer.create(<SearchForm value={FormSearch.fromJSON({
         default: 'google',
         engines: [['google', 'google.com'], ['yahoo', 'yahoo.com']],
       })} />).root;
 
-      let names = root.findAllByProps({ name: 'name' });
+      const names = root.findAllByProps({ name: 'name' });
       expect(names).to.have.lengthOf(2);
       expect(names[0].props.value).to.equal('google');
       expect(names[1].props.value).to.equal('yahoo');
 
-      let urls = root.findAllByProps({ name: 'url' });
+      const urls = root.findAllByProps({ name: 'url' });
       expect(urls).to.have.lengthOf(2);
       expect(urls[0].props.value).to.equal('google.com');
       expect(urls[1].props.value).to.equal('yahoo.com');
@@ -46,7 +46,7 @@ describe("settings/form/SearchForm", () => {
               engines: [['google', 'google.com'], ['yahoo', 'yahoo.com']]
           })}
           onChange={value => {
-            let json = value.toJSON();
+            const json = value.toJSON();
             expect(json.default).to.equal('louvre');
             expect(json.engines).to.have.lengthOf(2)
             expect(json.engines).to.have.deep.members(
@@ -56,10 +56,10 @@ describe("settings/form/SearchForm", () => {
           }} />, container);
       });
 
-      let radio = document.querySelectorAll('input[type=radio]');
+      const radio = document.querySelectorAll('input[type=radio]');
       radio.checked = true;
 
-      let name = document.querySelector('input[name=name]');
+      const name = document.querySelector('input[name=name]');
       name.value = 'louvre';
 
       ReactTestUtils.Simulate.change(name);
@@ -72,7 +72,7 @@ describe("settings/form/SearchForm", () => {
             engines: [['louvre', 'google.com'], ['yahoo', 'yahoo.com']]
           })}
           onChange={value => {
-            let json = value.toJSON();
+            const json = value.toJSON();
             expect(json.default).to.equal('yahoo');
             expect(json.engines).to.have.lengthOf(1)
             expect(json.engines).to.have.deep.members(
@@ -82,7 +82,7 @@ describe("settings/form/SearchForm", () => {
           }} />, container);
       });
 
-      let button = document.querySelector('input[type=button]');
+      const button = document.querySelector('input[type=button]');
       ReactTestUtils.Simulate.click(button);
     });
 
@@ -93,7 +93,7 @@ describe("settings/form/SearchForm", () => {
             engines: [['google', 'google.com']]
           })}
           onChange={value => {
-            let json = value.toJSON();
+            const json = value.toJSON();
             expect(json.default).to.equal('yahoo');
             expect(json.engines).to.have.lengthOf(2)
             expect(json.engines).to.have.deep.members(
@@ -103,7 +103,7 @@ describe("settings/form/SearchForm", () => {
           }} />, container);
       });
 
-      let button = document.querySelector('input[type=button].ui-add-button');
+      const button = document.querySelector('input[type=button].ui-add-button');
       ReactTestUtils.Simulate.click(button);
     });
   });
