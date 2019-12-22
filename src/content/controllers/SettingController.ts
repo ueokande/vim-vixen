@@ -18,9 +18,9 @@ export default class SettingController {
       const url = new URL(window.location.href);
       const disabled = current.blacklist.includesEntireBlacklist(url);
       if (disabled) {
-        this.addonEnabledUseCase.disable();
+        await this.addonEnabledUseCase.disable();
       } else {
-        this.addonEnabledUseCase.enable();
+        await this.addonEnabledUseCase.enable();
       }
     } catch (e) {
       // Sometime sendMessage fails when background script is not ready.
