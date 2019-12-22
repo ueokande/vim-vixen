@@ -29,8 +29,9 @@ const parseSetOption = (
   case 'string': return [key, value];
   case 'number': return [key, mustNumber(value)];
   case 'boolean': return [key, value];
+  default:
+    throw new Error('Unknown property type: ' + def.type);
   }
-  throw new Error('Unknown property type: ' + def.type);
 };
 
 export { parseSetOption };
