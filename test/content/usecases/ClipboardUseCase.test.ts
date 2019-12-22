@@ -6,19 +6,31 @@ import ConsoleClient from '../../../src/content/client/ConsoleClient';
 
 import * as sinon from 'sinon';
 import { expect } from 'chai';
+import {Operation} from "../../../src/shared/operations";
 
 describe('ClipboardUseCase', () => {
   let clipboardRepository: ClipboardRepository;
+
   let operationClient: OperationClient;
+
   let consoleClient: ConsoleClient;
+
   let sut: ClipboardUseCase;
 
   beforeEach(() => {
-    const modal = <ConsoleClient>{};
+    clipboardRepository = new class implements ClipboardRepository {
+      read(): string { return ""; }
+      write(_text: string) {}
+    };
+    operationClient = new class implements OperationClient {
+      execBackgroundOp(_repeat: number, _op: Operation): Promise<void> { return Promise.resolve() }
+      internalOpenUrl(_url: string, _newTab?: boolean, _background?: boolean): Promise<void> { return Promise.resolve() }
+    };
+    consoleClient = new class implements ConsoleClient {
+      error(_text: string): Promise<void> { return Promise.resolve() }
+      info(_text: string): Promise<void> { return Promise.resolve() }
+    };
 
-    clipboardRepository = <ClipboardRepository>{ read() {}, write(_) {} };
-    operationClient = <OperationClient>{ internalOpenUrl(_) {} };
-    consoleClient = <ConsoleClient>{ info(_) {}};
     sut = new ClipboardUseCase(
       clipboardRepository,
       new SettingRepositoryImpl(),

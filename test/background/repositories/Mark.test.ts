@@ -1,11 +1,10 @@
 import MarkRepository from 'background/repositories/MarkRepository';
-import GlobalMark from 'background/domains/GlobalMark';
 
 describe('background/repositories/mark', () => {
-  let repository;
+  let repository: MarkRepository;
 
   beforeEach(() => {
-    repository = new MarkRepository;
+    repository = new MarkRepository();
   });
 
   it('get and set', async() => {

@@ -104,7 +104,7 @@ describe('InputDriver', () => {
     ['input', 'textarea', 'select'].forEach((name) => {
       const input = window.document.createElement(name);
       const driver = new InputDriver(input);
-      driver.onKey((key: Key): boolean => {
+      driver.onKey((_key: Key): boolean => {
         expect.fail();
         return false;
       });

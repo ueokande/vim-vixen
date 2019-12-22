@@ -84,7 +84,6 @@ describe("console/components/console/completion", () => {
       size={3}
       select={1}
       />);
-    const instance = component.getInstance();
     const root = component.root;
 
     let children = root.children[0].children;
@@ -127,7 +126,6 @@ describe("console/components/console/completion", () => {
       select={5}
       />);
     const root = component.root;
-    const instance = component.getInstance();
 
     let children = root.children[0].children;
     expect(children).to.have.lengthOf(3);

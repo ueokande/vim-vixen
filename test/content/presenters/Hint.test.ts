@@ -12,7 +12,7 @@ describe('Hint', () => {
   describe('#constructor', () => {
     it('creates a hint element with tag name', () => {
       const link = document.getElementById('test-link');
-      const hint = new Hint(link, 'abc');
+      new Hint(link, 'abc');
 
       const elem = document.querySelector('.vimvixen-hint');
       expect(elem.textContent.trim()).to.be.equal('abc');
