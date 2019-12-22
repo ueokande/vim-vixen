@@ -1,4 +1,4 @@
-import Key from './Key';
+import Key from '../../shared/settings/Key';
 
 export default class KeySequence {
   constructor(
@@ -24,6 +24,43 @@ export default class KeySequence {
       }
     }
     return true;
+  }
+
+  isDigitOnly(): boolean {
+    return this.keys.every(key => key.isDigit());
+  }
+
+  repeatCount(): number {
+    let nonDigitAt = this.keys.findIndex(key => !key.isDigit());
+    if (this.keys.length === 0 || nonDigitAt === 0) {
+      return 1;
+    }
+    if (nonDigitAt === -1) {
+      nonDigitAt = this.keys.length;
+    }
+    let digits = this.keys.slice(0, nonDigitAt)
+      .map(key => key.key)
+      .join('');
+    return Number(digits);
+  }
+
+  trimNumericPrefix(): KeySequence {
+    let nonDigitAt = this.keys.findIndex(key => !key.isDigit());
+    if (nonDigitAt === -1) {
+      nonDigitAt = this.keys.length;
+    }
+    return new KeySequence(this.keys.slice(nonDigitAt));
+  }
+
+  splitNumericPrefix(): [KeySequence, KeySequence] {
+    let nonDigitIndex = this.keys.findIndex(key => !key.isDigit());
+    if (nonDigitIndex === -1) {
+      return [this, new KeySequence([])];
+    }
+    return [
+      new KeySequence(this.keys.slice(0, nonDigitIndex)),
+      new KeySequence(this.keys.slice(nonDigitIndex)),
+    ];
   }
 
   static fromMapKeys(keys: string): KeySequence {

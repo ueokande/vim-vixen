@@ -4,8 +4,11 @@ title: Keymaps
 
 # Keymaps
 
-Keymaps are configurable in the add-on's preferences by navigating to `about:addons` and selecting "Extensions".
-The default mappings are as follows:
+The following descriptions are the default keymaps.
+You can configure keymaps in the add-on's preferences by navigating to `about:addons` and selecting "Extensions".
+
+In the following descriptions, <kbd>Ctrl</kbd>+<kbd>x</kbd> means "press <kbd>x</kbd> with <kbd>Ctrl</kbd>", and <kbd>g</kbd><kbd>x</kbd> means "press <kbd>g</kbd>, then press <kbd>x</kbd>".
+Some commands may be preceded by a decimal number, such as <kbd>3</kbd><kbd>d</kbd> deletes three tabs.
 
 ## Scrolling
 
@@ -13,10 +16,10 @@ The default mappings are as follows:
 - <kbd>j</kbd>: scroll down
 - <kbd>h</kbd>: scroll left
 - <kbd>l</kbd>: scroll right
-- <kbd>Ctrl</kbd>+<kbd>U</kbd>: scroll up half a page
-- <kbd>Ctrl</kbd>+<kbd>D</kbd>: scroll down half a page
-- <kbd>Ctrl</kbd>+<kbd>B</kbd>: scroll up a page
-- <kbd>Ctrl</kbd>+<kbd>F</kbd>: scroll down a page
+- <kbd>Ctrl</kbd>+<kbd>u</kbd>: scroll up half a page
+- <kbd>Ctrl</kbd>+<kbd>d</kbd>: scroll down half a page
+- <kbd>Ctrl</kbd>+<kbd>b</kbd>: scroll up a page
+- <kbd>Ctrl</kbd>+<kbd>f</kbd>: scroll down a page
 - <kbd>g</kbd><kbd>g</kbd>: scroll to the top of a page
 - <kbd>G</kbd>: scroll to the bottom of a page
 - <kbd>0</kbd>: scroll to the leftmost part of a page

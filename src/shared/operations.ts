@@ -508,3 +508,29 @@ export const valueOf = (o: any): Operation => {
   }
   throw new TypeError('Unknown operation type: ' + o.type);
 };
+
+export const isNRepeatable = (type: string): boolean => {
+  switch (type) {
+  case SCROLL_VERTICALLY:
+  case SCROLL_HORIZONALLY:
+  case SCROLL_PAGES:
+  case NAVIGATE_HISTORY_PREV:
+  case NAVIGATE_HISTORY_NEXT:
+  case NAVIGATE_PARENT:
+  case TAB_CLOSE:
+  case TAB_CLOSE_FORCE:
+  case TAB_CLOSE_RIGHT:
+  case TAB_REOPEN:
+  case TAB_PREV:
+  case TAB_NEXT:
+  case TAB_DUPLICATE:
+  case ZOOM_IN:
+  case ZOOM_OUT:
+  case URLS_PASTE:
+  case FIND_NEXT:
+  case FIND_PREV:
+  case REPEAT_LAST:
+    return true;
+  }
+  return false;
+};

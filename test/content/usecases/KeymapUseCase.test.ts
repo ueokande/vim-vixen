@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import KeymapUseCase from '../../../src/content/usecases/KeymapUseCase';
 import {expect} from 'chai';
 import SettingRepository from "../../../src/content/repositories/SettingRepository";
@@ -50,7 +51,7 @@ class MockAddressRepository implements AddressRepository {
 
 
 describe('KeymapUseCase', () => {
-  it('returns matched operation', () => {
+  context('with no-digis keymaps', () => {
     let settings = Settings.fromJSON({
       keymaps: {
         k: {type: 'scroll.vertically', count: -1},
@@ -58,21 +59,117 @@ describe('KeymapUseCase', () => {
         gg: {type: 'scroll.top'},
       },
     });
-    let sut = new KeymapUseCase(
-      new KeymapRepositoryImpl(),
-      new MockSettingRepository(settings),
-      new MockAddonEnabledRepository(true),
-      new MockAddressRepository(new URL('https://example.com')),
-    );
 
-    expect(sut.nextOp(Key.fromMapKey('k'))).to.deep.equal({type: 'scroll.vertically', count: -1});
-    expect(sut.nextOp(Key.fromMapKey('j'))).to.deep.equal({type: 'scroll.vertically', count: 1});
-    expect(sut.nextOp(Key.fromMapKey('g'))).to.be.null;
-    expect(sut.nextOp(Key.fromMapKey('g'))).to.deep.equal({type: 'scroll.top'});
-    expect(sut.nextOp(Key.fromMapKey('z'))).to.be.null;
+    let sut: KeymapUseCase;
+
+    before(() => {
+      sut = new KeymapUseCase(
+          new KeymapRepositoryImpl(),
+          new MockSettingRepository(settings),
+          new MockAddonEnabledRepository(true),
+          new MockAddressRepository(new URL('https://example.com')),
+      );
+    });
+
+    it('returns matched operation', () => {
+      expect(sut.nextOps(Key.fromMapKey('k'))).to.deep.equal({ repeat: 1, op: {type: 'scroll.vertically', count: -1}});
+      expect(sut.nextOps(Key.fromMapKey('j'))).to.deep.equal({ repeat: 1, op: {type: 'scroll.vertically', count: 1}});
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.deep.equal({ repeat: 1, op: {type: 'scroll.top'}});
+      expect(sut.nextOps(Key.fromMapKey('z'))).to.be.null;
+    });
+
+    it('repeats n-times by numeric prefix and multiple key operations', () => {
+      expect(sut.nextOps(Key.fromMapKey('1'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('0'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.deep.equal({ repeat: 10, op: {type: "scroll.top"}});
+    });
   });
 
-  it('returns only ADDON_ENABLE and ADDON_TOGGLE_ENABLED operation', () => {
+  context('when keymaps containing numeric mappings', () => {
+    let settings = Settings.fromJSON({
+      keymaps: {
+        20: {type: "scroll.top"},
+        g5: {type: 'scroll.bottom'},
+      },
+    });
+
+    let sut: KeymapUseCase;
+
+    before(() => {
+      sut = new KeymapUseCase(
+          new KeymapRepositoryImpl(),
+          new MockSettingRepository(settings),
+          new MockAddonEnabledRepository(true),
+          new MockAddressRepository(new URL('https://example.com')),
+      );
+    });
+
+    it('returns the matched operation ends with digit', () => {
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('5'))).to.be.deep.equal({ repeat: 1, op: { type: 'scroll.bottom'}});
+    });
+
+    it('returns an operation matched the operation with digit keymaps', () => {
+      expect(sut.nextOps(Key.fromMapKey('2'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('0'))).to.be.deep.equal({ repeat: 1, op: { type: 'scroll.top'}});
+    });
+
+    it('returns operations repeated by numeric prefix', () => {
+      expect(sut.nextOps(Key.fromMapKey('2'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('5'))).to.be.deep.equal({ repeat: 2, op: { type: 'scroll.bottom'}});
+    });
+
+    it('does not matches with digit operation with numeric prefix', () => {
+      expect(sut.nextOps(Key.fromMapKey('3'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('2'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('0'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('5'))).to.be.deep.equal({ repeat: 320, op: { type: 'scroll.bottom'}});
+    });
+  });
+
+  context('when the keys are mismatched with the operations', () => {
+    let settings = Settings.fromJSON({
+      keymaps: {
+        gg: {type: "scroll.top"},
+        G: {type: "scroll.bottom"},
+      },
+    });
+
+    let sut: KeymapUseCase;
+
+    before(() => {
+      sut = new KeymapUseCase(
+          new KeymapRepositoryImpl(),
+          new MockSettingRepository(settings),
+          new MockAddonEnabledRepository(true),
+          new MockAddressRepository(new URL('https://example.com')),
+      );
+    });
+
+    it('clears input keys with no-matched operations', () => {
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('x'))).to.be.null; // clear
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.deep.equal({repeat: 1, op: {type: "scroll.top"}});
+    });
+
+    it('clears input keys and the prefix with no-matched operations', () => {
+      expect(sut.nextOps(Key.fromMapKey('1'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('0'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('x'))).to.be.null;   // clear
+      expect(sut.nextOps(Key.fromMapKey('1'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('0'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.deep.equal({ repeat: 10, op: {type: "scroll.top"}});
+    });
+  });
+
+  context('when the site matches to the blacklist', () => {
     let settings = Settings.fromJSON({
       keymaps: {
         k: {type: 'scroll.vertically', count: -1},
@@ -80,25 +177,32 @@ describe('KeymapUseCase', () => {
         b: {type: 'addon.toggle.enabled'},
       },
     });
-    let sut = new KeymapUseCase(
-      new KeymapRepositoryImpl(),
-      new MockSettingRepository(settings),
-      new MockAddonEnabledRepository(false),
-      new MockAddressRepository(new URL('https://example.com')),
-    );
 
-    expect(sut.nextOp(Key.fromMapKey('k'))).to.be.null;
-    expect(sut.nextOp(Key.fromMapKey('a'))).to.deep.equal({type: 'addon.enable'});
-    expect(sut.nextOp(Key.fromMapKey('b'))).to.deep.equal({type: 'addon.toggle.enabled'});
+    let sut: KeymapUseCase;
+
+    before(() => {
+      sut = new KeymapUseCase(
+          new KeymapRepositoryImpl(),
+          new MockSettingRepository(settings),
+          new MockAddonEnabledRepository(false),
+          new MockAddressRepository(new URL('https://example.com')),
+      );
+    });
+
+    it('returns only ADDON_ENABLE and ADDON_TOGGLE_ENABLED operation', () => {
+      expect(sut.nextOps(Key.fromMapKey('k'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('a'))).to.deep.equal({ repeat: 1, op: {type: 'addon.enable'}});
+      expect(sut.nextOps(Key.fromMapKey('b'))).to.deep.equal({ repeat: 1, op: {type: 'addon.toggle.enabled'}});
+    });
   });
 
-  it('blocks keys in the partial blacklist', () => {
+  context('when the site matches to the partial blacklist', () => {
     let settings = Settings.fromJSON({
       keymaps: {
         k: {type: 'scroll.vertically', count: -1},
         j: {type: 'scroll.vertically', count: 1},
-        gg: {"type": "scroll.top"},
-        G: {"type": "scroll.bottom"},
+        gg: {type: "scroll.top"},
+        G: {type: "scroll.bottom"},
       },
       blacklist: [
         { url: "example.com", keys: ['g'] },
@@ -106,28 +210,30 @@ describe('KeymapUseCase', () => {
       ],
     });
 
-    let sut = new KeymapUseCase(
-      new KeymapRepositoryImpl(),
-      new MockSettingRepository(settings),
-      new MockAddonEnabledRepository(true),
-      new MockAddressRepository(new URL('https://example.com')),
-    );
+    it('blocks keys in the partial blacklist', () => {
+      let sut = new KeymapUseCase(
+          new KeymapRepositoryImpl(),
+          new MockSettingRepository(settings),
+          new MockAddonEnabledRepository(true),
+          new MockAddressRepository(new URL('https://example.com')),
+      );
 
-    expect(sut.nextOp(Key.fromMapKey('k'))).to.deep.equal({type: 'scroll.vertically', count: -1});
-    expect(sut.nextOp(Key.fromMapKey('j'))).to.deep.equal({type: 'scroll.vertically', count: 1});
-    expect(sut.nextOp(Key.fromMapKey('g'))).to.be.null;
-    expect(sut.nextOp(Key.fromMapKey('g'))).to.be.null;
-    expect(sut.nextOp(Key.fromMapKey('G'))).to.deep.equal({type: 'scroll.bottom'});
+      expect(sut.nextOps(Key.fromMapKey('k'))).to.deep.equal({ repeat: 1, op: {type: 'scroll.vertically', count: -1}});
+      expect(sut.nextOps(Key.fromMapKey('j'))).to.deep.equal({ repeat: 1, op: {type: 'scroll.vertically', count: 1}});
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('G'))).to.deep.equal({ repeat: 1, op: {type: 'scroll.bottom'}});
 
-    sut = new KeymapUseCase(
-      new KeymapRepositoryImpl(),
-      new MockSettingRepository(settings),
-      new MockAddonEnabledRepository(true),
-      new MockAddressRepository(new URL('https://example.org')),
-    );
+      sut = new KeymapUseCase(
+          new KeymapRepositoryImpl(),
+          new MockSettingRepository(settings),
+          new MockAddonEnabledRepository(true),
+          new MockAddressRepository(new URL('https://example.org')),
+      );
 
-    expect(sut.nextOp(Key.fromMapKey('g'))).to.be.null;
-    expect(sut.nextOp(Key.fromMapKey('g'))).to.deep.equal({type: 'scroll.top'});
-    expect(sut.nextOp(Key.fromMapKey('G'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.be.null;
+      expect(sut.nextOps(Key.fromMapKey('g'))).to.deep.equal({ repeat: 1, op: {type: 'scroll.top'}});
+      expect(sut.nextOps(Key.fromMapKey('G'))).to.be.null;
+    });
   });
 });
