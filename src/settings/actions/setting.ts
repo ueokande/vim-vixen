@@ -26,6 +26,7 @@ const save = async(data: SettingData): Promise<actions.SettingAction> => {
   return set(data);
 };
 
+
 const switchToForm = (json: JSONTextSettings): actions.SettingAction => {
   try {
     // toSettings exercise validation

@@ -2,9 +2,9 @@ import { injectable } from 'tsyringe';
 import SettingData from '../../shared/SettingData';
 
 @injectable()
-export default class LocalSettingRepository {
+export default class SyncSettingRepository {
   async load(): Promise<SettingData | null> {
-    const {settings} = await browser.storage.local.get('settings');
+    const { settings } = await browser.storage.sync.get('settings');
     if (!settings) {
       return null;
     }
@@ -13,7 +13,7 @@ export default class LocalSettingRepository {
 
   onChange(callback: () => void) {
     browser.storage.onChanged.addListener((changes, area) => {
-      if (area !== 'local') {
+      if (area !== 'sync') {
         return;
       }
       if (changes.settings) {
@@ -22,3 +22,4 @@ export default class LocalSettingRepository {
     });
   }
 }
+

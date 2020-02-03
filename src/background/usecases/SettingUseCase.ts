@@ -1,15 +1,17 @@
 import { injectable } from 'tsyringe';
 import LocalSettingRepository from '../repositories/LocalSettingRepository';
 import CachedSettingRepository from '../repositories/CachedSettingRepository';
-import { DefaultSettingData } from '../../shared/SettingData';
+import SettingData, { DefaultSettingData } from '../../shared/SettingData';
 import Settings from '../../shared/settings/Settings';
 import NotifyPresenter from '../presenters/NotifyPresenter';
+import SyncSettingRepository from "../repositories/SyncSettingRepository";
 
 @injectable()
 export default class SettingUseCase {
 
   constructor(
     private localSettingRepository: LocalSettingRepository,
+    private syncSettingRepository: SyncSettingRepository,
     private cachedSettingRepository: CachedSettingRepository,
     private notifyPresenter: NotifyPresenter,
   ) {
@@ -20,14 +22,11 @@ export default class SettingUseCase {
   }
 
   async reload(): Promise<Settings> {
-    let data;
+    let data = DefaultSettingData;
     try {
-      data = await this.localSettingRepository.load();
+      data = await this.loadSettings();
     } catch (e) {
       this.showUnableToLoad(e);
-    }
-    if (!data) {
-      data = DefaultSettingData;
     }
 
     let value: Settings;
@@ -39,6 +38,18 @@ export default class SettingUseCase {
     }
     this.cachedSettingRepository.update(value!!);
     return value;
+  }
+
+  private async loadSettings(): Promise<SettingData> {
+    const sync = await this.syncSettingRepository.load();
+    if (sync) {
+        return sync;
+    }
+    const local = await this.localSettingRepository.load();
+    if (local) {
+      return local;
+    }
+    return DefaultSettingData;
   }
 
   private showUnableToLoad(e: Error) {
