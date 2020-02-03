@@ -8,7 +8,7 @@ export default class SettingRepository {
   }
 
   async saveJSON(settings: Settings): Promise<void> {
-    await this.browser.storage.local.set({
+    await this.browser.storage.sync.set({
       settings: {
         source: SettingSource.JSON,
         json:  JSONTextSettings.fromSettings(settings).toJSONText(),

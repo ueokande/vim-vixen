@@ -6,6 +6,8 @@ import eventually from './eventually';
 import { Builder, Lanthan } from 'lanthan';
 import { WebDriver, Key } from 'selenium-webdriver';
 import Page from './lib/Page';
+import SettingRepository from "./lib/SettingRepository";
+import Settings from "../src/shared/settings/Settings";
 
 describe('follow properties test', () => {
   const server = new TestServer().receiveContent('/', `
@@ -31,24 +33,17 @@ describe('follow properties test', () => {
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
 
-    await browser.storage.local.set({ settings: {
-      source: 'json',
-      json: `{
-        "keymaps": {
-          ":": { "type": "command.show" },
-          "f": { "type": "follow.start", "newTab": false },
-          "F": { "type": "follow.start", "newTab": true, "background": false },
-          "<C-F>": { "type": "follow.start", "newTab": true, "background": true }
-        },
-        "search": {
-          "default": "google",
-          "engines": { "google": "https://google.com/search?q={}" }
-        },
-        "properties": {
-          "hintchars": "jk"
-        }
-      }`,
-    }});
+    await new SettingRepository(browser).saveJSON(Settings.fromJSON({
+      "keymaps": {
+        ":": { "type": "command.show" },
+        "f": { "type": "follow.start", "newTab": false },
+        "F": { "type": "follow.start", "newTab": true, "background": false },
+        "<C-F>": { "type": "follow.start", "newTab": true, "background": true }
+      },
+      "properties": {
+        "hintchars": "jk"
+      }
+    }));
 
     await server.start();
   });
