@@ -1,7 +1,6 @@
 import { injectable } from 'tsyringe';
-import PersistentSettingRepository
-  from '../repositories/PersistentSettingRepository';
-import SettingRepository from '../repositories/SettingRepository';
+import LocalSettingRepository from '../repositories/LocalSettingRepository';
+import CachedSettingRepository from '../repositories/CachedSettingRepository';
 import { DefaultSettingData } from '../../shared/SettingData';
 import Settings from '../../shared/settings/Settings';
 import NotifyPresenter from '../presenters/NotifyPresenter';
@@ -10,20 +9,20 @@ import NotifyPresenter from '../presenters/NotifyPresenter';
 export default class SettingUseCase {
 
   constructor(
-    private persistentSettingRepository: PersistentSettingRepository,
-    private settingRepository: SettingRepository,
+    private localSettingRepository: LocalSettingRepository,
+    private cachedSettingRepository: CachedSettingRepository,
     private notifyPresenter: NotifyPresenter,
   ) {
   }
 
-  get(): Promise<Settings> {
-    return this.settingRepository.get();
+  getCached(): Promise<Settings> {
+    return this.cachedSettingRepository.get();
   }
 
   async reload(): Promise<Settings> {
     let data;
     try {
-      data = await this.persistentSettingRepository.load();
+      data = await this.localSettingRepository.load();
     } catch (e) {
       this.showUnableToLoad(e);
     }
@@ -38,7 +37,7 @@ export default class SettingUseCase {
       this.showUnableToLoad(e);
       value = DefaultSettingData.toSettings();
     }
-    this.settingRepository.update(value!!);
+    this.cachedSettingRepository.update(value!!);
     return value;
   }
 

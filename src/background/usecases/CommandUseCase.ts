@@ -5,7 +5,7 @@ import * as urls from '../../shared/urls';
 import TabPresenter from '../presenters/TabPresenter';
 import WindowPresenter from '../presenters/WindowPresenter';
 import HelpPresenter from '../presenters/HelpPresenter';
-import SettingRepository from '../repositories/SettingRepository';
+import CachedSettingRepository from '../repositories/CachedSettingRepository';
 import BookmarkRepository from '../repositories/BookmarkRepository';
 import ConsoleClient from '../infrastructures/ConsoleClient';
 import ContentMessageClient from '../infrastructures/ContentMessageClient';
@@ -17,7 +17,7 @@ export default class CommandIndicator {
     private tabPresenter: TabPresenter,
     private windowPresenter: WindowPresenter,
     private helpPresenter: HelpPresenter,
-    private settingRepository: SettingRepository,
+    private settingRepository: CachedSettingRepository,
     private bookmarkRepository: BookmarkRepository,
     private consoleClient: ConsoleClient,
     private contentMessageClient: ContentMessageClient,

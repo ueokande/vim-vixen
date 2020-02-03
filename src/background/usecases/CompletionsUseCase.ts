@@ -3,7 +3,7 @@ import CompletionGroup from '../domains/CompletionGroup';
 import CommandDocs from '../domains/CommandDocs';
 import CompletionsRepository from '../repositories/CompletionsRepository';
 import * as filters from './filters';
-import SettingRepository from '../repositories/SettingRepository';
+import CachedSettingRepository from '../repositories/CachedSettingRepository';
 import TabPresenter from '../presenters/TabPresenter';
 import Properties from '../../shared/settings/Properties';
 
@@ -17,7 +17,7 @@ export default class CompletionsUseCase {
   constructor(
     private tabPresenter: TabPresenter,
     private completionsRepository: CompletionsRepository,
-    private settingRepository: SettingRepository,
+    private settingRepository: CachedSettingRepository,
   ) {
   }
 

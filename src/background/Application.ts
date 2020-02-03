@@ -2,6 +2,7 @@ import { injectable } from 'tsyringe';
 import ContentMessageListener from './infrastructures/ContentMessageListener';
 import SettingController from './controllers/SettingController';
 import VersionController from './controllers/VersionController';
+import LocalSettingRepository from "./repositories/LocalSettingRepository";
 
 @injectable()
 export default class Application {
@@ -9,6 +10,7 @@ export default class Application {
     private contentMessageListener: ContentMessageListener,
     private settingController: SettingController,
     private versionController: VersionController,
+    private localSettingRepository: LocalSettingRepository
   ) {
   }
 
@@ -23,13 +25,8 @@ export default class Application {
     });
 
     this.contentMessageListener.run();
-    browser.storage.onChanged.addListener((changes, area) => {
-      if (area !== 'local') {
-        return;
-      }
-      if (changes.settings) {
-        this.settingController.reload();
-      }
+    this.localSettingRepository.onChange(() => {
+      this.settingController.reload();
     });
   }
 }

@@ -6,7 +6,7 @@ import Properties from '../../shared/settings/Properties';
 const CACHED_SETTING_KEY = 'setting';
 
 @injectable()
-export default class SettingRepository {
+export default class CachedSettingRepository {
   private cache: MemoryStorage;
 
   constructor() {
