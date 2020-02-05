@@ -40,6 +40,7 @@ export default class Application {
 
   run() {
     this.routeCommonComponents();
+    this.routeFocusEvents();
     if (window.self === window.top) {
       this.routeMasterComponents();
     }
@@ -117,5 +118,11 @@ export default class Application {
     inputDriver.onKey(key => this.keymapController.press(key));
 
     this.settingController.initSettings();
+  }
+
+  private routeFocusEvents() {
+    window.addEventListener('blur', () => {
+      this.keymapController.onBlurWindow();
+    });
   }
 }
