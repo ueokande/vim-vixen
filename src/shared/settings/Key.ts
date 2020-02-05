@@ -60,7 +60,7 @@ export default class Key {
   }
 
   isDigit(): boolean {
-    return digits.includes(this.key);
+    return digits.includes(this.key) && !this.ctrl && !this.alt && !this.meta;
   }
 
   equals(key: Key) {

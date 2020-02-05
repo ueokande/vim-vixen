@@ -80,7 +80,7 @@ describe("Key", () => {
     it('returns true if the key is a digit', () => {
         expect(new Key({ key: '0' }).isDigit()).to.be.true;
       expect(new Key({ key: '9' }).isDigit()).to.be.true;
-      expect(new Key({ key: '9', shift: true }).isDigit()).to.be.true;
+      expect(new Key({ key: '9', alt: true }).isDigit()).to.be.false;
 
       expect(new Key({ key: 'a' }).isDigit()).to.be.false;
       expect(new Key({ key: '０' }).isDigit()).to.be.false;
