@@ -1,4 +1,4 @@
-import { injectable } from 'tsyringe';
+import { injectable, inject } from 'tsyringe';
 import * as operations from '../../shared/operations';
 import * as parsers from './parsers';
 import * as urls from '../../shared/urls';
@@ -17,7 +17,7 @@ export default class CommandIndicator {
     private tabPresenter: TabPresenter,
     private windowPresenter: WindowPresenter,
     private helpPresenter: HelpPresenter,
-    private settingRepository: CachedSettingRepository,
+    @inject("CachedSettingRepository") private cachedSettingRepository: CachedSettingRepository,
     private bookmarkRepository: BookmarkRepository,
     private consoleClient: ConsoleClient,
     private contentMessageClient: ContentMessageClient,
@@ -133,7 +133,7 @@ export default class CommandIndicator {
       return;
     }
     const [name, value] = parsers.parseSetOption(keywords);
-    await this.settingRepository.setProperty(name, value);
+    await this.cachedSettingRepository.setProperty(name, value);
 
     return this.contentMessageClient.broadcastSettingsChanged();
   }
@@ -143,7 +143,7 @@ export default class CommandIndicator {
   }
 
   private async urlOrSearch(keywords: string): Promise<any> {
-    const settings = await this.settingRepository.get();
+    const settings = await this.cachedSettingRepository.get();
     return urls.searchUrl(keywords, settings.search);
   }
 }

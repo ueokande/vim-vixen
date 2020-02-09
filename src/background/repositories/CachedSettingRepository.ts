@@ -1,12 +1,20 @@
-import { injectable } from 'tsyringe';
 import MemoryStorage from '../infrastructures/MemoryStorage';
 import Settings from '../../shared/settings/Settings';
 import Properties from '../../shared/settings/Properties';
 
 const CACHED_SETTING_KEY = 'setting';
 
-@injectable()
-export default class CachedSettingRepository {
+export default interface CachedSettingRepository {
+  get(): Promise<Settings>;
+
+  update(value: Settings): Promise<void>;
+
+  setProperty(
+    name: string, value: string | number | boolean,
+  ): Promise<void>;
+}
+
+export class CachedSettingRepositoryImpl implements CachedSettingRepository {
   private cache: MemoryStorage;
 
   constructor() {
@@ -18,8 +26,9 @@ export default class CachedSettingRepository {
     return Promise.resolve(Settings.fromJSON(data));
   }
 
-  update(value: Settings): void {
-    return this.cache.set(CACHED_SETTING_KEY, value.toJSON());
+  update(value: Settings): Promise<void> {
+    this.cache.set(CACHED_SETTING_KEY, value.toJSON());
+    return Promise.resolve()
   }
 
   async setProperty(
@@ -49,6 +58,6 @@ export default class CachedSettingRepository {
       current.properties.complete = newValue as string;
       break;
     }
-    return this.update(current);
+    await this.update(current);
   }
 }

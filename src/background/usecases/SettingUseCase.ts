@@ -1,19 +1,18 @@
-import { injectable } from 'tsyringe';
-import LocalSettingRepository from '../repositories/LocalSettingRepository';
+import {inject, injectable} from 'tsyringe';
 import CachedSettingRepository from '../repositories/CachedSettingRepository';
-import SettingData, { DefaultSettingData } from '../../shared/SettingData';
+import SettingData, {DefaultSettingData} from '../../shared/SettingData';
 import Settings from '../../shared/settings/Settings';
-import NotifyPresenter from '../presenters/NotifyPresenter';
-import SyncSettingRepository from "../repositories/SyncSettingRepository";
+import Notifier from '../presenters/Notifier';
+import SettingRepository from "../repositories/SettingRepository";
 
 @injectable()
 export default class SettingUseCase {
 
   constructor(
-    private localSettingRepository: LocalSettingRepository,
-    private syncSettingRepository: SyncSettingRepository,
-    private cachedSettingRepository: CachedSettingRepository,
-    private notifyPresenter: NotifyPresenter,
+    @inject("LocalSettingRepository") private localSettingRepository: SettingRepository,
+    @inject("SyncSettingRepository") private syncSettingRepository: SettingRepository,
+    @inject("CachedSettingRepository") private cachedSettingRepository: CachedSettingRepository,
+    @inject("Notifier") private notifier: Notifier,
   ) {
   }
 
@@ -36,7 +35,7 @@ export default class SettingUseCase {
       this.showUnableToLoad(e);
       value = DefaultSettingData.toSettings();
     }
-    this.cachedSettingRepository.update(value!!);
+    await this.cachedSettingRepository.update(value!!);
     return value;
   }
 
@@ -54,7 +53,7 @@ export default class SettingUseCase {
 
   private showUnableToLoad(e: Error) {
     console.error('unable to load settings', e);
-    this.notifyPresenter.notifyInvalidSettings(() => {
+    this.notifier.notifyInvalidSettings(() => {
       browser.runtime.openOptionsPage();
     });
   }

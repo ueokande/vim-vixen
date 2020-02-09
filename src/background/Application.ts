@@ -1,8 +1,8 @@
-import { injectable } from 'tsyringe';
+import { injectable, inject } from 'tsyringe';
 import ContentMessageListener from './infrastructures/ContentMessageListener';
 import SettingController from './controllers/SettingController';
 import VersionController from './controllers/VersionController';
-import SyncSettingRepository from "./repositories/SyncSettingRepository";
+import SettingRepository from "./repositories/SettingRepository";
 
 @injectable()
 export default class Application {
@@ -10,7 +10,7 @@ export default class Application {
     private contentMessageListener: ContentMessageListener,
     private settingController: SettingController,
     private versionController: VersionController,
-    private syncSettingRepository: SyncSettingRepository
+    @inject("SyncSettingRepository") private syncSettingRepository: SettingRepository,
   ) {
   }
 
