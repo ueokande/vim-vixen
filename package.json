@@ -82,7 +82,7 @@
     "typescript": "^3.7.5",
     "web-ext-types": "^3.2.1",
     "webextensions-api-fake": "^0.9.1",
-    "webpack": "^4.41.4",
+    "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   }
 }
