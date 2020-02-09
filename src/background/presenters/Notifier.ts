@@ -1,10 +1,13 @@
-import { injectable } from 'tsyringe';
-
 const NOTIFICATION_ID_UPDATE = 'vimvixen-update';
 const NOTIFICATION_ID_INVALID_SETTINGS = 'vimvixen-update-invalid-settings';
 
-@injectable()
-export default class NotifyPresenter {
+export default interface Notifier {
+  notifyUpdated(version: string, onclick: () => void): Promise<void>;
+
+  notifyInvalidSettings(onclick: () => void): Promise<void>;
+}
+
+export class NotifierImpl implements NotifierImpl {
   async notifyUpdated(version: string, onclick: () => void): Promise<void> {
     const title = `Vim Vixen ${version} has been installed`;
     const message = 'Click here to see release notes';

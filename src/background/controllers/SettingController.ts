@@ -12,7 +12,7 @@ export default class SettingController {
   }
 
   getSetting(): Promise<Settings> {
-    return this.settingUseCase.get();
+    return this.settingUseCase.getCached();
   }
 
   async reload(): Promise<any> {

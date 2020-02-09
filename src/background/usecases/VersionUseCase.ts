@@ -1,19 +1,19 @@
-import { injectable } from 'tsyringe';
+import { injectable, inject } from 'tsyringe';
 import TabPresenter from '../presenters/TabPresenter';
-import NotifyPresenter from '../presenters/NotifyPresenter';
+import Notifier from '../presenters/Notifier';
 
 @injectable()
 export default class VersionUseCase {
   constructor(
     private tabPresenter: TabPresenter,
-    private notifyPresenter: NotifyPresenter,
+    @inject("Notifier") private notifier: Notifier,
   ) {
   }
 
   notify(): Promise<void> {
     const manifest = browser.runtime.getManifest();
     const url = this.releaseNoteUrl(manifest.version);
-    return this.notifyPresenter.notifyUpdated(manifest.version, () => {
+    return this.notifier.notifyUpdated(manifest.version, () => {
       this.tabPresenter.create(url);
     });
   }

@@ -1,34 +1,31 @@
-import { injectable } from 'tsyringe';
-import PersistentSettingRepository
-  from '../repositories/PersistentSettingRepository';
-import SettingRepository from '../repositories/SettingRepository';
-import { DefaultSettingData } from '../../shared/SettingData';
+import {inject, injectable} from 'tsyringe';
+import CachedSettingRepository from '../repositories/CachedSettingRepository';
+import SettingData, {DefaultSettingData} from '../../shared/SettingData';
 import Settings from '../../shared/settings/Settings';
-import NotifyPresenter from '../presenters/NotifyPresenter';
+import Notifier from '../presenters/Notifier';
+import SettingRepository from "../repositories/SettingRepository";
 
 @injectable()
 export default class SettingUseCase {
 
   constructor(
-    private persistentSettingRepository: PersistentSettingRepository,
-    private settingRepository: SettingRepository,
-    private notifyPresenter: NotifyPresenter,
+    @inject("LocalSettingRepository") private localSettingRepository: SettingRepository,
+    @inject("SyncSettingRepository") private syncSettingRepository: SettingRepository,
+    @inject("CachedSettingRepository") private cachedSettingRepository: CachedSettingRepository,
+    @inject("Notifier") private notifier: Notifier,
   ) {
   }
 
-  get(): Promise<Settings> {
-    return this.settingRepository.get();
+  getCached(): Promise<Settings> {
+    return this.cachedSettingRepository.get();
   }
 
   async reload(): Promise<Settings> {
-    let data;
+    let data = DefaultSettingData;
     try {
-      data = await this.persistentSettingRepository.load();
+      data = await this.loadSettings();
     } catch (e) {
       this.showUnableToLoad(e);
-    }
-    if (!data) {
-      data = DefaultSettingData;
     }
 
     let value: Settings;
@@ -38,13 +35,25 @@ export default class SettingUseCase {
       this.showUnableToLoad(e);
       value = DefaultSettingData.toSettings();
     }
-    this.settingRepository.update(value!!);
+    await this.cachedSettingRepository.update(value!!);
     return value;
+  }
+
+  private async loadSettings(): Promise<SettingData> {
+    const sync = await this.syncSettingRepository.load();
+    if (sync) {
+        return sync;
+    }
+    const local = await this.localSettingRepository.load();
+    if (local) {
+      return local;
+    }
+    return DefaultSettingData;
   }
 
   private showUnableToLoad(e: Error) {
     console.error('unable to load settings', e);
-    this.notifyPresenter.notifyInvalidSettings(() => {
+    this.notifier.notifyInvalidSettings(() => {
       browser.runtime.openOptionsPage();
     });
   }

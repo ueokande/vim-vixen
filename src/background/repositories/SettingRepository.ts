@@ -1,54 +1,49 @@
-import { injectable } from 'tsyringe';
-import MemoryStorage from '../infrastructures/MemoryStorage';
-import Settings from '../../shared/settings/Settings';
-import Properties from '../../shared/settings/Properties';
+import SettingData from '../../shared/SettingData';
 
-const CACHED_SETTING_KEY = 'setting';
+export default interface SettingRepository {
+  load(): Promise<SettingData | null>;
 
-@injectable()
-export default class SettingRepository {
-  private cache: MemoryStorage;
+  onChange(callback: () => void): void;
+}
 
-  constructor() {
-    this.cache = new MemoryStorage();
+export class LocalSettingRepository implements SettingRepository {
+  async load(): Promise<SettingData | null> {
+    const {settings} = await browser.storage.local.get('settings');
+    if (!settings) {
+      return null;
+    }
+    return SettingData.fromJSON(settings as any);
   }
 
-  get(): Promise<Settings> {
-    const data = this.cache.get(CACHED_SETTING_KEY);
-    return Promise.resolve(Settings.fromJSON(data));
+  onChange(callback: () => void) {
+    browser.storage.onChanged.addListener((changes, area) => {
+      if (area !== 'local') {
+        return;
+      }
+      if (changes.settings) {
+        callback();
+      }
+    });
+  }
+}
+
+export class SyncSettingRepository implements SettingRepository {
+  async load(): Promise<SettingData | null> {
+    const {settings} = await browser.storage.sync.get('settings');
+    if (!settings) {
+      return null;
+    }
+    return SettingData.fromJSON(settings as any);
   }
 
-  update(value: Settings): void {
-    return this.cache.set(CACHED_SETTING_KEY, value.toJSON());
-  }
-
-  async setProperty(
-    name: string, value: string | number | boolean,
-  ): Promise<void> {
-    const def = Properties.def(name);
-    if (!def) {
-      throw new Error('unknown property: ' + name);
-    }
-    if (typeof value !== def.type) {
-      throw new TypeError(`property type of ${name} mismatch: ${typeof value}`);
-    }
-    let newValue = value;
-    if (typeof value === 'string' && value === '') {
-      newValue = def.defaultValue;
-    }
-
-    const current = await this.get();
-    switch (name) {
-    case 'hintchars':
-      current.properties.hintchars = newValue as string;
-      break;
-    case 'smoothscroll':
-      current.properties.smoothscroll = newValue as boolean;
-      break;
-    case 'complete':
-      current.properties.complete = newValue as string;
-      break;
-    }
-    return this.update(current);
+  onChange(callback: () => void) {
+    browser.storage.onChanged.addListener((changes, area) => {
+      if (area !== 'sync') {
+        return;
+      }
+      if (changes.settings) {
+        callback();
+      }
+    });
   }
 }

@@ -1,9 +1,9 @@
-import { injectable } from 'tsyringe';
+import { injectable, inject } from 'tsyringe';
 import CompletionGroup from '../domains/CompletionGroup';
 import CommandDocs from '../domains/CommandDocs';
 import CompletionsRepository from '../repositories/CompletionsRepository';
 import * as filters from './filters';
-import SettingRepository from '../repositories/SettingRepository';
+import CachedSettingRepository from '../repositories/CachedSettingRepository';
 import TabPresenter from '../presenters/TabPresenter';
 import Properties from '../../shared/settings/Properties';
 
@@ -17,7 +17,7 @@ export default class CompletionsUseCase {
   constructor(
     private tabPresenter: TabPresenter,
     private completionsRepository: CompletionsRepository,
-    private settingRepository: SettingRepository,
+    @inject("CachedSettingRepository") private cachedSettingRepository: CachedSettingRepository,
   ) {
   }
 
@@ -41,7 +41,7 @@ export default class CompletionsUseCase {
     // TODO This logic contains view entities.  They should be defined on
     // content script
 
-    const settings = await this.settingRepository.get();
+    const settings = await this.cachedSettingRepository.get();
     const groups: CompletionGroup[] = [];
 
     const complete = settings.properties.complete;
@@ -180,7 +180,7 @@ export default class CompletionsUseCase {
   }
 
   async querySearchEngineItems(name: string, keywords: string) {
-    const settings = await this.settingRepository.get();
+    const settings = await this.cachedSettingRepository.get();
     const engines = Object.keys(settings.search.engines)
       .filter(key => key.startsWith(keywords));
     return engines.map(key => ({
