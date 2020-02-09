@@ -61,7 +61,7 @@
     "karma-webpack": "^4.0.2",
     "lanthan": "0.0.2",
     "mocha": "^7.0.1",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "prettier": "^1.19.1",
     "prettier-eslint": "^9.0.1",
     "react": "^16.12.0",
