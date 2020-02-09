@@ -99,4 +99,8 @@ export default class KeymapController {
     }
     return true;
   }
+
+  onBlurWindow() {
+    this.keymapUseCase.cancel();
+  }
 }

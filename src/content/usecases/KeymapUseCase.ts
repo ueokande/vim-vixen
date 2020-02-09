@@ -70,6 +70,10 @@ export default class KeymapUseCase {
     return null;
   }
 
+  cancel() {
+    this.repository.clear();
+  }
+
   private keymapEntityMap(): [KeySequence, operations.Operation][] {
     const keymaps = this.settingRepository.get().keymaps.combine(reservedKeymaps);
     let entries = keymaps.entries().map(
