@@ -40,6 +40,10 @@ class MockFindPresenter implements FindPresenter {
   clearSelection(): void {
     this.highlighted = false;
   }
+
+  getSelection(): string | null {
+    return 'some selected text';
+  }
 }
 
 class MockFindClient implements FindClient {
@@ -75,7 +79,7 @@ describe('FindUseCase', () => {
   });
 
   describe('#startFind', () => {
-    it('find next by ketword', async() => {
+    it('find next by keyword', async() => {
       presenter.document = 'monkey punch';
 
       await sut.startFind('monkey');
@@ -157,5 +161,28 @@ describe('FindUseCase', () => {
   });
 
   describe('#findPrev', () => {
+  });
+
+  describe('#findSelection', () => {
+    it('finds the selected text', async () => {
+      presenter.document = ' bla bla some selected text bla bla bla';
+      await sut.startFindSelection();
+      expect(await repository.getLastKeyword()).to.equal('some selected text');
+      expect(await consoleClient.text).to.equal('Pattern found: some selected text');
+    });
+
+    it('Shows an error if no text is selected', async () => {
+      presenter.document = 'banana pancakes';
+      const t = presenter.getSelection;
+      try {
+        presenter.getSelection = () => { return null; };
+
+        await sut.startFindSelection();
+        expect(await consoleClient.text).to.equal('No text is selected');
+
+      } finally {
+        presenter.getSelection = t;
+      }
+    });
   });
 });

@@ -8,6 +8,10 @@ export default class FindSlaveUseCase {
   ) {
   }
 
+  findSelection() {
+    this.findMasterClient.findSelection();
+  }
+
   findNext() {
     this.findMasterClient.findNext();
   }

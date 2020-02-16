@@ -51,6 +51,8 @@ export default class Application {
       switch (msg.type) {
       case messages.CONSOLE_ENTER_FIND:
         return this.findController.start(msg);
+      case messages.FIND_SELECTION:
+        return this.findController.startFindSelection(msg);
       case messages.FIND_NEXT:
         return this.findController.next(msg);
       case messages.FIND_PREV:

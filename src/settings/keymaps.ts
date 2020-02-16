@@ -44,6 +44,7 @@ const fields = [
     ['focus.input', 'Focus input'],
   ], [
     ['find.start', 'Start find mode'],
+    ['find.selection', 'Start find mode with visual selection'],
     ['find.next', 'Find next word'],
     ['find.prev', 'Find previous word'],
   ], [

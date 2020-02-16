@@ -138,6 +138,7 @@ export const DefaultSettingJSONText = `{
     "P": { "type": "urls.paste", "newTab": true },
     "/": { "type": "find.start" },
     "n": { "type": "find.next" },
+    "*": { "type": "find.selection" },
     "N": { "type": "find.prev" },
     ".": { "type": "repeat.last" },
     "<S-Esc>": { "type": "addon.toggle.enabled" }

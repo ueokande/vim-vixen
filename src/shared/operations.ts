@@ -68,6 +68,7 @@ export const URLS_PASTE = 'urls.paste';
 
 // Find
 export const FIND_START = 'find.start';
+export const FIND_SELECTION = 'find.selection';
 export const FIND_NEXT = 'find.next';
 export const FIND_PREV = 'find.prev';
 
@@ -282,6 +283,10 @@ export interface FindStartOperation {
   type: typeof FIND_START;
 }
 
+export interface FindSelectionOperation {
+  type: typeof FIND_SELECTION;
+}
+
 export interface FindNextOperation {
   type: typeof FIND_NEXT;
 }
@@ -358,6 +363,7 @@ export type Operation =
   UrlsYankOperation |
   UrlsPasteOperation |
   FindStartOperation |
+  FindSelectionOperation |
   FindNextOperation |
   FindPrevOperation |
   MarkSetPrefixOperation |
@@ -499,6 +505,7 @@ export const valueOf = (o: any): Operation => {
   case ZOOM_NEUTRAL:
   case URLS_YANK:
   case FIND_START:
+  case FIND_SELECTION:
   case FIND_NEXT:
   case FIND_PREV:
   case MARK_SET_PREFIX:

@@ -49,6 +49,8 @@ export default class KeymapController {
         return () => this.addonEnabledUseCase.disable();
       case operations.ADDON_TOGGLE_ENABLED:
         return () => this.addonEnabledUseCase.toggle();
+      case operations.FIND_SELECTION:
+        return () => this.findSlaveUseCase.findSelection();
       case operations.FIND_NEXT:
         return () => this.findSlaveUseCase.findNext();
       case operations.FIND_PREV:
