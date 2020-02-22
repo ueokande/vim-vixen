@@ -27,12 +27,3 @@ Test operations with default key maps.
 
 - [ ] keymap settings are applied to open tabs without reload
 - [ ] search settings are applied to open tabs without reload
-
-## Find mode
-
-- [ ] open console with <kbd>/</kbd>
-- [ ] highlight a word on <kbd>Enter</kbd> pressed in find console
-- [ ] Search next/prev by <kbd>n</kbd>/<kbd>N</kbd>
-- [ ] Wrap search by <kbd>n</kbd>/<kbd>N</kbd>
-- [ ] Find with last keyword if keyword is empty
-- [ ] Find keyword last used on new tab opened
