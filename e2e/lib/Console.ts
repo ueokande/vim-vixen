@@ -35,6 +35,11 @@ export class Console {
     return p.getText();
   }
 
+  async getInformationMessage(): Promise<string> {
+    const p = await this.webdriver.findElement(By.css('.vimvixen-console-info'));
+    return p.getText();
+  }
+
   async inputKeys(...keys: string[]) {
     const input = await this.webdriver.findElement(By.css('input'));
     await input.sendKeys(...keys);

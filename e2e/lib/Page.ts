@@ -6,6 +6,11 @@ type Hint = {
   text: string,
 };
 
+type Selection = {
+  from: number,
+  to: number,
+};
+
 export default class Page {
   private constructor(private webdriver: WebDriver) {
   }
@@ -64,6 +69,19 @@ export default class Page {
 
   pageHeight(): Promise<number> {
     return this.webdriver.executeScript(() => window.document.documentElement.clientHeight);
+  }
+
+  async getSelection(): Promise<Selection> {
+    const obj = await this.webdriver.executeScript(`return window.getSelection();`) as any;
+    return { from: obj.anchorOffset, to: obj.focusOffset };
+  }
+
+  async clearSelection(): Promise<void> {
+    await this.webdriver.executeScript(`window.getSelection().removeAllRanges()`);
+  }
+
+  async switchToTop(): Promise<void> {
+    await this.webdriver.switchTo().defaultContent();
   }
 
   async waitAndGetHints(): Promise<Hint[]> {
