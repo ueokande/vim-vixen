@@ -32,7 +32,7 @@ To disable <kbd>j</kbd> and <kbd>k</kbd> keys (scroll down and up) on github.com
 
 ```json
 {
-  "blacklist" [
+  "blacklist": [
     { "url": "github.com", "keys": ["j", "k"] }
   ]
 }
