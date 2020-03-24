@@ -1,4 +1,5 @@
-// console commands
+import Completions from "../Completions";
+
 export const CONSOLE_HIDE = 'console.hide';
 export const CONSOLE_SHOW_COMMAND = 'console.show.command';
 export const CONSOLE_SHOW_ERROR = 'console.show.error';
@@ -44,7 +45,7 @@ interface SetConsoleTextAction {
 
 interface SetCompletionsAction {
   type: typeof CONSOLE_SET_COMPLETIONS;
-  completions: any[];
+  completions: Completions;
   completionSource: string;
 }
 

@@ -1,11 +1,12 @@
 import * as actions from '../actions';
+import Completions from "../Completions";
 
 export interface State {
   mode: string;
   messageText: string;
   consoleText: string;
   completionSource: string;
-  completions: any[],
+  completions: Completions;
   select: number;
   viewIndex: number;
 }
