@@ -8,6 +8,8 @@ export class UnknownCommandError extends Error {
 
 export default class CommandParser {
   parse(value: string): Command {
+    value = value.replace(/!$/, "");
+
     switch (value) {
     case 'o':
     case 'open':
@@ -25,14 +27,8 @@ export default class CommandParser {
     case 'bdel':
     case 'bdelete':
       return Command.BufferDelete;
-    case 'bd!':
-    case 'bdel!':
-    case 'bdelete!':
-      return Command.BufferDeleteForce;
     case 'bdeletes':
       return Command.BuffersDelete;
-    case 'bdeletes!':
-      return Command.BuffersDeleteForce;
     case 'addbookmark':
       return Command.AddBookmark;
     case 'q':

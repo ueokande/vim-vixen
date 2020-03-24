@@ -8,7 +8,7 @@ describe("CommandParser", () => {
       const sut = new CommandParser();
       expect(sut.parse("open")).to.equal(Command.Open);
       expect(sut.parse("w")).to.equal(Command.WindowOpen);
-      expect(sut.parse("bdelete!")).to.equal(Command.BufferDeleteForce);
+      expect(sut.parse("bdelete!")).to.equal(Command.BufferDelete);
       expect(() => sut.parse("harakiri")).to.throw(UnknownCommandError);
     })
   })
