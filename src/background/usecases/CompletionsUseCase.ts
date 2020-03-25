@@ -2,15 +2,12 @@ import { injectable, inject } from 'tsyringe';
 import CompletionGroup from '../domains/CompletionGroup';
 import CommandDocs from '../domains/CommandDocs';
 import CompletionsRepository from '../repositories/CompletionsRepository';
-import * as filters from './filters';
 import CachedSettingRepository from '../repositories/CachedSettingRepository';
 import TabPresenter from '../presenters/TabPresenter';
 import Properties from '../../shared/settings/Properties';
-
-const COMPLETION_ITEM_LIMIT = 10;
+import CompletionUseCase from "../completion/CompletionUseCase";
 
 type Tab = browser.tabs.Tab;
-type HistoryItem = browser.history.HistoryItem;
 
 @injectable()
 export default class CompletionsUseCase {
@@ -18,6 +15,7 @@ export default class CompletionsUseCase {
     private tabPresenter: TabPresenter,
     private completionsRepository: CompletionsRepository,
     @inject("CachedSettingRepository") private cachedSettingRepository: CachedSettingRepository,
+    private completionUseCase: CompletionUseCase
   ) {
   }
 
@@ -179,42 +177,29 @@ export default class CompletionsUseCase {
     return [{ name: 'Buffers', items }];
   }
 
-  async querySearchEngineItems(name: string, keywords: string) {
-    const settings = await this.cachedSettingRepository.get();
-    const engines = Object.keys(settings.search.engines)
-      .filter(key => key.startsWith(keywords));
-    return engines.map(key => ({
-      caption: key,
-      content: name + ' ' + key,
+  async querySearchEngineItems(name: string, query: string) {
+    const engines = await this.completionUseCase.requestSearchEngines(query);
+    return engines.map(item => ({
+      caption: item,
+      content: name + ' ' + item,
     }));
   }
 
-  async queryHistoryItems(name: string, keywords: string) {
-    let histories = await this.completionsRepository.queryHistories(keywords);
-    histories = [histories]
-      .map(filters.filterBlankTitle)
-      .map(filters.filterHttp)
-      .map(filters.filterByTailingSlash)
-      .map(pages => filters.filterByPathname(pages, COMPLETION_ITEM_LIMIT))
-      .map(pages => filters.filterByOrigin(pages, COMPLETION_ITEM_LIMIT))[0]
-      .sort((x: HistoryItem, y: HistoryItem): number => {
-        return Number(y.visitCount) - Number(x.visitCount);
-      })
-      .slice(0, COMPLETION_ITEM_LIMIT);
-    return histories.map(page => ({
-      caption: page.title,
-      content: name + ' ' + page.url,
-      url: page.url
+  async queryHistoryItems(name: string, query: string) {
+    const items = await this.completionUseCase.requestHistory(query);
+    return items.map(item => ({
+      caption: item.title,
+      content: name + ' ' + item.url,
+      url: item.url
     }));
   }
 
-  async queryBookmarkItems(name: string, keywords: string) {
-    const bookmarks = await this.completionsRepository.queryBookmarks(keywords);
-    return bookmarks.slice(0, COMPLETION_ITEM_LIMIT)
-      .map(page => ({
-        caption: page.title,
-        content: name + ' ' + page.url,
-        url: page.url
-      }));
+  async queryBookmarkItems(name: string, query: string) {
+    const items = await this.completionUseCase.requestHistory(query);
+    return items.map(item => ({
+      caption: item.title,
+      content: name + ' ' + item.url,
+      url: item.url
+    }));
   }
 }
