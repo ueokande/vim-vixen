@@ -6,6 +6,7 @@ import Completion from './console/Completion';
 import Message from './console/Message';
 import * as consoleActions from '../../console/actions/console';
 import { State as AppState } from '../reducers';
+import CommandLineParser, { InputPhase } from "../commandline/CommandLineParser";
 
 const COMPLETION_MAX_ITEMS = 33;
 
@@ -17,6 +18,8 @@ type Props = StateProps & DispatchProps;
 
 class Console extends React.Component<Props> {
   private input: React.RefObject<Input>;
+
+  private commandLineParser: CommandLineParser = new CommandLineParser();
 
   constructor(props: Props) {
     super(props);
@@ -103,16 +106,16 @@ class Console extends React.Component<Props> {
   onChange(e: React.ChangeEvent<HTMLInputElement>) {
     const text = e.target.value;
     this.props.dispatch(consoleActions.setConsoleText(text));
-    if (this.props.mode === 'command') {
-      this.props.dispatch(consoleActions.getCompletions(text));
+    if (this.props.mode !== 'command') {
+      return
     }
+    this.updateCompletions(text)
   }
 
 
   componentDidUpdate(prevProps: Props) {
     if (prevProps.mode !== 'command' && this.props.mode === 'command') {
-      this.props.dispatch(
-        consoleActions.getCompletions(this.props.consoleText));
+      this.updateCompletions(this.props.consoleText);
       this.focus();
     } else if (prevProps.mode !== 'find' && this.props.mode === 'find') {
       this.focus();
@@ -152,6 +155,15 @@ class Console extends React.Component<Props> {
     window.focus();
     if (this.input.current) {
       this.input.current.focus();
+    }
+  }
+
+  private updateCompletions(text: string) {
+    const phase = this.commandLineParser.inputPhase(text);
+    if (phase === InputPhase.OnCommand) {
+      return this.props.dispatch(consoleActions.getCommandCompletions(text));
+    } else {
+      this.props.dispatch(consoleActions.getCompletions(text));
     }
   }
 }

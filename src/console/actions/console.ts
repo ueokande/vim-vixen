@@ -1,5 +1,20 @@
 import * as messages from '../../shared/messages';
 import * as actions from './index';
+import { Command } from "../../shared/Command";
+
+const commandDocs = {
+  [Command.Set]: 'Set a value of the property',
+  [Command.Open]: 'Open a URL or search by keywords in current tab',
+  [Command.TabOpen]: 'Open a URL or search by keywords in new tab',
+  [Command.WindowOpen]: 'Open a URL or search by keywords in new window',
+  [Command.Buffer]: 'Select tabs by matched keywords',
+  [Command.BufferDelete]: 'Close a certain tab matched by keywords',
+  [Command.BuffersDelete]: 'Close all tabs matched by keywords',
+  [Command.Quit]: 'Close the current tab',
+  [Command.QuitAll]: 'Close all tabs',
+  [Command.AddBookmark]: 'Add current page to bookmarks',
+  [Command.Help]: 'Open Vim Vixen help in new tab',
+};
 
 const hide = (): actions.ConsoleAction => {
   return {
@@ -68,6 +83,26 @@ const setConsoleText = (consoleText: string): actions.ConsoleAction => {
   };
 };
 
+const getCommandCompletions = (text: string): actions.ConsoleAction => {
+  const items = Object.entries(commandDocs)
+      .filter(([name]) => name.startsWith(text.trimLeft()))
+      .map(([name, doc]) => ({
+          caption: name,
+          content: name,
+          url: doc,
+        }));
+  const completions = [{
+    name: "Console Command",
+    items,
+  }];
+  return {
+    type: actions.CONSOLE_SET_COMPLETIONS,
+    completions,
+    completionSource: text,
+  }
+};
+
+
 const getCompletions = async(text: string): Promise<actions.ConsoleAction> => {
   const completions = await browser.runtime.sendMessage({
     type: messages.CONSOLE_QUERY_COMPLETIONS,
@@ -94,5 +129,5 @@ const completionPrev = (): actions.ConsoleAction => {
 
 export {
   hide, showCommand, showFind, showError, showInfo, hideCommand, setConsoleText,
-  enterCommand, enterFind, getCompletions, completionNext, completionPrev,
+  enterCommand, enterFind, getCompletions, getCommandCompletions, completionNext, completionPrev,
 };
