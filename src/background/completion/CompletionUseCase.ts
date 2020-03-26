@@ -1,8 +1,8 @@
 import { inject, injectable } from "tsyringe";
-import HistoryRepository from "./HistoryRepository";
-import BookmarkRepository from "./BookmarkRepository";
 import CachedSettingRepository from "../repositories/CachedSettingRepository";
 import CompletionType from "../../shared/CompletionType";
+import BookmarkRepository from "./BookmarkRepository";
+import HistoryRepository from "./HistoryRepository";
 
 export type BookmarkItem = {
   title: string
@@ -17,10 +17,9 @@ export type HistoryItem = {
 @injectable()
 export default class CompletionUseCase {
   constructor(
-    private bookmarkRepository: BookmarkRepository,
-    private historyRepository: HistoryRepository,
-    @inject("CachedSettingRepository")
-    private cachedSettingRepository: CachedSettingRepository,
+    @inject('BookmarkRepository') private bookmarkRepository: BookmarkRepository,
+    @inject('HistoryRepository') private historyRepository: HistoryRepository,
+    @inject("CachedSettingRepository") private cachedSettingRepository: CachedSettingRepository,
   ) {
   }
 
@@ -50,11 +49,11 @@ export default class CompletionUseCase {
       .filter(key => key.startsWith(query))
   }
 
-  requestBookmarks(query: any): Promise<BookmarkItem[]> {
+  requestBookmarks(query: string): Promise<BookmarkItem[]> {
     return this.bookmarkRepository.queryBookmarks(query);
   }
 
-  async requestHistory(query: string): Promise<HistoryItem[]> {
+  requestHistory(query: string): Promise<HistoryItem[]> {
     return this.historyRepository.queryHistories(query);
   }
 }

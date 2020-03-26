@@ -1,5 +1,6 @@
-import * as actions from 'console/actions';
-import * as consoleActions from 'console/actions/console';
+import * as actions from '../../../src/console/actions';
+import * as consoleActions from '../../../src/console/actions/console';
+import { expect } from 'chai';
 
 describe("console actions", () => {
   describe('hide', () => {
@@ -9,8 +10,8 @@ describe("console actions", () => {
     });
   });
   describe("showCommand", () => {
-    it('create CONSOLE_SHOW_COMMAND action', () => {
-      const action = consoleActions.showCommand('hello');
+    it('create CONSOLE_SHOW_COMMAND action', async () => {
+      const action = await consoleActions.showCommand('hello');
       expect(action.type).to.equal(actions.CONSOLE_SHOW_COMMAND);
       expect(action.text).to.equal('hello');
     });

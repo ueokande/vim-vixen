@@ -12,50 +12,50 @@ export const CONSOLE_COMPLETION_NEXT = 'console.completion.next';
 export const CONSOLE_COMPLETION_PREV = 'console.completion.prev';
 export const CONSOLE_SHOW_FIND = 'console.show.find';
 
-interface HideAction {
+export interface HideAction {
   type: typeof CONSOLE_HIDE;
 }
 
-interface ShowCommand {
+export interface ShowCommand {
   type: typeof CONSOLE_SHOW_COMMAND;
   text: string;
   completionTypes: CompletionType[];
 }
 
-interface ShowFindAction {
+export interface ShowFindAction {
   type: typeof CONSOLE_SHOW_FIND;
 }
 
-interface ShowErrorAction {
+export interface ShowErrorAction {
   type: typeof CONSOLE_SHOW_ERROR;
   text: string;
 }
 
-interface ShowInfoAction {
+export interface ShowInfoAction {
   type: typeof CONSOLE_SHOW_INFO;
   text: string;
 }
 
-interface HideCommandAction {
+export interface HideCommandAction {
   type: typeof CONSOLE_HIDE_COMMAND;
 }
 
-interface SetConsoleTextAction {
+export interface SetConsoleTextAction {
   type: typeof CONSOLE_SET_CONSOLE_TEXT;
   consoleText: string;
 }
 
-interface SetCompletionsAction {
+export interface SetCompletionsAction {
   type: typeof CONSOLE_SET_COMPLETIONS;
   completions: Completions;
   completionSource: string;
 }
 
-interface CompletionNextAction {
+export interface CompletionNextAction {
   type: typeof CONSOLE_COMPLETION_NEXT;
 }
 
-interface CompletionPrevAction {
+export interface CompletionPrevAction {
   type: typeof CONSOLE_COMPLETION_PREV;
 }
 

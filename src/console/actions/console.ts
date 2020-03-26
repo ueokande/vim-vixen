@@ -27,7 +27,7 @@ const hide = (): actions.ConsoleAction => {
   };
 };
 
-const showCommand = async (text: string): Promise<actions.ConsoleAction> => {
+const showCommand = async (text: string): Promise<actions.ShowCommand> => {
   const completionTypes = await completionClient.getCompletionTypes();
   return {
     type: actions.CONSOLE_SHOW_COMMAND,
@@ -36,27 +36,27 @@ const showCommand = async (text: string): Promise<actions.ConsoleAction> => {
   };
 };
 
-const showFind = (): actions.ConsoleAction => {
+const showFind = (): actions.ShowFindAction => {
   return {
     type: actions.CONSOLE_SHOW_FIND,
   };
 };
 
-const showError = (text: string): actions.ConsoleAction => {
+const showError = (text: string): actions.ShowErrorAction => {
   return {
     type: actions.CONSOLE_SHOW_ERROR,
     text: text
   };
 };
 
-const showInfo = (text: string): actions.ConsoleAction => {
+const showInfo = (text: string): actions.ShowInfoAction => {
   return {
     type: actions.CONSOLE_SHOW_INFO,
     text: text
   };
 };
 
-const hideCommand = (): actions.ConsoleAction => {
+const hideCommand = (): actions.HideCommandAction => {
   window.top.postMessage(JSON.stringify({
     type: messages.CONSOLE_UNFOCUS,
   }), '*');
@@ -65,9 +65,7 @@ const hideCommand = (): actions.ConsoleAction => {
   };
 };
 
-const enterCommand = async(
-  text: string,
-): Promise<actions.ConsoleAction> => {
+const enterCommand = async(text: string): Promise<actions.HideCommandAction> => {
   await browser.runtime.sendMessage({
     type: messages.CONSOLE_ENTER_COMMAND,
     text,
@@ -75,7 +73,7 @@ const enterCommand = async(
   return hideCommand();
 };
 
-const enterFind = (text?: string): actions.ConsoleAction => {
+const enterFind = (text?: string): actions.HideCommandAction => {
   window.top.postMessage(JSON.stringify({
     type: messages.CONSOLE_ENTER_FIND,
     text,
@@ -83,14 +81,14 @@ const enterFind = (text?: string): actions.ConsoleAction => {
   return hideCommand();
 };
 
-const setConsoleText = (consoleText: string): actions.ConsoleAction => {
+const setConsoleText = (consoleText: string): actions.SetConsoleTextAction => {
   return {
     type: actions.CONSOLE_SET_CONSOLE_TEXT,
     consoleText,
   };
 };
 
-const getCommandCompletions = (text: string): actions.ConsoleAction => {
+const getCommandCompletions = (text: string): actions.SetCompletionsAction => {
   const items = Object.entries(commandDocs)
       .filter(([name]) => name.startsWith(text.trimLeft()))
       .map(([name, doc]) => ({
@@ -109,7 +107,9 @@ const getCommandCompletions = (text: string): actions.ConsoleAction => {
   }
 };
 
-const getOpenCompletions = async(types: CompletionType[], original: string, command: Command, query: string): Promise<actions.ConsoleAction> => {
+const getOpenCompletions = async(
+    types: CompletionType[], original: string, command: Command, query: string,
+): Promise<actions.SetCompletionsAction> => {
   const completions: Completions = [];
   for (const type of types) {
     switch (type) {
@@ -155,7 +155,7 @@ const getOpenCompletions = async(types: CompletionType[], original: string, comm
   };
 };
 
-const getCompletions = async(text: string): Promise<actions.ConsoleAction> => {
+const getCompletions = async(text: string): Promise<actions.SetCompletionsAction> => {
   const completions = await browser.runtime.sendMessage({
     type: messages.CONSOLE_QUERY_COMPLETIONS,
     text,
@@ -167,13 +167,13 @@ const getCompletions = async(text: string): Promise<actions.ConsoleAction> => {
   };
 };
 
-const completionNext = (): actions.ConsoleAction => {
+const completionNext = (): actions.CompletionNextAction => {
   return {
     type: actions.CONSOLE_COMPLETION_NEXT,
   };
 };
 
-const completionPrev = (): actions.ConsoleAction => {
+const completionPrev = (): actions.CompletionPrevAction => {
   return {
     type: actions.CONSOLE_COMPLETION_PREV,
   };
