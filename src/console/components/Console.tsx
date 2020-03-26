@@ -7,6 +7,7 @@ import Message from './console/Message';
 import * as consoleActions from '../../console/actions/console';
 import { State as AppState } from '../reducers';
 import CommandLineParser, { InputPhase } from "../commandline/CommandLineParser";
+import { Command } from "../../shared/Command";
 
 const COMPLETION_MAX_ITEMS = 33;
 
@@ -163,7 +164,16 @@ class Console extends React.Component<Props> {
     if (phase === InputPhase.OnCommand) {
       return this.props.dispatch(consoleActions.getCommandCompletions(text));
     } else {
-      this.props.dispatch(consoleActions.getCompletions(text));
+      const cmd = this.commandLineParser.parse(text);
+      switch (cmd.command) {
+      case Command.Open:
+      case Command.TabOpen:
+      case Command.WindowOpen:
+        this.props.dispatch(consoleActions.getOpenCompletions(this.props.completionTypes, text, cmd.command, cmd.args));
+        break;
+      default:
+        this.props.dispatch(consoleActions.getCompletions(text));
+      }
     }
   }
 }

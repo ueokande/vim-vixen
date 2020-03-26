@@ -9,6 +9,7 @@ import AddonEnabledController from '../controllers/AddonEnabledController';
 import LinkController from '../controllers/LinkController';
 import OperationController from '../controllers/OperationController';
 import MarkController from '../controllers/MarkController';
+import CompletionController from "../controllers/CompletionController";
 
 @injectable()
 export default class ContentMessageListener {
@@ -17,6 +18,7 @@ export default class ContentMessageListener {
   constructor(
     private settingController: SettingController,
     private commandController: CommandController,
+    private completionController: CompletionController,
     private findController: FindController,
     private addonEnabledController: AddonEnabledController,
     private linkController: LinkController,
@@ -63,6 +65,14 @@ export default class ContentMessageListener {
     switch (message.type) {
     case messages.CONSOLE_QUERY_COMPLETIONS:
       return this.onConsoleQueryCompletions(message.text);
+    case messages.CONSOLE_GET_COMPLETION_TYPES:
+      return this.completionController.getCompletionTypes();
+    case messages.CONSOLE_REQUEST_SEARCH_ENGINES_MESSAGE:
+      return this.completionController.requestSearchEngines(message.query);
+    case messages.CONSOLE_REQUEST_BOOKMARKS:
+      return this.completionController.requestBookmarks(message.query);
+    case messages.CONSOLE_REQUEST_HISTORY:
+      return this.completionController.requestHistory(message.query);
     case messages.CONSOLE_ENTER_COMMAND:
       return this.onConsoleEnterCommand(message.text);
     case messages.SETTINGS_QUERY:

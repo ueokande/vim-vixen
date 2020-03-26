@@ -1,4 +1,5 @@
 import Completions from "../Completions";
+import CompletionType from "../../shared/CompletionType";
 
 export const CONSOLE_HIDE = 'console.hide';
 export const CONSOLE_SHOW_COMMAND = 'console.show.command';
@@ -18,6 +19,7 @@ interface HideAction {
 interface ShowCommand {
   type: typeof CONSOLE_SHOW_COMMAND;
   text: string;
+  completionTypes: CompletionType[];
 }
 
 interface ShowFindAction {

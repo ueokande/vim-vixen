@@ -1,16 +1,21 @@
 import * as operations from './operations';
+import CompletionType from "./CompletionType";
 
 export const BACKGROUND_OPERATION = 'background.operation';
 
 export const CONSOLE_UNFOCUS = 'console.unfocus';
 export const CONSOLE_ENTER_COMMAND = 'console.enter.command';
 export const CONSOLE_ENTER_FIND = 'console.enter.find';
-export const CONSOLE_QUERY_COMPLETIONS = 'console.query.completions';
+export const CONSOLE_QUERY_COMPLETIONS = 'console.query.completions'; // DEPRECATED
 export const CONSOLE_SHOW_COMMAND = 'console.show.command';
 export const CONSOLE_SHOW_ERROR = 'console.show.error';
 export const CONSOLE_SHOW_INFO = 'console.show.info';
 export const CONSOLE_SHOW_FIND = 'console.show.find';
 export const CONSOLE_HIDE = 'console.hide';
+export const CONSOLE_GET_COMPLETION_TYPES = 'console.get.completion.types'
+export const CONSOLE_REQUEST_SEARCH_ENGINES_MESSAGE = 'console.qresut.searchEngines';
+export const CONSOLE_REQUEST_BOOKMARKS = 'console.request.bookmarks';
+export const CONSOLE_REQUEST_HISTORY = 'console.request.history';
 
 export const FOLLOW_START = 'follow.start';
 export const FOLLOW_REQUEST_COUNT_TARGETS = 'follow.request.count.targets';
@@ -94,6 +99,41 @@ export interface ConsoleShowFindMessage {
 export interface ConsoleHideMessage {
   type: typeof CONSOLE_HIDE;
 }
+
+export interface ConsoleGetCompletionTypesMessage {
+  type: typeof CONSOLE_GET_COMPLETION_TYPES;
+}
+
+export interface ConsoleRequestSearchEnginesMessage {
+  type: typeof CONSOLE_REQUEST_SEARCH_ENGINES_MESSAGE;
+  query: string
+}
+
+export interface ConsoleRequestBookmarksMessage {
+  type: typeof CONSOLE_REQUEST_BOOKMARKS;
+  query: string;
+}
+
+export interface ConsoleRequestHistoryMessage {
+  type: typeof CONSOLE_REQUEST_HISTORY;
+  query: string;
+}
+
+export type ConsoleGetCompletionTypesResponse = CompletionType[];
+
+export type ConsoleRequestSearchEnginesResponse = {
+  title: string;
+}[]
+
+export type ConsoleRequestBookmarksResponse = {
+    title: string;
+    url: string;
+}[]
+
+export type ConsoleRequestHistoryResponse = {
+  title: string;
+  url: string;
+}[]
 
 export interface FollowStartMessage {
   type: typeof FOLLOW_START;
@@ -237,6 +277,10 @@ export type Message =
   ConsoleShowInfoMessage |
   ConsoleShowFindMessage |
   ConsoleHideMessage |
+  ConsoleRequestBookmarksMessage |
+  ConsoleRequestHistoryMessage |
+  ConsoleGetCompletionTypesMessage |
+  ConsoleRequestSearchEnginesMessage |
   FollowStartMessage |
   FollowRequestCountTargetsMessage |
   FollowResponseCountTargetsMessage |

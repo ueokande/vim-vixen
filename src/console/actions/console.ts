@@ -1,6 +1,11 @@
 import * as messages from '../../shared/messages';
 import * as actions from './index';
 import { Command } from "../../shared/Command";
+import CompletionClient from "../clients/CompletionClient";
+import CompletionType from "../../shared/CompletionType";
+import Completions from "../Completions";
+
+const completionClient = new CompletionClient();
 
 const commandDocs = {
   [Command.Set]: 'Set a value of the property',
@@ -22,10 +27,12 @@ const hide = (): actions.ConsoleAction => {
   };
 };
 
-const showCommand = (text: string): actions.ConsoleAction => {
+const showCommand = async (text: string): Promise<actions.ConsoleAction> => {
+  const completionTypes = await completionClient.getCompletionTypes();
   return {
     type: actions.CONSOLE_SHOW_COMMAND,
-    text: text
+    completionTypes,
+    text,
   };
 };
 
@@ -102,6 +109,51 @@ const getCommandCompletions = (text: string): actions.ConsoleAction => {
   }
 };
 
+const getOpenCompletions = async(types: CompletionType[], original: string, command: Command, query: string): Promise<actions.ConsoleAction> => {
+  const completions: Completions = [];
+  for (const type of types) {
+    switch (type) {
+      case CompletionType.SearchEngines:
+        completions.push({
+          name: 'Search Engines',
+          items: (await completionClient.requestSearchEngines(query))
+              .map(key => ({
+                caption: key.title,
+                content: command + ' ' + key.title,
+              }))
+        });
+        break;
+      case CompletionType.History:
+        completions.push({
+          name: 'History',
+          items: (await completionClient.requestHistory(query))
+              .map(item => ({
+                caption: item.title,
+                content: command + ' ' + item.url,
+                url: item.url
+              })),
+        });
+        break;
+      case CompletionType.Bookmarks:
+        completions.push({
+          name: 'Bookmarks',
+          items: (await completionClient.requestBookmarks(query))
+              .map(item => ({
+                caption: item.title,
+                content: command + ' ' + item.url,
+                url: item.url
+              }))
+        });
+        break;
+    }
+  }
+
+  return {
+    type: actions.CONSOLE_SET_COMPLETIONS,
+    completions,
+    completionSource: original,
+  };
+};
 
 const getCompletions = async(text: string): Promise<actions.ConsoleAction> => {
   const completions = await browser.runtime.sendMessage({
@@ -128,6 +180,7 @@ const completionPrev = (): actions.ConsoleAction => {
 };
 
 export {
-  hide, showCommand, showFind, showError, showInfo, hideCommand, setConsoleText,
-  enterCommand, enterFind, getCompletions, getCommandCompletions, completionNext, completionPrev,
+  hide, showCommand, showFind, showError, showInfo, hideCommand, setConsoleText, enterCommand, enterFind,
+  getCompletions, getCommandCompletions, getOpenCompletions,
+  completionNext, completionPrev,
 };

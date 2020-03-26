@@ -22,11 +22,11 @@ window.addEventListener('load', () => {
     wrapper);
 });
 
-const onMessage = (message: any): any => {
+const onMessage = async (message: any): Promise<any> => {
   const msg = messages.valueOf(message);
   switch (msg.type) {
   case messages.CONSOLE_SHOW_COMMAND:
-    return store.dispatch(consoleActions.showCommand(msg.command));
+    return store.dispatch(await consoleActions.showCommand(msg.command));
   case messages.CONSOLE_SHOW_FIND:
     return store.dispatch(consoleActions.showFind());
   case messages.CONSOLE_SHOW_ERROR:

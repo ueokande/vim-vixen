@@ -1,10 +1,12 @@
 import * as actions from '../actions';
 import Completions from "../Completions";
+import CompletionType from "../../shared/CompletionType";
 
 export interface State {
   mode: string;
   messageText: string;
   consoleText: string;
+  completionTypes: CompletionType[];
   completionSource: string;
   completions: Completions;
   select: number;
@@ -15,6 +17,7 @@ const defaultState = {
   mode: '',
   messageText: '',
   consoleText: '',
+  completionTypes: [],
   completionSource: '',
   completions: [],
   select: -1,
@@ -69,6 +72,7 @@ export default function reducer(
     return { ...state,
       mode: 'command',
       consoleText: action.text,
+      completionTypes: action.completionTypes,
       completions: []};
   case actions.CONSOLE_SHOW_FIND:
     return { ...state,
