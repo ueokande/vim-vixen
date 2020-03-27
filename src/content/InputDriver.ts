@@ -62,6 +62,10 @@ export default class InputDriver {
   }
 
   private onKeyPress(e: KeyboardEvent) {
+    if (e.key === 'CapsLock') {
+      return;
+    }
+
     if (this.pressed[e.key] && this.pressed[e.key] !== 'keypress') {
       return;
     }
@@ -70,6 +74,10 @@ export default class InputDriver {
   }
 
   private onKeyDown(e: KeyboardEvent) {
+    if (e.key === 'CapsLock') {
+        return;
+    }
+
     if (this.pressed[e.key] && this.pressed[e.key] !== 'keydown') {
       return;
     }
