@@ -123,7 +123,11 @@ export default class FollowMasterUseCase {
       return;
     }
 
-    this.followKeyRepository.pushKey(key);
+    if (key.length == 1) {
+      this.followKeyRepository.pushKey(key.toLowerCase());
+    } else {
+      this.followKeyRepository.pushKey(key);
+    }
 
     const tag = this.getCurrentTag();
     const matched = this.followMasterRepository.getTagsByPrefix(tag);
