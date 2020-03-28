@@ -114,38 +114,50 @@ const getOpenCompletions = async(
   const completions: Completions = [];
   for (const type of types) {
     switch (type) {
-      case CompletionType.SearchEngines:
+      case CompletionType.SearchEngines: {
+        const items = await completionClient.requestSearchEngines(query);
+        if (items.length === 0) {
+          break;
+        }
         completions.push({
           name: 'Search Engines',
-          items: (await completionClient.requestSearchEngines(query))
-              .map(key => ({
-                caption: key.title,
-                content: command + ' ' + key.title,
-              }))
+          items: items.map(key => ({
+            caption: key.title,
+            content: command + ' ' + key.title,
+          }))
         });
         break;
-      case CompletionType.History:
+      }
+      case CompletionType.History: {
+        const items = await completionClient.requestHistory(query);
+        if (items.length === 0) {
+          break;
+        }
         completions.push({
           name: 'History',
-          items: (await completionClient.requestHistory(query))
-              .map(item => ({
-                caption: item.title,
-                content: command + ' ' + item.url,
-                url: item.url
-              })),
+          items: items.map(item => ({
+            caption: item.title,
+            content: command + ' ' + item.url,
+            url: item.url
+          })),
         });
         break;
-      case CompletionType.Bookmarks:
+      }
+      case CompletionType.Bookmarks: {
+        const items = await completionClient.requestBookmarks(query);
+        if (items.length === 0) {
+          break;
+        }
         completions.push({
           name: 'Bookmarks',
-          items: (await completionClient.requestBookmarks(query))
-              .map(item => ({
-                caption: item.title,
-                content: command + ' ' + item.url,
-                url: item.url
-              }))
+          items: items.map(item => ({
+            caption: item.title,
+            content: command + ' ' + item.url,
+            url: item.url
+          }))
         });
         break;
+      }
     }
   }
 
@@ -160,15 +172,18 @@ const getTabCompletions = async (
   original: string, command: Command, query: string, excludePinned: boolean,
 ): Promise<actions.SetCompletionsAction> => {
     const items = await completionClient.requestTabs(query, excludePinned);
-    const completions = [{
-      name: 'Buffers',
-      items: items.map(item => ({
-        content: command + ' ' + item.url,
-        caption: `${item.index}: ${item.flag != TabFlag.None ? item.flag : ' ' } ${item.title}`,
-        url: item.url,
-        icon: item.faviconUrl,
-      })),
-    }];
+    let completions: Completions = [];
+    if (items.length > 0) {
+      completions = [{
+        name: 'Buffers',
+        items: items.map(item => ({
+          content: command + ' ' + item.url,
+          caption: `${item.index}: ${item.flag != TabFlag.None ? item.flag : ' ' } ${item.title}`,
+          url: item.url,
+          icon: item.faviconUrl,
+        })),
+      }];
+    }
     return {
       type: actions.CONSOLE_SET_COMPLETIONS,
       completions,
