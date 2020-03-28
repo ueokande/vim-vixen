@@ -1,5 +1,6 @@
 import * as operations from './operations';
 import CompletionType from "./CompletionType";
+import TabFlag from "./TabFlag";
 
 export const BACKGROUND_OPERATION = 'background.operation';
 
@@ -16,6 +17,7 @@ export const CONSOLE_GET_COMPLETION_TYPES = 'console.get.completion.types'
 export const CONSOLE_REQUEST_SEARCH_ENGINES_MESSAGE = 'console.qresut.searchEngines';
 export const CONSOLE_REQUEST_BOOKMARKS = 'console.request.bookmarks';
 export const CONSOLE_REQUEST_HISTORY = 'console.request.history';
+export const CONSOLE_REQUEST_TABS = 'console.request.tabs';
 
 export const FOLLOW_START = 'follow.start';
 export const FOLLOW_REQUEST_COUNT_TARGETS = 'follow.request.count.targets';
@@ -118,6 +120,20 @@ export interface ConsoleRequestHistoryMessage {
   type: typeof CONSOLE_REQUEST_HISTORY;
   query: string;
 }
+
+export interface ConsoleRequestTabsMessage {
+  type: typeof CONSOLE_REQUEST_TABS;
+  query: string;
+  excludePinned: boolean;
+}
+
+export type ConsoleRequesttabsResponse = {
+  index: number
+  flag: TabFlag
+  title: string
+  url: string
+  faviconUrl?: string
+}[]
 
 export type ConsoleGetCompletionTypesResponse = CompletionType[];
 
@@ -279,6 +295,7 @@ export type Message =
   ConsoleHideMessage |
   ConsoleRequestBookmarksMessage |
   ConsoleRequestHistoryMessage |
+  ConsoleRequestTabsMessage |
   ConsoleGetCompletionTypesMessage |
   ConsoleRequestSearchEnginesMessage |
   FollowStartMessage |

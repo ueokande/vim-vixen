@@ -1,10 +1,10 @@
-import { injectable } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import TabPresenter from '../presenters/TabPresenter';
 
 @injectable()
 export default class LinkUseCase {
   constructor(
-    private tabPresenter: TabPresenter,
+    @inject('TabPresenter') private tabPresenter: TabPresenter,
   ) {
   }
 

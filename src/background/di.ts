@@ -6,6 +6,8 @@ import { CachedSettingRepositoryImpl } from "./repositories/CachedSettingReposit
 import { container } from 'tsyringe';
 import HistoryRepositoryImpl from "./completion/impl/HistoryRepositoryImpl";
 import BookmarkRepositoryImpl from "./completion/impl/BookmarkRepositoryImpl";
+import TabRepositoryImpl from "./completion/impl/TabRepositoryImpl";
+import {TabPresenterImpl} from "./presenters/TabPresenter";
 
 container.register('LocalSettingRepository', { useValue: LocalSettingRepository });
 container.register('SyncSettingRepository', { useClass: SyncSettingRepository });
@@ -13,3 +15,5 @@ container.register('CachedSettingRepository', { useClass: CachedSettingRepositor
 container.register('Notifier', { useClass: NotifierImpl });
 container.register('HistoryRepository', { useClass: HistoryRepositoryImpl });
 container.register('BookmarkRepository', { useClass: BookmarkRepositoryImpl });
+container.register('TabRepository', { useClass: TabRepositoryImpl });
+container.register('TabPresenter', { useClass: TabPresenterImpl });

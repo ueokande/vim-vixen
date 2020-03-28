@@ -1,9 +1,10 @@
 import * as messages from '../../shared/messages';
 import * as actions from './index';
-import { Command } from "../../shared/Command";
+import {Command} from "../../shared/Command";
 import CompletionClient from "../clients/CompletionClient";
 import CompletionType from "../../shared/CompletionType";
 import Completions from "../Completions";
+import TabFlag from "../../shared/TabFlag";
 
 const completionClient = new CompletionClient();
 
@@ -155,6 +156,28 @@ const getOpenCompletions = async(
   };
 };
 
+const getTabCompletions = async (
+  original: string, command: Command, query: string, excludePinned: boolean,
+): Promise<actions.SetCompletionsAction> => {
+    const items = await completionClient.requestTabs(query, excludePinned);
+    const completions = [{
+      name: 'Buffers',
+      items: items.map(item => ({
+        content: command + ' ' + item.url,
+        caption: `${item.index}: ${item.flag != TabFlag.None ? item.flag : ' ' } ${item.title}`,
+        url: item.url,
+        icon: item.faviconUrl,
+      })),
+    }];
+    return {
+      type: actions.CONSOLE_SET_COMPLETIONS,
+      completions,
+      completionSource: original,
+    }
+};
+
+
+
 const getCompletions = async(text: string): Promise<actions.SetCompletionsAction> => {
   const completions = await browser.runtime.sendMessage({
     type: messages.CONSOLE_QUERY_COMPLETIONS,
@@ -181,6 +204,6 @@ const completionPrev = (): actions.CompletionPrevAction => {
 
 export {
   hide, showCommand, showFind, showError, showInfo, hideCommand, setConsoleText, enterCommand, enterFind,
-  getCompletions, getCommandCompletions, getOpenCompletions,
+  getCompletions, getCommandCompletions, getOpenCompletions, getTabCompletions,
   completionNext, completionPrev,
 };

@@ -15,7 +15,7 @@ export type HistoryItem = {
 }
 
 @injectable()
-export default class CompletionUseCase {
+export default class OpenCompletionUseCase {
   constructor(
     @inject('BookmarkRepository') private bookmarkRepository: BookmarkRepository,
     @inject('HistoryRepository') private historyRepository: HistoryRepository,

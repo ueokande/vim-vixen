@@ -1,4 +1,4 @@
-import { injectable } from 'tsyringe';
+import {inject, injectable} from 'tsyringe';
 import TabPresenter from '../presenters/TabPresenter';
 import WindowPresenter from '../presenters/WindowPresenter';
 import BrowserSettingRepository from '../repositories/BrowserSettingRepository';
@@ -6,7 +6,7 @@ import BrowserSettingRepository from '../repositories/BrowserSettingRepository';
 @injectable()
 export default class TabUseCase {
   constructor(
-    private tabPresenter: TabPresenter,
+    @inject('TabPresenter') private tabPresenter: TabPresenter,
     private windowPresenter: WindowPresenter,
     private browserSettingRepository: BrowserSettingRepository,
   ) {

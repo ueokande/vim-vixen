@@ -1,4 +1,3 @@
-import { injectable } from 'tsyringe';
 import MemoryStorage from '../infrastructures/MemoryStorage';
 
 const CURRENT_SELECTED_KEY = 'tabs.current.selected';
@@ -6,8 +5,41 @@ const LAST_SELECTED_KEY = 'tabs.last.selected';
 
 type Tab = browser.tabs.Tab;
 
-@injectable()
-export default class TabPresenter {
+export default interface TabPresenter {
+  open(url: string, tabId?: number): Promise<Tab>;
+
+  create(url: string, opts?: object): Promise<Tab>;
+
+  getCurrent(): Promise<Tab>;
+
+  getAll(): Promise<Tab[]>;
+
+  getLastSelectedId(): Promise<number | undefined>;
+
+  getByKeyword(keyword: string, excludePinned: boolean): Promise<Tab[]>;
+
+  select(tabId: number): Promise<void>;
+
+  remove(ids: number[]): Promise<void>;
+
+  reopen(): Promise<void>;
+
+  reload(tabId: number, cache: boolean): Promise<void>;
+
+  setPinned(tabId: number, pinned: boolean): Promise<void>;
+
+  duplicate(id: number): Promise<Tab>;
+
+  getZoom(tabId: number): Promise<number>;
+
+  setZoom(tabId: number, factor: number): Promise<void>;
+
+  onSelected(
+      listener: (arg: { tabId: number, windowId: number}) => void,
+  ): void;
+}
+
+export class TabPresenterImpl implements TabPresenter {
   open(url: string, tabId?: number): Promise<Tab> {
     return browser.tabs.update(tabId, { url });
   }
@@ -48,15 +80,15 @@ export default class TabPresenter {
     });
   }
 
-  select(tabId: number): Promise<Tab> {
-    return browser.tabs.update(tabId, { active: true });
+  async select(tabId: number): Promise<void> {
+    await browser.tabs.update(tabId, { active: true });
   }
 
-  remove(ids: number[]): Promise<void> {
-    return browser.tabs.remove(ids);
+  async remove(ids: number[]): Promise<void> {
+    await browser.tabs.remove(ids);
   }
 
-  async reopen(): Promise<any> {
+  async reopen(): Promise<void> {
     const window = await browser.windows.getCurrent();
     const sessions = await browser.sessions.getRecentlyClosed();
     const session = sessions.find((s) => {
@@ -66,19 +98,18 @@ export default class TabPresenter {
       return;
     }
     if (session.tab && session.tab.sessionId) {
-      return browser.sessions.restore(session.tab.sessionId);
-    }
-    if (session.window && session.window.sessionId) {
-      return browser.sessions.restore(session.window.sessionId);
+      await browser.sessions.restore(session.tab.sessionId);
+    } else if (session.window && session.window.sessionId) {
+      await browser.sessions.restore(session.window.sessionId);
     }
   }
 
-  reload(tabId: number, cache: boolean): Promise<void> {
-    return browser.tabs.reload(tabId, { bypassCache: cache });
+  async reload(tabId: number, cache: boolean): Promise<void> {
+    await browser.tabs.reload(tabId, { bypassCache: cache });
   }
 
-  setPinned(tabId: number, pinned: boolean): Promise<Tab> {
-    return browser.tabs.update(tabId, { pinned });
+  async setPinned(tabId: number, pinned: boolean): Promise<void> {
+    await browser.tabs.update(tabId, { pinned });
   }
 
   duplicate(id: number): Promise<Tab> {
@@ -100,7 +131,7 @@ export default class TabPresenter {
   }
 }
 
-const tabPresenter = new TabPresenter();
+const tabPresenter = new TabPresenterImpl();
 tabPresenter.onSelected((tab: any) => {
   const cache = new MemoryStorage();
 

@@ -2,7 +2,7 @@ import "reflect-metadata";
 import CompletionType from "../../../src/shared/CompletionType";
 import BookmarkRepository, {BookmarkItem} from "../../../src/background/completion/BookmarkRepository";
 import HistoryRepository, {HistoryItem} from "../../../src/background/completion/HistoryRepository";
-import CompletionUseCase from "../../../src/background/completion/CompletionUseCase";
+import OpenCompletionUseCase from "../../../src/background/completion/OpenCompletionUseCase";
 import CachedSettingRepository from "../../../src/background/repositories/CachedSettingRepository";
 import Settings, {DefaultSetting} from "../../../src/shared/settings/Settings";
 import { expect } from 'chai';
@@ -36,17 +36,17 @@ class MockSettingRepository implements CachedSettingRepository {
   }
 }
 
-describe('CompletionUseCase', () => {
+describe('OpenCompletionUseCase', () => {
   let bookmarkRepository: MockBookmarkRepository;
   let historyRepository: MockHistoryRepository;
   let settingRepository: MockSettingRepository;
-  let sut: CompletionUseCase;
+  let sut: OpenCompletionUseCase;
 
   beforeEach(() => {
     bookmarkRepository = new MockBookmarkRepository();
     historyRepository = new MockHistoryRepository();
     settingRepository = new MockSettingRepository();
-    sut = new CompletionUseCase(bookmarkRepository, historyRepository, settingRepository)
+    sut = new OpenCompletionUseCase(bookmarkRepository, historyRepository, settingRepository)
   });
 
   describe('#getCompletionTypes', () => {

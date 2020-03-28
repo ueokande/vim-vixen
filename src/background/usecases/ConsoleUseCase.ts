@@ -1,4 +1,4 @@
-import { injectable } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import TabPresenter from '../presenters/TabPresenter';
 import ConsoleClient from '../infrastructures/ConsoleClient';
 
@@ -6,7 +6,7 @@ import ConsoleClient from '../infrastructures/ConsoleClient';
 export default class ConsoleUseCase {
 
   constructor(
-    private tabPresenter: TabPresenter,
+    @inject('TabPresenter') private tabPresenter: TabPresenter,
     private consoleClient: ConsoleClient,
   ) {
   }

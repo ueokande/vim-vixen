@@ -1,4 +1,4 @@
-import { injectable } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import TabPresenter from '../presenters/TabPresenter';
 import MarkRepository from '../repositories/MarkRepository';
 import ConsoleClient from '../infrastructures/ConsoleClient';
@@ -7,7 +7,7 @@ import ContentMessageClient from '../infrastructures/ContentMessageClient';
 @injectable()
 export default class MarkUseCase {
   constructor(
-    private tabPresenter: TabPresenter,
+    @inject('TabPresenter') private tabPresenter: TabPresenter,
     private markRepository: MarkRepository,
     private consoleClient: ConsoleClient,
     private contentMessageClient: ContentMessageClient,

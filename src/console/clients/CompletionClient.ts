@@ -2,9 +2,10 @@ import * as messages from "../../shared/messages";
 import {
   ConsoleGetCompletionTypesResponse,
   ConsoleRequestBookmarksResponse,
-  ConsoleRequestHistoryResponse, ConsoleRequestSearchEnginesResponse
+  ConsoleRequestHistoryResponse, ConsoleRequestSearchEnginesResponse, ConsoleRequesttabsResponse
 } from "../../shared/messages";
 import CompletionType from "../../shared/CompletionType";
+import TabFlag from "../../shared/TabFlag";
 
 export type SearchEngines = {
   title: string
@@ -18,6 +19,14 @@ export type BookmarkItem = {
 export type HistoryItem = {
   title: string
   url: string
+}
+
+export type TabItem = {
+  index: number
+  flag: TabFlag
+  title: string
+  url: string
+  faviconUrl?: string
 }
 
 export default class CompletionClient {
@@ -49,6 +58,15 @@ export default class CompletionClient {
       type: messages.CONSOLE_REQUEST_HISTORY,
       query,
     }) as ConsoleRequestHistoryResponse;
+    return resp;
+  }
+
+  async requestTabs(query: string, excludePinned: boolean): Promise<TabItem[]> {
+    const resp = await browser.runtime.sendMessage({
+      type: messages.CONSOLE_REQUEST_TABS,
+      query,
+      excludePinned,
+    }) as ConsoleRequesttabsResponse;
     return resp;
   }
 }

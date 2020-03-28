@@ -5,7 +5,7 @@ import Notifier from '../presenters/Notifier';
 @injectable()
 export default class VersionUseCase {
   constructor(
-    private tabPresenter: TabPresenter,
+    @inject('TabPresenter') private tabPresenter: TabPresenter,
     @inject("Notifier") private notifier: Notifier,
   ) {
   }

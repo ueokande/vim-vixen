@@ -14,7 +14,7 @@ import RepeatUseCase from '../usecases/RepeatUseCase';
 @injectable()
 export default class CommandIndicator {
   constructor(
-    private tabPresenter: TabPresenter,
+    @inject('TabPresenter') private tabPresenter: TabPresenter,
     private windowPresenter: WindowPresenter,
     private helpPresenter: HelpPresenter,
     @inject("CachedSettingRepository") private cachedSettingRepository: CachedSettingRepository,
@@ -80,7 +80,7 @@ export default class CommandIndicator {
     }
 
     const current = await this.tabPresenter.getCurrent();
-    const tabs = await this.tabPresenter.getByKeyword(keywords);
+    const tabs = await this.tabPresenter.getByKeyword(keywords, false);
     if (tabs.length === 0) {
       throw new RangeError('No matching buffer for ' + keywords);
     }

@@ -5,17 +5,17 @@ import CompletionsRepository from '../repositories/CompletionsRepository';
 import CachedSettingRepository from '../repositories/CachedSettingRepository';
 import TabPresenter from '../presenters/TabPresenter';
 import Properties from '../../shared/settings/Properties';
-import CompletionUseCase from "../completion/CompletionUseCase";
+import OpenCompletionUseCase from "../completion/OpenCompletionUseCase";
 
 type Tab = browser.tabs.Tab;
 
 @injectable()
 export default class CompletionsUseCase {
   constructor(
-    private tabPresenter: TabPresenter,
+    @inject('TabPresenter') private tabPresenter: TabPresenter,
     private completionsRepository: CompletionsRepository,
     @inject("CachedSettingRepository") private cachedSettingRepository: CachedSettingRepository,
-    private completionUseCase: CompletionUseCase
+    private completionUseCase: OpenCompletionUseCase
   ) {
   }
 

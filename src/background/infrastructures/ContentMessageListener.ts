@@ -73,6 +73,8 @@ export default class ContentMessageListener {
       return this.completionController.requestBookmarks(message.query);
     case messages.CONSOLE_REQUEST_HISTORY:
       return this.completionController.requestHistory(message.query);
+    case messages.CONSOLE_REQUEST_TABS:
+      return this.completionController.queryTabs(message.query, message.excludePinned);
     case messages.CONSOLE_ENTER_COMMAND:
       return this.onConsoleEnterCommand(message.text);
     case messages.SETTINGS_QUERY:
