@@ -13,11 +13,12 @@ export const CONSOLE_SHOW_ERROR = 'console.show.error';
 export const CONSOLE_SHOW_INFO = 'console.show.info';
 export const CONSOLE_SHOW_FIND = 'console.show.find';
 export const CONSOLE_HIDE = 'console.hide';
-export const CONSOLE_GET_COMPLETION_TYPES = 'console.get.completion.types'
+export const CONSOLE_GET_COMPLETION_TYPES = 'console.get.completion.types';
 export const CONSOLE_REQUEST_SEARCH_ENGINES_MESSAGE = 'console.qresut.searchEngines';
 export const CONSOLE_REQUEST_BOOKMARKS = 'console.request.bookmarks';
 export const CONSOLE_REQUEST_HISTORY = 'console.request.history';
 export const CONSOLE_REQUEST_TABS = 'console.request.tabs';
+export const CONSOLE_GET_PROPERTIES = 'console.get.properties';
 
 export const FOLLOW_START = 'follow.start';
 export const FOLLOW_REQUEST_COUNT_TARGETS = 'follow.request.count.targets';
@@ -127,6 +128,10 @@ export interface ConsoleRequestTabsMessage {
   excludePinned: boolean;
 }
 
+export interface ConsoleGetPropertiesMessage {
+  type: typeof CONSOLE_GET_PROPERTIES;
+}
+
 export type ConsoleRequesttabsResponse = {
   index: number
   flag: TabFlag
@@ -149,6 +154,11 @@ export type ConsoleRequestBookmarksResponse = {
 export type ConsoleRequestHistoryResponse = {
   title: string;
   url: string;
+}[]
+
+export type ConsoleGetPropertiesResponse = {
+  name: string
+  type: 'string' | 'boolean' | 'number'
 }[]
 
 export interface FollowStartMessage {
@@ -296,6 +306,7 @@ export type Message =
   ConsoleRequestBookmarksMessage |
   ConsoleRequestHistoryMessage |
   ConsoleRequestTabsMessage |
+  ConsoleGetPropertiesMessage |
   ConsoleGetCompletionTypesMessage |
   ConsoleRequestSearchEnginesMessage |
   FollowStartMessage |

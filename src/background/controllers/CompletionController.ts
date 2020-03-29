@@ -1,5 +1,6 @@
 import {
   ConsoleGetCompletionTypesResponse,
+  ConsoleGetPropertiesResponse,
   ConsoleRequestBookmarksResponse,
   ConsoleRequestHistoryResponse,
   ConsoleRequestSearchEnginesResponse,
@@ -8,12 +9,14 @@ import {
 import { injectable } from "tsyringe";
 import OpenCompletionUseCase from "../completion/OpenCompletionUseCase";
 import TabCompletionUseCase from "../completion/TabCompletionUseCase";
+import PropertyCompletionUseCase from "../completion/PropertyCompletionUseCase";
 
 @injectable()
 export default class CompletionController {
   constructor(
     private completionUseCase: OpenCompletionUseCase,
     private tabCompletionUseCase: TabCompletionUseCase,
+    private propertyCompletionUseCase: PropertyCompletionUseCase,
   ) {
   }
 
@@ -36,5 +39,9 @@ export default class CompletionController {
 
   async queryTabs(query: string, excludePinned: boolean): Promise<ConsoleRequesttabsResponse> {
     return this.tabCompletionUseCase.queryTabs(query, excludePinned);
+  }
+
+  async getProperties(): Promise<ConsoleGetPropertiesResponse> {
+      return this.propertyCompletionUseCase.getProperties();
   }
 }

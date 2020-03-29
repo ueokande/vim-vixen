@@ -1,6 +1,6 @@
 import * as messages from "../../shared/messages";
 import {
-  ConsoleGetCompletionTypesResponse,
+  ConsoleGetCompletionTypesResponse, ConsoleGetPropertiesResponse,
   ConsoleRequestBookmarksResponse,
   ConsoleRequestHistoryResponse, ConsoleRequestSearchEnginesResponse, ConsoleRequesttabsResponse
 } from "../../shared/messages";
@@ -27,6 +27,11 @@ export type TabItem = {
   title: string
   url: string
   faviconUrl?: string
+}
+
+export type Property = {
+  name: string
+  type: 'string' | 'boolean' | 'number';
 }
 
 export default class CompletionClient {
@@ -67,6 +72,13 @@ export default class CompletionClient {
       query,
       excludePinned,
     }) as ConsoleRequesttabsResponse;
+    return resp;
+  }
+
+  async getProperties(): Promise<Property[]> {
+    const resp = await browser.runtime.sendMessage({
+      type: messages.CONSOLE_GET_PROPERTIES,
+    }) as ConsoleGetPropertiesResponse;
     return resp;
   }
 }

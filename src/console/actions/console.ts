@@ -22,6 +22,12 @@ const commandDocs = {
   [Command.Help]: 'Open Vim Vixen help in new tab',
 };
 
+const propertyDocs: {[key: string]: string} = {
+  'hintchars': 'hint characters on follow mode',
+  'smoothscroll': 'smooth scroll',
+  'complete': 'which are completed at the open page',
+};
+
 const hide = (): actions.ConsoleAction => {
   return {
     type: actions.CONSOLE_HIDE,
@@ -191,7 +197,40 @@ const getTabCompletions = async (
     }
 };
 
-
+const getPropertyCompletions = async(
+    original: string, command: Command, query: string,
+): Promise<actions.SetCompletionsAction> => {
+  const properties = await completionClient.getProperties();
+  const items = properties
+      .map(item => {
+        const desc = propertyDocs[item.name] || '';
+        if (item.type === 'boolean') {
+          return [{
+            caption: item.name,
+            content: command + ' ' + item.name,
+            url: 'Enable ' + desc,
+          }, {
+            caption: 'no' + item.name,
+            content: command + ' no' + item.name,
+            url: 'Disable ' + desc,
+          }];
+        } else {
+          return [{
+            caption: item.name,
+            content: name + ' ' + item.name,
+            url: 'Set ' + desc,
+          }];
+        }
+      })
+      .reduce((acc, val) => acc.concat(val), [])
+      .filter(item => item.caption.startsWith(query));
+  const completions: Completions = [{ name: 'Properties', items }];
+  return {
+    type: actions.CONSOLE_SET_COMPLETIONS,
+    completions,
+    completionSource: original,
+  }
+};
 
 const getCompletions = async(text: string): Promise<actions.SetCompletionsAction> => {
   const completions = await browser.runtime.sendMessage({
@@ -219,6 +258,6 @@ const completionPrev = (): actions.CompletionPrevAction => {
 
 export {
   hide, showCommand, showFind, showError, showInfo, hideCommand, setConsoleText, enterCommand, enterFind,
-  getCompletions, getCommandCompletions, getOpenCompletions, getTabCompletions,
+  getCompletions, getCommandCompletions, getOpenCompletions, getTabCompletions, getPropertyCompletions,
   completionNext, completionPrev,
 };
