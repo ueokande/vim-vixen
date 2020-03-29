@@ -96,9 +96,9 @@ describe('TabCompletionUseCase', () => {
       sinon.stub(tabPresenter, 'getLastSelectedId').returns(Promise.resolve(11));
 
       expect(await sut.queryTabs("", false)).to.deep.equal([
-        { index: 0, title: 'Google', url: 'https://google.com/', faviconUrl: 'https://google.com/favicon.ico', flag: TabFlag.CurrentTab },
-        { index: 1, title: 'Yahoo', url: 'https://yahoo.com/', faviconUrl: 'https://yahoo.com/favicon.ico', flag: TabFlag.LastTab },
-        { index: 2, title: 'Bing', url: 'https://bing.com/', faviconUrl: undefined, flag: TabFlag.None },
+        { index: 1, title: 'Google', url: 'https://google.com/', faviconUrl: 'https://google.com/favicon.ico', flag: TabFlag.CurrentTab },
+        { index: 2, title: 'Yahoo', url: 'https://yahoo.com/', faviconUrl: 'https://yahoo.com/favicon.ico', flag: TabFlag.LastTab },
+        { index: 3, title: 'Bing', url: 'https://bing.com/', faviconUrl: undefined, flag: TabFlag.None },
       ]);
     })
   });
