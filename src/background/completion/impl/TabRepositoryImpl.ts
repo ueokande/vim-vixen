@@ -15,13 +15,27 @@ export default class TabRepositoryImpl implements TabRepository {
       })
       .filter(item => item.id && item.title && item.url)
       .slice(0, COMPLETION_ITEM_LIMIT)
-      .map(item => ({
-        id: item.id!!,
-        url: item.url!!,
-        active: item.active,
-        title: item.title!!,
-        faviconUrl: item.favIconUrl,
-        index: item.index,
-      }))
+      .map(TabRepositoryImpl.toEntity);
+  }
+
+  async getAllTabs(excludePinned: boolean): Promise<Tab[]> {
+      if (excludePinned) {
+          return (await browser.tabs.query({ currentWindow: true, pinned: true }))
+              .map(TabRepositoryImpl.toEntity)
+
+      }
+      return (await browser.tabs.query({ currentWindow: true }))
+          .map(TabRepositoryImpl.toEntity)
+  }
+
+  private static toEntity(tab: browser.tabs.Tab,): Tab {
+    return {
+      id: tab.id!!,
+      url: tab.url!!,
+      active: tab.active,
+      title: tab.title!!,
+      faviconUrl: tab.favIconUrl,
+      index: tab.index,
+    }
   }
 }

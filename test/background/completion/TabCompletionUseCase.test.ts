@@ -11,6 +11,10 @@ class MockTabRepository implements TabRepositoryImpl {
   async queryTabs(_query: string, _excludePinned: boolean): Promise<Tab[]> {
     throw new Error("not implemented")
   }
+
+  async getAllTabs(_excludePinned: boolean): Promise<Tab[]> {
+    throw new Error("not implemented")
+  }
 }
 
 class MockTabPresenter implements TabPresenter {
@@ -83,22 +87,57 @@ describe('TabCompletionUseCase', () => {
   beforeEach(() => {
     tabRepository = new MockTabRepository();
     tabPresenter = new MockTabPresenter();
-    sut = new TabCompletionUseCase(tabRepository, tabPresenter)
+    sut = new TabCompletionUseCase(tabRepository, tabPresenter);
+
+    sinon.stub(tabPresenter, 'getLastSelectedId').returns(Promise.resolve(12));
+    sinon.stub(tabRepository, 'getAllTabs').returns(Promise.resolve([
+      { id: 10, index: 0, title: 'Google', url: 'https://google.com/', faviconUrl: 'https://google.com/favicon.ico', active: false },
+      { id: 11, index: 1, title: 'Yahoo', url: 'https://yahoo.com/', faviconUrl: 'https://yahoo.com/favicon.ico', active: true },
+      { id: 12, index: 2, title: 'Bing', url: 'https://bing.com/', active: false },
+    ]));
   });
 
   describe('#queryTabs', () => {
     it("returns tab items", async () => {
-      sinon.stub(tabRepository, 'queryTabs').returns(Promise.resolve([
-        { id: 10, index: 0, title: 'Google', url: 'https://google.com/', faviconUrl: 'https://google.com/favicon.ico', active: true },
-        { id: 11, index: 1, title: 'Yahoo', url: 'https://yahoo.com/', faviconUrl: 'https://yahoo.com/favicon.ico', active: false },
+      sinon.stub(tabRepository, 'queryTabs').withArgs('', false).returns(Promise.resolve([
+        { id: 10, index: 0, title: 'Google', url: 'https://google.com/', faviconUrl: 'https://google.com/favicon.ico', active: false },
+        { id: 11, index: 1, title: 'Yahoo', url: 'https://yahoo.com/', faviconUrl: 'https://yahoo.com/favicon.ico', active: true },
         { id: 12, index: 2, title: 'Bing', url: 'https://bing.com/', active: false },
+      ])).withArgs('oo', false).returns(Promise.resolve([
+        { id: 10, index: 0, title: 'Google', url: 'https://google.com/', faviconUrl: 'https://google.com/favicon.ico', active: false },
+        { id: 11, index: 1, title: 'Yahoo', url: 'https://yahoo.com/', faviconUrl: 'https://yahoo.com/favicon.ico', active: true },
       ]));
-      sinon.stub(tabPresenter, 'getLastSelectedId').returns(Promise.resolve(11));
 
-      expect(await sut.queryTabs("", false)).to.deep.equal([
+      expect(await sut.queryTabs('', false)).to.deep.equal([
+        { index: 1, title: 'Google', url: 'https://google.com/', faviconUrl: 'https://google.com/favicon.ico', flag: TabFlag.None },
+        { index: 2, title: 'Yahoo', url: 'https://yahoo.com/', faviconUrl: 'https://yahoo.com/favicon.ico', flag: TabFlag.CurrentTab },
+        { index: 3, title: 'Bing', url: 'https://bing.com/', faviconUrl: undefined, flag: TabFlag.LastTab },
+      ]);
+
+      expect(await sut.queryTabs('oo', false)).to.deep.equal([
+        { index: 1, title: 'Google', url: 'https://google.com/', faviconUrl: 'https://google.com/favicon.ico', flag: TabFlag.None },
+        { index: 2, title: 'Yahoo', url: 'https://yahoo.com/', faviconUrl: 'https://yahoo.com/favicon.ico', flag: TabFlag.CurrentTab },
+      ]);
+    });
+
+    it("returns a tab by the index", async () => {
+      expect(await sut.queryTabs('1', false)).to.deep.equal([
         { index: 1, title: 'Google', url: 'https://google.com/', faviconUrl: 'https://google.com/favicon.ico', flag: TabFlag.CurrentTab },
+      ]);
+
+      expect(await sut.queryTabs('10', false)).to.be.empty;
+      expect(await sut.queryTabs('-1', false)).to.be.empty;
+    });
+
+    it("returns the current tab by % flag", async () => {
+      expect(await sut.queryTabs('%', false)).to.deep.equal([
         { index: 2, title: 'Yahoo', url: 'https://yahoo.com/', faviconUrl: 'https://yahoo.com/favicon.ico', flag: TabFlag.LastTab },
-        { index: 3, title: 'Bing', url: 'https://bing.com/', faviconUrl: undefined, flag: TabFlag.None },
+      ]);
+    });
+
+    it("returns the current tab by # flag", async () => {
+      expect(await sut.queryTabs('#', false)).to.deep.equal([
+        { index: 3, title: 'Bing', url: 'https://bing.com/', faviconUrl: undefined, flag: TabFlag.LastTab },
       ]);
     })
   });
