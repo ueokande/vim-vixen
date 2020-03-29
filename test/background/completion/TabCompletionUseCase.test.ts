@@ -122,7 +122,7 @@ describe('TabCompletionUseCase', () => {
 
     it("returns a tab by the index", async () => {
       expect(await sut.queryTabs('1', false)).to.deep.equal([
-        { index: 1, title: 'Google', url: 'https://google.com/', faviconUrl: 'https://google.com/favicon.ico', flag: TabFlag.CurrentTab },
+        { index: 1, title: 'Google', url: 'https://google.com/', faviconUrl: 'https://google.com/favicon.ico', flag: TabFlag.None },
       ]);
 
       expect(await sut.queryTabs('10', false)).to.be.empty;
@@ -131,7 +131,7 @@ describe('TabCompletionUseCase', () => {
 
     it("returns the current tab by % flag", async () => {
       expect(await sut.queryTabs('%', false)).to.deep.equal([
-        { index: 2, title: 'Yahoo', url: 'https://yahoo.com/', faviconUrl: 'https://yahoo.com/favicon.ico', flag: TabFlag.LastTab },
+        { index: 2, title: 'Yahoo', url: 'https://yahoo.com/', faviconUrl: 'https://yahoo.com/favicon.ico', flag: TabFlag.CurrentTab },
       ]);
     });
 
