@@ -232,18 +232,6 @@ const getPropertyCompletions = async(
   }
 };
 
-const getCompletions = async(text: string): Promise<actions.SetCompletionsAction> => {
-  const completions = await browser.runtime.sendMessage({
-    type: messages.CONSOLE_QUERY_COMPLETIONS,
-    text,
-  });
-  return {
-    type: actions.CONSOLE_SET_COMPLETIONS,
-    completions,
-    completionSource: text,
-  };
-};
-
 const completionNext = (): actions.CompletionNextAction => {
   return {
     type: actions.CONSOLE_COMPLETION_NEXT,
@@ -258,6 +246,6 @@ const completionPrev = (): actions.CompletionPrevAction => {
 
 export {
   hide, showCommand, showFind, showError, showInfo, hideCommand, setConsoleText, enterCommand, enterFind,
-  getCompletions, getCommandCompletions, getOpenCompletions, getTabCompletions, getPropertyCompletions,
+  getCommandCompletions, getOpenCompletions, getTabCompletions, getPropertyCompletions,
   completionNext, completionPrev,
 };

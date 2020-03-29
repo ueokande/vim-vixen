@@ -175,22 +175,16 @@ class Console extends React.Component<Props> {
         this.props.dispatch(consoleActions.getTabCompletions(text, cmd.command, cmd.args, false));
         break;
       case Command.BufferDelete:
-        this.props.dispatch(consoleActions.getTabCompletions(text, cmd.command, cmd.args, true));
-        break;
-      case Command.BufferDeleteForce:
-        this.props.dispatch(consoleActions.getTabCompletions(text, cmd.command, cmd.args, false));
-        break;
       case Command.BuffersDelete:
         this.props.dispatch(consoleActions.getTabCompletions(text, cmd.command, cmd.args, true));
         break;
+      case Command.BufferDeleteForce:
       case Command.BuffersDeleteForce:
         this.props.dispatch(consoleActions.getTabCompletions(text, cmd.command, cmd.args, false));
         break;
       case Command.Set:
         this.props.dispatch(consoleActions.getPropertyCompletions(text, cmd.command, cmd.args));
         break;
-      default:
-        this.props.dispatch(consoleActions.getCompletions(text));
       }
     }
   }

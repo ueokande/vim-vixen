@@ -1,7 +1,6 @@
 import { injectable } from 'tsyringe';
 import * as messages from '../../shared/messages';
 import * as operations from '../../shared/operations';
-import CompletionGroup from '../domains/CompletionGroup';
 import CommandController from '../controllers/CommandController';
 import SettingController from '../controllers/SettingController';
 import FindController from '../controllers/FindController';
@@ -63,8 +62,6 @@ export default class ContentMessageListener {
     message: messages.Message, senderTab: browser.tabs.Tab,
   ): Promise<any> | any {
     switch (message.type) {
-    case messages.CONSOLE_QUERY_COMPLETIONS:
-      return this.onConsoleQueryCompletions(message.text);
     case messages.CONSOLE_GET_COMPLETION_TYPES:
       return this.completionController.getCompletionTypes();
     case messages.CONSOLE_REQUEST_SEARCH_ENGINES_MESSAGE:
@@ -105,11 +102,6 @@ export default class ContentMessageListener {
       );
     }
     throw new Error('unsupported message: ' + message.type);
-  }
-
-  async onConsoleQueryCompletions(line: string): Promise<CompletionGroup[]> {
-    const completions = await this.commandController.getCompletions(line);
-    return Promise.resolve(completions);
   }
 
   onConsoleEnterCommand(text: string): Promise<any> {

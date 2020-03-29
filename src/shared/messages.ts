@@ -7,7 +7,6 @@ export const BACKGROUND_OPERATION = 'background.operation';
 export const CONSOLE_UNFOCUS = 'console.unfocus';
 export const CONSOLE_ENTER_COMMAND = 'console.enter.command';
 export const CONSOLE_ENTER_FIND = 'console.enter.find';
-export const CONSOLE_QUERY_COMPLETIONS = 'console.query.completions'; // DEPRECATED
 export const CONSOLE_SHOW_COMMAND = 'console.show.command';
 export const CONSOLE_SHOW_ERROR = 'console.show.error';
 export const CONSOLE_SHOW_INFO = 'console.show.info';
@@ -73,11 +72,6 @@ export interface ConsoleEnterCommandMessage {
 export interface ConsoleEnterFindMessage {
   type: typeof CONSOLE_ENTER_FIND;
   text?: string;
-}
-
-export interface ConsoleQueryCompletionsMessage {
-  type: typeof CONSOLE_QUERY_COMPLETIONS;
-  text: string;
 }
 
 export interface ConsoleShowCommandMessage {
@@ -297,7 +291,6 @@ export type Message =
   ConsoleUnfocusMessage |
   ConsoleEnterCommandMessage |
   ConsoleEnterFindMessage |
-  ConsoleQueryCompletionsMessage |
   ConsoleShowCommandMessage |
   ConsoleShowErrorMessage |
   ConsoleShowInfoMessage |
@@ -342,7 +335,6 @@ export const valueOf = (o: any): Message => {
   case CONSOLE_UNFOCUS:
   case CONSOLE_ENTER_COMMAND:
   case CONSOLE_ENTER_FIND:
-  case CONSOLE_QUERY_COMPLETIONS:
   case CONSOLE_SHOW_COMMAND:
   case CONSOLE_SHOW_ERROR:
   case CONSOLE_SHOW_INFO:
