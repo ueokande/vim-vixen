@@ -35,7 +35,7 @@
     "@types/react-test-renderer": "^16.9.2",
     "@types/redux-promise": "^0.5.28",
     "@types/selenium-webdriver": "^4.0.6",
-    "@types/sinon": "^7.5.1",
+    "@types/sinon": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^2.19.0",
     "@typescript-eslint/parser": "^2.19.0",
     "ajv": "^6.11.0",
