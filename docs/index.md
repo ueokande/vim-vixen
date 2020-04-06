@@ -13,10 +13,10 @@ since it uses the WebExtensions API.
 
 ### Install Vim Vixen
 
-Vim Vixen is supported on Firefox 68 ESR.  Please latest version of stable ESR
+Vim Vixen is supported on Firefox 68 ESR.  Please install the latest version of stable ESR
 from the [download page](https://www.mozilla.org/en-US/firefox/).
 You can install Vim Vixen from [Firefox add-ons (addons.mozilla.org)][AMO], and
-manage installed addon-ons on Firefox preferences `about:preferences`.
+manage installed add-ons on Firefox preferences `about:preferences`.
 
 ### Quick start
 
