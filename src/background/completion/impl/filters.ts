@@ -33,7 +33,7 @@ const filterByTailingSlash = (items: Item[]): Item[] => {
   });
 };
 
-const filterByPathname = (items: Item[], min: number): Item[] => {
+const filterByPathname = (items: Item[]): Item[] => {
   const hash: {[key: string]: Item} = {};
   for (const item of items) {
     const url = new URL(item.url as string);
@@ -45,14 +45,10 @@ const filterByPathname = (items: Item[], min: number): Item[] => {
       hash[pathname] = item;
     }
   }
-  const filtered = Object.values(hash);
-  if (filtered.length < min) {
-    return items;
-  }
-  return filtered;
+  return Object.values(hash);
 };
 
-const filterByOrigin = (items: Item[], min: number): Item[] => {
+const filterByOrigin = (items: Item[]): Item[] => {
   const hash: {[key: string]: Item} = {};
   for (const item of items) {
     const origin = new URL(item.url as string).origin;
@@ -63,11 +59,7 @@ const filterByOrigin = (items: Item[], min: number): Item[] => {
       hash[origin] = item;
     }
   }
-  const filtered = Object.values(hash);
-  if (filtered.length < min) {
-    return items;
-  }
-  return filtered;
+  return Object.values(hash);
 };
 
 export {
