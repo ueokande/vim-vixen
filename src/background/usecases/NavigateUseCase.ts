@@ -1,11 +1,11 @@
-import { injectable } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import NavigateClient from '../clients/NavigateClient';
 import TabPresenter from '../presenters/TabPresenter';
 
 @injectable()
 export default class NavigateUseCase {
   constructor(
-    private tabPresenter: TabPresenter,
+    @inject('TabPresenter') private tabPresenter: TabPresenter,
     private navigateClient: NavigateClient,
   ) {
   }

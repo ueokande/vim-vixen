@@ -1,7 +1,5 @@
 import { injectable } from 'tsyringe';
-import CompletionsUseCase from '../usecases/CompletionsUseCase';
 import CommandUseCase from '../usecases/CommandUseCase';
-import CompletionGroup from '../domains/CompletionGroup';
 
 const trimStart = (str: string): string => {
   // NOTE String.trimStart is available on Firefox 61
@@ -11,44 +9,8 @@ const trimStart = (str: string): string => {
 @injectable()
 export default class CommandController {
   constructor(
-    private completionsUseCase: CompletionsUseCase,
     private commandIndicator: CommandUseCase,
   ) {
-  }
-
-  getCompletions(line: string): Promise<CompletionGroup[]> {
-    const trimmed = trimStart(line);
-    const words = trimmed.split(/ +/);
-    const name = words[0];
-    if (words.length === 1) {
-      return this.completionsUseCase.queryConsoleCommand(name);
-    }
-    const keywords = trimStart(trimmed.slice(name.length));
-    switch (words[0]) {
-    case 'o':
-    case 'open':
-    case 't':
-    case 'tabopen':
-    case 'w':
-    case 'winopen':
-      return this.completionsUseCase.queryOpen(name, keywords);
-    case 'b':
-    case 'buffer':
-      return this.completionsUseCase.queryBuffer(name, keywords);
-    case 'bd':
-    case 'bdel':
-    case 'bdelete':
-    case 'bdeletes':
-      return this.completionsUseCase.queryBdelete(name, keywords);
-    case 'bd!':
-    case 'bdel!':
-    case 'bdelete!':
-    case 'bdeletes!':
-      return this.completionsUseCase.queryBdeleteForce(name, keywords);
-    case 'set':
-      return this.completionsUseCase.querySet(name, keywords);
-    }
-    return Promise.resolve([]);
   }
 
   // eslint-disable-next-line complexity

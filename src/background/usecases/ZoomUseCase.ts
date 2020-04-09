@@ -1,4 +1,4 @@
-import { injectable } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import TabPresenter from '../presenters/TabPresenter';
 
 const ZOOM_SETTINGS: number[] = [
@@ -9,7 +9,7 @@ const ZOOM_SETTINGS: number[] = [
 @injectable()
 export default class ZoomUseCase {
   constructor(
-    private tabPresenter: TabPresenter,
+    @inject('TabPresenter') private tabPresenter: TabPresenter,
   ) {
   }
 

@@ -1,7 +1,6 @@
 import { injectable } from 'tsyringe';
 import * as messages from '../../shared/messages';
 import * as operations from '../../shared/operations';
-import CompletionGroup from '../domains/CompletionGroup';
 import CommandController from '../controllers/CommandController';
 import SettingController from '../controllers/SettingController';
 import FindController from '../controllers/FindController';
@@ -9,6 +8,7 @@ import AddonEnabledController from '../controllers/AddonEnabledController';
 import LinkController from '../controllers/LinkController';
 import OperationController from '../controllers/OperationController';
 import MarkController from '../controllers/MarkController';
+import CompletionController from "../controllers/CompletionController";
 
 @injectable()
 export default class ContentMessageListener {
@@ -17,6 +17,7 @@ export default class ContentMessageListener {
   constructor(
     private settingController: SettingController,
     private commandController: CommandController,
+    private completionController: CompletionController,
     private findController: FindController,
     private addonEnabledController: AddonEnabledController,
     private linkController: LinkController,
@@ -61,8 +62,18 @@ export default class ContentMessageListener {
     message: messages.Message, senderTab: browser.tabs.Tab,
   ): Promise<any> | any {
     switch (message.type) {
-    case messages.CONSOLE_QUERY_COMPLETIONS:
-      return this.onConsoleQueryCompletions(message.text);
+    case messages.CONSOLE_GET_COMPLETION_TYPES:
+      return this.completionController.getCompletionTypes();
+    case messages.CONSOLE_REQUEST_SEARCH_ENGINES_MESSAGE:
+      return this.completionController.requestSearchEngines(message.query);
+    case messages.CONSOLE_REQUEST_BOOKMARKS:
+      return this.completionController.requestBookmarks(message.query);
+    case messages.CONSOLE_REQUEST_HISTORY:
+      return this.completionController.requestHistory(message.query);
+    case messages.CONSOLE_REQUEST_TABS:
+      return this.completionController.queryTabs(message.query, message.excludePinned);
+    case messages.CONSOLE_GET_PROPERTIES:
+      return this.completionController.getProperties();
     case messages.CONSOLE_ENTER_COMMAND:
       return this.onConsoleEnterCommand(message.text);
     case messages.SETTINGS_QUERY:
@@ -91,11 +102,6 @@ export default class ContentMessageListener {
       );
     }
     throw new Error('unsupported message: ' + message.type);
-  }
-
-  async onConsoleQueryCompletions(line: string): Promise<CompletionGroup[]> {
-    const completions = await this.commandController.getCompletions(line);
-    return Promise.resolve(completions);
   }
 
   onConsoleEnterCommand(text: string): Promise<any> {

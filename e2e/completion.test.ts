@@ -33,7 +33,7 @@ describe("general completion test", () => {
     const console = await page.showConsole();
 
     const items = await console.getCompletions();
-    assert.strictEqual(items.length, 11);
+    assert.strictEqual(items.length, 12);
     assert.deepStrictEqual(items[0], { type: 'title', text: 'Console Command' });
     assert.ok(items[1].text.startsWith('set'));
     assert.ok(items[2].text.startsWith('open'));

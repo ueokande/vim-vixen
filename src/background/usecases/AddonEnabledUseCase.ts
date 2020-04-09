@@ -1,4 +1,4 @@
-import { injectable } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import IndicatorPresenter from '../presenters/IndicatorPresenter';
 import TabPresenter from '../presenters/TabPresenter';
 import ContentMessageClient from '../infrastructures/ContentMessageClient';
@@ -7,7 +7,7 @@ import ContentMessageClient from '../infrastructures/ContentMessageClient';
 export default class AddonEnabledUseCase {
   constructor(
     private indicatorPresentor: IndicatorPresenter,
-    private tabPresenter: TabPresenter,
+    @inject("TabPresenter") private tabPresenter: TabPresenter,
     private contentMessageClient: ContentMessageClient,
   ) {
     this.indicatorPresentor.onClick((tab) => {
