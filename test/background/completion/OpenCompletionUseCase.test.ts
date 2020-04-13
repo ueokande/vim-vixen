@@ -91,7 +91,7 @@ describe("OpenCompletionUseCase", () => {
               google: "https://google.com/search?q={}",
               yahoo: "https://search.yahoo.com/search?q={}",
               bing: "https://bing.com/search?q={}",
-              google_ja: "https://google.co.jp/search?q={}",
+              googleja: "https://google.co.jp/search?q={}",
             }),
             properties: DefaultSetting.properties,
             blacklist: DefaultSetting.blacklist,
@@ -103,11 +103,11 @@ describe("OpenCompletionUseCase", () => {
         "google",
         "yahoo",
         "bing",
-        "google_ja",
+        "googleja",
       ]);
       expect(await sut.requestSearchEngines("go")).to.deep.equal([
         "google",
-        "google_ja",
+        "googleja",
       ]);
       expect(await sut.requestSearchEngines("x")).to.be.empty;
     });
