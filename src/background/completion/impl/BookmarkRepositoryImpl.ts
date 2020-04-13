@@ -38,8 +38,8 @@ export default class CachedBookmarkRepository implements BookmarkRepository {
 
   private filter(items: HistoryItem[], query: string) {
     return items.filter(item => {
-      return query.split(' ').some(keyword => {
-        return item.title.toLowerCase().includes(keyword.toLowerCase()) || item.url.includes(keyword)
+      return query.split(' ').every(keyword => {
+        return item.title.toLowerCase().includes(keyword.toLowerCase()) || item.url!!.includes(keyword)
       });
     })
   };
