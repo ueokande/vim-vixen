@@ -1,13 +1,12 @@
-import { injectable, inject } from 'tsyringe';
-import ConsoleFramePresenter from '../presenters/ConsoleFramePresenter';
+import { injectable, inject } from "tsyringe";
+import ConsoleFramePresenter from "../presenters/ConsoleFramePresenter";
 
 @injectable()
 export default class ConsoleFrameUseCase {
   constructor(
-    @inject('ConsoleFramePresenter')
-    private consoleFramePresenter: ConsoleFramePresenter,
-  ) {
-  }
+    @inject("ConsoleFramePresenter")
+    private consoleFramePresenter: ConsoleFramePresenter
+  ) {}
 
   unfocus() {
     window.focus();

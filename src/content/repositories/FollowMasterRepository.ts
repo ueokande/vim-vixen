@@ -35,7 +35,7 @@ export class FollowMasterRepositoryImpl implements FollowMasterRepository {
   }
 
   getTagsByPrefix(prefix: string): string[] {
-    return current.tags.filter(t => t.startsWith(prefix));
+    return current.tags.filter((t) => t.startsWith(prefix));
   }
 
   addTag(tag: string): void {
@@ -54,4 +54,3 @@ export class FollowMasterRepositoryImpl implements FollowMasterRepository {
     return current.background;
   }
 }
-

@@ -1,7 +1,7 @@
-import MemoryStorage from '../infrastructures/MemoryStorage';
+import MemoryStorage from "../infrastructures/MemoryStorage";
 
-const CURRENT_SELECTED_KEY = 'tabs.current.selected';
-const LAST_SELECTED_KEY = 'tabs.last.selected';
+const CURRENT_SELECTED_KEY = "tabs.current.selected";
+const LAST_SELECTED_KEY = "tabs.last.selected";
 
 type Tab = browser.tabs.Tab;
 
@@ -35,7 +35,7 @@ export default interface TabPresenter {
   setZoom(tabId: number, factor: number): Promise<void>;
 
   onSelected(
-      listener: (arg: { tabId: number, windowId: number}) => void,
+    listener: (arg: { tabId: number; windowId: number }) => void
   ): void;
 }
 
@@ -50,7 +50,8 @@ export class TabPresenterImpl implements TabPresenter {
 
   async getCurrent(): Promise<Tab> {
     const tabs = await browser.tabs.query({
-      active: true, currentWindow: true
+      active: true,
+      currentWindow: true,
     });
     return tabs[0];
   }
@@ -62,22 +63,24 @@ export class TabPresenterImpl implements TabPresenter {
   async getLastSelectedId(): Promise<number | undefined> {
     const cache = new MemoryStorage();
     const tabId = await cache.get(LAST_SELECTED_KEY);
-    if (tabId === null || typeof tabId === 'undefined') {
+    if (tabId === null || typeof tabId === "undefined") {
       return;
     }
     return tabId;
   }
 
-  async getByKeyword(
-    keyword: string, excludePinned = false,
-  ): Promise<Tab[]> {
+  async getByKeyword(keyword: string, excludePinned = false): Promise<Tab[]> {
     const tabs = await browser.tabs.query({ currentWindow: true });
-    return tabs.filter((t) => {
-      return t.url && t.url.toLowerCase().includes(keyword.toLowerCase()) ||
-        t.title && t.title.toLowerCase().includes(keyword.toLowerCase());
-    }).filter((t) => {
-      return !(excludePinned && t.pinned);
-    });
+    return tabs
+      .filter((t) => {
+        return (
+          (t.url && t.url.toLowerCase().includes(keyword.toLowerCase())) ||
+          (t.title && t.title.toLowerCase().includes(keyword.toLowerCase()))
+        );
+      })
+      .filter((t) => {
+        return !(excludePinned && t.pinned);
+      });
   }
 
   async select(tabId: number): Promise<void> {
@@ -125,7 +128,7 @@ export class TabPresenterImpl implements TabPresenter {
   }
 
   onSelected(
-    listener: (arg: { tabId: number, windowId: number}) => void,
+    listener: (arg: { tabId: number; windowId: number }) => void
   ): void {
     browser.tabs.onActivated.addListener(listener);
   }

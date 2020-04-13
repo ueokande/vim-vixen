@@ -1,29 +1,29 @@
-import { injectable, inject } from 'tsyringe';
-import * as operations from '../../shared/operations';
-import * as parsers from './parsers';
-import * as urls from '../../shared/urls';
-import TabPresenter from '../presenters/TabPresenter';
-import WindowPresenter from '../presenters/WindowPresenter';
-import HelpPresenter from '../presenters/HelpPresenter';
-import CachedSettingRepository from '../repositories/CachedSettingRepository';
-import BookmarkRepository from '../repositories/BookmarkRepository';
-import ConsoleClient from '../infrastructures/ConsoleClient';
-import ContentMessageClient from '../infrastructures/ContentMessageClient';
-import RepeatUseCase from '../usecases/RepeatUseCase';
+import { injectable, inject } from "tsyringe";
+import * as operations from "../../shared/operations";
+import * as parsers from "./parsers";
+import * as urls from "../../shared/urls";
+import TabPresenter from "../presenters/TabPresenter";
+import WindowPresenter from "../presenters/WindowPresenter";
+import HelpPresenter from "../presenters/HelpPresenter";
+import CachedSettingRepository from "../repositories/CachedSettingRepository";
+import BookmarkRepository from "../repositories/BookmarkRepository";
+import ConsoleClient from "../infrastructures/ConsoleClient";
+import ContentMessageClient from "../infrastructures/ContentMessageClient";
+import RepeatUseCase from "../usecases/RepeatUseCase";
 
 @injectable()
 export default class CommandIndicator {
   constructor(
-    @inject('TabPresenter') private tabPresenter: TabPresenter,
+    @inject("TabPresenter") private tabPresenter: TabPresenter,
     private windowPresenter: WindowPresenter,
     private helpPresenter: HelpPresenter,
-    @inject("CachedSettingRepository") private cachedSettingRepository: CachedSettingRepository,
+    @inject("CachedSettingRepository")
+    private cachedSettingRepository: CachedSettingRepository,
     private bookmarkRepository: BookmarkRepository,
     private consoleClient: ConsoleClient,
     private contentMessageClient: ContentMessageClient,
-    private repeatUseCase: RepeatUseCase,
-  ) {
-  }
+    private repeatUseCase: RepeatUseCase
+  ) {}
 
   async open(keywords: string): Promise<browser.tabs.Tab> {
     const url = await this.urlOrSearch(keywords);
@@ -67,14 +67,14 @@ export default class CommandIndicator {
         throw new RangeError(`tab ${index + 1} does not exist`);
       }
       return this.tabPresenter.select(tabs[index].id as number);
-    } else if (keywords.trim() === '%') {
+    } else if (keywords.trim() === "%") {
       // Select current window
       return;
-    } else if (keywords.trim() === '#') {
+    } else if (keywords.trim() === "#") {
       // Select last selected window
       const lastId = await this.tabPresenter.getLastSelectedId();
-      if (typeof lastId === 'undefined' || lastId === null) {
-        throw new Error('No last selected tab');
+      if (typeof lastId === "undefined" || lastId === null) {
+        throw new Error("No last selected tab");
       }
       return this.tabPresenter.select(lastId);
     }
@@ -82,7 +82,7 @@ export default class CommandIndicator {
     const current = await this.tabPresenter.getCurrent();
     const tabs = await this.tabPresenter.getByKeyword(keywords, false);
     if (tabs.length === 0) {
-      throw new RangeError('No matching buffer for ' + keywords);
+      throw new RangeError("No matching buffer for " + keywords);
     }
     for (const tab of tabs) {
       if (tab.index > current.index) {
@@ -96,9 +96,9 @@ export default class CommandIndicator {
     const excludePinned = !force;
     const tabs = await this.tabPresenter.getByKeyword(keywords, excludePinned);
     if (tabs.length === 0) {
-      throw new Error('No matching buffer for ' + keywords);
+      throw new Error("No matching buffer for " + keywords);
     } else if (tabs.length > 1) {
-      throw new Error('More than one match for ' + keywords);
+      throw new Error("More than one match for " + keywords);
     }
     return this.tabPresenter.remove([tabs[0].id as number]);
   }
@@ -106,7 +106,7 @@ export default class CommandIndicator {
   async bdeletes(force: boolean, keywords: string): Promise<any> {
     const excludePinned = !force;
     const tabs = await this.tabPresenter.getByKeyword(keywords, excludePinned);
-    const ids = tabs.map(tab => tab.id as number);
+    const ids = tabs.map((tab) => tab.id as number);
     return this.tabPresenter.remove(ids);
   }
 
@@ -117,14 +117,14 @@ export default class CommandIndicator {
 
   async quitAll(): Promise<any> {
     const tabs = await this.tabPresenter.getAll();
-    const ids = tabs.map(tab => tab.id as number);
+    const ids = tabs.map((tab) => tab.id as number);
     this.tabPresenter.remove(ids);
   }
 
   async addbookmark(title: string): Promise<any> {
     const tab = await this.tabPresenter.getCurrent();
     const item = await this.bookmarkRepository.create(title, tab.url as string);
-    const message = 'Saved current page: ' + item.url;
+    const message = "Saved current page: " + item.url;
     return this.consoleClient.showInfo(tab.id as number, message);
   }
 

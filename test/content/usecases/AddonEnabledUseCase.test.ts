@@ -1,7 +1,7 @@
-import AddonEnabledRepository from '../../../src/content/repositories/AddonEnabledRepository';
-import AddonEnabledUseCase from '../../../src/content/usecases/AddonEnabledUseCase';
-import AddonIndicatorClient from '../../../src/content/client/AddonIndicatorClient';
-import { expect } from 'chai';
+import AddonEnabledRepository from "../../../src/content/repositories/AddonEnabledRepository";
+import AddonEnabledUseCase from "../../../src/content/usecases/AddonEnabledUseCase";
+import AddonIndicatorClient from "../../../src/content/client/AddonIndicatorClient";
+import { expect } from "chai";
 
 class MockAddonEnabledRepository implements AddonEnabledRepository {
   private enabled: boolean;
@@ -28,11 +28,11 @@ class MockAddonIndicatorClient implements AddonIndicatorClient {
 
   async setEnabled(enabled: boolean): Promise<void> {
     this.enabled = enabled;
-    return
+    return;
   }
 }
 
-describe('AddonEnabledUseCase', () => {
+describe("AddonEnabledUseCase", () => {
   let repository: MockAddonEnabledRepository;
   let indicator: MockAddonIndicatorClient;
   let sut: AddonEnabledUseCase;
@@ -43,8 +43,8 @@ describe('AddonEnabledUseCase', () => {
     sut = new AddonEnabledUseCase(indicator, repository);
   });
 
-  describe('#enable', () => {
-    it('store and indicate as enabled', async() => {
+  describe("#enable", () => {
+    it("store and indicate as enabled", async () => {
       await sut.enable();
 
       expect(repository.get()).to.be.true;
@@ -52,8 +52,8 @@ describe('AddonEnabledUseCase', () => {
     });
   });
 
-  describe('#disable', async() => {
-    it('store and indicate as disabled', async() => {
+  describe("#disable", async () => {
+    it("store and indicate as disabled", async () => {
       await sut.disable();
 
       expect(repository.get()).to.be.false;
@@ -61,8 +61,8 @@ describe('AddonEnabledUseCase', () => {
     });
   });
 
-  describe('#toggle', () => {
-    it('toggled enabled and disabled', async() => {
+  describe("#toggle", () => {
+    it("toggled enabled and disabled", async () => {
       repository.set(true);
       await sut.toggle();
 
@@ -78,8 +78,8 @@ describe('AddonEnabledUseCase', () => {
     });
   });
 
-  describe('#getEnabled', () => {
-    it('returns current addon enabled', () => {
+  describe("#getEnabled", () => {
+    it("returns current addon enabled", () => {
       repository.set(true);
       expect(sut.getEnabled()).to.be.true;
 

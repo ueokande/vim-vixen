@@ -1,4 +1,4 @@
-import * as messages from '../../shared/messages';
+import * as messages from "../../shared/messages";
 
 export default interface FindClient {
   getGlobalLastKeyword(): Promise<string | null>;

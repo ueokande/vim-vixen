@@ -1,4 +1,3 @@
-
 export type PropertiesJSON = {
   hintchars?: string;
   smoothscroll?: boolean;
@@ -11,38 +10,40 @@ export type PropertyTypes = {
   complete: string;
 };
 
-type PropertyName = 'hintchars' | 'smoothscroll' | 'complete';
+type PropertyName = "hintchars" | "smoothscroll" | "complete";
 
 type PropertyDef = {
   name: PropertyName;
   description: string;
   defaultValue: string | number | boolean;
-  type: 'string' | 'number' | 'boolean';
+  type: "string" | "number" | "boolean";
 };
 
 const defs: PropertyDef[] = [
   {
-    name: 'hintchars',
-    description: 'hint characters on follow mode',
-    defaultValue: 'abcdefghijklmnopqrstuvwxyz',
-    type: 'string',
-  }, {
-    name: 'smoothscroll',
-    description: 'smooth scroll',
+    name: "hintchars",
+    description: "hint characters on follow mode",
+    defaultValue: "abcdefghijklmnopqrstuvwxyz",
+    type: "string",
+  },
+  {
+    name: "smoothscroll",
+    description: "smooth scroll",
     defaultValue: false,
-    type: 'boolean',
-  }, {
-    name: 'complete',
-    description: 'which are completed at the open page',
-    defaultValue: 'sbh',
-    type: 'string',
-  }
+    type: "boolean",
+  },
+  {
+    name: "complete",
+    description: "which are completed at the open page",
+    defaultValue: "sbh",
+    type: "string",
+  },
 ];
 
 const defaultValues = {
-  hintchars: 'abcdefghijklmnopqrstuvwxyz',
+  hintchars: "abcdefghijklmnopqrstuvwxyz",
   smoothscroll: false,
-  complete: 'sbh',
+  complete: "sbh",
 };
 
 export default class Properties {
@@ -72,14 +73,14 @@ export default class Properties {
 
   static types(): PropertyTypes {
     return {
-      hintchars: 'string',
-      smoothscroll: 'boolean',
-      complete: 'string',
+      hintchars: "string",
+      smoothscroll: "boolean",
+      complete: "string",
     };
   }
 
   static def(name: string): PropertyDef | undefined {
-    return defs.find(p => p.name === name);
+    return defs.find((p) => p.name === name);
   }
 
   static defs(): PropertyDef[] {

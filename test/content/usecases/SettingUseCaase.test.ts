@@ -1,8 +1,10 @@
-import SettingRepository from '../../../src/content/repositories/SettingRepository';
-import SettingClient from '../../../src/content/client/SettingClient';
-import SettingUseCase from '../../../src/content/usecases/SettingUseCase';
-import Settings, { DefaultSetting } from '../../../src/shared/settings/Settings';
-import { expect } from 'chai';
+import SettingRepository from "../../../src/content/repositories/SettingRepository";
+import SettingClient from "../../../src/content/client/SettingClient";
+import SettingUseCase from "../../../src/content/usecases/SettingUseCase";
+import Settings, {
+  DefaultSetting,
+} from "../../../src/shared/settings/Settings";
+import { expect } from "chai";
 
 class MockSettingRepository implements SettingRepository {
   private current: Settings;
@@ -12,7 +14,7 @@ class MockSettingRepository implements SettingRepository {
   }
 
   set(settings: Settings): void {
-    this.current= settings;
+    this.current = settings;
   }
 
   get(): Settings {
@@ -32,7 +34,7 @@ class MockSettingClient implements SettingClient {
   }
 }
 
-describe('AddonEnabledUseCase', () => {
+describe("AddonEnabledUseCase", () => {
   let repository: MockSettingRepository;
   let client: MockSettingClient;
   let sut: SettingUseCase;
@@ -41,15 +43,15 @@ describe('AddonEnabledUseCase', () => {
     const testSettings = {
       keymaps: {},
       search: {
-        default: 'google',
+        default: "google",
         engines: {
-          google: 'https://google.com/?q={}',
-        }
+          google: "https://google.com/?q={}",
+        },
       },
       properties: {
-        hintchars: 'abcd1234',
+        hintchars: "abcd1234",
         smoothscroll: false,
-        complete: 'sbh',
+        complete: "sbh",
       },
       blacklist: [],
     };
@@ -59,13 +61,13 @@ describe('AddonEnabledUseCase', () => {
     sut = new SettingUseCase(repository, client);
   });
 
-  describe('#reload', () => {
-    it('loads settings and store to repository', async() => {
+  describe("#reload", () => {
+    it("loads settings and store to repository", async () => {
       const settings = await sut.reload();
-      expect(settings.properties.hintchars).to.equal('abcd1234');
+      expect(settings.properties.hintchars).to.equal("abcd1234");
 
       const saved = repository.get();
-      expect(saved.properties.hintchars).to.equal('abcd1234');
+      expect(saved.properties.hintchars).to.equal("abcd1234");
     });
   });
 });

@@ -1,21 +1,22 @@
 import "reflect-metadata";
 import SettingUseCase from "../../../src/background/usecases/SettingUseCase";
 import SettingRepository from "../../../src/background/repositories/SettingRepository";
-import SettingData, {JSONTextSettings} from "../../../src/shared/SettingData";
+import SettingData, { JSONTextSettings } from "../../../src/shared/SettingData";
 import CachedSettingRepository from "../../../src/background/repositories/CachedSettingRepository";
-import Settings, {DefaultSetting} from "../../../src/shared/settings/Settings";
+import Settings, {
+  DefaultSetting,
+} from "../../../src/shared/settings/Settings";
 import Notifier from "../../../src/background/presenters/Notifier";
-import {expect} from "chai";
+import { expect } from "chai";
 import Properties from "../../../src/shared/settings/Properties";
-import sinon from 'sinon';
+import sinon from "sinon";
 
 class MockSettingRepository implements SettingRepository {
   load(): Promise<SettingData | null> {
     throw new Error("not implemented");
   }
 
-  onChange(_: () => void): void {
-  }
+  onChange(_: () => void): void {}
 }
 
 class MockCachedSettingRepository implements CachedSettingRepository {
@@ -46,12 +47,12 @@ class NopNotifier implements Notifier {
   }
 }
 
-describe('SettingUseCase', () => {
-  let localSettingRepository : SettingRepository;
-  let syncSettingRepository : SettingRepository;
-  let cachedSettingRepository : CachedSettingRepository;
+describe("SettingUseCase", () => {
+  let localSettingRepository: SettingRepository;
+  let syncSettingRepository: SettingRepository;
+  let cachedSettingRepository: CachedSettingRepository;
   let notifier: Notifier;
-  let sut : SettingUseCase;
+  let sut: SettingUseCase;
 
   beforeEach(() => {
     localSettingRepository = new MockSettingRepository();
@@ -66,34 +67,34 @@ describe('SettingUseCase', () => {
     );
   });
 
-  describe('getCached', () => {
+  describe("getCached", () => {
     it("returns cached settings", async () => {
       const settings = new Settings({
         keymaps: DefaultSetting.keymaps,
         search: DefaultSetting.search,
         blacklist: DefaultSetting.blacklist,
         properties: new Properties({
-          hintchars: "abcd1234"
+          hintchars: "abcd1234",
         }),
       });
-      sinon.stub(cachedSettingRepository, "get")
+      sinon
+        .stub(cachedSettingRepository, "get")
         .returns(Promise.resolve(settings));
 
       const got = await sut.getCached();
       expect(got.properties.hintchars).to.equal("abcd1234");
-
     });
   });
 
   describe("reload", () => {
     context("when sync is not set", () => {
-      it("loads settings from local storage", async() => {
+      it("loads settings from local storage", async () => {
         const settings = new Settings({
           keymaps: DefaultSetting.keymaps,
           search: DefaultSetting.search,
           blacklist: DefaultSetting.blacklist,
           properties: new Properties({
-            hintchars: "abcd1234"
+            hintchars: "abcd1234",
           }),
         });
         const settingData = SettingData.fromJSON({
@@ -101,9 +102,11 @@ describe('SettingUseCase', () => {
           json: JSONTextSettings.fromSettings(settings).toJSONText(),
         });
 
-        sinon.stub(syncSettingRepository, "load")
+        sinon
+          .stub(syncSettingRepository, "load")
           .returns(Promise.resolve(null));
-        sinon.stub(localSettingRepository, "load")
+        sinon
+          .stub(localSettingRepository, "load")
           .returns(Promise.resolve(settingData));
 
         await sut.reload();
@@ -114,13 +117,13 @@ describe('SettingUseCase', () => {
     });
 
     context("when local is not set", () => {
-      it("loads settings from sync storage", async() => {
+      it("loads settings from sync storage", async () => {
         const settings = new Settings({
           keymaps: DefaultSetting.keymaps,
           search: DefaultSetting.search,
           blacklist: DefaultSetting.blacklist,
           properties: new Properties({
-            hintchars: "aaaa1111"
+            hintchars: "aaaa1111",
           }),
         });
         const settingData = SettingData.fromJSON({
@@ -128,9 +131,11 @@ describe('SettingUseCase', () => {
           json: JSONTextSettings.fromSettings(settings).toJSONText(),
         });
 
-        sinon.stub(syncSettingRepository, "load")
+        sinon
+          .stub(syncSettingRepository, "load")
           .returns(Promise.resolve(settingData));
-        sinon.stub(localSettingRepository, "load")
+        sinon
+          .stub(localSettingRepository, "load")
           .returns(Promise.resolve(null));
 
         await sut.reload();
@@ -141,21 +146,23 @@ describe('SettingUseCase', () => {
     });
 
     context("neither local nor sync not set", () => {
-      it("loads default settings", async() => {
-        it("loads settings from sync storage", async() => {
-          sinon.stub(syncSettingRepository, "load")
+      it("loads default settings", async () => {
+        it("loads settings from sync storage", async () => {
+          sinon
+            .stub(syncSettingRepository, "load")
             .returns(Promise.resolve(null));
-          sinon.stub(localSettingRepository, "load")
+          sinon
+            .stub(localSettingRepository, "load")
             .returns(Promise.resolve(null));
 
           await sut.reload();
 
           const current = await cachedSettingRepository.get();
-          expect(current.properties.hintchars).to.equal(DefaultSetting.properties.hintchars);
+          expect(current.properties.hintchars).to.equal(
+            DefaultSetting.properties.hintchars
+          );
         });
-
-      })
-    })
-  })
+      });
+    });
+  });
 });
-

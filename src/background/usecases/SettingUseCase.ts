@@ -1,20 +1,21 @@
-import {inject, injectable} from 'tsyringe';
-import CachedSettingRepository from '../repositories/CachedSettingRepository';
-import SettingData, {DefaultSettingData} from '../../shared/SettingData';
-import Settings from '../../shared/settings/Settings';
-import Notifier from '../presenters/Notifier';
+import { inject, injectable } from "tsyringe";
+import CachedSettingRepository from "../repositories/CachedSettingRepository";
+import SettingData, { DefaultSettingData } from "../../shared/SettingData";
+import Settings from "../../shared/settings/Settings";
+import Notifier from "../presenters/Notifier";
 import SettingRepository from "../repositories/SettingRepository";
 
 @injectable()
 export default class SettingUseCase {
-
   constructor(
-    @inject("LocalSettingRepository") private localSettingRepository: SettingRepository,
-    @inject("SyncSettingRepository") private syncSettingRepository: SettingRepository,
-    @inject("CachedSettingRepository") private cachedSettingRepository: CachedSettingRepository,
-    @inject("Notifier") private notifier: Notifier,
-  ) {
-  }
+    @inject("LocalSettingRepository")
+    private localSettingRepository: SettingRepository,
+    @inject("SyncSettingRepository")
+    private syncSettingRepository: SettingRepository,
+    @inject("CachedSettingRepository")
+    private cachedSettingRepository: CachedSettingRepository,
+    @inject("Notifier") private notifier: Notifier
+  ) {}
 
   getCached(): Promise<Settings> {
     return this.cachedSettingRepository.get();
@@ -42,7 +43,7 @@ export default class SettingUseCase {
   private async loadSettings(): Promise<SettingData> {
     const sync = await this.syncSettingRepository.load();
     if (sync) {
-        return sync;
+      return sync;
     }
     const local = await this.localSettingRepository.load();
     if (local) {
@@ -52,7 +53,7 @@ export default class SettingUseCase {
   }
 
   private showUnableToLoad(e: Error) {
-    console.error('unable to load settings', e);
+    console.error("unable to load settings", e);
     this.notifier.notifyInvalidSettings(() => {
       browser.runtime.openOptionsPage();
     });

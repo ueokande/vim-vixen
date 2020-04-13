@@ -1,15 +1,14 @@
-import { injectable } from 'tsyringe';
-import MarkUseCase from '../usecases/MarkUseCase';
-import MarkKeyyUseCase from '../usecases/MarkKeyUseCase';
-import Key from '../../shared/settings/Key';
+import { injectable } from "tsyringe";
+import MarkUseCase from "../usecases/MarkUseCase";
+import MarkKeyyUseCase from "../usecases/MarkKeyUseCase";
+import Key from "../../shared/settings/Key";
 
 @injectable()
 export default class MarkKeyController {
   constructor(
     private markUseCase: MarkUseCase,
-    private markKeyUseCase: MarkKeyyUseCase,
-  ) {
-  }
+    private markKeyUseCase: MarkKeyyUseCase
+  ) {}
 
   press(key: Key): boolean {
     if (this.markKeyUseCase.isSetMode()) {

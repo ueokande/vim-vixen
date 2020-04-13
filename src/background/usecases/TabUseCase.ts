@@ -1,16 +1,15 @@
-import {inject, injectable} from 'tsyringe';
-import TabPresenter from '../presenters/TabPresenter';
-import WindowPresenter from '../presenters/WindowPresenter';
-import BrowserSettingRepository from '../repositories/BrowserSettingRepository';
+import { inject, injectable } from "tsyringe";
+import TabPresenter from "../presenters/TabPresenter";
+import WindowPresenter from "../presenters/WindowPresenter";
+import BrowserSettingRepository from "../repositories/BrowserSettingRepository";
 
 @injectable()
 export default class TabUseCase {
   constructor(
-    @inject('TabPresenter') private tabPresenter: TabPresenter,
+    @inject("TabPresenter") private tabPresenter: TabPresenter,
     private windowPresenter: WindowPresenter,
-    private browserSettingRepository: BrowserSettingRepository,
-  ) {
-  }
+    private browserSettingRepository: BrowserSettingRepository
+  ) {}
 
   async close(force: boolean, selectLeft = false): Promise<any> {
     const tab = await this.tabPresenter.getCurrent();
@@ -27,7 +26,7 @@ export default class TabUseCase {
   async closeRight(): Promise<any> {
     const tabs = await this.tabPresenter.getAll();
     tabs.sort((t1, t2) => t1.index - t2.index);
-    const index = tabs.findIndex(t => t.active);
+    const index = tabs.findIndex((t) => t.active);
     if (index < 0) {
       return;
     }
@@ -65,16 +64,18 @@ export default class TabUseCase {
 
   async openPageSource(): Promise<any> {
     const tab = await this.tabPresenter.getCurrent();
-    const url = 'view-source:' + tab.url;
+    const url = "view-source:" + tab.url;
     return this.tabPresenter.create(url);
   }
 
   async openHome(newTab: boolean): Promise<any> {
     const tab = await this.tabPresenter.getCurrent();
     const urls = await this.browserSettingRepository.getHomepageUrls();
-    if (urls.length === 1 && urls[0] === 'about:home') {
+    if (urls.length === 1 && urls[0] === "about:home") {
       // eslint-disable-next-line max-len
-      throw new Error('Cannot open Firefox Home (about:home) by WebExtensions, set your custom URLs');
+      throw new Error(
+        "Cannot open Firefox Home (about:home) by WebExtensions, set your custom URLs"
+      );
     }
     if (urls.length === 1 && !newTab) {
       return this.tabPresenter.open(urls[0], tab.id);
@@ -85,7 +86,9 @@ export default class TabUseCase {
   }
 
   async openURL(
-    url: string, newTab?: boolean, newWindow?: boolean,
+    url: string,
+    newTab?: boolean,
+    newWindow?: boolean
   ): Promise<void> {
     if (newWindow) {
       await this.windowPresenter.create(url);

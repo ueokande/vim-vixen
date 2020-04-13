@@ -1,20 +1,19 @@
-import { injectable, inject } from 'tsyringe';
-import ScrollPresenter from '../presenters/ScrollPresenter';
-import MarkClient from '../client/MarkClient';
-import MarkRepository from '../repositories/MarkRepository';
-import SettingRepository from '../repositories/SettingRepository';
-import ConsoleClient from '../client/ConsoleClient';
+import { injectable, inject } from "tsyringe";
+import ScrollPresenter from "../presenters/ScrollPresenter";
+import MarkClient from "../client/MarkClient";
+import MarkRepository from "../repositories/MarkRepository";
+import SettingRepository from "../repositories/SettingRepository";
+import ConsoleClient from "../client/ConsoleClient";
 
 @injectable()
 export default class MarkUseCase {
   constructor(
-    @inject('ScrollPresenter') private scrollPresenter: ScrollPresenter,
-    @inject('MarkClient') private client: MarkClient,
-    @inject('MarkRepository') private repository: MarkRepository,
-    @inject('SettingRepository') private settingRepository: SettingRepository,
-    @inject('ConsoleClient') private consoleClient: ConsoleClient,
-  ) {
-  }
+    @inject("ScrollPresenter") private scrollPresenter: ScrollPresenter,
+    @inject("MarkClient") private client: MarkClient,
+    @inject("MarkRepository") private repository: MarkRepository,
+    @inject("SettingRepository") private settingRepository: SettingRepository,
+    @inject("ConsoleClient") private consoleClient: ConsoleClient
+  ) {}
 
   async set(key: string): Promise<void> {
     const pos = this.scrollPresenter.getScroll();
@@ -33,7 +32,7 @@ export default class MarkUseCase {
     } else {
       const pos = this.repository.get(key);
       if (!pos) {
-        throw new Error('Mark is not set');
+        throw new Error("Mark is not set");
       }
       this.scroll(pos.x, pos.y);
     }
@@ -45,6 +44,6 @@ export default class MarkUseCase {
   }
 
   private globalKey(key: string) {
-    return (/^[A-Z0-9]$/).test(key);
+    return /^[A-Z0-9]$/.test(key);
   }
 }

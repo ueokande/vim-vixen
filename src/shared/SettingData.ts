@@ -1,21 +1,21 @@
-import * as operations from './operations';
-import Settings, { DefaultSettingJSONText } from './settings/Settings';
-import Keymaps from './settings/Keymaps';
-import Search from './settings/Search';
-import Properties from './settings/Properties';
-import Blacklist from './settings/Blacklist';
+import * as operations from "./operations";
+import Settings, { DefaultSettingJSONText } from "./settings/Settings";
+import Keymaps from "./settings/Keymaps";
+import Search from "./settings/Search";
+import Properties from "./settings/Properties";
+import Blacklist from "./settings/Blacklist";
 
 export class FormKeymaps {
-  private readonly data: {[op: string]: string};
+  private readonly data: { [op: string]: string };
 
-  private constructor(data: {[op: string]: string}) {
+  private constructor(data: { [op: string]: string }) {
     this.data = data;
   }
 
   toKeymaps(): Keymaps {
     const keymaps: { [key: string]: operations.Operation } = {};
     for (const name of Object.keys(this.data)) {
-      const [type, argStr] = name.split('?');
+      const [type, argStr] = name.split("?");
       let args = {};
       if (argStr) {
         args = JSON.parse(argStr);
@@ -26,7 +26,7 @@ export class FormKeymaps {
     return Keymaps.fromJSON(keymaps);
   }
 
-  toJSON(): {[op: string]: string} {
+  toJSON(): { [op: string]: string } {
     return this.data;
   }
 
@@ -38,8 +38,8 @@ export class FormKeymaps {
     return new FormKeymaps(newData);
   }
 
-  static fromJSON(o: ReturnType<FormKeymaps['toJSON']>): FormKeymaps {
-    const data: {[op: string]: string} = {};
+  static fromJSON(o: ReturnType<FormKeymaps["toJSON"]>): FormKeymaps {
+    const data: { [op: string]: string } = {};
     for (const op of Object.keys(o)) {
       data[op] = o[op] as string;
     }
@@ -48,7 +48,7 @@ export class FormKeymaps {
 
   static fromKeymaps(keymaps: Keymaps): FormKeymaps {
     const json = keymaps.toJSON();
-    const data: {[op: string]: string} = {};
+    const data: { [op: string]: string } = {};
     for (const key of Object.keys(json)) {
       const op = json[key];
       const args = { ...op };
@@ -56,7 +56,7 @@ export class FormKeymaps {
 
       let name = op.type;
       if (Object.keys(args).length > 0) {
-        name += '?' + JSON.stringify(args);
+        name += "?" + JSON.stringify(args);
       }
       data[name] = key;
     }
@@ -85,18 +85,18 @@ export class FormSearch {
   toJSON(): {
     default: string;
     engines: string[][];
-    } {
+  } {
     return {
       default: this.default,
       engines: this.engines,
     };
   }
 
-  static fromJSON(o: ReturnType<FormSearch['toJSON']>): FormSearch {
-    if (!Object.prototype.hasOwnProperty.call(o, 'default')) {
+  static fromJSON(o: ReturnType<FormSearch["toJSON"]>): FormSearch {
+    if (!Object.prototype.hasOwnProperty.call(o, "default")) {
       throw new TypeError(`"default" field not set`);
     }
-    if (!Object.prototype.hasOwnProperty.call(o, 'engines')) {
+    if (!Object.prototype.hasOwnProperty.call(o, "engines")) {
       throw new TypeError(`"engines" field not set`);
     }
     return new FormSearch(o.default, o.engines);
@@ -106,16 +106,15 @@ export class FormSearch {
     const engines = Object.entries(search.engines).reduce(
       (o: string[][], [name, url]) => {
         return o.concat([[name, url]]);
-      }, []);
+      },
+      []
+    );
     return new FormSearch(search.defaultEngine, engines);
   }
 }
 
 export class JSONTextSettings {
-  constructor(
-    private json: string,
-  ) {
-  }
+  constructor(private json: string) {}
 
   toSettings(): Settings {
     return Settings.fromJSON(JSON.parse(this.json));
@@ -153,7 +152,7 @@ export class FormSettings {
     keymaps: FormKeymaps,
     search: FormSearch,
     properties: Properties,
-    blacklist: Blacklist,
+    blacklist: Blacklist
   ) {
     this.keymaps = keymaps;
     this.search = search;
@@ -166,7 +165,7 @@ export class FormSettings {
       keymaps,
       this.search,
       this.properties,
-      this.blacklist,
+      this.blacklist
     );
   }
 
@@ -175,17 +174,12 @@ export class FormSettings {
       this.keymaps,
       search,
       this.properties,
-      this.blacklist,
+      this.blacklist
     );
   }
 
   buildWithProperties(props: Properties): FormSettings {
-    return new FormSettings(
-      this.keymaps,
-      this.search,
-      props,
-      this.blacklist,
-    );
+    return new FormSettings(this.keymaps, this.search, props, this.blacklist);
   }
 
   buildWithBlacklist(blacklist: Blacklist): FormSettings {
@@ -193,7 +187,7 @@ export class FormSettings {
       this.keymaps,
       this.search,
       this.properties,
-      blacklist,
+      blacklist
     );
   }
 
@@ -207,11 +201,11 @@ export class FormSettings {
   }
 
   toJSON(): {
-    keymaps: ReturnType<FormKeymaps['toJSON']>;
-    search: ReturnType<FormSearch['toJSON']>;
-    properties: ReturnType<Properties['toJSON']>;
-    blacklist: ReturnType<Blacklist['toJSON']>;
-    } {
+    keymaps: ReturnType<FormKeymaps["toJSON"]>;
+    search: ReturnType<FormSearch["toJSON"]>;
+    properties: ReturnType<Properties["toJSON"]>;
+    blacklist: ReturnType<Blacklist["toJSON"]>;
+  } {
     return {
       keymaps: this.keymaps.toJSON(),
       search: this.search.toJSON(),
@@ -220,8 +214,8 @@ export class FormSettings {
     };
   }
 
-  static fromJSON(o: ReturnType<FormSettings['toJSON']>): FormSettings {
-    for (const name of ['keymaps', 'search', 'properties', 'blacklist']) {
+  static fromJSON(o: ReturnType<FormSettings["toJSON"]>): FormSettings {
+    for (const name of ["keymaps", "search", "properties", "blacklist"]) {
       if (!Object.prototype.hasOwnProperty.call(o, name)) {
         throw new Error(`"${name}" field not set`);
       }
@@ -230,7 +224,7 @@ export class FormSettings {
       FormKeymaps.fromJSON(o.keymaps),
       FormSearch.fromJSON(o.search),
       Properties.fromJSON(o.properties),
-      Blacklist.fromJSON(o.blacklist),
+      Blacklist.fromJSON(o.blacklist)
     );
   }
 
@@ -239,13 +233,14 @@ export class FormSettings {
       FormKeymaps.fromKeymaps(data.keymaps),
       FormSearch.fromSearch(data.search),
       data.properties,
-      data.blacklist);
+      data.blacklist
+    );
   }
 }
 
 export enum SettingSource {
-  JSON = 'json',
-  Form = 'form',
+  JSON = "json",
+  Form = "form",
 }
 
 export default class SettingData {
@@ -256,11 +251,13 @@ export default class SettingData {
   private form?: FormSettings;
 
   constructor({
-    source, json, form
+    source,
+    json,
+    form,
   }: {
-    source: SettingSource,
-    json?: JSONTextSettings,
-    form?: FormSettings,
+    source: SettingSource;
+    json?: JSONTextSettings;
+    form?: FormSettings;
   }) {
     this.source = source;
     this.json = json;
@@ -273,40 +270,40 @@ export default class SettingData {
 
   getJSON(): JSONTextSettings {
     if (!this.json) {
-      throw new TypeError('json settings not set');
+      throw new TypeError("json settings not set");
     }
     return this.json;
   }
 
   getForm(): FormSettings {
     if (!this.form) {
-      throw new TypeError('form settings not set');
+      throw new TypeError("form settings not set");
     }
     return this.form;
   }
 
   toJSON(): any {
     switch (this.source) {
-    case SettingSource.JSON:
-      return {
-        source: this.source,
-        json: (this.json as JSONTextSettings).toJSONText(),
-      };
-    case SettingSource.Form:
-      return {
-        source: this.source,
-        form: (this.form as FormSettings).toJSON(),
-      };
+      case SettingSource.JSON:
+        return {
+          source: this.source,
+          json: (this.json as JSONTextSettings).toJSONText(),
+        };
+      case SettingSource.Form:
+        return {
+          source: this.source,
+          form: (this.form as FormSettings).toJSON(),
+        };
     }
     throw new Error(`unknown settings source: ${this.source}`);
   }
 
   toSettings(): Settings {
     switch (this.source) {
-    case SettingSource.JSON:
-      return this.getJSON().toSettings();
-    case SettingSource.Form:
-      return this.getForm().toSettings();
+      case SettingSource.JSON:
+        return this.getJSON().toSettings();
+      case SettingSource.Form:
+        return this.getForm().toSettings();
     }
     throw new Error(`unknown settings source: ${this.source}`);
   }
@@ -314,27 +311,29 @@ export default class SettingData {
   static fromJSON(o: {
     source: string;
     json?: string;
-    form?: ReturnType<FormSettings['toJSON']>;
+    form?: ReturnType<FormSettings["toJSON"]>;
   }): SettingData {
     switch (o.source) {
-    case SettingSource.JSON:
-      return new SettingData({
-        source: o.source,
-        json: JSONTextSettings.fromText(
-          o.json as ReturnType<JSONTextSettings['toJSONText']>),
-      });
-    case SettingSource.Form:
-      return new SettingData({
-        source: o.source,
-        form: FormSettings.fromJSON(
-          o.form as ReturnType<FormSettings['toJSON']>),
-      });
+      case SettingSource.JSON:
+        return new SettingData({
+          source: o.source,
+          json: JSONTextSettings.fromText(
+            o.json as ReturnType<JSONTextSettings["toJSONText"]>
+          ),
+        });
+      case SettingSource.Form:
+        return new SettingData({
+          source: o.source,
+          form: FormSettings.fromJSON(
+            o.form as ReturnType<FormSettings["toJSON"]>
+          ),
+        });
     }
     throw new Error(`unknown settings source: ${o.source}`);
   }
 }
 
 export const DefaultSettingData: SettingData = SettingData.fromJSON({
-  source: 'json',
+  source: "json",
   json: DefaultSettingJSONText,
 });

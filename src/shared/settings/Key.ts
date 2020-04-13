@@ -1,4 +1,4 @@
-const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+const digits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
 export default class Key {
   public readonly key: string;
@@ -32,10 +32,10 @@ export default class Key {
   }
 
   static fromMapKey(str: string): Key {
-    if (str.startsWith('<') && str.endsWith('>')) {
+    if (str.startsWith("<") && str.endsWith(">")) {
       const inner = str.slice(1, -1);
-      const shift = inner.includes('S-');
-      let base = inner.slice(inner.lastIndexOf('-') + 1);
+      const shift = inner.includes("S-");
+      let base = inner.slice(inner.lastIndexOf("-") + 1);
       if (shift && base.length === 1) {
         base = base.toUpperCase();
       } else if (!shift && base.length === 1) {
@@ -44,9 +44,9 @@ export default class Key {
       return new Key({
         key: base,
         shift: shift,
-        ctrl: inner.includes('C-'),
-        alt: inner.includes('A-'),
-        meta: inner.includes('M-'),
+        ctrl: inner.includes("C-"),
+        alt: inner.includes("A-"),
+        meta: inner.includes("M-"),
       });
     }
 
@@ -64,10 +64,12 @@ export default class Key {
   }
 
   equals(key: Key) {
-    return this.key === key.key &&
+    return (
+      this.key === key.key &&
       this.ctrl === key.ctrl &&
       this.meta === key.meta &&
       this.alt === key.alt &&
-      this.shift === key.shift;
+      this.shift === key.shift
+    );
   }
 }

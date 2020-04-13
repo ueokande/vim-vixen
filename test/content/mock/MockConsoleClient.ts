@@ -1,4 +1,4 @@
-import ConsoleClient from '../../../src/content/client/ConsoleClient';
+import ConsoleClient from "../../../src/content/client/ConsoleClient";
 
 export default class MockConsoleClient implements ConsoleClient {
   public isError: boolean;
@@ -7,7 +7,7 @@ export default class MockConsoleClient implements ConsoleClient {
 
   constructor() {
     this.isError = false;
-    this.text = '';
+    this.text = "";
   }
 
   info(text: string): Promise<void> {
@@ -22,5 +22,3 @@ export default class MockConsoleClient implements ConsoleClient {
     return Promise.resolve();
   }
 }
-
-

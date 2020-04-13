@@ -1,5 +1,5 @@
-import { injectable } from 'tsyringe';
-import * as messages from '../../shared/messages';
+import { injectable } from "tsyringe";
+import * as messages from "../../shared/messages";
 
 @injectable()
 export default class NavigateClient {

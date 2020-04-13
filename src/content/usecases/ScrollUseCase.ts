@@ -1,14 +1,13 @@
-import { injectable, inject } from 'tsyringe';
-import ScrollPresenter from '../presenters/ScrollPresenter';
-import SettingRepository from '../repositories/SettingRepository';
+import { injectable, inject } from "tsyringe";
+import ScrollPresenter from "../presenters/ScrollPresenter";
+import SettingRepository from "../repositories/SettingRepository";
 
 @injectable()
 export default class ScrollUseCase {
   constructor(
-    @inject('ScrollPresenter') private presenter: ScrollPresenter,
-    @inject('SettingRepository') private settingRepository: SettingRepository,
-  ) {
-  }
+    @inject("ScrollPresenter") private presenter: ScrollPresenter,
+    @inject("SettingRepository") private settingRepository: SettingRepository
+  ) {}
 
   scrollVertically(count: number): void {
     const smooth = this.getSmoothScroll();

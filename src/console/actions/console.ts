@@ -1,6 +1,6 @@
-import * as messages from '../../shared/messages';
-import * as actions from './index';
-import {Command} from "../../shared/Command";
+import * as messages from "../../shared/messages";
+import * as actions from "./index";
+import { Command } from "../../shared/Command";
 import CompletionClient from "../clients/CompletionClient";
 import CompletionType from "../../shared/CompletionType";
 import Completions from "../Completions";
@@ -9,23 +9,23 @@ import TabFlag from "../../shared/TabFlag";
 const completionClient = new CompletionClient();
 
 const commandDocs = {
-  [Command.Set]: 'Set a value of the property',
-  [Command.Open]: 'Open a URL or search by keywords in current tab',
-  [Command.TabOpen]: 'Open a URL or search by keywords in new tab',
-  [Command.WindowOpen]: 'Open a URL or search by keywords in new window',
-  [Command.Buffer]: 'Select tabs by matched keywords',
-  [Command.BufferDelete]: 'Close a certain tab matched by keywords',
-  [Command.BuffersDelete]: 'Close all tabs matched by keywords',
-  [Command.Quit]: 'Close the current tab',
-  [Command.QuitAll]: 'Close all tabs',
-  [Command.AddBookmark]: 'Add current page to bookmarks',
-  [Command.Help]: 'Open Vim Vixen help in new tab',
+  [Command.Set]: "Set a value of the property",
+  [Command.Open]: "Open a URL or search by keywords in current tab",
+  [Command.TabOpen]: "Open a URL or search by keywords in new tab",
+  [Command.WindowOpen]: "Open a URL or search by keywords in new window",
+  [Command.Buffer]: "Select tabs by matched keywords",
+  [Command.BufferDelete]: "Close a certain tab matched by keywords",
+  [Command.BuffersDelete]: "Close all tabs matched by keywords",
+  [Command.Quit]: "Close the current tab",
+  [Command.QuitAll]: "Close all tabs",
+  [Command.AddBookmark]: "Add current page to bookmarks",
+  [Command.Help]: "Open Vim Vixen help in new tab",
 };
 
-const propertyDocs: {[key: string]: string} = {
-  'hintchars': 'hint characters on follow mode',
-  'smoothscroll': 'smooth scroll',
-  'complete': 'which are completed at the open page',
+const propertyDocs: { [key: string]: string } = {
+  hintchars: "hint characters on follow mode",
+  smoothscroll: "smooth scroll",
+  complete: "which are completed at the open page",
 };
 
 const hide = (): actions.ConsoleAction => {
@@ -52,27 +52,32 @@ const showFind = (): actions.ShowFindAction => {
 const showError = (text: string): actions.ShowErrorAction => {
   return {
     type: actions.CONSOLE_SHOW_ERROR,
-    text: text
+    text: text,
   };
 };
 
 const showInfo = (text: string): actions.ShowInfoAction => {
   return {
     type: actions.CONSOLE_SHOW_INFO,
-    text: text
+    text: text,
   };
 };
 
 const hideCommand = (): actions.HideCommandAction => {
-  window.top.postMessage(JSON.stringify({
-    type: messages.CONSOLE_UNFOCUS,
-  }), '*');
+  window.top.postMessage(
+    JSON.stringify({
+      type: messages.CONSOLE_UNFOCUS,
+    }),
+    "*"
+  );
   return {
     type: actions.CONSOLE_HIDE_COMMAND,
   };
 };
 
-const enterCommand = async(text: string): Promise<actions.HideCommandAction> => {
+const enterCommand = async (
+  text: string
+): Promise<actions.HideCommandAction> => {
   await browser.runtime.sendMessage({
     type: messages.CONSOLE_ENTER_COMMAND,
     text,
@@ -81,10 +86,13 @@ const enterCommand = async(text: string): Promise<actions.HideCommandAction> => 
 };
 
 const enterFind = (text?: string): actions.HideCommandAction => {
-  window.top.postMessage(JSON.stringify({
-    type: messages.CONSOLE_ENTER_FIND,
-    text,
-  }), '*');
+  window.top.postMessage(
+    JSON.stringify({
+      type: messages.CONSOLE_ENTER_FIND,
+      text,
+    }),
+    "*"
+  );
   return hideCommand();
 };
 
@@ -97,25 +105,30 @@ const setConsoleText = (consoleText: string): actions.SetConsoleTextAction => {
 
 const getCommandCompletions = (text: string): actions.SetCompletionsAction => {
   const items = Object.entries(commandDocs)
-      .filter(([name]) => name.startsWith(text.trimLeft()))
-      .map(([name, doc]) => ({
-          caption: name,
-          content: name,
-          url: doc,
-        }));
-  const completions = [{
-    name: "Console Command",
-    items,
-  }];
+    .filter(([name]) => name.startsWith(text.trimLeft()))
+    .map(([name, doc]) => ({
+      caption: name,
+      content: name,
+      url: doc,
+    }));
+  const completions = [
+    {
+      name: "Console Command",
+      items,
+    },
+  ];
   return {
     type: actions.CONSOLE_SET_COMPLETIONS,
     completions,
     completionSource: text,
-  }
+  };
 };
 
-const getOpenCompletions = async(
-    types: CompletionType[], original: string, command: Command, query: string,
+const getOpenCompletions = async (
+  types: CompletionType[],
+  original: string,
+  command: Command,
+  query: string
 ): Promise<actions.SetCompletionsAction> => {
   const completions: Completions = [];
   for (const type of types) {
@@ -126,11 +139,11 @@ const getOpenCompletions = async(
           break;
         }
         completions.push({
-          name: 'Search Engines',
-          items: items.map(key => ({
+          name: "Search Engines",
+          items: items.map((key) => ({
             caption: key.title,
-            content: command + ' ' + key.title,
-          }))
+            content: command + " " + key.title,
+          })),
         });
         break;
       }
@@ -140,11 +153,11 @@ const getOpenCompletions = async(
           break;
         }
         completions.push({
-          name: 'History',
-          items: items.map(item => ({
+          name: "History",
+          items: items.map((item) => ({
             caption: item.title,
-            content: command + ' ' + item.url,
-            url: item.url
+            content: command + " " + item.url,
+            url: item.url,
           })),
         });
         break;
@@ -155,12 +168,12 @@ const getOpenCompletions = async(
           break;
         }
         completions.push({
-          name: 'Bookmarks',
-          items: items.map(item => ({
+          name: "Bookmarks",
+          items: items.map((item) => ({
             caption: item.title,
-            content: command + ' ' + item.url,
-            url: item.url
-          }))
+            content: command + " " + item.url,
+            url: item.url,
+          })),
         });
         break;
       }
@@ -175,61 +188,75 @@ const getOpenCompletions = async(
 };
 
 const getTabCompletions = async (
-  original: string, command: Command, query: string, excludePinned: boolean,
+  original: string,
+  command: Command,
+  query: string,
+  excludePinned: boolean
 ): Promise<actions.SetCompletionsAction> => {
-    const items = await completionClient.requestTabs(query, excludePinned);
-    let completions: Completions = [];
-    if (items.length > 0) {
-      completions = [{
-        name: 'Buffers',
-        items: items.map(item => ({
-          content: command + ' ' + item.url,
-          caption: `${item.index}: ${item.flag != TabFlag.None ? item.flag : ' ' } ${item.title}`,
+  const items = await completionClient.requestTabs(query, excludePinned);
+  let completions: Completions = [];
+  if (items.length > 0) {
+    completions = [
+      {
+        name: "Buffers",
+        items: items.map((item) => ({
+          content: command + " " + item.url,
+          caption: `${item.index}: ${
+            item.flag != TabFlag.None ? item.flag : " "
+          } ${item.title}`,
           url: item.url,
           icon: item.faviconUrl,
         })),
-      }];
-    }
-    return {
-      type: actions.CONSOLE_SET_COMPLETIONS,
-      completions,
-      completionSource: original,
-    }
-};
-
-const getPropertyCompletions = async(
-    original: string, command: Command, query: string,
-): Promise<actions.SetCompletionsAction> => {
-  const properties = await completionClient.getProperties();
-  const items = properties
-      .map(item => {
-        const desc = propertyDocs[item.name] || '';
-        if (item.type === 'boolean') {
-          return [{
-            caption: item.name,
-            content: command + ' ' + item.name,
-            url: 'Enable ' + desc,
-          }, {
-            caption: 'no' + item.name,
-            content: command + ' no' + item.name,
-            url: 'Disable ' + desc,
-          }];
-        } else {
-          return [{
-            caption: item.name,
-            content: name + ' ' + item.name,
-            url: 'Set ' + desc,
-          }];
-        }
-      })
-      .reduce((acc, val) => acc.concat(val), [])
-      .filter(item => item.caption.startsWith(query));
-  const completions: Completions = [{ name: 'Properties', items }];
+      },
+    ];
+  }
   return {
     type: actions.CONSOLE_SET_COMPLETIONS,
     completions,
     completionSource: original,
-  }
+  };
+};
+
+const getPropertyCompletions = async (
+  original: string,
+  command: Command,
+  query: string
+): Promise<actions.SetCompletionsAction> => {
+  const properties = await completionClient.getProperties();
+  const items = properties
+    .map((item) => {
+      const desc = propertyDocs[item.name] || "";
+      if (item.type === "boolean") {
+        return [
+          {
+            caption: item.name,
+            content: command + " " + item.name,
+            url: "Enable " + desc,
+          },
+          {
+            caption: "no" + item.name,
+            content: command + " no" + item.name,
+            url: "Disable " + desc,
+          },
+        ];
+      } else {
+        return [
+          {
+            caption: item.name,
+            content: name + " " + item.name,
+            url: "Set " + desc,
+          },
+        ];
+      }
+    })
+    .reduce((acc, val) => acc.concat(val), [])
+    .filter((item) => item.caption.startsWith(query));
+  const completions: Completions = [{ name: "Properties", items }];
+  return {
+    type: actions.CONSOLE_SET_COMPLETIONS,
+    completions,
+    completionSource: original,
+  };
 };
 
 const completionNext = (): actions.CompletionNextAction => {
@@ -245,7 +272,19 @@ const completionPrev = (): actions.CompletionPrevAction => {
 };
 
 export {
-  hide, showCommand, showFind, showError, showInfo, hideCommand, setConsoleText, enterCommand, enterFind,
-  getCommandCompletions, getOpenCompletions, getTabCompletions, getPropertyCompletions,
-  completionNext, completionPrev,
+  hide,
+  showCommand,
+  showFind,
+  showError,
+  showInfo,
+  hideCommand,
+  setConsoleText,
+  enterCommand,
+  enterFind,
+  getCommandCompletions,
+  getOpenCompletions,
+  getTabCompletions,
+  getPropertyCompletions,
+  completionNext,
+  completionPrev,
 };

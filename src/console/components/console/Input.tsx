@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface Props {
   mode: string;
@@ -24,20 +24,18 @@ class Input extends React.Component<Props> {
   }
 
   render() {
-    let prompt = '';
-    if (this.props.mode === 'command') {
-      prompt = ':';
-    } else if (this.props.mode === 'find') {
-      prompt = '/';
+    let prompt = "";
+    if (this.props.mode === "command") {
+      prompt = ":";
+    } else if (this.props.mode === "find") {
+      prompt = "/";
     }
 
     return (
-      <div className='vimvixen-console-command'>
-        <i className='vimvixen-console-command-prompt'>
-          { prompt }
-        </i>
+      <div className="vimvixen-console-command">
+        <i className="vimvixen-console-command-prompt">{prompt}</i>
         <input
-          className='vimvixen-console-command-input'
+          className="vimvixen-console-command-input"
           ref={this.input}
           onBlur={this.props.onBlur}
           onKeyDown={this.props.onKeyDown}

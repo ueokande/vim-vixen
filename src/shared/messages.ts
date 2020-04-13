@@ -1,58 +1,59 @@
-import * as operations from './operations';
+import * as operations from "./operations";
 import CompletionType from "./CompletionType";
 import TabFlag from "./TabFlag";
 
-export const BACKGROUND_OPERATION = 'background.operation';
+export const BACKGROUND_OPERATION = "background.operation";
 
-export const CONSOLE_UNFOCUS = 'console.unfocus';
-export const CONSOLE_ENTER_COMMAND = 'console.enter.command';
-export const CONSOLE_ENTER_FIND = 'console.enter.find';
-export const CONSOLE_SHOW_COMMAND = 'console.show.command';
-export const CONSOLE_SHOW_ERROR = 'console.show.error';
-export const CONSOLE_SHOW_INFO = 'console.show.info';
-export const CONSOLE_SHOW_FIND = 'console.show.find';
-export const CONSOLE_HIDE = 'console.hide';
-export const CONSOLE_GET_COMPLETION_TYPES = 'console.get.completion.types';
-export const CONSOLE_REQUEST_SEARCH_ENGINES_MESSAGE = 'console.qresut.searchEngines';
-export const CONSOLE_REQUEST_BOOKMARKS = 'console.request.bookmarks';
-export const CONSOLE_REQUEST_HISTORY = 'console.request.history';
-export const CONSOLE_REQUEST_TABS = 'console.request.tabs';
-export const CONSOLE_GET_PROPERTIES = 'console.get.properties';
+export const CONSOLE_UNFOCUS = "console.unfocus";
+export const CONSOLE_ENTER_COMMAND = "console.enter.command";
+export const CONSOLE_ENTER_FIND = "console.enter.find";
+export const CONSOLE_SHOW_COMMAND = "console.show.command";
+export const CONSOLE_SHOW_ERROR = "console.show.error";
+export const CONSOLE_SHOW_INFO = "console.show.info";
+export const CONSOLE_SHOW_FIND = "console.show.find";
+export const CONSOLE_HIDE = "console.hide";
+export const CONSOLE_GET_COMPLETION_TYPES = "console.get.completion.types";
+export const CONSOLE_REQUEST_SEARCH_ENGINES_MESSAGE =
+  "console.qresut.searchEngines";
+export const CONSOLE_REQUEST_BOOKMARKS = "console.request.bookmarks";
+export const CONSOLE_REQUEST_HISTORY = "console.request.history";
+export const CONSOLE_REQUEST_TABS = "console.request.tabs";
+export const CONSOLE_GET_PROPERTIES = "console.get.properties";
 
-export const FOLLOW_START = 'follow.start';
-export const FOLLOW_REQUEST_COUNT_TARGETS = 'follow.request.count.targets';
-export const FOLLOW_RESPONSE_COUNT_TARGETS = 'follow.response.count.targets';
-export const FOLLOW_CREATE_HINTS = 'follow.create.hints';
-export const FOLLOW_SHOW_HINTS = 'follow.update.hints';
-export const FOLLOW_REMOVE_HINTS = 'follow.remove.hints';
-export const FOLLOW_ACTIVATE = 'follow.activate';
-export const FOLLOW_KEY_PRESS = 'follow.key.press';
+export const FOLLOW_START = "follow.start";
+export const FOLLOW_REQUEST_COUNT_TARGETS = "follow.request.count.targets";
+export const FOLLOW_RESPONSE_COUNT_TARGETS = "follow.response.count.targets";
+export const FOLLOW_CREATE_HINTS = "follow.create.hints";
+export const FOLLOW_SHOW_HINTS = "follow.update.hints";
+export const FOLLOW_REMOVE_HINTS = "follow.remove.hints";
+export const FOLLOW_ACTIVATE = "follow.activate";
+export const FOLLOW_KEY_PRESS = "follow.key.press";
 
-export const MARK_SET_GLOBAL = 'mark.set.global';
-export const MARK_JUMP_GLOBAL = 'mark.jump.global';
+export const MARK_SET_GLOBAL = "mark.set.global";
+export const MARK_JUMP_GLOBAL = "mark.jump.global";
 
-export const TAB_SCROLL_TO = 'tab.scroll.to';
+export const TAB_SCROLL_TO = "tab.scroll.to";
 
-export const FIND_NEXT = 'find.next';
-export const FIND_PREV = 'find.prev';
-export const FIND_GET_KEYWORD = 'find.get.keyword';
-export const FIND_SET_KEYWORD = 'find.set.keyword';
+export const FIND_NEXT = "find.next";
+export const FIND_PREV = "find.prev";
+export const FIND_GET_KEYWORD = "find.get.keyword";
+export const FIND_SET_KEYWORD = "find.set.keyword";
 
-export const ADDON_ENABLED_QUERY = 'addon.enabled.query';
-export const ADDON_ENABLED_RESPONSE = 'addon.enabled.response';
-export const ADDON_TOGGLE_ENABLED = 'addon.toggle.enabled';
+export const ADDON_ENABLED_QUERY = "addon.enabled.query";
+export const ADDON_ENABLED_RESPONSE = "addon.enabled.response";
+export const ADDON_TOGGLE_ENABLED = "addon.toggle.enabled";
 
-export const OPEN_URL = 'open.url';
+export const OPEN_URL = "open.url";
 
-export const SETTINGS_CHANGED = 'settings.changed';
-export const SETTINGS_QUERY = 'settings.query';
+export const SETTINGS_CHANGED = "settings.changed";
+export const SETTINGS_QUERY = "settings.query";
 
-export const CONSOLE_FRAME_MESSAGE = 'console.frame.message';
+export const CONSOLE_FRAME_MESSAGE = "console.frame.message";
 
-export const NAVIGATE_HISTORY_NEXT = 'navigate.history.next';
-export const NAVIGATE_HISTORY_PREV = 'navigate.history.prev';
-export const NAVIGATE_LINK_NEXT = 'navigate.link.next';
-export const NAVIGATE_LINK_PREV = 'navigate.link.prev';
+export const NAVIGATE_HISTORY_NEXT = "navigate.history.next";
+export const NAVIGATE_HISTORY_PREV = "navigate.history.prev";
+export const NAVIGATE_LINK_NEXT = "navigate.link.next";
+export const NAVIGATE_LINK_PREV = "navigate.link.prev";
 
 export interface BackgroundOperationMessage {
   type: typeof BACKGROUND_OPERATION;
@@ -103,7 +104,7 @@ export interface ConsoleGetCompletionTypesMessage {
 
 export interface ConsoleRequestSearchEnginesMessage {
   type: typeof CONSOLE_REQUEST_SEARCH_ENGINES_MESSAGE;
-  query: string
+  query: string;
 }
 
 export interface ConsoleRequestBookmarksMessage {
@@ -127,33 +128,33 @@ export interface ConsoleGetPropertiesMessage {
 }
 
 export type ConsoleRequesttabsResponse = {
-  index: number
-  flag: TabFlag
-  title: string
-  url: string
-  faviconUrl?: string
-}[]
+  index: number;
+  flag: TabFlag;
+  title: string;
+  url: string;
+  faviconUrl?: string;
+}[];
 
 export type ConsoleGetCompletionTypesResponse = CompletionType[];
 
 export type ConsoleRequestSearchEnginesResponse = {
   title: string;
-}[]
+}[];
 
 export type ConsoleRequestBookmarksResponse = {
-    title: string;
-    url: string;
-}[]
+  title: string;
+  url: string;
+}[];
 
 export type ConsoleRequestHistoryResponse = {
   title: string;
   url: string;
-}[]
+}[];
 
 export type ConsoleGetPropertiesResponse = {
-  name: string
-  type: 'string' | 'boolean' | 'number'
-}[]
+  name: string;
+  type: "string" | "boolean" | "number";
+}[];
 
 export interface FollowStartMessage {
   type: typeof FOLLOW_START;
@@ -163,8 +164,8 @@ export interface FollowStartMessage {
 
 export interface FollowRequestCountTargetsMessage {
   type: typeof FOLLOW_REQUEST_COUNT_TARGETS;
-  viewSize: { width: number, height: number };
-  framePosition: { x: number, y: number };
+  viewSize: { width: number; height: number };
+  framePosition: { x: number; y: number };
 }
 
 export interface FollowResponseCountTargetsMessage {
@@ -175,8 +176,8 @@ export interface FollowResponseCountTargetsMessage {
 export interface FollowCreateHintsMessage {
   type: typeof FOLLOW_CREATE_HINTS;
   tags: string[];
-  viewSize: { width: number, height: number };
-  framePosition: { x: number, y: number };
+  viewSize: { width: number; height: number };
+  framePosition: { x: number; y: number };
 }
 
 export interface FollowShowHintsMessage {
@@ -287,86 +288,86 @@ export interface NavigateLinkPrev {
 }
 
 export type Message =
-  BackgroundOperationMessage |
-  ConsoleUnfocusMessage |
-  ConsoleEnterCommandMessage |
-  ConsoleEnterFindMessage |
-  ConsoleShowCommandMessage |
-  ConsoleShowErrorMessage |
-  ConsoleShowInfoMessage |
-  ConsoleShowFindMessage |
-  ConsoleHideMessage |
-  ConsoleRequestBookmarksMessage |
-  ConsoleRequestHistoryMessage |
-  ConsoleRequestTabsMessage |
-  ConsoleGetPropertiesMessage |
-  ConsoleGetCompletionTypesMessage |
-  ConsoleRequestSearchEnginesMessage |
-  FollowStartMessage |
-  FollowRequestCountTargetsMessage |
-  FollowResponseCountTargetsMessage |
-  FollowCreateHintsMessage |
-  FollowShowHintsMessage |
-  FollowRemoveHintsMessage |
-  FollowActivateMessage |
-  FollowKeyPressMessage |
-  MarkSetGlobalMessage |
-  MarkJumpGlobalMessage |
-  TabScrollToMessage |
-  FindNextMessage |
-  FindPrevMessage |
-  FindGetKeywordMessage |
-  FindSetKeywordMessage |
-  AddonEnabledQueryMessage |
-  AddonEnabledResponseMessage |
-  AddonToggleEnabledMessage |
-  OpenUrlMessage |
-  SettingsChangedMessage |
-  SettingsQueryMessage |
-  ConsoleFrameMessageMessage |
-  NavigateHistoryNextMessage |
-  NavigateHistoryPrevMessage |
-  NavigateLinkNext |
-  NavigateLinkPrev;
+  | BackgroundOperationMessage
+  | ConsoleUnfocusMessage
+  | ConsoleEnterCommandMessage
+  | ConsoleEnterFindMessage
+  | ConsoleShowCommandMessage
+  | ConsoleShowErrorMessage
+  | ConsoleShowInfoMessage
+  | ConsoleShowFindMessage
+  | ConsoleHideMessage
+  | ConsoleRequestBookmarksMessage
+  | ConsoleRequestHistoryMessage
+  | ConsoleRequestTabsMessage
+  | ConsoleGetPropertiesMessage
+  | ConsoleGetCompletionTypesMessage
+  | ConsoleRequestSearchEnginesMessage
+  | FollowStartMessage
+  | FollowRequestCountTargetsMessage
+  | FollowResponseCountTargetsMessage
+  | FollowCreateHintsMessage
+  | FollowShowHintsMessage
+  | FollowRemoveHintsMessage
+  | FollowActivateMessage
+  | FollowKeyPressMessage
+  | MarkSetGlobalMessage
+  | MarkJumpGlobalMessage
+  | TabScrollToMessage
+  | FindNextMessage
+  | FindPrevMessage
+  | FindGetKeywordMessage
+  | FindSetKeywordMessage
+  | AddonEnabledQueryMessage
+  | AddonEnabledResponseMessage
+  | AddonToggleEnabledMessage
+  | OpenUrlMessage
+  | SettingsChangedMessage
+  | SettingsQueryMessage
+  | ConsoleFrameMessageMessage
+  | NavigateHistoryNextMessage
+  | NavigateHistoryPrevMessage
+  | NavigateLinkNext
+  | NavigateLinkPrev;
 
 // eslint-disable-next-line complexity
 export const valueOf = (o: any): Message => {
   switch (o.type) {
-  case CONSOLE_UNFOCUS:
-  case CONSOLE_ENTER_COMMAND:
-  case CONSOLE_ENTER_FIND:
-  case CONSOLE_SHOW_COMMAND:
-  case CONSOLE_SHOW_ERROR:
-  case CONSOLE_SHOW_INFO:
-  case CONSOLE_SHOW_FIND:
-  case CONSOLE_HIDE:
-  case FOLLOW_START:
-  case FOLLOW_REQUEST_COUNT_TARGETS:
-  case FOLLOW_RESPONSE_COUNT_TARGETS:
-  case FOLLOW_CREATE_HINTS:
-  case FOLLOW_SHOW_HINTS:
-  case FOLLOW_REMOVE_HINTS:
-  case FOLLOW_ACTIVATE:
-  case FOLLOW_KEY_PRESS:
-  case MARK_SET_GLOBAL:
-  case MARK_JUMP_GLOBAL:
-  case TAB_SCROLL_TO:
-  case FIND_NEXT:
-  case FIND_PREV:
-  case FIND_GET_KEYWORD:
-  case FIND_SET_KEYWORD:
-  case ADDON_ENABLED_QUERY:
-  case ADDON_ENABLED_RESPONSE:
-  case ADDON_TOGGLE_ENABLED:
-  case OPEN_URL:
-  case SETTINGS_CHANGED:
-  case SETTINGS_QUERY:
-  case CONSOLE_FRAME_MESSAGE:
-  case NAVIGATE_HISTORY_NEXT:
-  case NAVIGATE_HISTORY_PREV:
-  case NAVIGATE_LINK_NEXT:
-  case NAVIGATE_LINK_PREV:
-    return o;
+    case CONSOLE_UNFOCUS:
+    case CONSOLE_ENTER_COMMAND:
+    case CONSOLE_ENTER_FIND:
+    case CONSOLE_SHOW_COMMAND:
+    case CONSOLE_SHOW_ERROR:
+    case CONSOLE_SHOW_INFO:
+    case CONSOLE_SHOW_FIND:
+    case CONSOLE_HIDE:
+    case FOLLOW_START:
+    case FOLLOW_REQUEST_COUNT_TARGETS:
+    case FOLLOW_RESPONSE_COUNT_TARGETS:
+    case FOLLOW_CREATE_HINTS:
+    case FOLLOW_SHOW_HINTS:
+    case FOLLOW_REMOVE_HINTS:
+    case FOLLOW_ACTIVATE:
+    case FOLLOW_KEY_PRESS:
+    case MARK_SET_GLOBAL:
+    case MARK_JUMP_GLOBAL:
+    case TAB_SCROLL_TO:
+    case FIND_NEXT:
+    case FIND_PREV:
+    case FIND_GET_KEYWORD:
+    case FIND_SET_KEYWORD:
+    case ADDON_ENABLED_QUERY:
+    case ADDON_ENABLED_RESPONSE:
+    case ADDON_TOGGLE_ENABLED:
+    case OPEN_URL:
+    case SETTINGS_CHANGED:
+    case SETTINGS_QUERY:
+    case CONSOLE_FRAME_MESSAGE:
+    case NAVIGATE_HISTORY_NEXT:
+    case NAVIGATE_HISTORY_PREV:
+    case NAVIGATE_LINK_NEXT:
+    case NAVIGATE_LINK_PREV:
+      return o;
   }
-  throw new Error('unknown operation type: ' + o.type);
+  throw new Error("unknown operation type: " + o.type);
 };

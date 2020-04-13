@@ -1,18 +1,17 @@
-import { injectable, inject } from 'tsyringe';
-import FindPresenter from '../presenters/FindPresenter';
-import FindRepository from '../repositories/FindRepository';
-import FindClient from '../client/FindClient';
-import ConsoleClient from '../client/ConsoleClient';
+import { injectable, inject } from "tsyringe";
+import FindPresenter from "../presenters/FindPresenter";
+import FindRepository from "../repositories/FindRepository";
+import FindClient from "../client/FindClient";
+import ConsoleClient from "../client/ConsoleClient";
 
 @injectable()
 export default class FindUseCase {
   constructor(
-    @inject('FindPresenter') private presenter: FindPresenter,
-    @inject('FindRepository') private repository: FindRepository,
-    @inject('FindClient') private client: FindClient,
-    @inject('ConsoleClient') private consoleClient: ConsoleClient,
-  ) {
-  }
+    @inject("FindPresenter") private presenter: FindPresenter,
+    @inject("FindRepository") private repository: FindRepository,
+    @inject("FindClient") private client: FindClient,
+    @inject("ConsoleClient") private consoleClient: ConsoleClient
+  ) {}
 
   async startFind(keyword?: string): Promise<void> {
     this.presenter.clearSelection();
@@ -36,18 +35,16 @@ export default class FindUseCase {
     return this.findNextPrev(true);
   }
 
-  private async findNextPrev(
-    backwards: boolean,
-  ): Promise<void> {
+  private async findNextPrev(backwards: boolean): Promise<void> {
     const keyword = await this.getKeyword();
     if (!keyword) {
       return this.showNoLastKeywordError();
     }
     const found = this.presenter.find(keyword, backwards);
     if (found) {
-      this.consoleClient.info('Pattern found: ' + keyword);
+      this.consoleClient.info("Pattern found: " + keyword);
     } else {
-      this.consoleClient.error('Pattern not found: ' + keyword);
+      this.consoleClient.error("Pattern not found: " + keyword);
     }
   }
 
@@ -65,6 +62,6 @@ export default class FindUseCase {
   }
 
   private async showNoLastKeywordError(): Promise<void> {
-    await this.consoleClient.error('No previous search keywords');
+    await this.consoleClient.error("No previous search keywords");
   }
 }

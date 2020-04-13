@@ -1,19 +1,16 @@
-import { inject, injectable } from 'tsyringe';
-import TabPresenter from '../presenters/TabPresenter';
+import { inject, injectable } from "tsyringe";
+import TabPresenter from "../presenters/TabPresenter";
 
 @injectable()
 export default class TabSelectUseCase {
-  constructor(
-    @inject('TabPresenter') private tabPresenter: TabPresenter,
-  ) {
-  }
+  constructor(@inject("TabPresenter") private tabPresenter: TabPresenter) {}
 
   async selectPrev(count: number): Promise<any> {
     const tabs = await this.tabPresenter.getAll();
     if (tabs.length < 2) {
       return;
     }
-    const tab = tabs.find(t => t.active);
+    const tab = tabs.find((t) => t.active);
     if (!tab) {
       return;
     }
@@ -26,7 +23,7 @@ export default class TabSelectUseCase {
     if (tabs.length < 2) {
       return;
     }
-    const tab = tabs.find(t => t.active);
+    const tab = tabs.find((t) => t.active);
     if (!tab) {
       return;
     }
@@ -46,7 +43,7 @@ export default class TabSelectUseCase {
 
   async selectPrevSelected(): Promise<any> {
     const tabId = await this.tabPresenter.getLastSelectedId();
-    if (tabId === null || typeof tabId === 'undefined') {
+    if (tabId === null || typeof tabId === "undefined") {
       return Promise.resolve();
     }
     return this.tabPresenter.select(tabId);

@@ -1,4 +1,4 @@
-import { injectable } from 'tsyringe';
+import { injectable } from "tsyringe";
 
 @injectable()
 export default class WindowPresenter {

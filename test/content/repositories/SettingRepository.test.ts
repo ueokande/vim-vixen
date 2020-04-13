@@ -1,23 +1,23 @@
-import { SettingRepositoryImpl } from '../../../src/content/repositories/SettingRepository';
-import { expect } from 'chai';
-import Settings from '../../../src/shared/settings/Settings';
+import { SettingRepositoryImpl } from "../../../src/content/repositories/SettingRepository";
+import { expect } from "chai";
+import Settings from "../../../src/shared/settings/Settings";
 
-describe('SettingRepositoryImpl', () => {
-  it('updates and gets current value', () => {
+describe("SettingRepositoryImpl", () => {
+  it("updates and gets current value", () => {
     const sut = new SettingRepositoryImpl();
 
     const settings = Settings.fromJSON({
       keymaps: {},
-      search:{
-        default: 'google',
+      search: {
+        default: "google",
         engines: {
-          google: 'https://google.com/?q={}',
-        }
+          google: "https://google.com/?q={}",
+        },
       },
       properties: {
-        hintchars: 'abcd1234',
+        hintchars: "abcd1234",
         smoothscroll: false,
-        complete: 'sbh',
+        complete: "sbh",
       },
       blacklist: [],
     });
@@ -25,6 +25,6 @@ describe('SettingRepositoryImpl', () => {
     sut.set(settings);
 
     const actual = sut.get();
-    expect(actual.properties.hintchars).to.equal('abcd1234');
+    expect(actual.properties.hintchars).to.equal("abcd1234");
   });
 });

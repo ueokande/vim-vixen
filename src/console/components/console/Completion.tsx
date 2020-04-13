@@ -1,6 +1,6 @@
-import React from 'react';
-import CompletionItem from './CompletionItem';
-import CompletionTitle from './CompletionTitle';
+import React from "react";
+import CompletionItem from "./CompletionItem";
+import CompletionTitle from "./CompletionTitle";
 
 interface Item {
   icon?: string;
@@ -52,8 +52,10 @@ class Completion extends React.Component<Props, State> {
     if (nextProps.select < 0) {
       viewOffset = 0;
     } else if (prevState.select < nextProps.select) {
-      viewOffset = Math.max(prevState.viewOffset,
-        viewSelect - nextProps.size + 1);
+      viewOffset = Math.max(
+        prevState.viewOffset,
+        viewSelect - nextProps.size + 1
+      );
     } else if (prevState.select > nextProps.select) {
       viewOffset = Math.min(prevState.viewOffset, viewSelect);
     }
@@ -65,18 +67,17 @@ class Completion extends React.Component<Props, State> {
     let index = 0;
 
     for (const group of this.props.completions) {
-      eles.push(<CompletionTitle
-        key={`group-${index}`}
-        title={ group.name }
-      />);
+      eles.push(<CompletionTitle key={`group-${index}`} title={group.name} />);
       for (const item of group.items) {
-        eles.push(<CompletionItem
-          key={`item-${index}`}
-          icon={item.icon}
-          caption={item.caption}
-          url={item.url}
-          highlight={index === this.props.select}
-        / >);
+        eles.push(
+          <CompletionItem
+            key={`item-${index}`}
+            icon={item.icon}
+            caption={item.caption}
+            url={item.url}
+            highlight={index === this.props.select}
+          />
+        );
         ++index;
       }
     }
@@ -84,11 +85,7 @@ class Completion extends React.Component<Props, State> {
     const viewOffset = this.state.viewOffset;
     eles = eles.slice(viewOffset, viewOffset + this.props.size);
 
-    return (
-      <ul className='vimvixen-console-completion'>
-        { eles }
-      </ul>
-    );
+    return <ul className="vimvixen-console-completion">{eles}</ul>;
   }
 }
 

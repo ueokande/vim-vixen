@@ -1,5 +1,5 @@
-import Mark from '../domains/Mark';
-import * as messages from '../../shared/messages';
+import Mark from "../domains/Mark";
+import * as messages from "../../shared/messages";
 
 export default interface MarkClient {
   setGloablMark(key: string, mark: Mark): Promise<void>;

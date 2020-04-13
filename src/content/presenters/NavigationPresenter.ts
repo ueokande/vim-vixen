@@ -8,7 +8,7 @@ export default interface NavigationPresenter {
   openLinkNext(): void;
 }
 
-const REL_PATTERN: {[key: string]: RegExp} = {
+const REL_PATTERN: { [key: string]: RegExp } = {
   prev: /^(?:prev(?:ious)?|older)\b|\u2039|\u2190|\xab|\u226a|<</i,
   next: /^(?:next|newer)\b|\u203a|\u2192|\xbb|\u226b|>>/i,
 };
@@ -18,7 +18,7 @@ const REL_PATTERN: {[key: string]: RegExp} = {
 // eslint-disable-next-line func-style
 function selectLast<E extends Element>(
   selector: string,
-  filter?: (e: E) => boolean,
+  filter?: (e: E) => boolean
 ): E | null {
   let nodes = Array.from(
     window.document.querySelectorAll(selector) as NodeListOf<E>
@@ -40,15 +40,15 @@ export class NavigationPresenterImpl implements NavigationPresenter {
   }
 
   openLinkPrev(): void {
-    this.linkRel('prev');
+    this.linkRel("prev");
   }
 
   openLinkNext(): void {
-    this.linkRel('next');
+    this.linkRel("next");
   }
 
   // Code common to linkPrev and linkNext which navigates to the specified page.
-  private linkRel(rel: 'prev' | 'next'): void {
+  private linkRel(rel: "prev" | "next"): void {
     const link = selectLast<HTMLLinkElement>(`link[rel~=${rel}][href]`);
     if (link) {
       window.location.href = link.href;
@@ -57,10 +57,11 @@ export class NavigationPresenterImpl implements NavigationPresenter {
 
     const pattern = REL_PATTERN[rel];
 
-    const a = selectLast<HTMLAnchorElement>(`a[rel~=${rel}][href]`) ||
-    // `innerText` is much slower than `textContent`, but produces much better
-    // (i.e. less unexpected) results
-    selectLast('a[href]', lnk => pattern.test(lnk.innerText));
+    const a =
+      selectLast<HTMLAnchorElement>(`a[rel~=${rel}][href]`) ||
+      // `innerText` is much slower than `textContent`, but produces much better
+      // (i.e. less unexpected) results
+      selectLast("a[href]", (lnk) => pattern.test(lnk.innerText));
 
     if (a) {
       a.click();

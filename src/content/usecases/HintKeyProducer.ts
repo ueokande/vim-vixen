@@ -5,7 +5,7 @@ export default class HintKeyProducer {
 
   constructor(charset: string) {
     if (charset.length === 0) {
-      throw new TypeError('charset is empty');
+      throw new TypeError("charset is empty");
     }
 
     this.charset = charset;
@@ -15,12 +15,12 @@ export default class HintKeyProducer {
   produce(): string {
     this.increment();
 
-    return this.counter.map(x => this.charset[x]).join('');
+    return this.counter.map((x) => this.charset[x]).join("");
   }
 
   private increment(): void {
     const max = this.charset.length - 1;
-    if (this.counter.every(x => x === max)) {
+    if (this.counter.every((x) => x === max)) {
       this.counter = new Array(this.counter.length + 1).fill(0);
       return;
     }
@@ -35,4 +35,3 @@ export default class HintKeyProducer {
     this.counter.reverse();
   }
 }
-

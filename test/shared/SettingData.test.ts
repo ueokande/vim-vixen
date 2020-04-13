@@ -1,46 +1,48 @@
 import SettingData, {
-  FormKeymaps, JSONTextSettings, FormSettings,
-} from '../../src/shared/SettingData';
-import Settings from '../../src/shared/settings/Settings';
-import { expect } from 'chai';
-import Keymaps from '../../src/shared/settings/Keymaps';
+  FormKeymaps,
+  JSONTextSettings,
+  FormSettings,
+} from "../../src/shared/SettingData";
+import Settings from "../../src/shared/settings/Settings";
+import { expect } from "chai";
+import Keymaps from "../../src/shared/settings/Keymaps";
 
-describe('shared/SettingData', () => {
-  describe('FormKeymaps', () => {
-    describe('#valueOF to #toKeymaps', () => {
-      it('parses form keymaps and convert to operations', () => {
+describe("shared/SettingData", () => {
+  describe("FormKeymaps", () => {
+    describe("#valueOF to #toKeymaps", () => {
+      it("parses form keymaps and convert to operations", () => {
         const data = {
-          'scroll.vertically?{"count":1}': 'j',
-          'scroll.home': '0',
+          'scroll.vertically?{"count":1}': "j",
+          "scroll.home": "0",
         };
 
         const keymaps = FormKeymaps.fromJSON(data).toKeymaps().toJSON();
         expect(keymaps).to.deep.equal({
-          'j': { type: 'scroll.vertically', count: 1 },
-          '0': { type: 'scroll.home' },
+          j: { type: "scroll.vertically", count: 1 },
+          "0": { type: "scroll.home" },
         });
       });
     });
 
-    describe('#fromKeymaps to #toJSON', () => {
-      it('create from a Keymaps and create a JSON object', () => {
+    describe("#fromKeymaps to #toJSON", () => {
+      it("create from a Keymaps and create a JSON object", () => {
         const keymaps: Keymaps = Keymaps.fromJSON({
-          'j': { type: 'scroll.vertically', count: 1 },
-          '0': { type: 'scroll.home' },
+          j: { type: "scroll.vertically", count: 1 },
+          "0": { type: "scroll.home" },
         });
 
         const form = FormKeymaps.fromKeymaps(keymaps).toJSON();
         expect(form).to.deep.equal({
-          'scroll.vertically?{"count":1}': 'j',
-          'scroll.home': '0',
+          'scroll.vertically?{"count":1}': "j",
+          "scroll.home": "0",
         });
       });
     });
   });
 
-  describe('JSONSettings', () => {
-    describe('#valueOf to #toSettings', () => {
-      it('parse object and create a Settings', () => {
+  describe("JSONSettings", () => {
+    describe("#valueOf to #toSettings", () => {
+      it("parse object and create a Settings", () => {
         const o = `{
           "keymaps": {},
           "search": {
@@ -62,8 +64,8 @@ describe('shared/SettingData', () => {
       });
     });
 
-    describe('#fromSettings to #toJSON', () => {
-      it('create from a Settings and create a JSON string', () => {
+    describe("#fromSettings to #toJSON", () => {
+      it("create from a Settings and create a JSON string", () => {
         const o = Settings.fromJSON({
           keymaps: {},
           search: {
@@ -75,7 +77,7 @@ describe('shared/SettingData', () => {
           properties: {
             hintchars: "abcdefghijklmnopqrstuvwxyz",
             smoothscroll: false,
-            complete: "sbh"
+            complete: "sbh",
           },
           blacklist: [],
         });
@@ -86,67 +88,65 @@ describe('shared/SettingData', () => {
     });
   });
 
-  describe('FormSettings', () => {
-    describe('#valueOf to #toSettings', () => {
-      it('parse object and create a Settings', () => {
+  describe("FormSettings", () => {
+    describe("#valueOf to #toSettings", () => {
+      it("parse object and create a Settings", () => {
         const data = {
           keymaps: {
-            'scroll.vertically?{"count":1}': 'j',
-            'scroll.home': '0',
+            'scroll.vertically?{"count":1}': "j",
+            "scroll.home": "0",
           },
           search: {
             default: "google",
-            engines: [
-              ["google", "https://google.com/search?q={}"],
-            ]
+            engines: [["google", "https://google.com/search?q={}"]],
           },
           properties: {
             hintchars: "abcdefghijklmnopqrstuvwxyz",
             smoothscroll: false,
-            complete: "sbh"
+            complete: "sbh",
           },
-          blacklist: []
+          blacklist: [],
         };
 
         const settings = FormSettings.fromJSON(data).toSettings();
         expect(settings.toJSON()).to.deep.equal({
           keymaps: {
-            'j': { type: 'scroll.vertically', count: 1 },
-            '0': { type: 'scroll.home' },
+            j: { type: "scroll.vertically", count: 1 },
+            "0": { type: "scroll.home" },
           },
           search: {
             default: "google",
             engines: {
-              "google": "https://google.com/search?q={}"
-            }
+              google: "https://google.com/search?q={}",
+            },
           },
           properties: {
             hintchars: "abcdefghijklmnopqrstuvwxyz",
             smoothscroll: false,
-            complete: "sbh"
+            complete: "sbh",
           },
-          blacklist: []
+          blacklist: [],
         });
       });
     });
 
-    describe('#fromSettings to #toJSON', () => {
-      it('create from a Settings and create a JSON string', () => {
+    describe("#fromSettings to #toJSON", () => {
+      it("create from a Settings and create a JSON string", () => {
         const data: Settings = Settings.fromJSON({
           keymaps: {
-            'j': { type: 'scroll.vertically', count: 1 },
-            '0': { type: 'scroll.home' },
+            j: { type: "scroll.vertically", count: 1 },
+            "0": { type: "scroll.home" },
           },
           search: {
             default: "google",
             engines: {
-              "google": "https://google.com/search?q={}"
-            }
+              google: "https://google.com/search?q={}",
+            },
           },
           properties: {
             hintchars: "abcdefghijklmnopqrstuvwxyz",
             smoothscroll: false,
-            complete: "sbh"
+            complete: "sbh",
           },
           blacklist: [],
         });
@@ -154,19 +154,17 @@ describe('shared/SettingData', () => {
         const json = FormSettings.fromSettings(data).toJSON();
         expect(json).to.deep.equal({
           keymaps: {
-            'scroll.vertically?{"count":1}': 'j',
-            'scroll.home': '0',
+            'scroll.vertically?{"count":1}': "j",
+            "scroll.home": "0",
           },
           search: {
             default: "google",
-            engines: [
-              ["google", "https://google.com/search?q={}"],
-            ]
+            engines: [["google", "https://google.com/search?q={}"]],
           },
           properties: {
             hintchars: "abcdefghijklmnopqrstuvwxyz",
             smoothscroll: false,
-            complete: "sbh"
+            complete: "sbh",
           },
           blacklist: [],
         });
@@ -174,11 +172,11 @@ describe('shared/SettingData', () => {
     });
   });
 
-  describe('SettingData', () => {
-    describe('#valueOf to #toJSON', () => {
-      it('parse object from json source', () => {
+  describe("SettingData", () => {
+    describe("#valueOf to #toJSON", () => {
+      it("parse object from json source", () => {
         const data = {
-          source: 'json',
+          source: "json",
           json: `{
             "keymaps": {},
             "search": {
@@ -197,54 +195,50 @@ describe('shared/SettingData', () => {
         };
 
         const j = SettingData.fromJSON(data).toJSON();
-        expect(j.source).to.equal('json');
-        expect(j.json).to.be.a('string');
+        expect(j.source).to.equal("json");
+        expect(j.json).to.be.a("string");
       });
 
-      it('parse object from form source', () => {
+      it("parse object from form source", () => {
         const data = {
-          source: 'form',
+          source: "form",
           form: {
             keymaps: {},
             search: {
               default: "yahoo",
-              engines: [
-                ['yahoo', 'https://yahoo.com/search?q={}'],
-              ],
+              engines: [["yahoo", "https://yahoo.com/search?q={}"]],
             },
             properties: {
               hintchars: "abcdefghijklmnopqrstuvwxyz",
               smoothscroll: false,
-              complete: "sbh"
+              complete: "sbh",
             },
             blacklist: [],
           },
         };
 
         const j = SettingData.fromJSON(data).toJSON();
-        expect(j.source).to.equal('form');
+        expect(j.source).to.equal("form");
         expect(j.form).to.deep.equal({
           keymaps: {},
           search: {
             default: "yahoo",
-            engines: [
-              ['yahoo', 'https://yahoo.com/search?q={}'],
-            ],
+            engines: [["yahoo", "https://yahoo.com/search?q={}"]],
           },
           properties: {
             hintchars: "abcdefghijklmnopqrstuvwxyz",
             smoothscroll: false,
-            complete: "sbh"
+            complete: "sbh",
           },
           blacklist: [],
         });
       });
     });
 
-    describe('#toSettings', () => {
-      it('parse object from json source', () => {
+    describe("#toSettings", () => {
+      it("parse object from json source", () => {
         const data = {
-          source: 'json',
+          source: "json",
           json: `{
             "keymaps": {},
             "search": {
@@ -263,31 +257,29 @@ describe('shared/SettingData', () => {
         };
 
         const settings = SettingData.fromJSON(data).toSettings();
-        expect(settings.search.defaultEngine).to.equal('google');
+        expect(settings.search.defaultEngine).to.equal("google");
       });
 
-      it('parse object from form source', () => {
+      it("parse object from form source", () => {
         const data = {
-          source: 'form',
+          source: "form",
           form: {
             keymaps: {},
             search: {
               default: "yahoo",
-              engines: [
-                ['yahoo', 'https://yahoo.com/search?q={}'],
-              ],
+              engines: [["yahoo", "https://yahoo.com/search?q={}"]],
             },
             properties: {
               hintchars: "abcdefghijklmnopqrstuvwxyz",
               smoothscroll: false,
-              complete: "sbh"
+              complete: "sbh",
             },
             blacklist: [],
           },
         };
 
         const settings = SettingData.fromJSON(data).toSettings();
-        expect(settings.search.defaultEngine).to.equal('yahoo');
+        expect(settings.search.defaultEngine).to.equal("yahoo");
       });
     });
   });

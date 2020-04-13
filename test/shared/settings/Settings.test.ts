@@ -1,19 +1,19 @@
-import Settings from '../../../src/shared/settings/Settings';
-import { expect } from 'chai';
+import Settings from "../../../src/shared/settings/Settings";
+import { expect } from "chai";
 
-describe('Settings', () => {
-  describe('#valueOf', () => {
-    it('returns settings by valid settings', () => {
+describe("Settings", () => {
+  describe("#valueOf", () => {
+    it("returns settings by valid settings", () => {
       const x = Settings.fromJSON({
         keymaps: {},
-        "search": {
-          "default": "google",
-          "engines": {
-            "google": "https://google.com/search?q={}",
-          }
+        search: {
+          default: "google",
+          engines: {
+            google: "https://google.com/search?q={}",
+          },
         },
-        "properties": {},
-        "blacklist": []
+        properties: {},
+        blacklist: [],
       });
 
       expect({
@@ -27,28 +27,28 @@ describe('Settings', () => {
           default: "google",
           engines: {
             google: "https://google.com/search?q={}",
-          }
+          },
         },
         properties: {
           hintchars: "abcdefghijklmnopqrstuvwxyz",
           smoothscroll: false,
-          complete: "sbh"
+          complete: "sbh",
         },
-        blacklist: []
+        blacklist: [],
       });
     });
 
-    it('sets default settings', () => {
+    it("sets default settings", () => {
       const value = Settings.fromJSON({});
       expect(value.keymaps.toJSON()).to.not.be.empty;
       expect(value.properties.toJSON()).to.not.be.empty;
-      expect(value.search.defaultEngine).to.be.a('string');
-      expect(value.search.engines).to.be.an('object');
+      expect(value.search.defaultEngine).to.be.a("string");
+      expect(value.search.engines).to.be.an("object");
       expect(value.blacklist.toJSON()).to.be.empty;
     });
 
-    it('throws a TypeError with an unknown field', () => {
-      expect(() => Settings.fromJSON({ name: 'alice' })).to.throw(TypeError)
+    it("throws a TypeError with an unknown field", () => {
+      expect(() => Settings.fromJSON({ name: "alice" })).to.throw(TypeError);
     });
   });
 });

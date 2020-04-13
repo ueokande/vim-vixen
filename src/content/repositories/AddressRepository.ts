@@ -1,5 +1,5 @@
 export default interface AddressRepository {
-  getCurrentURL(): URL
+  getCurrentURL(): URL;
 }
 
 export class AddressRepositoryImpl implements AddressRepository {

@@ -1,16 +1,16 @@
-import Ajv from 'ajv';
+import Ajv from "ajv";
 
-import Keymaps, { KeymapsJSON } from './Keymaps';
-import Search, { SearchJSON } from './Search';
-import Properties, { PropertiesJSON } from './Properties';
-import Blacklist, { BlacklistJSON } from './Blacklist';
-import validate from './validate';
+import Keymaps, { KeymapsJSON } from "./Keymaps";
+import Search, { SearchJSON } from "./Search";
+import Properties, { PropertiesJSON } from "./Properties";
+import Blacklist, { BlacklistJSON } from "./Blacklist";
+import validate from "./validate";
 
 export type SettingsJSON = {
-  keymaps?: KeymapsJSON,
-  search?: SearchJSON,
-  properties?: PropertiesJSON,
-  blacklist?: BlacklistJSON,
+  keymaps?: KeymapsJSON;
+  search?: SearchJSON;
+  properties?: PropertiesJSON;
+  blacklist?: BlacklistJSON;
 };
 
 export default class Settings {
@@ -42,11 +42,11 @@ export default class Settings {
   static fromJSON(json: unknown): Settings {
     const valid = validate(json);
     if (!valid) {
-      const message = (validate as any).errors!!
-        .map((err: Ajv.ErrorObject) => {
+      const message = (validate as any)
+        .errors!!.map((err: Ajv.ErrorObject) => {
           return `'${err.dataPath}' ${err.message}`;
         })
-        .join('; ');
+        .join("; ");
       throw new TypeError(message);
     }
 
@@ -162,5 +162,6 @@ export const DefaultSettingJSONText = `{
   ]
 }`;
 
-export const DefaultSetting: Settings =
-  Settings.fromJSON(JSON.parse(DefaultSettingJSONText));
+export const DefaultSetting: Settings = Settings.fromJSON(
+  JSON.parse(DefaultSettingJSONText)
+);

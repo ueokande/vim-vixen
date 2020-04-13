@@ -6,16 +6,12 @@ export type SearchJSON = {
 };
 
 export default class Search {
-  constructor(
-    public defaultEngine: string,
-    public engines: Entries,
-  ) {
-  }
+  constructor(public defaultEngine: string, public engines: Entries) {}
 
   static fromJSON(json: SearchJSON): Search {
     for (const [name, url] of Object.entries(json.engines)) {
-      if (!(/^[a-zA-Z0-9]+$/).test(name)) {
-        throw new TypeError('Search engine\'s name must be [a-zA-Z0-9]+');
+      if (!/^[a-zA-Z0-9]+$/.test(name)) {
+        throw new TypeError("Search engine's name must be [a-zA-Z0-9]+");
       }
       const matches = url.match(/{}/g);
       if (matches === null) {

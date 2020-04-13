@@ -1,8 +1,10 @@
-import ScrollPresenter, { Point } from '../../../src/content/presenters/ScrollPresenter';
+import ScrollPresenter, {
+  Point,
+} from "../../../src/content/presenters/ScrollPresenter";
 
 export default class MockScrollPresenter implements ScrollPresenter {
   private pos: Point;
-  
+
   constructor() {
     this.pos = { x: 0, y: 0 };
   }
@@ -44,4 +46,3 @@ export default class MockScrollPresenter implements ScrollPresenter {
     this.pos.x = Infinity;
   }
 }
-

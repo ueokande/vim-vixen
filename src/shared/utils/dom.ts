@@ -1,9 +1,9 @@
 const isContentEditable = (element: Element): boolean => {
-  const value = element.getAttribute('contenteditable');
+  const value = element.getAttribute("contenteditable");
   if (value === null) {
     return false;
   }
-  return value.toLowerCase() === 'true' || value.toLowerCase() === '';
+  return value.toLowerCase() === "true" || value.toLowerCase() === "";
 };
 
 interface Rect {
@@ -14,12 +14,12 @@ interface Rect {
 }
 
 const rectangleCoordsRect = (coords: string): Rect => {
-  const [left, top, right, bottom] = coords.split(',').map(n => Number(n));
+  const [left, top, right, bottom] = coords.split(",").map((n) => Number(n));
   return { left, top, right, bottom };
 };
 
 const circleCoordsRect = (coords: string): Rect => {
-  const [x, y, r] = coords.split(',').map(n => Number(n));
+  const [x, y, r] = coords.split(",").map((n) => Number(n));
   return {
     left: x - r,
     top: y - r,
@@ -29,7 +29,7 @@ const circleCoordsRect = (coords: string): Rect => {
 };
 
 const polygonCoordsRect = (coords: string): Rect => {
-  const params = coords.split(',');
+  const params = coords.split(",");
   let minx = Number(params[0]),
     maxx = Number(params[0]),
     miny = Number(params[1]),
@@ -55,7 +55,7 @@ const polygonCoordsRect = (coords: string): Rect => {
 };
 
 const viewportRect = (e: Element): Rect => {
-  if (e.tagName !== 'AREA') {
+  if (e.tagName !== "AREA") {
     return e.getBoundingClientRect();
   }
 
@@ -63,29 +63,26 @@ const viewportRect = (e: Element): Rect => {
   const imgElement = document.querySelector(
     `img[usemap="#${mapElement.name}"]`
   ) as HTMLImageElement;
-  const {
-    left: mapLeft,
-    top: mapTop
-  } = imgElement.getBoundingClientRect();
-  const coords = e.getAttribute('coords');
+  const { left: mapLeft, top: mapTop } = imgElement.getBoundingClientRect();
+  const coords = e.getAttribute("coords");
   if (!coords) {
     return e.getBoundingClientRect();
   }
 
   let rect = { left: 0, top: 0, right: 0, bottom: 0 };
-  switch (e.getAttribute('shape')) {
-  case 'rect':
-  case 'rectangle':
-    rect = rectangleCoordsRect(coords);
-    break;
-  case 'circ':
-  case 'circle':
-    rect = circleCoordsRect(coords);
-    break;
-  case 'poly':
-  case 'polygon':
-    rect = polygonCoordsRect(coords);
-    break;
+  switch (e.getAttribute("shape")) {
+    case "rect":
+    case "rectangle":
+      rect = rectangleCoordsRect(coords);
+      break;
+    case "circ":
+    case "circle":
+      rect = circleCoordsRect(coords);
+      break;
+    case "poly":
+    case "polygon":
+      rect = polygonCoordsRect(coords);
+      break;
   }
   return {
     left: rect.left + mapLeft,
@@ -99,7 +96,7 @@ const isVisible = (element: Element): boolean => {
   const rect = element.getBoundingClientRect();
   const style = window.getComputedStyle(element);
 
-  if (style.overflow !== 'visible' && (rect.width === 0 || rect.height === 0)) {
+  if (style.overflow !== "visible" && (rect.width === 0 || rect.height === 0)) {
     return false;
   }
   if (rect.right < 0 && rect.bottom < 0) {
@@ -108,13 +105,15 @@ const isVisible = (element: Element): boolean => {
   if (window.innerWidth < rect.left && window.innerHeight < rect.top) {
     return false;
   }
-  if (element instanceof HTMLInputElement &&
-    element.type.toLowerCase() === 'hidden') {
+  if (
+    element instanceof HTMLInputElement &&
+    element.type.toLowerCase() === "hidden"
+  ) {
     return false;
   }
 
   const { display, visibility } = window.getComputedStyle(element);
-  if (display === 'none' || visibility === 'hidden') {
+  if (display === "none" || visibility === "hidden") {
     return false;
   }
   return true;

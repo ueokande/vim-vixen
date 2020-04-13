@@ -1,28 +1,28 @@
-import Search from './settings/Search';
+import Search from "./settings/Search";
 
 const trimStart = (str: string): string => {
   // NOTE String.trimStart is available on Firefox 61
-  return str.replace(/^\s+/, '');
+  return str.replace(/^\s+/, "");
 };
 
-const SUPPORTED_PROTOCOLS = ['http:', 'https:', 'ftp:', 'mailto:', 'about:'];
+const SUPPORTED_PROTOCOLS = ["http:", "https:", "ftp:", "mailto:", "about:"];
 
 const isLocalhost = (url: string): boolean => {
-  if (url === 'localhost') {
+  if (url === "localhost") {
     return true;
   }
 
-  const [host, port] = url.split(':', 2);
-  return host === 'localhost' && !isNaN(Number(port));
+  const [host, port] = url.split(":", 2);
+  return host === "localhost" && !isNaN(Number(port));
 };
 
 const isMissingHttp = (keywords: string): boolean => {
-  if (keywords.includes('.') && !keywords.includes(' ')) {
+  if (keywords.includes(".") && !keywords.includes(" ")) {
     return true;
   }
 
   try {
-    const u = new URL('http://' + keywords);
+    const u = new URL("http://" + keywords);
     return isLocalhost(u.host);
   } catch (e) {
     // fallthrough
@@ -41,18 +41,18 @@ const searchUrl = (keywords: string, search: Search): string => {
   }
 
   if (isMissingHttp(keywords)) {
-    return 'http://' + keywords;
+    return "http://" + keywords;
   }
 
   let template = search.engines[search.defaultEngine];
   let query = keywords;
 
-  const first = trimStart(keywords).split(' ')[0];
+  const first = trimStart(keywords).split(" ")[0];
   if (Object.keys(search.engines).includes(first)) {
     template = search.engines[first];
     query = trimStart(trimStart(keywords).slice(first.length));
   }
-  return template.replace('{}', encodeURIComponent(query));
+  return template.replace("{}", encodeURIComponent(query));
 };
 
 const normalizeUrl = (url: string): string => {
@@ -64,7 +64,7 @@ const normalizeUrl = (url: string): string => {
   } catch (e) {
     // fallthrough
   }
-  return 'http://' + url;
+  return "http://" + url;
 };
 
 export { searchUrl, normalizeUrl };

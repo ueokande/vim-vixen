@@ -1,7 +1,7 @@
-import { Lanthan } from 'lanthan';
-import { WebDriver, By } from 'selenium-webdriver';
-import JSONOptionPage from './JSONOptionPage';
-import FormOptionPage from './FormOptionPage';
+import { Lanthan } from "lanthan";
+import { WebDriver, By } from "selenium-webdriver";
+import JSONOptionPage from "./JSONOptionPage";
+import FormOptionPage from "./FormOptionPage";
 
 export default class OptionPage {
   private webdriver: WebDriver;
@@ -11,13 +11,17 @@ export default class OptionPage {
   }
 
   static async open(lanthan: Lanthan) {
-    const url = await lanthan.getWebExtBrowser().runtime.getURL("build/settings.html")
+    const url = await lanthan
+      .getWebExtBrowser()
+      .runtime.getURL("build/settings.html");
     await lanthan.getWebDriver().navigate().to(url);
     return new OptionPage(lanthan);
   }
 
   async switchToForm(): Promise<FormOptionPage> {
-    const useFormInput = await this.webdriver.findElement(By.css('#setting-source-form'));
+    const useFormInput = await this.webdriver.findElement(
+      By.css("#setting-source-form")
+    );
     await useFormInput.click();
     await this.webdriver.switchTo().alert().accept();
     return new FormOptionPage(this.lanthan);

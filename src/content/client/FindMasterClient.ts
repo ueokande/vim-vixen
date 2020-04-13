@@ -1,4 +1,4 @@
-import * as messages from '../../shared/messages';
+import * as messages from "../../shared/messages";
 
 export default interface FindMasterClient {
   findNext(): void;
@@ -8,14 +8,20 @@ export default interface FindMasterClient {
 
 export class FindMasterClientImpl implements FindMasterClient {
   findNext(): void {
-    window.top.postMessage(JSON.stringify({
-      type: messages.FIND_NEXT,
-    }), '*');
+    window.top.postMessage(
+      JSON.stringify({
+        type: messages.FIND_NEXT,
+      }),
+      "*"
+    );
   }
 
   findPrev(): void {
-    window.top.postMessage(JSON.stringify({
-      type: messages.FIND_PREV,
-    }), '*');
+    window.top.postMessage(
+      JSON.stringify({
+        type: messages.FIND_PREV,
+      }),
+      "*"
+    );
   }
 }

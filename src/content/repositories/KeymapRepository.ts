@@ -1,5 +1,5 @@
-import Key from '../../shared/settings/Key';
-import KeySequence from '../domains/KeySequence';
+import Key from "../../shared/settings/Key";
+import KeySequence from "../domains/KeySequence";
 
 export default interface KeymapRepository {
   enqueueKey(key: Key): KeySequence;
@@ -10,7 +10,6 @@ export default interface KeymapRepository {
 let current: KeySequence = new KeySequence([]);
 
 export class KeymapRepositoryImpl {
-
   enqueueKey(key: Key): KeySequence {
     current.push(key);
     return current;

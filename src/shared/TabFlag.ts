@@ -1,7 +1,7 @@
 enum TabFlag {
-    CurrentTab = '%',
-    LastTab = '#',
-    None = '',
+  CurrentTab = "%",
+  LastTab = "#",
+  None = "",
 }
 
-export default TabFlag
+export default TabFlag;

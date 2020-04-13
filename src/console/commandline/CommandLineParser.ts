@@ -2,9 +2,9 @@ import CommandParser from "./CommandParser";
 import { Command } from "../../shared/Command";
 
 export type CommandLine = {
-  readonly command: Command,
-  readonly args: string
-}
+  readonly command: Command;
+  readonly args: string;
+};
 
 export enum InputPhase {
   OnCommand,
@@ -17,11 +17,11 @@ export default class CommandLineParser {
   inputPhase(line: string): InputPhase {
     line = line.trimLeft();
     if (line.length == 0) {
-      return InputPhase.OnCommand
+      return InputPhase.OnCommand;
     }
     const command = line.split(/\s+/, 1)[0];
     if (line.length == command.length) {
-      return InputPhase.OnCommand
+      return InputPhase.OnCommand;
     }
     return InputPhase.OnArgs;
   }
@@ -33,6 +33,6 @@ export default class CommandLineParser {
     return {
       command: this.commandParser.parse(command),
       args: args,
-    }
+    };
   }
 }

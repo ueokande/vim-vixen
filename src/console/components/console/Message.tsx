@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface Props {
   mode: string;
@@ -7,18 +7,18 @@ interface Props {
 
 const Message = (props: Props) => {
   switch (props.mode) {
-  case 'error':
-    return (
-      <p className='vimvixen-console-message vimvixen-console-error'>
-        { props.children }
-      </p>
-    );
-  case 'info':
-    return (
-      <p className='vimvixen-console-message vimvixen-console-info'>
-        { props.children }
-      </p>
-    );
+    case "error":
+      return (
+        <p className="vimvixen-console-message vimvixen-console-error">
+          {props.children}
+        </p>
+      );
+    case "info":
+      return (
+        <p className="vimvixen-console-message vimvixen-console-info">
+          {props.children}
+        </p>
+      );
   }
   return null;
 };

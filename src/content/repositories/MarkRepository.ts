@@ -1,4 +1,4 @@
-import Mark from '../domains/Mark';
+import Mark from "../domains/Mark";
 
 export default interface MarkRepository {
   set(key: string, mark: Mark): void;
@@ -6,7 +6,7 @@ export default interface MarkRepository {
   get(key: string): Mark | null;
 }
 
-const saved: {[key: string]: Mark} = {};
+const saved: { [key: string]: Mark } = {};
 
 export class MarkRepositoryImpl implements MarkRepository {
   set(key: string, mark: Mark): void {

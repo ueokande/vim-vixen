@@ -1,11 +1,13 @@
-import * as operations from '../../shared/operations';
-import * as messages from '../../shared/messages';
+import * as operations from "../../shared/operations";
+import * as messages from "../../shared/messages";
 
 export default interface OperationClient {
   execBackgroundOp(repeat: number, op: operations.Operation): Promise<void>;
 
   internalOpenUrl(
-    url: string, newTab?: boolean, background?: boolean,
+    url: string,
+    newTab?: boolean,
+    background?: boolean
   ): Promise<void>;
 }
 
@@ -19,7 +21,9 @@ export class OperationClientImpl implements OperationClient {
   }
 
   internalOpenUrl(
-    url: string, newTab?: boolean, background?: boolean,
+    url: string,
+    newTab?: boolean,
+    background?: boolean
   ): Promise<void> {
     return browser.runtime.sendMessage({
       type: messages.BACKGROUND_OPERATION,

@@ -23,7 +23,6 @@ const current: Mode = {
 };
 
 export class MarkKeyRepositoryImpl implements MarkKeyRepository {
-
   isSetMode(): boolean {
     return current.setMode;
   }
