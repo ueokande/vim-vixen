@@ -3,6 +3,7 @@ export default interface FindPresenter {
   find(keyword: string, backwards: boolean): boolean;
 
   clearSelection(): void;
+  getSelection(): string|null;
 }
 
 // window.find(aString, aCaseSensitive, aBackwards, aWrapAround,
@@ -46,5 +47,13 @@ export class FindPresenterImpl implements FindPresenter {
     if (sel) {
       sel.removeAllRanges();
     }
+  }
+
+  getSelection(): string|null {
+    const sel = window.getSelection();
+    if (sel) {
+      return sel.toString();
+    }
+    return null;
   }
 }

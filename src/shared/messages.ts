@@ -35,6 +35,7 @@ export const TAB_SCROLL_TO = 'tab.scroll.to';
 
 export const FIND_NEXT = 'find.next';
 export const FIND_PREV = 'find.prev';
+export const FIND_SELECTION = 'find.selection';
 export const FIND_GET_KEYWORD = 'find.get.keyword';
 export const FIND_SET_KEYWORD = 'find.set.keyword';
 
@@ -219,6 +220,10 @@ export interface TabScrollToMessage {
   y: number;
 }
 
+export interface FindSelectionMessage {
+  type: typeof FIND_SELECTION;
+}
+
 export interface FindNextMessage {
   type: typeof FIND_NEXT;
 }
@@ -315,6 +320,7 @@ export type Message =
   TabScrollToMessage |
   FindNextMessage |
   FindPrevMessage |
+  FindSelectionMessage |
   FindGetKeywordMessage |
   FindSetKeywordMessage |
   AddonEnabledQueryMessage |
@@ -353,6 +359,7 @@ export const valueOf = (o: any): Message => {
   case TAB_SCROLL_TO:
   case FIND_NEXT:
   case FIND_PREV:
+  case FIND_SELECTION:
   case FIND_GET_KEYWORD:
   case FIND_SET_KEYWORD:
   case ADDON_ENABLED_QUERY:

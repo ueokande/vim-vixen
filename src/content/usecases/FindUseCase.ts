@@ -28,6 +28,15 @@ export default class FindUseCase {
     return this.findNext();
   }
 
+  async startFindSelection(): Promise<void> {
+    const sel = this.presenter.getSelection();
+    if (sel) {
+      this.startFind(sel);
+    } else {
+      return this.showNoSelectionError();
+    }
+  }
+
   findNext(): Promise<void> {
     return this.findNextPrev(false);
   }
@@ -62,6 +71,10 @@ export default class FindUseCase {
   private async saveKeyword(keyword: string): Promise<void> {
     this.repository.setLastKeyword(keyword);
     await this.client.setGlobalLastKeyword(keyword);
+  }
+
+  private async showNoSelectionError(): Promise<void> {
+    await this.consoleClient.error("No text is selected");
   }
 
   private async showNoLastKeywordError(): Promise<void> {

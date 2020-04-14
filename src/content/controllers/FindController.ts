@@ -13,6 +13,10 @@ export default class FindController {
     await this.findUseCase.startFind(m.text);
   }
 
+  async startFindSelection(_ : messages.FindSelectionMessage): Promise<void> {
+    await this.findUseCase.startFindSelection();
+  }
+
   async next(_: messages.FindNextMessage): Promise<void> {
     await this.findUseCase.findNext();
   }
