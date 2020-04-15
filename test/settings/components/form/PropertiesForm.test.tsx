@@ -2,7 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ReactTestRenderer from "react-test-renderer";
 import ReactTestUtils from "react-dom/test-utils";
-import PropertiesForm from "settings/components/form/PropertiesForm";
+import PropertiesForm from "../../../../src/settings/components/form/PropertiesForm";
+import { expect } from "chai";
 
 describe("settings/form/PropertiesForm", () => {
   describe("render", () => {
@@ -38,7 +39,7 @@ describe("settings/form/PropertiesForm", () => {
   });
 
   describe("onChange", () => {
-    let container;
+    let container: HTMLDivElement;
 
     beforeEach(() => {
       container = document.createElement("div");
@@ -47,7 +48,6 @@ describe("settings/form/PropertiesForm", () => {
 
     afterEach(() => {
       document.body.removeChild(container);
-      container = null;
     });
 
     it("invokes onChange event on text changed", (done) => {
@@ -65,7 +65,9 @@ describe("settings/form/PropertiesForm", () => {
         );
       });
 
-      const input = document.querySelector("input[name=myvalue]");
+      const input = document.querySelector(
+        "input[name=myvalue]"
+      ) as HTMLInputElement;
       input.value = "abcd";
       ReactTestUtils.Simulate.change(input);
     });
@@ -85,7 +87,9 @@ describe("settings/form/PropertiesForm", () => {
         );
       });
 
-      const input = document.querySelector("input[name=myvalue]");
+      const input = document.querySelector(
+        "input[name=myvalue]"
+      ) as HTMLInputElement;
       input.value = "1234";
       ReactTestUtils.Simulate.change(input);
     });
@@ -105,7 +109,9 @@ describe("settings/form/PropertiesForm", () => {
         );
       });
 
-      const input = document.querySelector("input[name=myvalue]");
+      const input = document.querySelector(
+        "input[name=myvalue]"
+      ) as HTMLInputElement;
       input.checked = true;
       ReactTestUtils.Simulate.change(input);
     });

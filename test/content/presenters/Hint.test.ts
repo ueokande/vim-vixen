@@ -13,17 +13,17 @@ describe("Hint", () => {
 
   describe("#constructor", () => {
     it("creates a hint element with tag name", () => {
-      const link = document.getElementById("test-link");
+      const link = document.getElementById("test-link")!!;
       new Hint(link, "abc");
 
       const elem = document.querySelector(".vimvixen-hint");
-      expect(elem.textContent.trim()).to.be.equal("abc");
+      expect(elem!!.textContent!!.trim()).to.be.equal("abc");
     });
   });
 
   describe("#show", () => {
     it("shows an element", () => {
-      const link = document.getElementById("test-link");
+      const link = document.getElementById("test-link")!!;
       const hint = new Hint(link, "abc");
       hint.hide();
       hint.show();
@@ -46,10 +46,10 @@ describe("Hint", () => {
 
   describe("#remove", () => {
     it("removes an element", () => {
-      const link = document.getElementById("test-link");
+      const link = document.getElementById("test-link")!!;
       const hint = new Hint(link, "abc");
 
-      const elem = document.querySelector(".vimvixen-hint");
+      const elem = document.querySelector(".vimvixen-hint")!!;
       expect(elem.parentElement).to.not.be.null;
       hint.remove();
       expect(elem.parentElement).to.be.null;

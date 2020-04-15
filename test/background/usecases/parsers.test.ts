@@ -1,4 +1,5 @@
-import * as parsers from "background/usecases/parsers";
+import * as parsers from "../../../src/background/usecases/parsers";
+import { expect } from "chai";
 
 describe("shared/commands/parsers", () => {
   describe("#parsers.parseSetOption", () => {

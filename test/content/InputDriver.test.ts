@@ -16,8 +16,6 @@ describe("InputDriver", () => {
 
   afterEach(() => {
     target.remove();
-    target = null;
-    driver = null;
   });
 
   it("register callbacks", (done) => {

@@ -2,8 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ReactTestRenderer from "react-test-renderer";
 import ReactTestUtils from "react-dom/test-utils";
-import SearchForm from "settings/components/form/SearchForm";
-import { FormSearch } from "shared/SettingData";
+import SearchForm from "../../../../src/settings/components/form/SearchForm";
+import { FormSearch } from "../../../../src/shared/SettingData";
+import { expect } from "chai";
 
 describe("settings/form/SearchForm", () => {
   describe("render", () => {
@@ -33,7 +34,7 @@ describe("settings/form/SearchForm", () => {
   });
 
   describe("onChange event", () => {
-    let container;
+    let container: HTMLDivElement;
 
     beforeEach(() => {
       container = document.createElement("div");
@@ -42,7 +43,6 @@ describe("settings/form/SearchForm", () => {
 
     afterEach(() => {
       document.body.removeChild(container);
-      container = null;
     });
 
     it("invokes onChange event on edit", (done) => {
@@ -71,10 +71,14 @@ describe("settings/form/SearchForm", () => {
         );
       });
 
-      const radio = document.querySelectorAll("input[type=radio]");
+      const radio = document.querySelector(
+        "input[type=radio]"
+      ) as HTMLInputElement;
       radio.checked = true;
 
-      const name = document.querySelector("input[name=name]");
+      const name = document.querySelector(
+        "input[name=name]"
+      ) as HTMLInputElement;
       name.value = "louvre";
 
       ReactTestUtils.Simulate.change(name);
@@ -105,7 +109,9 @@ describe("settings/form/SearchForm", () => {
         );
       });
 
-      const button = document.querySelector("input[type=button]");
+      const button = document.querySelector(
+        "input[type=button]"
+      ) as HTMLInputElement;
       ReactTestUtils.Simulate.click(button);
     });
 
@@ -132,7 +138,9 @@ describe("settings/form/SearchForm", () => {
         );
       });
 
-      const button = document.querySelector("input[type=button].ui-add-button");
+      const button = document.querySelector(
+        "input[type=button].ui-add-button"
+      ) as HTMLInputElement;
       ReactTestUtils.Simulate.click(button);
     });
   });

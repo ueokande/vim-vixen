@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import ReactTestRenderer from "react-test-renderer";
 import ReactTestUtils from "react-dom/test-utils";
 import KeymapsForm from "../../../../src/settings/components/form/KeymapsForm";
-import { FormKeymaps } from "shared/SettingData";
+import { FormKeymaps } from "../../../../src/shared/SettingData";
 import { expect } from "chai";
 
 describe("settings/form/KeymapsForm", () => {
@@ -37,7 +37,7 @@ describe("settings/form/KeymapsForm", () => {
   });
 
   describe("onChange event", () => {
-    let container;
+    let container: HTMLDivElement;
 
     beforeEach(() => {
       container = document.createElement("div");
@@ -46,7 +46,6 @@ describe("settings/form/KeymapsForm", () => {
 
     afterEach(() => {
       document.body.removeChild(container);
-      container = null;
     });
 
     it("invokes onChange event on edit", (done) => {
@@ -68,7 +67,9 @@ describe("settings/form/KeymapsForm", () => {
         );
       });
 
-      const input = document.getElementById('scroll.vertically?{"count":1}');
+      const input = document.getElementById(
+        'scroll.vertically?{"count":1}'
+      ) as HTMLInputElement;
       input.value = "jjj";
       ReactTestUtils.Simulate.change(input);
     });

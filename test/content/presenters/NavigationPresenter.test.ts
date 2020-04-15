@@ -4,7 +4,7 @@ import { expect } from "chai";
 describe("NavigationPresenterImpl", () => {
   let sut: NavigationPresenterImpl;
 
-  const testRel = (done, rel, html) => {
+  const testRel = (done: () => void, rel: string, html: string) => {
     const method =
       rel === "prev" ? sut.openLinkPrev.bind(sut) : sut.openLinkNext.bind(sut);
     document.body.innerHTML = html;
@@ -14,8 +14,10 @@ describe("NavigationPresenterImpl", () => {
       done();
     }, 0);
   };
-  const testPrev = (html) => (done) => testRel(done, "prev", html);
-  const testNext = (html) => (done) => testRel(done, "next", html);
+  const testPrev = (html: string) => (done: () => void) =>
+    testRel(done, "prev", html);
+  const testNext = (html: string) => (done: () => void) =>
+    testRel(done, "next", html);
 
   before(() => {
     sut = new NavigationPresenterImpl();

@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import ReactTestUtils from "react-dom/test-utils";
-import Input from "settings/components/ui/Input";
+import Input from "../../../../src/settings/components/ui/Input";
+import { expect } from "chai";
 
 describe("settings/ui/Input", () => {
-  let container;
+  let container: HTMLDivElement;
 
   beforeEach(() => {
     container = document.createElement("div");
@@ -13,7 +14,6 @@ describe("settings/ui/Input", () => {
 
   afterEach(() => {
     document.body.removeChild(container);
-    container = null;
   });
 
   context("type=text", () => {
@@ -25,8 +25,8 @@ describe("settings/ui/Input", () => {
         );
       });
 
-      const label = document.querySelector("label");
-      const input = document.querySelector("input");
+      const label = document.querySelector("label")!!;
+      const input = document.querySelector("input")!!;
       expect(label.textContent).to.contain("myfield");
       expect(input.type).to.contain("text");
       expect(input.name).to.contain("myname");
@@ -42,7 +42,7 @@ describe("settings/ui/Input", () => {
             label="myfield"
             value="myvalue"
             onChange={(e) => {
-              expect(e.target.value).to.equal("newvalue");
+              expect((e.target as HTMLInputElement).value).to.equal("newvalue");
               done();
             }}
           />,
@@ -50,7 +50,7 @@ describe("settings/ui/Input", () => {
         );
       });
 
-      const input = document.querySelector("input");
+      const input = document.querySelector("input")!!;
       input.value = "newvalue";
       ReactTestUtils.Simulate.change(input);
     });
@@ -65,8 +65,8 @@ describe("settings/ui/Input", () => {
         );
       });
 
-      const label = document.querySelector("label");
-      const input = document.querySelector("input");
+      const label = document.querySelector("label")!!;
+      const input = document.querySelector("input")!!;
       expect(label.textContent).to.contain("myfield");
       expect(input.type).to.contain("radio");
       expect(input.name).to.contain("myname");
@@ -82,7 +82,7 @@ describe("settings/ui/Input", () => {
             label="myfield"
             value="myvalue"
             onChange={(e) => {
-              expect(e.target.checked).to.be.true;
+              expect((e.target as HTMLInputElement).checked).to.be.true;
               done();
             }}
           />,
@@ -90,7 +90,7 @@ describe("settings/ui/Input", () => {
         );
       });
 
-      const input = document.querySelector("input");
+      const input = document.querySelector("input") as HTMLInputElement;
       input.checked = true;
       ReactTestUtils.Simulate.change(input);
     });
@@ -111,9 +111,9 @@ describe("settings/ui/Input", () => {
         );
       });
 
-      const label = document.querySelector("label");
-      const textarea = document.querySelector("textarea");
-      const error = document.querySelector(".settings-ui-input-error");
+      const label = document.querySelector("label")!!;
+      const textarea = document.querySelector("textarea")!!;
+      const error = document.querySelector(".settings-ui-input-error")!!;
       expect(label.textContent).to.contain("myfield");
       expect(textarea.nodeName).to.contain("TEXTAREA");
       expect(textarea.name).to.contain("myname");
@@ -130,7 +130,7 @@ describe("settings/ui/Input", () => {
             label="myfield"
             value="myvalue"
             onChange={(e) => {
-              expect(e.target.value).to.equal("newvalue");
+              expect((e.target as HTMLInputElement).value).to.equal("newvalue");
               done();
             }}
           />,
@@ -138,7 +138,7 @@ describe("settings/ui/Input", () => {
         );
       });
 
-      const input = document.querySelector("textarea");
+      const input = document.querySelector("textarea")!!;
       input.value = "newvalue";
       ReactTestUtils.Simulate.change(input);
     });

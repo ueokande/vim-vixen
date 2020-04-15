@@ -40,7 +40,7 @@ describe("AddonEnabledUseCase", () => {
   let sut: SettingUseCase;
 
   beforeEach(() => {
-    const testSettings = {
+    const testSettings = Settings.fromJSON({
       keymaps: {},
       search: {
         default: "google",
@@ -54,7 +54,7 @@ describe("AddonEnabledUseCase", () => {
         complete: "sbh",
       },
       blacklist: [],
-    };
+    });
 
     repository = new MockSettingRepository();
     client = new MockSettingClient(testSettings);

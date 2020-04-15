@@ -2,7 +2,15 @@ import * as actions from "../../../src/console/actions";
 import * as consoleActions from "../../../src/console/actions/console";
 import { expect } from "chai";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+import browserFake from "webextensions-api-fake";
+
 describe("console actions", () => {
+  beforeEach(() => {
+    (global as any).browser = browserFake();
+  });
+
   describe("hide", () => {
     it("create CONSOLE_HIDE action", () => {
       const action = consoleActions.hide();

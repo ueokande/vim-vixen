@@ -1,6 +1,9 @@
 import React from "react";
-import Completion from "console/components/console/Completion";
-import ReactTestRenderer from "react-test-renderer";
+import Completion from "../../../../src/console/components/console/Completion";
+import ReactTestRenderer, { ReactTestInstance } from "react-test-renderer";
+import { expect } from "chai";
+import CompletionTitle from "../../../../src/console/components/console/CompletionTitle";
+import CompletionItem from "../../../../src/console/components/console/CompletionItem";
 
 describe("console/components/console/completion", () => {
   const completions = [
@@ -24,13 +27,22 @@ describe("console/components/console/completion", () => {
 
   it("renders Completion component", () => {
     const root = ReactTestRenderer.create(
-      <Completion completions={completions} size={30} />
+      <Completion completions={completions} size={30} select={-1} />
     ).root;
 
-    expect(root.children).to.have.lengthOf(1);
-
-    const children = root.children[0].children;
+    // const children = root.findByType('ul').children as Array<ReactTestInstance>;
+    const children = root.findByType("ul").children as Array<ReactTestInstance>;
     expect(children).to.have.lengthOf(8);
+    expect(children.map((e) => e.type)).to.deep.equal([
+      CompletionTitle,
+      CompletionItem,
+      CompletionItem,
+      CompletionItem,
+      CompletionTitle,
+      CompletionItem,
+      CompletionItem,
+      CompletionItem,
+    ]);
     expect(children[0].props.title).to.equal("Fruit");
     expect(children[1].props.caption).to.equal("apple");
     expect(children[2].props.caption).to.equal("banana");
@@ -46,7 +58,7 @@ describe("console/components/console/completion", () => {
       <Completion completions={completions} size={30} select={3} />
     ).root;
 
-    const children = root.children[0].children;
+    const children = root.findByType("ul").children as Array<ReactTestInstance>;
     expect(children[5].props.highlight).to.be.true;
   });
 
@@ -55,10 +67,8 @@ describe("console/components/console/completion", () => {
       <Completion completions={completions} size={30} select={-1} />
     ).root;
 
-    const children = root.children[0].children;
-    for (const li of children[0].children) {
-      expect(li.props.highlight).not.to.be.ok;
-    }
+    const children = root.findByType("ul").findAllByType(CompletionItem);
+    expect(children.every((e) => e.props.highlight === false)).to.be.true;
   });
 
   it("limits completion items", () => {
@@ -66,7 +76,7 @@ describe("console/components/console/completion", () => {
       <Completion completions={completions} size={3} select={-1} />
     ).root;
 
-    let children = root.children[0].children;
+    let children = root.findByType("ul").children as Array<ReactTestInstance>;
     expect(children).to.have.lengthOf(3);
 
     expect(children[0].props.title).to.equal("Fruit");
@@ -77,7 +87,7 @@ describe("console/components/console/completion", () => {
       <Completion completions={completions} size={3} select={0} />
     ).root;
 
-    children = root.children[0].children;
+    children = root.findByType("ul").children as Array<ReactTestInstance>;
     expect(children[1].props.highlight).to.be.true;
   });
 
@@ -87,7 +97,7 @@ describe("console/components/console/completion", () => {
     );
     const root = component.root;
 
-    let children = root.children[0].children;
+    let children = root.findByType("ul").children as Array<ReactTestInstance>;
     expect(children).to.have.lengthOf(3);
     expect(children[0].props.title).to.equal("Fruit");
     expect(children[1].props.caption).to.equal("apple");
@@ -97,7 +107,7 @@ describe("console/components/console/completion", () => {
       <Completion completions={completions} size={3} select={2} />
     );
 
-    children = root.children[0].children;
+    children = root.findByType("ul").children as Array<ReactTestInstance>;
     expect(children).to.have.lengthOf(3);
     expect(children[0].props.caption).to.equal("apple");
     expect(children[1].props.caption).to.equal("banana");
@@ -108,7 +118,7 @@ describe("console/components/console/completion", () => {
       <Completion completions={completions} size={3} select={3} />
     );
 
-    children = root.children[0].children;
+    children = root.findByType("ul").children as Array<ReactTestInstance>;
     expect(children).to.have.lengthOf(3);
     expect(children[0].props.caption).to.equal("cherry");
     expect(children[1].props.title).to.equal("Element");
@@ -122,7 +132,7 @@ describe("console/components/console/completion", () => {
     );
     const root = component.root;
 
-    let children = root.children[0].children;
+    let children = root.findByType("ul").children as Array<ReactTestInstance>;
     expect(children).to.have.lengthOf(3);
     expect(children[0].props.caption).to.equal("argon");
     expect(children[1].props.caption).to.equal("boron");
@@ -132,21 +142,21 @@ describe("console/components/console/completion", () => {
       <Completion completions={completions} size={3} select={4} />
     );
 
-    children = root.children[0].children;
+    children = root.findByType("ul").children as Array<ReactTestInstance>;
     expect(children[1].props.highlight).to.be.true;
 
     component.update(
       <Completion completions={completions} size={3} select={3} />
     );
 
-    children = root.children[0].children;
+    children = root.findByType("ul").children as Array<ReactTestInstance>;
     expect(children[0].props.highlight).to.be.true;
 
     component.update(
       <Completion completions={completions} size={3} select={2} />
     );
 
-    children = root.children[0].children;
+    children = root.findByType("ul").children as Array<ReactTestInstance>;
     expect(children[0].props.caption).to.equal("cherry");
     expect(children[1].props.title).to.equal("Element");
     expect(children[2].props.caption).to.equal("argon");

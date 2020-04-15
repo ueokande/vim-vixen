@@ -6,6 +6,7 @@ import { expect } from "chai";
 
 import BlacklistForm from "../../../../src/settings/components/form/BlacklistForm";
 import Blacklist from "../../../../src/shared/settings/Blacklist";
+import AddButton from "../../../../src/settings/components/ui/AddButton";
 
 describe("settings/form/BlacklistForm", () => {
   describe("render", () => {
@@ -16,26 +17,32 @@ describe("settings/form/BlacklistForm", () => {
         />
       ).root;
 
-      const children = root.children[0].children;
-      expect(children).to.have.lengthOf(3);
-      expect(children[0].children[0].props.value).to.equal("*.slack.com");
-      expect(children[1].children[0].props.value).to.equal(
-        "www.google.com/maps"
-      );
-      expect(children[2].props.name).to.equal("add");
+      const rows = root.findAllByProps({
+        className: "form-blacklist-form-row",
+      });
+      expect(rows).to.have.lengthOf(2);
+      expect(
+        rows[0].findByProps({ className: "column-url" }).props.value
+      ).to.equal("*.slack.com");
+      expect(
+        rows[1].findByProps({ className: "column-url" }).props.value
+      ).to.equal("www.google.com/maps");
+
+      expect(() => root.findByType(AddButton)).not.throw();
     });
 
     it("renders blank value", () => {
       const root = ReactTestRenderer.create(<BlacklistForm />).root;
 
-      const children = root.children[0].children;
-      expect(children).to.have.lengthOf(1);
-      expect(children[0].props.name).to.equal("add");
+      const rows = root.findAllByProps({
+        className: "form-blacklist-form-row",
+      });
+      expect(rows).to.be.empty;
     });
   });
 
   describe("onChange", () => {
-    let container;
+    let container: HTMLDivElement;
 
     beforeEach(() => {
       container = document.createElement("div");
@@ -44,7 +51,6 @@ describe("settings/form/BlacklistForm", () => {
 
     afterEach(() => {
       document.body.removeChild(container);
-      container = null;
     });
 
     it("invokes onChange event on edit", (done) => {
@@ -65,7 +71,9 @@ describe("settings/form/BlacklistForm", () => {
         );
       });
 
-      const input = document.querySelectorAll("input[type=text]")[0];
+      const input = document.querySelectorAll(
+        "input[type=text]"
+      )[0] as HTMLInputElement;
       input.value = "gitter.im";
       ReactTestUtils.Simulate.change(input);
     });
@@ -104,7 +112,9 @@ describe("settings/form/BlacklistForm", () => {
         );
       });
 
-      const button = document.querySelector("input[type=button].ui-add-button");
+      const button = document.querySelector(
+        "input[type=button].ui-add-button"
+      ) as HTMLButtonElement;
       ReactTestUtils.Simulate.click(button);
     });
   });
