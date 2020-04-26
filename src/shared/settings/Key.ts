@@ -52,7 +52,7 @@ export default class Key {
 
     return new Key({
       key: str,
-      shift: str.toLowerCase() !== str,
+      shift: false,
       ctrl: false,
       alt: false,
       meta: false,
@@ -64,6 +64,15 @@ export default class Key {
   }
 
   equals(key: Key) {
+    // special case for uppercase command
+    // such that it allows both shift+command and capslock uppercase
+    if (key.key.toLowerCase() !== key.key) {
+      return this.key === key.key &&
+        this.ctrl === key.ctrl &&
+        this.meta === key.meta &&
+        this.alt === key.alt;
+    }
+
     return this.key === key.key &&
       this.ctrl === key.ctrl &&
       this.meta === key.meta &&
