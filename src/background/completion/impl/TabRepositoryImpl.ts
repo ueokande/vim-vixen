@@ -1,7 +1,5 @@
 import TabRepository, { Tab } from "../TabRepository";
 
-const COMPLETION_ITEM_LIMIT = 10;
-
 export default class TabRepositoryImpl implements TabRepository {
   async queryTabs(query: string, excludePinned: boolean): Promise<Tab[]> {
     const tabs = await browser.tabs.query({ currentWindow: true });
@@ -16,7 +14,6 @@ export default class TabRepositoryImpl implements TabRepository {
         return !(excludePinned && t.pinned);
       })
       .filter((item) => item.id && item.title && item.url)
-      .slice(0, COMPLETION_ITEM_LIMIT)
       .map(TabRepositoryImpl.toEntity);
   }
 
