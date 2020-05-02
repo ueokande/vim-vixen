@@ -1,15 +1,14 @@
-import { FindRepositoryImpl } from '../../../src/content/repositories/FindRepository';
-import { expect } from 'chai';
+import { FindRepositoryImpl } from "../../../src/content/repositories/FindRepository";
+import { expect } from "chai";
 
-describe('FindRepositoryImpl', () => {
-  it('updates and gets last keyword', () => {
+describe("FindRepositoryImpl", () => {
+  it("updates and gets last keyword", () => {
     const sut = new FindRepositoryImpl();
 
     expect(sut.getLastKeyword()).to.be.null;
 
-    sut.setLastKeyword('monkey');
+    sut.setLastKeyword("monkey");
 
-    expect(sut.getLastKeyword()).to.equal('monkey');
+    expect(sut.getLastKeyword()).to.equal("monkey");
   });
 });
-

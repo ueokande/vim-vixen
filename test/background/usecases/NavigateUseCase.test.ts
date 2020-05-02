@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import TabPresenter from '../../../src/background/presenters/TabPresenter';
-import NavigateUseCase from '../../../src/background/usecases/NavigateUseCase';
-import NavigateClient from '../../../src/background/clients/NavigateClient';
-import * as sinon from 'sinon';
+import TabPresenter from "../../../src/background/presenters/TabPresenter";
+import NavigateUseCase from "../../../src/background/usecases/NavigateUseCase";
+import NavigateClient from "../../../src/background/clients/NavigateClient";
+import * as sinon from "sinon";
 
 class MockTabPresenter implements TabPresenter {
   create(_url: string, _opts?: object): Promise<browser.tabs.Tab> {
@@ -17,7 +17,10 @@ class MockTabPresenter implements TabPresenter {
     throw new Error("not implemented");
   }
 
-  getByKeyword(_keyword: string, _excludePinned: boolean): Promise<browser.tabs.Tab[]> {
+  getByKeyword(
+    _keyword: string,
+    _excludePinned: boolean
+  ): Promise<browser.tabs.Tab[]> {
     throw new Error("not implemented");
   }
 
@@ -33,7 +36,9 @@ class MockTabPresenter implements TabPresenter {
     throw new Error("not implemented");
   }
 
-  onSelected(_listener: (arg: { tabId: number; windowId: number }) => void): void {
+  onSelected(
+    _listener: (arg: { tabId: number; windowId: number }) => void
+  ): void {
     throw new Error("not implemented");
   }
 
@@ -66,7 +71,7 @@ class MockTabPresenter implements TabPresenter {
   }
 }
 
-describe('NavigateUseCase', () => {
+describe("NavigateUseCase", () => {
   let sut: NavigateUseCase;
   let tabPresenter: TabPresenter;
   let navigateClient: NavigateClient;
@@ -80,7 +85,7 @@ describe('NavigateUseCase', () => {
   const newTab = (url: string): browser.tabs.Tab => {
     return {
       index: 0,
-      title: 'dummy title',
+      title: "dummy title",
       url: url,
       active: true,
       hidden: false,
@@ -91,53 +96,67 @@ describe('NavigateUseCase', () => {
       lastAccessed: 1585446733000,
       pinned: false,
       selected: false,
-      windowId: 0
+      windowId: 0,
     };
   };
 
-  describe('#openParent()', async () => {
-    it('opens parent directory of file', async() => {
-      sinon.stub(tabPresenter, 'getCurrent')
-          .returns(Promise.resolve(newTab('https://google.com/fruits/yellow/banana')));
+  describe("#openParent()", async () => {
+    it("opens parent directory of file", async () => {
+      sinon
+        .stub(tabPresenter, "getCurrent")
+        .returns(
+          Promise.resolve(newTab("https://google.com/fruits/yellow/banana"))
+        );
 
-      const mock = sinon.mock(tabPresenter)
-          .expects('open').withArgs('https://google.com/fruits/yellow/');
-
-      await sut.openParent();
-
-      mock.verify();
-    });
-
-    it('opens parent directory of directory', async() => {
-      sinon.stub(tabPresenter, 'getCurrent')
-          .returns(Promise.resolve(newTab('https://google.com/fruits/yellow/')));
-
-      const mock = sinon.mock(tabPresenter)
-          .expects('open').withArgs('https://google.com/fruits/');
+      const mock = sinon
+        .mock(tabPresenter)
+        .expects("open")
+        .withArgs("https://google.com/fruits/yellow/");
 
       await sut.openParent();
 
       mock.verify();
     });
 
-    it('removes hash', async() => {
-      sinon.stub(tabPresenter, 'getCurrent')
-          .returns(Promise.resolve(newTab('https://google.com/#top')));
+    it("opens parent directory of directory", async () => {
+      sinon
+        .stub(tabPresenter, "getCurrent")
+        .returns(Promise.resolve(newTab("https://google.com/fruits/yellow/")));
 
-      const mock = sinon.mock(tabPresenter)
-          .expects('open').withArgs('https://google.com/');
+      const mock = sinon
+        .mock(tabPresenter)
+        .expects("open")
+        .withArgs("https://google.com/fruits/");
 
       await sut.openParent();
 
       mock.verify();
     });
 
-    it('removes search query', async() => {
-      sinon.stub(tabPresenter, 'getCurrent')
-          .returns(Promise.resolve(newTab('https://google.com/search?q=apple')));
+    it("removes hash", async () => {
+      sinon
+        .stub(tabPresenter, "getCurrent")
+        .returns(Promise.resolve(newTab("https://google.com/#top")));
 
-      const mock = sinon.mock(tabPresenter)
-          .expects('open').withArgs('https://google.com/search');
+      const mock = sinon
+        .mock(tabPresenter)
+        .expects("open")
+        .withArgs("https://google.com/");
+
+      await sut.openParent();
+
+      mock.verify();
+    });
+
+    it("removes search query", async () => {
+      sinon
+        .stub(tabPresenter, "getCurrent")
+        .returns(Promise.resolve(newTab("https://google.com/search?q=apple")));
+
+      const mock = sinon
+        .mock(tabPresenter)
+        .expects("open")
+        .withArgs("https://google.com/search");
 
       await sut.openParent();
 
@@ -145,13 +164,16 @@ describe('NavigateUseCase', () => {
     });
   });
 
-  describe('#openRoot()', () => {
-    it('opens root direectory', async() => {
-      sinon.stub(tabPresenter, 'getCurrent')
-          .returns(Promise.resolve(newTab('https://google.com/seach?q=apple')));
+  describe("#openRoot()", () => {
+    it("opens root direectory", async () => {
+      sinon
+        .stub(tabPresenter, "getCurrent")
+        .returns(Promise.resolve(newTab("https://google.com/seach?q=apple")));
 
-      const mock = sinon.mock(tabPresenter)
-          .expects('open').withArgs('https://google.com');
+      const mock = sinon
+        .mock(tabPresenter)
+        .expects("open")
+        .withArgs("https://google.com");
 
       await sut.openRoot();
 

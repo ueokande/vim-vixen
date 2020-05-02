@@ -1,5 +1,5 @@
-import Settings from '../../shared/settings/Settings';
-import * as messages from '../../shared/messages';
+import Settings from "../../shared/settings/Settings";
+import * as messages from "../../shared/messages";
 
 export default interface SettingClient {
   load(): Promise<Settings>;

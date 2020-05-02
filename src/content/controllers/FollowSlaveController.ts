@@ -1,13 +1,10 @@
-import { injectable } from 'tsyringe';
-import * as messages from '../../shared/messages';
-import FollowSlaveUseCase from '../usecases/FollowSlaveUseCase';
+import { injectable } from "tsyringe";
+import * as messages from "../../shared/messages";
+import FollowSlaveUseCase from "../usecases/FollowSlaveUseCase";
 
 @injectable()
 export default class FollowSlaveController {
-  constructor(
-    private usecase: FollowSlaveUseCase,
-  ) {
-  }
+  constructor(private usecase: FollowSlaveUseCase) {}
 
   countTargets(m: messages.FollowRequestCountTargetsMessage): void {
     this.usecase.countTargets(m.viewSize, m.framePosition);

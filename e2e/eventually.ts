@@ -1,19 +1,19 @@
 const defaultInterval = 100;
 const defaultTimeout = 2000;
 
-type Handler = () => void
+type Handler = () => void;
 
 const sleep = (ms: number): Promise<void> => {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
- 
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 const eventually = async (
   fn: Handler,
   timeout = defaultTimeout,
-  interval = defaultInterval,
+  interval = defaultInterval
 ): Promise<void> => {
   const start = Date.now();
-  const loop = async() => {
+  const loop = async () => {
     try {
       await fn();
     } catch (err) {

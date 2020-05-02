@@ -1,24 +1,24 @@
-import * as dom from '../shared/utils/dom';
-import Key from '../shared/settings/Key';
+import * as dom from "../shared/utils/dom";
+import Key from "../shared/settings/Key";
 
 const cancelKey = (e: KeyboardEvent): boolean => {
-  if (e.key === 'Escape') {
+  if (e.key === "Escape") {
     return true;
   }
-  if (e.key === '[' && e.ctrlKey) {
+  if (e.key === "[" && e.ctrlKey) {
     return true;
   }
   return false;
 };
 
 const modifiedKeyName = (name: string): string => {
-  if (name === ' ') {
-    return 'Space';
+  if (name === " ") {
+    return "Space";
   }
   if (name.length === 1) {
     return name;
-  } else if (name === 'Escape') {
-    return 'Esc';
+  } else if (name === "Escape") {
+    return "Esc";
   }
   return name;
 };
@@ -44,7 +44,7 @@ export const keyFromKeyboardEvent = (e: KeyboardEvent): Key => {
 };
 
 export default class InputDriver {
-  private pressed: {[key: string]: string} = {};
+  private pressed: { [key: string]: string } = {};
 
   private onKeyListeners: ((key: Key) => boolean)[] = [];
 
@@ -52,9 +52,9 @@ export default class InputDriver {
     this.pressed = {};
     this.onKeyListeners = [];
 
-    target.addEventListener('keypress', this.onKeyPress.bind(this));
-    target.addEventListener('keydown', this.onKeyDown.bind(this));
-    target.addEventListener('keyup', this.onKeyUp.bind(this));
+    target.addEventListener("keypress", this.onKeyPress.bind(this));
+    target.addEventListener("keydown", this.onKeyDown.bind(this));
+    target.addEventListener("keyup", this.onKeyUp.bind(this));
   }
 
   onKey(cb: (key: Key) => boolean) {
@@ -62,18 +62,18 @@ export default class InputDriver {
   }
 
   private onKeyPress(e: KeyboardEvent) {
-    if (this.pressed[e.key] && this.pressed[e.key] !== 'keypress') {
+    if (this.pressed[e.key] && this.pressed[e.key] !== "keypress") {
       return;
     }
-    this.pressed[e.key] = 'keypress';
+    this.pressed[e.key] = "keypress";
     this.capture(e);
   }
 
   private onKeyDown(e: KeyboardEvent) {
-    if (this.pressed[e.key] && this.pressed[e.key] !== 'keydown') {
+    if (this.pressed[e.key] && this.pressed[e.key] !== "keydown") {
       return;
     }
-    this.pressed[e.key] = 'keydown';
+    this.pressed[e.key] = "keydown";
     this.capture(e);
   }
 
@@ -93,7 +93,7 @@ export default class InputDriver {
       }
       return;
     }
-    if (['Shift', 'Control', 'Alt', 'OS'].includes(e.key)) {
+    if (["Shift", "Control", "Alt", "OS"].includes(e.key)) {
       // pressing only meta key is ignored
       return;
     }
@@ -110,9 +110,11 @@ export default class InputDriver {
   }
 
   private fromInput(e: Element) {
-    return e instanceof HTMLInputElement ||
+    return (
+      e instanceof HTMLInputElement ||
       e instanceof HTMLTextAreaElement ||
       e instanceof HTMLSelectElement ||
-      dom.isContentEditable(e);
+      dom.isContentEditable(e)
+    );
   }
 }

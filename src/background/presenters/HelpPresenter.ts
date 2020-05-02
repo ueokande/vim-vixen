@@ -1,6 +1,6 @@
-import { injectable } from 'tsyringe';
+import { injectable } from "tsyringe";
 
-const url = 'https://ueokande.github.io/vim-vixen/';
+const url = "https://ueokande.github.io/vim-vixen/";
 
 @injectable()
 export default class HelpPresenter {

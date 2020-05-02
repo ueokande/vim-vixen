@@ -1,13 +1,10 @@
-import { injectable } from 'tsyringe';
-import { Message } from '../../shared/messages';
-import NavigateUseCase from '../usecases/NavigateUseCase';
+import { injectable } from "tsyringe";
+import { Message } from "../../shared/messages";
+import NavigateUseCase from "../usecases/NavigateUseCase";
 
 @injectable()
 export default class NavigateController {
-  constructor(
-    private navigateUseCase: NavigateUseCase,
-  ) {
-  }
+  constructor(private navigateUseCase: NavigateUseCase) {}
 
   openHistoryNext(_m: Message): Promise<void> {
     this.navigateUseCase.openHistoryNext();

@@ -1,4 +1,4 @@
-import * as doms from '../../shared/utils/dom';
+import * as doms from "../../shared/utils/dom";
 
 const SCROLL_DELTA_X = 64;
 const SCROLL_DELTA_Y = 64;
@@ -9,13 +9,19 @@ let lastTimeoutId: number | null = null;
 
 const isScrollableStyle = (element: Element): boolean => {
   const { overflowX, overflowY } = window.getComputedStyle(element);
-  return !(overflowX !== 'scroll' && overflowX !== 'auto' &&
-    overflowY !== 'scroll' && overflowY !== 'auto');
+  return !(
+    overflowX !== "scroll" &&
+    overflowX !== "auto" &&
+    overflowY !== "scroll" &&
+    overflowY !== "auto"
+  );
 };
 
 const isOverflowed = (element: Element): boolean => {
-  return element.scrollWidth > element.clientWidth ||
-    element.scrollHeight > element.clientHeight;
+  return (
+    element.scrollWidth > element.clientWidth ||
+    element.scrollHeight > element.clientHeight
+  );
 };
 
 // Find a visiable and scrollable element by depth-first search.  Currently
@@ -73,7 +79,7 @@ class Scroller {
     this.element.scrollTo({
       left: x,
       top: y,
-      behavior: 'smooth',
+      behavior: "smooth",
     });
     this.prepareReset();
   }
@@ -94,7 +100,7 @@ class Scroller {
   }
 }
 
-export type Point = { x: number, y: number };
+export type Point = { x: number; y: number };
 
 export default interface ScrollPresenter {
   getScroll(): Point;

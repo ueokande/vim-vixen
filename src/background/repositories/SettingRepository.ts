@@ -1,4 +1,4 @@
-import SettingData from '../../shared/SettingData';
+import SettingData from "../../shared/SettingData";
 
 export default interface SettingRepository {
   load(): Promise<SettingData | null>;
@@ -8,7 +8,7 @@ export default interface SettingRepository {
 
 export class LocalSettingRepository implements SettingRepository {
   async load(): Promise<SettingData | null> {
-    const {settings} = await browser.storage.local.get('settings');
+    const { settings } = await browser.storage.local.get("settings");
     if (!settings) {
       return null;
     }
@@ -17,7 +17,7 @@ export class LocalSettingRepository implements SettingRepository {
 
   onChange(callback: () => void) {
     browser.storage.onChanged.addListener((changes, area) => {
-      if (area !== 'local') {
+      if (area !== "local") {
         return;
       }
       if (changes.settings) {
@@ -29,7 +29,7 @@ export class LocalSettingRepository implements SettingRepository {
 
 export class SyncSettingRepository implements SettingRepository {
   async load(): Promise<SettingData | null> {
-    const {settings} = await browser.storage.sync.get('settings');
+    const { settings } = await browser.storage.sync.get("settings");
     if (!settings) {
       return null;
     }
@@ -38,7 +38,7 @@ export class SyncSettingRepository implements SettingRepository {
 
   onChange(callback: () => void) {
     browser.storage.onChanged.addListener((changes, area) => {
-      if (area !== 'sync') {
+      if (area !== "sync") {
         return;
       }
       if (changes.settings) {

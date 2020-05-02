@@ -1,5 +1,5 @@
-import * as messages from '../../shared/messages';
-import Key from '../../shared/settings/Key';
+import * as messages from "../../shared/messages";
+import Key from "../../shared/settings/Key";
 
 export default interface FollowMasterClient {
   startFollow(newTab: boolean, background: boolean): void;
@@ -40,6 +40,6 @@ export class FollowMasterClientImpl implements FollowMasterClient {
   }
 
   private postMessage(msg: messages.Message): void {
-    this.window.postMessage(JSON.stringify(msg), '*');
+    this.window.postMessage(JSON.stringify(msg), "*");
   }
 }

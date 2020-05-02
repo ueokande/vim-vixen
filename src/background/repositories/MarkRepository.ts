@@ -1,8 +1,8 @@
-import { injectable } from 'tsyringe';
-import MemoryStorage from '../infrastructures/MemoryStorage';
-import GlobalMark from '../domains/GlobalMark';
+import { injectable } from "tsyringe";
+import MemoryStorage from "../infrastructures/MemoryStorage";
+import GlobalMark from "../domains/GlobalMark";
 
-const MARK_KEY = 'mark';
+const MARK_KEY = "mark";
 
 @injectable()
 export default class MarkRepository {
@@ -34,4 +34,3 @@ export default class MarkRepository {
     return this.cache.get(MARK_KEY) || {};
   }
 }
-

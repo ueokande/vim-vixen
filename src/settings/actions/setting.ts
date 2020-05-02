@@ -1,15 +1,17 @@
-import * as actions from './index';
-import * as storages from '../storage';
+import * as actions from "./index";
+import * as storages from "../storage";
 import SettingData, {
-  JSONTextSettings, FormSettings, SettingSource,
-} from '../../shared/SettingData';
+  JSONTextSettings,
+  FormSettings,
+  SettingSource,
+} from "../../shared/SettingData";
 
-const load = async(): Promise<actions.SettingAction> => {
+const load = async (): Promise<actions.SettingAction> => {
   const data = await storages.load();
   return set(data);
 };
 
-const save = async(data: SettingData): Promise<actions.SettingAction> => {
+const save = async (data: SettingData): Promise<actions.SettingAction> => {
   try {
     if (data.getSource() === SettingSource.JSON) {
       // toSettings exercise validation
@@ -25,7 +27,6 @@ const save = async(data: SettingData): Promise<actions.SettingAction> => {
   await storages.save(data);
   return set(data);
 };
-
 
 const switchToForm = (json: JSONTextSettings): actions.SettingAction => {
   try {
@@ -55,18 +56,18 @@ const switchToJson = (form: FormSettings): actions.SettingAction => {
 const set = (data: SettingData): actions.SettingAction => {
   const source = data.getSource();
   switch (source) {
-  case SettingSource.JSON:
-    return {
-      type: actions.SETTING_SET_SETTINGS,
-      source: source,
-      json: data.getJSON(),
-    };
-  case SettingSource.Form:
-    return {
-      type: actions.SETTING_SET_SETTINGS,
-      source: source,
-      form: data.getForm(),
-    };
+    case SettingSource.JSON:
+      return {
+        type: actions.SETTING_SET_SETTINGS,
+        source: source,
+        json: data.getJSON(),
+      };
+    case SettingSource.Form:
+      return {
+        type: actions.SETTING_SET_SETTINGS,
+        source: source,
+        form: data.getForm(),
+      };
   }
   throw new Error(`unknown source: ${source}`);
 };

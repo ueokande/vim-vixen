@@ -25,5 +25,3 @@ export class FollowSlaveRepositoryImpl implements FollowSlaveRepository {
     return current.enabled;
   }
 }
-
-

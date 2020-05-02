@@ -1,16 +1,14 @@
-import { injectable } from 'tsyringe';
-import AddonEnabledUseCase from '../usecases/AddonEnabledUseCase';
-import SettingUseCase from '../usecases/SettingUseCase';
-import * as messages from '../../shared/messages';
+import { injectable } from "tsyringe";
+import AddonEnabledUseCase from "../usecases/AddonEnabledUseCase";
+import SettingUseCase from "../usecases/SettingUseCase";
+import * as messages from "../../shared/messages";
 
 @injectable()
 export default class SettingController {
-
   constructor(
     private addonEnabledUseCase: AddonEnabledUseCase,
-    private settingUseCase: SettingUseCase,
-  ) {
-  }
+    private settingUseCase: SettingUseCase
+  ) {}
 
   async initSettings(): Promise<void> {
     try {

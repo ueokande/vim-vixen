@@ -1,10 +1,10 @@
-import { injectable, inject } from 'tsyringe';
-import FollowSlaveRepository from '../repositories/FollowSlaveRepository';
-import FollowPresenter from '../presenters/FollowPresenter';
-import TabsClient from '../client/TabsClient';
-import FollowMasterClient from '../client/FollowMasterClient';
-import { LinkHint, InputHint } from '../presenters/Hint';
-import Key from '../../shared/settings/Key';
+import { injectable, inject } from "tsyringe";
+import FollowSlaveRepository from "../repositories/FollowSlaveRepository";
+import FollowPresenter from "../presenters/FollowPresenter";
+import TabsClient from "../client/TabsClient";
+import FollowMasterClient from "../client/FollowMasterClient";
+import { LinkHint, InputHint } from "../presenters/Hint";
+import Key from "../../shared/settings/Key";
 
 interface Size {
   width: number;
@@ -19,19 +19,18 @@ interface Point {
 @injectable()
 export default class FollowSlaveUseCase {
   constructor(
-    @inject('FollowPresenter')
+    @inject("FollowPresenter")
     private presenter: FollowPresenter,
 
-    @inject('TabsClient')
+    @inject("TabsClient")
     private tabsClient: TabsClient,
 
-    @inject('FollowMasterClient')
+    @inject("FollowMasterClient")
     private followMasterClient: FollowMasterClient,
 
-    @inject('FollowSlaveRepository')
-    private followSlaveRepository: FollowSlaveRepository,
-  ) {
-  }
+    @inject("FollowSlaveRepository")
+    private followSlaveRepository: FollowSlaveRepository
+  ) {}
 
   countTargets(viewSize: Size, framePosition: Point): void {
     const count = this.presenter.getTargetCount(viewSize, framePosition);
@@ -65,11 +64,11 @@ export default class FollowSlaveUseCase {
       const url = hint.getLink();
       let openNewTab = newTab;
       // Open link by background script in order to prevent a popup block
-      if (hint.getLinkTarget() === '_blank') {
+      if (hint.getLinkTarget() === "_blank") {
         openNewTab = true;
       }
       // eslint-disable-next-line no-script-url
-      if (!url || url === '#' || url.toLowerCase().startsWith('javascript:')) {
+      if (!url || url === "#" || url.toLowerCase().startsWith("javascript:")) {
         return;
       }
       await this.tabsClient.openUrl(url, openNewTab, background);

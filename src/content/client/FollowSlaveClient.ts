@@ -1,4 +1,4 @@
-import * as messages from '../../shared/messages';
+import * as messages from "../../shared/messages";
 
 interface Size {
   width: number;
@@ -69,6 +69,6 @@ export class FollowSlaveClientImpl implements FollowSlaveClient {
   }
 
   private postMessage(msg: messages.Message): void {
-    this.target.postMessage(JSON.stringify(msg), '*');
+    this.target.postMessage(JSON.stringify(msg), "*");
   }
 }

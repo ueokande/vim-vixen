@@ -1,4 +1,4 @@
-import * as messages from '../../shared/messages';
+import * as messages from "../../shared/messages";
 
 export default interface ConsoleClient {
   info(text: string): Promise<void>;

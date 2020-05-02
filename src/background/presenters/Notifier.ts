@@ -1,5 +1,5 @@
-const NOTIFICATION_ID_UPDATE = 'vimvixen-update';
-const NOTIFICATION_ID_INVALID_SETTINGS = 'vimvixen-update-invalid-settings';
+const NOTIFICATION_ID_UPDATE = "vimvixen-update";
+const NOTIFICATION_ID_INVALID_SETTINGS = "vimvixen-update-invalid-settings";
 
 export default interface Notifier {
   notifyUpdated(version: string, onclick: () => void): Promise<void>;
@@ -10,7 +10,7 @@ export default interface Notifier {
 export class NotifierImpl implements NotifierImpl {
   async notifyUpdated(version: string, onclick: () => void): Promise<void> {
     const title = `Vim Vixen ${version} has been installed`;
-    const message = 'Click here to see release notes';
+    const message = "Click here to see release notes";
 
     const listener = (id: string) => {
       if (id !== NOTIFICATION_ID_UPDATE) {
@@ -22,8 +22,8 @@ export class NotifierImpl implements NotifierImpl {
     browser.notifications.onClicked.addListener(listener);
 
     await browser.notifications.create(NOTIFICATION_ID_UPDATE, {
-      'type': 'basic',
-      'iconUrl': browser.extension.getURL('resources/icon_48x48.png'),
+      type: "basic",
+      iconUrl: browser.extension.getURL("resources/icon_48x48.png"),
       title,
       message,
     });
@@ -32,7 +32,8 @@ export class NotifierImpl implements NotifierImpl {
   async notifyInvalidSettings(onclick: () => void): Promise<void> {
     const title = `Loaded settings is invalid`;
     // eslint-disable-next-line max-len
-    const message = 'The default settings is used due to the last saved settings is invalid.  Check your current settings from the add-on preference';
+    const message =
+      "The default settings is used due to the last saved settings is invalid.  Check your current settings from the add-on preference";
 
     const listener = (id: string) => {
       if (id !== NOTIFICATION_ID_INVALID_SETTINGS) {
@@ -44,8 +45,8 @@ export class NotifierImpl implements NotifierImpl {
     browser.notifications.onClicked.addListener(listener);
 
     await browser.notifications.create(NOTIFICATION_ID_INVALID_SETTINGS, {
-      'type': 'basic',
-      'iconUrl': browser.extension.getURL('resources/icon_48x48.png'),
+      type: "basic",
+      iconUrl: browser.extension.getURL("resources/icon_48x48.png"),
       title,
       message,
     });

@@ -1,10 +1,10 @@
-import { injectable, inject } from 'tsyringe';
-import FollowKeyRepository from '../repositories/FollowKeyRepository';
-import FollowMasterRepository from '../repositories/FollowMasterRepository';
-import FollowSlaveClient from '../client/FollowSlaveClient';
-import FollowSlaveClientFactory from '../client/FollowSlaveClientFactory';
-import SettingRepository from '../repositories/SettingRepository';
-import HintKeyProducer from './HintKeyProducer';
+import { injectable, inject } from "tsyringe";
+import FollowKeyRepository from "../repositories/FollowKeyRepository";
+import FollowMasterRepository from "../repositories/FollowMasterRepository";
+import FollowSlaveClient from "../client/FollowSlaveClient";
+import FollowSlaveClientFactory from "../client/FollowSlaveClientFactory";
+import SettingRepository from "../repositories/SettingRepository";
+import HintKeyProducer from "./HintKeyProducer";
 
 @injectable()
 export default class FollowMasterUseCase {
@@ -12,17 +12,17 @@ export default class FollowMasterUseCase {
   private producer: HintKeyProducer | null;
 
   constructor(
-    @inject('FollowKeyRepository')
+    @inject("FollowKeyRepository")
     private followKeyRepository: FollowKeyRepository,
 
-    @inject('FollowMasterRepository')
+    @inject("FollowMasterRepository")
     private followMasterRepository: FollowMasterRepository,
 
-    @inject('SettingRepository')
+    @inject("SettingRepository")
     private settingRepository: SettingRepository,
 
-    @inject('FollowSlaveClientFactory')
-    private followSlaveClientFactory: FollowSlaveClientFactory,
+    @inject("FollowSlaveClientFactory")
+    private followSlaveClientFactory: FollowSlaveClientFactory
   ) {
     this.producer = null;
   }
@@ -36,19 +36,21 @@ export default class FollowMasterUseCase {
 
     const viewWidth = window.top.innerWidth;
     const viewHeight = window.top.innerHeight;
-    this.followSlaveClientFactory.create(window.top).requestHintCount(
-      { width: viewWidth, height: viewHeight },
-      { x: 0, y: 0 },
-    );
+    this.followSlaveClientFactory
+      .create(window.top)
+      .requestHintCount(
+        { width: viewWidth, height: viewHeight },
+        { x: 0, y: 0 }
+      );
 
-    const frameElements = window.document.querySelectorAll('iframe');
+    const frameElements = window.document.querySelectorAll("iframe");
     for (let i = 0; i < frameElements.length; ++i) {
       const ele = frameElements[i] as HTMLFrameElement | HTMLIFrameElement;
       const { left: frameX, top: frameY } = ele.getBoundingClientRect();
       const client = this.followSlaveClientFactory.create(ele.contentWindow!!);
       client.requestHintCount(
         { width: viewWidth, height: viewHeight },
-        { x: frameX, y: frameY },
+        { x: frameX, y: frameY }
       );
     }
   }
@@ -67,8 +69,10 @@ export default class FollowMasterUseCase {
     const viewHeight = window.innerHeight || doc.documentElement.clientHeight;
     let pos = { x: 0, y: 0 };
     if (sender !== window) {
-      const frameElements = window.document.querySelectorAll('iframe');
-      const ele = Array.from(frameElements).find(e => e.contentWindow === sender);
+      const frameElements = window.document.querySelectorAll("iframe");
+      const ele = Array.from(frameElements).find(
+        (e) => e.contentWindow === sender
+      );
       if (!ele) {
         // elements of the sender is gone
         return;
@@ -77,11 +81,7 @@ export default class FollowMasterUseCase {
       pos = { x: frameX, y: frameY };
     }
     const client = this.followSlaveClientFactory.create(sender);
-    client.createHints(
-      { width: viewWidth, height: viewHeight },
-      pos,
-      produced,
-    );
+    client.createHints({ width: viewWidth, height: viewHeight }, pos, produced);
   }
 
   cancelFollow(): void {
@@ -110,17 +110,17 @@ export default class FollowMasterUseCase {
 
   enqueue(key: string): void {
     switch (key) {
-    case 'Enter':
-      this.activate(this.getCurrentTag());
-      return;
-    case 'Esc':
-      this.cancelFollow();
-      return;
-    case 'Backspace':
-    case 'Delete':
-      this.followKeyRepository.popKey();
-      this.filter(this.getCurrentTag());
-      return;
+      case "Enter":
+        this.activate(this.getCurrentTag());
+        return;
+      case "Esc":
+        this.cancelFollow();
+        return;
+      case "Backspace":
+      case "Delete":
+        this.followKeyRepository.popKey();
+        this.filter(this.getCurrentTag());
+        return;
     }
 
     this.followKeyRepository.pushKey(key);
@@ -138,13 +138,15 @@ export default class FollowMasterUseCase {
 
   private broadcastToSlaves(handler: (client: FollowSlaveClient) => void) {
     const allFrames = [window.self].concat(Array.from(window.frames as any));
-    const clients = allFrames.map(w => this.followSlaveClientFactory.create(w));
+    const clients = allFrames.map((w) =>
+      this.followSlaveClientFactory.create(w)
+    );
     for (const client of clients) {
       handler(client);
     }
   }
 
   private getCurrentTag(): string {
-    return this.followKeyRepository.getKeys().join('');
+    return this.followKeyRepository.getKeys().join("");
   }
 }

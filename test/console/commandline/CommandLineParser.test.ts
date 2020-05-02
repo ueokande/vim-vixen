@@ -1,4 +1,6 @@
-import CommandLineParser, {InputPhase} from "../../../src/console/commandline/CommandLineParser";
+import CommandLineParser, {
+  InputPhase,
+} from "../../../src/console/commandline/CommandLineParser";
 import { Command } from "../../../src/shared/Command";
 import { expect } from "chai";
 
@@ -9,7 +11,7 @@ describe("CommandLineParser", () => {
       expect(sut.inputPhase("")).to.equal(InputPhase.OnCommand);
       expect(sut.inputPhase("op")).to.equal(InputPhase.OnCommand);
       expect(sut.inputPhase("open ")).to.equal(InputPhase.OnArgs);
-      expect(sut.inputPhase("open apple")).to.equal(InputPhase.OnArgs)
+      expect(sut.inputPhase("open apple")).to.equal(InputPhase.OnArgs);
     });
   });
   describe("#parse", () => {
@@ -24,6 +26,6 @@ describe("CommandLineParser", () => {
         command: Command.QuitAll,
         args: "",
       });
-    })
-  })
+    });
+  });
 });

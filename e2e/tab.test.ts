@@ -1,57 +1,59 @@
-import * as path from 'path';
-import * as assert from 'assert';
+import * as path from "path";
+import * as assert from "assert";
 
-import TestServer from './lib/TestServer';
-import eventually from './eventually';
-import { Builder, Lanthan } from 'lanthan';
-import { WebDriver, Key } from 'selenium-webdriver';
-import Page from './lib/Page';
+import TestServer from "./lib/TestServer";
+import eventually from "./eventually";
+import { Builder, Lanthan } from "lanthan";
+import { WebDriver, Key } from "selenium-webdriver";
+import Page from "./lib/Page";
 
 describe("tab test", () => {
-  const server = new TestServer().receiveContent('/*', 'ok');
+  const server = new TestServer().receiveContent("/*", "ok");
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let browser: any;
   let win: any;
   let tabs: any[];
 
-  before(async() => {
-    lanthan = await Builder
-      .forBrowser('firefox')
-      .spyAddon(path.join(__dirname, '..'))
+  before(async () => {
+    lanthan = await Builder.forBrowser("firefox")
+      .spyAddon(path.join(__dirname, ".."))
       .build();
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
     await server.start();
   });
 
-  after(async() => {
+  after(async () => {
     await server.stop();
     if (lanthan) {
       await lanthan.quit();
     }
   });
 
-  beforeEach(async() => {
-    win = await browser.windows.create({ url: server.url('/#0') });
+  beforeEach(async () => {
+    win = await browser.windows.create({ url: server.url("/#0") });
     for (let i = 1; i < 5; ++i) {
-      await browser.tabs.create({ url: server.url('/#' + i), windowId: win.id });
-      await webdriver.navigate().to(server.url('/#' + i));
+      await browser.tabs.create({
+        url: server.url("/#" + i),
+        windowId: win.id,
+      });
+      await webdriver.navigate().to(server.url("/#" + i));
     }
     tabs = await browser.tabs.query({ windowId: win.id });
     tabs.sort((t1: any, t2: any) => t1.index - t2.index);
   });
 
-  afterEach(async() => {
+  afterEach(async () => {
     await browser.windows.remove(win.id);
   });
 
-  it('deletes tab and selects right by d', async () => {
+  it("deletes tab and selects right by d", async () => {
     await browser.tabs.update(tabs[3].id, { active: true });
     const page = await Page.currentContext(webdriver);
-    await page.sendKeys('d');
+    await page.sendKeys("d");
 
-    await eventually(async() => {
+    await eventually(async () => {
       const current = await browser.tabs.query({ windowId: win.id });
       assert.strictEqual(current.length, tabs.length - 1);
       assert.strictEqual(current[3].active, true);
@@ -59,34 +61,34 @@ describe("tab test", () => {
     });
   });
 
-  it('deletes tab and selects left by D', async () => {
+  it("deletes tab and selects left by D", async () => {
     await browser.tabs.update(tabs[3].id, { active: true });
     const page = await Page.currentContext(webdriver);
-    await page.sendKeys(Key.SHIFT, 'D');
+    await page.sendKeys(Key.SHIFT, "D");
 
-    await eventually(async() => {
+    await eventually(async () => {
       const current = await browser.tabs.query({ windowId: win.id });
       assert.strictEqual(current.length, tabs.length - 1);
       assert.strictEqual(current[2].active, true);
       assert.strictEqual(current[2].id, tabs[2].id);
-    })
+    });
   });
 
-  it('deletes all tabs to the right by x$', async () => {
+  it("deletes all tabs to the right by x$", async () => {
     await browser.tabs.update(tabs[1].id, { active: true });
     const page = await Page.currentContext(webdriver);
-    await page.sendKeys('x', '$');
+    await page.sendKeys("x", "$");
 
     const current = await browser.tabs.query({ windowId: win.id });
     assert.strictEqual(current.length, 2);
   });
 
-  it('duplicates tab by zd', async () => {
+  it("duplicates tab by zd", async () => {
     await browser.tabs.update(tabs[0].id, { active: true });
     const page = await Page.currentContext(webdriver);
-    await page.sendKeys('z', 'd');
+    await page.sendKeys("z", "d");
 
-    await eventually(async() => {
+    await eventually(async () => {
       const current = await browser.tabs.query({ windowId: win.id });
       current.sort((t1: any, t2: any) => t1.index - t2.index);
       assert.strictEqual(current.length, tabs.length + 1);
@@ -94,118 +96,121 @@ describe("tab test", () => {
     });
   });
 
-  it('makes pinned by zp', async () => {
+  it("makes pinned by zp", async () => {
     await browser.tabs.update(tabs[0].id, { active: true });
     const page = await Page.currentContext(webdriver);
-    await page.sendKeys('z', 'p');
+    await page.sendKeys("z", "p");
 
     const current = await browser.tabs.query({ windowId: win.id });
     assert.strictEqual(current[0].pinned, true);
   });
 
-  it('selects previous tab by K', async () => {
+  it("selects previous tab by K", async () => {
     await browser.tabs.update(tabs[2].id, { active: true });
     const page = await Page.currentContext(webdriver);
-    await page.sendKeys(Key.SHIFT, 'K');
+    await page.sendKeys(Key.SHIFT, "K");
 
     const current = await browser.tabs.query({ windowId: win.id });
     assert.strictEqual(current[1].active, true);
   });
 
-  it('selects previous tab by K rotatory', async () => {
+  it("selects previous tab by K rotatory", async () => {
     await browser.tabs.update(tabs[0].id, { active: true });
     const page = await Page.currentContext(webdriver);
-    await page.sendKeys(Key.SHIFT, 'K');
+    await page.sendKeys(Key.SHIFT, "K");
 
     const current = await browser.tabs.query({ windowId: win.id });
-    assert.strictEqual(current[current.length - 1].active, true)
+    assert.strictEqual(current[current.length - 1].active, true);
   });
 
-  it('selects next tab by J', async () => {
+  it("selects next tab by J", async () => {
     await browser.tabs.update(tabs[2].id, { active: true });
     const page = await Page.currentContext(webdriver);
-    await page.sendKeys(Key.SHIFT, 'J');
+    await page.sendKeys(Key.SHIFT, "J");
 
     const current = await browser.tabs.query({ windowId: win.id });
     assert.strictEqual(current[3].active, true);
   });
 
-  it('selects previous tab by J rotatory', async () => {
+  it("selects previous tab by J rotatory", async () => {
     await browser.tabs.update(tabs[tabs.length - 1].id, { active: true });
     const page = await Page.currentContext(webdriver);
-    await page.sendKeys(Key.SHIFT, 'J');
+    await page.sendKeys(Key.SHIFT, "J");
 
     const current = await browser.tabs.query({ windowId: win.id });
-    assert.strictEqual(current[0].active, true)
+    assert.strictEqual(current[0].active, true);
   });
 
-  it('selects first tab by g0', async () => {
+  it("selects first tab by g0", async () => {
     await browser.tabs.update(tabs[2].id, { active: true });
     const page = await Page.currentContext(webdriver);
-    await page.sendKeys('g', '0');
+    await page.sendKeys("g", "0");
 
     const current = await browser.tabs.query({ windowId: win.id });
-    assert.strictEqual(current[0].active, true)
+    assert.strictEqual(current[0].active, true);
   });
 
-  it('selects last tab by g$', async () => {
+  it("selects last tab by g$", async () => {
     await browser.tabs.update(tabs[2].id, { active: true });
     const page = await Page.currentContext(webdriver);
-    await page.sendKeys('g', '$');
+    await page.sendKeys("g", "$");
 
     const current = await browser.tabs.query({ windowId: win.id });
-    assert.strictEqual(current[current.length - 1].active, true)
+    assert.strictEqual(current[current.length - 1].active, true);
   });
 
-  it('selects last selected tab by <C-6>', async () => {
+  it("selects last selected tab by <C-6>", async () => {
     await browser.tabs.update(tabs[1].id, { active: true });
     await browser.tabs.update(tabs[4].id, { active: true });
 
     const page = await Page.currentContext(webdriver);
-    await page.sendKeys(Key.CONTROL, '6');
+    await page.sendKeys(Key.CONTROL, "6");
 
     const current = await browser.tabs.query({ windowId: win.id });
-    assert.strictEqual(current[1].active, true)
+    assert.strictEqual(current[1].active, true);
   });
 
   // browser.sessions.getRecentlyClosed() sometime throws "An unexpected error occurred"
   // This might be a bug in Firefox.
-  it.skip('reopen tab by u', async () => {
+  it.skip("reopen tab by u", async () => {
     await browser.tabs.remove(tabs[1].id);
     const page = await Page.currentContext(webdriver);
-    await page.sendKeys('u');
+    await page.sendKeys("u");
 
     const current = await browser.tabs.query({ windowId: win.id });
     assert.strictEqual(current.length, tabs.length);
   });
 
-  it('does not delete pinned tab by d', async () => {
+  it("does not delete pinned tab by d", async () => {
     await browser.tabs.update(tabs[0].id, { active: true, pinned: true });
     const page = await Page.currentContext(webdriver);
-    await page.sendKeys('d');
+    await page.sendKeys("d");
 
     const current = await browser.tabs.query({ windowId: win.id });
     assert.strictEqual(current.length, tabs.length);
   });
 
-  it('deletes pinned tab by !d', async () => {
+  it("deletes pinned tab by !d", async () => {
     await browser.tabs.update(tabs[0].id, { active: true, pinned: true });
     const page = await Page.currentContext(webdriver);
-    await page.sendKeys('!', 'd');
+    await page.sendKeys("!", "d");
 
     const current = await browser.tabs.query({ windowId: win.id });
     assert.strictEqual(current.length, tabs.length - 1);
   });
 
-  it('opens view-source by gf', async () => {
+  it("opens view-source by gf", async () => {
     await browser.tabs.update(tabs[0].id, { active: true });
     const page = await Page.currentContext(webdriver);
-    await page.sendKeys('g', 'f');
+    await page.sendKeys("g", "f");
 
-    await eventually(async() => {
+    await eventually(async () => {
       const current = await browser.tabs.query({ windowId: win.id });
       assert.strictEqual(current.length, tabs.length + 1);
-      assert.strictEqual(current[current.length - 1].url, `view-source:${server.url('/#0')}`);
+      assert.strictEqual(
+        current[current.length - 1].url,
+        `view-source:${server.url("/#0")}`
+      );
     });
   });
 });

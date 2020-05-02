@@ -1,42 +1,42 @@
-import * as path from 'path';
-import * as assert from 'assert';
+import * as path from "path";
+import * as assert from "assert";
 
-import eventually from './eventually';
-import TestServer from './lib/TestServer';
-import { Builder, Lanthan } from 'lanthan';
-import { Key, WebDriver } from 'selenium-webdriver';
-import Page from './lib/Page';
+import eventually from "./eventually";
+import TestServer from "./lib/TestServer";
+import { Builder, Lanthan } from "lanthan";
+import { Key, WebDriver } from "selenium-webdriver";
+import Page from "./lib/Page";
 
 describe("find test", () => {
-  const server = new TestServer().receiveContent('/',
-    `<!DOCTYPE html><html lang="en"><body>--hello--hello--hello--</body></html>`,
+  const server = new TestServer().receiveContent(
+    "/",
+    `<!DOCTYPE html><html lang="en"><body>--hello--hello--hello--</body></html>`
   );
   let lanthan: Lanthan;
   let webdriver: WebDriver;
   let page: Page;
 
-  before(async() => {
-    lanthan = await Builder
-      .forBrowser('firefox')
-      .spyAddon(path.join(__dirname, '..'))
+  before(async () => {
+    lanthan = await Builder.forBrowser("firefox")
+      .spyAddon(path.join(__dirname, ".."))
       .build();
     webdriver = lanthan.getWebDriver();
     await server.start();
   });
 
-  after(async() => {
+  after(async () => {
     await server.stop();
     if (lanthan) {
       await lanthan.quit();
     }
   });
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     page = await Page.navigateTo(webdriver, server.url());
   });
 
-  it('starts searching', async() => {
-    await page.sendKeys('/');
+  it("starts searching", async () => {
+    await page.sendKeys("/");
     const console = await page.getConsole();
     await console.execCommand("hello");
     await page.switchToTop();
@@ -60,53 +60,53 @@ describe("find test", () => {
     assert.deepStrictEqual(selection, { from: 16, to: 21 });
   });
 
-  it('shows error if pattern not found', async() => {
-    await page.sendKeys('/');
+  it("shows error if pattern not found", async () => {
+    await page.sendKeys("/");
     let console = await page.getConsole();
-    await console.execCommand('world');
+    await console.execCommand("world");
 
     await page.switchToTop();
     const selection = await page.getSelection();
     assert.deepStrictEqual(selection, { from: 0, to: 0 });
 
-    await eventually(async() => {
+    await eventually(async () => {
       console = await page.getConsole();
       const message = await console.getErrorMessage();
-      assert.strictEqual(message, 'Pattern not found: world');
+      assert.strictEqual(message, "Pattern not found: world");
     });
   });
 
-  it('search with last keyword if keyword is empty', async() => {
-    await page.sendKeys('/');
+  it("search with last keyword if keyword is empty", async () => {
+    await page.sendKeys("/");
     let console = await page.getConsole();
-    await console.execCommand('hello');
+    await console.execCommand("hello");
     await page.switchToTop();
 
     await page.clearSelection();
     let selection = await page.getSelection();
     assert.deepStrictEqual(selection, { from: 0, to: 0 });
 
-    await page.sendKeys('/');
+    await page.sendKeys("/");
     console = await page.getConsole();
-    await console.execCommand('');
+    await console.execCommand("");
     await page.switchToTop();
 
     selection = await page.getSelection();
     assert.deepStrictEqual(selection, { from: 2, to: 7 });
   });
 
-  it('search with last keyword on new page', async() => {
-    await page.sendKeys('/');
+  it("search with last keyword on new page", async () => {
+    await page.sendKeys("/");
     const console = await page.getConsole();
-    await console.execCommand('hello');
+    await console.execCommand("hello");
 
     await page.switchToTop();
-    await page.sendKeys('n');
+    await page.sendKeys("n");
     let selection = await page.getSelection();
     assert.deepStrictEqual(selection, { from: 9, to: 14 });
 
     page = await Page.navigateTo(webdriver, server.url());
-    await page.sendKeys('n');
+    await page.sendKeys("n");
     selection = await page.getSelection();
     assert.deepStrictEqual(selection, { from: 2, to: 7 });
   });

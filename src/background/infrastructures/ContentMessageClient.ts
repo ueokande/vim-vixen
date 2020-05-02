@@ -1,12 +1,12 @@
-import { injectable } from 'tsyringe';
-import * as messages from '../../shared/messages';
+import { injectable } from "tsyringe";
+import * as messages from "../../shared/messages";
 
 @injectable()
 export default class ContentMessageClient {
   async broadcastSettingsChanged(): Promise<void> {
     const tabs = await browser.tabs.query({});
     for (const tab of tabs) {
-      if (!tab.id || tab.url && tab.url.startsWith('about:')) {
+      if (!tab.id || (tab.url && tab.url.startsWith("about:"))) {
         continue;
       }
       browser.tabs.sendMessage(tab.id, {
@@ -19,7 +19,7 @@ export default class ContentMessageClient {
     const enabled = await browser.tabs.sendMessage(tabId, {
       type: messages.ADDON_ENABLED_QUERY,
     });
-    return enabled as any as boolean;
+    return (enabled as any) as boolean;
   }
 
   async toggleAddonEnabled(tabId: number): Promise<void> {

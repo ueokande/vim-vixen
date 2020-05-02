@@ -1,19 +1,18 @@
-import { WebDriver, By, until } from 'selenium-webdriver';
-import { Console } from './Console';
+import { WebDriver, By, until } from "selenium-webdriver";
+import { Console } from "./Console";
 
 type Hint = {
-  displayed: boolean,
-  text: string,
+  displayed: boolean;
+  text: string;
 };
 
 type Selection = {
-  from: number,
-  to: number,
+  from: number;
+  to: number;
 };
 
 export default class Page {
-  private constructor(private webdriver: WebDriver) {
-  }
+  private constructor(private webdriver: WebDriver) {}
 
   static async currentContext(webdriver: WebDriver): Promise<Page> {
     await Page.waitForConsoleLoaded(webdriver);
@@ -26,8 +25,10 @@ export default class Page {
     return new Page(webdriver);
   }
 
-  async sendKeys(...keys: Array<string|number|Promise<string|number>>): Promise<void> {
-    const body = await this.webdriver.findElement(By.css('body'));
+  async sendKeys(
+    ...keys: Array<string | number | Promise<string | number>>
+  ): Promise<void> {
+    const body = await this.webdriver.findElement(By.css("body"));
     await body.sendKeys(...keys);
   }
 
@@ -38,17 +39,23 @@ export default class Page {
   }
 
   async showConsole(): Promise<Console> {
-    const iframe = this.webdriver.findElement(By.css('#vimvixen-console-frame'));
+    const iframe = this.webdriver.findElement(
+      By.css("#vimvixen-console-frame")
+    );
 
-    await this.sendKeys(':');
+    await this.sendKeys(":");
     await this.webdriver.wait(until.elementIsVisible(iframe));
     await this.webdriver.switchTo().frame(0);
-    await this.webdriver.wait(until.elementLocated(By.css('input.vimvixen-console-command-input')));
+    await this.webdriver.wait(
+      until.elementLocated(By.css("input.vimvixen-console-command-input"))
+    );
     return new Console(this.webdriver);
   }
 
   async getConsole(): Promise<Console> {
-    const iframe = this.webdriver.findElement(By.css('#vimvixen-console-frame'));
+    const iframe = this.webdriver.findElement(
+      By.css("#vimvixen-console-frame")
+    );
 
     await this.webdriver.wait(until.elementIsVisible(iframe));
     await this.webdriver.switchTo().frame(0);
@@ -68,16 +75,22 @@ export default class Page {
   }
 
   pageHeight(): Promise<number> {
-    return this.webdriver.executeScript(() => window.document.documentElement.clientHeight);
+    return this.webdriver.executeScript(
+      () => window.document.documentElement.clientHeight
+    );
   }
 
   async getSelection(): Promise<Selection> {
-    const obj = await this.webdriver.executeScript(`return window.getSelection();`) as any;
+    const obj = (await this.webdriver.executeScript(
+      `return window.getSelection();`
+    )) as any;
     return { from: obj.anchorOffset, to: obj.focusOffset };
   }
 
   async clearSelection(): Promise<void> {
-    await this.webdriver.executeScript(`window.getSelection().removeAllRanges()`);
+    await this.webdriver.executeScript(
+      `window.getSelection().removeAllRanges()`
+    );
   }
 
   async switchToTop(): Promise<void> {
@@ -85,15 +98,17 @@ export default class Page {
   }
 
   async waitAndGetHints(): Promise<Hint[]> {
-    await this.webdriver.wait(until.elementsLocated(By.css('.vimvixen-hint')));
+    await this.webdriver.wait(until.elementsLocated(By.css(".vimvixen-hint")));
 
-    const elements = await this.webdriver.findElements(By.css(`.vimvixen-hint`));
+    const elements = await this.webdriver.findElements(
+      By.css(`.vimvixen-hint`)
+    );
     const hints = [];
     for (const e of elements) {
-      const display = await e.getCssValue('display');
+      const display = await e.getCssValue("display");
       const text = await e.getText();
       hints.push({
-        displayed: display !== 'none',
+        displayed: display !== "none",
         text: text,
       });
     }
@@ -105,7 +120,9 @@ export default class Page {
     if (!topFrame) {
       return;
     }
-    await webdriver.wait(until.elementLocated(By.css('iframe.vimvixen-console-frame')));
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await webdriver.wait(
+      until.elementLocated(By.css("iframe.vimvixen-console-frame"))
+    );
+    await new Promise((resolve) => setTimeout(resolve, 100));
   }
 }

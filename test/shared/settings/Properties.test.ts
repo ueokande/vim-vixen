@@ -1,30 +1,29 @@
-import Properties from '../../../src/shared/settings/Properties';
-import { expect } from 'chai';
+import Properties from "../../../src/shared/settings/Properties";
+import { expect } from "chai";
 
-describe('Properties', () => {
-  describe('#propertiesValueOf', () => {
-    it('returns with default properties by empty settings', () => {
+describe("Properties", () => {
+  describe("#propertiesValueOf", () => {
+    it("returns with default properties by empty settings", () => {
       const props = Properties.fromJSON({});
       expect(props).to.deep.equal({
         hintchars: "abcdefghijklmnopqrstuvwxyz",
         smoothscroll: false,
-        complete: "sbh"
-      })
+        complete: "sbh",
+      });
     });
 
-    it('returns properties by valid settings', () => {
+    it("returns properties by valid settings", () => {
       const props = Properties.fromJSON({
         hintchars: "abcdefgh",
         smoothscroll: false,
-        complete: "sbh"
+        complete: "sbh",
       });
 
       expect(props).to.deep.equal({
         hintchars: "abcdefgh",
         smoothscroll: false,
-        complete: "sbh"
+        complete: "sbh",
       });
     });
   });
 });
-

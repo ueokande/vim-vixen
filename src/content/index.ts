@@ -1,10 +1,10 @@
-import 'reflect-metadata';
+import "reflect-metadata";
 
-import Application from './Application';
-import consoleFrameStyle from './site-style';
-import { ConsoleFramePresenterImpl } from './presenters/ConsoleFramePresenter';
-import { container } from 'tsyringe';
-import './di';
+import Application from "./Application";
+import consoleFrameStyle from "./site-style";
+import { ConsoleFramePresenterImpl } from "./presenters/ConsoleFramePresenter";
+import { container } from "tsyringe";
+import "./di";
 
 if (window.self === window.top) {
   new ConsoleFramePresenterImpl().initialize();
@@ -13,8 +13,10 @@ if (window.self === window.top) {
 try {
   const app = container.resolve(Application);
   app.run();
-} catch (e) { console.error(e); }
+} catch (e) {
+  console.error(e);
+}
 
-const style = window.document.createElement('style');
+const style = window.document.createElement("style");
 style.textContent = consoleFrameStyle;
 window.document.head.appendChild(style);

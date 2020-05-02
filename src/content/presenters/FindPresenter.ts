@@ -1,4 +1,3 @@
-
 export default interface FindPresenter {
   find(keyword: string, backwards: boolean): boolean;
 
@@ -18,7 +17,8 @@ interface MyWindow extends Window {
     aWrapAround?: boolean,
     aWholeWord?: boolean,
     aSearchInFrames?: boolean,
-    aShowDialog?: boolean): boolean;
+    aShowDialog?: boolean
+  ): boolean;
 }
 
 // eslint-disable-next-line no-var, vars-on-top, init-declarations
@@ -28,7 +28,6 @@ export class FindPresenterImpl implements FindPresenter {
   find(keyword: string, backwards: boolean): boolean {
     const caseSensitive = false;
     const wrapScan = true;
-
 
     // NOTE: aWholeWord dows not implemented, and aSearchInFrames does not work
     // because of same origin policy

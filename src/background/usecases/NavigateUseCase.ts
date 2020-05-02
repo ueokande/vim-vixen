@@ -1,14 +1,13 @@
-import { inject, injectable } from 'tsyringe';
-import NavigateClient from '../clients/NavigateClient';
-import TabPresenter from '../presenters/TabPresenter';
+import { inject, injectable } from "tsyringe";
+import NavigateClient from "../clients/NavigateClient";
+import TabPresenter from "../presenters/TabPresenter";
 
 @injectable()
 export default class NavigateUseCase {
   constructor(
-    @inject('TabPresenter') private tabPresenter: TabPresenter,
-    private navigateClient: NavigateClient,
-  ) {
-  }
+    @inject("TabPresenter") private tabPresenter: TabPresenter,
+    private navigateClient: NavigateClient
+  ) {}
 
   async openHistoryNext(): Promise<void> {
     const tab = await this.tabPresenter.getCurrent();
@@ -34,16 +33,16 @@ export default class NavigateUseCase {
     const tab = await this.tabPresenter.getCurrent();
     const url = new URL(tab.url!!);
     if (url.hash.length > 0) {
-      url.hash = '';
+      url.hash = "";
     } else if (url.search.length > 0) {
-      url.search = '';
+      url.search = "";
     } else {
       const basenamePattern = /\/[^/]+$/;
       const lastDirPattern = /\/[^/]+\/$/;
       if (basenamePattern.test(url.pathname)) {
-        url.pathname = url.pathname.replace(basenamePattern, '/');
+        url.pathname = url.pathname.replace(basenamePattern, "/");
       } else if (lastDirPattern.test(url.pathname)) {
-        url.pathname = url.pathname.replace(lastDirPattern, '/');
+        url.pathname = url.pathname.replace(lastDirPattern, "/");
       }
     }
     await this.tabPresenter.open(url.href);

@@ -1,12 +1,11 @@
-import { injectable, inject } from 'tsyringe';
-import MarkKeyRepository from '../repositories/MarkKeyRepository';
+import { injectable, inject } from "tsyringe";
+import MarkKeyRepository from "../repositories/MarkKeyRepository";
 
 @injectable()
 export default class MarkKeyUseCase {
   constructor(
-    @inject('MarkKeyRepository') private repository: MarkKeyRepository,
-  ) {
-  }
+    @inject("MarkKeyRepository") private repository: MarkKeyRepository
+  ) {}
 
   isSetMode(): boolean {
     return this.repository.isSetMode();

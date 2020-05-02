@@ -1,10 +1,7 @@
-import Key from '../../shared/settings/Key';
+import Key from "../../shared/settings/Key";
 
 export default class KeySequence {
-  constructor(
-    public readonly keys: Key[],
-  ) {
-  }
+  constructor(public readonly keys: Key[]) {}
 
   push(key: Key): number {
     return this.keys.push(key);
@@ -27,25 +24,26 @@ export default class KeySequence {
   }
 
   isDigitOnly(): boolean {
-    return this.keys.every(key => key.isDigit());
+    return this.keys.every((key) => key.isDigit());
   }
 
   repeatCount(): number {
-    let nonDigitAt = this.keys.findIndex(key => !key.isDigit());
+    let nonDigitAt = this.keys.findIndex((key) => !key.isDigit());
     if (this.keys.length === 0 || nonDigitAt === 0) {
       return 1;
     }
     if (nonDigitAt === -1) {
       nonDigitAt = this.keys.length;
     }
-    const digits = this.keys.slice(0, nonDigitAt)
-      .map(key => key.key)
-      .join('');
+    const digits = this.keys
+      .slice(0, nonDigitAt)
+      .map((key) => key.key)
+      .join("");
     return Number(digits);
   }
 
   trimNumericPrefix(): KeySequence {
-    let nonDigitAt = this.keys.findIndex(key => !key.isDigit());
+    let nonDigitAt = this.keys.findIndex((key) => !key.isDigit());
     if (nonDigitAt === -1) {
       nonDigitAt = this.keys.length;
     }
@@ -53,7 +51,7 @@ export default class KeySequence {
   }
 
   splitNumericPrefix(): [KeySequence, KeySequence] {
-    const nonDigitIndex = this.keys.findIndex(key => !key.isDigit());
+    const nonDigitIndex = this.keys.findIndex((key) => !key.isDigit());
     if (nonDigitIndex === -1) {
       return [this, new KeySequence([])];
     }
@@ -65,15 +63,16 @@ export default class KeySequence {
 
   static fromMapKeys(keys: string): KeySequence {
     const fromMapKeysRecursive = (
-      remaining: string, mappedKeys: Key[],
+      remaining: string,
+      mappedKeys: Key[]
     ): Key[] => {
       if (remaining.length === 0) {
         return mappedKeys;
       }
 
       let nextPos = 1;
-      if (remaining.startsWith('<')) {
-        const ltPos = remaining.indexOf('>');
+      if (remaining.startsWith("<")) {
+        const ltPos = remaining.indexOf(">");
         if (ltPos > 0) {
           nextPos = ltPos + 1;
         }

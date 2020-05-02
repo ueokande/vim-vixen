@@ -4,7 +4,7 @@ import {
   ConsoleRequestBookmarksResponse,
   ConsoleRequestHistoryResponse,
   ConsoleRequestSearchEnginesResponse,
-  ConsoleRequesttabsResponse
+  ConsoleRequesttabsResponse,
 } from "../../shared/messages";
 import { injectable } from "tsyringe";
 import OpenCompletionUseCase from "../completion/OpenCompletionUseCase";
@@ -16,20 +16,23 @@ export default class CompletionController {
   constructor(
     private completionUseCase: OpenCompletionUseCase,
     private tabCompletionUseCase: TabCompletionUseCase,
-    private propertyCompletionUseCase: PropertyCompletionUseCase,
-  ) {
-  }
+    private propertyCompletionUseCase: PropertyCompletionUseCase
+  ) {}
 
   async getCompletionTypes(): Promise<ConsoleGetCompletionTypesResponse> {
     return this.completionUseCase.getCompletionTypes();
   }
 
-  async requestSearchEngines(query: string): Promise<ConsoleRequestSearchEnginesResponse> {
+  async requestSearchEngines(
+    query: string
+  ): Promise<ConsoleRequestSearchEnginesResponse> {
     const items = await this.completionUseCase.requestSearchEngines(query);
-    return items.map(name => ({ title: name }));
+    return items.map((name) => ({ title: name }));
   }
 
-  async requestBookmarks(query: string): Promise<ConsoleRequestBookmarksResponse> {
+  async requestBookmarks(
+    query: string
+  ): Promise<ConsoleRequestBookmarksResponse> {
     return this.completionUseCase.requestBookmarks(query);
   }
 
@@ -37,11 +40,14 @@ export default class CompletionController {
     return this.completionUseCase.requestHistory(query);
   }
 
-  async queryTabs(query: string, excludePinned: boolean): Promise<ConsoleRequesttabsResponse> {
+  async queryTabs(
+    query: string,
+    excludePinned: boolean
+  ): Promise<ConsoleRequesttabsResponse> {
     return this.tabCompletionUseCase.queryTabs(query, excludePinned);
   }
 
   async getProperties(): Promise<ConsoleGetPropertiesResponse> {
-      return this.propertyCompletionUseCase.getProperties();
+    return this.propertyCompletionUseCase.getProperties();
   }
 }

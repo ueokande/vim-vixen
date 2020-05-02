@@ -1,7 +1,7 @@
-import { injectable } from 'tsyringe';
-import MemoryStorage from '../infrastructures/MemoryStorage';
+import { injectable } from "tsyringe";
+import MemoryStorage from "../infrastructures/MemoryStorage";
 
-const FIND_KEYWORD_KEY = 'find-keyword';
+const FIND_KEYWORD_KEY = "find-keyword";
 
 @injectable()
 export default class FindRepository {
@@ -20,4 +20,3 @@ export default class FindRepository {
     return Promise.resolve();
   }
 }
-

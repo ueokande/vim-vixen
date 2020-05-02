@@ -1,4 +1,4 @@
-import FollowSlaveClient, { FollowSlaveClientImpl } from './FollowSlaveClient';
+import FollowSlaveClient, { FollowSlaveClientImpl } from "./FollowSlaveClient";
 
 export default interface FollowSlaveClientFactory {
   create(window: Window): FollowSlaveClient;

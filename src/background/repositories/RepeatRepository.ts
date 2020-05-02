@@ -1,8 +1,8 @@
-import { injectable } from 'tsyringe';
-import { Operation } from '../../shared/operations';
-import MemoryStorage from '../infrastructures/MemoryStorage';
+import { injectable } from "tsyringe";
+import { Operation } from "../../shared/operations";
+import MemoryStorage from "../infrastructures/MemoryStorage";
 
-const REPEAT_KEY = 'repeat';
+const REPEAT_KEY = "repeat";
 
 @injectable()
 export default class RepeatRepository {

@@ -1,24 +1,23 @@
-import { injectable, inject } from 'tsyringe';
-import * as urls from '../../shared/urls';
-import ClipboardRepository from '../repositories/ClipboardRepository';
-import SettingRepository from '../repositories/SettingRepository';
-import ConsoleClient from '../client/ConsoleClient';
-import OperationClient from '../client/OperationClient';
+import { injectable, inject } from "tsyringe";
+import * as urls from "../../shared/urls";
+import ClipboardRepository from "../repositories/ClipboardRepository";
+import SettingRepository from "../repositories/SettingRepository";
+import ConsoleClient from "../client/ConsoleClient";
+import OperationClient from "../client/OperationClient";
 
 @injectable()
 export default class ClipboardUseCase {
   constructor(
-    @inject('ClipboardRepository') private repository: ClipboardRepository,
-    @inject('SettingRepository') private settingRepository: SettingRepository,
-    @inject('ConsoleClient') private consoleClient: ConsoleClient,
-    @inject('OperationClient') private operationClinet: OperationClient,
-  ) {
-  }
+    @inject("ClipboardRepository") private repository: ClipboardRepository,
+    @inject("SettingRepository") private settingRepository: SettingRepository,
+    @inject("ConsoleClient") private consoleClient: ConsoleClient,
+    @inject("OperationClient") private operationClinet: OperationClient
+  ) {}
 
   async yankCurrentURL(): Promise<string> {
     const url = window.location.href;
     this.repository.write(url);
-    await this.consoleClient.info('Yanked ' + url);
+    await this.consoleClient.info("Yanked " + url);
     return Promise.resolve(url);
   }
 

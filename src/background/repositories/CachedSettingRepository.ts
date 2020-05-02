@@ -1,17 +1,15 @@
-import MemoryStorage from '../infrastructures/MemoryStorage';
-import Settings from '../../shared/settings/Settings';
-import Properties from '../../shared/settings/Properties';
+import MemoryStorage from "../infrastructures/MemoryStorage";
+import Settings from "../../shared/settings/Settings";
+import Properties from "../../shared/settings/Properties";
 
-const CACHED_SETTING_KEY = 'setting';
+const CACHED_SETTING_KEY = "setting";
 
 export default interface CachedSettingRepository {
   get(): Promise<Settings>;
 
   update(value: Settings): Promise<void>;
 
-  setProperty(
-    name: string, value: string | number | boolean,
-  ): Promise<void>;
+  setProperty(name: string, value: string | number | boolean): Promise<void>;
 }
 
 export class CachedSettingRepositoryImpl implements CachedSettingRepository {
@@ -28,35 +26,36 @@ export class CachedSettingRepositoryImpl implements CachedSettingRepository {
 
   update(value: Settings): Promise<void> {
     this.cache.set(CACHED_SETTING_KEY, value.toJSON());
-    return Promise.resolve()
+    return Promise.resolve();
   }
 
   async setProperty(
-    name: string, value: string | number | boolean,
+    name: string,
+    value: string | number | boolean
   ): Promise<void> {
     const def = Properties.def(name);
     if (!def) {
-      throw new Error('unknown property: ' + name);
+      throw new Error("unknown property: " + name);
     }
     if (typeof value !== def.type) {
       throw new TypeError(`property type of ${name} mismatch: ${typeof value}`);
     }
     let newValue = value;
-    if (typeof value === 'string' && value === '') {
+    if (typeof value === "string" && value === "") {
       newValue = def.defaultValue;
     }
 
     const current = await this.get();
     switch (name) {
-    case 'hintchars':
-      current.properties.hintchars = newValue as string;
-      break;
-    case 'smoothscroll':
-      current.properties.smoothscroll = newValue as boolean;
-      break;
-    case 'complete':
-      current.properties.complete = newValue as string;
-      break;
+      case "hintchars":
+        current.properties.hintchars = newValue as string;
+        break;
+      case "smoothscroll":
+        current.properties.smoothscroll = newValue as boolean;
+        break;
+      case "complete":
+        current.properties.complete = newValue as string;
+        break;
     }
     await this.update(current);
   }

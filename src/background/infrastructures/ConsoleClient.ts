@@ -1,5 +1,5 @@
-import { injectable } from 'tsyringe';
-import * as messages from '../../shared/messages';
+import { injectable } from "tsyringe";
+import * as messages from "../../shared/messages";
 
 @injectable()
 export default class ConsoleClient {
@@ -12,7 +12,7 @@ export default class ConsoleClient {
 
   showFind(tabId: number): Promise<any> {
     return browser.tabs.sendMessage(tabId, {
-      type: messages.CONSOLE_SHOW_FIND
+      type: messages.CONSOLE_SHOW_FIND,
     });
   }
 
@@ -36,4 +36,3 @@ export default class ConsoleClient {
     });
   }
 }
-

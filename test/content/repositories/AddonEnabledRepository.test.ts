@@ -1,8 +1,8 @@
-import { AddonEnabledRepositoryImpl } from '../../../src/content/repositories/AddonEnabledRepository';
-import { expect } from 'chai';
+import { AddonEnabledRepositoryImpl } from "../../../src/content/repositories/AddonEnabledRepository";
+import { expect } from "chai";
 
-describe('AddonEnabledRepositoryImpl', () => {
-  it('updates and gets current value', () => {
+describe("AddonEnabledRepositoryImpl", () => {
+  it("updates and gets current value", () => {
     const sut = new AddonEnabledRepositoryImpl();
 
     sut.set(true);
@@ -12,4 +12,3 @@ describe('AddonEnabledRepositoryImpl', () => {
     expect(sut.get()).to.be.false;
   });
 });
-
