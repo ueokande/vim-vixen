@@ -26,6 +26,7 @@ const propertyDocs: { [key: string]: string } = {
   hintchars: "hint characters on follow mode",
   smoothscroll: "smooth scroll",
   complete: "which are completed at the open page",
+  colorscheme: "color scheme of the console",
 };
 
 const hide = (): actions.ConsoleAction => {

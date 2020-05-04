@@ -156,7 +156,8 @@ export const DefaultSettingJSONText = `{
   "properties": {
     "hintchars": "abcdefghijklmnopqrstuvwxyz",
     "smoothscroll": false,
-    "complete": "sbh"
+    "complete": "sbh",
+    "colorscheme": "system"
   },
   "blacklist": [
   ]
