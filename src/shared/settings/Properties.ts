@@ -22,7 +22,6 @@ type PropertyName = "hintchars" | "smoothscroll" | "complete" | "colorscheme";
 
 type PropertyDef = {
   name: PropertyName;
-  description: string;
   defaultValue: string | number | boolean;
   type: "string" | "number" | "boolean";
 };
@@ -30,25 +29,21 @@ type PropertyDef = {
 const defs: PropertyDef[] = [
   {
     name: "hintchars",
-    description: "hint characters on follow mode",
     defaultValue: "abcdefghijklmnopqrstuvwxyz",
     type: "string",
   },
   {
     name: "smoothscroll",
-    description: "smooth scroll",
     defaultValue: false,
     type: "boolean",
   },
   {
     name: "complete",
-    description: "which are completed at the open page",
     defaultValue: "sbh",
     type: "string",
   },
   {
     name: "colorscheme",
-    description: "color scheme of the console",
     defaultValue: ColorScheme.System,
     type: "string",
   },
