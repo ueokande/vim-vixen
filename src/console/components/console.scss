@@ -1,16 +1,18 @@
-$completion-title-background: lightgray;
-$completion-title-foreground: #000000;
-$completion-item-background: #ffffff;
-$completion-item-foreground: #000000;
-$completion-item-description-foreground: #008000;
-$completion-selected-background: #ffff00;
-$completion-selected-foreground: #000000;
-$command-background: #ffffff;
-$command-foreground: #000000;
-$console-error-background: #ff0000;
-$console-error-foreground: #ffffff;
-$console-info-background: #ffffff;
-$console-info-foreground: #018786;
+:root {
+  --completion-title-background: lightgray;
+  --completion-title-foreground: #000000;
+  --completion-item-background: #ffffff;
+  --completion-item-foreground: #000000;
+  --completion-item-description-foreground: #008000;
+  --completion-selected-background: #ffff00;
+  --completion-selected-foreground: #000000;
+  --command-background: #ffffff;
+  --command-foreground: #000000;
+  --console-error-background: #ff0000;
+  --console-error-foreground: #ffffff;
+  --console-info-background: #ffffff;
+  --console-info-foreground: #018786;
+}
 
 html, body, * {
   margin: 0;
@@ -45,16 +47,16 @@ body {
     @include console-font;
 
     &-title {
-      background-color: $completion-title-background;
-      color: $completion-title-foreground;
+      background-color: var(--completion-title-background);
+      color: var(--completion-title-foreground);
       font-weight: bold;
       margin: 0;
       padding: 0;
     }
 
     &-item {
-      background-color: $completion-item-background;
-      color: $completion-item-foreground;
+      background-color: var(--completion-item-background);
+      color: var(--completion-item-foreground);
 
       padding-left: 1.5rem;
       background-position: 0 center;
@@ -63,8 +65,8 @@ body {
       white-space: pre;
 
       &.vimvixen-completion-selected {
-        background-color: $completion-selected-background;
-        color: $completion-selected-foreground;
+        background-color: var(--completion-selected-background);
+        color: var(--completion-selected-foreground);
       }
 
       &-caption {
@@ -76,7 +78,7 @@ body {
 
       &-url {
         display: inline-block;
-        color: $completion-item-description-foreground;
+        color: var(--completion-item-description-foreground);
         width: 60%;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -91,20 +93,20 @@ body {
   }
 
   &-error {
-    background-color: $console-error-background;
-    color: $console-error-foreground;
+    background-color: var(--console-error-background);
+    color: var(--console-error-foreground);
     font-weight: bold;
   }
 
   &-info {
-    background-color: $console-info-background;
-    color: $console-info-foreground;
+    background-color: var(--console-info-background);
+    color: var(--console-info-foreground);
     font-weight: normal;
   }
 
   &-command {
-    background-color: $command-background;
-    color: $command-foreground;
+    background-color: var(--command-background);
+    color: var(--command-foreground);
     display: flex;
 
     &-prompt {
@@ -114,8 +116,8 @@ body {
     &-input {
       border: none;
       flex-grow: 1;
-      background-color: $command-background;
-      color: $command-foreground;
+      background-color: var(--command-background);
+      color: var(--command-foreground);
 
       @include console-font;
     }
