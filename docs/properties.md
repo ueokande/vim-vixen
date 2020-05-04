@@ -52,3 +52,19 @@ Each character represents the following:
 ```
 :set complete=sbh
 ```
+
+## `colorscheme`
+
+Set color scheme on the console.  The allowed value is one of `light`, `dark`,
+and `system` (default).  `light` and `dark` indicate the light-mode and
+dark-mode are used in the console, respectively.  `system` indicate the
+preferred color configured by system settings is used (see also
+[prefers-color-scheme][]).
+
+```
+set colorscheme=system     " Use system settings
+set colorscheme=light      " Light mode
+set colorscheme=dark       " Dark mode
+```
+
+[prefers-color-scheme]: https://developer.mozilla.org/docs/Web/CSS/@media/prefers-color-scheme
