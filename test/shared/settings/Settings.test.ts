@@ -33,6 +33,7 @@ describe("Settings", () => {
           hintchars: "abcdefghijklmnopqrstuvwxyz",
           smoothscroll: false,
           complete: "sbh",
+          colorscheme: "system",
         },
         blacklist: [],
       });

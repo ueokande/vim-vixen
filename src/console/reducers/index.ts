@@ -1,6 +1,7 @@
 import * as actions from "../actions";
 import Completions from "../Completions";
 import CompletionType from "../../shared/CompletionType";
+import ColorScheme from "../../shared/ColorScheme";
 
 export interface State {
   mode: string;
@@ -11,6 +12,7 @@ export interface State {
   completions: Completions;
   select: number;
   viewIndex: number;
+  colorscheme: ColorScheme;
 }
 
 const defaultState = {
@@ -22,6 +24,7 @@ const defaultState = {
   completions: [],
   select: -1,
   viewIndex: 0,
+  colorscheme: ColorScheme.System,
 };
 
 const nextSelection = (state: State): number => {
@@ -122,6 +125,11 @@ export default function reducer(
         ),
       };
     }
+    case actions.CONSOLE_SET_COLORSCHEME:
+      return {
+        ...state,
+        colorscheme: action.colorscheme,
+      };
     default:
       return state;
   }

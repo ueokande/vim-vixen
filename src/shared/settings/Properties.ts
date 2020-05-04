@@ -1,8 +1,4 @@
-enum ColorScheme {
-  System = "system",
-  Light = "light",
-  Dark = "dark",
-}
+import ColorScheme from "../ColorScheme";
 
 export type PropertiesJSON = {
   hintchars?: string;

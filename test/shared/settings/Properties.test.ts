@@ -1,5 +1,6 @@
 import Properties from "../../../src/shared/settings/Properties";
 import { expect } from "chai";
+import ColorScheme from "../../../src/shared/ColorScheme";
 
 describe("Properties", () => {
   describe("#propertiesValueOf", () => {
@@ -9,6 +10,7 @@ describe("Properties", () => {
         hintchars: "abcdefghijklmnopqrstuvwxyz",
         smoothscroll: false,
         complete: "sbh",
+        colorscheme: "system",
       });
     });
 
@@ -17,12 +19,14 @@ describe("Properties", () => {
         hintchars: "abcdefgh",
         smoothscroll: false,
         complete: "sbh",
+        colorscheme: ColorScheme.System,
       });
 
       expect(props).to.deep.equal({
         hintchars: "abcdefgh",
         smoothscroll: false,
         complete: "sbh",
+        colorscheme: "system",
       });
     });
   });
