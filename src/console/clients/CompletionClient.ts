@@ -5,7 +5,7 @@ import {
   ConsoleRequestBookmarksResponse,
   ConsoleRequestHistoryResponse,
   ConsoleRequestSearchEnginesResponse,
-  ConsoleRequesttabsResponse,
+  ConsoleRequestTabsResponse,
 } from "../../shared/messages";
 import CompletionType from "../../shared/CompletionType";
 import TabFlag from "../../shared/TabFlag";
@@ -74,7 +74,7 @@ export default class CompletionClient {
       type: messages.CONSOLE_REQUEST_TABS,
       query,
       excludePinned,
-    })) as ConsoleRequesttabsResponse;
+    })) as ConsoleRequestTabsResponse;
     return resp;
   }
 

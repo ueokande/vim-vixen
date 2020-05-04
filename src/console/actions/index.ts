@@ -1,5 +1,6 @@
 import Completions from "../Completions";
 import CompletionType from "../../shared/CompletionType";
+import ColorScheme from "../../shared/ColorScheme";
 
 export const CONSOLE_HIDE = "console.hide";
 export const CONSOLE_SHOW_COMMAND = "console.show.command";
@@ -11,6 +12,7 @@ export const CONSOLE_SET_COMPLETIONS = "console.set.completions";
 export const CONSOLE_COMPLETION_NEXT = "console.completion.next";
 export const CONSOLE_COMPLETION_PREV = "console.completion.prev";
 export const CONSOLE_SHOW_FIND = "console.show.find";
+export const CONSOLE_SET_COLORSCHEME = "console.set.colorscheme";
 
 export interface HideAction {
   type: typeof CONSOLE_HIDE;
@@ -59,6 +61,11 @@ export interface CompletionPrevAction {
   type: typeof CONSOLE_COMPLETION_PREV;
 }
 
+export interface SetColorSchemeAction {
+  type: typeof CONSOLE_SET_COLORSCHEME;
+  colorscheme: ColorScheme;
+}
+
 export type ConsoleAction =
   | HideAction
   | ShowCommand
@@ -69,4 +76,5 @@ export type ConsoleAction =
   | SetConsoleTextAction
   | SetCompletionsAction
   | CompletionNextAction
-  | CompletionPrevAction;
+  | CompletionPrevAction
+  | SetColorSchemeAction;

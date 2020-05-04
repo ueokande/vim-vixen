@@ -2,11 +2,13 @@ import * as messages from "../../shared/messages";
 import * as actions from "./index";
 import { Command } from "../../shared/Command";
 import CompletionClient from "../clients/CompletionClient";
+import SettingClient from "../clients/SettingClient";
 import CompletionType from "../../shared/CompletionType";
 import Completions from "../Completions";
 import TabFlag from "../../shared/TabFlag";
 
 const completionClient = new CompletionClient();
+const settingClient = new SettingClient();
 
 const commandDocs = {
   [Command.Set]: "Set a value of the property",
@@ -26,6 +28,7 @@ const propertyDocs: { [key: string]: string } = {
   hintchars: "hint characters on follow mode",
   smoothscroll: "smooth scroll",
   complete: "which are completed at the open page",
+  colorscheme: "color scheme of the console",
 };
 
 const hide = (): actions.ConsoleAction => {
@@ -271,6 +274,14 @@ const completionPrev = (): actions.CompletionPrevAction => {
   };
 };
 
+const setColorScheme = async (): Promise<actions.SetColorSchemeAction> => {
+  const scheme = await settingClient.getColorScheme();
+  return {
+    type: actions.CONSOLE_SET_COLORSCHEME,
+    colorscheme: scheme,
+  };
+};
+
 export {
   hide,
   showCommand,
@@ -287,4 +298,5 @@ export {
   getPropertyCompletions,
   completionNext,
   completionPrev,
+  setColorScheme,
 };

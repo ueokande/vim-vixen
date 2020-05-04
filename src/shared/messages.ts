@@ -127,7 +127,7 @@ export interface ConsoleGetPropertiesMessage {
   type: typeof CONSOLE_GET_PROPERTIES;
 }
 
-export type ConsoleRequesttabsResponse = {
+export type ConsoleRequestTabsResponse = {
   index: number;
   flag: TabFlag;
   title: string;

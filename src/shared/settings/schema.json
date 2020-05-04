@@ -48,6 +48,10 @@
         },
         "complete": {
           "type": "string"
+        },
+        "colorscheme": {
+          "type": "string",
+          "enum": ["system", "light", "dark"]
         }
       }
     },

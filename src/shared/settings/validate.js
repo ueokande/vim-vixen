@@ -1,4 +1,5 @@
 'use strict';
+var equal = require('ajv/lib/compile/equal');
 var validate = (function() {
   var pattern0 = new RegExp('.*');
   var refVal = [];
@@ -273,6 +274,46 @@ var validate = (function() {
                       }
                       var valid2 = errors === errs_2;
                     }
+                    if (valid2) {
+                      var data2 = data1.colorscheme;
+                      if (data2 === undefined) {
+                        valid2 = true;
+                      } else {
+                        var errs_2 = errors;
+                        if (typeof data2 !== "string") {
+                          validate.errors = [{
+                            keyword: 'type',
+                            dataPath: (dataPath || '') + '.properties.colorscheme',
+                            schemaPath: '#/properties/properties/properties/colorscheme/type',
+                            params: {
+                              type: 'string'
+                            },
+                            message: 'should be string'
+                          }];
+                          return false;
+                        }
+                        var schema2 = validate.schema.properties.properties.properties.colorscheme.enum;
+                        var valid2;
+                        valid2 = false;
+                        for (var i2 = 0; i2 < schema2.length; i2++)
+                          if (equal(data2, schema2[i2])) {
+                            valid2 = true;
+                            break;
+                          } if (!valid2) {
+                          validate.errors = [{
+                            keyword: 'enum',
+                            dataPath: (dataPath || '') + '.properties.colorscheme',
+                            schemaPath: '#/properties/properties/properties/colorscheme/enum',
+                            params: {
+                              allowedValues: schema2
+                            },
+                            message: 'should be equal to one of the allowed values'
+                          }];
+                          return false;
+                        }
+                        var valid2 = errors === errs_2;
+                      }
+                    }
                   }
                 }
               } else {
@@ -535,6 +576,10 @@ validate.schema = {
         },
         "complete": {
           "type": "string"
+        },
+        "colorscheme": {
+          "type": "string",
+          "enum": ["system", "light", "dark"]
         }
       }
     },

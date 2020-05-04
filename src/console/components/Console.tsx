@@ -10,6 +10,7 @@ import CommandLineParser, {
   InputPhase,
 } from "../commandline/CommandLineParser";
 import { Command } from "../../shared/Command";
+import ColorScheme from "../../shared/ColorScheme";
 
 const COMPLETION_MAX_ITEMS = 33;
 
@@ -126,11 +127,23 @@ class Console extends React.Component<Props> {
   }
 
   render() {
+    let theme = this.props.colorscheme;
+    if (this.props.colorscheme === ColorScheme.System) {
+      if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        theme = ColorScheme.Dark;
+      } else {
+        theme = ColorScheme.Light;
+      }
+    }
+
     switch (this.props.mode) {
       case "command":
       case "find":
         return (
-          <div className="vimvixen-console-command-wrapper">
+          <div data-theme={theme} className="vimvixen-console-command-wrapper">
             <Completion
               size={COMPLETION_MAX_ITEMS}
               completions={this.props.completions}
@@ -149,14 +162,18 @@ class Console extends React.Component<Props> {
       case "info":
       case "error":
         return (
-          <Message mode={this.props.mode}>{this.props.messageText}</Message>
+          <div data-theme={theme}>
+            <Message mode={this.props.mode}>{this.props.messageText}</Message>
+          </div>
         );
       default:
         return null;
     }
   }
 
-  focus() {
+  async focus() {
+    this.props.dispatch(consoleActions.setColorScheme());
+
     window.focus();
     if (this.input.current) {
       this.input.current.focus();

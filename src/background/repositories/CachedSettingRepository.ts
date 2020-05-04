@@ -1,6 +1,7 @@
 import MemoryStorage from "../infrastructures/MemoryStorage";
 import Settings from "../../shared/settings/Settings";
 import Properties from "../../shared/settings/Properties";
+import ColorScheme from "../../shared/ColorScheme";
 
 const CACHED_SETTING_KEY = "setting";
 
@@ -56,6 +57,18 @@ export class CachedSettingRepositoryImpl implements CachedSettingRepository {
       case "complete":
         current.properties.complete = newValue as string;
         break;
+      case "colorscheme": {
+        switch (newValue) {
+          case ColorScheme.Light:
+          case ColorScheme.Dark:
+          case ColorScheme.System:
+            current.properties.colorscheme = newValue as ColorScheme;
+            break;
+          default:
+            throw new Error(`Unsupported colorscheme: ${newValue}`);
+        }
+        break;
+      }
     }
     await this.update(current);
   }
