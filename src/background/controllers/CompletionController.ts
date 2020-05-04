@@ -4,7 +4,7 @@ import {
   ConsoleRequestBookmarksResponse,
   ConsoleRequestHistoryResponse,
   ConsoleRequestSearchEnginesResponse,
-  ConsoleRequesttabsResponse,
+  ConsoleRequestTabsResponse,
 } from "../../shared/messages";
 import { injectable } from "tsyringe";
 import OpenCompletionUseCase from "../completion/OpenCompletionUseCase";
@@ -43,7 +43,7 @@ export default class CompletionController {
   async queryTabs(
     query: string,
     excludePinned: boolean
-  ): Promise<ConsoleRequesttabsResponse> {
+  ): Promise<ConsoleRequestTabsResponse> {
     return this.tabCompletionUseCase.queryTabs(query, excludePinned);
   }
 
