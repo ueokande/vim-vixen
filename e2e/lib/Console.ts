@@ -76,6 +76,12 @@ export class Console {
     });
   }
 
+  async getTheme(): Promise<string> {
+    const wrapper = await this.webdriver.findElement(By.css("div[data-theme]"));
+    const theme = await wrapper.getAttribute("data-theme");
+    return theme;
+  }
+
   async close(): Promise<void> {
     const input = await this.webdriver.findElement(By.css("input"));
     await input.sendKeys(Key.ESCAPE);
