@@ -1,4 +1,4 @@
-:root {
+[data-theme="light"] {
   --completion-title-background: lightgray;
   --completion-title-foreground: #000000;
   --completion-item-background: #ffffff;
@@ -12,6 +12,22 @@
   --console-error-foreground: #ffffff;
   --console-info-background: #ffffff;
   --console-info-foreground: #018786;
+}
+
+[data-theme="dark"] {
+  --completion-title-background: #052027;
+  --completion-title-foreground: white;
+  --completion-item-background: #2f474f;
+  --completion-item-foreground: white;
+  --completion-item-description-foreground: #86fab0;
+  --completion-selected-background: #eeff41;
+  --completion-selected-foreground: #000000;
+  --command-background: #052027;
+  --command-foreground: white;
+  --console-error-background: red;
+  --console-error-foreground: white;
+  --console-info-background: #052027;
+  --console-info-foreground: #ffffff;
 }
 
 html, body, * {
