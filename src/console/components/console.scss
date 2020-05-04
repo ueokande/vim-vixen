@@ -1,3 +1,17 @@
+$completion-title-background: lightgray;
+$completion-title-foreground: #000000;
+$completion-item-background: #ffffff;
+$completion-item-foreground: #000000;
+$completion-item-description-foreground: #008000;
+$completion-selected-background: #ffff00;
+$completion-selected-foreground: #000000;
+$command-background: #ffffff;
+$command-foreground: #000000;
+$console-error-background: #ff0000;
+$console-error-foreground: #ffffff;
+$console-info-background: #ffffff;
+$console-info-foreground: #018786;
+
 html, body, * {
   margin: 0;
   padding: 0;
@@ -16,7 +30,7 @@ body {
   margin: 0;
   padding: 0;
 
-  @mixin consoole-font {
+  @mixin console-font {
     font-style: normal;
     font-family: monospace;
     font-size: 12px;
@@ -28,18 +42,20 @@ body {
   }
 
   &-completion {
-    background-color: white;
-
-    @include consoole-font;
+    @include console-font;
 
     &-title {
-      background-color: lightgray;
+      background-color: $completion-title-background;
+      color: $completion-title-foreground;
       font-weight: bold;
       margin: 0;
       padding: 0;
     }
 
     &-item {
+      background-color: $completion-item-background;
+      color: $completion-item-foreground;
+
       padding-left: 1.5rem;
       background-position: 0 center;
       background-size: contain;
@@ -47,7 +63,8 @@ body {
       white-space: pre;
 
       &.vimvixen-completion-selected {
-        background-color: yellow;
+        background-color: $completion-selected-background;
+        color: $completion-selected-foreground;
       }
 
       &-caption {
@@ -59,7 +76,7 @@ body {
 
       &-url {
         display: inline-block;
-        color: green;
+        color: $completion-item-description-foreground;
         width: 60%;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -68,36 +85,39 @@ body {
   }
 
   &-message {
-    @include consoole-font;
+    @include console-font;
 
     border-top: 1px solid gray;
   }
 
   &-error {
-    background-color: red;
+    background-color: $console-error-background;
+    color: $console-error-foreground;
     font-weight: bold;
-    color: white;
   }
 
   &-info {
-    background-color: white;
+    background-color: $console-info-background;
+    color: $console-info-foreground;
     font-weight: normal;
-    color: green;
   }
 
   &-command {
-    background-color: white;
+    background-color: $command-background;
+    color: $command-foreground;
     display: flex;
 
     &-prompt {
-      @include consoole-font;
+      @include console-font;
     }
 
     &-input {
       border: none;
       flex-grow: 1;
+      background-color: $command-background;
+      color: $command-foreground;
 
-      @include consoole-font;
+      @include console-font;
     }
   }
 }
