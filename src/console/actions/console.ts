@@ -243,7 +243,7 @@ const getPropertyCompletions = async (
         return [
           {
             caption: item.name,
-            content: name + " " + item.name,
+            content: command + " " + item.name,
             url: "Set " + desc,
           },
         ];
