@@ -44,7 +44,7 @@ const findScrollable = (element: Element): Element | null => {
 };
 
 const scrollTarget = () => {
-  if (window.document.scrollingElement) {
+  if (window.document.scrollingElement && isOverflowed(window.document.scrollingElement)) {
     return window.document.scrollingElement;
   }
   if (isOverflowed(window.document.documentElement)) {
