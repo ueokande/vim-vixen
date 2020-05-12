@@ -12,6 +12,11 @@ export default class HintKeyProducer {
     this.counter = [];
   }
 
+  setNumberOfHints(nHints: number): void {
+    const charsPrKey : number = Math.ceil(Math.log(nHints) / Math.log(this.charset.length));
+    this.counter = new Array(charsPrKey).fill(0);
+  }
+
   produce(): string {
     this.increment();
 
