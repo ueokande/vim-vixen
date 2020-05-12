@@ -119,7 +119,10 @@ export class InputHint extends Hint {
       default:
         if (doms.isContentEditable(target)) {
           return target.focus();
-        } else if (target.hasAttribute("tabindex")) {
+        } else if (
+          target.hasAttribute("tabindex") ||
+          target.hasAttribute("onclick")
+        ) {
           return target.click();
         }
     }

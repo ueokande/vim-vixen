@@ -11,6 +11,7 @@ const TARGET_SELECTOR = [
   '[contenteditable=""]',
   "[tabindex]",
   '[role="button"]',
+  "[onclick]",
   "summary",
 ].join(",");
 
@@ -92,7 +93,10 @@ export class FollowPresenterImpl implements FollowPresenter {
   }
 
   createHints(viewSize: Size, framePosition: Point, tags: string[]): void {
+    const t0 = performance.now();
     const targets = this.getTargets(viewSize, framePosition);
+    const t1 = performance.now();
+    console.log("Took: " + (t1 - t0));
     const min = Math.min(targets.length, tags.length);
     for (let i = 0; i < min; ++i) {
       const target = targets[i];
@@ -129,7 +133,7 @@ export class FollowPresenterImpl implements FollowPresenter {
     const filtered = Array.prototype.filter.call(
       all,
       (element: HTMLElement) => {
-        const style = window.getComputedStyle(element);
+        const style = element.style;
 
         // AREA's 'display' in Browser style is 'none'
         return (
