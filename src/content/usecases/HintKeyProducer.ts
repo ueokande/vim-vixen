@@ -13,7 +13,9 @@ export default class HintKeyProducer {
   }
 
   setNumberOfHints(nHints: number): void {
-    const charsPrKey : number = Math.ceil(Math.log(nHints) / Math.log(this.charset.length));
+    const charsPrKey: number = Math.ceil(
+      Math.log(nHints) / Math.log(this.charset.length)
+    );
     this.counter = new Array(charsPrKey).fill(0);
   }
 
