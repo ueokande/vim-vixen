@@ -130,7 +130,7 @@ export class FollowPresenterImpl implements FollowPresenter {
     const filtered = Array.prototype.filter.call(
       all,
       (element: HTMLElement) => {
-        const style = element.style;
+        const style = window.getComputedStyle(element);
 
         // AREA's 'display' in Browser style is 'none'
         return (
