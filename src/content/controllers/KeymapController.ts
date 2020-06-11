@@ -51,7 +51,8 @@ export default class KeymapController {
         case operations.ADDON_TOGGLE_ENABLED:
           return () => this.addonEnabledUseCase.toggle();
         case operations.ADDON_SENDMESSAGE:
-          return () => this.addonSendmessageUseCase.sendMessage(op.extensionId, op.message);
+          return () =>
+            this.addonSendmessageUseCase.sendMessage(op.extensionId, op.message);
         case operations.FIND_NEXT:
           return () => this.findSlaveUseCase.findNext();
         case operations.FIND_PREV:
