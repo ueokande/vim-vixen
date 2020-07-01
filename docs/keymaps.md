@@ -54,7 +54,7 @@ numeric marks (`[A-Z0-9]`) store the position and the tab.
 - <kbd>b</kbd>: select tabs by URL or title
 - <kbd>a</kbd>: add the current page to your bookmarks
 
-See the [console commands](./console_commands.html) section for a more detailed description.
+See the [console commands](./console_commands.md) section for a more detailed description.
 
 ## Zoom
 
