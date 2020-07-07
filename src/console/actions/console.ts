@@ -29,6 +29,7 @@ const propertyDocs: { [key: string]: string } = {
   smoothscroll: "smooth scroll",
   complete: "which are completed at the open page",
   colorscheme: "color scheme of the console",
+  searchOnlyCurrentWin: "buffer switch and tab completion only in current browser window"
 };
 
 const hide = (): actions.ConsoleAction => {

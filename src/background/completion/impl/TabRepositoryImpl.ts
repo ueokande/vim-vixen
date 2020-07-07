@@ -2,7 +2,10 @@ import TabRepository, { Tab } from "../TabRepository";
 
 export default class TabRepositoryImpl implements TabRepository {
   async queryTabs(query: string, excludePinned: boolean, onlyCurrentWin: boolean): Promise<Tab[]> {
-    const tabs = await browser.tabs.query({ currentWindow: true });
+    const tabs = [
+      ...await browser.tabs.query({ currentWindow: true }),
+      ...(onlyCurrentWin ? [] : await browser.tabs.query({ currentWindow: false }))
+    ]
     return tabs
       .filter((t) => {
         return (
@@ -20,10 +23,16 @@ export default class TabRepositoryImpl implements TabRepository {
   async getAllTabs(excludePinned: boolean, onlyCurrentWin: boolean): Promise<Tab[]> {
     if (excludePinned) {
       return (
-        await browser.tabs.query({ currentWindow: onlyCurrentWin, pinned: true })
+        [
+            ...await browser.tabs.query({ currentWindow: true, pinned: true }),
+            ...(onlyCurrentWin ? [] : await browser.tabs.query({ currentWindow: false, pinned: true }))
+        ]
       ).map(TabRepositoryImpl.toEntity);
     }
-    return (await browser.tabs.query({ currentWindow: onlyCurrentWin })).map(
+    return [
+      ...await browser.tabs.query({ currentWindow: true }),
+      ...(onlyCurrentWin ? [] : await browser.tabs.query({ currentWindow: false }))
+    ].map(
       TabRepositoryImpl.toEntity
     );
   }
@@ -36,6 +45,7 @@ export default class TabRepositoryImpl implements TabRepository {
       title: tab.title!!,
       faviconUrl: tab.favIconUrl,
       index: tab.index,
+      windowId: tab.windowId,
     };
   }
 }

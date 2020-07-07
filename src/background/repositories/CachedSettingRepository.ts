@@ -69,6 +69,10 @@ export class CachedSettingRepositoryImpl implements CachedSettingRepository {
         }
         break;
       }
+      case "searchOnlyCurrentWin":
+        current.properties.searchOnlyCurrentWin = newValue as boolean;
+        break;
+
     }
     await this.update(current);
   }

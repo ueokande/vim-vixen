@@ -5,6 +5,7 @@ export type Tab = {
   title: string;
   url: string;
   faviconUrl?: string;
+  windowId: number;
 };
 
 export default interface TabRepository {
