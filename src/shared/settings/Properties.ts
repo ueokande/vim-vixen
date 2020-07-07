@@ -16,7 +16,7 @@ export type PropertyTypes = {
   searchOnlyCurrentWin: string;
 };
 
-type PropertyName = "hintchars" | "smoothscroll" | "complete" | "colorscheme";
+type PropertyName = "hintchars" | "smoothscroll" | "complete" | "colorscheme" | "searchOnlyCurrentWin";
 
 type PropertyDef = {
   name: PropertyName;
@@ -57,7 +57,7 @@ const defaultValues = {
   smoothscroll: false,
   complete: "sbh",
   colorscheme: ColorScheme.System,
-  searchOnlyCurrentWin: true,
+  searchOnlyCurrentWin: false,
 };
 
 export default class Properties {
@@ -101,7 +101,7 @@ export default class Properties {
       smoothscroll: "boolean",
       complete: "string",
       colorscheme: "string",
-      searchOnlyCurrentWin: "string",
+      searchOnlyCurrentWin: "boolean",
     };
   }
 
