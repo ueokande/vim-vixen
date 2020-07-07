@@ -91,6 +91,10 @@ export class TabPresenterImpl implements TabPresenter {
 
   async select(tabId: number): Promise<void> {
     await browser.tabs.update(tabId, { active: true });
+    const windowId = (await browser.tabs.get(tabId)).windowId;
+    if((await browser.windows.getCurrent()).id !== windowId) {
+       await browser.windows.update(windowId, {focused: true})
+    }
   }
 
   async remove(ids: number[]): Promise<void> {
