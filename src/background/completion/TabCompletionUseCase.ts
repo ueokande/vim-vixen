@@ -11,9 +11,9 @@ export default class TabCompletionUseCase {
     @inject("TabPresenter") private tabPresenter: TabPresenter
   ) {}
 
-  async queryTabs(query: string, excludePinned: boolean): Promise<TabItem[]> {
+  async queryTabs(query: string, excludePinned: boolean, onlyCurrentWin: boolean): Promise<TabItem[]> {
     const lastTabId = await this.tabPresenter.getLastSelectedId();
-    const allTabs = await this.tabRepository.getAllTabs(excludePinned);
+    const allTabs = await this.tabRepository.getAllTabs(excludePinned, onlyCurrentWin);
     const num = parseInt(query, 10);
     let tabs: Tab[] = [];
     if (!isNaN(num)) {
@@ -32,7 +32,7 @@ export default class TabCompletionUseCase {
         tabs = [tab];
       }
     } else {
-      tabs = await this.tabRepository.queryTabs(query, excludePinned);
+      tabs = await this.tabRepository.queryTabs(query, excludePinned, onlyCurrentWin);
     }
 
     return tabs.map((tab) => {

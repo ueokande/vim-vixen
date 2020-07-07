@@ -60,8 +60,10 @@ export default class CommandIndicator {
       return;
     }
 
+    const settings = await this.cachedSettingRepository.get();
+    const onlyCurrentWin = settings.properties.searchOnlyCurrentWin;
     if (!isNaN(Number(keywords))) {
-      const tabs = await this.tabPresenter.getAll();
+      const tabs = await this.tabPresenter.getAll(onlyCurrentWin);
       const index = parseInt(keywords, 10) - 1;
       if (index < 0 || tabs.length <= index) {
         throw new RangeError(`tab ${index + 1} does not exist`);
@@ -80,7 +82,7 @@ export default class CommandIndicator {
     }
 
     const current = await this.tabPresenter.getCurrent();
-    const tabs = await this.tabPresenter.getByKeyword(keywords, false);
+    const tabs = await this.tabPresenter.getByKeyword(keywords, false, onlyCurrentWin);
     if (tabs.length === 0) {
       throw new RangeError("No matching buffer for " + keywords);
     }

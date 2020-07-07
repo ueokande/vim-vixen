@@ -1,7 +1,7 @@
 import TabRepository, { Tab } from "../TabRepository";
 
 export default class TabRepositoryImpl implements TabRepository {
-  async queryTabs(query: string, excludePinned: boolean): Promise<Tab[]> {
+  async queryTabs(query: string, excludePinned: boolean, onlyCurrentWin: boolean): Promise<Tab[]> {
     const tabs = await browser.tabs.query({ currentWindow: true });
     return tabs
       .filter((t) => {
@@ -17,13 +17,13 @@ export default class TabRepositoryImpl implements TabRepository {
       .map(TabRepositoryImpl.toEntity);
   }
 
-  async getAllTabs(excludePinned: boolean): Promise<Tab[]> {
+  async getAllTabs(excludePinned: boolean, onlyCurrentWin: boolean): Promise<Tab[]> {
     if (excludePinned) {
       return (
-        await browser.tabs.query({ currentWindow: true, pinned: true })
+        await browser.tabs.query({ currentWindow: onlyCurrentWin, pinned: true })
       ).map(TabRepositoryImpl.toEntity);
     }
-    return (await browser.tabs.query({ currentWindow: true })).map(
+    return (await browser.tabs.query({ currentWindow: onlyCurrentWin })).map(
       TabRepositoryImpl.toEntity
     );
   }

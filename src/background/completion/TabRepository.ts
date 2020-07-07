@@ -8,7 +8,7 @@ export type Tab = {
 };
 
 export default interface TabRepository {
-  queryTabs(query: string, excludePinned: boolean): Promise<Tab[]>;
+  queryTabs(query: string, excludePinned: boolean, onlyCurrentWin: boolean): Promise<Tab[]>;
 
-  getAllTabs(excludePinned: boolean): Promise<Tab[]>;
+  getAllTabs(excludePinned: boolean, onlyCurrentWin: boolean): Promise<Tab[]>;
 }

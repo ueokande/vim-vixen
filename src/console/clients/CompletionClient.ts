@@ -69,11 +69,12 @@ export default class CompletionClient {
     return resp;
   }
 
-  async requestTabs(query: string, excludePinned: boolean): Promise<TabItem[]> {
+  async requestTabs(query: string, excludePinned: boolean, onlyCurrentWin: boolean): Promise<TabItem[]> {
     const resp = (await browser.runtime.sendMessage({
       type: messages.CONSOLE_REQUEST_TABS,
       query,
       excludePinned,
+      onlyCurrentWin
     })) as ConsoleRequestTabsResponse;
     return resp;
   }

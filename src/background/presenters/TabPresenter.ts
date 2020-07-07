@@ -12,11 +12,11 @@ export default interface TabPresenter {
 
   getCurrent(): Promise<Tab>;
 
-  getAll(): Promise<Tab[]>;
+  getAll(onlyCurrentWin?: boolean): Promise<Tab[]>;
 
   getLastSelectedId(): Promise<number | undefined>;
 
-  getByKeyword(keyword: string, excludePinned: boolean): Promise<Tab[]>;
+  getByKeyword(keyword: string, excludePinned: boolean, onlyCurrentWin?: boolean = true): Promise<Tab[]>;
 
   select(tabId: number): Promise<void>;
 
@@ -56,8 +56,8 @@ export class TabPresenterImpl implements TabPresenter {
     return tabs[0];
   }
 
-  getAll(): Promise<Tab[]> {
-    return browser.tabs.query({ currentWindow: true });
+  getAll(onlyCurrentWin?: boolean = true): Promise<Tab[]> {
+    return browser.tabs.query({ currentWindow: onlyCurrentWin });
   }
 
   async getLastSelectedId(): Promise<number | undefined> {
@@ -69,7 +69,7 @@ export class TabPresenterImpl implements TabPresenter {
     return tabId;
   }
 
-  async getByKeyword(keyword: string, excludePinned = false): Promise<Tab[]> {
+  async getByKeyword(keyword: string, excludePinned = false, onlyCurrentWin?: boolean = true): Promise<Tab[]> {
     const tabs = await browser.tabs.query({ currentWindow: true });
     return tabs
       .filter((t) => {
