@@ -23,4 +23,14 @@ export default `
   font-size: 12px;
   color: black;
 }
+
+.vimvixen-indicate-border-active {
+    box-sizing: border-box;
+   border: 8px solid #fa6600 !important;
+}
+
+.vimvixen-indicate-border {
+    border: 7px solid #ffffff00;
+    border-bottom: 8px solid #ffffff00;
+}
 `;
