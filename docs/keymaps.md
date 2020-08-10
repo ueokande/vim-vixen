@@ -35,7 +35,7 @@ numeric marks (`[A-Z0-9]`) store the position and the tab.
 - <kbd>d</kbd>: delete the current tab and select the tab to its right
 - <kbd>D</kbd>: delete the current tab and select the tab to its left
 - <kbd>!</kbd><kbd>d</kbd>: delete a pinned tab
-- <kbd>u</kbd>: reopen a close tab
+- <kbd>u</kbd>: reopen a closed tab
 - <kbd>r</kbd>: reload the current tab
 - <kbd>R</kbd>: reload the current tab, bypassing the cache
 - <kbd>K</kbd> or <kbd>g</kbd><kbd>T</kbd>: select the previous tab
