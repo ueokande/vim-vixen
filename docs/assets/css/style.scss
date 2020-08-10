@@ -219,8 +219,8 @@ footer {
   top: 16px;
   opacity: 0;
   z-index: 4;
+  cursor: pointer;
 }
-
 
 .open-menu-bar-container {
   position: fixed;
@@ -231,6 +231,7 @@ footer {
   display: inline-block;
   z-index: 2;
 }
+
 .open-menu-bar {
   display: block;
   width: 32px;
