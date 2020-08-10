@@ -42,17 +42,18 @@ commands:
 
             echo 'export PATH=~/geckodriver/$GECKODRIVER_VERSION:$PATH' >> $BASH_ENV
 
-  setup_npm:
+  install_dependencies:
     steps:
       - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies
-          command: npm install
+          command: yarn install
       - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
+          key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
-            - node_modules
+            - ~/.cache/yarn
 
 jobs:
   build:
@@ -61,10 +62,10 @@ jobs:
     steps:
       - install_firefox
       - checkout
-      - setup_npm
-      - run: npm run lint
-      - run: npm test
-      - run: npm run package
+      - install_dependencies
+      - run: yarn lint
+      - run: yarn test
+      - run: yarn package
 
   e2e:
     executor:
@@ -73,17 +74,17 @@ jobs:
       - run: sudo apt-get update && sudo apt-get -y install xsel
       - install_firefox
       - checkout
-      - setup_npm
-      - run: npm run build
-      - run: npm run test:e2e
+      - install_dependencies
+      - run: yarn build
+      - run: yarn test:e2e
 
   deploy:
     executor:
       name: default
     steps:
       - checkout
-      - setup_npm
-      - run: npm run package
+      - install_dependencies
+      - run: yarn package
       - run:
           name: Deploy to AMO
           command: |

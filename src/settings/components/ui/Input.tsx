@@ -20,7 +20,6 @@ class Input extends React.Component<Props> {
       <div className="settings-ui-input">
         <label htmlFor={props.id}>{props.label}</label>
         <input
-          type="text"
           className={inputClassName}
           onChange={this.bindOnChange.bind(this)}
           {...pp}
@@ -37,7 +36,6 @@ class Input extends React.Component<Props> {
       <div className="settings-ui-input">
         <label>
           <input
-            type="radio"
             className={inputClassName}
             onChange={this.bindOnChange.bind(this)}
             {...pp}

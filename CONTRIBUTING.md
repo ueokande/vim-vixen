@@ -17,14 +17,14 @@ Clone sources into local
 
 Install dependencies:
 
-    npm install
+    yarn install
 
 Start webpack:
 
-    npm run start
+    yarn start
 
 Then open `about:debugging` in Firefox, and choose directory from "Load Temporary Add-on".
 To run tests and lint:
 
-    npm run test
-    npm run lint
+    yarn test
+    yarn lint

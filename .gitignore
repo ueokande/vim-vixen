@@ -2,3 +2,4 @@
 /build/
 *.zip
 lanthan-driver.log
+package-lock.json
