@@ -32,7 +32,7 @@ tabs, use <kbd>u</kbd>.
 To open a link, press <kbd>f</kbd> to enter the **follow mode** to select a
 link.  Then you can select links by alphabetic keys.
 
-See also [Keymaps](./keymaps.html) for more detailed of keymaps.
+See also [Keymaps](./keymaps.md) for more detailed of keymaps.
 
 ### Using commands
 
@@ -51,7 +51,7 @@ or search keywords with search engine (such as Google) like:
 :open How to use Vim
 ```
 
-You can see completed commands on [Console commands](./console_commands.html).
+You can see completed commands on [Console commands](./console_commands.md).
 
 ## Copyright
 

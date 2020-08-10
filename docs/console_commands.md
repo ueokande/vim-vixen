@@ -35,7 +35,7 @@ To use a search engine other than the default, specify the search engine to use 
 :open yahoo How to contribute to Vim-Vixen
 ```
 
-To adjust the default search-engine and add/remove search engines, see the [search engines](./search_engines.html) section.
+To adjust the default search-engine and add/remove search engines, see the [search engines](./search_engines.md) section.
 
 Use <kbd>Tab</kbd> to select from the autocomplete suggestions. To configure this, set the [`complete` property.](./properties.html#complete)
 
@@ -94,5 +94,5 @@ the current page.
 ## `:set`
 
 The `:set` command can be used to temporarily override properties in the
-console. See the [properties](./properties.html) section for more details on
+console. See the [properties](./properties.md) section for more details on
 the available properties.

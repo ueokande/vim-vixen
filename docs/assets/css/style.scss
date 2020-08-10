@@ -37,7 +37,7 @@ h1, h2, h3, h4, h5 {
   }
 }
 
-header {
+.header-wide {
   border-bottom: 1px solid $border-color;
   position: fixed;
   width: 100%;
@@ -63,6 +63,19 @@ header {
   }
 }
 
+.header-mobile {
+  border-bottom: 1px solid $border-color;
+  position: fixed;
+  width: 100%;
+  background-color: white;
+
+  h1 {
+    padding: 0 1.5rem;
+    line-height: 4rem;
+    text-align: center;
+  }
+}
+
 aside {
   width: 15rem;
   position: fixed;
@@ -80,12 +93,42 @@ aside {
 
   ul {
     li {
+      display: block;
       a {
         padding: .35rem 1.5rem .35rem 1.5rem;
         line-height: 2.5;
+        display: block;
       }
     }
+
+    .separator {
+      height: 0;
+      border-bottom: 1px solid $border-color;
+    }
   }
+}
+
+.aside-wide {
+  width: 15rem;
+  position: fixed;
+  top: 4rem;
+  left: 0;
+  bottom: 0;
+}
+
+.aside-mobile {
+  width: 15rem;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: -16rem;
+  bottom: 0;
+  border-right: 1px solid $border-color;
+  padding: 4rem 0;
+  background-color: white;
+  box-shadow: 0 0 1rem #aaa;
+  transition-property: left;
+  transition-duration: 0.3s;
 }
 
 main {
@@ -165,4 +208,93 @@ footer {
   left: 0;
   right: 0;
   background-color: lightgreen;
+}
+
+.open-menu-checkbox {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  opacity: 0;
+  z-index: 4;
+}
+
+
+.open-menu-bar-container {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  z-index: 2;
+}
+.open-menu-bar {
+  display: block;
+  width: 32px;
+  height: 4px;
+  margin: 5px 0;
+  background: #444;
+  border-radius: 2px;
+  transition-duration: 0.3s;
+
+  &:nth-of-type(1) {
+    transform-origin: 3px 50%;
+  }
+
+  &:nth-of-type(2) {
+    transform-origin: 0% 100%;
+  }
+
+  &:nth-of-type(3) {
+    transform-origin: 3px 50%;
+  }
+}
+
+.open-menu-checkbox:checked ~ .aside-mobile {
+  left: 0;
+}
+
+.open-menu-checkbox:checked ~ .open-menu-bar-container > .open-menu-bar {
+  &:nth-of-type(1) {
+    transform: rotate(45deg) translate(3px, -3px);
+  }
+
+  &:nth-of-type(2) {
+    opacity: 0;
+    transform: scale(0.2, 0.2);
+  }
+
+  &:nth-of-type(3) {
+    transform: rotate(-45deg) translate(3px, 3px);
+  }
+}
+
+// for PC
+@media (min-width: 769px) {
+  .header-mobile {
+    display: none;
+  }
+  .aside-mobile {
+    display: none;
+  }
+  .open-menu-checkbox, .open-menu-bar-container {
+    display: none;
+  }
+}
+
+// for mobile
+@media (max-width: 768px) {
+  .header-wide {
+    display: none;
+  }
+  .aside-wide {
+    display: none;
+  }
+
+  main {
+    padding: 4rem 2rem 2rem 2rem;
+  }
 }
