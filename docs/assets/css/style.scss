@@ -93,9 +93,11 @@ aside {
 
   ul {
     li {
+      display: block;
       a {
         padding: .35rem 1.5rem .35rem 1.5rem;
         line-height: 2.5;
+        display: block;
       }
     }
 
