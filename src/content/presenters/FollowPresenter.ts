@@ -11,6 +11,7 @@ const TARGET_SELECTOR = [
   '[contenteditable=""]',
   "[tabindex]",
   '[role="button"]',
+  "[onclick]",
   "summary",
 ].join(",");
 
