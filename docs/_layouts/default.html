@@ -17,7 +17,7 @@
 </head>
 
 <body>
-  <header>
+  <header class='header-wide'>
     <h1><a href='index.html'>Vim Vixen</a></h1>
     <ul>
       <li><a target="_blank" rel="noopener" href='https://github.com/ueokande/vim-vixen'>GitHub</a></li>
@@ -25,7 +25,11 @@
     </ul>
   </header>
 
-  <aside>
+  <header class='header-mobile'>
+    <h1><a href='index.html'>Vim Vixen</a></h1>
+  </header>
+
+  <aside class='aside-wide'>
     <h1>Guide</h1>
     <ul>
       <li><a href='./keymaps.html'>Keymaps</a></li>
@@ -33,6 +37,24 @@
       <li><a href='./blacklist.html'>Blacklist</a></li>
       <li><a href='./search_engines.html'>Search engines</a></li>
       <li><a href='./properties.html'>Properties</a></li>
+    </ul>
+  </aside>
+
+  <input class="open-menu-checkbox" type="checkbox" />
+  <span class="open-menu-bar-container">
+    <span class="open-menu-bar"></span><span class="open-menu-bar"></span><span class="open-menu-bar"></span>
+  </span>
+
+  <aside class='aside-mobile'>
+    <ul>
+      <li><a href='./keymaps.html'>Keymaps</a></li>
+      <li><a href='./console_commands.html'>Console commands</a></li>
+      <li><a href='./blacklist.html'>Blacklist</a></li>
+      <li><a href='./search_engines.html'>Search engines</a></li>
+      <li><a href='./properties.html'>Properties</a></li>
+      <li class='separator'></li>
+      <li><a target="_blank" rel="noopener" href='https://github.com/ueokande/vim-vixen'>GitHub</a></li>
+      <li><a target="_blank" rel="noopener" href='https://addons.mozilla.org/firefox/addon/vim-vixen/'>Firefox Add-ons</a></li>
     </ul>
   </aside>
 
