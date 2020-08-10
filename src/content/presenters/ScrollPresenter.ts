@@ -8,19 +8,21 @@ let scrolling = false;
 let lastTimeoutId: number | null = null;
 
 const isScrollableStyle = (element: Element): boolean => {
-  const { overflowX, overflowY } = window.getComputedStyle(element);
+  const { overflowX, overflowY, overflow } = window.getComputedStyle(element);
   return !(
     overflowX !== "scroll" &&
     overflowX !== "auto" &&
     overflowY !== "scroll" &&
-    overflowY !== "auto"
+    overflowY !== "auto" &&
+    overflow !== "scroll" &&
+    overflow !== "auto"
   );
 };
 
-const isOverflowed = (element: Element): boolean => {
+const doneScrolling = (element: Element): boolean => {
   return (
-    element.scrollWidth > element.clientWidth ||
-    element.scrollHeight > element.clientHeight
+    element.scrollTop + element.clientHeight >= element.scrollHeight - 5 &&
+    element.scrollLeft + element.clientWidth >= element.scrollWidth - 5
   );
 };
 
@@ -29,7 +31,7 @@ const isOverflowed = (element: Element): boolean => {
 // method is not cached.  That does not cause performance issue because in the
 // most pages, the window is root element i,e, documentElement.
 const findScrollable = (element: Element): Element | null => {
-  if (isScrollableStyle(element) && isOverflowed(element)) {
+  if (isScrollableStyle(element) && !doneScrolling(element)) {
     return element;
   }
 
@@ -44,12 +46,13 @@ const findScrollable = (element: Element): Element | null => {
 };
 
 const scrollTarget = () => {
-  if (isOverflowed(window.document.documentElement)) {
-    return window.document.documentElement;
+  if (
+    window.document.scrollingElement &&
+    !doneScrolling(window.document.scrollingElement)
+  ) {
+    return window.document.scrollingElement;
   }
-  if (isOverflowed(window.document.body)) {
-    return window.document.body;
-  }
+
   const target = findScrollable(window.document.documentElement);
   if (target) {
     return target;
