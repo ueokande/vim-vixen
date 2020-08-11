@@ -8,7 +8,17 @@ type Tab = browser.tabs.Tab;
 export default interface TabPresenter {
   open(url: string, tabId?: number): Promise<Tab>;
 
-  create(url: string, opts?: object): Promise<Tab>;
+  create(
+    url: string,
+    opts?: {
+      active?: boolean;
+      cookieStoreId?: string;
+      index?: number;
+      openerTabId?: number;
+      pinned?: boolean;
+      windowId?: number;
+    }
+  ): Promise<Tab>;
 
   getCurrent(): Promise<Tab>;
 
@@ -44,7 +54,17 @@ export class TabPresenterImpl implements TabPresenter {
     return browser.tabs.update(tabId, { url });
   }
 
-  create(url: string, opts?: object): Promise<Tab> {
+  create(
+    url: string,
+    opts?: {
+      active?: boolean;
+      cookieStoreId?: string;
+      index?: number;
+      openerTabId?: number;
+      pinned?: boolean;
+      windowId?: number;
+    }
+  ): Promise<Tab> {
     return browser.tabs.create({ url, ...opts });
   }
 

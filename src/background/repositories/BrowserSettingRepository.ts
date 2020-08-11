@@ -13,7 +13,7 @@ declare namespace browser.browserSettings.homepageOverride {
     | "controllable_by_this_extension"
     | "controlled_by_this_extension";
 
-  function get(param: object): Promise<BrowserSettings>;
+  function get(param: { [key: string]: string }): Promise<BrowserSettings>;
 }
 
 @injectable()

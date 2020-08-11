@@ -18,7 +18,7 @@ class MockTabRepository implements TabRepositoryImpl {
 }
 
 class MockTabPresenter implements TabPresenter {
-  create(_url: string, _opts?: object): Promise<browser.tabs.Tab> {
+  create(_url: string, _opts?: unknown): Promise<browser.tabs.Tab> {
     throw new Error("not implemented");
   }
 

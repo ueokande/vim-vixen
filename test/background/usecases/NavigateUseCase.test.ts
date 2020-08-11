@@ -5,7 +5,7 @@ import NavigateClient from "../../../src/background/clients/NavigateClient";
 import * as sinon from "sinon";
 
 class MockTabPresenter implements TabPresenter {
-  create(_url: string, _opts?: object): Promise<browser.tabs.Tab> {
+  create(_url: string, _opts?: unknown): Promise<browser.tabs.Tab> {
     throw new Error("not implemented");
   }
 
