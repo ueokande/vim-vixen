@@ -63,7 +63,7 @@ export class Console {
       for (const li of Array.from(items)) {
         if (li.classList.contains("vimvixen-console-completion-title")) {
           objs.push({ type: "title", text: li.textContent!.trim() });
-        } else if ("vimvixen-console-completion-item") {
+        } else if (li.classList.contains("vimvixen-console-completion-item")) {
           const highlight = li.classList.contains(
             "vimvixen-completion-selected"
           );
