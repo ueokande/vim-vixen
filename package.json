@@ -48,7 +48,7 @@
     "eslint-plugin-react": "7.20.5",
     "eslint-plugin-standard": "^4.0.1",
     "express": "^4.17.1",
-    "html-webpack-plugin": "^4.0.0",
+    "html-webpack-plugin": "4.3.0",
     "jsonwebtoken": "^8.5.1",
     "jszip": "^3.2.2",
     "karma": "^5.0.0",
@@ -82,7 +82,7 @@
     "typescript": "3.9.7",
     "web-ext-types": "^3.2.1",
     "webextensions-api-fake": "^0.9.1",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "webpack": "4.44.1",
+    "webpack-cli": "3.3.12"
   }
 }
