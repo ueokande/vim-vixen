@@ -106,9 +106,9 @@ class SettingsComponent extends React.Component<Props> {
     let fields = null;
     const disabled = this.props.error.length > 0;
     if (this.props.source === "form") {
-      fields = this.renderFormFields(this.props.form!!);
+      fields = this.renderFormFields(this.props.form!);
     } else if (this.props.source === "json") {
-      fields = this.renderJsonFields(this.props.json!!, this.props.error);
+      fields = this.renderJsonFields(this.props.json!, this.props.error);
     }
     return (
       <div>

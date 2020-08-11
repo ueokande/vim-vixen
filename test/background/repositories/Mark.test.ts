@@ -13,13 +13,13 @@ describe("background/repositories/mark", () => {
 
     await repository.setMark("A", mark);
 
-    let got = (await repository.getMark("A"))!!;
+    let got = (await repository.getMark("A"))!;
     expect(got.tabId).to.equal(1);
     expect(got.url).to.equal("http://example.com");
     expect(got.x).to.equal(10);
     expect(got.y).to.equal(30);
 
-    got = (await repository.getMark("B"))!!;
+    got = (await repository.getMark("B"))!;
     expect(got).to.be.undefined;
   });
 });

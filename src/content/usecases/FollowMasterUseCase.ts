@@ -47,7 +47,7 @@ export default class FollowMasterUseCase {
     for (let i = 0; i < frameElements.length; ++i) {
       const ele = frameElements[i] as HTMLFrameElement | HTMLIFrameElement;
       const { left: frameX, top: frameY } = ele.getBoundingClientRect();
-      const client = this.followSlaveClientFactory.create(ele.contentWindow!!);
+      const client = this.followSlaveClientFactory.create(ele.contentWindow!);
       client.requestHintCount(
         { width: viewWidth, height: viewHeight },
         { x: frameX, y: frameY }
@@ -59,7 +59,7 @@ export default class FollowMasterUseCase {
   createSlaveHints(count: number, sender: Window): void {
     const produced = [];
     for (let i = 0; i < count; ++i) {
-      const tag = this.producer!!.produce();
+      const tag = this.producer!.produce();
       produced.push(tag);
       this.followMasterRepository.addTag(tag);
     }

@@ -36,7 +36,7 @@ export default class SettingUseCase {
       this.showUnableToLoad(e);
       value = DefaultSettingData.toSettings();
     }
-    await this.cachedSettingRepository.update(value!!);
+    await this.cachedSettingRepository.update(value!);
     return value;
   }
 

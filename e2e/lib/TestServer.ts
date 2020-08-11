@@ -41,7 +41,7 @@ export default class TestServer {
 
     this.http = http.createServer(this.app);
     return new Promise((resolve) => {
-      this.http!!.listen(this.port, this.address, () => {
+      this.http!.listen(this.port, this.address, () => {
         resolve();
       });
     });
@@ -52,7 +52,7 @@ export default class TestServer {
       return Promise.resolve();
     }
     return new Promise((resolve) => {
-      this.http!!.close(() => {
+      this.http!.close(() => {
         this.http = undefined;
         resolve();
       });

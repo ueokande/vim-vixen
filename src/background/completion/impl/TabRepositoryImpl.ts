@@ -30,10 +30,10 @@ export default class TabRepositoryImpl implements TabRepository {
 
   private static toEntity(tab: browser.tabs.Tab): Tab {
     return {
-      id: tab.id!!,
-      url: tab.url!!,
+      id: tab.id!,
+      url: tab.url!,
       active: tab.active,
-      title: tab.title!!,
+      title: tab.title!,
       faviconUrl: tab.favIconUrl,
       index: tab.index,
     };

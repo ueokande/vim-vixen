@@ -24,7 +24,7 @@ describe("settings setting reducer", () => {
     };
     const state = settingReducer(undefined, action);
     expect(state.source).to.equal("json");
-    expect(state.json!!.toJSONText()).to.equal('{ "key": "value" }');
+    expect(state.json!.toJSONText()).to.equal('{ "key": "value" }');
     expect(state.form).to.deep.equal(action.form);
   });
 
@@ -36,7 +36,7 @@ describe("settings setting reducer", () => {
     };
     const state = settingReducer(undefined, action);
     expect(state.error).to.equal("bad value");
-    expect(state.json!!.toJSONText()).to.equal("{}");
+    expect(state.json!.toJSONText()).to.equal("{}");
   });
 
   it("return next state for SETTING_SWITCH_TO_FORM", () => {
@@ -55,7 +55,7 @@ describe("settings setting reducer", () => {
       json: JSONTextSettings.fromText("{}"),
     };
     const state = settingReducer(undefined, action);
-    expect(state.json!!.toJSONText()).to.equal("{}");
+    expect(state.json!.toJSONText()).to.equal("{}");
     expect(state.source).to.equal(SettingSource.JSON);
   });
 });

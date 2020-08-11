@@ -164,7 +164,7 @@ describe("follow test", () => {
     await page.sendKeys("a");
 
     const tagName = (await webdriver.executeScript(
-      () => document.activeElement!!.tagName
+      () => document.activeElement!.tagName
     )) as string;
     assert.strictEqual(tagName.toLowerCase(), "input");
   });
@@ -188,7 +188,7 @@ describe("follow test", () => {
     await page.sendKeys("a");
 
     const tagName = (await webdriver.executeScript(
-      () => document.activeElement!!.tagName
+      () => document.activeElement!.tagName
     )) as string;
     assert.strictEqual(tagName.toLowerCase(), "input");
   });

@@ -15,7 +15,7 @@ export default class JSONOptionPage {
     );
     await textarea.sendKeys(" ");
     await this.webdriver.executeScript(() =>
-      document.querySelector("textarea")!!.blur()
+      document.querySelector("textarea")!.blur()
     );
   }
 
