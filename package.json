@@ -60,7 +60,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^4.0.2",
     "lanthan": "0.0.2",
-    "mocha": "^7.0.1",
+    "mocha": "^8.1.1",
     "node-sass": "^4.13.1",
     "prettier": "^2.0.0",
     "prettier-eslint": "^11.0.0",
