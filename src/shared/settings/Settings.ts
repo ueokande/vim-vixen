@@ -43,7 +43,7 @@ export default class Settings {
     const valid = validate(json);
     if (!valid) {
       const message = (validate as any)
-        .errors!!.map((err: Ajv.ErrorObject) => {
+        .errors!.map((err: Ajv.ErrorObject) => {
           return `'${err.dataPath}' ${err.message}`;
         })
         .join("; ");

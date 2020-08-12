@@ -23,8 +23,6 @@ describe("tab test", () => {
     webdriver = lanthan.getWebDriver();
     browser = lanthan.getWebExtBrowser();
     await server.start();
-
-    browser = browser;
   });
 
   after(async () => {

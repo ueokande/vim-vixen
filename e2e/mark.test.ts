@@ -86,7 +86,7 @@ describe("mark test", () => {
       handles = await webdriver.getAllWindowHandles();
       assert.strictEqual(handles.length, 2);
     });
-    await webdriver.switchTo().window(handles!![0]);
+    await webdriver.switchTo().window(handles![0]);
 
     page = await Page.navigateTo(webdriver, server.url("/#second"));
     await page.sendKeys("'", "A");

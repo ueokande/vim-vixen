@@ -23,7 +23,7 @@ export default class CachedBookmarkRepository implements BookmarkRepository {
       .filter((item) => {
         let url = undefined;
         try {
-          url = new URL(item.url!!);
+          url = new URL(item.url!);
         } catch (e) {
           return false;
         }
@@ -31,8 +31,8 @@ export default class CachedBookmarkRepository implements BookmarkRepository {
       })
       .slice(0, COMPLETION_ITEM_LIMIT)
       .map((item) => ({
-        title: item.title!!,
-        url: item.url!!,
+        title: item.title!,
+        url: item.url!,
       }));
   }
 
@@ -41,7 +41,7 @@ export default class CachedBookmarkRepository implements BookmarkRepository {
       return query.split(" ").every((keyword) => {
         return (
           item.title.toLowerCase().includes(keyword.toLowerCase()) ||
-          item.url!!.includes(keyword)
+          item.url!.includes(keyword)
         );
       });
     });

@@ -11,27 +11,27 @@ export default class NavigateUseCase {
 
   async openHistoryNext(): Promise<void> {
     const tab = await this.tabPresenter.getCurrent();
-    await this.navigateClient.historyNext(tab.id!!);
+    await this.navigateClient.historyNext(tab.id!);
   }
 
   async openHistoryPrev(): Promise<void> {
     const tab = await this.tabPresenter.getCurrent();
-    await this.navigateClient.historyPrev(tab.id!!);
+    await this.navigateClient.historyPrev(tab.id!);
   }
 
   async openLinkNext(): Promise<void> {
     const tab = await this.tabPresenter.getCurrent();
-    await this.navigateClient.linkNext(tab.id!!);
+    await this.navigateClient.linkNext(tab.id!);
   }
 
   async openLinkPrev(): Promise<void> {
     const tab = await this.tabPresenter.getCurrent();
-    await this.navigateClient.linkPrev(tab.id!!);
+    await this.navigateClient.linkPrev(tab.id!);
   }
 
   async openParent(): Promise<void> {
     const tab = await this.tabPresenter.getCurrent();
-    const url = new URL(tab.url!!);
+    const url = new URL(tab.url!);
     if (url.hash.length > 0) {
       url.hash = "";
     } else if (url.search.length > 0) {
@@ -50,7 +50,7 @@ export default class NavigateUseCase {
 
   async openRoot(): Promise<void> {
     const tab = await this.tabPresenter.getCurrent();
-    const url = new URL(tab.url!!);
+    const url = new URL(tab.url!);
     await this.tabPresenter.open(url.origin);
   }
 }

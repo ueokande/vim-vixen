@@ -36,8 +36,8 @@ export default class CachedHistoryRepository implements HistoryRepository {
       .sort((x, y) => Number(y.visitCount) - Number(x.visitCount))
       .slice(0, COMPLETION_ITEM_LIMIT)
       .map((item) => ({
-        title: item.title!!,
-        url: item.url!!,
+        title: item.title!,
+        url: item.url!,
       }));
   }
 
@@ -59,8 +59,8 @@ export default class CachedHistoryRepository implements HistoryRepository {
     return items.filter((item) => {
       return query.split(" ").every((keyword) => {
         return (
-          item.title!!.toLowerCase().includes(keyword.toLowerCase()) ||
-          item.url!!.includes(keyword)
+          item.title!.toLowerCase().includes(keyword.toLowerCase()) ||
+          item.url!.includes(keyword)
         );
       });
     });

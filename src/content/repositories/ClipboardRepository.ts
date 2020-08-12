@@ -15,7 +15,7 @@ export class ClipboardRepositoryImpl {
     textarea.focus();
 
     const ok = window.document.execCommand("paste");
-    const value = textarea.textContent!!;
+    const value = textarea.textContent!;
     textarea.remove();
 
     if (!ok) {

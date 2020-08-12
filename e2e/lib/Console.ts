@@ -62,12 +62,12 @@ export class Console {
       const objs = [];
       for (const li of Array.from(items)) {
         if (li.classList.contains("vimvixen-console-completion-title")) {
-          objs.push({ type: "title", text: li.textContent!!.trim() });
-        } else if ("vimvixen-console-completion-item") {
+          objs.push({ type: "title", text: li.textContent!.trim() });
+        } else if (li.classList.contains("vimvixen-console-completion-item")) {
           const highlight = li.classList.contains(
             "vimvixen-completion-selected"
           );
-          objs.push({ type: "item", text: li.textContent!!.trim(), highlight });
+          objs.push({ type: "item", text: li.textContent!.trim(), highlight });
         } else {
           throw new Error(`unexpected class: ${li.className}`);
         }
