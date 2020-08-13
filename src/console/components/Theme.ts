@@ -1,0 +1,53 @@
+import baseStyled, { ThemedStyledInterface } from "styled-components";
+
+type Theme = {
+  completionTitleBackground: string;
+  completionTitleForeground: string;
+  completionItemBackground: string;
+  completionItemForeground: string;
+  completionItemDescriptionForeground: string;
+  completionSelectedBackground: string;
+  completionSelectedForeground: string;
+  commandBackground: string;
+  commandForeground: string;
+  consoleErrorBackground: string;
+  consoleErrorForeground: string;
+  consoleInfoBackground: string;
+  consoleInfoForeground: string;
+};
+
+export const LightTheme: Theme = {
+  completionTitleBackground: "lightgray",
+  completionTitleForeground: "#000000",
+  completionItemBackground: "#ffffff",
+  completionItemForeground: "#000000",
+  completionItemDescriptionForeground: "#008000",
+  completionSelectedBackground: "#ffff00",
+  completionSelectedForeground: "#000000",
+  commandBackground: "#ffffff",
+  commandForeground: "#000000",
+  consoleErrorBackground: "#ff0000",
+  consoleErrorForeground: "#ffffff",
+  consoleInfoBackground: "#ffffff",
+  consoleInfoForeground: "#018786",
+};
+
+export const DarkTheme: Theme = {
+  completionTitleBackground: "#052027",
+  completionTitleForeground: "white",
+  completionItemBackground: "#2f474f",
+  completionItemForeground: "white",
+  completionItemDescriptionForeground: "#86fab0",
+  completionSelectedBackground: "#eeff41",
+  completionSelectedForeground: "#000000",
+  commandBackground: "#052027",
+  commandForeground: "white",
+  consoleErrorBackground: "red",
+  consoleErrorForeground: "white",
+  consoleInfoBackground: "#052027",
+  consoleInfoForeground: "#ffffff",
+};
+
+const styled = baseStyled as ThemedStyledInterface<Theme>;
+
+export default styled;
