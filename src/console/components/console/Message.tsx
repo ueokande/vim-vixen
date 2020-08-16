@@ -23,9 +23,9 @@ interface Props {
 const Message: React.FC<Props> = ({ mode, children }) => {
   switch (mode) {
     case "error":
-      return <Error>{children}</Error>;
+      return <Error role="alert">{children}</Error>;
     case "info":
-      return <Info>{children}</Info>;
+      return <Info role="status">{children}</Info>;
   }
   return null;
 };
