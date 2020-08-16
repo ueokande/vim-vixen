@@ -1,7 +1,11 @@
 import { WebDriver, By, Key } from "selenium-webdriver";
 
+export type CompletionGroups = {
+  name: string;
+  items: Array<CompletionItem>;
+};
+
 export type CompletionItem = {
-  type: string;
   text: string;
   highlight: boolean;
 };
@@ -25,9 +29,7 @@ export class Console {
   }
 
   async execCommand(command: string): Promise<void> {
-    const input = await this.webdriver.findElement(
-      By.css("input.vimvixen-console-command-input")
-    );
+    const input = await this.webdriver.findElement(By.css("input"));
     await input.sendKeys(command, Key.ENTER);
   }
 
@@ -52,27 +54,20 @@ export class Console {
 
   getCompletions(): Promise<CompletionItem[]> {
     return this.webdriver.executeScript(() => {
-      const items = document.querySelectorAll(
-        ".vimvixen-console-completion > li"
-      );
-      if (items.length === 0) {
+      const groups = document.querySelectorAll("[role=group]");
+      if (groups.length === 0) {
         throw new Error("completion items not found");
       }
 
-      const objs = [];
-      for (const li of Array.from(items)) {
-        if (li.classList.contains("vimvixen-console-completion-title")) {
-          objs.push({ type: "title", text: li.textContent!.trim() });
-        } else if (li.classList.contains("vimvixen-console-completion-item")) {
-          const highlight = li.classList.contains(
-            "vimvixen-completion-selected"
-          );
-          objs.push({ type: "item", text: li.textContent!.trim(), highlight });
-        } else {
-          throw new Error(`unexpected class: ${li.className}`);
-        }
-      }
-      return objs;
+      return Array.from(groups).map((group) => ({
+        name: group.textContent!.trim(),
+        items: Array.from(group.querySelectorAll("[role=menuitem]")).map(
+          (item) => ({
+            text: item.textContent!.trim(),
+            highlight: item.getAttribute("aria-selected") === "true",
+          })
+        ),
+      }));
     });
   }
 

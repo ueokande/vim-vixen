@@ -89,6 +89,7 @@ class Completion extends React.Component<Props, State> {
             caption={item.caption}
             url={item.url}
             highlight={itemIndex === this.props.select}
+            aria-selected={itemIndex === this.props.select}
             role="menuitem"
           />
         );
