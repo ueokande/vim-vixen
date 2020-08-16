@@ -85,7 +85,7 @@ class Completion extends React.Component<Props, State> {
     const viewOffset = this.state.viewOffset;
     eles = eles.slice(viewOffset, viewOffset + this.props.size);
 
-    return <ul className="vimvixen-console-completion">{eles}</ul>;
+    return <ul>{eles}</ul>;
   }
 }
 
