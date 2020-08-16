@@ -1,7 +1,11 @@
 import React from "react";
 import styled from "../Theme";
 
-const Container = styled.li<{ icon: string; highlight: boolean }>`
+const Container = styled.li<{
+  shown: boolean;
+  icon: string;
+  highlight: boolean;
+}>`
   backgroundimage: ${({ icon }) => "url(" + icon + ")"};
   background-color: ${({ highlight, theme }) =>
     highlight
@@ -11,6 +15,7 @@ const Container = styled.li<{ icon: string; highlight: boolean }>`
     highlight
       ? theme.completionSelectedForeground
       : theme.completionItemForeground};
+  display: ${({ shown }) => (shown ? "display" : "none")};
   padding-left: 1.5rem;
   background-position: 0 center;
   background-size: contain;
@@ -34,16 +39,19 @@ const Description = styled.span`
 `;
 
 interface Props {
+  shown: boolean;
   highlight: boolean;
   caption?: string;
   url?: string;
   icon?: string;
 }
 
-const CompletionItem: React.FC<Props> = ({ highlight, caption, url, icon }) => (
-  <Container icon={icon || ""} highlight={highlight}>
-    <Caption>{caption}</Caption>
-    <Description>{url}</Description>
+const CompletionItem: React.FC<React.HTMLAttributes<HTMLElement> & Props> = (
+  props
+) => (
+  <Container icon={props.icon || ""} {...props}>
+    <Caption>{props.caption}</Caption>
+    <Description>{props.url}</Description>
   </Container>
 );
 

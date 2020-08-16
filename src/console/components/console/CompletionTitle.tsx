@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "../Theme";
 
-const Li = styled.li`
+const Li = styled.li<{ shown: boolean }>`
+  display: ${({ shown }) => (shown ? "display" : "none")};
   background-color: ${({ theme }) => theme.completionTitleBackground};
   color: ${({ theme }) => theme.completionTitleForeground};
   font-weight: bold;
@@ -10,11 +11,12 @@ const Li = styled.li`
 `;
 
 interface Props {
+  shown: boolean;
   title: string;
 }
 
-const CompletionTitle: React.FC<Props> = ({ title }) => {
-  return <Li>{title}</Li>;
-};
+const CompletionTitle: React.FC<React.HTMLAttributes<HTMLElement> & Props> = (
+  props
+) => <Li {...props}>{props.title}</Li>;
 
 export default CompletionTitle;
