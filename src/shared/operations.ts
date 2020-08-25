@@ -101,7 +101,7 @@ export interface AddonToggleEnabledOperation {
 export interface AddonSendmessageOperation {
   type: typeof ADDON_SENDMESSAGE;
   extensionId: string;
-  message: string | object;
+  message: string | Record<string, string>;
 }
 
 export interface CommandShowOperation {
@@ -438,7 +438,7 @@ export const valueOf = (o: any): Operation => {
       return {
         type: o.type,
         extensionId: o.extensionId,
-        message: o.message
+        message: o.message,
       };
     case COMMAND_SHOW_OPEN:
     case COMMAND_SHOW_TABOPEN:
