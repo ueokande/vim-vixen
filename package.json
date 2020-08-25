@@ -72,7 +72,7 @@
     "redux-promise": "^0.6.0",
     "reflect-metadata": "^0.1.13",
     "request-promise-native": "^1.0.8",
-    "sass-loader": "^9.0.3",
+    "sass-loader": "^10.0.0",
     "sinon": "^9.0.3",
     "sinon-chrome": "^3.0.1",
     "style-loader": "^1.1.3",
