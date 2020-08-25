@@ -62,7 +62,7 @@
     "lanthan": "0.0.2",
     "mocha": "^8.1.1",
     "node-sass": "^4.13.1",
-    "prettier": "2.0.5",
+    "prettier": "2.1.0",
     "prettier-eslint": "11.0.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
