@@ -10,7 +10,7 @@ export default `
   z-index: 2147483647;
   border: none;
   background-color: unset;
-  pointer-events:none;
+  pointer-events:none !important;
 }
 
 .vimvixen-hint {
