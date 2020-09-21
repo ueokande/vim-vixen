@@ -11,6 +11,13 @@ import CommandLineParser, {
 } from "../commandline/CommandLineParser";
 import { Command } from "../../shared/Command";
 import ColorScheme from "../../shared/ColorScheme";
+import { LightTheme, DarkTheme } from "./Theme";
+import styled from "./Theme";
+import { ThemeProvider } from "styled-components";
+
+const ConsoleWrapper = styled.div`
+  border-top: 1px solid gray;
+`;
 
 const COMPLETION_MAX_ITEMS = 33;
 
@@ -143,28 +150,34 @@ class Console extends React.Component<Props> {
       case "command":
       case "find":
         return (
-          <div data-theme={theme} className="vimvixen-console-command-wrapper">
-            <Completion
-              size={COMPLETION_MAX_ITEMS}
-              completions={this.props.completions}
-              select={this.props.select}
-            />
-            <Input
-              ref={this.input}
-              mode={this.props.mode}
-              onBlur={this.onBlur.bind(this)}
-              onKeyDown={this.onKeyDown.bind(this)}
-              onChange={this.onChange.bind(this)}
-              value={this.props.consoleText}
-            />
-          </div>
+          <ThemeProvider
+            theme={theme === ColorScheme.Dark ? DarkTheme : LightTheme}
+          >
+            <ConsoleWrapper>
+              <Completion
+                size={COMPLETION_MAX_ITEMS}
+                completions={this.props.completions}
+                select={this.props.select}
+              />
+              <Input
+                ref={this.input}
+                mode={this.props.mode}
+                onBlur={this.onBlur.bind(this)}
+                onKeyDown={this.onKeyDown.bind(this)}
+                onChange={this.onChange.bind(this)}
+                value={this.props.consoleText}
+              />
+            </ConsoleWrapper>
+          </ThemeProvider>
         );
       case "info":
       case "error":
         return (
-          <div data-theme={theme}>
+          <ThemeProvider
+            theme={theme === ColorScheme.Dark ? DarkTheme : LightTheme}
+          >
             <Message mode={this.props.mode}>{this.props.messageText}</Message>
-          </div>
+          </ThemeProvider>
         );
       default:
         return null;

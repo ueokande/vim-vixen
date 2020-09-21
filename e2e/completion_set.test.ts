@@ -33,14 +33,14 @@ describe("completion on set commands", () => {
     await console.inputKeys("set ");
 
     await eventually(async () => {
-      const items = await console.getCompletions();
-      assert.strictEqual(items.length, 6);
-      assert.deepStrictEqual(items[0], { type: "title", text: "Properties" });
-      assert.ok(items[1].text.startsWith("hintchars"));
-      assert.ok(items[2].text.startsWith("smoothscroll"));
-      assert.ok(items[3].text.startsWith("nosmoothscroll"));
-      assert.ok(items[4].text.startsWith("complete"));
-      assert.ok(items[5].text.startsWith("colorscheme"));
+      const groups = await console.getCompletions();
+      const items = groups[0].items;
+      assert.strictEqual(items.length, 5);
+      assert.ok(items[0].text.startsWith("hintchars"));
+      assert.ok(items[1].text.startsWith("smoothscroll"));
+      assert.ok(items[2].text.startsWith("nosmoothscroll"));
+      assert.ok(items[3].text.startsWith("complete"));
+      assert.ok(items[4].text.startsWith("colorscheme"));
     });
   });
 
@@ -49,9 +49,10 @@ describe("completion on set commands", () => {
     await console.inputKeys("set no");
 
     await eventually(async () => {
-      const items = await console.getCompletions();
-      assert.strictEqual(items.length, 2);
-      assert.ok(items[1].text.includes("nosmoothscroll"));
+      const groups = await console.getCompletions();
+      const items = groups[0].items;
+      assert.strictEqual(items.length, 1);
+      assert.ok(items[0].text.includes("nosmoothscroll"));
     });
   });
 });

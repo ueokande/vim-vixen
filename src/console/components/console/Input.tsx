@@ -1,4 +1,22 @@
 import React from "react";
+import styled from "../Theme";
+
+const Container = styled.div`
+  background-color: ${({ theme }) => theme.commandBackground};
+  color: ${({ theme }) => theme.commandForeground};
+  display: flex;
+`;
+
+const Prompt = styled.i`
+  font-style: normal;
+`;
+
+const InputInner = styled.input`
+  border: none;
+  flex-grow: 1;
+  background-color: ${({ theme }) => theme.commandBackground};
+  color: ${({ theme }) => theme.commandForeground};
+`;
 
 interface Props {
   mode: string;
@@ -32,17 +50,16 @@ class Input extends React.Component<Props> {
     }
 
     return (
-      <div className="vimvixen-console-command">
-        <i className="vimvixen-console-command-prompt">{prompt}</i>
-        <input
-          className="vimvixen-console-command-input"
+      <Container>
+        <Prompt>{prompt}</Prompt>
+        <InputInner
           ref={this.input}
           onBlur={this.props.onBlur}
           onKeyDown={this.props.onKeyDown}
           onChange={this.props.onChange}
           value={this.props.value}
         />
-      </div>
+      </Container>
     );
   }
 }

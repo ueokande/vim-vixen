@@ -46,9 +46,7 @@ export default class Page {
     await this.sendKeys(":");
     await this.webdriver.wait(until.elementIsVisible(iframe));
     await this.webdriver.switchTo().frame(0);
-    await this.webdriver.wait(
-      until.elementLocated(By.css("input.vimvixen-console-command-input"))
-    );
+    await this.webdriver.wait(until.elementLocated(By.css("input")));
     return new Console(this.webdriver);
   }
 

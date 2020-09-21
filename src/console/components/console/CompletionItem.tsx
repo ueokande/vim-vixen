@@ -1,35 +1,62 @@
 import React from "react";
-import PropTypes from "prop-types";
+import styled from "../Theme";
+
+const Container = styled.li<{
+  shown: boolean;
+  icon: string;
+  highlight: boolean;
+}>`
+  background-image: ${({ icon }) => "url(" + icon + ")"};
+  background-color: ${({ highlight, theme }) =>
+    highlight
+      ? theme.completionSelectedBackground
+      : theme.completionItemBackground};
+  color: ${({ highlight, theme }) =>
+    highlight
+      ? theme.completionSelectedForeground
+      : theme.completionItemForeground};
+  display: ${({ shown }) => (shown ? "display" : "none")};
+  padding-left: 1.8rem;
+  background-position: 0 center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  white-space: pre;
+`;
+
+const Caption = styled.span`
+  display: inline-block;
+  width: 40%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
+
+const Description = styled.span`
+  display: inline-block;
+  color: ${({ theme }) => theme.completionItemDescriptionForeground};
+  width: 60%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
 
 interface Props {
+  shown: boolean;
   highlight: boolean;
   caption?: string;
   url?: string;
   icon?: string;
 }
 
-const CompletionItem = (props: Props) => {
-  let className = "vimvixen-console-completion-item";
-  if (props.highlight) {
-    className += " vimvixen-completion-selected";
-  }
-  return (
-    <li
-      className={className}
-      style={{ backgroundImage: "url(" + props.icon + ")" }}
-    >
-      <span className="vimvixen-console-completion-item-caption">
-        {props.caption}
-      </span>
-      <span className="vimvixen-console-completion-item-url">{props.url}</span>
-    </li>
-  );
-};
-
-CompletionItem.propTypes = {
-  highlight: PropTypes.bool,
-  caption: PropTypes.string,
-  url: PropTypes.string,
-};
+const CompletionItem: React.FC<React.HTMLAttributes<HTMLElement> & Props> = (
+  props
+) => (
+  <Container
+    icon={props.icon || ""}
+    aria-labelledby={`completion-item-${props.caption}`}
+    {...props}
+  >
+    <Caption id={`completion-item-${props.caption}`}>{props.caption}</Caption>
+    <Description>{props.url}</Description>
+  </Container>
+);
 
 export default CompletionItem;

@@ -1,7 +1,11 @@
 import { WebDriver, By, Key } from "selenium-webdriver";
 
+export type CompletionGroups = {
+  title: string;
+  items: Array<CompletionItem>;
+};
+
 export type CompletionItem = {
-  type: string;
   text: string;
   highlight: boolean;
 };
@@ -25,23 +29,17 @@ export class Console {
   }
 
   async execCommand(command: string): Promise<void> {
-    const input = await this.webdriver.findElement(
-      By.css("input.vimvixen-console-command-input")
-    );
+    const input = await this.webdriver.findElement(By.css("input"));
     await input.sendKeys(command, Key.ENTER);
   }
 
   async getErrorMessage(): Promise<string> {
-    const p = await this.webdriver.findElement(
-      By.css(".vimvixen-console-error")
-    );
+    const p = await this.webdriver.findElement(By.css("[role=alert]"));
     return p.getText();
   }
 
   async getInformationMessage(): Promise<string> {
-    const p = await this.webdriver.findElement(
-      By.css(".vimvixen-console-info")
-    );
+    const p = await this.webdriver.findElement(By.css("[role=status]"));
     return p.getText();
   }
 
@@ -50,36 +48,42 @@ export class Console {
     await input.sendKeys(...keys);
   }
 
-  getCompletions(): Promise<CompletionItem[]> {
+  getCompletions(): Promise<CompletionGroups[]> {
     return this.webdriver.executeScript(() => {
-      const items = document.querySelectorAll(
-        ".vimvixen-console-completion > li"
-      );
-      if (items.length === 0) {
+      const groups = document.querySelectorAll("[role=group]");
+      if (groups.length === 0) {
         throw new Error("completion items not found");
       }
 
-      const objs = [];
-      for (const li of Array.from(items)) {
-        if (li.classList.contains("vimvixen-console-completion-title")) {
-          objs.push({ type: "title", text: li.textContent!.trim() });
-        } else if (li.classList.contains("vimvixen-console-completion-item")) {
-          const highlight = li.classList.contains(
-            "vimvixen-completion-selected"
-          );
-          objs.push({ type: "item", text: li.textContent!.trim(), highlight });
-        } else {
-          throw new Error(`unexpected class: ${li.className}`);
-        }
-      }
-      return objs;
+      return Array.from(groups).map((group) => {
+        const describedby = group.getAttribute("aria-describedby") as string;
+        const title = document.getElementById(describedby)!;
+        const items = group.querySelectorAll("[role=menuitem]");
+
+        return {
+          title: title.textContent!.trim(),
+          items: Array.from(items).map((item) => ({
+            text: document.getElementById(
+              item.getAttribute("aria-labelledby")!
+            )!.textContent,
+            highlight: item.getAttribute("aria-selected") === "true",
+          })),
+        };
+      });
     });
   }
 
   async getTheme(): Promise<string> {
-    const wrapper = await this.webdriver.findElement(By.css("div[data-theme]"));
-    const theme = await wrapper.getAttribute("data-theme");
-    return theme;
+    const color = (await this.webdriver.executeScript(() => {
+      const input = document.querySelector("input")!;
+      return window.getComputedStyle(input).backgroundColor;
+    })) as string;
+    if (color === "rgb(5, 32, 39)") {
+      return "dark";
+    } else if (color === "rgb(255, 255, 255)") {
+      return "light";
+    }
+    throw new Error(`unknown input color: ${color}`);
   }
 
   async close(): Promise<void> {

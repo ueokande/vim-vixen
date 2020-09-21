@@ -45,31 +45,13 @@ describe("completion on open/tabopen/winopen commands", () => {
     await console.inputKeys("open ");
 
     await eventually(async () => {
-      const completions = await console.getCompletions();
-      assert.ok(
-        completions.find(
-          (x) => x.type === "title" && x.text === "Search Engines"
-        )
-      );
-      assert.ok(
-        completions.find((x) => x.type === "title" && x.text === "Bookmarks")
-      );
-      assert.ok(
-        completions.find((x) => x.type === "title" && x.text === "History")
-      );
-    });
-  });
-
-  it('should filter items with URLs by keywords on "open" command', async () => {
-    const console = await page.showConsole();
-    await console.inputKeys("open https://");
-
-    await eventually(async () => {
-      const completions = await console.getCompletions();
-      const items = completions
-        .filter((x) => x.type === "item")
-        .map((x) => x.text);
-      assert.ok(items.every((x) => x.includes("https://")));
+      const groups = await console.getCompletions();
+      const titles = groups.map((group) => group.title);
+      assert.deepStrictEqual(titles, [
+        "Search Engines",
+        "Bookmarks",
+        "History",
+      ]);
     });
   });
 
@@ -78,11 +60,9 @@ describe("completion on open/tabopen/winopen commands", () => {
     await console.inputKeys("open getting");
 
     await eventually(async () => {
-      const completions = await console.getCompletions();
-      const items = completions
-        .filter((x) => x.type === "item")
-        .map((x) => x.text);
-      assert.ok(items.every((x) => x.toLowerCase().includes("getting")));
+      const groups = await console.getCompletions();
+      const items = groups.map((group) => group.items).flat();
+      assert.ok(items.every((x) => x.text.toLowerCase().includes("getting")));
     });
   });
 
@@ -91,24 +71,20 @@ describe("completion on open/tabopen/winopen commands", () => {
     await console.inputKeys("tabopen getting");
 
     await eventually(async () => {
-      const completions = await console.getCompletions();
-      const items = completions
-        .filter((x) => x.type === "item")
-        .map((x) => x.text);
-      assert.ok(items.every((x) => x.includes("https://")));
+      const groups = await console.getCompletions();
+      const items = groups.map((group) => group.items).flat();
+      assert.ok(items.every((x) => x.text.toLowerCase().includes("getting")));
     });
   });
 
   it('should filter items with titles by keywords on "winopen" command', async () => {
     const console = await page.showConsole();
-    await console.inputKeys("winopen https://");
+    await console.inputKeys("winopen getting");
 
     await eventually(async () => {
-      const completions = await console.getCompletions();
-      const items = completions
-        .filter((x) => x.type === "item")
-        .map((x) => x.text);
-      assert.ok(items.every((x) => x.includes("https://")));
+      const groups = await console.getCompletions();
+      const items = groups.map((group) => group.items).flat();
+      assert.ok(items.every((x) => x.text.toLowerCase().includes("getting")));
     });
   });
 
@@ -121,10 +97,8 @@ describe("completion on open/tabopen/winopen commands", () => {
     await console.inputKeys("open ");
 
     await eventually(async () => {
-      const completions = await console.getCompletions();
-      const titles = completions
-        .filter((x) => x.type === "title")
-        .map((x) => x.text);
+      const groups = await console.getCompletions();
+      const titles = groups.map((group) => group.title);
       assert.deepStrictEqual(titles, [
         "Search Engines",
         "Bookmarks",
@@ -141,10 +115,8 @@ describe("completion on open/tabopen/winopen commands", () => {
     await console.inputKeys("open ");
 
     await eventually(async () => {
-      const completions = await console.getCompletions();
-      const titles = completions
-        .filter((x) => x.type === "title")
-        .map((x) => x.text);
+      const groups = await console.getCompletions();
+      const titles = groups.map((group) => group.title);
       assert.deepStrictEqual(titles, [
         "Bookmarks",
         "Search Engines",
@@ -164,10 +136,8 @@ describe("completion on open/tabopen/winopen commands", () => {
     await console.inputKeys("open ");
 
     await eventually(async () => {
-      const completions = await console.getCompletions();
-      const titles = completions
-        .filter((x) => x.type === "title")
-        .map((x) => x.text);
+      const groups = await console.getCompletions();
+      const titles = groups.map((group) => group.title);
       assert.deepStrictEqual(titles, [
         "Search Engines",
         "Bookmarks",
@@ -188,10 +158,8 @@ describe("completion on open/tabopen/winopen commands", () => {
     await console.inputKeys("open ");
 
     await eventually(async () => {
-      const completions = await console.getCompletions();
-      const titles = completions
-        .filter((x) => x.type === "title")
-        .map((x) => x.text);
+      const groups = await console.getCompletions();
+      const titles = groups.map((group) => group.title);
       assert.deepStrictEqual(titles, [
         "Bookmarks",
         "Search Engines",

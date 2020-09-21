@@ -63,29 +63,52 @@ class Completion extends React.Component<Props, State> {
   }
 
   render() {
-    let eles = [];
-    let index = 0;
+    let itemIndex = 0;
+    let viewIndex = 0;
+    const groups: Array<JSX.Element> = [];
+    const viewOffset = this.state.viewOffset;
+    const viewSize = this.props.size;
 
-    for (const group of this.props.completions) {
-      eles.push(<CompletionTitle key={`group-${index}`} title={group.name} />);
+    this.props.completions.forEach((group, groupIndex) => {
+      const items = [];
+      const title = (
+        <CompletionTitle
+          id={`title-${groupIndex}`}
+          key={`group-${groupIndex}`}
+          shown={viewOffset <= viewIndex && viewIndex < viewOffset + viewSize}
+          title={group.name}
+        />
+      );
+      ++viewIndex;
       for (const item of group.items) {
-        eles.push(
+        items.push(
           <CompletionItem
-            key={`item-${index}`}
+            shown={viewOffset <= viewIndex && viewIndex < viewOffset + viewSize}
+            key={`item-${itemIndex}`}
             icon={item.icon}
             caption={item.caption}
             url={item.url}
-            highlight={index === this.props.select}
+            highlight={itemIndex === this.props.select}
+            aria-selected={itemIndex === this.props.select}
+            role="menuitem"
           />
         );
-        ++index;
+        ++viewIndex;
+        ++itemIndex;
       }
-    }
+      groups.push(
+        <div
+          key={`group-${groupIndex}`}
+          role="group"
+          aria-describedby={`title-${groupIndex}`}
+        >
+          {title}
+          <ul>{items}</ul>
+        </div>
+      );
+    });
 
-    const viewOffset = this.state.viewOffset;
-    eles = eles.slice(viewOffset, viewOffset + this.props.size);
-
-    return <ul className="vimvixen-console-completion">{eles}</ul>;
+    return <div role="menu">{groups}</div>;
   }
 }
 
