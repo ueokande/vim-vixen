@@ -6,6 +6,11 @@ import Blacklist, { BlacklistItem } from "../../../shared/settings/Blacklist";
 
 const Grid = styled.div``;
 
+const GridHeader = styled.div`
+  display: flex;
+  font-weight: bold;
+`;
+
 const GridRow = styled.div`
   display: flex;
 `;
@@ -48,10 +53,10 @@ class PartialBlacklistForm extends React.Component<Props> {
     return (
       <>
         <Grid>
-          <GridRow>
+          <GridHeader>
             <GridCell>URL</GridCell>
             <GridCell>Keys</GridCell>
-          </GridRow>
+          </GridHeader>
           {this.props.value.items.map((item, index) => {
             if (!item.partial) {
               return null;

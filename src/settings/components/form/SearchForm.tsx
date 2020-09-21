@@ -6,6 +6,11 @@ import { FormSearch } from "../../../shared/SettingData";
 
 const Grid = styled.div``;
 
+const GridHeader = styled.div`
+  display: flex;
+  font-weight: bold;
+`;
+
 const GridRow = styled.div`
   display: flex;
 `;
@@ -50,11 +55,11 @@ class SearchForm extends React.Component<Props> {
     return (
       <>
         <Grid>
-          <GridRow>
+          <GridHeader>
             <GridCell>Name</GridCell>
             <GridCell>URL</GridCell>
             <GridCell>Default</GridCell>
-          </GridRow>
+          </GridHeader>
           {value.engines.map((engine, index) => {
             return (
               <GridRow key={index}>

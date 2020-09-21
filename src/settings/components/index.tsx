@@ -1,6 +1,6 @@
-import "./site.scss";
 import React from "react";
 import { connect } from "react-redux";
+import styled from "styled-components";
 import TextArea from "./ui/TextArea";
 import Radio from "./ui/Radio";
 import SearchForm from "./form/SearchForm";
@@ -18,6 +18,28 @@ import SettingData, {
 import { State as AppState } from "../reducers/setting";
 import Properties from "../../shared/settings/Properties";
 import Blacklist from "../../shared/settings/Blacklist";
+
+const Container = styled.form`
+  padding: 2px;
+  font-family: system-ui;
+`;
+
+const Fieldset = styled.fieldset`
+  margin: 0;
+  padding: 0;
+  border: none;
+  margin-top: 1rem;
+
+  &:first-of-type {
+    margin-top: 1rem;
+  }
+`;
+
+const Legend = styled.legend`
+  font-size: 1.5rem;
+  padding: 0.5rem 0;
+  font-weight: bold;
+`;
 
 const DO_YOU_WANT_TO_CONTINUE =
   "Some settings in JSON can be lost when migrating.  " +
@@ -41,47 +63,47 @@ class SettingsComponent extends React.Component<Props> {
   renderFormFields(form: FormSettings) {
     return (
       <div>
-        <fieldset>
-          <legend>Keybindings</legend>
+        <Fieldset>
+          <Legend>Keybindings</Legend>
           <KeymapsForm
             value={form.keymaps}
             onChange={this.bindKeymapsForm.bind(this)}
             onBlur={this.save.bind(this)}
           />
-        </fieldset>
-        <fieldset>
-          <legend>Search Engines</legend>
+        </Fieldset>
+        <Fieldset>
+          <Legend>Search Engines</Legend>
           <SearchForm
             value={form.search}
             onChange={this.bindSearchForm.bind(this)}
             onBlur={this.save.bind(this)}
           />
-        </fieldset>
-        <fieldset>
-          <legend>Blacklist</legend>
+        </Fieldset>
+        <Fieldset>
+          <Legend>Blacklist</Legend>
           <BlacklistForm
             value={form.blacklist}
             onChange={this.bindBlacklistForm.bind(this)}
             onBlur={this.save.bind(this)}
           />
-        </fieldset>
-        <fieldset>
-          <legend>Partial blacklist</legend>
+        </Fieldset>
+        <Fieldset>
+          <Legend>Partial blacklist</Legend>
           <PartialBlacklistForm
             value={form.blacklist}
             onChange={this.bindBlacklistForm.bind(this)}
             onBlur={this.save.bind(this)}
           />
-        </fieldset>
-        <fieldset>
-          <legend>Properties</legend>
+        </Fieldset>
+        <Fieldset>
+          <Legend>Properties</Legend>
           <PropertiesForm
             types={Properties.types()}
             value={form.properties.toJSON()}
             onChange={this.bindPropertiesForm.bind(this)}
             onBlur={this.save.bind(this)}
           />
-        </fieldset>
+        </Fieldset>
       </div>
     );
   }
@@ -111,30 +133,28 @@ class SettingsComponent extends React.Component<Props> {
       fields = this.renderJsonFields(this.props.json!, this.props.error);
     }
     return (
-      <div>
+      <Container>
         <h1>Configure Vim-Vixen</h1>
-        <form className="vimvixen-settings-form">
-          <Radio
-            id="setting-source-form"
-            name="source"
-            label="Use form"
-            checked={this.props.source === "form"}
-            value="form"
-            onValueChange={this.bindSource.bind(this)}
-            disabled={disabled}
-          />
+        <Radio
+          id="setting-source-form"
+          name="source"
+          label="Use form"
+          checked={this.props.source === "form"}
+          value="form"
+          onValueChange={this.bindSource.bind(this)}
+          disabled={disabled}
+        />
 
-          <Radio
-            name="source"
-            label="Use plain JSON"
-            checked={this.props.source === "json"}
-            value="json"
-            onValueChange={this.bindSource.bind(this)}
-            disabled={disabled}
-          />
-          {fields}
-        </form>
-      </div>
+        <Radio
+          name="source"
+          label="Use plain JSON"
+          checked={this.props.source === "json"}
+          value="json"
+          onValueChange={this.bindSource.bind(this)}
+          disabled={disabled}
+        />
+        {fields}
+      </Container>
     );
   }
 
