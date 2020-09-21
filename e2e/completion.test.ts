@@ -28,33 +28,24 @@ describe("general completion test", () => {
     page = await Page.navigateTo(webdriver, "about:blank");
   });
 
-  it("should all commands on empty line", async () => {
+  it("should shows all commands on empty line", async () => {
     const console = await page.showConsole();
 
-    const items = await console.getCompletions();
-    assert.strictEqual(items.length, 12);
-    assert.deepStrictEqual(items[0], {
-      type: "title",
-      text: "Console Command",
-    });
-    assert.ok(items[1].text.startsWith("set"));
-    assert.ok(items[2].text.startsWith("open"));
-    assert.ok(items[3].text.startsWith("tabopen"));
+    const groups = await console.getCompletions();
+    assert.strictEqual(groups.length, 1);
+    assert.strictEqual(groups[0].title, "Console Command");
+    assert.strictEqual(groups[0].items.length, 11);
   });
 
-  it("should only commands filtered by prefix", async () => {
+  it("should shows commands filtered by prefix", async () => {
     const console = await page.showConsole();
     await console.inputKeys("b");
 
-    const items = await console.getCompletions();
-    assert.strictEqual(items.length, 4);
-    assert.deepStrictEqual(items[0], {
-      type: "title",
-      text: "Console Command",
-    });
-    assert.ok(items[1].text.startsWith("buffer"));
-    assert.ok(items[2].text.startsWith("bdelete"));
-    assert.ok(items[3].text.startsWith("bdeletes"));
+    const groups = await console.getCompletions();
+    const items = groups[0].items;
+    assert.ok(items[0].text.startsWith("buffer"));
+    assert.ok(items[1].text.startsWith("bdelete"));
+    assert.ok(items[2].text.startsWith("bdeletes"));
   });
 
   // > byffer
@@ -65,21 +56,24 @@ describe("general completion test", () => {
     const console = await page.showConsole();
     await console.inputKeys("b");
     await eventually(async () => {
-      const items = await console.getCompletions();
-      assert.strictEqual(items.length, 4);
+      const groups = await console.getCompletions();
+      const items = groups[0].items;
+      assert.strictEqual(items.length, 3);
     });
 
     await console.sendKeys(Key.TAB);
     await eventually(async () => {
-      const items = await console.getCompletions();
-      assert.ok(items[1].highlight);
+      const groups = await console.getCompletions();
+      const items = groups[0].items;
+      assert.ok(items[0].highlight);
       assert.strictEqual(await console.currentValue(), "buffer");
     });
 
     await console.sendKeys(Key.TAB, Key.TAB);
     await eventually(async () => {
-      const items = await console.getCompletions();
-      assert.ok(items[3].highlight);
+      const groups = await console.getCompletions();
+      const items = groups[0].items;
+      assert.ok(items[2].highlight);
       assert.strictEqual(await console.currentValue(), "bdeletes");
     });
 
@@ -90,8 +84,9 @@ describe("general completion test", () => {
 
     await console.sendKeys(Key.SHIFT, Key.TAB);
     await eventually(async () => {
-      const items = await console.getCompletions();
-      assert.ok(items[3].highlight);
+      const groups = await console.getCompletions();
+      const items = groups[0].items;
+      assert.ok(items[2].highlight);
       assert.strictEqual(await console.currentValue(), "bdeletes");
     });
   });

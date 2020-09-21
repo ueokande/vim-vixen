@@ -72,17 +72,19 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     await console.inputKeys("buffer ");
 
     await eventually(async () => {
-      const items = await console.getCompletions();
-      assert.strictEqual(items.length, 6);
-      assert.deepStrictEqual(items[0], { type: "title", text: "Buffers" });
-      assert.ok(items[1].text.startsWith("1:"));
-      assert.ok(items[2].text.startsWith("2:"));
-      assert.ok(items[3].text.startsWith("3:"));
-      assert.ok(items[4].text.startsWith("4:"));
-      assert.ok(items[5].text.startsWith("5:"));
+      const groups = await console.getCompletions();
+      assert.strictEqual(groups.length, 1);
+      assert.strictEqual(groups[0].title, "Buffers");
 
-      assert.ok(items[3].text.includes("%"));
-      assert.ok(items[5].text.includes("#"));
+      const items = groups[0].items;
+      assert.ok(items[0].text.startsWith("1:"));
+      assert.ok(items[1].text.startsWith("2:"));
+      assert.ok(items[2].text.startsWith("3:"));
+      assert.ok(items[3].text.startsWith("4:"));
+      assert.ok(items[4].text.startsWith("5:"));
+
+      assert.ok(items[2].text.includes("%"));
+      assert.ok(items[4].text.includes("#"));
     });
   });
 
@@ -91,11 +93,10 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     await console.inputKeys("buffer title_site2");
 
     await eventually(async () => {
-      const items = await console.getCompletions();
-      assert.deepStrictEqual(items[0], { type: "title", text: "Buffers" });
-      assert.ok(items[1].text.startsWith("2:"));
-      assert.ok(items[1].text.includes("title_site2"));
-      assert.ok(items[1].text.includes(server.url("/site2")));
+      const groups = await console.getCompletions();
+      const items = groups[0].items;
+      assert.ok(items[0].text.startsWith("2:"));
+      assert.ok(items[0].text.includes("title_site2"));
     });
   });
 
@@ -104,9 +105,9 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     await console.inputKeys("buffer /site2");
 
     await eventually(async () => {
-      const items = await console.getCompletions();
-      assert.deepStrictEqual(items[0], { type: "title", text: "Buffers" });
-      assert.ok(items[1].text.startsWith("2:"));
+      const groups = await console.getCompletions();
+      const items = groups[0].items;
+      assert.ok(items[0].text.startsWith("2:"));
     });
   });
 
@@ -115,10 +116,11 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     await console.inputKeys("buffer 2");
 
     await eventually(async () => {
-      const items = await console.getCompletions();
-      assert.strictEqual(items.length, 2);
-      assert.deepStrictEqual(items[0], { type: "title", text: "Buffers" });
-      assert.ok(items[1].text.startsWith("2:"));
+      const groups = await console.getCompletions();
+      const items = groups[0].items;
+
+      assert.strictEqual(items.length, 1);
+      assert.ok(items[0].text.startsWith("2:"));
     });
   });
 
@@ -127,11 +129,12 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     await console.inputKeys("bdelete site");
 
     await eventually(async () => {
-      const items = await console.getCompletions();
-      assert.strictEqual(items.length, 4);
-      assert.ok(items[1].text.includes("site3"));
-      assert.ok(items[2].text.includes("site4"));
-      assert.ok(items[3].text.includes("site5"));
+      const groups = await console.getCompletions();
+      const items = groups[0].items;
+      assert.strictEqual(items.length, 3);
+      assert.ok(items[0].text.includes("site3"));
+      assert.ok(items[1].text.includes("site4"));
+      assert.ok(items[2].text.includes("site5"));
     });
   });
 
@@ -140,11 +143,12 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     await console.inputKeys("bdeletes site");
 
     await eventually(async () => {
-      const items = await console.getCompletions();
-      assert.strictEqual(items.length, 4);
-      assert.ok(items[1].text.includes("site3"));
-      assert.ok(items[2].text.includes("site4"));
-      assert.ok(items[3].text.includes("site5"));
+      const groups = await console.getCompletions();
+      const items = groups[0].items;
+      assert.strictEqual(items.length, 3);
+      assert.ok(items[0].text.includes("site3"));
+      assert.ok(items[1].text.includes("site4"));
+      assert.ok(items[2].text.includes("site5"));
     });
   });
 
@@ -153,13 +157,14 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     await console.inputKeys("bdelete! site");
 
     await eventually(async () => {
-      const items = await console.getCompletions();
-      assert.strictEqual(items.length, 6);
-      assert.ok(items[1].text.includes("site1"));
-      assert.ok(items[2].text.includes("site2"));
-      assert.ok(items[3].text.includes("site3"));
-      assert.ok(items[4].text.includes("site4"));
-      assert.ok(items[5].text.includes("site5"));
+      const groups = await console.getCompletions();
+      const items = groups[0].items;
+      assert.strictEqual(items.length, 5);
+      assert.ok(items[0].text.includes("site1"));
+      assert.ok(items[1].text.includes("site2"));
+      assert.ok(items[2].text.includes("site3"));
+      assert.ok(items[3].text.includes("site4"));
+      assert.ok(items[4].text.includes("site5"));
     });
   });
 
@@ -168,13 +173,14 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     await console.inputKeys("bdeletes! site");
 
     await eventually(async () => {
-      const items = await console.getCompletions();
-      assert.strictEqual(items.length, 6);
-      assert.ok(items[1].text.includes("site1"));
-      assert.ok(items[2].text.includes("site2"));
-      assert.ok(items[3].text.includes("site3"));
-      assert.ok(items[4].text.includes("site4"));
-      assert.ok(items[5].text.includes("site5"));
+      const groups = await console.getCompletions();
+      const items = groups[0].items;
+      assert.strictEqual(items.length, 5);
+      assert.ok(items[0].text.includes("site1"));
+      assert.ok(items[1].text.includes("site2"));
+      assert.ok(items[2].text.includes("site3"));
+      assert.ok(items[3].text.includes("site4"));
+      assert.ok(items[4].text.includes("site5"));
     });
   });
 });

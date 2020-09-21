@@ -1,7 +1,7 @@
 import { WebDriver, By, Key } from "selenium-webdriver";
 
 export type CompletionGroups = {
-  name: string;
+  title: string;
   items: Array<CompletionItem>;
 };
 
@@ -34,16 +34,12 @@ export class Console {
   }
 
   async getErrorMessage(): Promise<string> {
-    const p = await this.webdriver.findElement(
-      By.css(".vimvixen-console-error")
-    );
+    const p = await this.webdriver.findElement(By.css("[role=alert]"));
     return p.getText();
   }
 
   async getInformationMessage(): Promise<string> {
-    const p = await this.webdriver.findElement(
-      By.css(".vimvixen-console-info")
-    );
+    const p = await this.webdriver.findElement(By.css("[role=status]"));
     return p.getText();
   }
 
@@ -52,29 +48,42 @@ export class Console {
     await input.sendKeys(...keys);
   }
 
-  getCompletions(): Promise<CompletionItem[]> {
+  getCompletions(): Promise<CompletionGroups[]> {
     return this.webdriver.executeScript(() => {
       const groups = document.querySelectorAll("[role=group]");
       if (groups.length === 0) {
         throw new Error("completion items not found");
       }
 
-      return Array.from(groups).map((group) => ({
-        name: group.textContent!.trim(),
-        items: Array.from(group.querySelectorAll("[role=menuitem]")).map(
-          (item) => ({
-            text: item.textContent!.trim(),
+      return Array.from(groups).map((group) => {
+        const describedby = group.getAttribute("aria-describedby") as string;
+        const title = document.getElementById(describedby)!;
+        const items = group.querySelectorAll("[role=menuitem]");
+
+        return {
+          title: title.textContent!.trim(),
+          items: Array.from(items).map((item) => ({
+            text: document.getElementById(
+              item.getAttribute("aria-labelledby")!
+            )!.textContent,
             highlight: item.getAttribute("aria-selected") === "true",
-          })
-        ),
-      }));
+          })),
+        };
+      });
     });
   }
 
   async getTheme(): Promise<string> {
-    const wrapper = await this.webdriver.findElement(By.css("div[data-theme]"));
-    const theme = await wrapper.getAttribute("data-theme");
-    return theme;
+    const color = (await this.webdriver.executeScript(() => {
+      const input = document.querySelector("input")!;
+      return window.getComputedStyle(input).backgroundColor;
+    })) as string;
+    if (color === "rgb(5, 32, 39)") {
+      return "dark";
+    } else if (color === "rgb(255, 255, 255)") {
+      return "light";
+    }
+    throw new Error(`unknown input color: ${color}`);
   }
 
   async close(): Promise<void> {

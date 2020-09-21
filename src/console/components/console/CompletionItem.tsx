@@ -49,8 +49,12 @@ interface Props {
 const CompletionItem: React.FC<React.HTMLAttributes<HTMLElement> & Props> = (
   props
 ) => (
-  <Container icon={props.icon || ""} {...props}>
-    <Caption>{props.caption}</Caption>
+  <Container
+    icon={props.icon || ""}
+    aria-labelledby={`completion-item-${props.caption}`}
+    {...props}
+  >
+    <Caption id={`completion-item-${props.caption}`}>{props.caption}</Caption>
     <Description>{props.url}</Description>
   </Container>
 );
