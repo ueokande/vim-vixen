@@ -8,8 +8,8 @@ export default `
   height: 100%;
   position: fixed;
   z-index: 2147483647;
-  border: none;
-  background-color: unset;
+  border: none !important;
+  background-color: unset !important;
   pointer-events:none;
 }
 
