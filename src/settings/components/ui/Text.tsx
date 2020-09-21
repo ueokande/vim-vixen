@@ -1,42 +1,54 @@
 import React from "react";
-import "./Input.scss";
+import styled from "styled-components";
 
-interface Props extends React.AllHTMLAttributes<HTMLElement> {
+const Container = styled.div`
+  page-break-inside: avoid;
+`;
+
+const Input = styled.input<{ hasError: boolean }>`
+  padding: 4px;
+  width: 8rem;
+  box-shadow: ${({ hasError }) => (hasError ? "0 0 2px red" : "none")};
+`;
+
+const Label = styled.label`
+  font-weight: bold;
+  min-width: 14rem;
+  display: inline-block;
+`;
+
+interface Props extends React.HTMLAttributes<HTMLElement> {
   name: string;
   error?: string;
   label: string;
   value: string;
   onValueChange?: (name: string, value: string) => void;
-  onBlur?: (e: React.FocusEvent<Element>) => void;
 }
 
-class Input extends React.Component<Props> {
-  renderText(props: Props) {
-    const inputClassName = props.error ? "input-error" : "";
-    const pp = { ...props };
-    delete pp.onValueChange;
-    return (
-      <div className="settings-ui-input">
-        <label htmlFor={props.id}>{props.label}</label>
-        <input
+const Text: React.FC<Props> = (props) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (props.onValueChange) {
+      props.onValueChange(e.target.name, e.target.value);
+    }
+  };
+
+  const pp = { ...props };
+  delete pp.onValueChange;
+
+  return (
+    <Container>
+      <Label>
+        {props.label}
+        <br />
+        <Input
           type="text"
-          className={inputClassName}
-          onChange={this.bindOnChange.bind(this)}
+          hasError={props.error !== undefined}
+          onChange={onChange}
           {...pp}
         />
-      </div>
-    );
-  }
+      </Label>
+    </Container>
+  );
+};
 
-  render() {
-    return this.renderText(this.props);
-  }
-
-  bindOnChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    if (this.props.onValueChange) {
-      this.props.onValueChange(e.target.name, e.target.value);
-    }
-  }
-}
-
-export default Input;
+export default Text;

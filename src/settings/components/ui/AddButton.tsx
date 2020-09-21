@@ -1,19 +1,24 @@
-import "./AddButton.scss";
 import React from "react";
+import styled from "styled-components";
 
-type Props = React.AllHTMLAttributes<HTMLInputElement>;
+const Button = styled.input`
+  border: none;
+  padding: 4;
+  display: inline;
+  background: none;
+  font-weight: bold;
+  color: green;
+  cursor: pointer;
 
-class AddButton extends React.Component<Props> {
-  render() {
-    return (
-      <input
-        className="ui-add-button"
-        type="button"
-        value="&#x271a;"
-        {...this.props}
-      />
-    );
+  &:hover {
+    color: darkgreen;
   }
-}
+`;
+
+type Props = React.InputHTMLAttributes<HTMLInputElement>;
+
+const AddButton: React.FC<Props> = (props) => (
+  <Button type="button" value="&#x271a;" {...props} />
+);
 
 export default AddButton;

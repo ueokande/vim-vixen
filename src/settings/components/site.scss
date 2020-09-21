@@ -1,12 +1,6 @@
 .vimvixen-settings-form {
   padding: 2px;
-
-  textarea[name=json] {
-    font-family: monospace;
-    width: 100%;
-    min-height: 64ex;
-    resize: vertical;
-  }
+  font-family: system-ui;
 
   fieldset {
     margin: 0;

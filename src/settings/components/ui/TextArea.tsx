@@ -1,42 +1,54 @@
 import React from "react";
-import "./Input.scss";
+import styled from "styled-components";
 
-interface Props extends React.AllHTMLAttributes<HTMLElement> {
-  name: string;
+const Container = styled.div`
+  page-break-inside: avoid;
+`;
+
+const Label = styled.label`
+  font-weight: bold;
+  min-width: 14rem;
+  display: inline-block;
+`;
+
+const ErrorableTextArea = styled.textarea<{ hasError: boolean }>`
+  box-shadow: ${({ hasError }) => (hasError ? "0 0 2px red" : "none")};
+  font-family: monospace;
+  font-family: monospace;
+  width: 100%;
+  min-height: 64ex;
+  resize: vertical;
+`;
+
+const ErrorMessage = styled.p`
+  font-weight: bold;
+  color: red;
+  min-height: 1.5em;
+`;
+
+interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   error?: string;
   label: string;
-  value: string;
   onValueChange?: (name: string, value: string) => void;
-  onBlur?: (e: React.FocusEvent<Element>) => void;
 }
 
-class TextArea extends React.Component<Props> {
-  renderTextArea(props: Props) {
-    const inputClassName = props.error ? "input-error" : "";
-    const pp = { ...props };
-    delete pp.onValueChange;
-    return (
-      <div className="settings-ui-input">
-        <label htmlFor={props.id}>{props.label}</label>
-        <textarea
-          className={inputClassName}
-          onChange={this.bindOnChange.bind(this)}
-          {...pp}
-        />
-        <p className="settings-ui-input-error">{this.props.error}</p>
-      </div>
-    );
-  }
-
-  render() {
-    return this.renderTextArea(this.props);
-  }
-
-  bindOnChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    if (this.props.onValueChange) {
-      this.props.onValueChange(e.target.name, e.target.value);
+const TextArea: React.FC<Props> = (props) => {
+  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (props.onValueChange) {
+      props.onValueChange(e.target.name, e.target.value);
     }
-  }
-}
+  };
+
+  const hasError = typeof props.error !== "undefined" && props.error !== "";
+  const pp = { ...props };
+  delete pp.onValueChange;
+  return (
+    <Container>
+      <Label htmlFor={props.id}>{props.label}</Label>
+      <ErrorableTextArea hasError={hasError} onChange={onChange} {...pp} />
+      {hasError ? <ErrorMessage>{props.error}</ErrorMessage> : null}
+    </Container>
+  );
+};
 
 export default TextArea;
