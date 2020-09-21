@@ -1,6 +1,6 @@
 import "./KeymapsForm.scss";
 import React from "react";
-import Input from "../ui/Input";
+import Text from "../ui/Text";
 import keymaps from "../../keymaps";
 import { FormKeymaps } from "../../../shared/SettingData";
 
@@ -27,8 +27,7 @@ class KeymapsForm extends React.Component<Props> {
               {group.map(([name, label]) => {
                 const value = values[name] || "";
                 return (
-                  <Input
-                    type="text"
+                  <Text
                     id={name}
                     name={name}
                     key={name}

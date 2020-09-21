@@ -1,7 +1,8 @@
 import "./site.scss";
 import React from "react";
 import { connect } from "react-redux";
-import Input from "./ui/Input";
+import TextArea from "./ui/TextArea";
+import Radio from "./ui/Radio";
 import SearchForm from "./form/SearchForm";
 import KeymapsForm from "./form/KeymapsForm";
 import BlacklistForm from "./form/BlacklistForm";
@@ -88,8 +89,7 @@ class SettingsComponent extends React.Component<Props> {
   renderJsonFields(json: JSONTextSettings, error: string) {
     return (
       <div>
-        <Input
-          type="textarea"
+        <TextArea
           name="json"
           label="Plain JSON"
           spellCheck={false}
@@ -114,8 +114,7 @@ class SettingsComponent extends React.Component<Props> {
       <div>
         <h1>Configure Vim-Vixen</h1>
         <form className="vimvixen-settings-form">
-          <Input
-            type="radio"
+          <Radio
             id="setting-source-form"
             name="source"
             label="Use form"
@@ -125,8 +124,7 @@ class SettingsComponent extends React.Component<Props> {
             disabled={disabled}
           />
 
-          <Input
-            type="radio"
+          <Radio
             name="source"
             label="Use plain JSON"
             checked={this.props.source === "json"}
