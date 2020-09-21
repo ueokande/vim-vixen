@@ -6,7 +6,7 @@ const Container = styled.li<{
   icon: string;
   highlight: boolean;
 }>`
-  backgroundimage: ${({ icon }) => "url(" + icon + ")"};
+  background-image: ${({ icon }) => "url(" + icon + ")"};
   background-color: ${({ highlight, theme }) =>
     highlight
       ? theme.completionSelectedBackground
@@ -16,7 +16,7 @@ const Container = styled.li<{
       ? theme.completionSelectedForeground
       : theme.completionItemForeground};
   display: ${({ shown }) => (shown ? "display" : "none")};
-  padding-left: 1.5rem;
+  padding-left: 1.8rem;
   background-position: 0 center;
   background-size: contain;
   background-repeat: no-repeat;
