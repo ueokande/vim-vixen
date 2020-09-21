@@ -1,8 +1,20 @@
-import "./KeymapsForm.scss";
 import React from "react";
+import styled from "styled-components";
 import Text from "../ui/Text";
 import keymaps from "../../keymaps";
 import { FormKeymaps } from "../../../shared/SettingData";
+
+const Grid = styled.div`
+  column-count: 3;
+`;
+
+const FieldGroup = styled.div`
+  margin-top: 24px;
+
+  &:first-of-type {
+    margin-top: 24px;
+  }
+`;
 
 interface Props {
   value: FormKeymaps;
@@ -20,10 +32,10 @@ class KeymapsForm extends React.Component<Props> {
   render() {
     const values = this.props.value.toJSON();
     return (
-      <div className="form-keymaps-form">
+      <Grid>
         {keymaps.fields.map((group, index) => {
           return (
-            <div key={index} className="form-keymaps-form-field-group">
+            <FieldGroup key={index}>
               {group.map(([name, label]) => {
                 const value = values[name] || "";
                 return (
@@ -38,10 +50,10 @@ class KeymapsForm extends React.Component<Props> {
                   />
                 );
               })}
-            </div>
+            </FieldGroup>
           );
         })}
-      </div>
+      </Grid>
     );
   }
 

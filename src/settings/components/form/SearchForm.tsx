@@ -1,8 +1,36 @@
-import "./SearchForm.scss";
 import React from "react";
+import styled from "styled-components";
 import AddButton from "../ui/AddButton";
 import DeleteButton from "../ui/DeleteButton";
 import { FormSearch } from "../../../shared/SettingData";
+
+const Grid = styled.div``;
+
+const GridRow = styled.div`
+  display: flex;
+`;
+
+const GridCell = styled.div<{ grow?: number }>`
+  &:nth-child(1) {
+    flex-grow: 0;
+    min-width: 10%;
+    max-width: 10%;
+  }
+
+  &:nth-child(2) {
+    flex-grow: 2;
+  }
+
+  &:nth-child(3) {
+    flex-grow: 0;
+    flex-shrink: 1;
+  }
+`;
+
+const Input = styled.input`
+  width: 100%;
+  box-sizing: border-box;
+`;
 
 interface Props {
   value: FormSearch;
@@ -20,57 +48,61 @@ class SearchForm extends React.Component<Props> {
   render() {
     const value = this.props.value.toJSON();
     return (
-      <div className="form-search-form">
-        <div className="form-search-form-header">
-          <div className="column-name">Name</div>
-          <div className="column-url">URL</div>
-          <div className="column-option">Default</div>
-        </div>
-        {value.engines.map((engine, index) => {
-          return (
-            <div key={index} className="form-search-form-row">
-              <input
-                data-index={index}
-                type="text"
-                name="name"
-                className="column-name"
-                value={engine[0]}
-                onChange={this.bindValue.bind(this)}
-                onBlur={this.props.onBlur}
-              />
-              <input
-                data-index={index}
-                type="text"
-                name="url"
-                placeholder="http://example.com/?q={}"
-                className="column-url"
-                value={engine[1]}
-                onChange={this.bindValue.bind(this)}
-                onBlur={this.props.onBlur}
-              />
-              <div className="column-option">
-                <input
-                  data-index={index}
-                  type="radio"
-                  name="default"
-                  checked={value.default === engine[0]}
-                  onChange={this.bindValue.bind(this)}
-                />
-                <DeleteButton
-                  data-index={index}
-                  name="delete"
-                  onClick={this.bindValue.bind(this)}
-                />
-              </div>
-            </div>
-          );
-        })}
+      <>
+        <Grid>
+          <GridRow>
+            <GridCell>Name</GridCell>
+            <GridCell>URL</GridCell>
+            <GridCell>Default</GridCell>
+          </GridRow>
+          {value.engines.map((engine, index) => {
+            return (
+              <GridRow key={index}>
+                <GridCell>
+                  <Input
+                    data-index={index}
+                    type="text"
+                    name="name"
+                    value={engine[0]}
+                    onChange={this.bindValue.bind(this)}
+                    onBlur={this.props.onBlur}
+                  />
+                </GridCell>
+                <GridCell>
+                  <Input
+                    data-index={index}
+                    type="text"
+                    name="url"
+                    placeholder="http://example.com/?q={}"
+                    value={engine[1]}
+                    onChange={this.bindValue.bind(this)}
+                    onBlur={this.props.onBlur}
+                  />
+                </GridCell>
+                <GridCell>
+                  <input
+                    data-index={index}
+                    type="radio"
+                    name="default"
+                    checked={value.default === engine[0]}
+                    onChange={this.bindValue.bind(this)}
+                  />
+                  <DeleteButton
+                    data-index={index}
+                    name="delete"
+                    onClick={this.bindValue.bind(this)}
+                  />
+                </GridCell>
+              </GridRow>
+            );
+          })}
+        </Grid>
         <AddButton
           name="add"
           style={{ float: "right" }}
           onClick={this.bindValue.bind(this)}
         />
-      </div>
+      </>
     );
   }
 
