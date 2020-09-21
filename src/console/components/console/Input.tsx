@@ -53,7 +53,6 @@ class Input extends React.Component<Props> {
       <Container>
         <Prompt>{prompt}</Prompt>
         <InputInner
-          className="vimvixen-console-command-input"
           ref={this.input}
           onBlur={this.props.onBlur}
           onKeyDown={this.props.onKeyDown}
