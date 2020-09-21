@@ -21,12 +21,16 @@ describe("settings/form/SearchForm", () => {
         />
       ).root;
 
-      const names = root.findAllByProps({ name: "name" });
+      const names = root
+        .findAllByType("input")
+        .filter((instance) => instance.props.name === "name");
       expect(names).to.have.lengthOf(2);
       expect(names[0].props.value).to.equal("google");
       expect(names[1].props.value).to.equal("yahoo");
 
-      const urls = root.findAllByProps({ name: "url" });
+      const urls = root
+        .findAllByType("input")
+        .filter((instance) => instance.props.name === "url");
       expect(urls).to.have.lengthOf(2);
       expect(urls[0].props.value).to.equal("google.com");
       expect(urls[1].props.value).to.equal("yahoo.com");
@@ -139,7 +143,7 @@ describe("settings/form/SearchForm", () => {
       });
 
       const button = document.querySelector(
-        "input[type=button].ui-add-button"
+        "input[type=button][name=add]"
       ) as HTMLInputElement;
       ReactTestUtils.Simulate.click(button);
     });

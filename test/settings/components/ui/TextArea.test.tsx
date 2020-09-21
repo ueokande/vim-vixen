@@ -32,7 +32,7 @@ describe("settings/ui/TextArea", () => {
 
     const label = document.querySelector("label")!;
     const textarea = document.querySelector("textarea")!;
-    const error = document.querySelector(".settings-ui-input-error")!;
+    const error = document.querySelector("[role=alert]")!;
     expect(label.textContent).to.contain("myfield");
     expect(textarea.nodeName).to.contain("TEXTAREA");
     expect(textarea.name).to.contain("myname");

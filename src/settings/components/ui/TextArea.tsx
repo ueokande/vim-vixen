@@ -46,7 +46,9 @@ const TextArea: React.FC<Props> = (props) => {
     <Container>
       <Label htmlFor={props.id}>{props.label}</Label>
       <ErrorableTextArea hasError={hasError} onChange={onChange} {...pp} />
-      {hasError ? <ErrorMessage>{props.error}</ErrorMessage> : null}
+      {hasError ? (
+        <ErrorMessage role="alert">{props.error}</ErrorMessage>
+      ) : null}
     </Container>
   );
 };

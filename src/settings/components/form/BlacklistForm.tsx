@@ -40,13 +40,13 @@ class BlacklistForm extends React.Component<Props> {
   render() {
     return (
       <>
-        <Grid>
+        <Grid role="list">
           {this.props.value.items.map((item, index) => {
             if (item.partial) {
               return null;
             }
             return (
-              <GridRow key={index}>
+              <GridRow role="listitem" key={index}>
                 <GridCell>
                   <Input
                     data-index={index}
