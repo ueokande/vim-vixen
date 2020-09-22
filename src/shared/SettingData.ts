@@ -51,10 +51,9 @@ export class FormKeymaps {
     const data: { [op: string]: string } = {};
     for (const key of Object.keys(json)) {
       const op = json[key];
-      const args = { ...op };
-      delete args.type;
+      const { type, ...args } = op;
 
-      let name = op.type;
+      let name = type;
       if (Object.keys(args).length > 0) {
         name += "?" + JSON.stringify(args);
       }
