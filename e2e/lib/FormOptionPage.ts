@@ -1,5 +1,5 @@
 import { Lanthan } from "lanthan";
-import { WebDriver, By, until } from "selenium-webdriver";
+import { WebDriver, WebElement, By, error } from "selenium-webdriver";
 
 export default class FormOptionPage {
   private webdriver: WebDriver;
@@ -9,15 +9,15 @@ export default class FormOptionPage {
   }
 
   async setBlacklist(nth: number, url: string): Promise<void> {
-    const selector = ".form-blacklist-form-row > .column-url";
-    const inputs = await this.webdriver.findElements(By.css(selector));
-    if (inputs.length <= nth) {
+    const fieldset = await this.getFieldsetByLegend("Blacklist");
+    const rows = await fieldset.findElements(By.css("[role=listitem]"));
+    if (rows.length <= nth) {
       throw new RangeError("Index out of range to set a blacklist");
     }
-    await inputs[nth].sendKeys(url);
-    await this.webdriver.executeScript(
-      `document.querySelectorAll('${selector}')[${nth}].blur()`
-    );
+
+    const input = rows[nth].findElement(By.css("[aria-label=URL]"));
+    await input.sendKeys(url);
+    await this.blurActiveElement();
   }
 
   async setPartialBlacklist(
@@ -25,121 +25,122 @@ export default class FormOptionPage {
     url: string,
     keys: string
   ): Promise<void> {
-    let selector = ".form-partial-blacklist-form-row > .column-url";
-    let inputs = await this.webdriver.findElements(By.css(selector));
-    if (inputs.length <= nth) {
+    const fieldset = await this.getFieldsetByLegend("Partial blacklist");
+    const rows = await fieldset.findElements(By.css("[role=listitem]"));
+    if (rows.length <= nth) {
       throw new RangeError("Index out of range to set a partial blacklist");
     }
-    await inputs[nth].sendKeys(url);
-    await this.webdriver.executeScript(
-      `document.querySelectorAll('${selector}')[${nth}].blur()`
-    );
 
-    selector = ".form-partial-blacklist-form-row > .column-keys";
-    inputs = await this.webdriver.findElements(By.css(selector));
-    if (inputs.length <= nth) {
-      throw new RangeError("Index out of range to set a partial blacklist");
-    }
-    await inputs[nth].sendKeys(keys);
-    await this.webdriver.executeScript(
-      `document.querySelectorAll('${selector}')[${nth}].blur()`
-    );
+    const urlInput = rows[nth].findElement(By.css("[aria-label=URL]"));
+    await urlInput.sendKeys(url);
+    await this.blurActiveElement();
+
+    const keysInput = rows[nth].findElement(By.css("[aria-label=Keys]"));
+    await keysInput.sendKeys(keys);
+    await this.blurActiveElement();
   }
 
   async setSearchEngine(nth: number, name: string, url: string) {
-    let selector = ".form-search-form-row > .column-name";
-    let inputs = await this.webdriver.findElements(By.css(selector));
-    if (inputs.length <= nth) {
+    const fieldset = await this.getFieldsetByLegend("Search Engines");
+    const rows = await fieldset.findElements(By.css("[role=listitem]"));
+    if (rows.length <= nth) {
       throw new RangeError("Index out of range to set a search engine");
     }
-    await inputs[nth].sendKeys(name);
-    await this.webdriver.executeScript(
-      `document.querySelectorAll('${selector}')[${nth}].blur()`
-    );
 
-    selector = ".form-search-form-row > .column-url";
-    inputs = await this.webdriver.findElements(By.css(selector));
-    if (inputs.length <= nth) {
-      throw new RangeError("Index out of range to set a search engine");
-    }
-    await inputs[nth].sendKeys(url);
-    await this.webdriver.executeScript(
-      `document.querySelectorAll('${selector}')[${nth}].blur()`
-    );
+    const nameInput = rows[nth].findElement(By.css("[aria-label=Name"));
+    await nameInput.sendKeys(name);
+    await this.blurActiveElement();
+
+    const urlInput = rows[nth].findElement(By.css("[aria-label=URL]"));
+    await urlInput.sendKeys(url);
+    await this.blurActiveElement();
   }
 
   async addBlacklist(): Promise<void> {
-    const rows = await this.webdriver.findElements(
-      By.css(`.form-blacklist-form-row`)
-    );
-    const button = await this.webdriver.findElement(
-      By.css(".form-blacklist-form .ui-add-button")
-    );
-    await button.click();
-    await this.webdriver.wait(
-      until.elementLocated(
-        By.css(`.form-blacklist-form-row:nth-child(${rows.length + 1})`)
-      )
-    );
+    const fieldset = await this.getFieldsetByLegend("Blacklist");
+    const rows = await fieldset.findElements(By.css("[role=listitem]"));
+    const addButton = await fieldset.findElement(By.css("[aria-label=Add]"));
+
+    await addButton.click();
+    await this.webdriver.wait(async () => {
+      const newRows = await fieldset.findElements(By.css("[role=listitem]"));
+      return newRows.length == rows.length + 1;
+    });
   }
 
   async addPartialBlacklist(): Promise<void> {
-    const rows = await this.webdriver.findElements(
-      By.css(`.form-partial-blacklist-form-row`)
-    );
-    const button = await this.webdriver.findElement(
-      By.css(".form-partial-blacklist-form .ui-add-button")
-    );
-    await button.click();
-    await this.webdriver.wait(
-      until.elementLocated(
-        By.css(`.form-partial-blacklist-form-row:nth-child(${rows.length + 2})`)
-      )
-    );
+    const fieldset = await this.getFieldsetByLegend("Partial blacklist");
+    const addButton = await fieldset.findElement(By.css("[aria-label=Add]"));
+    const rows = await fieldset.findElements(By.css("[role=listitem]"));
+
+    await addButton.click();
+    await this.webdriver.wait(async () => {
+      const newRows = await fieldset.findElements(By.css("[role=listitem]"));
+      return newRows.length == rows.length + 1;
+    });
   }
 
   async removeBlackList(nth: number): Promise<void> {
-    const buttons = await this.webdriver.findElements(
-      By.css(".form-blacklist-form-row .ui-delete-button")
+    const fieldset = await this.getFieldsetByLegend("Blacklist");
+    const deleteButtons = await fieldset.findElements(
+      By.css("[aria-label=Delete]")
     );
-    if (buttons.length <= nth) {
+    if (deleteButtons.length <= nth) {
       throw new RangeError("Index out of range to remove blacklist");
     }
-    await buttons[nth].click();
+    await deleteButtons[nth].click();
   }
 
   async removePartialBlackList(nth: number): Promise<void> {
-    const buttons = await this.webdriver.findElements(
-      By.css(".form-partial-blacklist-form-row .ui-delete-button")
+    const fieldset = await this.getFieldsetByLegend("Partial blacklist");
+    const deleteButtons = await fieldset.findElements(
+      By.css("[aria-label=Delete]")
     );
-    if (buttons.length <= nth) {
-      throw new RangeError("Index out of range to remove partial blacklist");
+    if (deleteButtons.length <= nth) {
+      throw new RangeError(
+        `Index out of range ${deleteButtons.length} to remove partial blacklist ${nth}`
+      );
     }
-    await buttons[nth].click();
+    await deleteButtons[nth].click();
   }
 
   async addSearchEngine(): Promise<void> {
-    const rows = await this.webdriver.findElements(
-      By.css(`.form-search-form-row > .column-name`)
-    );
-    const button = await this.webdriver.findElement(
-      By.css(".form-search-form > .ui-add-button")
-    );
-    await button.click();
-    await this.webdriver.wait(
-      until.elementLocated(
-        By.css(`.form-search-form-row:nth-child(${rows.length + 1})`)
-      )
-    );
+    const fieldset = await this.getFieldsetByLegend("Search Engines");
+    const rows = await fieldset.findElements(By.css("[role=listitem]"));
+    const addButton = await fieldset.findElement(By.css("[aria-label=Add]"));
+
+    await addButton.click();
+    await this.webdriver.wait(async () => {
+      const newRows = await fieldset.findElements(By.css("[role=listitem]"));
+      return newRows.length == rows.length + 1;
+    });
   }
 
   async setDefaultSearchEngine(nth: number): Promise<void> {
-    const radios = await this.webdriver.findElements(
-      By.css(".form-search-form-row input[type=radio]")
+    const fieldset = await this.getFieldsetByLegend("Search Engines");
+    const radios = await fieldset.findElements(
+      By.css("[name=default][type=radio]")
     );
     if (radios.length <= nth) {
       throw new RangeError("Index out of range to set a default search engine");
     }
     await radios[nth].click();
+  }
+
+  private async getFieldsetByLegend(legendText: string): Promise<WebElement> {
+    const fieldsets = await this.webdriver.findElements(By.tagName("fieldset"));
+    for (const fieldset of fieldsets) {
+      const legend = await fieldset.findElement(By.tagName("legend"));
+      if ((await legend.getText()) === legendText) {
+        return fieldset;
+      }
+    }
+    throw new error.NoSuchElementError(
+      `Unable to locate fieldset with legend: ` + legendText
+    );
+  }
+
+  private async blurActiveElement(): Promise<void> {
+    await this.webdriver.executeScript(`document.activeElement.blur()`);
   }
 }

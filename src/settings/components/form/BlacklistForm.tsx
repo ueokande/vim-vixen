@@ -52,6 +52,7 @@ class BlacklistForm extends React.Component<Props> {
                     data-index={index}
                     type="text"
                     name="url"
+                    aria-label="URL"
                     value={item.pattern}
                     placeholder="example.com/mail/*"
                     onChange={this.bindValue.bind(this)}
@@ -64,6 +65,7 @@ class BlacklistForm extends React.Component<Props> {
                     name="delete"
                     onClick={this.bindValue.bind(this)}
                     onBlur={this.props.onBlur}
+                    aria-label="Delete"
                   />
                 </GridCell>
               </GridRow>
@@ -72,6 +74,7 @@ class BlacklistForm extends React.Component<Props> {
         </Grid>
         <AddButton
           name="add"
+          aria-label="Add"
           style={{ float: "right" }}
           onClick={this.bindValue.bind(this)}
         />

@@ -54,7 +54,7 @@ class SearchForm extends React.Component<Props> {
     const value = this.props.value.toJSON();
     return (
       <>
-        <Grid>
+        <Grid role="list">
           <GridHeader>
             <GridCell>Name</GridCell>
             <GridCell>URL</GridCell>
@@ -62,12 +62,13 @@ class SearchForm extends React.Component<Props> {
           </GridHeader>
           {value.engines.map((engine, index) => {
             return (
-              <GridRow key={index}>
+              <GridRow key={index} role="listitem">
                 <GridCell>
                   <Input
                     data-index={index}
                     type="text"
                     name="name"
+                    aria-label="Name"
                     value={engine[0]}
                     onChange={this.bindValue.bind(this)}
                     onBlur={this.props.onBlur}
@@ -78,6 +79,7 @@ class SearchForm extends React.Component<Props> {
                     data-index={index}
                     type="text"
                     name="url"
+                    aria-label="URL"
                     placeholder="http://example.com/?q={}"
                     value={engine[1]}
                     onChange={this.bindValue.bind(this)}
@@ -89,11 +91,14 @@ class SearchForm extends React.Component<Props> {
                     data-index={index}
                     type="radio"
                     name="default"
+                    aria-label="Default"
                     checked={value.default === engine[0]}
                     onChange={this.bindValue.bind(this)}
                   />
+                  a
                   <DeleteButton
                     data-index={index}
+                    aria-label="Delete"
                     name="delete"
                     onClick={this.bindValue.bind(this)}
                   />
@@ -104,6 +109,7 @@ class SearchForm extends React.Component<Props> {
         </Grid>
         <AddButton
           name="add"
+          aria-label="Add"
           style={{ float: "right" }}
           onClick={this.bindValue.bind(this)}
         />

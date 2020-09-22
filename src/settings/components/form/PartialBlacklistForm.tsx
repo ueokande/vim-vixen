@@ -52,7 +52,7 @@ class PartialBlacklistForm extends React.Component<Props> {
   render() {
     return (
       <>
-        <Grid>
+        <Grid role="list">
           <GridHeader>
             <GridCell>URL</GridCell>
             <GridCell>Keys</GridCell>
@@ -62,12 +62,13 @@ class PartialBlacklistForm extends React.Component<Props> {
               return null;
             }
             return (
-              <GridRow key={index}>
+              <GridRow key={index} role="listitem">
                 <GridCell>
                   <Input
                     data-index={index}
                     type="text"
                     name="url"
+                    aria-label="URL"
                     value={item.pattern}
                     placeholder="example.com/mail/*"
                     onChange={this.bindValue.bind(this)}
@@ -79,6 +80,7 @@ class PartialBlacklistForm extends React.Component<Props> {
                     data-index={index}
                     type="text"
                     name="keys"
+                    aria-label="Keys"
                     value={item.keys.join(",")}
                     placeholder="j,k,<C-d>,<C-u>"
                     onChange={this.bindValue.bind(this)}
@@ -89,6 +91,7 @@ class PartialBlacklistForm extends React.Component<Props> {
                   <DeleteButton
                     data-index={index}
                     name="delete"
+                    aria-label="Delete"
                     onClick={this.bindValue.bind(this)}
                     onBlur={this.props.onBlur}
                   />
@@ -99,6 +102,7 @@ class PartialBlacklistForm extends React.Component<Props> {
         </Grid>
         <AddButton
           name="add"
+          aria-label="Add"
           style={{ float: "right" }}
           onClick={this.bindValue.bind(this)}
         />
