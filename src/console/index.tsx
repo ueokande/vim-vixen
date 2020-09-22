@@ -5,6 +5,7 @@ import promise from "redux-promise";
 import * as consoleActions from "./actions/console";
 import { Provider } from "react-redux";
 import Console from "./components/Console";
+import "./index.css";
 import React from "react";
 import ReactDOM from "react-dom";
 

@@ -1,4 +1,3 @@
-import "./console.scss";
 import { connect } from "react-redux";
 import React from "react";
 import Input from "./console/Input";

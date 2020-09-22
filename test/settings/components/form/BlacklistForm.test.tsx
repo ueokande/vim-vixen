@@ -17,16 +17,16 @@ describe("settings/form/BlacklistForm", () => {
         />
       ).root;
 
-      const rows = root.findAllByProps({
-        className: "form-blacklist-form-row",
-      });
+      const rows = root
+        .findAllByType("div")
+        .filter((instance) => instance.props.role === "listitem");
       expect(rows).to.have.lengthOf(2);
-      expect(
-        rows[0].findByProps({ className: "column-url" }).props.value
-      ).to.equal("*.slack.com");
-      expect(
-        rows[1].findByProps({ className: "column-url" }).props.value
-      ).to.equal("www.google.com/maps");
+      expect(rows[0].findByProps({ name: "url" }).props.value).to.equal(
+        "*.slack.com"
+      );
+      expect(rows[1].findByProps({ name: "url" }).props.value).to.equal(
+        "www.google.com/maps"
+      );
 
       expect(() => root.findByType(AddButton)).not.throw();
     });
@@ -113,7 +113,7 @@ describe("settings/form/BlacklistForm", () => {
       });
 
       const button = document.querySelector(
-        "input[type=button].ui-add-button"
+        "input[type=button][name=add]"
       ) as HTMLButtonElement;
       ReactTestUtils.Simulate.click(button);
     });

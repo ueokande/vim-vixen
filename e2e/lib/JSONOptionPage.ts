@@ -20,9 +20,7 @@ export default class JSONOptionPage {
   }
 
   async getErrorMessage(): Promise<string> {
-    const error = await this.webdriver.findElement(
-      By.css(".settings-ui-input-error")
-    );
+    const error = await this.webdriver.findElement(By.css("p[role=alert]"));
     return error.getText();
   }
 }

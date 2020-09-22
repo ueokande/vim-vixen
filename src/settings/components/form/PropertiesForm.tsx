@@ -1,5 +1,19 @@
-import "./PropertiesForm.scss";
+import styled from "styled-components";
 import React from "react";
+
+const Form = styled.div``;
+
+const Row = styled.div``;
+
+const Label = styled.label`
+  display: inline-block;
+  min-width: 5rem;
+  font-weight: bold;
+`;
+
+const Input = styled.input`
+  line-height: 2.2rem;
+`;
 
 interface Props {
   types: { [key: string]: string };
@@ -21,7 +35,7 @@ class PropertiesForm extends React.Component<Props> {
     const values = this.props.value;
 
     return (
-      <div className="form-properties-form">
+      <Form>
         {Object.keys(types).map((name) => {
           const type = types[name];
           let inputType = "";
@@ -42,23 +56,22 @@ class PropertiesForm extends React.Component<Props> {
             return null;
           }
           return (
-            <div key={name} className="form-properties-form-row">
-              <label>
-                <span className="column-name">{name}</span>
-                <input
+            <Row key={name}>
+              <Label>
+                <span>{name}</span>
+                <Input
                   type={inputType}
                   name={name}
-                  className="column-input"
                   value={values[name] ? values[name] : ""}
                   onChange={onChange}
                   onBlur={this.props.onBlur}
                   checked={values[name]}
                 />
-              </label>
-            </div>
+              </Label>
+            </Row>
           );
         })}
-      </div>
+      </Form>
     );
   }
 
