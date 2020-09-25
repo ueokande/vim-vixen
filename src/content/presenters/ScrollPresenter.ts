@@ -7,23 +7,28 @@ const SCROLL_DELTA_Y = 64;
 let scrolling = false;
 let lastTimeoutId: number | null = null;
 
-const isScrollableStyle = (element: Element): boolean => {
-  const { overflowX, overflowY, overflow } = window.getComputedStyle(element);
-  return !(
-    overflowX !== "scroll" &&
-    overflowX !== "auto" &&
-    overflowY !== "scroll" &&
-    overflowY !== "auto" &&
-    overflow !== "scroll" &&
-    overflow !== "auto"
-  );
-};
+// Check if an element is scrollable by actually scrolling it.
+// Only checks for vertical scrollability.
+// Credit: https://github.com/philc/vimium/blob/bdf654aebe6f570f427c5f7bc9592cad86e642b5/content_scripts/scroller.js#L93
+const canBeScrolled = (element: Element): boolean => {
+  let scrollTopBefore = element.scrollTop;
+  element.scrollBy(0, 1);
+  let scrollTopAfter = element.scrollTop;
+  element.scrollBy(0, -1)
+  return scrollTopBefore + 1 === scrollTopAfter
+}
 
-const doneScrolling = (element: Element): boolean => {
-  return (
-    element.scrollTop + element.clientHeight >= element.scrollHeight - 5 &&
-    element.scrollLeft + element.clientWidth >= element.scrollWidth - 5
-  );
+// Check if the element's overflow and visibility permit scrolling.
+// Credit: https://github.com/philc/vimium/blob/bdf654aebe6f570f427c5f7bc9592cad86e642b5/content_scripts/scroller.js#L74
+const isScrollableStyle = (element: Element): boolean => {
+  const { overflowX, overflowY, overflow, visibility } = window.getComputedStyle(element);
+  if ([overflow, overflowX, overflowY].includes("hidden")) {
+    return false;
+  }
+  if (["hidden", "collapse"].includes(visibility)) {
+    return false;
+  }
+  return canBeScrolled(element);
 };
 
 // Find a visiable and scrollable element by depth-first search.  Currently
@@ -31,7 +36,7 @@ const doneScrolling = (element: Element): boolean => {
 // method is not cached.  That does not cause performance issue because in the
 // most pages, the window is root element i,e, documentElement.
 const findScrollable = (element: Element): Element | null => {
-  if (isScrollableStyle(element) && !doneScrolling(element)) {
+  if (isScrollableStyle(element)) {
     return element;
   }
 
@@ -48,7 +53,7 @@ const findScrollable = (element: Element): Element | null => {
 const scrollTarget = () => {
   if (
     window.document.scrollingElement &&
-    !doneScrolling(window.document.scrollingElement)
+    isScrollableStyle(window.document.scrollingElement)
   ) {
     return window.document.scrollingElement;
   }
