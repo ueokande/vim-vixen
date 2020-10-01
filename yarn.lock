@@ -711,9 +711,9 @@ after@0.8.2:
   integrity sha1-/ts5T58OAqqXaOcCvaI7UF+ufh8=
 
 ajv-cli@^3.0.0:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/ajv-cli/-/ajv-cli-3.2.1.tgz#fb7bf9480c324345ca00f003afb96dda68b03bd5"
-  integrity sha512-EZW2fqkQVMvp3oPfVrUZnh4nl/sENKpSG1q+R5wHqaM71EU7JAxzxYzvkjcgIRer6Y4HFkY1uCEHT/DMWE5apw==
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/ajv-cli/-/ajv-cli-3.3.0.tgz#dd72207f5395051db7d620ab7d4da1cec3d50f06"
+  integrity sha512-4eiNNjDlainn5Rm+rU3egxLUUxzevcB+gviBLs9sm6etHNrE7l2JSQ3yoz5hE+eqrth3pTygELOafhSIO8Hiig==
   dependencies:
     ajv "^6.7.0"
     ajv-pack "^0.3.0"
