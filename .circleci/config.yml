@@ -11,7 +11,7 @@ executors:
 
 commands:
   install_firefox:
-    steps:
+    steps:$
       - restore_cache:
           key: firefox-bin
           paths:
