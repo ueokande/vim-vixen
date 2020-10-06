@@ -27,7 +27,7 @@
     "@types/chai": "^4.2.8",
     "@types/express": "^4.17.2",
     "@types/mocha": "^8.0.1",
-    "@types/node": "^12.12.21",
+    "@types/node": "^14.11.5",
     "@types/prop-types": "^15.7.3",
     "@types/react": "^16.9.46",
     "@types/react-dom": "^16.9.5",
