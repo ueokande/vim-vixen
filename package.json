@@ -74,7 +74,7 @@
     "request-promise-native": "^1.0.8",
     "sinon": "^9.0.3",
     "sinon-chrome": "^3.0.1",
-    "style-loader": "^1.1.3",
+    "style-loader": "^2.0.0",
     "styled-components": "^5.1.1",
     "ts-loader": "^8.0.2",
     "ts-node": "^9.0.0",
