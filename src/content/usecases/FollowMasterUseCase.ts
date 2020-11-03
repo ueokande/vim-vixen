@@ -58,6 +58,7 @@ export default class FollowMasterUseCase {
   // eslint-disable-next-line max-statements
   createSlaveHints(count: number, sender: Window): void {
     const produced = [];
+    this.producer!.setNumberOfHints(count);
     for (let i = 0; i < count; ++i) {
       const tag = this.producer!.produce();
       produced.push(tag);
