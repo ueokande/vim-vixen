@@ -19,25 +19,47 @@ const isScrollableStyle = (element: Element): boolean => {
   );
 };
 
-const doneScrolling = (element: Element): boolean => {
-  return (
-    element.scrollTop + element.clientHeight >= element.scrollHeight - 5 &&
-    element.scrollLeft + element.clientWidth >= element.scrollWidth - 5
-  );
+enum Direction {
+  Up,
+  Down,
+  Left,
+  Right,
+  NA,
+}
+
+const doneScrolling = (element: Element, direction: Direction): boolean => {
+  switch (direction) {
+    case Direction.Up:
+      return element.scrollTop == 0;
+    case Direction.Down:
+      return element.scrollTop + element.clientHeight >= element.scrollHeight;
+    case Direction.Left:
+      return element.scrollLeft == 0;
+    case Direction.Right:
+      return element.scrollLeft + element.clientWidth >= element.scrollWidth;
+    case Direction.NA:
+      return (
+        element.scrollTop + element.clientHeight >= element.scrollHeight &&
+        element.scrollLeft + element.clientWidth >= element.scrollWidth
+      );
+  }
 };
 
 // Find a visiable and scrollable element by depth-first search.  Currently
 // this method is called by each scrolling, and the returned value of this
 // method is not cached.  That does not cause performance issue because in the
 // most pages, the window is root element i,e, documentElement.
-const findScrollable = (element: Element): Element | null => {
-  if (isScrollableStyle(element) && !doneScrolling(element)) {
+const findScrollable = (
+  element: Element,
+  direction: Direction
+): Element | null => {
+  if (isScrollableStyle(element) && !doneScrolling(element, direction)) {
     return element;
   }
 
   const children = Array.from(element.children).filter(doms.isVisible);
   for (const child of children) {
-    const scrollable = findScrollable(child);
+    const scrollable = findScrollable(child, direction);
     if (scrollable) {
       return scrollable;
     }
@@ -45,15 +67,15 @@ const findScrollable = (element: Element): Element | null => {
   return null;
 };
 
-const scrollTarget = () => {
+const scrollTarget = (direction: Direction) => {
   if (
     window.document.scrollingElement &&
-    !doneScrolling(window.document.scrollingElement)
+    !doneScrolling(window.document.scrollingElement, direction)
   ) {
     return window.document.scrollingElement;
   }
 
-  const target = findScrollable(window.document.documentElement);
+  const target = findScrollable(window.document.documentElement, direction);
   if (target) {
     return target;
   }
@@ -119,12 +141,13 @@ export default interface ScrollPresenter {
 
 export class ScrollPresenterImpl {
   getScroll(): Point {
-    const target = scrollTarget();
+    const target = scrollTarget(Direction.NA);
     return { x: target.scrollLeft, y: target.scrollTop };
   }
 
   scrollVertically(count: number, smooth: boolean): void {
-    const target = scrollTarget();
+    const direction = count >= 0 ? Direction.Down : Direction.Up;
+    const target = scrollTarget(direction);
     let delta = SCROLL_DELTA_Y * count;
     if (scrolling) {
       delta = SCROLL_DELTA_Y * count * 4;
@@ -133,7 +156,8 @@ export class ScrollPresenterImpl {
   }
 
   scrollHorizonally(count: number, smooth: boolean): void {
-    const target = scrollTarget();
+    const direction = count >= 0 ? Direction.Right : Direction.Left;
+    const target = scrollTarget(direction);
     let delta = SCROLL_DELTA_X * count;
     if (scrolling) {
       delta = SCROLL_DELTA_X * count * 4;
@@ -142,7 +166,8 @@ export class ScrollPresenterImpl {
   }
 
   scrollPages(count: number, smooth: boolean): void {
-    const target = scrollTarget();
+    const direction = count >= 0 ? Direction.Down : Direction.Up;
+    const target = scrollTarget(direction);
     const height = target.clientHeight;
     let delta = height * count;
     if (scrolling) {
@@ -152,33 +177,33 @@ export class ScrollPresenterImpl {
   }
 
   scrollTo(x: number, y: number, smooth: boolean): void {
-    const target = scrollTarget();
+    const target = scrollTarget(Direction.NA);
     new Scroller(target, smooth).scrollTo(x, y);
   }
 
   scrollToTop(smooth: boolean): void {
-    const target = scrollTarget();
+    const target = scrollTarget(Direction.Up);
     const x = target.scrollLeft;
     const y = 0;
     new Scroller(target, smooth).scrollTo(x, y);
   }
 
   scrollToBottom(smooth: boolean): void {
-    const target = scrollTarget();
+    const target = scrollTarget(Direction.Down);
     const x = target.scrollLeft;
     const y = target.scrollHeight;
     new Scroller(target, smooth).scrollTo(x, y);
   }
 
   scrollToHome(smooth: boolean): void {
-    const target = scrollTarget();
+    const target = scrollTarget(Direction.Left);
     const x = 0;
     const y = target.scrollTop;
     new Scroller(target, smooth).scrollTo(x, y);
   }
 
   scrollToEnd(smooth: boolean): void {
-    const target = scrollTarget();
+    const target = scrollTarget(Direction.Right);
     const x = target.scrollWidth;
     const y = target.scrollTop;
     new Scroller(target, smooth).scrollTo(x, y);
