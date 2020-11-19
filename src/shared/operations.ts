@@ -5,6 +5,7 @@ export const CANCEL = "cancel";
 export const ADDON_ENABLE = "addon.enable";
 export const ADDON_DISABLE = "addon.disable";
 export const ADDON_TOGGLE_ENABLED = "addon.toggle.enabled";
+export const ADDON_SENDMESSAGE = "addon.sendmessage";
 
 // Command
 export const COMMAND_SHOW = "command.show";
@@ -95,6 +96,12 @@ export interface AddonDisableOperation {
 
 export interface AddonToggleEnabledOperation {
   type: typeof ADDON_TOGGLE_ENABLED;
+}
+
+export interface AddonSendmessageOperation {
+  type: typeof ADDON_SENDMESSAGE;
+  extensionId: string;
+  message: string | Record<string, string>;
 }
 
 export interface CommandShowOperation {
@@ -315,6 +322,7 @@ export type Operation =
   | AddonEnableOperation
   | AddonDisableOperation
   | AddonToggleEnabledOperation
+  | AddonSendmessageOperation
   | CommandShowOperation
   | CommandShowOpenOperation
   | CommandShowTabopenOperation
@@ -409,12 +417,29 @@ const assertRequiredString = (obj: any, name: string) => {
   }
 };
 
+const assertRequiredObjectOrString = (obj: any, name: string) => {
+  if (
+    !Object.prototype.hasOwnProperty.call(obj, name) ||
+    !(typeof obj[name] === "string" || typeof obj[name] == "object")
+  ) {
+    throw new TypeError(`Missing object or string parameter: '${name}`);
+  }
+};
+
 // eslint-disable-next-line complexity, max-lines-per-function
 export const valueOf = (o: any): Operation => {
   if (!Object.prototype.hasOwnProperty.call(o, "type")) {
     throw new TypeError(`Missing 'type' field`);
   }
   switch (o.type) {
+    case ADDON_SENDMESSAGE:
+      assertRequiredString(o, "extensionId");
+      assertRequiredObjectOrString(o, "message");
+      return {
+        type: o.type,
+        extensionId: o.extensionId,
+        message: o.message,
+      };
     case COMMAND_SHOW_OPEN:
     case COMMAND_SHOW_TABOPEN:
     case COMMAND_SHOW_WINOPEN:

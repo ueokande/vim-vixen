@@ -2,6 +2,7 @@ import { injectable, inject } from "tsyringe";
 import * as operations from "../../shared/operations";
 import KeymapUseCase from "../usecases/KeymapUseCase";
 import AddonEnabledUseCase from "../usecases/AddonEnabledUseCase";
+import AddonSendmessageUseCase from "../usecases/AddonSendmessageUseCase";
 import FindSlaveUseCase from "../usecases/FindSlaveUseCase";
 import ScrollUseCase from "../usecases/ScrollUseCase";
 import FocusUseCase from "../usecases/FocusUseCase";
@@ -16,6 +17,7 @@ export default class KeymapController {
   constructor(
     private keymapUseCase: KeymapUseCase,
     private addonEnabledUseCase: AddonEnabledUseCase,
+    private addonSendmessageUseCase: AddonSendmessageUseCase,
     private findSlaveUseCase: FindSlaveUseCase,
     private scrollUseCase: ScrollUseCase,
     private focusUseCase: FocusUseCase,
@@ -48,6 +50,12 @@ export default class KeymapController {
           return () => this.addonEnabledUseCase.disable();
         case operations.ADDON_TOGGLE_ENABLED:
           return () => this.addonEnabledUseCase.toggle();
+        case operations.ADDON_SENDMESSAGE:
+          return () =>
+            this.addonSendmessageUseCase.sendMessage(
+              op.extensionId,
+              op.message
+            );
         case operations.FIND_NEXT:
           return () => this.findSlaveUseCase.findNext();
         case operations.FIND_PREV:
