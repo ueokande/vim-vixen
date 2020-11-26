@@ -6358,10 +6358,10 @@ tsutils@^3.17.1:
   dependencies:
     tslib "^1.8.1"
 
-tsyringe@4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/tsyringe/-/tsyringe-4.3.0.tgz#50ce2ec56c83569a2dfafb7233a5265a2a10bde4"
-  integrity sha512-Vzty1M/EQXSsEE8aoIOLl1l793chcPyQAnFJaS1mFDtFvNPY+jknSPwMIF6yfcjua+2GTgwxWFzuA3cjIx4NZA==
+tsyringe@4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/tsyringe/-/tsyringe-4.4.0.tgz#cd8a6866316b4cf643ee5e72c41c8a221ccea73d"
+  integrity sha512-SlMApe1lhIq546CDp7bF+IdF4RB6d+9C5T7B0AS0P/Bm+Qpizj/gEmZzvw9J/KlXPEt4qHTbi1TRvX3rCPSdTg==
   dependencies:
     tslib "^1.9.3"
 
