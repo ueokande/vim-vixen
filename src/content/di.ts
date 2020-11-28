@@ -29,6 +29,7 @@ import { SettingClientImpl } from "./client/SettingClient";
 import { SettingRepositoryImpl } from "./repositories/SettingRepository";
 import { TabsClientImpl } from "./client/TabsClient";
 import { container } from "tsyringe";
+import OperatorFactoryImpl from "./operators/impls/OperatorFactoryImpl";
 
 container.register("FollowMasterClient", {
   useValue: new FollowMasterClientImpl(window.top),
@@ -80,3 +81,4 @@ container.register("ScrollPresenter", { useClass: ScrollPresenterImpl });
 container.register("SettingClient", { useClass: SettingClientImpl });
 container.register("SettingRepository", { useClass: SettingRepositoryImpl });
 container.register("TabsClient", { useClass: TabsClientImpl });
+container.register("OperatorFactory", { useClass: OperatorFactoryImpl });
