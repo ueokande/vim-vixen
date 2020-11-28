@@ -17,6 +17,7 @@ import { FollowMasterRepositoryImpl } from "./repositories/FollowMasterRepositor
 import { FollowPresenterImpl } from "./presenters/FollowPresenter";
 import { FollowSlaveClientFactoryImpl } from "./client/FollowSlaveClientFactory";
 import { FollowSlaveRepositoryImpl } from "./repositories/FollowSlaveRepository";
+import { HintKeyRepositoryImpl } from "./repositories/HintKeyRepository";
 import { KeymapRepositoryImpl } from "./repositories/KeymapRepository";
 import { MarkClientImpl } from "./client/MarkClient";
 import { MarkKeyRepositoryImpl } from "./repositories/MarkKeyRepository";
@@ -63,6 +64,9 @@ container.register("FollowSlaveClientFactory", {
 });
 container.register("FollowSlaveRepository", {
   useClass: FollowSlaveRepositoryImpl,
+});
+container.register("HintKeyRepository", {
+  useClass: HintKeyRepositoryImpl,
 });
 container.register("KeymapRepository", { useClass: KeymapRepositoryImpl });
 container.register("MarkClient", { useClass: MarkClientImpl });
