@@ -18,7 +18,7 @@ For usage and more detailed information, check out our [documentations][document
 
 ## Copyright
 
-Copyright © 2017-2019 by Shin'ya Ueoka
+Copyright © 2017-2020 by Shin'ya Ueoka
 
 ## Licence
 
