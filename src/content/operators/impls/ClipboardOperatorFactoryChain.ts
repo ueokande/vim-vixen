@@ -8,6 +8,7 @@ import ConsoleClient from "../../client/ConsoleClient";
 import OperationClient from "../../client/OperationClient";
 import SettingRepository from "../../repositories/SettingRepository";
 import * as operations from "../../../shared/operations";
+import URLRepository from "./URLRepository";
 
 @injectable()
 export default class ClipboardOperatorFactoryChain
@@ -20,7 +21,9 @@ export default class ClipboardOperatorFactoryChain
     @inject("OperationClient")
     private readonly operationClinet: OperationClient,
     @inject("SettingRepository")
-    private readonly settingRepository: SettingRepository
+    private readonly settingRepository: SettingRepository,
+    @inject("URLRepository")
+    private readonly urlRepository: URLRepository
   ) {}
 
   create(op: operations.Operation, _repeat: number): Operator | null {
@@ -28,7 +31,8 @@ export default class ClipboardOperatorFactoryChain
       case operations.URLS_YANK:
         return new YankURLOperator(
           this.clipboardRepository,
-          this.consoleClient
+          this.consoleClient,
+          this.urlRepository
         );
       case operations.URLS_PASTE:
         return new PasteOperator(

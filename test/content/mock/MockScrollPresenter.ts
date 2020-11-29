@@ -3,10 +3,10 @@ import ScrollPresenter, {
 } from "../../../src/content/presenters/ScrollPresenter";
 
 export default class MockScrollPresenter implements ScrollPresenter {
-  private pos: Point;
+  private readonly pos: Point;
 
-  constructor() {
-    this.pos = { x: 0, y: 0 };
+  constructor(initX = 0, initY = 0) {
+    this.pos = { x: initX, y: initY };
   }
 
   getScroll(): Point {

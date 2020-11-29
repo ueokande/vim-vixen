@@ -1,7 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import Operator from "../Operator";
 import OperatorFactoryChain from "../OperatorFactoryChain";
-import RepeatOperator from "./RepeatOperator";
 import FindNextOperator from "./FindNextOperator";
 import FindPrevOperator from "./FindPrevOperator";
 import FindMasterClient from "../../client/FindMasterClient";
@@ -17,15 +16,9 @@ export default class FindOperatorFactoryChain implements OperatorFactoryChain {
   create(op: operations.Operation, repeat: number): Operator | null {
     switch (op.type) {
       case operations.FIND_NEXT:
-        return new RepeatOperator(
-          new FindNextOperator(this.findMasterClient),
-          repeat
-        );
+        return new FindNextOperator(this.findMasterClient, repeat);
       case operations.FIND_PREV:
-        return new RepeatOperator(
-          new FindPrevOperator(this.findMasterClient),
-          repeat
-        );
+        return new FindPrevOperator(this.findMasterClient, repeat);
     }
     return null;
   }
