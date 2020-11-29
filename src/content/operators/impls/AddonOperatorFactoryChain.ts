@@ -1,49 +1,15 @@
 import { inject, injectable } from "tsyringe";
-import Operator from "../Operator";
 import OperatorFactoryChain from "../OperatorFactoryChain";
 import AddonIndicatorClient from "../../client/AddonIndicatorClient";
 import AddonEnabledRepository from "../../repositories/AddonEnabledRepository";
 import * as operations from "../../../shared/operations";
-
-export class EnableAddonOperator implements Operator {
-  constructor(
-    private readonly indicator: AddonIndicatorClient,
-    private readonly repository: AddonEnabledRepository
-  ) {}
-
-  async run(): Promise<void> {
-    this.repository.set(true);
-    await this.indicator.setEnabled(true);
-  }
-}
-
-export class DisableAddonOperator implements Operator {
-  constructor(
-    private readonly indicator: AddonIndicatorClient,
-    private readonly repository: AddonEnabledRepository
-  ) {}
-
-  async run(): Promise<void> {
-    this.repository.set(false);
-    await this.indicator.setEnabled(false);
-  }
-}
-
-export class ToggleAddonOperator implements Operator {
-  constructor(
-    private readonly indicator: AddonIndicatorClient,
-    private readonly repository: AddonEnabledRepository
-  ) {}
-
-  async run(): Promise<void> {
-    const current = this.repository.get();
-    this.repository.set(!current);
-    await this.indicator.setEnabled(!current);
-  }
-}
+import Operator from "../Operator";
+import EnableAddonOperator from "./EnableAddonOperator";
+import DisableAddonOperator from "./DisableAddonOperator";
+import ToggleAddonOperator from "./ToggleAddonOperator";
 
 @injectable()
-export class AddonOperatorFactoryChain implements OperatorFactoryChain {
+export default class AddonOperatorFactoryChain implements OperatorFactoryChain {
   constructor(
     @inject("AddonIndicatorClient")
     private readonly addonIndicatorClient: AddonIndicatorClient,

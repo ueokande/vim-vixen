@@ -1,23 +1,13 @@
 import { inject, injectable } from "tsyringe";
+import StartFollowOperator from "./StartFollowOperator";
 import Operator from "../Operator";
 import OperatorFactoryChain from "../OperatorFactoryChain";
 import FollowMasterClient from "../../client/FollowMasterClient";
 import * as operations from "../../../shared/operations";
 
-export class StartFollowOperator implements Operator {
-  constructor(
-    private readonly followMasterClient: FollowMasterClient,
-    private readonly newTab: boolean,
-    private readonly background: boolean
-  ) {}
-
-  async run(): Promise<void> {
-    this.followMasterClient.startFollow(this.newTab, this.background);
-  }
-}
-
 @injectable()
-export class FollowOperatorFactoryChain implements OperatorFactoryChain {
+export default class FollowOperatorFactoryChain
+  implements OperatorFactoryChain {
   constructor(
     @inject("FollowMasterClient")
     private followMasterClient: FollowMasterClient

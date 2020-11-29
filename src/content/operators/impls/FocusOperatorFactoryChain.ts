@@ -1,19 +1,12 @@
 import { inject, injectable } from "tsyringe";
-import Operator from "../Operator";
 import OperatorFactoryChain from "../OperatorFactoryChain";
+import Operator from "../Operator";
+import FocusOperator from "./FocusOperator";
 import FocusPresenter from "../../presenters/FocusPresenter";
 import * as operations from "../../../shared/operations";
 
-export class FocusOperator implements Operator {
-  constructor(private readonly presenter: FocusPresenter) {}
-
-  async run(): Promise<void> {
-    this.presenter.focusFirstElement();
-  }
-}
-
 @injectable()
-export class FocusOperatorFactoryChain implements OperatorFactoryChain {
+export default class FocusOperatorFactoryChain implements OperatorFactoryChain {
   constructor(
     @inject("FocusPresenter")
     private readonly focusPresenter: FocusPresenter
