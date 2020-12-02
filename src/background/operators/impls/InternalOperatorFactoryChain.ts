@@ -15,6 +15,7 @@ export default class InternalOperatorFactoryChain
     private readonly windowPresenter: WindowPresenter,
     @inject("TabPresenter")
     private readonly tabPresenter: TabPresenter,
+    @inject("ConsoleClient")
     private readonly consoleClient: ConsoleClient
   ) {}
 

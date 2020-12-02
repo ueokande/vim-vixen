@@ -20,7 +20,9 @@ export default class NavigateOperatorFactoryChain
   constructor(
     @inject("TabPresenter")
     private readonly tabPresenter: TabPresenter,
+    @inject("NavigateClient")
     private readonly navigateClient: NavigateClient,
+    @inject("BrowserSettingRepository")
     private readonly browserSettingRepository: BrowserSettingRepository
   ) {}
 

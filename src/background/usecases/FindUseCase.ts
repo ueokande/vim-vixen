@@ -6,9 +6,11 @@ import ConsoleClient from "../infrastructures/ConsoleClient";
 @injectable()
 export default class FindUseCase {
   constructor(
-    @inject("TabPresenter") private tabPresenter: TabPresenter,
-    private findRepository: FindRepository,
-    private consoleClient: ConsoleClient
+    @inject("TabPresenter")
+    private readonly tabPresenter: TabPresenter,
+    private readonly findRepository: FindRepository,
+    @inject("ConsoleClient")
+    private readonly consoleClient: ConsoleClient
   ) {}
 
   getKeyword(): Promise<string> {

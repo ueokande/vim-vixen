@@ -1,4 +1,4 @@
-import { injectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import * as operations from "../../shared/operations";
 import RepeatRepository from "../repositories/RepeatRepository";
 
@@ -6,7 +6,10 @@ type Operation = operations.Operation;
 
 @injectable()
 export default class RepeatUseCase {
-  constructor(private repeatRepository: RepeatRepository) {}
+  constructor(
+    @inject("RepeatRepository")
+    private readonly repeatRepository: RepeatRepository
+  ) {}
 
   storeLastOperation(op: Operation): void {
     this.repeatRepository.setLastOperation(op);

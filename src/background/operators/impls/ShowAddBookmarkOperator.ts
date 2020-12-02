@@ -11,7 +11,7 @@ export default class ShowAddBookmarkOperator implements Operator {
 
   async run(): Promise<void> {
     const tab = await this.tabPresenter.getCurrent();
-    let command = "addookmark ";
+    let command = "addbookmark ";
     if (this.alter) {
       command += tab.title || "";
     }

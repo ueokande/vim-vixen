@@ -18,6 +18,7 @@ export default class CommandOperatorFactoryChain
   constructor(
     @inject("TabPresenter")
     private readonly tabPresenter: TabPresenter,
+    @inject("ConsoleClient")
     private readonly consoleClient: ConsoleClient
   ) {}
 

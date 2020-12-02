@@ -5,8 +5,10 @@ import ConsoleClient from "../infrastructures/ConsoleClient";
 @injectable()
 export default class ConsoleUseCase {
   constructor(
-    @inject("TabPresenter") private tabPresenter: TabPresenter,
-    private consoleClient: ConsoleClient
+    @inject("TabPresenter")
+    private readonly tabPresenter: TabPresenter,
+    @inject("ConsoleClient")
+    private readonly consoleClient: ConsoleClient
   ) {}
 
   async showCommand(): Promise<any> {

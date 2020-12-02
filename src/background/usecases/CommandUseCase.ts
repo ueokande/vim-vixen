@@ -14,15 +14,17 @@ import RepeatUseCase from "../usecases/RepeatUseCase";
 @injectable()
 export default class CommandIndicator {
   constructor(
-    @inject("TabPresenter") private tabPresenter: TabPresenter,
-    private windowPresenter: WindowPresenter,
-    private helpPresenter: HelpPresenter,
+    @inject("TabPresenter")
+    private readonly tabPresenter: TabPresenter,
+    private readonly windowPresenter: WindowPresenter,
+    private readonly helpPresenter: HelpPresenter,
     @inject("CachedSettingRepository")
-    private cachedSettingRepository: CachedSettingRepository,
-    private bookmarkRepository: BookmarkRepository,
-    private consoleClient: ConsoleClient,
-    private contentMessageClient: ContentMessageClient,
-    private repeatUseCase: RepeatUseCase
+    private readonly cachedSettingRepository: CachedSettingRepository,
+    private readonly bookmarkRepository: BookmarkRepository,
+    @inject("ConsoleClient")
+    private readonly consoleClient: ConsoleClient,
+    private readonly contentMessageClient: ContentMessageClient,
+    private readonly repeatUseCase: RepeatUseCase
   ) {}
 
   async open(keywords: string): Promise<browser.tabs.Tab> {

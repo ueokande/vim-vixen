@@ -1,10 +1,10 @@
 import Operator from "../Operator";
-import ZoomUseCase from "../../usecases/ZoomUseCase";
+import ZoomPresenter from "../../usecases/ZoomPresenter";
 
 export default class ZoomInOperator implements Operator {
-  constructor(private readonly zoomUseCase: ZoomUseCase) {}
+  constructor(private readonly zoomPresenter: ZoomPresenter) {}
 
   run(): Promise<void> {
-    return this.zoomUseCase.zoomIn();
+    return this.zoomPresenter.zoomIn();
   }
 }

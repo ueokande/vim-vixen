@@ -6,9 +6,11 @@ import BrowserSettingRepository from "../repositories/BrowserSettingRepository";
 @injectable()
 export default class TabUseCase {
   constructor(
-    @inject("TabPresenter") private tabPresenter: TabPresenter,
-    private windowPresenter: WindowPresenter,
-    private browserSettingRepository: BrowserSettingRepository
+    @inject("TabPresenter")
+    private readonly tabPresenter: TabPresenter,
+    private readonly windowPresenter: WindowPresenter,
+    @inject("BrowserSettingRepository")
+    private readonly browserSettingRepository: BrowserSettingRepository
   ) {}
 
   async close(force: boolean, selectLeft = false): Promise<any> {

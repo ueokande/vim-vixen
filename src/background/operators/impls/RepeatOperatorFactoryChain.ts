@@ -10,6 +10,7 @@ import * as operations from "../../../shared/operations";
 export default class RepeatOperatorFactoryChain
   implements OperatorFactoryChain {
   constructor(
+    @inject("RepeatRepository")
     private readonly repeatRepository: RepeatRepository,
     @inject("OperatorFactory")
     private readonly operatorFactory: OperatorFactory

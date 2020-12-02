@@ -5,8 +5,10 @@ import TabPresenter from "../presenters/TabPresenter";
 @injectable()
 export default class NavigateUseCase {
   constructor(
-    @inject("TabPresenter") private tabPresenter: TabPresenter,
-    private navigateClient: NavigateClient
+    @inject("TabPresenter")
+    private readonly tabPresenter: TabPresenter,
+    @inject("NavigateClient")
+    private readonly navigateClient: NavigateClient
   ) {}
 
   async openHistoryNext(): Promise<void> {

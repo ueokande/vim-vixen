@@ -1,16 +1,18 @@
 import { inject, injectable } from "tsyringe";
 import TabPresenter from "../presenters/TabPresenter";
 import MarkRepository from "../repositories/MarkRepository";
-import ConsoleClient from "../infrastructures/ConsoleClient";
 import ContentMessageClient from "../infrastructures/ContentMessageClient";
+import ConsoleClient from "../infrastructures/ConsoleClient";
 
 @injectable()
 export default class MarkUseCase {
   constructor(
-    @inject("TabPresenter") private tabPresenter: TabPresenter,
-    private markRepository: MarkRepository,
-    private consoleClient: ConsoleClient,
-    private contentMessageClient: ContentMessageClient
+    @inject("TabPresenter")
+    private readonly tabPresenter: TabPresenter,
+    private readonly markRepository: MarkRepository,
+    @inject("ConsoleClient")
+    private readonly consoleClient: ConsoleClient,
+    private readonly contentMessageClient: ContentMessageClient
   ) {}
 
   async setGlobal(key: string, x: number, y: number): Promise<any> {

@@ -1,7 +1,9 @@
 import "reflect-metadata";
 import TabPresenter from "../../../src/background/presenters/TabPresenter";
 import NavigateUseCase from "../../../src/background/usecases/NavigateUseCase";
-import NavigateClient from "../../../src/background/clients/NavigateClient";
+import NavigateClient, {
+  NavigateClientImpl,
+} from "../../../src/background/clients/NavigateClient";
 import * as sinon from "sinon";
 
 class MockTabPresenter implements TabPresenter {
@@ -78,7 +80,7 @@ describe("NavigateUseCase", () => {
 
   beforeEach(() => {
     tabPresenter = new MockTabPresenter();
-    navigateClient = new NavigateClient();
+    navigateClient = new NavigateClientImpl();
     sut = new NavigateUseCase(tabPresenter, navigateClient);
   });
 
