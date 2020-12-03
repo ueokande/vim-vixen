@@ -12,6 +12,7 @@ import * as operations from "../../../shared/operations";
 export default class InternalOperatorFactoryChain
   implements OperatorFactoryChain {
   constructor(
+    @inject("WindowPresenter")
     private readonly windowPresenter: WindowPresenter,
     @inject("TabPresenter")
     private readonly tabPresenter: TabPresenter,

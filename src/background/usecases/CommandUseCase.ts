@@ -16,6 +16,7 @@ export default class CommandIndicator {
   constructor(
     @inject("TabPresenter")
     private readonly tabPresenter: TabPresenter,
+    @inject("WindowPresenter")
     private readonly windowPresenter: WindowPresenter,
     private readonly helpPresenter: HelpPresenter,
     @inject("CachedSettingRepository")
@@ -46,7 +47,7 @@ export default class CommandIndicator {
     return this.tabPresenter.create(url);
   }
 
-  async winopen(keywords: string): Promise<browser.windows.Window> {
+  async winopen(keywords: string): Promise<void> {
     const url = await this.urlOrSearch(keywords);
     this.repeatUseCase.storeLastOperation({
       type: operations.INTERNAL_OPEN_URL,

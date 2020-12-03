@@ -8,6 +8,7 @@ export default class TabUseCase {
   constructor(
     @inject("TabPresenter")
     private readonly tabPresenter: TabPresenter,
+    @inject("WindowPresenter")
     private readonly windowPresenter: WindowPresenter,
     @inject("BrowserSettingRepository")
     private readonly browserSettingRepository: BrowserSettingRepository

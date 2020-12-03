@@ -17,6 +17,7 @@ import { ConsoleClientImpl } from "./infrastructures/ConsoleClient";
 import { BrowserSettingRepositoryImpl } from "./repositories/BrowserSettingRepository";
 import { RepeatRepositoryImpl } from "./repositories/RepeatRepository";
 import { ZoomPresenterImpl } from "./usecases/ZoomPresenter";
+import { WindowPresenterImpl } from "./presenters/WindowPresenter";
 
 container.register("LocalSettingRepository", {
   useValue: LocalSettingRepository,
@@ -37,6 +38,7 @@ container.register("RepeatRepository", { useClass: RepeatRepositoryImpl });
 container.register("TabRepository", { useClass: TabRepositoryImpl });
 container.register("ZoomPresenter", { useClass: ZoomPresenterImpl });
 container.register("TabPresenter", { useClass: TabPresenterImpl });
+container.register("WindowPresenter", { useClass: WindowPresenterImpl });
 container.register("NavigateClient", { useClass: NavigateClientImpl });
 container.register("ConsoleClient", { useClass: ConsoleClientImpl });
 container.register("OperatorFactory", { useClass: OperatorFactoryImpl });
