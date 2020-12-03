@@ -7,7 +7,7 @@ import CloseTabOperator from "./CloseTabOperator";
 import CloseTabRightOperator from "./CloseTabRightOperator";
 import ReopenTabOperator from "./ReopenTabOperator";
 import SelectTabPrevOperator from "./SelectTabPrevOperator";
-import SelectTabNextOperator from "./SelectTabPrevOperator";
+import SelectTabNextOperator from "./SelectTabNextOperator";
 import SelectFirstTabOperator from "./SelectFirstTabOperator";
 import SelectLastTabOperator from "./SelectLastTabOperator";
 import SelectPreviousSelectedTabOperator from "./SelectPreviousSelectedTabOperator";
@@ -39,9 +39,9 @@ export default class TabOperatorFactoryChain implements OperatorFactoryChain {
       case operations.TAB_REOPEN:
         return new ReopenTabOperator(this.tabPresenter);
       case operations.TAB_PREV:
-        return new SelectTabPrevOperator(this.tabPresenter, 1);
+        return new SelectTabPrevOperator(this.tabPresenter);
       case operations.TAB_NEXT:
-        return new SelectTabNextOperator(this.tabPresenter, 1);
+        return new SelectTabNextOperator(this.tabPresenter);
       case operations.TAB_FIRST:
         return new SelectFirstTabOperator(this.tabPresenter);
       case operations.TAB_LAST:

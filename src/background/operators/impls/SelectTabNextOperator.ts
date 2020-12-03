@@ -2,10 +2,7 @@ import Operator from "../Operator";
 import TabPresenter from "../../presenters/TabPresenter";
 
 export default class SelectTabNextOperator implements Operator {
-  constructor(
-    private readonly tabPresenter: TabPresenter,
-    private readonly count: number
-  ) {}
+  constructor(private readonly tabPresenter: TabPresenter) {}
 
   async run(): Promise<void> {
     const tabs = await this.tabPresenter.getAll();
@@ -16,7 +13,7 @@ export default class SelectTabNextOperator implements Operator {
     if (!tab) {
       return;
     }
-    const select = (tab.index + this.count) % tabs.length;
+    const select = (tab.index + 1) % tabs.length;
     return this.tabPresenter.select(tabs[select].id as number);
   }
 }
