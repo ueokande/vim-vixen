@@ -26,7 +26,7 @@ const doneScrolling = (element: Element): boolean => {
   );
 };
 
-// Find a visiable and scrollable element by depth-first search.  Currently
+// Find a visible and scrollable element by depth-first search.  Currently
 // this method is called by each scrolling, and the returned value of this
 // method is not cached.  That does not cause performance issue because in the
 // most pages, the window is root element i,e, documentElement.
