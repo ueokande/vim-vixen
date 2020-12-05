@@ -1,4 +1,4 @@
-import ZoomPresenter from "../../../src/background/usecases/ZoomPresenter";
+import ZoomPresenter from "../../../src/background/presenters/ZoomPresenter";
 
 export default class MockZoomPresenter implements ZoomPresenter {
   resetZoom(): Promise<void> {

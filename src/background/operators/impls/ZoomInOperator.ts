@@ -1,5 +1,5 @@
 import Operator from "../Operator";
-import ZoomPresenter from "../../usecases/ZoomPresenter";
+import ZoomPresenter from "../../presenters/ZoomPresenter";
 
 export default class ZoomInOperator implements Operator {
   constructor(private readonly zoomPresenter: ZoomPresenter) {}

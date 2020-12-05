@@ -4,7 +4,7 @@ import OperatorFactoryChain from "../OperatorFactoryChain";
 import ZoomInOperator from "./ZoomInOperator";
 import ZoomOutOperator from "./ZoomOutOperator";
 import ResetZoomOperator from "./ResetZoomOperator";
-import ZoomPresenter from "../../usecases/ZoomPresenter";
+import ZoomPresenter from "../../presenters/ZoomPresenter";
 import * as operations from "../../../shared/operations";
 
 @injectable()

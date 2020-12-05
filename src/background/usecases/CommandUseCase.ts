@@ -12,7 +12,7 @@ import ContentMessageClient from "../infrastructures/ContentMessageClient";
 import RepeatUseCase from "../usecases/RepeatUseCase";
 
 @injectable()
-export default class CommandIndicator {
+export default class CommandUseCase {
   constructor(
     @inject("TabPresenter")
     private readonly tabPresenter: TabPresenter,

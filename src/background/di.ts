@@ -16,7 +16,7 @@ import { NavigateClientImpl } from "./clients/NavigateClient";
 import { ConsoleClientImpl } from "./infrastructures/ConsoleClient";
 import { BrowserSettingRepositoryImpl } from "./repositories/BrowserSettingRepository";
 import { RepeatRepositoryImpl } from "./repositories/RepeatRepository";
-import { ZoomPresenterImpl } from "./usecases/ZoomPresenter";
+import { ZoomPresenterImpl } from "./presenters/ZoomPresenter";
 import { WindowPresenterImpl } from "./presenters/WindowPresenter";
 
 container.register("LocalSettingRepository", {
