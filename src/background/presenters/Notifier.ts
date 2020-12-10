@@ -30,10 +30,10 @@ export class NotifierImpl implements NotifierImpl {
   }
 
   async notifyInvalidSettings(onclick: () => void): Promise<void> {
-    const title = `Loaded settings is invalid`;
+    const title = `Loading settings failed`;
     // eslint-disable-next-line max-len
     const message =
-      "The default settings is used due to the last saved settings is invalid.  Check your current settings from the add-on preference";
+      "The default settings are used due to the last saved settings is invalid.  Check your current settings from the add-on preference";
 
     const listener = (id: string) => {
       if (id !== NOTIFICATION_ID_INVALID_SETTINGS) {
