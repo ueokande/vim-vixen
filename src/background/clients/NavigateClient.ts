@@ -1,8 +1,16 @@
-import { injectable } from "tsyringe";
 import * as messages from "../../shared/messages";
 
-@injectable()
-export default class NavigateClient {
+export default interface NavigateClient {
+  historyNext(tabId: number): Promise<void>;
+
+  historyPrev(tabId: number): Promise<void>;
+
+  linkNext(tabId: number): Promise<void>;
+
+  linkPrev(tabId: number): Promise<void>;
+}
+
+export class NavigateClientImpl implements NavigateClient {
   async historyNext(tabId: number): Promise<void> {
     await browser.tabs.sendMessage(tabId, {
       type: messages.NAVIGATE_HISTORY_NEXT,

@@ -1,8 +1,9 @@
-import { injectable } from "tsyringe";
+export default interface WindowPresenter {
+  create(url: string): Promise<void>;
+}
 
-@injectable()
-export default class WindowPresenter {
-  create(url: string): Promise<browser.windows.Window> {
-    return browser.windows.create({ url });
+export class WindowPresenterImpl implements WindowPresenter {
+  async create(url: string): Promise<void> {
+    await browser.windows.create({ url });
   }
 }

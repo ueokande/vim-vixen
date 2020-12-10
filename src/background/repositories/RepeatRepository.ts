@@ -4,8 +4,14 @@ import MemoryStorage from "../infrastructures/MemoryStorage";
 
 const REPEAT_KEY = "repeat";
 
+export default interface RepeatRepository {
+  getLastOperation(): Operation | undefined;
+
+  setLastOperation(op: Operation): void;
+}
+
 @injectable()
-export default class RepeatRepository {
+export class RepeatRepositoryImpl implements RepeatRepository {
   private cache: MemoryStorage;
 
   constructor() {

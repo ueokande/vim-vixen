@@ -17,6 +17,7 @@ import { FollowMasterRepositoryImpl } from "./repositories/FollowMasterRepositor
 import { FollowPresenterImpl } from "./presenters/FollowPresenter";
 import { FollowSlaveClientFactoryImpl } from "./client/FollowSlaveClientFactory";
 import { FollowSlaveRepositoryImpl } from "./repositories/FollowSlaveRepository";
+import { HintKeyRepositoryImpl } from "./repositories/HintKeyRepository";
 import { KeymapRepositoryImpl } from "./repositories/KeymapRepository";
 import { MarkClientImpl } from "./client/MarkClient";
 import { MarkKeyRepositoryImpl } from "./repositories/MarkKeyRepository";
@@ -28,6 +29,8 @@ import { SettingClientImpl } from "./client/SettingClient";
 import { SettingRepositoryImpl } from "./repositories/SettingRepository";
 import { TabsClientImpl } from "./client/TabsClient";
 import { container } from "tsyringe";
+import OperatorFactoryImpl from "./operators/impls/OperatorFactoryImpl";
+import { URLRepositoryImpl } from "./operators/impls/URLRepository";
 
 container.register("FollowMasterClient", {
   useValue: new FollowMasterClientImpl(window.top),
@@ -64,6 +67,9 @@ container.register("FollowSlaveClientFactory", {
 container.register("FollowSlaveRepository", {
   useClass: FollowSlaveRepositoryImpl,
 });
+container.register("HintKeyRepository", {
+  useClass: HintKeyRepositoryImpl,
+});
 container.register("KeymapRepository", { useClass: KeymapRepositoryImpl });
 container.register("MarkClient", { useClass: MarkClientImpl });
 container.register("MarkKeyRepository", { useClass: MarkKeyRepositoryImpl });
@@ -75,4 +81,6 @@ container.register("OperationClient", { useClass: OperationClientImpl });
 container.register("ScrollPresenter", { useClass: ScrollPresenterImpl });
 container.register("SettingClient", { useClass: SettingClientImpl });
 container.register("SettingRepository", { useClass: SettingRepositoryImpl });
+container.register("URLRepository", { useClass: URLRepositoryImpl });
 container.register("TabsClient", { useClass: TabsClientImpl });
+container.register("OperatorFactory", { useClass: OperatorFactoryImpl });

@@ -22,7 +22,7 @@ export default class AddonEnabledUseCase {
     return this.indicatorPresentor.indicate(enabled);
   }
 
-  onIndicatorClick(tabId: number): Promise<void> {
+  private onIndicatorClick(tabId: number): Promise<void> {
     return this.contentMessageClient.toggleAddonEnabled(tabId);
   }
 

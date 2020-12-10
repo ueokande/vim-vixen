@@ -15,16 +15,8 @@ export default class MarkKeyUseCase {
     return this.repository.isJumpMode();
   }
 
-  enableSetMode(): void {
-    this.repository.enableSetMode();
-  }
-
   disableSetMode(): void {
     this.repository.disabeSetMode();
-  }
-
-  enableJumpMode(): void {
-    this.repository.enableJumpMode();
   }
 
   disableJumpMode(): void {

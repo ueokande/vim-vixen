@@ -79,8 +79,10 @@ describe("tab test", () => {
     const page = await Page.currentContext(webdriver);
     await page.sendKeys("x", "$");
 
-    const current = await browser.tabs.query({ windowId: win.id });
-    assert.strictEqual(current.length, 2);
+    await eventually(async () => {
+      const current = await browser.tabs.query({ windowId: win.id });
+      assert.strictEqual(current.length, 2);
+    });
   });
 
   it("duplicates tab by zd", async () => {

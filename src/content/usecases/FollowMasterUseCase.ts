@@ -4,13 +4,10 @@ import FollowMasterRepository from "../repositories/FollowMasterRepository";
 import FollowSlaveClient from "../client/FollowSlaveClient";
 import FollowSlaveClientFactory from "../client/FollowSlaveClientFactory";
 import SettingRepository from "../repositories/SettingRepository";
-import HintKeyProducer from "./HintKeyProducer";
+import HintKeyRepository from "../repositories/HintKeyRepository";
 
 @injectable()
 export default class FollowMasterUseCase {
-  // TODO Make repository
-  private producer: HintKeyProducer | null;
-
   constructor(
     @inject("FollowKeyRepository")
     private followKeyRepository: FollowKeyRepository,
@@ -22,14 +19,15 @@ export default class FollowMasterUseCase {
     private settingRepository: SettingRepository,
 
     @inject("FollowSlaveClientFactory")
-    private followSlaveClientFactory: FollowSlaveClientFactory
-  ) {
-    this.producer = null;
-  }
+    private followSlaveClientFactory: FollowSlaveClientFactory,
+
+    @inject("HintKeyRepository")
+    private hintKeyRepository: HintKeyRepository
+  ) {}
 
   startFollow(newTab: boolean, background: boolean): void {
     const hintchars = this.settingRepository.get().properties.hintchars;
-    this.producer = new HintKeyProducer(hintchars);
+    this.hintKeyRepository.reset(hintchars);
 
     this.followKeyRepository.clearKeys();
     this.followMasterRepository.setCurrentFollowMode(newTab, background);
@@ -59,7 +57,7 @@ export default class FollowMasterUseCase {
   createSlaveHints(count: number, sender: Window): void {
     const produced = [];
     for (let i = 0; i < count; ++i) {
-      const tag = this.producer!.produce();
+      const tag = this.hintKeyRepository.produce();
       produced.push(tag);
       this.followMasterRepository.addTag(tag);
     }

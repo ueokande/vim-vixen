@@ -12,17 +12,20 @@ import ContentMessageClient from "../infrastructures/ContentMessageClient";
 import RepeatUseCase from "../usecases/RepeatUseCase";
 
 @injectable()
-export default class CommandIndicator {
+export default class CommandUseCase {
   constructor(
-    @inject("TabPresenter") private tabPresenter: TabPresenter,
-    private windowPresenter: WindowPresenter,
-    private helpPresenter: HelpPresenter,
+    @inject("TabPresenter")
+    private readonly tabPresenter: TabPresenter,
+    @inject("WindowPresenter")
+    private readonly windowPresenter: WindowPresenter,
+    private readonly helpPresenter: HelpPresenter,
     @inject("CachedSettingRepository")
-    private cachedSettingRepository: CachedSettingRepository,
-    private bookmarkRepository: BookmarkRepository,
-    private consoleClient: ConsoleClient,
-    private contentMessageClient: ContentMessageClient,
-    private repeatUseCase: RepeatUseCase
+    private readonly cachedSettingRepository: CachedSettingRepository,
+    private readonly bookmarkRepository: BookmarkRepository,
+    @inject("ConsoleClient")
+    private readonly consoleClient: ConsoleClient,
+    private readonly contentMessageClient: ContentMessageClient,
+    private readonly repeatUseCase: RepeatUseCase
   ) {}
 
   async open(keywords: string): Promise<browser.tabs.Tab> {
@@ -44,7 +47,7 @@ export default class CommandIndicator {
     return this.tabPresenter.create(url);
   }
 
-  async winopen(keywords: string): Promise<browser.windows.Window> {
+  async winopen(keywords: string): Promise<void> {
     const url = await this.urlOrSearch(keywords);
     this.repeatUseCase.storeLastOperation({
       type: operations.INTERNAL_OPEN_URL,
