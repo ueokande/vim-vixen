@@ -20,7 +20,7 @@ import { ZoomPresenterImpl } from "./presenters/ZoomPresenter";
 import { WindowPresenterImpl } from "./presenters/WindowPresenter";
 
 container.register("LocalSettingRepository", {
-  useValue: LocalSettingRepository,
+  useClass: LocalSettingRepository,
 });
 container.register("SyncSettingRepository", {
   useClass: SyncSettingRepository,
