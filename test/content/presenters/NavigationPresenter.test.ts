@@ -1,7 +1,9 @@
 import { NavigationPresenterImpl } from "../../../src/content/presenters/NavigationPresenter";
 import { expect } from "chai";
 
-describe("NavigationPresenterImpl", () => {
+describe("NavigationPresenterImpl", function () {
+  this.timeout(5000);
+
   let sut: NavigationPresenterImpl;
 
   const testRel = (done: () => void, rel: string, html: string) => {
