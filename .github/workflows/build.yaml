@@ -64,5 +64,9 @@ jobs:
     - run: yarn install
     - run: yarn build
     - run: |
+        export DISPLAY=:99
+
         geckodriver &
+        sudo Xvfb -ac :99 -screen 0 1280x1024x24 >/dev/null 2>&1 &
+
         yarn test:e2e
