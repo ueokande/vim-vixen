@@ -63,4 +63,6 @@ jobs:
 
     - run: yarn install
     - run: yarn build
-    - run: yarn test:e2e
+    - run: |
+        geckodriver &
+        yarn test:e2e
