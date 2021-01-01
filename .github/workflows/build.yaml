@@ -98,6 +98,9 @@ jobs:
     - run: yarn install
     - run: yarn package
     - name: Release to AMO
+      env:
+        JWT_ISSUER: "${{ secrets.JWT_ISSUER }}"
+        JWT_SECRET: "${{ secrets.JWT_SECRET }}"
       run: |
         version=$(jq -r '.version' manifest.json)
         ./script/deploy vim-vixen@i-beam.org "$version" "vim-vixen-${version}.zip"
