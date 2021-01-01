@@ -19,7 +19,7 @@ jobs:
         firefox-version: 78.3.0esr
     - uses: ueokande/setup-geckodriver@latest
       with:
-        firefox-version: 0.28.0
+        geckodriver-version: 0.28.0
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
@@ -49,7 +49,7 @@ jobs:
         firefox-version: 78.3.0esr
     - uses: ueokande/setup-geckodriver@latest
       with:
-        firefox-version: 0.28.0
+        geckodriver-version: 0.28.0
     - name: Install xsel
       run: sudo apt-get install -y --no-install-recommends xsel
 
