@@ -50,6 +50,8 @@ jobs:
     - uses: ueokande/setup-geckodriver@latest
       with:
         firefox-version: 0.28.0
+    - name: Install xsel
+      run: sudo apt-get install -y --no-install-recommends xsel
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
@@ -63,7 +65,8 @@ jobs:
 
     - run: yarn install
     - run: yarn build
-    - run: |
+    - name: Run test
+      run: |
         export DISPLAY=:99
 
         geckodriver &
