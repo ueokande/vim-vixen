@@ -1,0 +1,106 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14.15.1'
+    - uses: ueokande/setup-firefox@latest
+      with:
+        firefox-version: 78.3.0esr
+    - uses: ueokande/setup-geckodriver@latest
+      with:
+        geckodriver-version: 0.28.0
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+    - uses: actions/cache@v2
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    - run: yarn install
+    - run: yarn lint
+    - run: yarn test
+    - run: yarn package
+
+  test-e2e:
+    name: E2E Test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14.15.1'
+    - uses: ueokande/setup-firefox@latest
+      with:
+        firefox-version: 78.3.0esr
+    - uses: ueokande/setup-geckodriver@latest
+      with:
+        geckodriver-version: 0.28.0
+    - name: Install xsel
+      run: sudo apt-get install -y --no-install-recommends xsel
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+    - uses: actions/cache@v2
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    - run: yarn install
+    - run: yarn build
+    - name: Run test
+      run: |
+        export DISPLAY=:99
+
+        geckodriver &
+        sudo Xvfb -ac :99 -screen 0 1280x1024x24 >/dev/null 2>&1 &
+
+        yarn test:e2e
+
+  deploy:
+    name: Release to AMO
+    needs: [build, test-e2e]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14.15.1'
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+    - uses: actions/cache@v2
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    - run: yarn install
+    - run: yarn package
+    - name: Release to AMO
+      env:
+        JWT_ISSUER: "${{ secrets.JWT_ISSUER }}"
+        JWT_SECRET: "${{ secrets.JWT_SECRET }}"
+      run: |
+        version=$(jq -r '.version' manifest.json)
+        ./script/deploy vim-vixen@i-beam.org "$version" "vim-vixen-${version}.zip"
