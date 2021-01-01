@@ -73,3 +73,31 @@ jobs:
         sudo Xvfb -ac :99 -screen 0 1280x1024x24 >/dev/null 2>&1 &
 
         yarn test:e2e
+
+  deploy:
+    name: Release to AMO
+    needs: [build, test-e2e]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14.15.1'
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+    - uses: actions/cache@v2
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    - run: yarn install
+    - run: yarn package
+    - name: Release to AMO
+      run: |
+        version=$(jq -r '.version' manifest.json)
+        ./script/deploy vim-vixen@i-beam.org "$version" "vim-vixen-${version}.zip"
