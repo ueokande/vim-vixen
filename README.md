@@ -1,7 +1,7 @@
 # Vim Vixen
 
 [![Join the chat room on Gitter for vim-vixen/vim-vixen](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/vim-vixen/vim-vixen)
-[![CircleCI](https://circleci.com/gh/ueokande/vim-vixen.svg?style=svg)](https://circleci.com/gh/ueokande/vim-vixen)
+[![GitHub Actions](https://github.com/ueokande/vim-vixen/workflows/Build/badge.svg)](https://github.com/ueokande/vim-vixen/actions?query=workflow%3ABuild)
 
 Vim Vixen is a Firefox add-on which allows you to easily navigate the web by
 keyboard. Since version 57, Firefox has migrated to the WebExtensions API and
