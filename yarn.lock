@@ -357,9 +357,9 @@
     redux "^3.6.0"
 
 "@types/selenium-webdriver@^4.0.6":
-  version "4.0.9"
-  resolved "https://registry.yarnpkg.com/@types/selenium-webdriver/-/selenium-webdriver-4.0.9.tgz#12621e55b2ef8f6c98bd17fe23fa720c6cba16bd"
-  integrity sha512-HopIwBE7GUXsscmt/J0DhnFXLSmO04AfxT6b8HAprknwka7pqEWquWDMXxCjd+NUHK9MkCe1SDKKsMiNmCItbQ==
+  version "4.0.11"
+  resolved "https://registry.yarnpkg.com/@types/selenium-webdriver/-/selenium-webdriver-4.0.11.tgz#740d1b3a47badec6784015ee8f3e89d3cb5fd985"
+  integrity sha512-VHv3kVxdploPZRa5Epsrgae9f8Wp0B+TVj3L93Yv0nB2RCRGRTKuhz/vRUZR4yItLqzdIxsxALe3qT3yqTAJTg==
 
 "@types/serve-static@*":
   version "1.13.5"
