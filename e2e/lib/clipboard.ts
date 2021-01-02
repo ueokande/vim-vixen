@@ -20,7 +20,7 @@ const readLinux = (): Promise<string> => {
   });
 };
 
-const writeLinux = (data: string): Promise<string> => {
+const writeLinux = (data: string): Promise<void> => {
   let stderr = "";
   return new Promise((resolve) => {
     const xsel = spawn("xsel", ["--clipboard", "--input"]);
@@ -58,7 +58,7 @@ const readDarwin = (): Promise<string> => {
   });
 };
 
-const writeDarwin = (data: string): Promise<string> => {
+const writeDarwin = (data: string): Promise<void> => {
   let stderr = "";
   return new Promise((resolve) => {
     const pbcopy = spawn("pbcopy");
