@@ -107,6 +107,8 @@ export default class Application {
           return this.navigateController.openLinkNext(msg);
         case messages.NAVIGATE_LINK_PREV:
           return this.navigateController.openLinkPrev(msg);
+        case messages.CONSOLE_RESIZE:
+          return this.consoleFrameController.resize(msg);
       }
     });
 

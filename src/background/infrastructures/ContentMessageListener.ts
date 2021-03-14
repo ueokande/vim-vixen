@@ -9,23 +9,23 @@ import LinkController from "../controllers/LinkController";
 import OperationController from "../controllers/OperationController";
 import MarkController from "../controllers/MarkController";
 import CompletionController from "../controllers/CompletionController";
+import ConsoleController from "../controllers/ConsoleController";
 
 @injectable()
 export default class ContentMessageListener {
-  private consolePorts: { [tabId: number]: browser.runtime.Port };
+  private readonly consolePorts: { [tabId: number]: browser.runtime.Port } = {};
 
   constructor(
-    private settingController: SettingController,
-    private commandController: CommandController,
-    private completionController: CompletionController,
-    private findController: FindController,
-    private addonEnabledController: AddonEnabledController,
-    private linkController: LinkController,
-    private operationController: OperationController,
-    private markController: MarkController
-  ) {
-    this.consolePorts = {};
-  }
+    private readonly settingController: SettingController,
+    private readonly commandController: CommandController,
+    private readonly completionController: CompletionController,
+    private readonly findController: FindController,
+    private readonly addonEnabledController: AddonEnabledController,
+    private readonly linkController: LinkController,
+    private readonly operationController: OperationController,
+    private readonly markController: MarkController,
+    private readonly consoleController: ConsoleController
+  ) {}
 
   run(): void {
     browser.runtime.onMessage.addListener(
@@ -80,6 +80,8 @@ export default class ContentMessageListener {
         return this.completionController.getProperties();
       case messages.CONSOLE_ENTER_COMMAND:
         return this.onConsoleEnterCommand(message.text);
+      case messages.CONSOLE_RESIZE:
+        return this.onConsoleResize(message.width, message.height);
       case messages.SETTINGS_QUERY:
         return this.onSettingsQuery();
       case messages.FIND_GET_KEYWORD:
@@ -112,6 +114,10 @@ export default class ContentMessageListener {
 
   onConsoleEnterCommand(text: string): Promise<unknown> {
     return this.commandController.exec(text);
+  }
+
+  onConsoleResize(width: number, height: number): Promise<void> {
+    return this.consoleController.resize(width, height);
   }
 
   async onSettingsQuery(): Promise<unknown> {

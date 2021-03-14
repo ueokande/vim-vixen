@@ -19,6 +19,7 @@ export const CONSOLE_REQUEST_BOOKMARKS = "console.request.bookmarks";
 export const CONSOLE_REQUEST_HISTORY = "console.request.history";
 export const CONSOLE_REQUEST_TABS = "console.request.tabs";
 export const CONSOLE_GET_PROPERTIES = "console.get.properties";
+export const CONSOLE_RESIZE = "console.resize";
 
 export const FOLLOW_START = "follow.start";
 export const FOLLOW_REQUEST_COUNT_TARGETS = "follow.request.count.targets";
@@ -125,6 +126,12 @@ export interface ConsoleRequestTabsMessage {
 
 export interface ConsoleGetPropertiesMessage {
   type: typeof CONSOLE_GET_PROPERTIES;
+}
+
+export interface ConsoleResizeMessage {
+  type: typeof CONSOLE_RESIZE;
+  width: number;
+  height: number;
 }
 
 export type ConsoleRequestTabsResponse = {
@@ -301,6 +308,7 @@ export type Message =
   | ConsoleRequestHistoryMessage
   | ConsoleRequestTabsMessage
   | ConsoleGetPropertiesMessage
+  | ConsoleResizeMessage
   | ConsoleGetCompletionTypesMessage
   | ConsoleRequestSearchEnginesMessage
   | FollowStartMessage
@@ -363,11 +371,12 @@ export const valueOf = (o: any): Message => {
     case SETTINGS_CHANGED:
     case SETTINGS_QUERY:
     case CONSOLE_FRAME_MESSAGE:
+    case CONSOLE_RESIZE:
     case NAVIGATE_HISTORY_NEXT:
     case NAVIGATE_HISTORY_PREV:
     case NAVIGATE_LINK_NEXT:
     case NAVIGATE_LINK_PREV:
       return o;
   }
-  throw new Error("unknown operation type: " + o.type);
+  throw new Error("unknown message type: " + o.type);
 };
