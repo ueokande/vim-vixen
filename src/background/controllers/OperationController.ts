@@ -11,7 +11,7 @@ export default class OperationController {
     private readonly operatorFactory: OperatorFactory
   ) {}
 
-  async exec(repeat: number, op: operations.Operation): Promise<any> {
+  async exec(repeat: number, op: operations.Operation): Promise<void> {
     await this.doOperation(repeat, op);
     if (this.repeatUseCase.isRepeatable(op)) {
       this.repeatUseCase.storeLastOperation(op);
@@ -21,7 +21,7 @@ export default class OperationController {
   private async doOperation(
     repeat: number,
     operation: operations.Operation
-  ): Promise<any> {
+  ): Promise<void> {
     const operator = this.operatorFactory.create(operation);
     for (let i = 0; i < repeat; ++i) {
       // eslint-disable-next-line no-await-in-loop

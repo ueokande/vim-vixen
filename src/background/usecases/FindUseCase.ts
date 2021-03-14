@@ -9,7 +9,7 @@ export default class FindUseCase {
     return this.findRepository.getKeyword();
   }
 
-  setKeyword(keyword: string): Promise<any> {
+  setKeyword(keyword: string): Promise<void> {
     return this.findRepository.setKeyword(keyword);
   }
 }

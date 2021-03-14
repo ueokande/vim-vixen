@@ -58,7 +58,7 @@ export default class CommandUseCase {
   }
 
   // eslint-disable-next-line max-statements
-  async buffer(keywords: string): Promise<any> {
+  async buffer(keywords: string): Promise<void> {
     if (keywords.length === 0) {
       return;
     }
@@ -95,7 +95,7 @@ export default class CommandUseCase {
     return this.tabPresenter.select(tabs[0].id as number);
   }
 
-  async bdelete(force: boolean, keywords: string): Promise<any> {
+  async bdelete(force: boolean, keywords: string): Promise<void> {
     const excludePinned = !force;
     const tabs = await this.tabPresenter.getByKeyword(keywords, excludePinned);
     if (tabs.length === 0) {
@@ -106,32 +106,32 @@ export default class CommandUseCase {
     return this.tabPresenter.remove([tabs[0].id as number]);
   }
 
-  async bdeletes(force: boolean, keywords: string): Promise<any> {
+  async bdeletes(force: boolean, keywords: string): Promise<void> {
     const excludePinned = !force;
     const tabs = await this.tabPresenter.getByKeyword(keywords, excludePinned);
     const ids = tabs.map((tab) => tab.id as number);
     return this.tabPresenter.remove(ids);
   }
 
-  async quit(): Promise<any> {
+  async quit(): Promise<void> {
     const tab = await this.tabPresenter.getCurrent();
     return this.tabPresenter.remove([tab.id as number]);
   }
 
-  async quitAll(): Promise<any> {
+  async quitAll(): Promise<void> {
     const tabs = await this.tabPresenter.getAll();
     const ids = tabs.map((tab) => tab.id as number);
     this.tabPresenter.remove(ids);
   }
 
-  async addbookmark(title: string): Promise<any> {
+  async addbookmark(title: string): Promise<void> {
     const tab = await this.tabPresenter.getCurrent();
     const item = await this.bookmarkRepository.create(title, tab.url as string);
     const message = "Saved current page: " + item.url;
     return this.consoleClient.showInfo(tab.id as number, message);
   }
 
-  async set(keywords: string): Promise<any> {
+  async set(keywords: string): Promise<void> {
     if (keywords.length === 0) {
       return;
     }
@@ -145,7 +145,7 @@ export default class CommandUseCase {
     return this.helpPresenter.open();
   }
 
-  private async urlOrSearch(keywords: string): Promise<any> {
+  private async urlOrSearch(keywords: string): Promise<string> {
     const settings = await this.cachedSettingRepository.get();
     return urls.searchUrl(keywords, settings.search);
   }

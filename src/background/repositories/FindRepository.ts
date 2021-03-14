@@ -15,7 +15,7 @@ export default class FindRepository {
     return Promise.resolve(this.cache.get(FIND_KEYWORD_KEY));
   }
 
-  setKeyword(keyword: string): Promise<any> {
+  setKeyword(keyword: string): Promise<void> {
     this.cache.set(FIND_KEYWORD_KEY, keyword);
     return Promise.resolve();
   }

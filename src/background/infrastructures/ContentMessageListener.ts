@@ -61,7 +61,7 @@ export default class ContentMessageListener {
   onMessage(
     message: messages.Message,
     senderTab: browser.tabs.Tab
-  ): Promise<any> | any {
+  ): Promise<unknown> | unknown {
     switch (message.type) {
       case messages.CONSOLE_GET_COMPLETION_TYPES:
         return this.completionController.getCompletionTypes();
@@ -110,11 +110,11 @@ export default class ContentMessageListener {
     throw new Error("unsupported message: " + message.type);
   }
 
-  onConsoleEnterCommand(text: string): Promise<any> {
+  onConsoleEnterCommand(text: string): Promise<unknown> {
     return this.commandController.exec(text);
   }
 
-  async onSettingsQuery(): Promise<any> {
+  async onSettingsQuery(): Promise<unknown> {
     return (await this.settingController.getSetting()).toJSON();
   }
 
@@ -122,11 +122,11 @@ export default class ContentMessageListener {
     return this.findController.getKeyword();
   }
 
-  onFindSetKeyword(keyword: string): Promise<any> {
+  onFindSetKeyword(keyword: string): Promise<void> {
     return this.findController.setKeyword(keyword);
   }
 
-  onAddonEnabledResponse(enabled: boolean): Promise<any> {
+  onAddonEnabledResponse(enabled: boolean): Promise<void> {
     return this.addonEnabledController.indicate(enabled);
   }
 
@@ -135,22 +135,25 @@ export default class ContentMessageListener {
     url: string,
     openerId: number,
     background: boolean
-  ): Promise<any> {
+  ): Promise<void> {
     if (newTab) {
       return this.linkController.openNewTab(url, openerId, background);
     }
     return this.linkController.openToTab(url, openerId);
   }
 
-  onBackgroundOperation(count: number, op: operations.Operation): Promise<any> {
+  onBackgroundOperation(
+    count: number,
+    op: operations.Operation
+  ): Promise<void> {
     return this.operationController.exec(count, op);
   }
 
-  onMarkSetGlobal(key: string, x: number, y: number): Promise<any> {
+  onMarkSetGlobal(key: string, x: number, y: number): Promise<void> {
     return this.markController.setGlobal(key, x, y);
   }
 
-  onMarkJumpGlobal(key: string): Promise<any> {
+  onMarkJumpGlobal(key: string): Promise<void> {
     return this.markController.jumpGlobal(key);
   }
 
