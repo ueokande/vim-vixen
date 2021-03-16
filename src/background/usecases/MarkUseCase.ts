@@ -15,13 +15,13 @@ export default class MarkUseCase {
     private readonly contentMessageClient: ContentMessageClient
   ) {}
 
-  async setGlobal(key: string, x: number, y: number): Promise<any> {
+  async setGlobal(key: string, x: number, y: number): Promise<void> {
     const tab = await this.tabPresenter.getCurrent();
     const mark = { tabId: tab.id as number, url: tab.url as string, x, y };
     return this.markRepository.setMark(key, mark);
   }
 
-  async jumpGlobal(key: string): Promise<any> {
+  async jumpGlobal(key: string): Promise<void> {
     const current = await this.tabPresenter.getCurrent();
 
     const mark = await this.markRepository.getMark(key);

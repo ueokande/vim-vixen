@@ -12,4 +12,8 @@ export default class ConsoleFrameUseCase {
     window.focus();
     this.consoleFramePresenter.blur();
   }
+
+  resize(width: number, height: number) {
+    this.consoleFramePresenter.resize(width, height);
+  }
 }

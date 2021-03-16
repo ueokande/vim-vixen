@@ -18,6 +18,7 @@ import { BrowserSettingRepositoryImpl } from "./repositories/BrowserSettingRepos
 import { RepeatRepositoryImpl } from "./repositories/RepeatRepository";
 import { ZoomPresenterImpl } from "./presenters/ZoomPresenter";
 import { WindowPresenterImpl } from "./presenters/WindowPresenter";
+import { ConsoleFrameClientImpl } from "./controllers/ConsoleFrameClient";
 
 container.register("LocalSettingRepository", {
   useClass: LocalSettingRepository,
@@ -41,4 +42,5 @@ container.register("TabPresenter", { useClass: TabPresenterImpl });
 container.register("WindowPresenter", { useClass: WindowPresenterImpl });
 container.register("NavigateClient", { useClass: NavigateClientImpl });
 container.register("ConsoleClient", { useClass: ConsoleClientImpl });
+container.register("ConsoleFrameClient", { useClass: ConsoleFrameClientImpl });
 container.register("OperatorFactory", { useClass: OperatorFactoryImpl });

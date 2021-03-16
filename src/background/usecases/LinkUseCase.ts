@@ -5,15 +5,15 @@ import TabPresenter from "../presenters/TabPresenter";
 export default class LinkUseCase {
   constructor(@inject("TabPresenter") private tabPresenter: TabPresenter) {}
 
-  openToTab(url: string, tabId: number): Promise<any> {
-    return this.tabPresenter.open(url, tabId);
+  async openToTab(url: string, tabId: number): Promise<void> {
+    await this.tabPresenter.open(url, tabId);
   }
 
   async openNewTab(
     url: string,
     openerId: number,
     background: boolean
-  ): Promise<any> {
+  ): Promise<void> {
     const properties: any = { active: !background };
 
     const platform = await browser.runtime.getPlatformInfo();
@@ -22,6 +22,6 @@ export default class LinkUseCase {
       properties.openerTabId = openerId;
     }
 
-    return this.tabPresenter.create(url, properties);
+    await this.tabPresenter.create(url, properties);
   }
 }

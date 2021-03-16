@@ -9,4 +9,8 @@ export default class ConsoleFrameController {
   unfocus(_message: messages.Message) {
     this.consoleFrameUseCase.unfocus();
   }
+
+  resize(message: messages.ConsoleResizeMessage) {
+    this.consoleFrameUseCase.resize(message.width, message.height);
+  }
 }

@@ -13,6 +13,7 @@ import ColorScheme from "../../shared/ColorScheme";
 import { LightTheme, DarkTheme } from "./Theme";
 import styled from "./Theme";
 import { ThemeProvider } from "styled-components";
+import ConsoleFrameClient from "../clients/ConsoleFrameClient";
 
 const ConsoleWrapper = styled.div`
   border-top: 1px solid gray;
@@ -30,6 +31,7 @@ class Console extends React.Component<Props> {
   private input: React.RefObject<Input>;
 
   private commandLineParser: CommandLineParser = new CommandLineParser();
+  private consoleFrameClient = new ConsoleFrameClient();
 
   constructor(props: Props) {
     super(props);
@@ -130,6 +132,12 @@ class Console extends React.Component<Props> {
     } else if (prevProps.mode !== "find" && this.props.mode === "find") {
       this.focus();
     }
+
+    const {
+      scrollWidth: width,
+      scrollHeight: height,
+    } = document.getElementById("vimvixen-console")!;
+    this.consoleFrameClient.resize(width, height);
   }
 
   render() {

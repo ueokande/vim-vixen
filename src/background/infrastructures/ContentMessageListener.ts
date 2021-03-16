@@ -9,23 +9,23 @@ import LinkController from "../controllers/LinkController";
 import OperationController from "../controllers/OperationController";
 import MarkController from "../controllers/MarkController";
 import CompletionController from "../controllers/CompletionController";
+import ConsoleController from "../controllers/ConsoleController";
 
 @injectable()
 export default class ContentMessageListener {
-  private consolePorts: { [tabId: number]: browser.runtime.Port };
+  private readonly consolePorts: { [tabId: number]: browser.runtime.Port } = {};
 
   constructor(
-    private settingController: SettingController,
-    private commandController: CommandController,
-    private completionController: CompletionController,
-    private findController: FindController,
-    private addonEnabledController: AddonEnabledController,
-    private linkController: LinkController,
-    private operationController: OperationController,
-    private markController: MarkController
-  ) {
-    this.consolePorts = {};
-  }
+    private readonly settingController: SettingController,
+    private readonly commandController: CommandController,
+    private readonly completionController: CompletionController,
+    private readonly findController: FindController,
+    private readonly addonEnabledController: AddonEnabledController,
+    private readonly linkController: LinkController,
+    private readonly operationController: OperationController,
+    private readonly markController: MarkController,
+    private readonly consoleController: ConsoleController
+  ) {}
 
   run(): void {
     browser.runtime.onMessage.addListener(
@@ -61,7 +61,7 @@ export default class ContentMessageListener {
   onMessage(
     message: messages.Message,
     senderTab: browser.tabs.Tab
-  ): Promise<any> | any {
+  ): Promise<unknown> | unknown {
     switch (message.type) {
       case messages.CONSOLE_GET_COMPLETION_TYPES:
         return this.completionController.getCompletionTypes();
@@ -80,6 +80,8 @@ export default class ContentMessageListener {
         return this.completionController.getProperties();
       case messages.CONSOLE_ENTER_COMMAND:
         return this.onConsoleEnterCommand(message.text);
+      case messages.CONSOLE_RESIZE:
+        return this.onConsoleResize(message.width, message.height);
       case messages.SETTINGS_QUERY:
         return this.onSettingsQuery();
       case messages.FIND_GET_KEYWORD:
@@ -110,11 +112,15 @@ export default class ContentMessageListener {
     throw new Error("unsupported message: " + message.type);
   }
 
-  onConsoleEnterCommand(text: string): Promise<any> {
+  onConsoleEnterCommand(text: string): Promise<unknown> {
     return this.commandController.exec(text);
   }
 
-  async onSettingsQuery(): Promise<any> {
+  onConsoleResize(width: number, height: number): Promise<void> {
+    return this.consoleController.resize(width, height);
+  }
+
+  async onSettingsQuery(): Promise<unknown> {
     return (await this.settingController.getSetting()).toJSON();
   }
 
@@ -122,11 +128,11 @@ export default class ContentMessageListener {
     return this.findController.getKeyword();
   }
 
-  onFindSetKeyword(keyword: string): Promise<any> {
+  onFindSetKeyword(keyword: string): Promise<void> {
     return this.findController.setKeyword(keyword);
   }
 
-  onAddonEnabledResponse(enabled: boolean): Promise<any> {
+  onAddonEnabledResponse(enabled: boolean): Promise<void> {
     return this.addonEnabledController.indicate(enabled);
   }
 
@@ -135,22 +141,25 @@ export default class ContentMessageListener {
     url: string,
     openerId: number,
     background: boolean
-  ): Promise<any> {
+  ): Promise<void> {
     if (newTab) {
       return this.linkController.openNewTab(url, openerId, background);
     }
     return this.linkController.openToTab(url, openerId);
   }
 
-  onBackgroundOperation(count: number, op: operations.Operation): Promise<any> {
+  onBackgroundOperation(
+    count: number,
+    op: operations.Operation
+  ): Promise<void> {
     return this.operationController.exec(count, op);
   }
 
-  onMarkSetGlobal(key: string, x: number, y: number): Promise<any> {
+  onMarkSetGlobal(key: string, x: number, y: number): Promise<void> {
     return this.markController.setGlobal(key, x, y);
   }
 
-  onMarkJumpGlobal(key: string): Promise<any> {
+  onMarkJumpGlobal(key: string): Promise<void> {
     return this.markController.jumpGlobal(key);
   }
 

@@ -22,7 +22,7 @@ export default class MarkRepository {
     return Promise.resolve(mark);
   }
 
-  setMark(key: string, mark: GlobalMark): Promise<any> {
+  setMark(key: string, mark: GlobalMark): Promise<void> {
     const marks = this.getOrEmptyMarks();
     marks[key] = { tabId: mark.tabId, url: mark.url, x: mark.x, y: mark.y };
     this.cache.set(MARK_KEY, marks);

@@ -14,7 +14,7 @@ export default class SettingController {
     return this.settingUseCase.getCached();
   }
 
-  async reload(): Promise<any> {
+  async reload(): Promise<void> {
     await this.settingUseCase.reload();
     this.contentMessageClient.broadcastSettingsChanged();
   }

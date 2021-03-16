@@ -11,7 +11,7 @@ export default class CommandController {
   constructor(private commandIndicator: CommandUseCase) {}
 
   // eslint-disable-next-line complexity
-  exec(line: string): Promise<any> {
+  exec(line: string): Promise<unknown> {
     const trimmed = trimStart(line);
     const words = trimmed.split(/ +/);
     const name = words[0];
