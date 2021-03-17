@@ -3,15 +3,10 @@ import "reflect-metadata";
 import Application from "./Application";
 import Bootstrap from "./Bootstrap";
 import consoleFrameStyle from "./site-style";
-import { ConsoleFramePresenterImpl } from "./presenters/ConsoleFramePresenter";
 import { container } from "tsyringe";
 import "./di";
 
 const initDom = () => {
-  if (window.self === window.top) {
-    new ConsoleFramePresenterImpl().initialize();
-  }
-
   try {
     const app = container.resolve(Application);
     app.run();
