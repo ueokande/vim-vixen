@@ -11,7 +11,7 @@ import ReactDOM from "react-dom";
 
 const store = createStore(reducers, applyMiddleware(promise));
 
-window.addEventListener("load", () => {
+window.addEventListener("DOMContentLoaded", () => {
   const wrapper = document.getElementById("vimvixen-console");
   ReactDOM.render(
     <Provider store={store}>
