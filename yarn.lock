@@ -749,15 +749,15 @@ acorn@^7.1.1, acorn@^7.4.0:
   integrity sha512-+G7P8jJmCHr+S+cLfQxygbWhXy+8YTVGzAkpEbcLo2mLoL7tij/VG41QSHACSf5QgYRhMZYHuNc6drJaO0Da+w==
 
 ajv-cli@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/ajv-cli/-/ajv-cli-4.0.1.tgz#00543699942f8bec8b2e7aadc62909139c788cf8"
-  integrity sha512-vRV3Qrqq9yiKZbjX2uaqjykE2QI08/SlY/fPR7e6hloTTCOGXXcGXghLVgBkqeN7Ts/+Xfc21CjOX0p41Hskcw==
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/ajv-cli/-/ajv-cli-4.2.0.tgz#f2c371edfd9c999f2a9e0afdd5675eede8e16544"
+  integrity sha512-3Ab8Kuh7QnyXxg+v4NFzah1LLBHgYBUVtJZC8bOaDAdl766kT6Usw5f+g8UcFN+24lYIbchaQBQ+uUntYpBEyQ==
   dependencies:
-    ajv "^7.0.0"
+    ajv "^7.2.1"
     fast-json-patch "^2.0.0"
     glob "^7.1.0"
     js-yaml "^3.14.0"
-    json-schema-migrate "^1.0.0"
+    json-schema-migrate "^1.1.0"
     json5 "^2.1.3"
     minimist "^1.2.0"
 
@@ -781,10 +781,10 @@ ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.3, ajv@^6.12.4, ajv@^6.12.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ajv@^7.0.0, ajv@^7.0.0-beta.9, ajv@^7.0.2:
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-7.0.3.tgz#13ae747eff125cafb230ac504b2406cf371eece2"
-  integrity sha512-R50QRlXSxqXcQP5SvKUrw8VZeypvo12i2IX0EeR5PiZ7bEKeHWgzgo264LDadUsCU42lTJVhFikTqJwNeH34gQ==
+ajv@^7.0.0-beta.9, ajv@^7.0.2, ajv@^7.2.1:
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-7.2.1.tgz#a5ac226171912447683524fa2f1248fcf8bac83d"
+  integrity sha512-+nu0HDv7kNSOua9apAVc979qd932rrZeb3WOvoiD31A/p1mIE5/9bN2027pE2rOPYEdS3UHzsvof4hY+lM9/WQ==
   dependencies:
     fast-deep-equal "^3.1.1"
     json-schema-traverse "^1.0.0"
@@ -3376,10 +3376,10 @@ json-parse-better-errors@^1.0.2:
   resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
   integrity sha512-mrqyZKfX5EhL7hvqcV6WG1yYjnjeuYDzDhhcAAUrq8Po85NBQBJP+ZDUT75qZQ98IkUoBqdkExkukOU7Ts2wrw==
 
-json-schema-migrate@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/json-schema-migrate/-/json-schema-migrate-1.0.0.tgz#9169a3f9c0b0c5dfc749d01bb7c76d31ad081599"
-  integrity sha512-Ze3G4zCBi0ZHKQaK3EEFv7Q0d3/LxZldrH/6rFNNegkGGolMp6Deg6rLWyOaRApPABeZfMyZXbIiAFyRP1bHQA==
+json-schema-migrate@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/json-schema-migrate/-/json-schema-migrate-1.1.0.tgz#3e886c38a8efdc9fd3c831d450595c5ab7a36b17"
+  integrity sha512-PggRuqHB+k1OMz0N1vXCMmwwr8cAsKWVOG5jZh1I2xSyePpRoBG6xOlWG50qe2Ca3hxfWWqZHLEYqJw2/4765g==
   dependencies:
     ajv "^7.0.0-beta.9"
 
