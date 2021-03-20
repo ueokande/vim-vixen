@@ -15,13 +15,13 @@ export default class Page {
   private constructor(private webdriver: WebDriver) {}
 
   static async currentContext(webdriver: WebDriver): Promise<Page> {
-    await Page.waitForConsoleLoaded(webdriver);
+    await Page.waitForPageCompleted(webdriver);
     return new Page(webdriver);
   }
 
   static async navigateTo(webdriver: WebDriver, url: string): Promise<Page> {
     await webdriver.navigate().to(url);
-    await Page.waitForConsoleLoaded(webdriver);
+    await Page.waitForPageCompleted(webdriver);
     return new Page(webdriver);
   }
 
@@ -34,17 +34,20 @@ export default class Page {
 
   async navigateTo(url: string): Promise<Page> {
     await this.webdriver.navigate().to(url);
-    await Page.waitForConsoleLoaded(this.webdriver);
+    await Page.waitForPageCompleted(this.webdriver);
     return new Page(this.webdriver);
   }
 
   async showConsole(): Promise<Console> {
-    const iframe = this.webdriver.findElement(
-      By.css("#vimvixen-console-frame")
-    );
+    await this.webdriver.switchTo().frame(0);
+    await Page.waitForDocumentCompleted(this.webdriver);
+    await this.webdriver.switchTo().parentFrame();
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     await this.sendKeys(":");
+    const iframe = this.webdriver.findElement(By.id("vimvixen-console-frame"));
     await this.webdriver.wait(until.elementIsVisible(iframe));
+
     await this.webdriver.switchTo().frame(0);
     await this.webdriver.wait(until.elementLocated(By.css("input")));
     return new Console(this.webdriver);
@@ -113,14 +116,19 @@ export default class Page {
     return hints;
   }
 
-  private static async waitForConsoleLoaded(webdriver: WebDriver) {
+  private static async waitForPageCompleted(webdriver: WebDriver) {
     const topFrame = await webdriver.executeScript(() => window.top === window);
     if (!topFrame) {
       return;
     }
+    return this.waitForDocumentCompleted(webdriver);
+  }
+
+  private static async waitForDocumentCompleted(webdriver: WebDriver) {
     await webdriver.wait(
-      until.elementLocated(By.css("iframe.vimvixen-console-frame"))
+      async () =>
+        (await webdriver.executeScript("return document.readyState")) ===
+        "complete"
     );
-    await new Promise((resolve) => setTimeout(resolve, 100));
   }
 }
