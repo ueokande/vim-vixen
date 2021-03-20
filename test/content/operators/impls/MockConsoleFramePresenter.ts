@@ -19,4 +19,8 @@ export default class MockConsoleFramePresenter
   resize(_width: number, _height: number): void {
     throw new Error("not implemented");
   }
+
+  isTopWindow(): boolean {
+    return true;
+  }
 }

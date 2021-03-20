@@ -34,10 +34,12 @@ export default class AddonEnabledUseCase {
   private async setEnabled(on: boolean): Promise<void> {
     this.repository.set(on);
 
-    if (on) {
-      this.consoleFramePresenter.attach();
-    } else {
-      this.consoleFramePresenter.detach();
+    if (this.consoleFramePresenter.isTopWindow()) {
+      if (on) {
+        this.consoleFramePresenter.attach();
+      } else {
+        this.consoleFramePresenter.detach();
+      }
     }
     await this.indicator.setEnabled(on);
   }

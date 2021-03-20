@@ -6,6 +6,8 @@ export default interface ConsoleFramePresenter {
   blur(): void;
 
   resize(width: number, height: number): void;
+
+  isTopWindow(): boolean;
 }
 
 export class ConsoleFramePresenterImpl implements ConsoleFramePresenter {
@@ -46,5 +48,9 @@ export class ConsoleFramePresenterImpl implements ConsoleFramePresenter {
       return;
     }
     ele.style.height = `${height}px`;
+  }
+
+  isTopWindow(): boolean {
+    return window.top === window;
   }
 }
