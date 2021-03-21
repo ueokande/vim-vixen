@@ -35,20 +35,18 @@ export default class Page {
   async navigateTo(url: string): Promise<Page> {
     await this.webdriver.navigate().to(url);
     await Page.waitForPageCompleted(this.webdriver);
+
+    await new Promise((resolve) => setTimeout(resolve, 200));
+
     return new Page(this.webdriver);
   }
 
   async showConsole(): Promise<Console> {
-    await this.webdriver.switchTo().frame(0);
-    await Page.waitForDocumentCompleted(this.webdriver);
-    await this.webdriver.switchTo().parentFrame();
-    await new Promise((resolve) => setTimeout(resolve, 100));
-
     await this.sendKeys(":");
     const iframe = this.webdriver.findElement(By.id("vimvixen-console-frame"));
     await this.webdriver.wait(until.elementIsVisible(iframe));
 
-    await this.webdriver.switchTo().frame(0);
+    await this.webdriver.switchTo().frame(iframe);
     await this.webdriver.wait(until.elementLocated(By.css("input")));
     return new Console(this.webdriver);
   }
@@ -57,9 +55,8 @@ export default class Page {
     const iframe = this.webdriver.findElement(
       By.css("#vimvixen-console-frame")
     );
-
     await this.webdriver.wait(until.elementIsVisible(iframe));
-    await this.webdriver.switchTo().frame(0);
+    await this.webdriver.switchTo().frame(iframe);
     return new Console(this.webdriver);
   }
 
@@ -116,12 +113,19 @@ export default class Page {
     return hints;
   }
 
-  private static async waitForPageCompleted(webdriver: WebDriver) {
+  private static async waitForPageCompleted(
+    webdriver: WebDriver
+  ): Promise<void> {
+    this.waitForDocumentCompleted(webdriver);
+
     const topFrame = await webdriver.executeScript(() => window.top === window);
     if (!topFrame) {
       return;
     }
-    return this.waitForDocumentCompleted(webdriver);
+    await webdriver.wait(until.elementLocated(By.id("vimvixen-console-frame")));
+    await webdriver.switchTo().frame(0);
+    await Page.waitForDocumentCompleted(webdriver);
+    await webdriver.switchTo().parentFrame();
   }
 
   private static async waitForDocumentCompleted(webdriver: WebDriver) {
