@@ -122,8 +122,17 @@ export default class Page {
     if (!topFrame) {
       return;
     }
-    await webdriver.wait(until.elementLocated(By.id("vimvixen-console-frame")));
-    await webdriver.switchTo().frame(0);
+    // style tag is injected at end of add-on loading
+    await webdriver.wait(until.elementLocated(By.tagName("style")));
+
+    const iframe = await webdriver.findElements(
+      By.id("vimvixen-console-frame")
+    );
+    if (iframe.length === 0) {
+      return;
+    }
+
+    await webdriver.switchTo().frame(iframe[0]);
     await Page.waitForDocumentCompleted(webdriver);
     await webdriver.switchTo().parentFrame();
   }

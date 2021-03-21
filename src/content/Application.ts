@@ -36,12 +36,12 @@ export default class Application {
     private navigateController: NavigateController
   ) {}
 
-  run() {
-    this.routeCommonComponents();
+  init(): Promise<void> {
     this.routeFocusEvents();
     if (window.self === window.top) {
       this.routeMasterComponents();
     }
+    return this.routeCommonComponents();
   }
 
   private routeMasterComponents() {
@@ -76,7 +76,7 @@ export default class Application {
     });
   }
 
-  private routeCommonComponents() {
+  private routeCommonComponents(): Promise<void> {
     this.messageListener.onWebMessage((msg: Message) => {
       switch (msg.type) {
         case messages.FOLLOW_REQUEST_COUNT_TARGETS:
@@ -117,7 +117,7 @@ export default class Application {
     inputDriver.onKey((key) => this.markKeyController.press(key));
     inputDriver.onKey((key) => this.keymapController.press(key));
 
-    this.settingController.initSettings();
+    return this.settingController.initSettings();
   }
 
   private routeFocusEvents() {

@@ -7,12 +7,14 @@ import { container } from "tsyringe";
 import "./di";
 
 const initDom = () => {
-  try {
-    const app = container.resolve(Application);
-    app.run();
-  } catch (e) {
-    console.error(e);
-  }
+  (async () => {
+    try {
+      const app = container.resolve(Application);
+      await app.init();
+    } catch (e) {
+      console.error(e);
+    }
+  })();
 
   const style = window.document.createElement("style");
   style.textContent = consoleFrameStyle;
