@@ -2,18 +2,21 @@ import { expect } from "chai";
 import EnableAddonOperator from "../../../../src/content/operators/impls/EnableAddonOperator";
 import MockAddonIndicatorClient from "../../mock/MockAddonIndicatorClient";
 import MockAddonEnabledRepository from "../../mock/MockAddonEnabledRepository";
+import MockConsoleFramePresenter from "./MockConsoleFramePresenter";
 
 describe("EnableAddonOperator", () => {
   describe("#run", () => {
     it("enabled addon", async () => {
       const client = new MockAddonIndicatorClient(false);
       const repository = new MockAddonEnabledRepository(false);
-      const sut = new EnableAddonOperator(client, repository);
+      const presenter = new MockConsoleFramePresenter(false);
+      const sut = new EnableAddonOperator(client, repository, presenter);
 
       await sut.run();
 
       expect(client.enabled).to.be.true;
       expect(repository.enabled).to.be.true;
+      expect(presenter.attached).to.be.true;
     });
   });
 });

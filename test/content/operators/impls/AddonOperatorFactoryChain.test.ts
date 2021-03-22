@@ -6,13 +6,15 @@ import * as operations from "../../../../src/shared/operations";
 import { expect } from "chai";
 import MockAddonIndicatorClient from "../../mock/MockAddonIndicatorClient";
 import MockAddonEnabledRepository from "../../mock/MockAddonEnabledRepository";
+import MockConsoleFramePresenter from "./MockConsoleFramePresenter";
 
 describe("AddonOperatorFactoryChain", () => {
   describe("#create", () => {
     it("returns an operator", () => {
       const sut = new AddonOperatorFactoryChain(
         new MockAddonIndicatorClient(),
-        new MockAddonEnabledRepository()
+        new MockAddonEnabledRepository(),
+        new MockConsoleFramePresenter(false)
       );
       expect(sut.create({ type: operations.ADDON_ENABLE }, 0)).to.be.instanceOf(
         EnableAddonOperator

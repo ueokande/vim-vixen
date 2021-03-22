@@ -2,6 +2,7 @@ import AddonEnabledRepository from "../../../src/content/repositories/AddonEnabl
 import AddonEnabledUseCase from "../../../src/content/usecases/AddonEnabledUseCase";
 import AddonIndicatorClient from "../../../src/content/client/AddonIndicatorClient";
 import { expect } from "chai";
+import MockConsoleFramePresenter from "../operators/impls/MockConsoleFramePresenter";
 
 class MockAddonEnabledRepository implements AddonEnabledRepository {
   private enabled: boolean;
@@ -35,12 +36,14 @@ class MockAddonIndicatorClient implements AddonIndicatorClient {
 describe("AddonEnabledUseCase", () => {
   let repository: MockAddonEnabledRepository;
   let indicator: MockAddonIndicatorClient;
+  let presenter: MockConsoleFramePresenter;
   let sut: AddonEnabledUseCase;
 
   beforeEach(() => {
-    repository = new MockAddonEnabledRepository(true);
+    repository = new MockAddonEnabledRepository(false);
     indicator = new MockAddonIndicatorClient(false);
-    sut = new AddonEnabledUseCase(indicator, repository);
+    presenter = new MockConsoleFramePresenter(false);
+    sut = new AddonEnabledUseCase(indicator, repository, presenter);
   });
 
   describe("#enable", () => {
@@ -49,6 +52,7 @@ describe("AddonEnabledUseCase", () => {
 
       expect(repository.get()).to.be.true;
       expect(indicator.enabled).to.be.true;
+      expect(presenter.attached).to.be.true;
     });
   });
 
@@ -58,6 +62,7 @@ describe("AddonEnabledUseCase", () => {
 
       expect(repository.get()).to.be.false;
       expect(indicator.enabled).to.be.false;
+      expect(presenter.attached).to.be.false;
     });
   });
 
@@ -68,6 +73,7 @@ describe("AddonEnabledUseCase", () => {
 
       expect(repository.get()).to.be.false;
       expect(indicator.enabled).to.be.false;
+      expect(presenter.attached).to.be.false;
 
       repository.set(false);
 
@@ -75,6 +81,7 @@ describe("AddonEnabledUseCase", () => {
 
       expect(repository.get()).to.be.true;
       expect(indicator.enabled).to.be.true;
+      expect(presenter.attached).to.be.true;
     });
   });
 

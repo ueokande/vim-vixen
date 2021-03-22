@@ -15,13 +15,13 @@ export default class Page {
   private constructor(private webdriver: WebDriver) {}
 
   static async currentContext(webdriver: WebDriver): Promise<Page> {
-    await Page.waitForConsoleLoaded(webdriver);
+    await Page.waitForPageCompleted(webdriver);
     return new Page(webdriver);
   }
 
   static async navigateTo(webdriver: WebDriver, url: string): Promise<Page> {
     await webdriver.navigate().to(url);
-    await Page.waitForConsoleLoaded(webdriver);
+    await Page.waitForPageCompleted(webdriver);
     return new Page(webdriver);
   }
 
@@ -34,18 +34,19 @@ export default class Page {
 
   async navigateTo(url: string): Promise<Page> {
     await this.webdriver.navigate().to(url);
-    await Page.waitForConsoleLoaded(this.webdriver);
+    await Page.waitForPageCompleted(this.webdriver);
+
+    await new Promise((resolve) => setTimeout(resolve, 200));
+
     return new Page(this.webdriver);
   }
 
   async showConsole(): Promise<Console> {
-    const iframe = this.webdriver.findElement(
-      By.css("#vimvixen-console-frame")
-    );
-
     await this.sendKeys(":");
+    const iframe = this.webdriver.findElement(By.id("vimvixen-console-frame"));
     await this.webdriver.wait(until.elementIsVisible(iframe));
-    await this.webdriver.switchTo().frame(0);
+
+    await this.webdriver.switchTo().frame(iframe);
     await this.webdriver.wait(until.elementLocated(By.css("input")));
     return new Console(this.webdriver);
   }
@@ -54,9 +55,8 @@ export default class Page {
     const iframe = this.webdriver.findElement(
       By.css("#vimvixen-console-frame")
     );
-
     await this.webdriver.wait(until.elementIsVisible(iframe));
-    await this.webdriver.switchTo().frame(0);
+    await this.webdriver.switchTo().frame(iframe);
     return new Console(this.webdriver);
   }
 
@@ -113,14 +113,35 @@ export default class Page {
     return hints;
   }
 
-  private static async waitForConsoleLoaded(webdriver: WebDriver) {
+  private static async waitForPageCompleted(
+    webdriver: WebDriver
+  ): Promise<void> {
+    this.waitForDocumentCompleted(webdriver);
+
     const topFrame = await webdriver.executeScript(() => window.top === window);
     if (!topFrame) {
       return;
     }
-    await webdriver.wait(
-      until.elementLocated(By.css("iframe.vimvixen-console-frame"))
+    // style tag is injected at end of add-on loading
+    await webdriver.wait(until.elementLocated(By.tagName("style")));
+
+    const iframe = await webdriver.findElements(
+      By.id("vimvixen-console-frame")
     );
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    if (iframe.length === 0) {
+      return;
+    }
+
+    await webdriver.switchTo().frame(iframe[0]);
+    await Page.waitForDocumentCompleted(webdriver);
+    await webdriver.switchTo().parentFrame();
+  }
+
+  private static async waitForDocumentCompleted(webdriver: WebDriver) {
+    await webdriver.wait(
+      async () =>
+        (await webdriver.executeScript("return document.readyState")) ===
+        "complete"
+    );
   }
 }

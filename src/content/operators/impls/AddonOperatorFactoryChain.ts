@@ -7,6 +7,7 @@ import Operator from "../Operator";
 import EnableAddonOperator from "./EnableAddonOperator";
 import DisableAddonOperator from "./DisableAddonOperator";
 import ToggleAddonOperator from "./ToggleAddonOperator";
+import ConsoleFramePresenter from "../../presenters/ConsoleFramePresenter";
 
 @injectable()
 export default class AddonOperatorFactoryChain implements OperatorFactoryChain {
@@ -14,7 +15,9 @@ export default class AddonOperatorFactoryChain implements OperatorFactoryChain {
     @inject("AddonIndicatorClient")
     private readonly addonIndicatorClient: AddonIndicatorClient,
     @inject("AddonEnabledRepository")
-    private readonly addonEnabledRepository: AddonEnabledRepository
+    private readonly addonEnabledRepository: AddonEnabledRepository,
+    @inject("ConsoleFramePresenter")
+    private readonly consoleFramePresenter: ConsoleFramePresenter
   ) {}
 
   create(op: operations.Operation, _repeat: number): Operator | null {
@@ -22,17 +25,20 @@ export default class AddonOperatorFactoryChain implements OperatorFactoryChain {
       case operations.ADDON_ENABLE:
         return new EnableAddonOperator(
           this.addonIndicatorClient,
-          this.addonEnabledRepository
+          this.addonEnabledRepository,
+          this.consoleFramePresenter
         );
       case operations.ADDON_DISABLE:
         return new DisableAddonOperator(
           this.addonIndicatorClient,
-          this.addonEnabledRepository
+          this.addonEnabledRepository,
+          this.consoleFramePresenter
         );
       case operations.ADDON_TOGGLE_ENABLED:
         return new ToggleAddonOperator(
           this.addonIndicatorClient,
-          this.addonEnabledRepository
+          this.addonEnabledRepository,
+          this.consoleFramePresenter
         );
     }
     return null;
