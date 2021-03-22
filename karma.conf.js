@@ -1,10 +1,12 @@
+const path = require('path');
+
 module.exports = function (config) {
 
   var webpackConfig = require('./webpack.config.js');
 
   config.set({
     basePath: '',
-    frameworks: ['mocha', 'sinon'],
+    frameworks: ['mocha'],
     files: [
       'test/main.ts',
       'test/**/*.test.ts',
@@ -29,7 +31,16 @@ module.exports = function (config) {
     webpack: {
       mode: 'development',
       devtool: 'inline-source-map',
-      resolve: webpackConfig.resolve,
+      resolve: {
+        alias: {
+          sinon: path.resolve(__dirname, 'node_modules/sinon/pkg/sinon.js'),
+        },
+        fallback: {
+          // for webextensions-api-fake
+          "url": false,
+        },
+        ...webpackConfig.resolve,
+      },
       module: webpackConfig.module
     },
 
