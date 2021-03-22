@@ -57,7 +57,6 @@
     "karma-html2js-preprocessor": "^1.1.0",
     "karma-mocha": "^2.0.1",
     "karma-mocha-reporter": "^2.2.5",
-    "karma-sinon": "^1.0.5",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^5.0.0",
     "lanthan": "0.0.2",

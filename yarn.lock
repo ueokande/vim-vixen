@@ -2750,11 +2750,6 @@ karma-mocha@^2.0.1:
   dependencies:
     minimist "^1.2.3"
 
-karma-sinon@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/karma-sinon/-/karma-sinon-1.0.5.tgz#4e3443f2830fdecff624d3747163f1217daa2a9a"
-  integrity sha1-TjRD8oMP3s/2JNN0cWPxIX2qKpo=
-
 karma-sourcemap-loader@^0.3.7:
   version "0.3.8"
   resolved "https://registry.yarnpkg.com/karma-sourcemap-loader/-/karma-sourcemap-loader-0.3.8.tgz#d4bae72fb7a8397328a62b75013d2df937bdcf9c"
