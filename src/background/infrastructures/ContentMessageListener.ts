@@ -81,7 +81,11 @@ export default class ContentMessageListener {
       case messages.CONSOLE_ENTER_COMMAND:
         return this.onConsoleEnterCommand(message.text);
       case messages.CONSOLE_RESIZE:
-        return this.onConsoleResize(message.width, message.height);
+        return this.onConsoleResize(
+          senderTab.id!,
+          message.width,
+          message.height
+        );
       case messages.SETTINGS_QUERY:
         return this.onSettingsQuery();
       case messages.FIND_GET_KEYWORD:
@@ -116,8 +120,12 @@ export default class ContentMessageListener {
     return this.commandController.exec(text);
   }
 
-  onConsoleResize(width: number, height: number): Promise<void> {
-    return this.consoleController.resize(width, height);
+  onConsoleResize(
+    senderTabId: number,
+    width: number,
+    height: number
+  ): Promise<void> {
+    return this.consoleController.resize(senderTabId, width, height);
   }
 
   async onSettingsQuery(): Promise<unknown> {
