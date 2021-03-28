@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import ConsoleFrameClient from "./ConsoleFrameClient";
+import ConsoleFrameClient from "../clients/ConsoleFrameClient";
 import TabPresenter from "../presenters/TabPresenter";
 
 @injectable()

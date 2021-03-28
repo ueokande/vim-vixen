@@ -1,5 +1,5 @@
 import { injectable } from "tsyringe";
-import ConsoleUseCase from "./ConsoleUseCase";
+import ConsoleUseCase from "../usecases/ConsoleUseCase";
 
 @injectable()
 export default class ConsoleController {

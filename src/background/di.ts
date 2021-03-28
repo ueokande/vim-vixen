@@ -18,7 +18,7 @@ import { BrowserSettingRepositoryImpl } from "./repositories/BrowserSettingRepos
 import { RepeatRepositoryImpl } from "./repositories/RepeatRepository";
 import { ZoomPresenterImpl } from "./presenters/ZoomPresenter";
 import { WindowPresenterImpl } from "./presenters/WindowPresenter";
-import { ConsoleFrameClientImpl } from "./controllers/ConsoleFrameClient";
+import { ConsoleFrameClientImpl } from "./clients/ConsoleFrameClient";
 
 container.register("LocalSettingRepository", {
   useClass: LocalSettingRepository,
