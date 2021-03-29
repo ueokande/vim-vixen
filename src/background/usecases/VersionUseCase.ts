@@ -19,7 +19,7 @@ export default class VersionUseCase {
 
   releaseNoteUrl(version?: string): string {
     if (version) {
-      return `https://github.com/ueokande/vim-vixen/releases/tag/${version}`;
+      return `https://github.com/ueokande/vim-vixen/releases/tag/v${version}`;
     }
     return "https://github.com/ueokande/vim-vixen/releases/";
   }
