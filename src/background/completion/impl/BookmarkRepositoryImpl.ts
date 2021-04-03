@@ -1,21 +1,9 @@
 import BookmarkRepository, { BookmarkItem } from "../BookmarkRepository";
-import { HistoryItem } from "../HistoryRepository";
-import PrefetchAndCache from "./PrefetchAndCache";
 
 const COMPLETION_ITEM_LIMIT = 10;
 
 export default class CachedBookmarkRepository implements BookmarkRepository {
-  private bookmarkCache: PrefetchAndCache<BookmarkItem>;
-
-  constructor() {
-    this.bookmarkCache = new PrefetchAndCache(this.getter, this.filter, 10);
-  }
-
-  queryBookmarks(query: string): Promise<BookmarkItem[]> {
-    return this.bookmarkCache.get(query);
-  }
-
-  private async getter(query: string): Promise<BookmarkItem[]> {
+  async queryBookmarks(query: string): Promise<BookmarkItem[]> {
     const items = await browser.bookmarks.search({ query });
     return items
       .filter((item) => item.title && item.title.length > 0)
@@ -34,16 +22,5 @@ export default class CachedBookmarkRepository implements BookmarkRepository {
         title: item.title!,
         url: item.url!,
       }));
-  }
-
-  private filter(items: HistoryItem[], query: string) {
-    return items.filter((item) => {
-      return query.split(" ").every((keyword) => {
-        return (
-          item.title.toLowerCase().includes(keyword.toLowerCase()) ||
-          item.url!.includes(keyword)
-        );
-      });
-    });
   }
 }
