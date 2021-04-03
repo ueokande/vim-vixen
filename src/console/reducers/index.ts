@@ -11,7 +11,6 @@ export interface State {
   completionSource: string;
   completions: Completions;
   select: number;
-  viewIndex: number;
   colorscheme: ColorScheme;
 }
 
@@ -23,7 +22,6 @@ const defaultState = {
   completionSource: "",
   completions: [],
   select: -1,
-  viewIndex: 0,
   colorscheme: ColorScheme.System,
 };
 

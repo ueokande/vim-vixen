@@ -28,15 +28,11 @@ interface DispatchProps {
 type Props = StateProps & DispatchProps;
 
 class Console extends React.Component<Props> {
-  private input: React.RefObject<Input>;
-
   private commandLineParser: CommandLineParser = new CommandLineParser();
   private consoleFrameClient = new ConsoleFrameClient();
 
   constructor(props: Props) {
     super(props);
-
-    this.input = React.createRef();
   }
 
   onBlur() {
@@ -167,7 +163,6 @@ class Console extends React.Component<Props> {
                 select={this.props.select}
               />
               <Input
-                ref={this.input}
                 mode={this.props.mode}
                 onBlur={this.onBlur.bind(this)}
                 onKeyDown={this.onKeyDown.bind(this)}
@@ -195,9 +190,6 @@ class Console extends React.Component<Props> {
     this.props.dispatch(consoleActions.setColorScheme());
 
     window.focus();
-    if (this.input.current) {
-      this.input.current.focus();
-    }
   }
 
   private updateCompletions(text: string) {

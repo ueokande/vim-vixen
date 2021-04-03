@@ -26,42 +26,32 @@ interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-class Input extends React.Component<Props> {
-  private input: React.RefObject<HTMLInputElement>;
+const Input: React.FC<Props> = (props) => {
+  const input = React.useRef<HTMLInputElement>(null);
 
-  constructor(props: Props) {
-    super(props);
+  React.useEffect(() => {
+    input?.current?.focus();
+  }, []);
 
-    this.input = React.createRef();
+  let prompt = "";
+  if (props.mode === "command") {
+    prompt = ":";
+  } else if (props.mode === "find") {
+    prompt = "/";
   }
 
-  focus() {
-    if (this.input.current) {
-      this.input.current.focus();
-    }
-  }
-
-  render() {
-    let prompt = "";
-    if (this.props.mode === "command") {
-      prompt = ":";
-    } else if (this.props.mode === "find") {
-      prompt = "/";
-    }
-
-    return (
-      <Container>
-        <Prompt>{prompt}</Prompt>
-        <InputInner
-          ref={this.input}
-          onBlur={this.props.onBlur}
-          onKeyDown={this.props.onKeyDown}
-          onChange={this.props.onChange}
-          value={this.props.value}
-        />
-      </Container>
-    );
-  }
-}
+  return (
+    <Container>
+      <Prompt>{prompt}</Prompt>
+      <InputInner
+        ref={input}
+        onBlur={props.onBlur}
+        onKeyDown={props.onKeyDown}
+        onChange={props.onChange}
+        value={props.value}
+      />
+    </Container>
+  );
+};
 
 export default Input;
