@@ -1,5 +1,6 @@
 import React from "react";
-import * as consoleActions from "../../console/actions/console";
+import * as consoleActions from "../actions/console";
+import * as completionActions from "../actions/completion";
 import AppContext from "./AppContext";
 import CommandLineParser, {
   InputPhase,
@@ -9,6 +10,8 @@ import ConsoleFrameClient from "../clients/ConsoleFrameClient";
 import Input from "./console//Input";
 import { Command } from "../../shared/Command";
 import styled from "styled-components";
+import reducer, { defaultState, completedText } from "../reducers/completion";
+import CompletionType from "../../shared/CompletionType";
 
 const COMPLETION_MAX_ITEMS = 33;
 
@@ -18,13 +21,15 @@ const ConsoleWrapper = styled.div`
 
 const CommandPrompt: React.FC = () => {
   const { state, dispatch } = React.useContext(AppContext);
+  const [completionState, completionDispatch] = React.useReducer(
+    reducer,
+    defaultState
+  );
   const commandLineParser = new CommandLineParser();
   const consoleFrameClient = new ConsoleFrameClient();
 
   const onBlur = () => {
-    if (state.mode === "command" || state.mode === "find") {
-      dispatch(consoleActions.hideCommand());
-    }
+    dispatch(consoleActions.hideCommand());
   };
 
   const doEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -32,21 +37,17 @@ const CommandPrompt: React.FC = () => {
     e.preventDefault();
 
     const value = (e.target as HTMLInputElement).value;
-    if (state.mode === "command") {
-      dispatch(consoleActions.enterCommand(value));
-    } else if (state.mode === "find") {
-      dispatch(consoleActions.enterFind(value === "" ? undefined : value));
-    }
+    dispatch(consoleActions.enterCommand(value));
   };
 
   const selectNext = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    dispatch(consoleActions.completionNext());
+    completionDispatch(completionActions.completionNext());
     e.stopPropagation();
     e.preventDefault();
   };
 
   const selectPrev = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    dispatch(consoleActions.completionPrev());
+    completionDispatch(completionActions.completionPrev());
     e.stopPropagation();
     e.preventDefault();
   };
@@ -61,9 +62,9 @@ const CommandPrompt: React.FC = () => {
         break;
       case "Tab":
         if (e.shiftKey) {
-          dispatch(consoleActions.completionPrev());
+          completionDispatch(completionActions.completionPrev());
         } else {
-          dispatch(consoleActions.completionNext());
+          completionDispatch(completionActions.completionNext());
         }
         e.stopPropagation();
         e.preventDefault();
@@ -101,79 +102,113 @@ const CommandPrompt: React.FC = () => {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
     dispatch(consoleActions.setConsoleText(text));
-    updateCompletions(text);
+    const action = getCompletionAction(text);
+    Promise.resolve(action).then((a) => {
+      if (a) {
+        completionDispatch(a);
+
+        const {
+          scrollWidth: width,
+          scrollHeight: height,
+        } = document.getElementById("vimvixen-console")!;
+        consoleFrameClient.resize(width, height);
+      }
+    });
   };
 
   React.useEffect(() => {
-    updateCompletions(state.consoleText);
+    completionActions.startCompletion().then((action) => {
+      completionDispatch(action);
+
+      const completionAction = getCompletionAction(
+        state.consoleText,
+        action.completionTypes
+      );
+      Promise.resolve(completionAction).then((a) => {
+        if (a) {
+          completionDispatch(a);
+
+          const {
+            scrollWidth: width,
+            scrollHeight: height,
+          } = document.getElementById("vimvixen-console")!;
+          consoleFrameClient.resize(width, height);
+        }
+      });
+    });
   }, []);
 
-  React.useEffect(() => {
-    const {
-      scrollWidth: width,
-      scrollHeight: height,
-    } = document.getElementById("vimvixen-console")!;
-    consoleFrameClient.resize(width, height);
-  });
-
-  const updateCompletions = (text: string) => {
+  const getCompletionAction = (
+    text: string,
+    completionTypes: CompletionType[] | undefined = undefined
+  ) => {
+    const types = completionTypes || completionState.completionTypes;
     const phase = commandLineParser.inputPhase(text);
     if (phase === InputPhase.OnCommand) {
-      dispatch(consoleActions.getCommandCompletions(text));
+      return completionActions.getCommandCompletions(text);
     } else {
       const cmd = commandLineParser.parse(text);
       switch (cmd.command) {
         case Command.Open:
         case Command.TabOpen:
         case Command.WindowOpen:
-          dispatch(
-            consoleActions.getOpenCompletions(
-              state.completionTypes,
-              text,
-              cmd.command,
-              cmd.args
-            )
+          return completionActions.getOpenCompletions(
+            types,
+            text,
+            cmd.command,
+            cmd.args
           );
-          break;
         case Command.Buffer:
-          dispatch(
-            consoleActions.getTabCompletions(text, cmd.command, cmd.args, false)
+          return completionActions.getTabCompletions(
+            text,
+            cmd.command,
+            cmd.args,
+            false
           );
-          break;
         case Command.BufferDelete:
         case Command.BuffersDelete:
-          dispatch(
-            consoleActions.getTabCompletions(text, cmd.command, cmd.args, true)
+          return completionActions.getTabCompletions(
+            text,
+            cmd.command,
+            cmd.args,
+            true
           );
-          break;
         case Command.BufferDeleteForce:
         case Command.BuffersDeleteForce:
-          dispatch(
-            consoleActions.getTabCompletions(text, cmd.command, cmd.args, false)
+          return completionActions.getTabCompletions(
+            text,
+            cmd.command,
+            cmd.args,
+            false
           );
-          break;
         case Command.Set:
-          dispatch(
-            consoleActions.getPropertyCompletions(text, cmd.command, cmd.args)
+          return completionActions.getPropertyCompletions(
+            text,
+            cmd.command,
+            cmd.args
           );
-          break;
       }
     }
+    return undefined;
   };
 
   return (
     <ConsoleWrapper>
       <Completion
         size={COMPLETION_MAX_ITEMS}
-        completions={state.completions}
-        select={state.select}
+        completions={completionState.completions}
+        select={completionState.select}
       />
       <Input
         prompt={":"}
         onBlur={onBlur}
         onKeyDown={onKeyDown}
         onChange={onChange}
-        value={state.consoleText}
+        value={
+          completionState.select < 0
+            ? state.consoleText
+            : completedText(completionState)
+        }
       />
     </ConsoleWrapper>
   );
