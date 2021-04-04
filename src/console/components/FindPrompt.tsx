@@ -42,8 +42,6 @@ const FindPrompt: React.FC = () => {
   };
 
   React.useEffect(() => {
-    window.focus();
-
     const {
       scrollWidth: width,
       scrollHeight: height,
