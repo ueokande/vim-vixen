@@ -7,10 +7,7 @@ import CommandLineParser, {
   InputPhase,
 } from "../commandline/CommandLineParser";
 import { Command } from "../../shared/Command";
-import ColorScheme from "../../shared/ColorScheme";
-import { LightTheme, DarkTheme } from "./Theme";
-import styled from "./Theme";
-import { ThemeProvider } from "styled-components";
+import ColorSchemeProvider, { styled } from "./ColorSchemeProvider";
 import ConsoleFrameClient from "../clients/ConsoleFrameClient";
 import AppContext from "./AppContext";
 
@@ -180,25 +177,11 @@ const Console: React.FC = () => {
     }
   };
 
-  let theme = state.colorscheme;
-  if (state.colorscheme === ColorScheme.System) {
-    if (
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-    ) {
-      theme = ColorScheme.Dark;
-    } else {
-      theme = ColorScheme.Light;
-    }
-  }
-
   switch (state.mode) {
     case "command":
     case "find":
       return (
-        <ThemeProvider
-          theme={theme === ColorScheme.Dark ? DarkTheme : LightTheme}
-        >
+        <ColorSchemeProvider colorscheme={state.colorscheme}>
           <ConsoleWrapper>
             <Completion
               size={COMPLETION_MAX_ITEMS}
@@ -213,16 +196,14 @@ const Console: React.FC = () => {
               value={state.consoleText}
             />
           </ConsoleWrapper>
-        </ThemeProvider>
+        </ColorSchemeProvider>
       );
     case "info":
     case "error":
       return (
-        <ThemeProvider
-          theme={theme === ColorScheme.Dark ? DarkTheme : LightTheme}
-        >
+        <ColorSchemeProvider colorscheme={state.colorscheme}>
           <Message mode={state.mode}>{state.messageText}</Message>
-        </ThemeProvider>
+        </ColorSchemeProvider>
       );
     default:
       return null;

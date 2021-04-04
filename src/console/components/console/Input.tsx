@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "../Theme";
+import { styled } from "../ColorSchemeProvider";
 
 const Container = styled.div`
   background-color: ${({ theme }) => theme.commandBackground};
