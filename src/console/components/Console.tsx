@@ -1,6 +1,7 @@
 import React from "react";
 import Input from "./console/Input";
 import Completion from "./console/Completion";
+import FindPrompt from "./FindPrompt";
 import InfoMessage from "./InfoMessage";
 import ErrorMessage from "./ErrorMessage";
 import * as consoleActions from "../../console/actions/console";
@@ -178,11 +179,10 @@ const Console: React.FC = () => {
     }
   };
 
-  switch (state.mode) {
-    case "command":
-    case "find":
-      return (
-        <ColorSchemeProvider colorscheme={state.colorscheme}>
+  const ele = (() => {
+    switch (state.mode) {
+      case "command":
+        return (
           <ConsoleWrapper>
             <Completion
               size={COMPLETION_MAX_ITEMS}
@@ -190,30 +190,30 @@ const Console: React.FC = () => {
               select={state.select}
             />
             <Input
-              mode={state.mode}
+              prompt={":"}
               onBlur={onBlur}
               onKeyDown={onKeyDown}
               onChange={onChange}
               value={state.consoleText}
             />
           </ConsoleWrapper>
-        </ColorSchemeProvider>
-      );
-    case "info":
-      return (
-        <ColorSchemeProvider colorscheme={state.colorscheme}>
-          <InfoMessage>{state.messageText}</InfoMessage>
-        </ColorSchemeProvider>
-      );
-    case "error":
-      return (
-        <ColorSchemeProvider colorscheme={state.colorscheme}>
-          <ErrorMessage>{state.messageText}</ErrorMessage>
-        </ColorSchemeProvider>
-      );
-    default:
-      return null;
-  }
+        );
+      case "find":
+        return <FindPrompt />;
+      case "info":
+        return <InfoMessage>{state.messageText}</InfoMessage>;
+      case "error":
+        return <ErrorMessage>{state.messageText}</ErrorMessage>;
+      default:
+        return null;
+    }
+  })();
+
+  return (
+    <ColorSchemeProvider colorscheme={state.colorscheme}>
+      {ele}
+    </ColorSchemeProvider>
+  );
 };
 
 export default Console;

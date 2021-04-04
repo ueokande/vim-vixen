@@ -19,7 +19,7 @@ const InputInner = styled.input`
 `;
 
 interface Props {
-  mode: string;
+  prompt: string;
   value: string;
   onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -33,16 +33,9 @@ const Input: React.FC<Props> = (props) => {
     input?.current?.focus();
   }, []);
 
-  let prompt = "";
-  if (props.mode === "command") {
-    prompt = ":";
-  } else if (props.mode === "find") {
-    prompt = "/";
-  }
-
   return (
     <Container>
-      <Prompt>{prompt}</Prompt>
+      <Prompt>{props.prompt}</Prompt>
       <InputInner
         ref={input}
         onBlur={props.onBlur}
