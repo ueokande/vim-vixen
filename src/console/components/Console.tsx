@@ -1,10 +1,8 @@
-import { connect } from "react-redux";
 import React from "react";
 import Input from "./console/Input";
 import Completion from "./console/Completion";
 import Message from "./console/Message";
 import * as consoleActions from "../../console/actions/console";
-import { State as AppState } from "../reducers";
 import CommandLineParser, {
   InputPhase,
 } from "../commandline/CommandLineParser";
@@ -14,6 +12,7 @@ import { LightTheme, DarkTheme } from "./Theme";
 import styled from "./Theme";
 import { ThemeProvider } from "styled-components";
 import ConsoleFrameClient from "../clients/ConsoleFrameClient";
+import AppContext from "./AppContext";
 
 const ConsoleWrapper = styled.div`
   border-top: 1px solid gray;
@@ -21,63 +20,54 @@ const ConsoleWrapper = styled.div`
 
 const COMPLETION_MAX_ITEMS = 33;
 
-type StateProps = ReturnType<typeof mapStateToProps>;
-interface DispatchProps {
-  dispatch: (action: any) => void;
-}
-type Props = StateProps & DispatchProps;
+const Console: React.FC = () => {
+  const { state, dispatch } = React.useContext(AppContext);
+  const commandLineParser = new CommandLineParser();
+  const consoleFrameClient = new ConsoleFrameClient();
 
-class Console extends React.Component<Props> {
-  private commandLineParser: CommandLineParser = new CommandLineParser();
-  private consoleFrameClient = new ConsoleFrameClient();
-
-  constructor(props: Props) {
-    super(props);
-  }
-
-  onBlur() {
-    if (this.props.mode === "command" || this.props.mode === "find") {
-      return this.props.dispatch(consoleActions.hideCommand());
+  const onBlur = () => {
+    if (state.mode === "command" || state.mode === "find") {
+      dispatch(consoleActions.hideCommand());
     }
-  }
+  };
 
-  doEnter(e: React.KeyboardEvent<HTMLInputElement>) {
+  const doEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     e.stopPropagation();
     e.preventDefault();
 
     const value = (e.target as HTMLInputElement).value;
-    if (this.props.mode === "command") {
-      return this.props.dispatch(consoleActions.enterCommand(value));
-    } else if (this.props.mode === "find") {
-      return this.props.dispatch(
-        consoleActions.enterFind(value === "" ? undefined : value)
-      );
+    if (state.mode === "command") {
+      dispatch(consoleActions.enterCommand(value));
+    } else if (state.mode === "find") {
+      dispatch(consoleActions.enterFind(value === "" ? undefined : value));
     }
-  }
+  };
 
-  selectNext(e: React.KeyboardEvent<HTMLInputElement>) {
-    this.props.dispatch(consoleActions.completionNext());
+  const selectNext = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    dispatch(consoleActions.completionNext());
     e.stopPropagation();
     e.preventDefault();
-  }
+  };
 
-  selectPrev(e: React.KeyboardEvent<HTMLInputElement>) {
-    this.props.dispatch(consoleActions.completionPrev());
+  const selectPrev = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    dispatch(consoleActions.completionPrev());
     e.stopPropagation();
     e.preventDefault();
-  }
+  };
 
-  onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
       case "Escape":
-        return this.props.dispatch(consoleActions.hideCommand());
+        dispatch(consoleActions.hideCommand());
+        break;
       case "Enter":
-        return this.doEnter(e);
+        doEnter(e);
+        break;
       case "Tab":
         if (e.shiftKey) {
-          this.props.dispatch(consoleActions.completionPrev());
+          dispatch(consoleActions.completionPrev());
         } else {
-          this.props.dispatch(consoleActions.completionNext());
+          dispatch(consoleActions.completionNext());
         }
         e.stopPropagation();
         e.preventDefault();
@@ -85,126 +75,79 @@ class Console extends React.Component<Props> {
       case "[":
         if (e.ctrlKey) {
           e.preventDefault();
-          return this.props.dispatch(consoleActions.hideCommand());
+          dispatch(consoleActions.hideCommand());
         }
         break;
       case "c":
         if (e.ctrlKey) {
           e.preventDefault();
-          return this.props.dispatch(consoleActions.hideCommand());
+          dispatch(consoleActions.hideCommand());
         }
         break;
       case "m":
         if (e.ctrlKey) {
-          return this.doEnter(e);
+          doEnter(e);
         }
         break;
       case "n":
         if (e.ctrlKey) {
-          this.selectNext(e);
+          selectNext(e);
         }
         break;
       case "p":
         if (e.ctrlKey) {
-          this.selectPrev(e);
+          selectPrev(e);
         }
         break;
     }
-  }
+  };
 
-  onChange(e: React.ChangeEvent<HTMLInputElement>) {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
-    this.props.dispatch(consoleActions.setConsoleText(text));
-    if (this.props.mode !== "command") {
+    dispatch(consoleActions.setConsoleText(text));
+    if (state.mode !== "command") {
       return;
     }
-    this.updateCompletions(text);
-  }
+    updateCompletions(text);
+  };
 
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.mode !== "command" && this.props.mode === "command") {
-      this.updateCompletions(this.props.consoleText);
-      this.focus();
-    } else if (prevProps.mode !== "find" && this.props.mode === "find") {
-      this.focus();
+  const prevState = React.useRef(state);
+  React.useEffect(() => {
+    if (prevState.current.mode !== "command" && state.mode === "command") {
+      updateCompletions(state.consoleText);
+      focus();
+    } else if (prevState.current.mode !== "find" && state.mode === "find") {
+      focus();
     }
 
     const {
       scrollWidth: width,
       scrollHeight: height,
     } = document.getElementById("vimvixen-console")!;
-    this.consoleFrameClient.resize(width, height);
-  }
+    consoleFrameClient.resize(width, height);
 
-  render() {
-    let theme = this.props.colorscheme;
-    if (this.props.colorscheme === ColorScheme.System) {
-      if (
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-      ) {
-        theme = ColorScheme.Dark;
-      } else {
-        theme = ColorScheme.Light;
-      }
-    }
+    prevState.current = state;
+  });
 
-    switch (this.props.mode) {
-      case "command":
-      case "find":
-        return (
-          <ThemeProvider
-            theme={theme === ColorScheme.Dark ? DarkTheme : LightTheme}
-          >
-            <ConsoleWrapper>
-              <Completion
-                size={COMPLETION_MAX_ITEMS}
-                completions={this.props.completions}
-                select={this.props.select}
-              />
-              <Input
-                mode={this.props.mode}
-                onBlur={this.onBlur.bind(this)}
-                onKeyDown={this.onKeyDown.bind(this)}
-                onChange={this.onChange.bind(this)}
-                value={this.props.consoleText}
-              />
-            </ConsoleWrapper>
-          </ThemeProvider>
-        );
-      case "info":
-      case "error":
-        return (
-          <ThemeProvider
-            theme={theme === ColorScheme.Dark ? DarkTheme : LightTheme}
-          >
-            <Message mode={this.props.mode}>{this.props.messageText}</Message>
-          </ThemeProvider>
-        );
-      default:
-        return null;
-    }
-  }
-
-  async focus() {
-    this.props.dispatch(consoleActions.setColorScheme());
+  const focus = () => {
+    dispatch(consoleActions.setColorScheme());
 
     window.focus();
-  }
+  };
 
-  private updateCompletions(text: string) {
-    const phase = this.commandLineParser.inputPhase(text);
+  const updateCompletions = (text: string) => {
+    const phase = commandLineParser.inputPhase(text);
     if (phase === InputPhase.OnCommand) {
-      return this.props.dispatch(consoleActions.getCommandCompletions(text));
+      dispatch(consoleActions.getCommandCompletions(text));
     } else {
-      const cmd = this.commandLineParser.parse(text);
+      const cmd = commandLineParser.parse(text);
       switch (cmd.command) {
         case Command.Open:
         case Command.TabOpen:
         case Command.WindowOpen:
-          this.props.dispatch(
+          dispatch(
             consoleActions.getOpenCompletions(
-              this.props.completionTypes,
+              state.completionTypes,
               text,
               cmd.command,
               cmd.args
@@ -212,32 +155,78 @@ class Console extends React.Component<Props> {
           );
           break;
         case Command.Buffer:
-          this.props.dispatch(
+          dispatch(
             consoleActions.getTabCompletions(text, cmd.command, cmd.args, false)
           );
           break;
         case Command.BufferDelete:
         case Command.BuffersDelete:
-          this.props.dispatch(
+          dispatch(
             consoleActions.getTabCompletions(text, cmd.command, cmd.args, true)
           );
           break;
         case Command.BufferDeleteForce:
         case Command.BuffersDeleteForce:
-          this.props.dispatch(
+          dispatch(
             consoleActions.getTabCompletions(text, cmd.command, cmd.args, false)
           );
           break;
         case Command.Set:
-          this.props.dispatch(
+          dispatch(
             consoleActions.getPropertyCompletions(text, cmd.command, cmd.args)
           );
           break;
       }
     }
+  };
+
+  let theme = state.colorscheme;
+  if (state.colorscheme === ColorScheme.System) {
+    if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      theme = ColorScheme.Dark;
+    } else {
+      theme = ColorScheme.Light;
+    }
   }
-}
 
-const mapStateToProps = (state: AppState) => ({ ...state });
+  switch (state.mode) {
+    case "command":
+    case "find":
+      return (
+        <ThemeProvider
+          theme={theme === ColorScheme.Dark ? DarkTheme : LightTheme}
+        >
+          <ConsoleWrapper>
+            <Completion
+              size={COMPLETION_MAX_ITEMS}
+              completions={state.completions}
+              select={state.select}
+            />
+            <Input
+              mode={state.mode}
+              onBlur={onBlur}
+              onKeyDown={onKeyDown}
+              onChange={onChange}
+              value={state.consoleText}
+            />
+          </ConsoleWrapper>
+        </ThemeProvider>
+      );
+    case "info":
+    case "error":
+      return (
+        <ThemeProvider
+          theme={theme === ColorScheme.Dark ? DarkTheme : LightTheme}
+        >
+          <Message mode={state.mode}>{state.messageText}</Message>
+        </ThemeProvider>
+      );
+    default:
+      return null;
+  }
+};
 
-export default connect(mapStateToProps)(Console);
+export default Console;

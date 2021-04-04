@@ -14,7 +14,7 @@ export interface State {
   colorscheme: ColorScheme;
 }
 
-const defaultState = {
+export const defaultState = {
   mode: "",
   messageText: "",
   consoleText: "",
