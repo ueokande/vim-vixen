@@ -1,9 +1,9 @@
 import React from "react";
 import * as consoleActions from "../../console/actions/console";
-import ConsoleFrameClient from "../clients/ConsoleFrameClient";
 import AppContext from "./AppContext";
 import Input from "./console/Input";
 import styled from "styled-components";
+import useAutoResize from "../hooks/useAutoResize";
 
 const ConsoleWrapper = styled.div`
   border-top: 1px solid gray;
@@ -13,10 +13,11 @@ const FindPrompt: React.FC = () => {
   const { dispatch } = React.useContext(AppContext);
   const [inputValue, setInputValue] = React.useState("");
 
-  const consoleFrameClient = new ConsoleFrameClient();
   const onBlur = () => {
     dispatch(consoleActions.hideCommand());
   };
+
+  useAutoResize();
 
   const doEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     e.stopPropagation();
@@ -40,14 +41,6 @@ const FindPrompt: React.FC = () => {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
-
-  React.useEffect(() => {
-    const {
-      scrollWidth: width,
-      scrollHeight: height,
-    } = document.getElementById("vimvixen-console")!;
-    consoleFrameClient.resize(width, height);
-  }, []);
 
   return (
     <ConsoleWrapper>
