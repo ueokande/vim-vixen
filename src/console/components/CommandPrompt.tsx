@@ -6,12 +6,12 @@ import CommandLineParser, {
   InputPhase,
 } from "../commandline/CommandLineParser";
 import Completion from "./console/Completion";
-import ConsoleFrameClient from "../clients/ConsoleFrameClient";
 import Input from "./console//Input";
 import { Command } from "../../shared/Command";
 import styled from "styled-components";
 import reducer, { defaultState, completedText } from "../reducers/completion";
 import CompletionType from "../../shared/CompletionType";
+import useAutoResize from "../hooks/useAutoResize";
 
 const COMPLETION_MAX_ITEMS = 33;
 
@@ -26,7 +26,8 @@ const CommandPrompt: React.FC = () => {
     defaultState
   );
   const commandLineParser = new CommandLineParser();
-  const consoleFrameClient = new ConsoleFrameClient();
+
+  useAutoResize();
 
   const onBlur = () => {
     dispatch(consoleActions.hideCommand());
@@ -106,12 +107,6 @@ const CommandPrompt: React.FC = () => {
     Promise.resolve(action).then((a) => {
       if (a) {
         completionDispatch(a);
-
-        const {
-          scrollWidth: width,
-          scrollHeight: height,
-        } = document.getElementById("vimvixen-console")!;
-        consoleFrameClient.resize(width, height);
       }
     });
   };
@@ -127,12 +122,6 @@ const CommandPrompt: React.FC = () => {
       Promise.resolve(completionAction).then((a) => {
         if (a) {
           completionDispatch(a);
-
-          const {
-            scrollWidth: width,
-            scrollHeight: height,
-          } = document.getElementById("vimvixen-console")!;
-          consoleFrameClient.resize(width, height);
         }
       });
     });
