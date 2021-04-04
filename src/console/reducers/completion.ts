@@ -1,28 +1,19 @@
 import * as actions from "../actions";
 import Completions from "../Completions";
 import CompletionType from "../../shared/CompletionType";
-import ColorScheme from "../../shared/ColorScheme";
 
 export interface State {
-  mode: string;
-  messageText: string;
-  consoleText: string;
   completionTypes: CompletionType[];
   completionSource: string;
   completions: Completions;
   select: number;
-  colorscheme: ColorScheme;
 }
 
 export const defaultState = {
-  mode: "",
-  messageText: "",
-  consoleText: "",
   completionTypes: [],
   completionSource: "",
   completions: [],
   select: -1,
-  colorscheme: ColorScheme.System,
 };
 
 const nextSelection = (state: State): number => {
@@ -52,82 +43,50 @@ const prevSelection = (state: State): number => {
   return state.select - 1;
 };
 
-const nextConsoleText = (completions: any[], select: number, defaults: any) => {
-  if (select < 0) {
-    return defaults;
+export const completedText = (state: State): string => {
+  if (state.select < 0) {
+    return state.completionSource;
   }
-  const items = completions
+  const items = state.completions
     .map((g) => g.items)
     .reduce((g1, g2) => g1.concat(g2));
-  return items[select].content;
+  return items[state.select].content || "";
 };
 
 // eslint-disable-next-line max-lines-per-function
 export default function reducer(
   state: State = defaultState,
-  action: actions.ConsoleAction
+  action: actions.CompletionAction
 ): State {
   switch (action.type) {
-    case actions.CONSOLE_HIDE:
-      return { ...state, mode: "" };
-    case actions.CONSOLE_SHOW_COMMAND:
+    case actions.COMPLETION_START_COMPLETION:
       return {
         ...state,
-        mode: "command",
-        consoleText: action.text,
         completionTypes: action.completionTypes,
         completions: [],
+        select: -1,
       };
-    case actions.CONSOLE_SHOW_FIND:
-      return { ...state, mode: "find", consoleText: "", completions: [] };
-    case actions.CONSOLE_SHOW_ERROR:
-      return { ...state, mode: "error", messageText: action.text };
-    case actions.CONSOLE_SHOW_INFO:
-      return { ...state, mode: "info", messageText: action.text };
-    case actions.CONSOLE_HIDE_COMMAND:
-      return {
-        ...state,
-        mode:
-          state.mode === "command" || state.mode === "find" ? "" : state.mode,
-      };
-    case actions.CONSOLE_SET_CONSOLE_TEXT:
-      return { ...state, consoleText: action.consoleText };
-    case actions.CONSOLE_SET_COMPLETIONS:
+    case actions.COMPLETION_SET_COMPLETIONS:
       return {
         ...state,
         completions: action.completions,
         completionSource: action.completionSource,
         select: -1,
       };
-    case actions.CONSOLE_COMPLETION_NEXT: {
+    case actions.COMPLETION_COMPLETION_NEXT: {
       const select = nextSelection(state);
       return {
         ...state,
         select: select,
-        consoleText: nextConsoleText(
-          state.completions,
-          select,
-          state.completionSource
-        ),
       };
     }
-    case actions.CONSOLE_COMPLETION_PREV: {
+    case actions.COMPLETION_COMPLETION_PREV: {
       const select = prevSelection(state);
       return {
         ...state,
         select: select,
-        consoleText: nextConsoleText(
-          state.completions,
-          select,
-          state.completionSource
-        ),
       };
     }
-    case actions.CONSOLE_SET_COLORSCHEME:
-      return {
-        ...state,
-        colorscheme: action.colorscheme,
-      };
     default:
       return state;
   }

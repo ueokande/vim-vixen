@@ -1,5 +1,5 @@
 import * as messages from "../shared/messages";
-import reducers, { defaultState } from "./reducers";
+import reducers, { defaultState } from "./reducers/console";
 import * as consoleActions from "./actions/console";
 import Console from "./components/Console";
 import AppContext from "./components/AppContext";

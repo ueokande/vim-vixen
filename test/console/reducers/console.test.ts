@@ -1,8 +1,6 @@
 import * as actions from "../../../src/console/actions";
-import reducer, { State } from "../../../src/console/reducers";
+import reducer from "../../../src/console/reducers/console";
 import { expect } from "chai";
-import CompletionType from "../../../src/shared/CompletionType";
-import { ConsoleAction } from "../../../src/console/actions";
 
 describe("console reducer", () => {
   it("return the initial state", () => {
@@ -10,8 +8,6 @@ describe("console reducer", () => {
     expect(state).to.have.property("mode", "");
     expect(state).to.have.property("messageText", "");
     expect(state).to.have.property("consoleText", "");
-    expect(state).to.have.deep.property("completions", []);
-    expect(state).to.have.property("select", -1);
   });
 
   it("return next state for CONSOLE_HIDE", () => {
@@ -24,7 +20,6 @@ describe("console reducer", () => {
   it("return next state for CONSOLE_SHOW_COMMAND", () => {
     const action: actions.ConsoleAction = {
       type: actions.CONSOLE_SHOW_COMMAND,
-      completionTypes: [CompletionType.SearchEngines, CompletionType.History],
       text: "open ",
     };
     const state = reducer(undefined, action);
@@ -72,93 +67,5 @@ describe("console reducer", () => {
     const state = reducer(undefined, action);
 
     expect(state).to.have.property("consoleText", "hello world");
-  });
-
-  it("return next state for CONSOLE_SET_COMPLETIONS", () => {
-    const initialState = reducer(undefined, {} as any);
-    let state: State = {
-      ...initialState,
-      select: 0,
-      completions: [],
-    };
-    const action: actions.ConsoleAction = {
-      type: actions.CONSOLE_SET_COMPLETIONS,
-      completions: [
-        {
-          name: "Apple",
-          items: [{}, {}, {}],
-        },
-        {
-          name: "Banana",
-          items: [{}, {}, {}],
-        },
-      ],
-      completionSource: "",
-    };
-    state = reducer(state, action);
-    expect(state).to.have.property("completions", action.completions);
-    expect(state).to.have.property("select", -1);
-  });
-
-  it("return next state for CONSOLE_COMPLETION_NEXT", () => {
-    const initialState = reducer(undefined, {} as any);
-    const action: ConsoleAction = { type: actions.CONSOLE_COMPLETION_NEXT };
-    let state = {
-      ...initialState,
-      select: -1,
-      completions: [
-        {
-          name: "Apple",
-          items: [{}, {}],
-        },
-        {
-          name: "Banana",
-          items: [{}],
-        },
-      ],
-    };
-
-    state = reducer(state, action);
-    expect(state).to.have.property("select", 0);
-
-    state = reducer(state, action);
-    expect(state).to.have.property("select", 1);
-
-    state = reducer(state, action);
-    expect(state).to.have.property("select", 2);
-
-    state = reducer(state, action);
-    expect(state).to.have.property("select", -1);
-  });
-
-  it("return next state for CONSOLE_COMPLETION_PREV", () => {
-    const initialState = reducer(undefined, {} as any);
-    const action: ConsoleAction = { type: actions.CONSOLE_COMPLETION_PREV };
-    let state = {
-      ...initialState,
-      select: -1,
-      completions: [
-        {
-          name: "Apple",
-          items: [{}, {}],
-        },
-        {
-          name: "Banana",
-          items: [{}],
-        },
-      ],
-    };
-
-    state = reducer(state, action);
-    expect(state).to.have.property("select", 2);
-
-    state = reducer(state, action);
-    expect(state).to.have.property("select", 1);
-
-    state = reducer(state, action);
-    expect(state).to.have.property("select", 0);
-
-    state = reducer(state, action);
-    expect(state).to.have.property("select", -1);
   });
 });

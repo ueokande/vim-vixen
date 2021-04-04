@@ -60,18 +60,4 @@ describe("console actions", () => {
       expect(action.consoleText).to.equal("hello world");
     });
   });
-
-  describe("completionPrev", () => {
-    it("create CONSOLE_COMPLETION_PREV action", () => {
-      const action = consoleActions.completionPrev();
-      expect(action.type).to.equal(actions.CONSOLE_COMPLETION_PREV);
-    });
-  });
-
-  describe("completionNext", () => {
-    it("create CONSOLE_COMPLETION_NEXT action", () => {
-      const action = consoleActions.completionNext();
-      expect(action.type).to.equal(actions.CONSOLE_COMPLETION_NEXT);
-    });
-  });
 });

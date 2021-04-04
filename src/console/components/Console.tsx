@@ -12,7 +12,6 @@ const Console: React.FC = () => {
 
   React.useEffect(() => {
     dispatch(consoleActions.setColorScheme());
-    window.focus();
   }, []);
 
   const ele = (() => {

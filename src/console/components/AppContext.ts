@@ -1,5 +1,5 @@
 import React from "react";
-import { State, defaultState } from "../reducers";
+import { State, defaultState } from "../reducers/console";
 import { ConsoleAction } from "../actions";
 
 const AppContext = React.createContext<{
