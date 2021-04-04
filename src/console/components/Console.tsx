@@ -1,7 +1,8 @@
 import React from "react";
 import Input from "./console/Input";
 import Completion from "./console/Completion";
-import Message from "./console/Message";
+import InfoMessage from "./InfoMessage";
+import ErrorMessage from "./ErrorMessage";
 import * as consoleActions from "../../console/actions/console";
 import CommandLineParser, {
   InputPhase,
@@ -199,10 +200,15 @@ const Console: React.FC = () => {
         </ColorSchemeProvider>
       );
     case "info":
+      return (
+        <ColorSchemeProvider colorscheme={state.colorscheme}>
+          <InfoMessage>{state.messageText}</InfoMessage>
+        </ColorSchemeProvider>
+      );
     case "error":
       return (
         <ColorSchemeProvider colorscheme={state.colorscheme}>
-          <Message mode={state.mode}>{state.messageText}</Message>
+          <ErrorMessage>{state.messageText}</ErrorMessage>
         </ColorSchemeProvider>
       );
     default:
