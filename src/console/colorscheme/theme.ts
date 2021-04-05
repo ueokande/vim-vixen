@@ -1,9 +1,4 @@
-import React from "react";
-import ColorScheme from "../../shared/ColorScheme";
-import { ThemeProvider } from "styled-components";
-import baseStyled, { ThemedStyledInterface } from "styled-components";
-
-type ThemeProperties = {
+export type ThemeProperties = {
   completionTitleBackground: string;
   completionTitleForeground: string;
   completionItemBackground: string;
@@ -50,27 +45,3 @@ export const DarkTheme: ThemeProperties = {
   consoleInfoBackground: "#052027",
   consoleInfoForeground: "#ffffff",
 };
-
-interface Props extends React.HTMLAttributes<HTMLElement> {
-  colorscheme: ColorScheme;
-}
-
-const ColorSchemeProvider: React.FC<Props> = ({ colorscheme, children }) => {
-  let theme = LightTheme;
-  if (colorscheme === ColorScheme.System) {
-    if (
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-    ) {
-      theme = DarkTheme;
-    }
-  } else if (colorscheme === ColorScheme.Dark) {
-    theme = DarkTheme;
-  }
-
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
-};
-
-export const styled = baseStyled as ThemedStyledInterface<ThemeProperties>;
-
-export default ColorSchemeProvider;

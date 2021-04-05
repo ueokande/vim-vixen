@@ -1,8 +1,6 @@
-import ColorScheme from "../../shared/ColorScheme";
 import {
   CONSOLE_HIDE,
   CONSOLE_HIDE_COMMAND,
-  CONSOLE_SET_COLORSCHEME,
   CONSOLE_SET_CONSOLE_TEXT,
   CONSOLE_SHOW_COMMAND,
   CONSOLE_SHOW_ERROR,
@@ -15,14 +13,12 @@ export interface State {
   mode: string;
   messageText: string;
   consoleText: string;
-  colorscheme: ColorScheme;
 }
 
 export const defaultState = {
   mode: "",
   messageText: "",
   consoleText: "",
-  colorscheme: ColorScheme.System,
 };
 
 // eslint-disable-next-line max-lines-per-function
@@ -53,11 +49,6 @@ export default function reducer(
       };
     case CONSOLE_SET_CONSOLE_TEXT:
       return { ...state, consoleText: action.consoleText };
-    case CONSOLE_SET_COLORSCHEME:
-      return {
-        ...state,
-        colorscheme: action.colorscheme,
-      };
     default:
       return state;
   }

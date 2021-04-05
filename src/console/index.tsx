@@ -6,6 +6,7 @@ import AppContext from "./components/AppContext";
 import "./index.css";
 import React from "react";
 import ReactDOM from "react-dom";
+import ColorSchemeProvider from "./colorscheme/providers";
 
 const wrapAsync = <T extends unknown>(
   dispatch: React.Dispatch<T>
@@ -48,7 +49,9 @@ const RootComponent: React.FC = () => {
 
   return (
     <AppContext.Provider value={{ state, dispatch: wrapAsync(dispatch) }}>
-      <Console />
+      <ColorSchemeProvider>
+        <Console />
+      </ColorSchemeProvider>
     </AppContext.Provider>
   );
 };

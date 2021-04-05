@@ -1,8 +1,4 @@
 import * as messages from "../../shared/messages";
-import SettingClient from "../clients/SettingClient";
-import ColorScheme from "../../shared/ColorScheme";
-
-const settingClient = new SettingClient();
 
 export const CONSOLE_SHOW_COMMAND = "console.show.command";
 export const CONSOLE_SHOW_ERROR = "console.show.error";
@@ -10,7 +6,6 @@ export const CONSOLE_SHOW_INFO = "console.show.info";
 export const CONSOLE_HIDE_COMMAND = "console.hide.command";
 export const CONSOLE_SET_CONSOLE_TEXT = "console.set.command";
 export const CONSOLE_SHOW_FIND = "console.show.find";
-export const CONSOLE_SET_COLORSCHEME = "completion.set.colorscheme";
 export const CONSOLE_HIDE = "console.hide";
 
 export interface HideAction {
@@ -45,11 +40,6 @@ export interface SetConsoleTextAction {
   consoleText: string;
 }
 
-export interface SetColorSchemeAction {
-  type: typeof CONSOLE_SET_COLORSCHEME;
-  colorscheme: ColorScheme;
-}
-
 export type ConsoleAction =
   | HideAction
   | ShowCommand
@@ -57,8 +47,7 @@ export type ConsoleAction =
   | ShowErrorAction
   | ShowInfoAction
   | HideCommandAction
-  | SetConsoleTextAction
-  | SetColorSchemeAction;
+  | SetConsoleTextAction;
 
 const hide = (): ConsoleAction => {
   return {
@@ -131,14 +120,6 @@ const setConsoleText = (consoleText: string): SetConsoleTextAction => {
   };
 };
 
-const setColorScheme = async (): Promise<SetColorSchemeAction> => {
-  const scheme = await settingClient.getColorScheme();
-  return {
-    type: CONSOLE_SET_COLORSCHEME,
-    colorscheme: scheme,
-  };
-};
-
 export {
   hide,
   showCommand,
@@ -149,5 +130,4 @@ export {
   setConsoleText,
   enterCommand,
   enterFind,
-  setColorScheme,
 };

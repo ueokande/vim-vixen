@@ -3,37 +3,29 @@ import FindPrompt from "./FindPrompt";
 import CommandPrompt from "./CommandPrompt";
 import InfoMessage from "./InfoMessage";
 import ErrorMessage from "./ErrorMessage";
-import * as consoleActions from "../../console/actions/console";
-import ColorSchemeProvider from "./ColorSchemeProvider";
 import AppContext from "./AppContext";
+import { useColorSchemeRefresh } from "../colorscheme/hooks";
 
 const Console: React.FC = () => {
-  const { state, dispatch } = React.useContext(AppContext);
+  const { state } = React.useContext(AppContext);
+  const refreshColorScheme = useColorSchemeRefresh();
 
   React.useEffect(() => {
-    dispatch(consoleActions.setColorScheme());
+    refreshColorScheme();
   }, []);
 
-  const ele = (() => {
-    switch (state.mode) {
-      case "command":
-        return <CommandPrompt />;
-      case "find":
-        return <FindPrompt />;
-      case "info":
-        return <InfoMessage>{state.messageText}</InfoMessage>;
-      case "error":
-        return <ErrorMessage>{state.messageText}</ErrorMessage>;
-      default:
-        return null;
-    }
-  })();
-
-  return (
-    <ColorSchemeProvider colorscheme={state.colorscheme}>
-      {ele}
-    </ColorSchemeProvider>
-  );
+  switch (state.mode) {
+    case "command":
+      return <CommandPrompt />;
+    case "find":
+      return <FindPrompt />;
+    case "info":
+      return <InfoMessage>{state.messageText}</InfoMessage>;
+    case "error":
+      return <ErrorMessage>{state.messageText}</ErrorMessage>;
+    default:
+      return null;
+  }
 };
 
 export default Console;

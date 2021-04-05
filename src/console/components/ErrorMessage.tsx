@@ -1,5 +1,5 @@
 import React from "react";
-import { styled } from "./ColorSchemeProvider";
+import styled from "../colorscheme/styled";
 
 const Wrapper = styled.p`
   border-top: 1px solid gray;
