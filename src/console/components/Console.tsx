@@ -11,8 +11,10 @@ const Console: React.FC = () => {
   const refreshColorScheme = useColorSchemeRefresh();
 
   React.useEffect(() => {
-    refreshColorScheme();
-  }, []);
+    if (state.mode !== "") {
+      refreshColorScheme();
+    }
+  }, [state.mode]);
 
   switch (state.mode) {
     case "command":
