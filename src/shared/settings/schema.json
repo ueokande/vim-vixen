@@ -52,6 +52,9 @@
         "colorscheme": {
           "type": "string",
           "enum": ["system", "light", "dark"]
+        },
+        "searchOnlyCurrentWin": {
+          "type": "boolean"
         }
       }
     },

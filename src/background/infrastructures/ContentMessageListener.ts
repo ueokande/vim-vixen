@@ -74,7 +74,8 @@ export default class ContentMessageListener {
       case messages.CONSOLE_REQUEST_TABS:
         return this.completionController.queryTabs(
           message.query,
-          message.excludePinned
+          message.excludePinned,
+          message.onlyCurrentWin
         );
       case messages.CONSOLE_GET_PROPERTIES:
         return this.completionController.getProperties();

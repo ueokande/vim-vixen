@@ -313,6 +313,26 @@ var validate = (function() {
                         }
                         var valid2 = errors === errs_2;
                       }
+                      if (valid2) {
+                        if (data1.searchOnlyCurrentWin === undefined) {
+                          valid2 = true;
+                        } else {
+                          var errs_2 = errors;
+                          if (typeof data1.searchOnlyCurrentWin !== "boolean") {
+                            validate.errors = [{
+                              keyword: 'type',
+                              dataPath: (dataPath || '') + '.properties.searchOnlyCurrentWin',
+                              schemaPath: '#/properties/properties/properties/searchOnlyCurrentWin/type',
+                              params: {
+                                type: 'boolean'
+                              },
+                              message: 'should be boolean'
+                            }];
+                            return false;
+                          }
+                          var valid2 = errors === errs_2;
+                        }
+                      }
                     }
                   }
                 }
@@ -580,6 +600,9 @@ validate.schema = {
         "colorscheme": {
           "type": "string",
           "enum": ["system", "light", "dark"]
+        },
+        "searchOnlyCurrentWin": {
+          "type": "boolean"
         }
       }
     },

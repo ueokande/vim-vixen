@@ -122,6 +122,7 @@ export interface ConsoleRequestTabsMessage {
   type: typeof CONSOLE_REQUEST_TABS;
   query: string;
   excludePinned: boolean;
+  onlyCurrentWin: boolean;
 }
 
 export interface ConsoleGetPropertiesMessage {

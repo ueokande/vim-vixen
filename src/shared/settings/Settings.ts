@@ -157,7 +157,8 @@ export const DefaultSettingJSONText = `{
     "hintchars": "abcdefghijklmnopqrstuvwxyz",
     "smoothscroll": false,
     "complete": "sbh",
-    "colorscheme": "system"
+    "colorscheme": "system",
+    "searchOnlyCurrentWin": false
   },
   "blacklist": [
   ]

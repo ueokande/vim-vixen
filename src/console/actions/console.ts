@@ -29,6 +29,7 @@ const propertyDocs: { [key: string]: string } = {
   smoothscroll: "smooth scroll",
   complete: "which are completed at the open page",
   colorscheme: "color scheme of the console",
+  searchOnlyCurrentWin: "buffer switch and tab completion only in current browser window"
 };
 
 const hide = (): actions.ConsoleAction => {
@@ -194,9 +195,10 @@ const getTabCompletions = async (
   original: string,
   command: Command,
   query: string,
-  excludePinned: boolean
+  excludePinned: boolean,
 ): Promise<actions.SetCompletionsAction> => {
-  const items = await completionClient.requestTabs(query, excludePinned);
+  const onlyCurrentWin = await settingClient.shouldSearchOnlyCurrentWin();
+  const items = await completionClient.requestTabs(query, excludePinned, onlyCurrentWin);
   let completions: Completions = [];
   if (items.length > 0) {
     completions = [

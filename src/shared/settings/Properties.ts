@@ -5,6 +5,7 @@ export type PropertiesJSON = {
   smoothscroll?: boolean;
   complete?: string;
   colorscheme?: ColorScheme;
+  searchOnlyCurrentWin?: boolean;
 };
 
 export type PropertyTypes = {
@@ -12,9 +13,10 @@ export type PropertyTypes = {
   smoothscroll: string;
   complete: string;
   colorscheme: string;
+  searchOnlyCurrentWin: string;
 };
 
-type PropertyName = "hintchars" | "smoothscroll" | "complete" | "colorscheme";
+type PropertyName = "hintchars" | "smoothscroll" | "complete" | "colorscheme" | "searchOnlyCurrentWin";
 
 type PropertyDef = {
   name: PropertyName;
@@ -43,6 +45,11 @@ const defs: PropertyDef[] = [
     defaultValue: ColorScheme.System,
     type: "string",
   },
+  {
+    name: "searchOnlyCurrentWin",
+    defaultValue: true,
+    type: "boolean",
+  },
 ];
 
 const defaultValues = {
@@ -50,6 +57,7 @@ const defaultValues = {
   smoothscroll: false,
   complete: "sbh",
   colorscheme: ColorScheme.System,
+  searchOnlyCurrentWin: false,
 };
 
 export default class Properties {
@@ -61,21 +69,26 @@ export default class Properties {
 
   public colorscheme: ColorScheme;
 
+  public searchOnlyCurrentWin: boolean;
+
   constructor({
     hintchars,
     smoothscroll,
     complete,
     colorscheme,
+    searchOnlyCurrentWin,
   }: {
     hintchars?: string;
     smoothscroll?: boolean;
     complete?: string;
     colorscheme?: ColorScheme;
+    searchOnlyCurrentWin?: boolean;
   } = {}) {
     this.hintchars = hintchars || defaultValues.hintchars;
     this.smoothscroll = smoothscroll || defaultValues.smoothscroll;
     this.complete = complete || defaultValues.complete;
     this.colorscheme = colorscheme || defaultValues.colorscheme;
+    this.searchOnlyCurrentWin = searchOnlyCurrentWin || defaultValues.searchOnlyCurrentWin;
   }
 
   static fromJSON(json: PropertiesJSON): Properties {
@@ -88,6 +101,7 @@ export default class Properties {
       smoothscroll: "boolean",
       complete: "string",
       colorscheme: "string",
+      searchOnlyCurrentWin: "boolean",
     };
   }
 
@@ -105,6 +119,7 @@ export default class Properties {
       smoothscroll: this.smoothscroll,
       complete: this.complete,
       colorscheme: this.colorscheme,
+      searchOnlyCurrentWin: this.searchOnlyCurrentWin,
     };
   }
 }

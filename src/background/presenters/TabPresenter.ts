@@ -22,11 +22,11 @@ export default interface TabPresenter {
 
   getCurrent(): Promise<Tab>;
 
-  getAll(): Promise<Tab[]>;
+  getAll(onlyCurrentWin?: boolean): Promise<Tab[]>;
 
   getLastSelectedId(): Promise<number | undefined>;
 
-  getByKeyword(keyword: string, excludePinned: boolean): Promise<Tab[]>;
+  getByKeyword(keyword: string, excludePinned: boolean, onlyCurrentWin?: boolean): Promise<Tab[]>;
 
   select(tabId: number): Promise<void>;
 
@@ -76,8 +76,11 @@ export class TabPresenterImpl implements TabPresenter {
     return tabs[0];
   }
 
-  getAll(): Promise<Tab[]> {
-    return browser.tabs.query({ currentWindow: true });
+  getAll(onlyCurrentWin: boolean = true): Promise<Tab[]> {
+    return browser.tabs.query({ currentWindow: true })
+        .then( res =>
+            (onlyCurrentWin ? res : browser.tabs.query({ currentWindow: false })
+                .then( res2 => [...res, ...res2])))
   }
 
   async getLastSelectedId(): Promise<number | undefined> {
@@ -89,8 +92,11 @@ export class TabPresenterImpl implements TabPresenter {
     return tabId;
   }
 
-  async getByKeyword(keyword: string, excludePinned = false): Promise<Tab[]> {
-    const tabs = await browser.tabs.query({ currentWindow: true });
+  async getByKeyword(keyword: string, excludePinned = false, onlyCurrentWin: boolean = true): Promise<Tab[]> {
+    const tabs = [
+        ...await browser.tabs.query({ currentWindow: true }),
+      ...(onlyCurrentWin ? [] : await browser.tabs.query({ currentWindow: false }))
+    ];
     return tabs
       .filter((t) => {
         return (
@@ -105,6 +111,10 @@ export class TabPresenterImpl implements TabPresenter {
 
   async select(tabId: number): Promise<void> {
     await browser.tabs.update(tabId, { active: true });
+    const windowId = (await browser.tabs.get(tabId)).windowId;
+    if((await browser.windows.getCurrent()).id !== windowId) {
+       await browser.windows.update(windowId, {focused: true})
+    }
   }
 
   async remove(ids: number[]): Promise<void> {

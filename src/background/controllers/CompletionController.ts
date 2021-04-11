@@ -42,9 +42,10 @@ export default class CompletionController {
 
   async queryTabs(
     query: string,
-    excludePinned: boolean
+    excludePinned: boolean,
+    onlyCurrentWin: boolean
   ): Promise<ConsoleRequestTabsResponse> {
-    return this.tabCompletionUseCase.queryTabs(query, excludePinned);
+    return this.tabCompletionUseCase.queryTabs(query, excludePinned, onlyCurrentWin);
   }
 
   async getProperties(): Promise<ConsoleGetPropertiesResponse> {
