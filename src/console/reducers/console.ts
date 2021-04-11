@@ -1,7 +1,6 @@
 import {
   CONSOLE_HIDE,
   CONSOLE_HIDE_COMMAND,
-  CONSOLE_SET_CONSOLE_TEXT,
   CONSOLE_SHOW_COMMAND,
   CONSOLE_SHOW_ERROR,
   CONSOLE_SHOW_FIND,
@@ -47,8 +46,6 @@ export default function reducer(
         mode:
           state.mode === "command" || state.mode === "find" ? "" : state.mode,
       };
-    case CONSOLE_SET_CONSOLE_TEXT:
-      return { ...state, consoleText: action.consoleText };
     default:
       return state;
   }

@@ -2,7 +2,6 @@ import * as consoleActions from "../../../src/console/actions/console";
 import {
   CONSOLE_HIDE,
   CONSOLE_HIDE_COMMAND,
-  CONSOLE_SET_CONSOLE_TEXT,
   CONSOLE_SHOW_COMMAND,
   CONSOLE_SHOW_ERROR,
   CONSOLE_SHOW_FIND,
@@ -58,14 +57,6 @@ describe("console actions", () => {
     it("create CONSOLE_HIDE_COMMAND action", () => {
       const action = consoleActions.hideCommand();
       expect(action.type).to.equal(CONSOLE_HIDE_COMMAND);
-    });
-  });
-
-  describe("setConsoleText", () => {
-    it("create CONSOLE_SET_CONSOLE_TEXT action", () => {
-      const action = consoleActions.setConsoleText("hello world");
-      expect(action.type).to.equal(CONSOLE_SET_CONSOLE_TEXT);
-      expect(action.consoleText).to.equal("hello world");
     });
   });
 });

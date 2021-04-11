@@ -1,38 +1,38 @@
 import Completions from "../Completions";
 import CompletionType from "../../shared/CompletionType";
 import {
-  COMPLETION_COMPLETION_NEXT,
-  COMPLETION_COMPLETION_PREV,
-  COMPLETION_SET_COMPLETIONS,
-  COMPLETION_START_COMPLETION,
+  INIT_COMPLETIONS,
+  SET_COMPLETION_SOURCE,
+  SET_COMPLETIONS,
+  COMPLETION_NEXT,
+  COMPLETION_PREV,
   CompletionAction,
-} from "../actions/completion";
+} from "./actions";
 
 export interface State {
-  completionTypes: CompletionType[];
+  completionTypes?: CompletionType[];
   completionSource: string;
   completions: Completions;
   select: number;
 }
 
 export const defaultState = {
-  completionTypes: [],
+  completionTypes: undefined,
   completionSource: "",
   completions: [],
   select: -1,
 };
 
 const nextSelection = (state: State): number => {
-  if (state.completions.length === 0) {
+  const length = state.completions
+    .map((g) => g.items.length)
+    .reduce((x, y) => x + y, 0);
+  if (length === 0) {
     return -1;
   }
   if (state.select < 0) {
     return 0;
   }
-
-  const length = state.completions
-    .map((g) => g.items.length)
-    .reduce((x, y) => x + y);
   if (state.select + 1 < length) {
     return state.select + 1;
   }
@@ -40,6 +40,9 @@ const nextSelection = (state: State): number => {
 };
 
 const prevSelection = (state: State): number => {
+  if (state.completions.length === 0) {
+    return -1;
+  }
   const length = state.completions
     .map((g) => g.items.length)
     .reduce((x, y) => x + y);
@@ -49,44 +52,38 @@ const prevSelection = (state: State): number => {
   return state.select - 1;
 };
 
-export const completedText = (state: State): string => {
-  if (state.select < 0) {
-    return state.completionSource;
-  }
-  const items = state.completions
-    .map((g) => g.items)
-    .reduce((g1, g2) => g1.concat(g2));
-  return items[state.select].content || "";
-};
-
 // eslint-disable-next-line max-lines-per-function
 export default function reducer(
   state: State = defaultState,
   action: CompletionAction
 ): State {
   switch (action.type) {
-    case COMPLETION_START_COMPLETION:
+    case INIT_COMPLETIONS:
       return {
         ...state,
         completionTypes: action.completionTypes,
         completions: [],
         select: -1,
       };
-    case COMPLETION_SET_COMPLETIONS:
+    case SET_COMPLETION_SOURCE:
       return {
         ...state,
-        completions: action.completions,
         completionSource: action.completionSource,
         select: -1,
       };
-    case COMPLETION_COMPLETION_NEXT: {
+    case SET_COMPLETIONS:
+      return {
+        ...state,
+        completions: action.completions,
+      };
+    case COMPLETION_NEXT: {
       const select = nextSelection(state);
       return {
         ...state,
         select: select,
       };
     }
-    case COMPLETION_COMPLETION_PREV: {
+    case COMPLETION_PREV: {
       const select = prevSelection(state);
       return {
         ...state,

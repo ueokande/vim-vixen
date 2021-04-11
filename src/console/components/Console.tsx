@@ -16,7 +16,7 @@ const Console: React.FC = () => {
 
   switch (state.mode) {
     case "command":
-      return <CommandPrompt />;
+      return <CommandPrompt initialInputValue={state.consoleText} />;
     case "find":
       return <FindPrompt />;
     case "info":

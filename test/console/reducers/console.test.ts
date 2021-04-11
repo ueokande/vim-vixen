@@ -3,7 +3,6 @@ import { expect } from "chai";
 import {
   CONSOLE_HIDE,
   CONSOLE_HIDE_COMMAND,
-  CONSOLE_SET_CONSOLE_TEXT,
   CONSOLE_SHOW_COMMAND,
   CONSOLE_SHOW_ERROR,
   CONSOLE_SHOW_INFO,
@@ -65,15 +64,5 @@ describe("console reducer", () => {
 
     state = reducer({ ...initialState, mode: "error" }, action);
     expect(state).to.have.property("mode", "error");
-  });
-
-  it("return next state for CONSOLE_SET_CONSOLE_TEXT", () => {
-    const action: ConsoleAction = {
-      type: CONSOLE_SET_CONSOLE_TEXT,
-      consoleText: "hello world",
-    };
-    const state = reducer(undefined, action);
-
-    expect(state).to.have.property("consoleText", "hello world");
   });
 });

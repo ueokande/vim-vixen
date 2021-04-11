@@ -4,7 +4,6 @@ export const CONSOLE_SHOW_COMMAND = "console.show.command";
 export const CONSOLE_SHOW_ERROR = "console.show.error";
 export const CONSOLE_SHOW_INFO = "console.show.info";
 export const CONSOLE_HIDE_COMMAND = "console.hide.command";
-export const CONSOLE_SET_CONSOLE_TEXT = "console.set.command";
 export const CONSOLE_SHOW_FIND = "console.show.find";
 export const CONSOLE_HIDE = "console.hide";
 
@@ -35,19 +34,13 @@ export interface HideCommandAction {
   type: typeof CONSOLE_HIDE_COMMAND;
 }
 
-export interface SetConsoleTextAction {
-  type: typeof CONSOLE_SET_CONSOLE_TEXT;
-  consoleText: string;
-}
-
 export type ConsoleAction =
   | HideAction
   | ShowCommand
   | ShowFindAction
   | ShowErrorAction
   | ShowInfoAction
-  | HideCommandAction
-  | SetConsoleTextAction;
+  | HideCommandAction;
 
 const hide = (): ConsoleAction => {
   return {
@@ -113,13 +106,6 @@ const enterFind = (text?: string): HideCommandAction => {
   return hideCommand();
 };
 
-const setConsoleText = (consoleText: string): SetConsoleTextAction => {
-  return {
-    type: CONSOLE_SET_CONSOLE_TEXT,
-    consoleText,
-  };
-};
-
 export {
   hide,
   showCommand,
@@ -127,7 +113,6 @@ export {
   showError,
   showInfo,
   hideCommand,
-  setConsoleText,
   enterCommand,
   enterFind,
 };
