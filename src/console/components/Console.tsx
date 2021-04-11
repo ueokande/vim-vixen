@@ -3,31 +3,37 @@ import FindPrompt from "./FindPrompt";
 import CommandPrompt from "./CommandPrompt";
 import InfoMessage from "./InfoMessage";
 import ErrorMessage from "./ErrorMessage";
-import AppContext from "./AppContext";
 import { useColorSchemeRefresh } from "../colorscheme/hooks";
+import {
+  useCommandMode,
+  useErrorMessage,
+  useFindMode,
+  useInfoMessage,
+} from "../app/hooks";
 
 const Console: React.FC = () => {
-  const { state } = React.useContext(AppContext);
   const refreshColorScheme = useColorSchemeRefresh();
+  const { visible: visibleCommand, initialInputValue } = useCommandMode();
+  const { visible: visibleFind } = useFindMode();
+  const { visible: visibleInfo, message: infoMessage } = useInfoMessage();
+  const { visible: visibleError, message: errorMessage } = useErrorMessage();
 
   React.useEffect(() => {
-    if (state.mode !== "") {
+    if (visibleCommand || visibleFind || visibleInfo || visibleError) {
       refreshColorScheme();
     }
-  }, [state.mode]);
+  }, [visibleCommand, visibleFind, visibleInfo, visibleError]);
 
-  switch (state.mode) {
-    case "command":
-      return <CommandPrompt initialInputValue={state.consoleText} />;
-    case "find":
-      return <FindPrompt />;
-    case "info":
-      return <InfoMessage>{state.messageText}</InfoMessage>;
-    case "error":
-      return <ErrorMessage>{state.messageText}</ErrorMessage>;
-    default:
-      return null;
+  if (visibleCommand) {
+    return <CommandPrompt initialInputValue={initialInputValue} />;
+  } else if (visibleFind) {
+    return <FindPrompt />;
+  } else if (visibleInfo) {
+    return <InfoMessage>{infoMessage}</InfoMessage>;
+  } else if (visibleError) {
+    return <ErrorMessage>{errorMessage}</ErrorMessage>;
   }
+  return null;
 };
 
 export default Console;

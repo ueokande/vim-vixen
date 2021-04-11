@@ -1,12 +1,11 @@
 import React from "react";
-import * as consoleActions from "../actions/console";
-import AppContext from "./AppContext";
 import Completion from "./console/Completion";
 import Input from "./console//Input";
 import styled from "styled-components";
 import { useCompletions, useSelectCompletion } from "../completion/hooks";
 import useAutoResize from "../hooks/useAutoResize";
 import { CompletionProvider } from "../completion/provider";
+import { useExecCommand, useHide } from "../app/hooks";
 
 const COMPLETION_MAX_ITEMS = 33;
 
@@ -19,7 +18,7 @@ interface Props {
 }
 
 const CommandPromptInner: React.FC<Props> = ({ initialInputValue }) => {
-  const { dispatch } = React.useContext(AppContext);
+  const hide = useHide();
   const [inputValue, setInputValue] = React.useState(initialInputValue);
   const { completions, updateCompletions } = useCompletions();
   const {
@@ -28,11 +27,12 @@ const CommandPromptInner: React.FC<Props> = ({ initialInputValue }) => {
     selectNext,
     selectPrev,
   } = useSelectCompletion();
+  const execCommand = useExecCommand();
 
   useAutoResize();
 
   const onBlur = () => {
-    dispatch(consoleActions.hideCommand());
+    hide();
   };
 
   const isCancelKey = React.useCallback(
@@ -63,10 +63,11 @@ const CommandPromptInner: React.FC<Props> = ({ initialInputValue }) => {
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (isCancelKey(e)) {
-      dispatch(consoleActions.hideCommand());
+      hide();
     } else if (isEnterKey(e)) {
       const value = (e.target as HTMLInputElement).value;
-      dispatch(consoleActions.enterCommand(value));
+      execCommand(value);
+      hide();
     } else if (isNextKey(e)) {
       selectNext();
     } else if (isPrevKey(e)) {

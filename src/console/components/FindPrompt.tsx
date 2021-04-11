@@ -1,20 +1,20 @@
 import React from "react";
-import * as consoleActions from "../../console/actions/console";
-import AppContext from "./AppContext";
 import Input from "./console/Input";
 import styled from "styled-components";
 import useAutoResize from "../hooks/useAutoResize";
+import { useExecFind, useHide } from "../app/hooks";
 
 const ConsoleWrapper = styled.div`
   border-top: 1px solid gray;
 `;
 
 const FindPrompt: React.FC = () => {
-  const { dispatch } = React.useContext(AppContext);
   const [inputValue, setInputValue] = React.useState("");
+  const hide = useHide();
+  const execFind = useExecFind();
 
   const onBlur = () => {
-    dispatch(consoleActions.hideCommand());
+    hide();
   };
 
   useAutoResize();
@@ -24,13 +24,13 @@ const FindPrompt: React.FC = () => {
     e.preventDefault();
 
     const value = (e.target as HTMLInputElement).value;
-    dispatch(consoleActions.enterFind(value === "" ? undefined : value));
+    execFind(value === "" ? undefined : value);
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
       case "Escape":
-        dispatch(consoleActions.hideCommand());
+        hide();
         break;
       case "Enter":
         doEnter(e);

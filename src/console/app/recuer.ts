@@ -1,12 +1,12 @@
 import {
-  CONSOLE_HIDE,
-  CONSOLE_HIDE_COMMAND,
-  CONSOLE_SHOW_COMMAND,
-  CONSOLE_SHOW_ERROR,
-  CONSOLE_SHOW_FIND,
-  CONSOLE_SHOW_INFO,
-  ConsoleAction,
-} from "../actions/console";
+  HIDE,
+  HIDE_COMMAND,
+  SHOW_COMMAND,
+  SHOW_ERROR,
+  SHOW_FIND,
+  SHOW_INFO,
+  AppAction,
+} from "./actions";
 
 export interface State {
   mode: string;
@@ -23,24 +23,24 @@ export const defaultState = {
 // eslint-disable-next-line max-lines-per-function
 export default function reducer(
   state: State = defaultState,
-  action: ConsoleAction
+  action: AppAction
 ): State {
   switch (action.type) {
-    case CONSOLE_HIDE:
+    case HIDE:
       return { ...state, mode: "" };
-    case CONSOLE_SHOW_COMMAND:
+    case SHOW_COMMAND:
       return {
         ...state,
         mode: "command",
         consoleText: action.text,
       };
-    case CONSOLE_SHOW_FIND:
+    case SHOW_FIND:
       return { ...state, mode: "find", consoleText: "" };
-    case CONSOLE_SHOW_ERROR:
+    case SHOW_ERROR:
       return { ...state, mode: "error", messageText: action.text };
-    case CONSOLE_SHOW_INFO:
+    case SHOW_INFO:
       return { ...state, mode: "info", messageText: action.text };
-    case CONSOLE_HIDE_COMMAND:
+    case HIDE_COMMAND:
       return {
         ...state,
         mode:
