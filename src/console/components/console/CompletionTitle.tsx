@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "../Theme";
+import styled from "../../colorscheme/styled";
 
 const Li = styled.li<{ shown: boolean }>`
   display: ${({ shown }) => (shown ? "display" : "none")};
@@ -10,13 +10,13 @@ const Li = styled.li<{ shown: boolean }>`
   padding: 0;
 `;
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLElement> {
   shown: boolean;
   title: string;
 }
 
-const CompletionTitle: React.FC<React.HTMLAttributes<HTMLElement> & Props> = (
-  props
-) => <Li {...props}>{props.title}</Li>;
+const CompletionTitle: React.FC<Props> = (props) => (
+  <Li {...props}>{props.title}</Li>
+);
 
 export default CompletionTitle;

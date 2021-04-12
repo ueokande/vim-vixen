@@ -100,9 +100,14 @@ describe("console/components/console/completion/Completion", () => {
   });
 
   it("scrolls up to down with select", () => {
-    const component = ReactTestRenderer.create(
-      <Completion completions={completions} size={3} select={1} />
-    );
+    let component: ReturnType<ReactTestRenderer["create"]> | null = null;
+
+    ReactTestRenderer.act(() => {
+      component = ReactTestRenderer.create(
+        <Completion completions={completions} size={3} select={1} />
+      );
+    });
+
     const root = component.root;
 
     let items = root.findAllByType(CompletionItem);
@@ -126,9 +131,11 @@ describe("console/components/console/completion/Completion", () => {
       false,
     ]);
 
-    component.update(
-      <Completion completions={completions} size={3} select={2} />
-    );
+    ReactTestRenderer.act(() => {
+      component.update(
+        <Completion completions={completions} size={3} select={2} />
+      );
+    });
     items = root.findAllByType(CompletionItem);
     showns = root
       .findAllByProps({ role: "group" })
@@ -151,9 +158,11 @@ describe("console/components/console/completion/Completion", () => {
     ]);
     expect(items[2].props.highlight).to.be.true;
 
-    component.update(
-      <Completion completions={completions} size={3} select={3} />
-    );
+    ReactTestRenderer.act(() => {
+      component.update(
+        <Completion completions={completions} size={3} select={3} />
+      );
+    });
     items = root.findAllByType(CompletionItem);
     showns = root
       .findAllByProps({ role: "group" })
@@ -178,9 +187,13 @@ describe("console/components/console/completion/Completion", () => {
   });
 
   it("scrolls down to up with select", () => {
-    const component = ReactTestRenderer.create(
-      <Completion completions={completions} size={3} select={5} />
-    );
+    let component: ReturnType<ReactTestRenderer["create"]> | null = null;
+
+    ReactTestRenderer.act(() => {
+      component = ReactTestRenderer.create(
+        <Completion completions={completions} size={3} select={5} />
+      );
+    });
     const root = component.root;
 
     let items = root.findAllByType(CompletionItem);
@@ -206,9 +219,11 @@ describe("console/components/console/completion/Completion", () => {
     ]);
     expect(items[5].props.highlight).to.be.true;
 
-    component.update(
-      <Completion completions={completions} size={3} select={4} />
-    );
+    ReactTestRenderer.act(() => {
+      component.update(
+        <Completion completions={completions} size={3} select={4} />
+      );
+    });
     items = root.findAllByType(CompletionItem);
     showns = root
       .findAllByProps({ role: "group" })
@@ -231,9 +246,11 @@ describe("console/components/console/completion/Completion", () => {
     ]);
     expect(items[4].props.highlight).to.be.true;
 
-    component.update(
-      <Completion completions={completions} size={3} select={3} />
-    );
+    ReactTestRenderer.act(() => {
+      component.update(
+        <Completion completions={completions} size={3} select={3} />
+      );
+    });
     items = root.findAllByType(CompletionItem);
     showns = root
       .findAllByProps({ role: "group" })
@@ -256,9 +273,11 @@ describe("console/components/console/completion/Completion", () => {
     ]);
     expect(items[3].props.highlight).to.be.true;
 
-    component.update(
-      <Completion completions={completions} size={3} select={2} />
-    );
+    ReactTestRenderer.act(() => {
+      component.update(
+        <Completion completions={completions} size={3} select={2} />
+      );
+    });
     items = root.findAllByType(CompletionItem);
     showns = root
       .findAllByProps({ role: "group" })

@@ -1,6 +1,4 @@
-import baseStyled, { ThemedStyledInterface } from "styled-components";
-
-type Theme = {
+export type ThemeProperties = {
   completionTitleBackground: string;
   completionTitleForeground: string;
   completionItemBackground: string;
@@ -16,7 +14,7 @@ type Theme = {
   consoleInfoForeground: string;
 };
 
-export const LightTheme: Theme = {
+export const LightTheme: ThemeProperties = {
   completionTitleBackground: "lightgray",
   completionTitleForeground: "#000000",
   completionItemBackground: "#ffffff",
@@ -32,7 +30,7 @@ export const LightTheme: Theme = {
   consoleInfoForeground: "#018786",
 };
 
-export const DarkTheme: Theme = {
+export const DarkTheme: ThemeProperties = {
   completionTitleBackground: "#052027",
   completionTitleForeground: "white",
   completionItemBackground: "#2f474f",
@@ -47,7 +45,3 @@ export const DarkTheme: Theme = {
   consoleInfoBackground: "#052027",
   consoleInfoForeground: "#ffffff",
 };
-
-const styled = baseStyled as ThemedStyledInterface<Theme>;
-
-export default styled;

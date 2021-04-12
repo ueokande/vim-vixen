@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "../Theme";
+import styled from "../../colorscheme/styled";
 
 const Container = styled.li<{
   shown: boolean;
@@ -38,7 +38,7 @@ const Description = styled.span`
   overflow: hidden;
 `;
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLElement> {
   shown: boolean;
   highlight: boolean;
   caption?: string;
@@ -46,9 +46,7 @@ interface Props {
   icon?: string;
 }
 
-const CompletionItem: React.FC<React.HTMLAttributes<HTMLElement> & Props> = (
-  props
-) => (
+const CompletionItem: React.FC<Props> = (props) => (
   <Container
     icon={props.icon || ""}
     aria-labelledby={`completion-item-${props.caption}`}
