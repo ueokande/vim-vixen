@@ -35,6 +35,41 @@ const propertyDocs: { [key: string]: string } = {
 
 const completionClient = new CompletionClient();
 
+const useDelayedCallback = <T extends unknown, U extends unknown>(
+  callback: (arg1: T, arg2: U) => void,
+  timeout: number
+) => {
+  const [timer, setTimer] = React.useState<
+    ReturnType<typeof setTimeout> | undefined
+  >();
+  const [enabled, setEnabled] = React.useState(false);
+
+  const enableDelay = React.useCallback(() => {
+    setEnabled(true);
+  }, [setEnabled]);
+
+  const delayedCallback = React.useCallback(
+    (arg1: T, arg2: U) => {
+      if (enabled) {
+        if (typeof timer !== "undefined") {
+          clearTimeout(timer);
+        }
+        const id = setTimeout(() => {
+          callback(arg1, arg2);
+          clearTimeout(timer!);
+          setTimer(undefined);
+        }, timeout);
+        setTimer(id);
+      } else {
+        callback(arg1, arg2);
+      }
+    },
+    [enabled, timer]
+  );
+
+  return { enableDelay, delayedCallback };
+};
+
 const getCommandCompletions = async (query: string): Promise<Completions> => {
   const items = Object.entries(commandDocs)
     .filter(([name]) => name.startsWith(query))
@@ -185,63 +220,88 @@ export const useCompletions = () => {
     });
   }, []);
 
-  React.useEffect(() => {
-    const text = state.completionSource;
-    const phase = commandLineParser.inputPhase(text);
-    if (phase === InputPhase.OnCommand) {
-      getCommandCompletions(text).then((completions) =>
-        dispatch(actions.setCompletions(completions))
-      );
-    } else {
-      let cmd: CommandLine | null = null;
-      try {
-        cmd = commandLineParser.parse(text);
-      } catch (e) {
-        if (e instanceof UnknownCommandError) {
-          return;
-        }
-      }
-      switch (cmd?.command) {
-        case Command.Open:
-        case Command.TabOpen:
-        case Command.WindowOpen:
-          if (!state.completionTypes) {
-            initCompletion(text);
-            return;
+  const { delayedCallback: queryCompletions, enableDelay } = useDelayedCallback(
+    React.useCallback(
+      (text: string, completionTypes?: CompletionType[]) => {
+        const phase = commandLineParser.inputPhase(text);
+        if (phase === InputPhase.OnCommand) {
+          getCommandCompletions(text).then((completions) =>
+            dispatch(actions.setCompletions(completions))
+          );
+        } else {
+          let cmd: CommandLine | null = null;
+          try {
+            cmd = commandLineParser.parse(text);
+          } catch (e) {
+            if (e instanceof UnknownCommandError) {
+              return;
+            }
           }
+          switch (cmd?.command) {
+            case Command.Open:
+            case Command.TabOpen:
+            case Command.WindowOpen:
+              if (!completionTypes) {
+                initCompletion(text);
+                return;
+              }
 
-          getOpenCompletions(
-            cmd.command,
-            cmd.args,
-            state.completionTypes
-          ).then((completions) =>
-            dispatch(actions.setCompletions(completions))
-          );
-          break;
-        case Command.Buffer:
-          getTabCompletions(cmd.command, cmd.args, false).then((completions) =>
-            dispatch(actions.setCompletions(completions))
-          );
-          break;
-        case Command.BufferDelete:
-        case Command.BuffersDelete:
-          getTabCompletions(cmd.command, cmd.args, true).then((completions) =>
-            dispatch(actions.setCompletions(completions))
-          );
-          break;
-        case Command.BufferDeleteForce:
-        case Command.BuffersDeleteForce:
-          getTabCompletions(cmd.command, cmd.args, false).then((completions) =>
-            dispatch(actions.setCompletions(completions))
-          );
-          break;
-        case Command.Set:
-          getPropertyCompletions(cmd.command, cmd.args).then((completions) =>
-            dispatch(actions.setCompletions(completions))
-          );
-          break;
-      }
-    }
+              getOpenCompletions(
+                cmd.command,
+                cmd.args,
+                completionTypes
+              ).then((completions) =>
+                dispatch(actions.setCompletions(completions))
+              );
+              break;
+            case Command.Buffer:
+              getTabCompletions(
+                cmd.command,
+                cmd.args,
+                false
+              ).then((completions) =>
+                dispatch(actions.setCompletions(completions))
+              );
+              break;
+            case Command.BufferDelete:
+            case Command.BuffersDelete:
+              getTabCompletions(
+                cmd.command,
+                cmd.args,
+                true
+              ).then((completions) =>
+                dispatch(actions.setCompletions(completions))
+              );
+              break;
+            case Command.BufferDeleteForce:
+            case Command.BuffersDeleteForce:
+              getTabCompletions(
+                cmd.command,
+                cmd.args,
+                false
+              ).then((completions) =>
+                dispatch(actions.setCompletions(completions))
+              );
+              break;
+            case Command.Set:
+              getPropertyCompletions(
+                cmd.command,
+                cmd.args
+              ).then((completions) =>
+                dispatch(actions.setCompletions(completions))
+              );
+              break;
+          }
+          enableDelay();
+        }
+      },
+      [dispatch]
+    ),
+    100
+  );
+
+  React.useEffect(() => {
+    queryCompletions(state.completionSource, state.completionTypes);
   }, [state.completionSource, state.completionTypes]);
 
   return {
