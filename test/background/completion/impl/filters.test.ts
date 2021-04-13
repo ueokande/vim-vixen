@@ -54,6 +54,19 @@ describe("background/usecases/filters", () => {
   });
 
   describe("filterByPathname", () => {
+    it("remains items less than minimam length", () => {
+      const pages = [
+        { id: "0", url: "http://i-beam.org/search?q=apple" },
+        { id: "1", url: "http://i-beam.org/search?q=apple_banana" },
+        { id: "2", url: "http://i-beam.org/search?q=apple_banana_cherry" },
+        { id: "3", url: "http://i-beam.org/request?q=apple" },
+        { id: "4", url: "http://i-beam.org/request?q=apple_banana" },
+        { id: "5", url: "http://i-beam.org/request?q=apple_banana_cherry" },
+      ];
+      const filtered = filters.filterByPathname(pages, 10);
+      expect(filtered).to.have.lengthOf(6);
+    });
+
     it("filters by length of pathname", () => {
       const pages = [
         { id: "0", url: "http://i-beam.org/search?q=apple" },
@@ -63,7 +76,7 @@ describe("background/usecases/filters", () => {
         { id: "4", url: "http://i-beam.net/search?q=apple_banana" },
         { id: "5", url: "http://i-beam.net/search?q=apple_banana_cherry" },
       ];
-      const filtered = filters.filterByPathname(pages);
+      const filtered = filters.filterByPathname(pages, 0);
       expect(filtered).to.deep.equal([
         { id: "0", url: "http://i-beam.org/search?q=apple" },
         { id: "3", url: "http://i-beam.net/search?q=apple" },
@@ -72,6 +85,19 @@ describe("background/usecases/filters", () => {
   });
 
   describe("filterByOrigin", () => {
+    it("remains items less than minimam length", () => {
+      const pages = [
+        { id: "0", url: "http://i-beam.org/search?q=apple" },
+        { id: "1", url: "http://i-beam.org/search?q=apple_banana" },
+        { id: "2", url: "http://i-beam.org/search?q=apple_banana_cherry" },
+        { id: "3", url: "http://i-beam.org/request?q=apple" },
+        { id: "4", url: "http://i-beam.org/request?q=apple_banana" },
+        { id: "5", url: "http://i-beam.org/request?q=apple_banana_cherry" },
+      ];
+      const filtered = filters.filterByOrigin(pages, 10);
+      expect(filtered).to.have.lengthOf(6);
+    });
+
     it("filters by length of pathname", () => {
       const pages = [
         { id: "0", url: "http://i-beam.org/search?q=apple" },
@@ -81,7 +107,7 @@ describe("background/usecases/filters", () => {
         { id: "4", url: "http://i-beam.org/request?q=apple_banana" },
         { id: "5", url: "http://i-beam.org/request?q=apple_banana_cherry" },
       ];
-      const filtered = filters.filterByOrigin(pages);
+      const filtered = filters.filterByOrigin(pages, 0);
       expect(filtered).to.deep.equal([
         { id: "0", url: "http://i-beam.org/search?q=apple" },
       ]);
