@@ -25,6 +25,7 @@ const FindPrompt: React.FC = () => {
 
     const value = (e.target as HTMLInputElement).value;
     execFind(value === "" ? undefined : value);
+    hide();
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
