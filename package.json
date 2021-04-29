@@ -39,7 +39,7 @@
     "@types/styled-components": "^5.1.2",
     "@typescript-eslint/eslint-plugin": "3.9.0",
     "@typescript-eslint/parser": "3.10.1",
-    "ajv": "^7.0.2",
+    "ajv": "^8.2.0",
     "ajv-cli": "^5.0.0",
     "chai": "^4.2.0",
     "css-loader": "^5.0.1",
