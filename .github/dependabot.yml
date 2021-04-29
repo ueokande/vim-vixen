@@ -1,0 +1,100 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "20:00"
+  open-pull-requests-limit: 10
+  versioning-strategy: widen
+  ignore:
+  - dependency-name: eslint
+    versions:
+    - 7.19.0
+    - 7.23.0
+    - 7.25.0
+  - dependency-name: "@types/node"
+    versions:
+    - 14.14.22
+    - 14.14.25
+    - 14.14.27
+    - 14.14.28
+    - 14.14.31
+    - 14.14.32
+    - 14.14.33
+    - 14.14.35
+    - 14.14.36
+    - 15.0.0
+  - dependency-name: ts-loader
+    versions:
+    - 9.0.2
+    - 9.1.0
+  - dependency-name: karma-webpack
+    versions:
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+    - 5.0.0
+  - dependency-name: webpack
+    versions:
+    - 5.20.0
+    - 5.20.1
+    - 5.25.0
+    - 5.25.1
+    - 5.26.0
+    - 5.26.3
+    - 5.27.0
+    - 5.27.1
+    - 5.27.2
+    - 5.28.0
+    - 5.30.0
+    - 5.31.0
+    - 5.31.2
+    - 5.32.0
+    - 5.33.2
+    - 5.35.0
+  - dependency-name: ajv
+    versions:
+    - 8.0.1
+    - 8.0.2
+    - 8.0.3
+    - 8.0.5
+    - 8.1.0
+  - dependency-name: webpack-cli
+    versions:
+    - 4.6.0
+  - dependency-name: karma
+    versions:
+    - 6.0.3
+    - 6.0.4
+    - 6.3.0
+  - dependency-name: jszip
+    versions:
+    - 3.6.0
+  - dependency-name: chai
+    versions:
+    - 4.3.0
+    - 4.3.1
+    - 4.3.3
+  - dependency-name: "@types/react"
+    versions:
+    - 17.0.2
+  - dependency-name: eslint-config-prettier
+    versions:
+    - 7.2.0
+    - 8.0.0
+  - dependency-name: "@types/express"
+    versions:
+    - 4.17.11
