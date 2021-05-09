@@ -31,6 +31,7 @@ const fields = [
     ['tabs.reload?{"cache":true}', "Reload with no caches"],
     ["tabs.pin.toggle", "Toggle pinned state"],
     ["tabs.duplicate", "Duplicate a tab"],
+    ["tabs.reader.toggle", "Reader view"],
   ],
   [
     ['follow.start?{"newTab":false,"background":false}', "Follow a link"],

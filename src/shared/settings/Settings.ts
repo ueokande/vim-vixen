@@ -133,6 +133,7 @@ export const DefaultSettingJSONText = `{
     "gf": { "type": "page.source" },
     "gh": { "type": "page.home" },
     "gH": { "type": "page.home", "newTab": true },
+    "gr": { "type": "tabs.reader.toggle" },
     "y": { "type": "urls.yank" },
     "p": { "type": "urls.paste", "newTab": false },
     "P": { "type": "urls.paste", "newTab": true },

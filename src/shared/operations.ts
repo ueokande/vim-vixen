@@ -56,6 +56,7 @@ export const TAB_PIN = "tabs.pin";
 export const TAB_UNPIN = "tabs.unpin";
 export const TAB_TOGGLE_PINNED = "tabs.pin.toggle";
 export const TAB_DUPLICATE = "tabs.duplicate";
+export const TAB_TOGGLE_READER = "tabs.reader.toggle";
 
 // Zooms
 export const ZOOM_IN = "zoom.in";
@@ -257,6 +258,10 @@ export interface TabDuplicateOperation {
   type: typeof TAB_DUPLICATE;
 }
 
+export interface TabToggleReaderOperation {
+  type: typeof TAB_TOGGLE_READER;
+}
+
 export interface ZoomInOperation {
   type: typeof ZOOM_IN;
 }
@@ -352,6 +357,7 @@ export type Operation =
   | TabUnpinOperation
   | TabTogglePinnedOperation
   | TabDuplicateOperation
+  | TabToggleReaderOperation
   | ZoomInOperation
   | ZoomOutOperation
   | ZoomNeutralOperation
@@ -506,6 +512,7 @@ export const valueOf = (o: any): Operation => {
     case TAB_UNPIN:
     case TAB_TOGGLE_PINNED:
     case TAB_DUPLICATE:
+    case TAB_TOGGLE_READER:
     case ZOOM_IN:
     case ZOOM_OUT:
     case ZOOM_NEUTRAL:
