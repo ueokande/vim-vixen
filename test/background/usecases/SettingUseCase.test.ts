@@ -38,7 +38,7 @@ class MockCachedSettingRepository implements CachedSettingRepository {
 }
 
 class NopNotifier implements Notifier {
-  notifyInvalidSettings(_onclick: () => void): Promise<void> {
+  notifyInvalidSettings(_error: Error, _onclick: () => void): Promise<void> {
     return Promise.resolve();
   }
 
