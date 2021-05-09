@@ -54,7 +54,7 @@ export default class SettingUseCase {
 
   private showUnableToLoad(e: Error) {
     console.error("unable to load settings", e);
-    this.notifier.notifyInvalidSettings(() => {
+    this.notifier.notifyInvalidSettings(e, () => {
       browser.runtime.openOptionsPage();
     });
   }

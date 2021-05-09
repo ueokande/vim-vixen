@@ -4,7 +4,7 @@ const NOTIFICATION_ID_INVALID_SETTINGS = "vimvixen-update-invalid-settings";
 export default interface Notifier {
   notifyUpdated(version: string, onclick: () => void): Promise<void>;
 
-  notifyInvalidSettings(onclick: () => void): Promise<void>;
+  notifyInvalidSettings(error: Error, onclick: () => void): Promise<void>;
 }
 
 export class NotifierImpl implements NotifierImpl {
@@ -29,11 +29,13 @@ export class NotifierImpl implements NotifierImpl {
     });
   }
 
-  async notifyInvalidSettings(onclick: () => void): Promise<void> {
+  async notifyInvalidSettings(
+    error: Error,
+    onclick: () => void
+  ): Promise<void> {
     const title = `Loading settings failed`;
     // eslint-disable-next-line max-len
-    const message =
-      "The default settings are used due to the last saved settings is invalid.  Check your current settings from the add-on preference";
+    const message = `The default settings are used due to the last saved settings is invalid.  Check your current settings from the add-on preference: ${error.message}`;
 
     const listener = (id: string) => {
       if (id !== NOTIFICATION_ID_INVALID_SETTINGS) {
