@@ -47,6 +47,8 @@ export default interface TabPresenter {
   onSelected(
     listener: (arg: { tabId: number; windowId: number }) => void
   ): void;
+
+  toggleReaderMode(tabId: number): Promise<void>;
 }
 
 export class TabPresenterImpl implements TabPresenter {
@@ -151,6 +153,10 @@ export class TabPresenterImpl implements TabPresenter {
     listener: (arg: { tabId: number; windowId: number }) => void
   ): void {
     browser.tabs.onActivated.addListener(listener);
+  }
+
+  toggleReaderMode(tabId: number): Promise<void> {
+    return browser.tabs.toggleReaderMode(tabId);
   }
 }
 

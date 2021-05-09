@@ -1,3 +1,7 @@
+declare namespace browser.tabs {
+  function toggleReaderMode(tabId?: number): Promise<void>;
+}
+
 declare namespace browser.browserSettings.homepageOverride {
   type BrowserSettings = {
     value: string;

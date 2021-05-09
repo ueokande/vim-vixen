@@ -16,6 +16,7 @@ import PinTabOperator from "./PinTabOperator";
 import UnpinTabOperator from "./UnpinTabOperator";
 import TogglePinnedTabOperator from "./TogglePinnedTabOperator";
 import DuplicateTabOperator from "./DuplicateTabOperator";
+import ToggleReaderOperator from "./ToggleReaderOperator";
 
 @injectable()
 export default class TabOperatorFactoryChain implements OperatorFactoryChain {
@@ -58,6 +59,8 @@ export default class TabOperatorFactoryChain implements OperatorFactoryChain {
         return new TogglePinnedTabOperator(this.tabPresenter);
       case operations.TAB_DUPLICATE:
         return new DuplicateTabOperator(this.tabPresenter);
+      case operations.TAB_TOGGLE_READER:
+        return new ToggleReaderOperator(this.tabPresenter);
     }
     return null;
   }
