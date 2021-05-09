@@ -107,6 +107,20 @@ describe("tab test", () => {
     assert.strictEqual(current[0].pinned, true);
   });
 
+  it("switches to reader view", async () => {
+    await browser.tabs.update(tabs[0].id, { active: true });
+    const page = await Page.currentContext(webdriver);
+    await page.sendKeys("g", "r");
+
+    // Unable to switch to reader view, but an error message occurs
+    const console = await page.getConsole();
+    const errorMessage = await console.getErrorMessage();
+    assert.strictEqual(
+      errorMessage,
+      "The specified tab cannot be placed into reader mode."
+    );
+  });
+
   it("selects previous tab by K", async () => {
     await browser.tabs.update(tabs[2].id, { active: true });
     const page = await Page.currentContext(webdriver);
