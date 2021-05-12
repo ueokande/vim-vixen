@@ -31,6 +31,7 @@
     "sessions",
     "storage",
     "tabs",
+    "find",
     "clipboardRead",
     "notifications",
     "bookmarks",
