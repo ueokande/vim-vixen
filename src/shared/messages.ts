@@ -35,11 +35,6 @@ export const MARK_JUMP_GLOBAL = "mark.jump.global";
 
 export const TAB_SCROLL_TO = "tab.scroll.to";
 
-export const FIND_NEXT = "find.next";
-export const FIND_PREV = "find.prev";
-export const FIND_GET_KEYWORD = "find.get.keyword";
-export const FIND_SET_KEYWORD = "find.set.keyword";
-
 export const ADDON_ENABLED_QUERY = "addon.enabled.query";
 export const ADDON_ENABLED_RESPONSE = "addon.enabled.response";
 export const ADDON_TOGGLE_ENABLED = "addon.toggle.enabled";
@@ -227,24 +222,6 @@ export interface TabScrollToMessage {
   y: number;
 }
 
-export interface FindNextMessage {
-  type: typeof FIND_NEXT;
-}
-
-export interface FindPrevMessage {
-  type: typeof FIND_PREV;
-}
-
-export interface FindGetKeywordMessage {
-  type: typeof FIND_GET_KEYWORD;
-}
-
-export interface FindSetKeywordMessage {
-  type: typeof FIND_SET_KEYWORD;
-  keyword: string;
-  found: boolean;
-}
-
 export interface AddonEnabledQueryMessage {
   type: typeof ADDON_ENABLED_QUERY;
 }
@@ -322,10 +299,6 @@ export type Message =
   | MarkSetGlobalMessage
   | MarkJumpGlobalMessage
   | TabScrollToMessage
-  | FindNextMessage
-  | FindPrevMessage
-  | FindGetKeywordMessage
-  | FindSetKeywordMessage
   | AddonEnabledQueryMessage
   | AddonEnabledResponseMessage
   | AddonToggleEnabledMessage
@@ -360,10 +333,6 @@ export const valueOf = (o: any): Message => {
     case MARK_SET_GLOBAL:
     case MARK_JUMP_GLOBAL:
     case TAB_SCROLL_TO:
-    case FIND_NEXT:
-    case FIND_PREV:
-    case FIND_GET_KEYWORD:
-    case FIND_SET_KEYWORD:
     case ADDON_ENABLED_QUERY:
     case ADDON_ENABLED_RESPONSE:
     case ADDON_TOGGLE_ENABLED:

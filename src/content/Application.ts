@@ -1,6 +1,5 @@
 import { injectable } from "tsyringe";
 import MessageListener from "./MessageListener";
-import FindController from "./controllers/FindController";
 import MarkController from "./controllers/MarkController";
 import FollowMasterController from "./controllers/FollowMasterController";
 import FollowSlaveController from "./controllers/FollowSlaveController";
@@ -22,7 +21,6 @@ export default class Application {
   // eslint-disable-next-line max-params
   constructor(
     private messageListener: MessageListener,
-    private findController: FindController,
     private markController: MarkController,
     private followMasterController: FollowMasterController,
     private followSlaveController: FollowSlaveController,
@@ -47,12 +45,6 @@ export default class Application {
   private routeMasterComponents() {
     this.messageListener.onWebMessage((msg: Message, sender: Window) => {
       switch (msg.type) {
-        case messages.CONSOLE_ENTER_FIND:
-          return this.findController.start(msg);
-        case messages.FIND_NEXT:
-          return this.findController.next(msg);
-        case messages.FIND_PREV:
-          return this.findController.prev(msg);
         case messages.CONSOLE_UNFOCUS:
           return this.consoleFrameController.unfocus(msg);
         case messages.FOLLOW_START:
