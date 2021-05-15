@@ -7,7 +7,6 @@ import { Operation } from "../../../shared/operations";
 import OperationClient from "../../client/OperationClient";
 import AddonOperatorFactoryChain from "./AddonOperatorFactoryChain";
 import ClipboardOperatorFactoryChain from "./ClipboardOperatorFactoryChain";
-import FindOperatorFactoryChain from "./FindOperatorFactoryChain";
 import FocusOperatorFactoryChain from "./FocusOperatorFactoryChain";
 import FollowOperatorFactoryChain from "./FollowOperatorFactoryChain";
 import MarkOperatorFactoryChain from "./MarkOperatorFactoryChain";
@@ -20,7 +19,6 @@ export default class OperatorFactoryImpl implements OperatorFactory {
   constructor(
     addonOperatorFactoryChain: AddonOperatorFactoryChain,
     clipboardOperatorFactoryChain: ClipboardOperatorFactoryChain,
-    findOperatorFactoryChain: FindOperatorFactoryChain,
     focusOperatorFactoryChain: FocusOperatorFactoryChain,
     followOperatorFactoryChain: FollowOperatorFactoryChain,
     markOperatorFactoryChain: MarkOperatorFactoryChain,
@@ -31,7 +29,6 @@ export default class OperatorFactoryImpl implements OperatorFactory {
     this.factoryChains = [
       addonOperatorFactoryChain,
       clipboardOperatorFactoryChain,
-      findOperatorFactoryChain,
       focusOperatorFactoryChain,
       followOperatorFactoryChain,
       markOperatorFactoryChain,
