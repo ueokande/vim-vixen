@@ -176,4 +176,8 @@ export default class MockTabPresenter implements TabPresenter {
     this.zooms[index] = factor;
     return Promise.resolve();
   }
+
+  toggleReaderMode(_tabId: number): Promise<void> {
+    throw new Error("not implemented");
+  }
 }
