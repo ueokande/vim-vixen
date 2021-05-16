@@ -27,6 +27,7 @@ import { TabsClientImpl } from "./client/TabsClient";
 import { container } from "tsyringe";
 import OperatorFactoryImpl from "./operators/impls/OperatorFactoryImpl";
 import { URLRepositoryImpl } from "./operators/impls/URLRepository";
+import { FindPresenterImpl } from "./presenters/FindPresenter";
 
 container.register("FollowMasterClient", {
   useValue: new FollowMasterClientImpl(window.top),
@@ -71,6 +72,7 @@ container.register("NavigationPresenter", {
 });
 container.register("OperationClient", { useClass: OperationClientImpl });
 container.register("ScrollPresenter", { useClass: ScrollPresenterImpl });
+container.register("FindPresenter", { useClass: FindPresenterImpl });
 container.register("SettingClient", { useClass: SettingClientImpl });
 container.register("SettingRepository", { useClass: SettingRepositoryImpl });
 container.register("URLRepository", { useClass: URLRepositoryImpl });

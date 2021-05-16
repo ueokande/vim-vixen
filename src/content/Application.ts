@@ -13,6 +13,7 @@ import SettingController from "./controllers/SettingController";
 import ConsoleFrameController from "./controllers/ConsoleFrameController";
 import NavigateController from "./controllers/NavigateController";
 import * as messages from "../shared/messages";
+import FindController from "./controllers/FindController";
 
 type Message = messages.Message;
 
@@ -31,7 +32,8 @@ export default class Application {
     private addonEnabledController: AddonEnabledController,
     private settingController: SettingController,
     private consoleFrameController: ConsoleFrameController,
-    private navigateController: NavigateController
+    private navigateController: NavigateController,
+    private findController: FindController
   ) {}
 
   init(): Promise<void> {
@@ -101,6 +103,13 @@ export default class Application {
           return this.navigateController.openLinkPrev(msg);
         case messages.CONSOLE_RESIZE:
           return this.consoleFrameController.resize(msg);
+        case messages.FIND_SELECT_KEYWORD:
+          return this.findController.selectKeyword({
+            startTextNodePos: msg.startTextNodePos,
+            endTextNodePos: msg.endTextNodePos,
+            startOffset: msg.startOffset,
+            endOffset: msg.endOffset,
+          });
       }
     });
 

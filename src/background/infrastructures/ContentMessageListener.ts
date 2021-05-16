@@ -9,6 +9,7 @@ import OperationController from "../controllers/OperationController";
 import MarkController from "../controllers/MarkController";
 import CompletionController from "../controllers/CompletionController";
 import ConsoleController from "../controllers/ConsoleController";
+import FindController from "../controllers/FindController";
 
 @injectable()
 export default class ContentMessageListener {
@@ -22,7 +23,8 @@ export default class ContentMessageListener {
     private readonly linkController: LinkController,
     private readonly operationController: OperationController,
     private readonly markController: MarkController,
-    private readonly consoleController: ConsoleController
+    private readonly consoleController: ConsoleController,
+    private readonly findController: FindController
   ) {}
 
   run(): void {
@@ -34,6 +36,7 @@ export default class ContentMessageListener {
             return {};
           }
           return ret.catch((e) => {
+            console.error(e);
             if (!sender.tab || !sender.tab.id) {
               return;
             }
@@ -43,6 +46,7 @@ export default class ContentMessageListener {
             });
           });
         } catch (e) {
+          console.error(e);
           if (!sender.tab || !sender.tab.id) {
             return;
           }
@@ -78,6 +82,8 @@ export default class ContentMessageListener {
         return this.completionController.getProperties();
       case messages.CONSOLE_ENTER_COMMAND:
         return this.onConsoleEnterCommand(message.text);
+      case messages.CONSOLE_ENTER_FIND:
+        return this.findController.startFind(senderTab.id!, message.keyword);
       case messages.CONSOLE_RESIZE:
         return this.onConsoleResize(
           senderTab.id!,

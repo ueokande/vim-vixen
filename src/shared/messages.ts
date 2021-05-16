@@ -35,6 +35,8 @@ export const MARK_JUMP_GLOBAL = "mark.jump.global";
 
 export const TAB_SCROLL_TO = "tab.scroll.to";
 
+export const FIND_SELECT_KEYWORD = "find.select.keyword";
+
 export const ADDON_ENABLED_QUERY = "addon.enabled.query";
 export const ADDON_ENABLED_RESPONSE = "addon.enabled.response";
 export const ADDON_TOGGLE_ENABLED = "addon.toggle.enabled";
@@ -68,7 +70,7 @@ export interface ConsoleEnterCommandMessage {
 
 export interface ConsoleEnterFindMessage {
   type: typeof CONSOLE_ENTER_FIND;
-  text?: string;
+  keyword?: string;
 }
 
 export interface ConsoleShowCommandMessage {
@@ -222,6 +224,14 @@ export interface TabScrollToMessage {
   y: number;
 }
 
+export interface FindSelectKeyword {
+  type: typeof FIND_SELECT_KEYWORD;
+  startTextNodePos: number;
+  endTextNodePos: number;
+  startOffset: number;
+  endOffset: number;
+}
+
 export interface AddonEnabledQueryMessage {
   type: typeof ADDON_ENABLED_QUERY;
 }
@@ -299,6 +309,7 @@ export type Message =
   | MarkSetGlobalMessage
   | MarkJumpGlobalMessage
   | TabScrollToMessage
+  | FindSelectKeyword
   | AddonEnabledQueryMessage
   | AddonEnabledResponseMessage
   | AddonToggleEnabledMessage
@@ -333,6 +344,7 @@ export const valueOf = (o: any): Message => {
     case MARK_SET_GLOBAL:
     case MARK_JUMP_GLOBAL:
     case TAB_SCROLL_TO:
+    case FIND_SELECT_KEYWORD:
     case ADDON_ENABLED_QUERY:
     case ADDON_ENABLED_RESPONSE:
     case ADDON_TOGGLE_ENABLED:
