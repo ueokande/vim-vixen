@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import FindRepositoryImpl from "../repositories/FindRepository";
 import FindClient from "../clients/FindClient";
+import ConsoleClient from "../infrastructures/ConsoleClient";
 
 @injectable()
 export default class StartFindUseCase {
@@ -8,7 +9,9 @@ export default class StartFindUseCase {
     @inject("FindClient")
     private readonly findClient: FindClient,
     @inject("FindRepository")
-    private readonly findRepository: FindRepositoryImpl
+    private readonly findRepository: FindRepositoryImpl,
+    @inject("ConsoleClient")
+    private readonly consoleClient: ConsoleClient
   ) {}
 
   async startFind(tabId: number, keyword?: string): Promise<void> {
@@ -28,6 +31,10 @@ export default class StartFindUseCase {
     }
     await this.findClient.highlightAll();
     await this.findClient.selectKeyword(tabId, keyword, match.rangeData[0]);
+    await this.consoleClient.showInfo(
+      tabId,
+      `1 of ${match.count} matched: ${keyword}`
+    );
 
     await this.findRepository.setGlobalKeyword(keyword);
     await this.findRepository.setLocalState(tabId, {

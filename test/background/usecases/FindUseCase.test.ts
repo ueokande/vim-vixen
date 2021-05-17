@@ -6,10 +6,13 @@ import FindRepository from "../../../src/background/repositories/FindRepository"
 import { expect } from "chai";
 import MockFindClient from "../mock/MockFindClient";
 import MockFindRepository from "../mock/MockFindRepository";
+import MockConsoleClient from "../mock/MockConsoleClient";
+import ConsoleClient from "../../../src/background/infrastructures/ConsoleClient";
 
 describe("FindUseCase", () => {
   let findClient: FindClient;
   let findRepository: FindRepository;
+  let consoleClient: ConsoleClient;
   let sut: StartFindUseCase;
 
   const rangeData = (count: number): browser.find.RangeData[] => {
@@ -27,7 +30,8 @@ describe("FindUseCase", () => {
   beforeEach(() => {
     findClient = new MockFindClient();
     findRepository = new MockFindRepository();
-    sut = new StartFindUseCase(findClient, findRepository);
+    consoleClient = new MockConsoleClient();
+    sut = new StartFindUseCase(findClient, findRepository, consoleClient);
   });
 
   describe("startFind", function () {
@@ -44,6 +48,11 @@ describe("FindUseCase", () => {
           .mock(findClient)
           .expects("selectKeyword")
           .once();
+        const showInfo = sinon
+          .mock(consoleClient)
+          .expects("showInfo")
+          .once()
+          .withArgs(10, "1 of 10 matched: Hello, world");
 
         await sut.startFind(10, "Hello, world");
 
@@ -56,6 +65,7 @@ describe("FindUseCase", () => {
         );
         highlightAll.verify();
         selectKeyword.verify();
+        showInfo.verify();
       });
 
       it("throws an error if no matched", (done) => {
@@ -88,12 +98,18 @@ describe("FindUseCase", () => {
           .mock(findClient)
           .expects("selectKeyword")
           .once();
+        const showInfo = sinon
+          .mock(consoleClient)
+          .expects("showInfo")
+          .once()
+          .withArgs(10, "1 of 10 matched: Hello, world");
 
         await sut.startFind(10, undefined);
 
         expect(startFind.calledWith("Hello, world")).to.be.true;
         highlightAll.verify();
         selectKeyword.verify();
+        showInfo.verify();
       });
 
       it("starts find with last used keyword in global", async () => {
@@ -109,12 +125,18 @@ describe("FindUseCase", () => {
           .mock(findClient)
           .expects("selectKeyword")
           .once();
+        const showInfo = sinon
+          .mock(consoleClient)
+          .expects("showInfo")
+          .once()
+          .withArgs(10, "1 of 10 matched: Hello, world");
 
         await sut.startFind(10, undefined);
 
         expect(startFind.calledWith("Hello, world")).to.be.true;
         highlightAll.verify();
         selectKeyword.verify();
+        showInfo.verify();
       });
     });
   });

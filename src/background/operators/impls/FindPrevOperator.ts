@@ -2,12 +2,14 @@ import Operator from "../Operator";
 import TabPresenter from "../../presenters/TabPresenter";
 import FindRepository from "../../repositories/FindRepository";
 import FindClient from "../../clients/FindClient";
+import ConsoleClient from "../../infrastructures/ConsoleClient";
 
 export default class FindPrevOperator implements Operator {
   constructor(
     private readonly tabPresenter: TabPresenter,
     private readonly findRepository: FindRepository,
-    private readonly findClient: FindClient
+    private readonly findClient: FindClient,
+    private readonly consoleClient: ConsoleClient
   ) {}
 
   async run(): Promise<void> {
@@ -28,6 +30,12 @@ export default class FindPrevOperator implements Operator {
       tabId,
       state.keyword,
       state.rangeData[state.highlightPosition]
+    );
+    await this.consoleClient.showInfo(
+      tabId,
+      `${state.highlightPosition + 1} of ${state.rangeData.length} matched: ${
+        state.keyword
+      }`
     );
     await this.findRepository.setLocalState(tabId, state);
   }

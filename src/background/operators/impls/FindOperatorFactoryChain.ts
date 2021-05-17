@@ -7,6 +7,7 @@ import FindNextOperator from "./FindNextOperator";
 import FindPrevOperator from "./FindPrevOperator";
 import FindRepository from "../../repositories/FindRepository";
 import FindClient from "../../clients/FindClient";
+import ConsoleClient from "../../infrastructures/ConsoleClient";
 
 @injectable()
 export default class FindOperatorFactoryChain implements OperatorFactoryChain {
@@ -16,7 +17,9 @@ export default class FindOperatorFactoryChain implements OperatorFactoryChain {
     @inject("FindRepository")
     private readonly findRepository: FindRepository,
     @inject("FindClient")
-    private readonly findClient: FindClient
+    private readonly findClient: FindClient,
+    @inject("ConsoleClient")
+    private readonly consoleClient: ConsoleClient
   ) {}
 
   create(op: operations.Operation): Operator | null {
@@ -25,13 +28,15 @@ export default class FindOperatorFactoryChain implements OperatorFactoryChain {
         return new FindNextOperator(
           this.tabPresenter,
           this.findRepository,
-          this.findClient
+          this.findClient,
+          this.consoleClient
         );
       case operations.FIND_PREV:
         return new FindPrevOperator(
           this.tabPresenter,
           this.findRepository,
-          this.findClient
+          this.findClient,
+          this.consoleClient
         );
     }
     return null;

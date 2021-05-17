@@ -4,6 +4,7 @@ import FindNextOperator from "../../../../src/background/operators/impls/FindNex
 import { FindState } from "../../../../src/background/repositories/FindRepository";
 import MockFindRepository from "../../mock/MockFindRepository";
 import MockFindClient from "../../mock/MockFindClient";
+import MockConsoleClient from "../../mock/MockConsoleClient";
 
 describe("FindNextOperator", () => {
   describe("#run", () => {
@@ -11,12 +12,14 @@ describe("FindNextOperator", () => {
       const tabPresenter = new MockTabPresenter();
       const findRepository = new MockFindRepository();
       const findClient = new MockFindClient();
+      const consoleClient = new MockConsoleClient();
       await tabPresenter.create("https://example.com/");
 
       const sut = new FindNextOperator(
         tabPresenter,
         findRepository,
-        findClient
+        findClient,
+        consoleClient
       );
       try {
         await sut.run();
@@ -30,6 +33,7 @@ describe("FindNextOperator", () => {
       const tabPresenter = new MockTabPresenter();
       const findRepository = new MockFindRepository();
       const findClient = new MockFindClient();
+      const consoleClient = new MockConsoleClient();
       const currentTab = await tabPresenter.create("https://example.com/");
 
       const state: FindState = {
@@ -64,27 +68,39 @@ describe("FindNextOperator", () => {
       };
 
       await findRepository.setLocalState(currentTab.id!, state);
-      const mock = sinon.mock(findClient);
-      mock
+      const mockFindClient = sinon.mock(findClient);
+      mockFindClient
         .expects("selectKeyword")
         .withArgs(currentTab?.id, "Hello, world", state.rangeData[1]);
-      mock
+      mockFindClient
         .expects("selectKeyword")
         .withArgs(currentTab?.id, "Hello, world", state.rangeData[2]);
-      mock
+      mockFindClient
         .expects("selectKeyword")
         .withArgs(currentTab?.id, "Hello, world", state.rangeData[0]);
+      const mockConsoleClient = sinon.mock(consoleClient);
+      mockConsoleClient
+        .expects("showInfo")
+        .withArgs(currentTab?.id, "2 of 3 matched: Hello, world");
+      mockConsoleClient
+        .expects("showInfo")
+        .withArgs(currentTab?.id, "3 of 3 matched: Hello, world");
+      mockConsoleClient
+        .expects("showInfo")
+        .withArgs(currentTab?.id, "1 of 3 matched: Hello, world");
       const sut = new FindNextOperator(
         tabPresenter,
         findRepository,
-        findClient
+        findClient,
+        consoleClient
       );
 
       await sut.run();
       await sut.run();
       await sut.run();
 
-      mock.verify();
+      mockConsoleClient.verify();
+      mockFindClient.verify();
     });
   });
 });
