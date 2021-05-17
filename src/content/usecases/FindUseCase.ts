@@ -15,7 +15,7 @@ export default class FindUseCase {
     private readonly findPresenter: FindPresenter
   ) {}
 
-  selectKeyword(rangeData: RangeData): void {
-    this.findPresenter.selectKeyword(rangeData);
+  selectKeyword(keyword: string, rangeData: RangeData): void {
+    this.findPresenter.selectKeyword(keyword, rangeData);
   }
 }

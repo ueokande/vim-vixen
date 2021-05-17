@@ -5,7 +5,7 @@ import FindUseCase, { RangeData } from "../usecases/FindUseCase";
 export default class FindController {
   constructor(private findUseCase: FindUseCase) {}
 
-  selectKeyword(rangeData: RangeData) {
-    this.findUseCase.selectKeyword(rangeData);
+  selectKeyword(keyword: string, rangeData: RangeData) {
+    this.findUseCase.selectKeyword(keyword, rangeData);
   }
 }

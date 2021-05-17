@@ -226,6 +226,7 @@ export interface TabScrollToMessage {
 
 export interface FindSelectKeyword {
   type: typeof FIND_SELECT_KEYWORD;
+  keyword: string;
   startTextNodePos: number;
   endTextNodePos: number;
   startOffset: number;

@@ -25,6 +25,7 @@ export default class FindNextOperator implements Operator {
       (state.highlightPosition + 1) % state.rangeData.length;
     await this.findClient.selectKeyword(
       tabId,
+      state.keyword,
       state.rangeData[state.highlightPosition]
     );
     await this.findRepository.setLocalState(tabId, state);

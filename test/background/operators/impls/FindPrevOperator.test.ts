@@ -67,13 +67,13 @@ describe("FindPrevOperator", () => {
       const mock = sinon.mock(findClient);
       mock
         .expects("selectKeyword")
-        .withArgs(currentTab?.id, state.rangeData[0]);
+        .withArgs(currentTab?.id, "Hello, world", state.rangeData[0]);
       mock
         .expects("selectKeyword")
-        .withArgs(currentTab?.id, state.rangeData[2]);
+        .withArgs(currentTab?.id, "Hello, world", state.rangeData[2]);
       mock
         .expects("selectKeyword")
-        .withArgs(currentTab?.id, state.rangeData[1]);
+        .withArgs(currentTab?.id, "Hello, world", state.rangeData[1]);
       const sut = new FindNextOperator(
         tabPresenter,
         findRepository,

@@ -26,6 +26,7 @@ export default class FindPrevOperator implements Operator {
       state.rangeData.length;
     await this.findClient.selectKeyword(
       tabId,
+      state.keyword,
       state.rangeData[state.highlightPosition]
     );
     await this.findRepository.setLocalState(tabId, state);

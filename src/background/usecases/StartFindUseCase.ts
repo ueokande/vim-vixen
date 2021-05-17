@@ -27,7 +27,7 @@ export default class StartFindUseCase {
       throw new Error(`Pattern not found: ${keyword}`);
     }
     await this.findClient.highlightAll();
-    await this.findClient.selectKeyword(tabId, match.rangeData[0]);
+    await this.findClient.selectKeyword(tabId, keyword, match.rangeData[0]);
 
     await this.findRepository.setGlobalKeyword(keyword);
     await this.findRepository.setLocalState(tabId, {

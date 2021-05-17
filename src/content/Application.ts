@@ -104,7 +104,7 @@ export default class Application {
         case messages.CONSOLE_RESIZE:
           return this.consoleFrameController.resize(msg);
         case messages.FIND_SELECT_KEYWORD:
-          return this.findController.selectKeyword({
+          return this.findController.selectKeyword(msg.keyword, {
             startTextNodePos: msg.startTextNodePos,
             endTextNodePos: msg.endTextNodePos,
             startOffset: msg.startOffset,

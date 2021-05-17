@@ -13,6 +13,7 @@ export default class MockFindClient implements FindClient {
 
   selectKeyword(
     _tabId: number,
+    _keyword: string,
     _rangeData: browser.find.RangeData
   ): Promise<void> {
     throw new Error("not implemented");

@@ -9,6 +9,7 @@ export default interface FindClient {
 
   selectKeyword(
     tabId: number,
+    keyword: string,
     rangeData: browser.find.RangeData
   ): Promise<void>;
 }
@@ -39,10 +40,12 @@ export class FindClientImpl implements FindClient {
 
   async selectKeyword(
     tabId: number,
+    keyword: string,
     rangeData: browser.find.RangeData
   ): Promise<void> {
     await browser.tabs.sendMessage(tabId, {
       type: messages.FIND_SELECT_KEYWORD,
+      keyword,
       startTextNodePos: rangeData.startTextNodePos,
       endTextNodePos: rangeData.endTextNodePos,
       startOffset: rangeData.startOffset,
