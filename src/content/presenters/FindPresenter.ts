@@ -21,8 +21,9 @@ export class FindPresenterImpl implements FindPresenter {
     }
 
     const textNodes = this.getAllTextNode();
+    const textNode = textNodes[rangeData.startTextNodePos];
     const range = document.createRange();
-    range.selectNode(textNodes[rangeData.startTextNodePos]);
+    range.selectNode(textNode);
     range.setStart(
       textNodes[rangeData.startTextNodePos],
       rangeData.startOffset
@@ -32,6 +33,8 @@ export class FindPresenterImpl implements FindPresenter {
       selection.removeAllRanges();
     }
     selection.addRange(range);
+
+    textNode.parentElement!.scrollIntoView({ block: "center" });
   }
 
   private getAllTextNode() {
