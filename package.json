@@ -59,7 +59,7 @@
     "karma-mocha-reporter": "^2.2.5",
     "karma-sinon": "^1.0.5",
     "karma-sourcemap-loader": "^0.3.7",
-    "karma-webpack": "^4.0.2",
+    "karma-webpack": "^5.0.0",
     "lanthan": "0.0.2",
     "mocha": "^8.1.1",
     "prettier": "2.2.1",
@@ -82,7 +82,7 @@
     "typescript": "4.2.4",
     "web-ext-types": "^3.2.1",
     "webextensions-api-fake": "^0.9.1",
-    "webpack": "4.46.0",
+    "webpack": "5.37.1",
     "webpack-cli": "4.7.0"
   }
 }
