@@ -34,6 +34,7 @@ export default class ContentMessageListener {
             return {};
           }
           return ret.catch((e) => {
+            console.error(e);
             if (!sender.tab || !sender.tab.id) {
               return;
             }
@@ -43,6 +44,7 @@ export default class ContentMessageListener {
             });
           });
         } catch (e) {
+          console.error(e);
           if (!sender.tab || !sender.tab.id) {
             return;
           }
