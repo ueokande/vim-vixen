@@ -56,16 +56,6 @@ export default class Application {
       }
       return undefined;
     });
-
-    this.messageListener.onBackgroundMessage((msg: Message) => {
-      switch (msg.type) {
-        case messages.ADDON_ENABLED_QUERY:
-          return this.addonEnabledController.getAddonEnabled(msg);
-        case messages.TAB_SCROLL_TO:
-          return this.markController.scrollTo(msg);
-      }
-      return undefined;
-    });
   }
 
   private routeCommonComponents(): Promise<void> {
@@ -101,6 +91,15 @@ export default class Application {
           return this.navigateController.openLinkPrev(msg);
         case messages.CONSOLE_RESIZE:
           return this.consoleFrameController.resize(msg);
+      }
+
+      if (window.self === window.top) {
+        switch (msg.type) {
+          case messages.ADDON_ENABLED_QUERY:
+            return this.addonEnabledController.getAddonEnabled(msg);
+          case messages.TAB_SCROLL_TO:
+            return this.markController.scrollTo(msg);
+        }
       }
     });
 
