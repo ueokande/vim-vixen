@@ -14,7 +14,8 @@ import StartFindOperator from "./StartFindOperator";
 
 @injectable()
 export default class CommandOperatorFactoryChain
-  implements OperatorFactoryChain {
+  implements OperatorFactoryChain
+{
   constructor(
     @inject("TabPresenter")
     private readonly tabPresenter: TabPresenter,

@@ -8,7 +8,8 @@ import * as operations from "../../../shared/operations";
 
 @injectable()
 export default class RepeatOperatorFactoryChain
-  implements OperatorFactoryChain {
+  implements OperatorFactoryChain
+{
   constructor(
     @inject("RepeatRepository")
     private readonly repeatRepository: RepeatRepository,

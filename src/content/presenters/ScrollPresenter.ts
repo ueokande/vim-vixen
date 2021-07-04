@@ -21,12 +21,8 @@ const canBeScrolled = (element: Element): boolean => {
 // Check if the element's overflow and visibility permit scrolling.
 // Credit: https://github.com/philc/vimium/blob/bdf654aebe6f570f427c5f7bc9592cad86e642b5/content_scripts/scroller.js#L74
 const isScrollableStyle = (element: Element): boolean => {
-  const {
-    overflowX,
-    overflowY,
-    overflow,
-    visibility,
-  } = window.getComputedStyle(element);
+  const { overflowX, overflowY, overflow, visibility } =
+    window.getComputedStyle(element);
   if ([overflow, overflowX, overflowY].includes("hidden")) {
     return false;
   }

@@ -10,7 +10,8 @@ import * as operations from "../../../shared/operations";
 
 @injectable()
 export default class InternalOperatorFactoryChain
-  implements OperatorFactoryChain {
+  implements OperatorFactoryChain
+{
   constructor(
     @inject("WindowPresenter")
     private readonly windowPresenter: WindowPresenter,

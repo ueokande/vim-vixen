@@ -5,7 +5,8 @@ import SettingRepository from "../../repositories/SettingRepository";
 
 export default class ScrollToBottomOperator
   extends AbstractScrollOperator
-  implements Operator {
+  implements Operator
+{
   constructor(
     private readonly presenter: ScrollPresenter,
     settingRepository: SettingRepository

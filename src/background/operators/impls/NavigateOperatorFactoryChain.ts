@@ -16,7 +16,8 @@ import * as operations from "../../../shared/operations";
 
 @injectable()
 export default class NavigateOperatorFactoryChain
-  implements OperatorFactoryChain {
+  implements OperatorFactoryChain
+{
   constructor(
     @inject("TabPresenter")
     private readonly tabPresenter: TabPresenter,
