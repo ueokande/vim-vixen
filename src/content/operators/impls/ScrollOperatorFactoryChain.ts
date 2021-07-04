@@ -14,7 +14,8 @@ import ScrollToEndOperator from "./ScrollToEndOperator";
 
 @injectable()
 export default class ScrollOperatorFactoryChain
-  implements OperatorFactoryChain {
+  implements OperatorFactoryChain
+{
   constructor(
     @inject("ScrollPresenter")
     private readonly scrollPresenter: ScrollPresenter,

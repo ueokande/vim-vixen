@@ -12,7 +12,8 @@ import URLRepository from "./URLRepository";
 
 @injectable()
 export default class ClipboardOperatorFactoryChain
-  implements OperatorFactoryChain {
+  implements OperatorFactoryChain
+{
   constructor(
     @inject("ClipboardRepository")
     private readonly clipboardRepository: ClipboardRepository,

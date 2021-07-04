@@ -246,49 +246,30 @@ export const useCompletions = () => {
                 return;
               }
 
-              getOpenCompletions(
-                cmd.command,
-                cmd.args,
-                completionTypes
-              ).then((completions) =>
-                dispatch(actions.setCompletions(completions))
+              getOpenCompletions(cmd.command, cmd.args, completionTypes).then(
+                (completions) => dispatch(actions.setCompletions(completions))
               );
               break;
             case Command.Buffer:
-              getTabCompletions(
-                cmd.command,
-                cmd.args,
-                false
-              ).then((completions) =>
-                dispatch(actions.setCompletions(completions))
+              getTabCompletions(cmd.command, cmd.args, false).then(
+                (completions) => dispatch(actions.setCompletions(completions))
               );
               break;
             case Command.BufferDelete:
             case Command.BuffersDelete:
-              getTabCompletions(
-                cmd.command,
-                cmd.args,
-                true
-              ).then((completions) =>
-                dispatch(actions.setCompletions(completions))
+              getTabCompletions(cmd.command, cmd.args, true).then(
+                (completions) => dispatch(actions.setCompletions(completions))
               );
               break;
             case Command.BufferDeleteForce:
             case Command.BuffersDeleteForce:
-              getTabCompletions(
-                cmd.command,
-                cmd.args,
-                false
-              ).then((completions) =>
-                dispatch(actions.setCompletions(completions))
+              getTabCompletions(cmd.command, cmd.args, false).then(
+                (completions) => dispatch(actions.setCompletions(completions))
               );
               break;
             case Command.Set:
-              getPropertyCompletions(
-                cmd.command,
-                cmd.args
-              ).then((completions) =>
-                dispatch(actions.setCompletions(completions))
+              getPropertyCompletions(cmd.command, cmd.args).then(
+                (completions) => dispatch(actions.setCompletions(completions))
               );
               break;
           }
@@ -314,12 +295,14 @@ export const useCompletions = () => {
 export const useSelectCompletion = () => {
   const state = React.useContext(CompletionStateContext);
   const dispatch = React.useContext(CompletionDispatchContext);
-  const next = React.useCallback(() => dispatch(actions.selectNext()), [
-    dispatch,
-  ]);
-  const prev = React.useCallback(() => dispatch(actions.selectPrev()), [
-    dispatch,
-  ]);
+  const next = React.useCallback(
+    () => dispatch(actions.selectNext()),
+    [dispatch]
+  );
+  const prev = React.useCallback(
+    () => dispatch(actions.selectPrev()),
+    [dispatch]
+  );
   const currentValue = React.useMemo(() => {
     if (state.select < 0) {
       return state.completionSource;

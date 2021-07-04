@@ -7,7 +7,8 @@ import * as operations from "../../../shared/operations";
 
 @injectable()
 export default class FollowOperatorFactoryChain
-  implements OperatorFactoryChain {
+  implements OperatorFactoryChain
+{
   constructor(
     @inject("FollowMasterClient")
     private followMasterClient: FollowMasterClient

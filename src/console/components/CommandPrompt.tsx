@@ -21,12 +21,8 @@ const CommandPromptInner: React.FC<Props> = ({ initialInputValue }) => {
   const hide = useHide();
   const [inputValue, setInputValue] = React.useState(initialInputValue);
   const { completions, updateCompletions } = useCompletions();
-  const {
-    select,
-    currentValue,
-    selectNext,
-    selectPrev,
-  } = useSelectCompletion();
+  const { select, currentValue, selectNext, selectPrev } =
+    useSelectCompletion();
   const execCommand = useExecCommand();
 
   useAutoResize();
