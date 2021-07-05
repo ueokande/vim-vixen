@@ -8,6 +8,7 @@ import NavigateOperatorFactoryChain from "./NavigateOperatorFactoryChain";
 import RepeatOperatorFactoryChain from "./RepeatOperatorFactoryChain";
 import TabOperatorFactoryChain from "./TabOperatorFactoryChain";
 import ZoomOperatorFactoryChain from "./ZoomOperatorFactoryChain";
+import FindOperatorFactoryChain from "./FindOperatorFactoryChain";
 import * as operations from "../../../shared/operations";
 
 @injectable()
@@ -20,6 +21,7 @@ export class OperatorFactoryImpl implements OperatorFactory {
     navigateOperatorFactoryChain: NavigateOperatorFactoryChain,
     tabOperatorFactoryChain: TabOperatorFactoryChain,
     zoomOperatorFactoryChain: ZoomOperatorFactoryChain,
+    findOperatorFactoryChain: FindOperatorFactoryChain,
     @inject(delay(() => RepeatOperatorFactoryChain))
     repeatOperatorFactoryChain: RepeatOperatorFactoryChain
   ) {
@@ -30,6 +32,7 @@ export class OperatorFactoryImpl implements OperatorFactory {
       repeatOperatorFactoryChain,
       tabOperatorFactoryChain,
       zoomOperatorFactoryChain,
+      findOperatorFactoryChain,
     ];
   }
 

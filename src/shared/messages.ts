@@ -37,8 +37,7 @@ export const TAB_SCROLL_TO = "tab.scroll.to";
 
 export const FIND_NEXT = "find.next";
 export const FIND_PREV = "find.prev";
-export const FIND_GET_KEYWORD = "find.get.keyword";
-export const FIND_SET_KEYWORD = "find.set.keyword";
+export const FIND_CLEAR_SELECTION = "find.clear.selection";
 
 export const ADDON_ENABLED_QUERY = "addon.enabled.query";
 export const ADDON_ENABLED_RESPONSE = "addon.enabled.response";
@@ -73,7 +72,7 @@ export interface ConsoleEnterCommandMessage {
 
 export interface ConsoleEnterFindMessage {
   type: typeof CONSOLE_ENTER_FIND;
-  text?: string;
+  keyword?: string;
 }
 
 export interface ConsoleShowCommandMessage {
@@ -229,20 +228,16 @@ export interface TabScrollToMessage {
 
 export interface FindNextMessage {
   type: typeof FIND_NEXT;
+  keyword: string;
 }
 
 export interface FindPrevMessage {
   type: typeof FIND_PREV;
-}
-
-export interface FindGetKeywordMessage {
-  type: typeof FIND_GET_KEYWORD;
-}
-
-export interface FindSetKeywordMessage {
-  type: typeof FIND_SET_KEYWORD;
   keyword: string;
-  found: boolean;
+}
+
+export interface FindClearSelection {
+  type: typeof FIND_CLEAR_SELECTION;
 }
 
 export interface AddonEnabledQueryMessage {
@@ -324,8 +319,7 @@ export type Message =
   | TabScrollToMessage
   | FindNextMessage
   | FindPrevMessage
-  | FindGetKeywordMessage
-  | FindSetKeywordMessage
+  | FindClearSelection
   | AddonEnabledQueryMessage
   | AddonEnabledResponseMessage
   | AddonToggleEnabledMessage
@@ -362,8 +356,7 @@ export const valueOf = (o: any): Message => {
     case TAB_SCROLL_TO:
     case FIND_NEXT:
     case FIND_PREV:
-    case FIND_GET_KEYWORD:
-    case FIND_SET_KEYWORD:
+    case FIND_CLEAR_SELECTION:
     case ADDON_ENABLED_QUERY:
     case ADDON_ENABLED_RESPONSE:
     case ADDON_TOGGLE_ENABLED:
