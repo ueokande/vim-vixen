@@ -24,7 +24,7 @@
   "homepage": "https://github.com/ueokande/vim-vixen",
   "devDependencies": {
     "@types/assert": "^1.4.6",
-    "@types/chai": "^4.2.18",
+    "@types/chai": "^4.2.21",
     "@types/express": "^4.17.2",
     "@types/mocha": "^8.0.1",
     "@types/node": "^14.14.13",
