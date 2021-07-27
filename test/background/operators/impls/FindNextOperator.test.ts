@@ -1,90 +1,179 @@
-import sinon from "sinon";
+import * as sinon from "sinon";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 import FindNextOperator from "../../../../src/background/operators/impls/FindNextOperator";
-import { FindState } from "../../../../src/background/repositories/FindRepository";
 import MockFindRepository from "../../mock/MockFindRepository";
 import MockFindClient from "../../mock/MockFindClient";
+import MockConsoleClient from "../../mock/MockConsoleClient";
+import MockFramePresenter from "../../mock/MockFramePresenter";
 
 describe("FindNextOperator", () => {
-  describe("#run", () => {
-    it("throws an error on no previous keywords", async () => {
-      const tabPresenter = new MockTabPresenter();
-      const findRepository = new MockFindRepository();
-      const findClient = new MockFindClient();
-      await tabPresenter.create("https://example.com/");
+  const keyword = "hello";
+  const frameIds = [0, 100, 101];
 
-      const sut = new FindNextOperator(
-        tabPresenter,
-        findRepository,
-        findClient
-      );
-      try {
-        await sut.run();
-      } catch (e) {
-        return;
-      }
-      throw new Error("unexpected reach");
+  const tabPresenter = new MockTabPresenter();
+  const findRepository = new MockFindRepository();
+  const findClient = new MockFindClient();
+  const consoleClient = new MockConsoleClient();
+  const framePresenter = new MockFramePresenter();
+  const sut = new FindNextOperator(
+    tabPresenter,
+    findRepository,
+    findClient,
+    consoleClient,
+    framePresenter
+  );
+
+  let currentTabId: number;
+
+  beforeEach(async () => {
+    sinon.restore();
+
+    const currentTab = await tabPresenter.create("https://example.com/", {
+      active: true,
     });
+    currentTabId = currentTab.id!;
+  });
 
-    it("select a next next", async () => {
-      const tabPresenter = new MockTabPresenter();
-      const findRepository = new MockFindRepository();
-      const findClient = new MockFindClient();
-      const currentTab = await tabPresenter.create("https://example.com/");
+  describe("#run", () => {
+    it("shows errors if no previous keywords", async () => {
+      sinon
+        .stub(findRepository, "getLocalState")
+        .returns(Promise.resolve(undefined));
 
-      const state: FindState = {
-        keyword: "Hello, world",
-        rangeData: [
-          {
-            framePos: 0,
-            startOffset: 0,
-            endOffset: 10,
-            startTextNodePos: 0,
-            endTextNodePos: 0,
-            text: "Hello, world",
-          },
-          {
-            framePos: 1,
-            startOffset: 0,
-            endOffset: 10,
-            startTextNodePos: 1,
-            endTextNodePos: 1,
-            text: "Hello, world",
-          },
-          {
-            framePos: 2,
-            startOffset: 2,
-            endOffset: 10,
-            startTextNodePos: 1,
-            endTextNodePos: 1,
-            text: "Hello, world",
-          },
-        ],
-        highlightPosition: 0,
-      };
-
-      await findRepository.setLocalState(currentTab.id!, state);
-      const mock = sinon.mock(findClient);
+      const mock = sinon.mock(consoleClient);
       mock
-        .expects("selectKeyword")
-        .withArgs(currentTab?.id, state.rangeData[1]);
-      mock
-        .expects("selectKeyword")
-        .withArgs(currentTab?.id, state.rangeData[2]);
-      mock
-        .expects("selectKeyword")
-        .withArgs(currentTab?.id, state.rangeData[0]);
-      const sut = new FindNextOperator(
-        tabPresenter,
-        findRepository,
-        findClient
-      );
+        .expects("showError")
+        .withArgs(currentTabId, "No previous search keywords");
 
-      await sut.run();
-      await sut.run();
       await sut.run();
 
       mock.verify();
+    });
+
+    it("continues a search on the same frame", async () => {
+      sinon.stub(findRepository, "getLocalState").returns(
+        Promise.resolve({
+          keyword,
+          frameIds,
+          framePos: 1,
+        })
+      );
+
+      const mockFindClient = sinon.mock(findClient);
+      mockFindClient
+        .expects("findNext")
+        .withArgs(currentTabId, 100, keyword)
+        .returns(Promise.resolve(true));
+
+      const mockFindRepository = sinon.mock(findRepository);
+      mockFindRepository
+        .expects("setLocalState")
+        .withArgs(currentTabId, { keyword, frameIds, framePos: 1 });
+
+      await sut.run();
+
+      mockFindRepository.verify();
+      mockFindClient.verify();
+    });
+
+    it("continues a search on next frame", async () => {
+      sinon.stub(findRepository, "getLocalState").returns(
+        Promise.resolve({
+          keyword,
+          frameIds,
+          framePos: 1,
+        })
+      );
+
+      const mockFindClient = sinon.mock(findClient);
+      mockFindClient
+        .expects("findNext")
+        .withArgs(currentTabId, 100, keyword)
+        .returns(Promise.resolve(false));
+      mockFindClient
+        .expects("clearSelection")
+        .withArgs(currentTabId, 100)
+        .returns(Promise.resolve());
+      mockFindClient
+        .expects("findNext")
+        .withArgs(currentTabId, 101, keyword)
+        .returns(Promise.resolve(true));
+
+      const mockFindRepository = sinon.mock(findRepository);
+      mockFindRepository
+        .expects("setLocalState")
+        .withArgs(currentTabId, { keyword, frameIds, framePos: 2 });
+
+      await sut.run();
+
+      mockFindRepository.verify();
+      mockFindClient.verify();
+    });
+
+    it("exercise a wrap-search", async () => {
+      sinon.stub(findRepository, "getLocalState").returns(
+        Promise.resolve({
+          keyword,
+          frameIds,
+          framePos: 2,
+        })
+      );
+
+      const mockFindClient = sinon.mock(findClient);
+      mockFindClient
+        .expects("findNext")
+        .withArgs(currentTabId, 101, keyword)
+        .returns(Promise.resolve(false));
+      mockFindClient
+        .expects("clearSelection")
+        .withArgs(currentTabId, 101)
+        .returns(Promise.resolve());
+      mockFindClient
+        .expects("findNext")
+        .withArgs(currentTabId, 0, keyword)
+        .returns(Promise.resolve(true));
+
+      const mockFindRepository = sinon.mock(findRepository);
+      mockFindRepository
+        .expects("setLocalState")
+        .withArgs(currentTabId, { keyword, frameIds, framePos: 0 });
+
+      await sut.run();
+
+      mockFindRepository.verify();
+      mockFindClient.verify();
+    });
+
+    it("starts a search with last keywords", async () => {
+      sinon
+        .stub(findRepository, "getLocalState")
+        .returns(Promise.resolve(undefined));
+      sinon
+        .stub(findRepository, "getGlobalKeyword")
+        .returns(Promise.resolve(keyword));
+      sinon
+        .stub(framePresenter, "getAllFrameIds")
+        .returns(Promise.resolve(frameIds));
+      sinon.stub(consoleClient, "showInfo").returns(Promise.resolve());
+
+      const mockFindClient = sinon.mock(findClient);
+      mockFindClient.expects("clearSelection").withArgs(currentTabId, 0);
+      mockFindClient.expects("clearSelection").withArgs(currentTabId, 100);
+      mockFindClient.expects("clearSelection").withArgs(currentTabId, 101);
+      mockFindClient
+        .expects("findNext")
+        .withArgs(currentTabId, 0, keyword)
+        .returns(Promise.resolve(true));
+
+      const mockFindRepository = sinon.mock(findRepository);
+      mockFindRepository
+        .expects("setLocalState")
+        .withArgs(currentTabId, { keyword, frameIds, framePos: 0 });
+
+      await sut.run();
+
+      mockFindRepository.verify();
+      mockFindClient.verify();
     });
   });
 });

@@ -25,7 +25,8 @@ describe("background/repositories/FindRepositoryImpl", () => {
 
       await sut.setLocalState(10, {
         keyword: "Hello, world",
-        frameId: 20,
+        frameIds: [20, 21],
+        framePos: 0,
       });
 
       const state = await sut.getLocalState(10);

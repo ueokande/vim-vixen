@@ -44,12 +44,12 @@ describe("TabOperatorFactoryChain", () => {
       expect(sut.create({ type: operations.TAB_FIRST })).to.be.instanceOf(
         SelectFirstTabOperator
       );
-      expect(
-        sut.create({ type: operations.TAB_LAST, newTab: false })
-      ).to.be.instanceOf(SelectLastTabOperator);
-      expect(
-        sut.create({ type: operations.TAB_PREV_SEL, newTab: false })
-      ).to.be.instanceOf(SelectPreviousSelectedTabOperator);
+      expect(sut.create({ type: operations.TAB_LAST })).to.be.instanceOf(
+        SelectLastTabOperator
+      );
+      expect(sut.create({ type: operations.TAB_PREV_SEL })).to.be.instanceOf(
+        SelectPreviousSelectedTabOperator
+      );
       expect(
         sut.create({ type: operations.TAB_RELOAD, cache: false })
       ).to.be.instanceOf(ReloadTabOperator);

@@ -1,24 +1,23 @@
-import FindClient, {
-  FindResult,
-} from "../../../src/background/clients/FindClient";
+import FindClient from "../../../src/background/clients/FindClient";
 
 export default class MockFindClient implements FindClient {
-  highlightAll(): Promise<void> {
-    throw new Error("not implemented");
-  }
-
-  removeHighlights(): Promise<void> {
-    throw new Error("not implemented");
-  }
-
-  selectKeyword(
+  findNext(
     _tabId: number,
-    _rangeData: browser.find.RangeData
-  ): Promise<void> {
+    _frameId: number,
+    _keyword: string
+  ): Promise<boolean> {
     throw new Error("not implemented");
   }
 
-  startFind(_keyword: string): Promise<FindResult> {
+  findPrev(
+    _tabId: number,
+    _frameId: number,
+    _keyword: string
+  ): Promise<boolean> {
+    throw new Error("not implemented");
+  }
+
+  clearSelection(_tabId: number, _frameId: number): Promise<void> {
     throw new Error("not implemented");
   }
 }

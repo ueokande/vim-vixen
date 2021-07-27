@@ -23,4 +23,9 @@ export default class MockFindRepository implements FindRepository {
     this.localStates[tabId] = state;
     return Promise.resolve();
   }
+
+  deleteLocalState(tabId: number): Promise<void> {
+    delete this.localStates[tabId];
+    return Promise.resolve();
+  }
 }
