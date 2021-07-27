@@ -82,6 +82,10 @@ class MockTabPresenter implements TabPresenter {
   setZoom(_tabId: number, _factor: number): Promise<void> {
     throw new Error("not implemented");
   }
+
+  toggleReaderMode(_tabId: number): Promise<void> {
+    throw new Error("not implemented");
+  }
 }
 
 describe("TabCompletionUseCase", () => {
