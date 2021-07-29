@@ -1,6 +1,5 @@
 import { injectable } from "tsyringe";
 import MessageListener from "./MessageListener";
-import FindController from "./controllers/FindController";
 import MarkController from "./controllers/MarkController";
 import FollowMasterController from "./controllers/FollowMasterController";
 import FollowSlaveController from "./controllers/FollowSlaveController";
@@ -14,6 +13,7 @@ import SettingController from "./controllers/SettingController";
 import ConsoleFrameController from "./controllers/ConsoleFrameController";
 import NavigateController from "./controllers/NavigateController";
 import * as messages from "../shared/messages";
+import FindController from "./controllers/FindController";
 
 type Message = messages.Message;
 
@@ -22,7 +22,6 @@ export default class Application {
   // eslint-disable-next-line max-params
   constructor(
     private messageListener: MessageListener,
-    private findController: FindController,
     private markController: MarkController,
     private followMasterController: FollowMasterController,
     private followSlaveController: FollowSlaveController,
@@ -33,7 +32,8 @@ export default class Application {
     private addonEnabledController: AddonEnabledController,
     private settingController: SettingController,
     private consoleFrameController: ConsoleFrameController,
-    private navigateController: NavigateController
+    private navigateController: NavigateController,
+    private findController: FindController
   ) {}
 
   init(): Promise<void> {
@@ -47,12 +47,6 @@ export default class Application {
   private routeMasterComponents() {
     this.messageListener.onWebMessage((msg: Message, sender: Window) => {
       switch (msg.type) {
-        case messages.CONSOLE_ENTER_FIND:
-          return this.findController.start(msg);
-        case messages.FIND_NEXT:
-          return this.findController.next(msg);
-        case messages.FIND_PREV:
-          return this.findController.prev(msg);
         case messages.CONSOLE_UNFOCUS:
           return this.consoleFrameController.unfocus(msg);
         case messages.FOLLOW_START:
@@ -61,16 +55,6 @@ export default class Application {
           return this.followMasterController.responseCountTargets(msg, sender);
         case messages.FOLLOW_KEY_PRESS:
           return this.followMasterController.keyPress(msg);
-      }
-      return undefined;
-    });
-
-    this.messageListener.onBackgroundMessage((msg: Message) => {
-      switch (msg.type) {
-        case messages.ADDON_ENABLED_QUERY:
-          return this.addonEnabledController.getAddonEnabled(msg);
-        case messages.TAB_SCROLL_TO:
-          return this.markController.scrollTo(msg);
       }
       return undefined;
     });
@@ -109,6 +93,21 @@ export default class Application {
           return this.navigateController.openLinkPrev(msg);
         case messages.CONSOLE_RESIZE:
           return this.consoleFrameController.resize(msg);
+        case messages.FIND_NEXT:
+          return this.findController.findNext(msg.keyword);
+        case messages.FIND_PREV:
+          return this.findController.findPrev(msg.keyword);
+        case messages.FIND_CLEAR_SELECTION:
+          return this.findController.clearSelection();
+      }
+
+      if (window.self === window.top) {
+        switch (msg.type) {
+          case messages.ADDON_ENABLED_QUERY:
+            return this.addonEnabledController.getAddonEnabled(msg);
+          case messages.TAB_SCROLL_TO:
+            return this.markController.scrollTo(msg);
+        }
       }
     });
 

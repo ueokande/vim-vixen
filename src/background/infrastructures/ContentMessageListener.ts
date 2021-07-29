@@ -3,13 +3,13 @@ import * as messages from "../../shared/messages";
 import * as operations from "../../shared/operations";
 import CommandController from "../controllers/CommandController";
 import SettingController from "../controllers/SettingController";
-import FindController from "../controllers/FindController";
 import AddonEnabledController from "../controllers/AddonEnabledController";
 import LinkController from "../controllers/LinkController";
 import OperationController from "../controllers/OperationController";
 import MarkController from "../controllers/MarkController";
 import CompletionController from "../controllers/CompletionController";
 import ConsoleController from "../controllers/ConsoleController";
+import FindController from "../controllers/FindController";
 
 @injectable()
 export default class ContentMessageListener {
@@ -19,12 +19,12 @@ export default class ContentMessageListener {
     private readonly settingController: SettingController,
     private readonly commandController: CommandController,
     private readonly completionController: CompletionController,
-    private readonly findController: FindController,
     private readonly addonEnabledController: AddonEnabledController,
     private readonly linkController: LinkController,
     private readonly operationController: OperationController,
     private readonly markController: MarkController,
-    private readonly consoleController: ConsoleController
+    private readonly consoleController: ConsoleController,
+    private readonly findController: FindController
   ) {}
 
   run(): void {
@@ -36,6 +36,7 @@ export default class ContentMessageListener {
             return {};
           }
           return ret.catch((e) => {
+            console.error(e);
             if (!sender.tab || !sender.tab.id) {
               return;
             }
@@ -45,6 +46,7 @@ export default class ContentMessageListener {
             });
           });
         } catch (e) {
+          console.error(e);
           if (!sender.tab || !sender.tab.id) {
             return;
           }
@@ -80,6 +82,8 @@ export default class ContentMessageListener {
         return this.completionController.getProperties();
       case messages.CONSOLE_ENTER_COMMAND:
         return this.onConsoleEnterCommand(message.text);
+      case messages.CONSOLE_ENTER_FIND:
+        return this.findController.startFind(senderTab.id!, message.keyword);
       case messages.CONSOLE_RESIZE:
         return this.onConsoleResize(
           senderTab.id!,
@@ -88,10 +92,6 @@ export default class ContentMessageListener {
         );
       case messages.SETTINGS_QUERY:
         return this.onSettingsQuery();
-      case messages.FIND_GET_KEYWORD:
-        return this.onFindGetKeyword();
-      case messages.FIND_SET_KEYWORD:
-        return this.onFindSetKeyword(message.keyword);
       case messages.ADDON_ENABLED_RESPONSE:
         return this.onAddonEnabledResponse(message.enabled);
       case messages.OPEN_URL:
@@ -130,14 +130,6 @@ export default class ContentMessageListener {
 
   async onSettingsQuery(): Promise<unknown> {
     return (await this.settingController.getSetting()).toJSON();
-  }
-
-  onFindGetKeyword(): Promise<string> {
-    return this.findController.getKeyword();
-  }
-
-  onFindSetKeyword(keyword: string): Promise<void> {
-    return this.findController.setKeyword(keyword);
   }
 
   onAddonEnabledResponse(enabled: boolean): Promise<void> {

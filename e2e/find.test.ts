@@ -41,23 +41,31 @@ describe("find test", () => {
     await console.execCommand("hello");
     await page.switchToTop();
 
-    let selection = await page.getSelection();
-    assert.deepStrictEqual(selection, { from: 2, to: 7 });
+    await eventually(async () => {
+      const selection = await page.getSelection();
+      assert.deepStrictEqual(selection, { from: 2, to: 7 });
+    });
 
     // search next keyword
     await page.sendKeys("n");
-    selection = await page.getSelection();
-    assert.deepStrictEqual(selection, { from: 9, to: 14 });
+    await eventually(async () => {
+      const selection = await page.getSelection();
+      assert.deepStrictEqual(selection, { from: 9, to: 14 });
+    });
 
     // search previous keyword
     await page.sendKeys(Key.SHIFT, "N");
-    selection = await page.getSelection();
-    assert.deepStrictEqual(selection, { from: 2, to: 7 });
+    await eventually(async () => {
+      const selection = await page.getSelection();
+      assert.deepStrictEqual(selection, { from: 2, to: 7 });
+    });
 
     // search previous keyword by wrap-search
     await page.sendKeys(Key.SHIFT, "N");
-    selection = await page.getSelection();
-    assert.deepStrictEqual(selection, { from: 16, to: 21 });
+    await eventually(async () => {
+      const selection = await page.getSelection();
+      assert.deepStrictEqual(selection, { from: 16, to: 21 });
+    });
   });
 
   it("shows error if pattern not found", async () => {
@@ -66,8 +74,10 @@ describe("find test", () => {
     await console.execCommand("world");
 
     await page.switchToTop();
-    const selection = await page.getSelection();
-    assert.deepStrictEqual(selection, { from: 0, to: 0 });
+    await eventually(async () => {
+      const selection = await page.getSelection();
+      assert.deepStrictEqual(selection, { from: 0, to: 0 });
+    });
 
     await eventually(async () => {
       console = await page.getConsole();
@@ -83,16 +93,20 @@ describe("find test", () => {
     await page.switchToTop();
 
     await page.clearSelection();
-    let selection = await page.getSelection();
-    assert.deepStrictEqual(selection, { from: 0, to: 0 });
+    await eventually(async () => {
+      const selection = await page.getSelection();
+      assert.deepStrictEqual(selection, { from: 0, to: 0 });
+    });
 
     await page.sendKeys("/");
     console = await page.getConsole();
     await console.execCommand("");
     await page.switchToTop();
 
-    selection = await page.getSelection();
-    assert.deepStrictEqual(selection, { from: 2, to: 7 });
+    await eventually(async () => {
+      const selection = await page.getSelection();
+      assert.deepStrictEqual(selection, { from: 2, to: 7 });
+    });
   });
 
   it("search with last keyword on new page", async () => {
@@ -102,12 +116,16 @@ describe("find test", () => {
 
     await page.switchToTop();
     await page.sendKeys("n");
-    let selection = await page.getSelection();
-    assert.deepStrictEqual(selection, { from: 9, to: 14 });
+    await eventually(async () => {
+      const selection = await page.getSelection();
+      assert.deepStrictEqual(selection, { from: 9, to: 14 });
+    });
 
     page = await Page.navigateTo(webdriver, server.url());
     await page.sendKeys("n");
-    selection = await page.getSelection();
-    assert.deepStrictEqual(selection, { from: 2, to: 7 });
+    await eventually(async () => {
+      const selection = await page.getSelection();
+      assert.deepStrictEqual(selection, { from: 2, to: 7 });
+    });
   });
 });

@@ -6,10 +6,6 @@ import { AddressRepositoryImpl } from "./repositories/AddressRepository";
 import { ClipboardRepositoryImpl } from "./repositories/ClipboardRepository";
 import { ConsoleClientImpl } from "./client/ConsoleClient";
 import { ConsoleFramePresenterImpl } from "./presenters/ConsoleFramePresenter";
-import { FindClientImpl } from "./client/FindClient";
-import { FindMasterClientImpl } from "./client/FindMasterClient";
-import { FindPresenterImpl } from "./presenters/FindPresenter";
-import { FindRepositoryImpl } from "./repositories/FindRepository";
 import { FocusPresenterImpl } from "./presenters/FocusPresenter";
 import { FollowKeyRepositoryImpl } from "./repositories/FollowKeyRepository";
 import { FollowMasterClientImpl } from "./client/FollowMasterClient";
@@ -31,6 +27,7 @@ import { TabsClientImpl } from "./client/TabsClient";
 import { container } from "tsyringe";
 import OperatorFactoryImpl from "./operators/impls/OperatorFactoryImpl";
 import { URLRepositoryImpl } from "./operators/impls/URLRepository";
+import { FindPresenterImpl } from "./presenters/FindPresenter";
 
 container.register("FollowMasterClient", {
   useValue: new FollowMasterClientImpl(window.top),
@@ -49,10 +46,6 @@ container.register("ConsoleClient", { useClass: ConsoleClientImpl });
 container.register("ConsoleFramePresenter", {
   useClass: ConsoleFramePresenterImpl,
 });
-container.register("FindClient", { useClass: FindClientImpl });
-container.register("FindMasterClient", { useClass: FindMasterClientImpl });
-container.register("FindPresenter", { useClass: FindPresenterImpl });
-container.register("FindRepository", { useClass: FindRepositoryImpl });
 container.register("FocusPresenter", { useClass: FocusPresenterImpl });
 container.register("FollowKeyRepository", {
   useClass: FollowKeyRepositoryImpl,
@@ -79,6 +72,7 @@ container.register("NavigationPresenter", {
 });
 container.register("OperationClient", { useClass: OperationClientImpl });
 container.register("ScrollPresenter", { useClass: ScrollPresenterImpl });
+container.register("FindPresenter", { useClass: FindPresenterImpl });
 container.register("SettingClient", { useClass: SettingClientImpl });
 container.register("SettingRepository", { useClass: SettingRepositoryImpl });
 container.register("URLRepository", { useClass: URLRepositoryImpl });

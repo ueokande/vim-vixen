@@ -1,20 +1,19 @@
 import { injectable } from "tsyringe";
-import * as messages from "../../shared/messages";
 import FindUseCase from "../usecases/FindUseCase";
 
 @injectable()
 export default class FindController {
   constructor(private findUseCase: FindUseCase) {}
 
-  async start(m: messages.ConsoleEnterFindMessage): Promise<void> {
-    await this.findUseCase.startFind(m.text);
+  findNext(keyword: string): boolean {
+    return this.findUseCase.findNext(keyword);
   }
 
-  async next(_: messages.FindNextMessage): Promise<void> {
-    await this.findUseCase.findNext();
+  findPrev(keyword: string): boolean {
+    return this.findUseCase.findPrev(keyword);
   }
 
-  async prev(_: messages.FindPrevMessage): Promise<void> {
-    await this.findUseCase.findPrev();
+  clearSelection() {
+    return this.findUseCase.clearSelection();
   }
 }

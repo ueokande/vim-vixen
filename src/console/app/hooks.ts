@@ -103,13 +103,10 @@ export const useExecCommand = () => {
 
 export const useExecFind = () => {
   const execFind = React.useCallback((text?: string) => {
-    window.top.postMessage(
-      JSON.stringify({
-        type: messages.CONSOLE_ENTER_FIND,
-        text,
-      }),
-      "*"
-    );
+    browser.runtime.sendMessage({
+      type: messages.CONSOLE_ENTER_FIND,
+      keyword: text,
+    });
   }, []);
   return execFind;
 };
