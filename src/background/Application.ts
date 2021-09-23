@@ -1,5 +1,6 @@
 import { injectable, inject } from "tsyringe";
 import ContentMessageListener from "./infrastructures/ContentMessageListener";
+import FindPortListener from "./infrastructures/FindPortListener";
 import SettingController from "./controllers/SettingController";
 import VersionController from "./controllers/VersionController";
 import SettingRepository from "./repositories/SettingRepository";
@@ -20,6 +21,11 @@ export default class Application {
     private readonly frameRepository: ReadyFrameRepository
   ) {}
 
+  private readonly findPortListener = new FindPortListener(
+    this.onFindPortConnect.bind(this),
+    this.onFindPortDisconnect.bind(this)
+  );
+
   run() {
     this.settingController.reload();
 
@@ -35,24 +41,31 @@ export default class Application {
       }
       this.versionController.notify();
     });
-    browser.webNavigation.onCompleted.addListener((detail) => {
-      // The console iframe embedded by Vim-Vixen has url starting with
-      // 'moz-extensions://'.  The add-on should ignore it from search targets.
-      //
-      // When a browser blocks to load an iframe by x-frame options or a
-      // content security policy, the URL begins with 'about:neterror', and
-      // a background script fails to send a message to iframe.
-      if (
-        detail.url.startsWith("http://") ||
-        detail.url.startsWith("https://")
-      ) {
-        this.frameRepository.addFrameId(detail.tabId, detail.frameId);
-      }
-    });
 
     this.contentMessageListener.run();
     this.syncSettingRepository.onChange(() => {
       this.settingController.reload();
     });
+    this.findPortListener.run();
+  }
+
+  private onFindPortConnect(port: browser.runtime.Port) {
+    const tabId = port.sender?.tab?.id;
+    const frameId = port.sender?.frameId;
+    if (typeof tabId === "undefined" || typeof frameId === "undefined") {
+      return;
+    }
+
+    this.frameRepository.addFrameId(tabId, frameId);
+  }
+
+  private onFindPortDisconnect(port: browser.runtime.Port) {
+    const tabId = port.sender?.tab?.id;
+    const frameId = port.sender?.frameId;
+    if (typeof tabId === "undefined" || typeof frameId === "undefined") {
+      return;
+    }
+
+    this.frameRepository.removeFrameId(tabId, frameId);
   }
 }

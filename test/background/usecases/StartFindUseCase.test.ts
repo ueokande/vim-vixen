@@ -46,7 +46,7 @@ describe("StartFindUseCase", () => {
       const mockFindRepository = sinon.mock(findRepository);
       mockFindRepository
         .expects("setLocalState")
-        .withArgs(currentTabId, { frameIds, framePos: 1, keyword });
+        .withArgs(currentTabId, { keyword, frameId: 100 });
       const mockConsoleClient = sinon.mock(consoleClient);
       mockConsoleClient
         .expects("showInfo")
@@ -76,10 +76,10 @@ describe("StartFindUseCase", () => {
       mockFindRepository
         .expects("getLocalState")
         .withArgs(currentTabId)
-        .returns(Promise.resolve({ keyword, frameIds, framePos: 0 }));
+        .returns(Promise.resolve({ keyword, frameId: 0 }));
       mockFindRepository
         .expects("setLocalState")
-        .withArgs(currentTabId, { frameIds, framePos: 1, keyword });
+        .withArgs(currentTabId, { keyword, frameId: 100 });
       const mockConsoleClient = sinon.mock(consoleClient);
       mockConsoleClient
         .expects("showInfo")
@@ -115,7 +115,7 @@ describe("StartFindUseCase", () => {
         .returns(Promise.resolve(keyword));
       mockFindRepository
         .expects("setLocalState")
-        .withArgs(currentTabId, { frameIds, framePos: 1, keyword });
+        .withArgs(currentTabId, { keyword, frameId: 100 });
       const mockConsoleClient = sinon.mock(consoleClient);
       mockConsoleClient
         .expects("showInfo")

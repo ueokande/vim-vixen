@@ -40,16 +40,11 @@ export default class StartFindUseCase {
       await this.findClient.clearSelection(tabId, frameId);
     }
 
-    for (let framePos = 0; framePos < frameIds.length; ++framePos) {
-      const found = await this.findClient.findNext(
-        tabId,
-        frameIds[framePos],
-        keyword
-      );
+    for (const frameId of frameIds) {
+      const found = await this.findClient.findNext(tabId, frameId, keyword);
       if (found) {
         await this.findRepository.setLocalState(tabId, {
-          frameIds,
-          framePos,
+          frameId,
           keyword,
         });
         await this.consoleClient.showInfo(tabId, "Pattern found: " + keyword);

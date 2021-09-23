@@ -7,7 +7,9 @@ type State = { [tabId: number]: number[] };
 export default interface ReadyFrameRepository {
   clearFrameIds(tabId: number): Promise<void>;
 
-  addFrameId(tabId: number, fraemId: number): Promise<void>;
+  addFrameId(tabId: number, frameId: number): Promise<void>;
+
+  removeFrameId(tabId: number, frameId: number): Promise<void>;
 
   getFrameIds(tabId: number): Promise<number[] | undefined>;
 }
@@ -29,12 +31,26 @@ export class ReadyFrameRepositoryImpl implements ReadyFrameRepository {
     return Promise.resolve();
   }
 
-  addFrameId(tabId: number, fraemId: number): Promise<void> {
+  addFrameId(tabId: number, frameId: number): Promise<void> {
     let state: State | undefined = this.cache.get(REPOSITORY_KEY);
     if (typeof state === "undefined") {
       state = {};
     }
-    state[tabId] = (state[tabId] || []).concat(fraemId);
+    state[tabId] = (state[tabId] || []).concat(frameId);
+    this.cache.set(REPOSITORY_KEY, state);
+    return Promise.resolve();
+  }
+
+  removeFrameId(tabId: number, frameId: number): Promise<void> {
+    const state: State | undefined = this.cache.get(REPOSITORY_KEY);
+    if (typeof state === "undefined") {
+      return Promise.resolve();
+    }
+    const ids = state[tabId];
+    if (typeof ids === "undefined") {
+      return Promise.resolve();
+    }
+    state[tabId] = ids.filter((id) => id != frameId);
     this.cache.set(REPOSITORY_KEY, state);
     return Promise.resolve();
   }

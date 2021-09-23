@@ -6,8 +6,7 @@ const FIND_LOCAL_KEYWORD_KEY = "find-local-keyword";
 
 export type FindState = {
   keyword: string;
-  framePos: number;
-  frameIds: number[];
+  frameId: number;
 };
 
 export default interface FindRepository {

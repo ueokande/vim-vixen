@@ -32,6 +32,10 @@ describe("FindNextOperator", () => {
       active: true,
     });
     currentTabId = currentTab.id!;
+
+    sinon
+      .stub(frameRepository, "getFrameIds")
+      .returns(Promise.resolve(frameIds));
   });
 
   describe("#run", () => {
@@ -54,8 +58,7 @@ describe("FindNextOperator", () => {
       sinon.stub(findRepository, "getLocalState").returns(
         Promise.resolve({
           keyword,
-          frameIds,
-          framePos: 1,
+          frameId: 100,
         })
       );
 
@@ -68,7 +71,7 @@ describe("FindNextOperator", () => {
       const mockFindRepository = sinon.mock(findRepository);
       mockFindRepository
         .expects("setLocalState")
-        .withArgs(currentTabId, { keyword, frameIds, framePos: 1 });
+        .withArgs(currentTabId, { keyword, frameId: 100 });
 
       await sut.run();
 
@@ -80,8 +83,7 @@ describe("FindNextOperator", () => {
       sinon.stub(findRepository, "getLocalState").returns(
         Promise.resolve({
           keyword,
-          frameIds,
-          framePos: 1,
+          frameId: 100,
         })
       );
 
@@ -102,7 +104,7 @@ describe("FindNextOperator", () => {
       const mockFindRepository = sinon.mock(findRepository);
       mockFindRepository
         .expects("setLocalState")
-        .withArgs(currentTabId, { keyword, frameIds, framePos: 2 });
+        .withArgs(currentTabId, { keyword, frameId: 101 });
 
       await sut.run();
 
@@ -114,8 +116,7 @@ describe("FindNextOperator", () => {
       sinon.stub(findRepository, "getLocalState").returns(
         Promise.resolve({
           keyword,
-          frameIds,
-          framePos: 2,
+          frameId: 101,
         })
       );
 
@@ -136,7 +137,7 @@ describe("FindNextOperator", () => {
       const mockFindRepository = sinon.mock(findRepository);
       mockFindRepository
         .expects("setLocalState")
-        .withArgs(currentTabId, { keyword, frameIds, framePos: 0 });
+        .withArgs(currentTabId, { keyword, frameId: 0 });
 
       await sut.run();
 
@@ -151,9 +152,6 @@ describe("FindNextOperator", () => {
       sinon
         .stub(findRepository, "getGlobalKeyword")
         .returns(Promise.resolve(keyword));
-      sinon
-        .stub(frameRepository, "getFrameIds")
-        .returns(Promise.resolve(frameIds));
       sinon.stub(consoleClient, "showInfo").returns(Promise.resolve());
 
       const mockFindClient = sinon.mock(findClient);
@@ -168,7 +166,7 @@ describe("FindNextOperator", () => {
       const mockFindRepository = sinon.mock(findRepository);
       mockFindRepository
         .expects("setLocalState")
-        .withArgs(currentTabId, { keyword, frameIds, framePos: 0 });
+        .withArgs(currentTabId, { keyword, frameId: 0 });
 
       await sut.run();
 
