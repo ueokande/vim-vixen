@@ -4,7 +4,7 @@ import FindPrevOperator from "../../../../src/background/operators/impls/FindPre
 import MockFindRepository from "../../mock/MockFindRepository";
 import MockFindClient from "../../mock/MockFindClient";
 import MockConsoleClient from "../../mock/MockConsoleClient";
-import MockFramePresenter from "../../mock/MockFramePresenter";
+import MockReadyFrameRepository from "../../mock/MockReadyFrameRepository";
 
 describe("FindPrevOperator", () => {
   const keyword = "hello";
@@ -14,13 +14,13 @@ describe("FindPrevOperator", () => {
   const findRepository = new MockFindRepository();
   const findClient = new MockFindClient();
   const consoleClient = new MockConsoleClient();
-  const framePresenter = new MockFramePresenter();
+  const frameRepository = new MockReadyFrameRepository();
   const sut = new FindPrevOperator(
     tabPresenter,
     findRepository,
     findClient,
     consoleClient,
-    framePresenter
+    frameRepository
   );
 
   let currentTabId: number;
@@ -152,7 +152,7 @@ describe("FindPrevOperator", () => {
         .stub(findRepository, "getGlobalKeyword")
         .returns(Promise.resolve(keyword));
       sinon
-        .stub(framePresenter, "getAllFrameIds")
+        .stub(frameRepository, "getFrameIds")
         .returns(Promise.resolve(frameIds));
       sinon.stub(consoleClient, "showInfo").returns(Promise.resolve());
 

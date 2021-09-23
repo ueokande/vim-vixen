@@ -18,10 +18,10 @@ import { BrowserSettingRepositoryImpl } from "./repositories/BrowserSettingRepos
 import { RepeatRepositoryImpl } from "./repositories/RepeatRepository";
 import { ZoomPresenterImpl } from "./presenters/ZoomPresenter";
 import { WindowPresenterImpl } from "./presenters/WindowPresenter";
-import { FramePresenterImpl } from "./presenters/FramePresenter";
 import { FindClientImpl } from "./clients/FindClient";
 import { ConsoleFrameClientImpl } from "./clients/ConsoleFrameClient";
 import { FindRepositoryImpl } from "./repositories/FindRepository";
+import { ReadyFrameRepositoryImpl } from "./repositories/ReadyFrameRepository";
 
 container.register("LocalSettingRepository", {
   useClass: LocalSettingRepository,
@@ -43,10 +43,12 @@ container.register("TabRepository", { useClass: TabRepositoryImpl });
 container.register("ZoomPresenter", { useClass: ZoomPresenterImpl });
 container.register("TabPresenter", { useClass: TabPresenterImpl });
 container.register("WindowPresenter", { useClass: WindowPresenterImpl });
-container.register("FramePresenter", { useClass: FramePresenterImpl });
 container.register("FindRepository", { useClass: FindRepositoryImpl });
 container.register("FindClient", { useClass: FindClientImpl });
 container.register("NavigateClient", { useClass: NavigateClientImpl });
 container.register("ConsoleClient", { useClass: ConsoleClientImpl });
 container.register("ConsoleFrameClient", { useClass: ConsoleFrameClientImpl });
 container.register("OperatorFactory", { useClass: OperatorFactoryImpl });
+container.register("ReadyFrameRepository", {
+  useClass: ReadyFrameRepositoryImpl,
+});

@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 import ConsoleClient from "../infrastructures/ConsoleClient";
 import FindRepositoryImpl from "../repositories/FindRepository";
 import FindClient from "../clients/FindClient";
-import FramePresenter from "../presenters/FramePresenter";
+import ReadyFrameRepository from "../repositories/ReadyFrameRepository";
 
 @injectable()
 export default class StartFindUseCase {
@@ -13,8 +13,8 @@ export default class StartFindUseCase {
     private readonly findRepository: FindRepositoryImpl,
     @inject("ConsoleClient")
     private readonly consoleClient: ConsoleClient,
-    @inject("FramePresenter")
-    private readonly framePresenter: FramePresenter
+    @inject("ReadyFrameRepository")
+    private readonly frameRepository: ReadyFrameRepository
   ) {}
 
   async startFind(tabId: number, keyword?: string): Promise<void> {
@@ -31,7 +31,11 @@ export default class StartFindUseCase {
 
     this.findRepository.setGlobalKeyword(keyword);
 
-    const frameIds = await this.framePresenter.getAllFrameIds(tabId);
+    const frameIds = await this.frameRepository.getFrameIds(tabId);
+    if (typeof frameIds === "undefined") {
+      // No frames are ready
+      return;
+    }
     for (const frameId of frameIds) {
       await this.findClient.clearSelection(tabId, frameId);
     }

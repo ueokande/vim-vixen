@@ -2,7 +2,7 @@ import * as sinon from "sinon";
 import MockFindClient from "../mock/MockFindClient";
 import MockFindRepository from "../mock/MockFindRepository";
 import MockConsoleClient from "../mock/MockConsoleClient";
-import MockFramePresenter from "../mock/MockFramePresenter";
+import MockReadyFrameRepository from "../mock/MockReadyFrameRepository";
 import StartFindUseCase from "../../../src/background/usecases/StartFindUseCase";
 
 describe("StartFindUseCase", () => {
@@ -13,19 +13,19 @@ describe("StartFindUseCase", () => {
   const findClient = new MockFindClient();
   const findRepository = new MockFindRepository();
   const consoleClient = new MockConsoleClient();
-  const framePresenter = new MockFramePresenter();
+  const frameRepository = new MockReadyFrameRepository();
   const sut = new StartFindUseCase(
     findClient,
     findRepository,
     consoleClient,
-    framePresenter
+    frameRepository
   );
 
   beforeEach(async () => {
     sinon.restore();
 
     sinon
-      .stub(framePresenter, "getAllFrameIds")
+      .stub(frameRepository, "getFrameIds")
       .returns(Promise.resolve(frameIds));
   });
 

@@ -3,7 +3,7 @@ import TabPresenter from "../../presenters/TabPresenter";
 import FindRepository from "../../repositories/FindRepository";
 import FindClient from "../../clients/FindClient";
 import ConsoleClient from "../../infrastructures/ConsoleClient";
-import FramePresenter from "../../presenters/FramePresenter";
+import ReadyFrameRepository from "../../repositories/ReadyFrameRepository";
 
 export default class FindNextOperator implements Operator {
   constructor(
@@ -11,7 +11,7 @@ export default class FindNextOperator implements Operator {
     private readonly findRepository: FindRepository,
     private readonly findClient: FindClient,
     private readonly consoleClient: ConsoleClient,
-    private readonly framePresenter: FramePresenter
+    private readonly frameRepository: ReadyFrameRepository
   ) {}
 
   async run(): Promise<void> {
@@ -65,7 +65,12 @@ export default class FindNextOperator implements Operator {
 
     const keyword = await this.findRepository.getGlobalKeyword();
     if (keyword) {
-      const frameIds = await this.framePresenter.getAllFrameIds(tabId);
+      const frameIds = await this.frameRepository.getFrameIds(tabId);
+      if (typeof frameIds === "undefined") {
+        // No frames are ready
+        return;
+      }
+
       for (const frameId of frameIds) {
         await this.findClient.clearSelection(tabId, frameId);
       }
