@@ -34,8 +34,7 @@
     "clipboardRead",
     "notifications",
     "bookmarks",
-    "browserSettings",
-    "webNavigation"
+    "browserSettings"
   ],
   "web_accessible_resources": [
     "build/console.html",
