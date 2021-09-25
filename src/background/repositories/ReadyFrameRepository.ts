@@ -36,7 +36,7 @@ export class ReadyFrameRepositoryImpl implements ReadyFrameRepository {
     if (typeof state === "undefined") {
       state = {};
     }
-    state[tabId] = (state[tabId] || []).concat(frameId);
+    state[tabId] = (state[tabId] || []).concat(frameId).sort();
     this.cache.set(REPOSITORY_KEY, state);
     return Promise.resolve();
   }
