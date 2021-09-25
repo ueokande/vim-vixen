@@ -2,11 +2,9 @@ import MemoryStorage from "../infrastructures/MemoryStorage";
 
 const REPOSITORY_KEY = "readyFrameRepository";
 
-type State = { [tabId: number]: number[] };
+type State = { [tabId: number]: { [frameId: number]: number } };
 
 export default interface ReadyFrameRepository {
-  clearFrameIds(tabId: number): Promise<void>;
-
   addFrameId(tabId: number, frameId: number): Promise<void>;
 
   removeFrameId(tabId: number, frameId: number): Promise<void>;
@@ -21,22 +19,14 @@ export class ReadyFrameRepositoryImpl implements ReadyFrameRepository {
     this.cache = new MemoryStorage();
   }
 
-  clearFrameIds(tabId: number): Promise<void> {
-    let state: State | undefined = this.cache.get(REPOSITORY_KEY);
-    if (typeof state === "undefined") {
-      state = {};
-    }
-    delete state[tabId];
-    this.cache.set(REPOSITORY_KEY, state);
-    return Promise.resolve();
-  }
-
   addFrameId(tabId: number, frameId: number): Promise<void> {
     let state: State | undefined = this.cache.get(REPOSITORY_KEY);
     if (typeof state === "undefined") {
       state = {};
     }
-    state[tabId] = (state[tabId] || []).concat(frameId).sort();
+    const tab = state[tabId] || {};
+    tab[frameId] = (tab[frameId] || 0) + 1;
+    state[tabId] = tab;
     this.cache.set(REPOSITORY_KEY, state);
     return Promise.resolve();
   }
@@ -50,7 +40,15 @@ export class ReadyFrameRepositoryImpl implements ReadyFrameRepository {
     if (typeof ids === "undefined") {
       return Promise.resolve();
     }
-    state[tabId] = ids.filter((id) => id != frameId);
+    const tab = state[tabId] || {};
+    tab[frameId] = (tab[frameId] || 0) - 1;
+    if (tab[frameId] == 0) {
+      delete tab[frameId];
+    }
+    if (Object.keys(tab).length === 0) {
+      delete state[tabId];
+    }
+
     this.cache.set(REPOSITORY_KEY, state);
     return Promise.resolve();
   }
@@ -60,6 +58,13 @@ export class ReadyFrameRepositoryImpl implements ReadyFrameRepository {
     if (typeof state === "undefined") {
       return Promise.resolve(undefined);
     }
-    return Promise.resolve(state[tabId]);
+    const tab = state[tabId];
+    if (typeof tab === "undefined") {
+      return Promise.resolve(undefined);
+    }
+    const frameIds = Object.keys(tab)
+      .map((v) => Number(v))
+      .sort();
+    return Promise.resolve(frameIds);
   }
 }

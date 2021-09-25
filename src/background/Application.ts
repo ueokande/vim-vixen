@@ -31,7 +31,6 @@ export default class Application {
 
     browser.tabs.onUpdated.addListener((tabId: number, info) => {
       if (info.status == "loading") {
-        this.frameRepository.clearFrameIds(tabId);
         this.findRepository.deleteLocalState(tabId);
       }
     });

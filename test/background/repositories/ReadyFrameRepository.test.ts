@@ -15,12 +15,19 @@ describe("background/repositories/ReadyFrameRepositoryImpl", () => {
     await sut.addFrameId(1, 12);
     await sut.addFrameId(1, 11);
     await sut.addFrameId(2, 20);
+    await sut.addFrameId(2, 21);
+    await sut.addFrameId(2, 21);
 
     expect(await sut.getFrameIds(1)).to.deep.equal([10, 11, 12]);
+    expect(await sut.getFrameIds(2)).to.deep.equal([20, 21]);
+
+    await sut.removeFrameId(2, 21);
+    expect(await sut.getFrameIds(2)).to.deep.equal([20, 21]);
+
+    await sut.removeFrameId(2, 21);
     expect(await sut.getFrameIds(2)).to.deep.equal([20]);
 
-    await sut.clearFrameIds(1);
-
-    expect(await sut.getFrameIds(1)).to.be.undefined;
+    await sut.removeFrameId(2, 20);
+    expect(await sut.getFrameIds(2)).to.be.undefined;
   });
 });
