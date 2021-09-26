@@ -8,12 +8,9 @@ describe("FocusOperatorFactoryChain", () => {
   describe("#create", () => {
     it("returns an operator", () => {
       const sut = new FocusOperatorFactoryChain(new MockFocusPresenter());
-      expect(
-        sut.create(
-          { type: operations.FOCUS_INPUT, newTab: false, background: false },
-          0
-        )
-      ).to.be.instanceOf(FocusOperator);
+      expect(sut.create({ type: operations.FOCUS_INPUT }, 0)).to.be.instanceOf(
+        FocusOperator
+      );
       expect(sut.create({ type: operations.SCROLL_TOP }, 0)).to.be.null;
     });
   });

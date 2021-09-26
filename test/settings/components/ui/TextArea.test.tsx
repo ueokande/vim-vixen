@@ -20,7 +20,6 @@ describe("settings/ui/TextArea", () => {
     ReactTestUtils.act(() => {
       ReactDOM.render(
         <TextArea
-          type="textarea"
           name="myname"
           label="myfield"
           value="myvalue"
@@ -48,7 +47,9 @@ describe("settings/ui/TextArea", () => {
           label="myfield"
           value="myvalue"
           onChange={(e) => {
-            expect((e.target as HTMLInputElement).value).to.equal("newvalue");
+            expect((e.target as HTMLTextAreaElement).value).to.equal(
+              "newvalue"
+            );
             done();
           }}
         />,

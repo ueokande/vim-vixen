@@ -6,7 +6,7 @@ import ErrorMessage from "../../../src/console/components/ErrorMessage";
 describe("console/components/console/completion/ErrorMessage", () => {
   it("renders an error message", () => {
     const root = ReactTestRenderer.create(
-      <ErrorMessage mode="error">Hello!</ErrorMessage>
+      <ErrorMessage>Hello!</ErrorMessage>
     ).root;
 
     const p = root.findByType("p");
