@@ -41,7 +41,7 @@ class MockAddressRepository implements AddressRepository {
 }
 
 describe("KeymapUseCase", () => {
-  context("with no-digis keymaps", () => {
+  describe("with no-digis keymaps", () => {
     const settings = Settings.fromJSON({
       keymaps: {
         k: { type: "scroll.vertically", count: -1 },
@@ -52,7 +52,7 @@ describe("KeymapUseCase", () => {
 
     let sut: KeymapUseCase;
 
-    before(() => {
+    beforeEach(() => {
       sut = new KeymapUseCase(
         new KeymapRepositoryImpl(),
         new MockSettingRepository(settings),
@@ -89,7 +89,7 @@ describe("KeymapUseCase", () => {
     });
   });
 
-  context("when keymaps containing numeric mappings", () => {
+  describe("when keymaps containing numeric mappings", () => {
     const settings = Settings.fromJSON({
       keymaps: {
         20: { type: "scroll.top" },
@@ -99,7 +99,7 @@ describe("KeymapUseCase", () => {
 
     let sut: KeymapUseCase;
 
-    before(() => {
+    beforeEach(() => {
       sut = new KeymapUseCase(
         new KeymapRepositoryImpl(),
         new MockSettingRepository(settings),
@@ -145,7 +145,7 @@ describe("KeymapUseCase", () => {
     });
   });
 
-  context("when the keys are mismatched with the operations", () => {
+  describe("when the keys are mismatched with the operations", () => {
     const settings = Settings.fromJSON({
       keymaps: {
         gg: { type: "scroll.top" },
@@ -155,7 +155,7 @@ describe("KeymapUseCase", () => {
 
     let sut: KeymapUseCase;
 
-    before(() => {
+    beforeEach(() => {
       sut = new KeymapUseCase(
         new KeymapRepositoryImpl(),
         new MockSettingRepository(settings),
@@ -189,7 +189,7 @@ describe("KeymapUseCase", () => {
     });
   });
 
-  context("when the site matches to the blacklist", () => {
+  describe("when the site matches to the blacklist", () => {
     const settings = Settings.fromJSON({
       keymaps: {
         k: { type: "scroll.vertically", count: -1 },
@@ -200,7 +200,7 @@ describe("KeymapUseCase", () => {
 
     let sut: KeymapUseCase;
 
-    before(() => {
+    beforeEach(() => {
       sut = new KeymapUseCase(
         new KeymapRepositoryImpl(),
         new MockSettingRepository(settings),
@@ -222,7 +222,7 @@ describe("KeymapUseCase", () => {
     });
   });
 
-  context("when the site matches to the partial blacklist", () => {
+  describe("when the site matches to the partial blacklist", () => {
     const settings = Settings.fromJSON({
       keymaps: {
         k: { type: "scroll.vertically", count: -1 },

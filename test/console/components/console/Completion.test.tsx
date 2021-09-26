@@ -100,7 +100,7 @@ describe("console/components/console/completion/Completion", () => {
   });
 
   it("scrolls up to down with select", () => {
-    let component: ReturnType<ReactTestRenderer["create"]> | null = null;
+    let component: ReactTestRenderer.ReactTestRenderer | null = null;
 
     ReactTestRenderer.act(() => {
       component = ReactTestRenderer.create(
@@ -108,7 +108,7 @@ describe("console/components/console/completion/Completion", () => {
       );
     });
 
-    const root = component.root;
+    const root = component!.root;
 
     let items = root.findAllByType(CompletionItem);
     let showns = root
@@ -132,7 +132,7 @@ describe("console/components/console/completion/Completion", () => {
     ]);
 
     ReactTestRenderer.act(() => {
-      component.update(
+      component!.update(
         <Completion completions={completions} size={3} select={2} />
       );
     });
@@ -159,7 +159,7 @@ describe("console/components/console/completion/Completion", () => {
     expect(items[2].props.highlight).to.be.true;
 
     ReactTestRenderer.act(() => {
-      component.update(
+      component!.update(
         <Completion completions={completions} size={3} select={3} />
       );
     });
@@ -187,14 +187,14 @@ describe("console/components/console/completion/Completion", () => {
   });
 
   it("scrolls down to up with select", () => {
-    let component: ReturnType<ReactTestRenderer["create"]> | null = null;
+    let component: ReactTestRenderer.ReactTestRenderer | null = null;
 
     ReactTestRenderer.act(() => {
       component = ReactTestRenderer.create(
         <Completion completions={completions} size={3} select={5} />
       );
     });
-    const root = component.root;
+    const root = component!.root;
 
     let items = root.findAllByType(CompletionItem);
     let showns = root
@@ -220,7 +220,7 @@ describe("console/components/console/completion/Completion", () => {
     expect(items[5].props.highlight).to.be.true;
 
     ReactTestRenderer.act(() => {
-      component.update(
+      component!.update(
         <Completion completions={completions} size={3} select={4} />
       );
     });
@@ -247,7 +247,7 @@ describe("console/components/console/completion/Completion", () => {
     expect(items[4].props.highlight).to.be.true;
 
     ReactTestRenderer.act(() => {
-      component.update(
+      component!.update(
         <Completion completions={completions} size={3} select={3} />
       );
     });
@@ -274,7 +274,7 @@ describe("console/components/console/completion/Completion", () => {
     expect(items[3].props.highlight).to.be.true;
 
     ReactTestRenderer.act(() => {
-      component.update(
+      component!.update(
         <Completion completions={completions} size={3} select={2} />
       );
     });

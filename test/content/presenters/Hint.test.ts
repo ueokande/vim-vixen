@@ -108,7 +108,7 @@ describe("LinkHint", () => {
 
 describe("InputHint", () => {
   describe("#activate()", () => {
-    context("<input>", () => {
+    describe("<input>", () => {
       beforeEach(() => {
         document.body.innerHTML = `<input id='test-input'></input>`;
       });
@@ -122,7 +122,7 @@ describe("InputHint", () => {
       });
     });
 
-    context('<input type="checkbox">', () => {
+    describe('<input type="checkbox">', () => {
       beforeEach(() => {
         document.body.innerHTML = `<input type="checkbox" id='test-input'></input>`;
       });
@@ -135,7 +135,7 @@ describe("InputHint", () => {
         expect(input.checked).to.be.true;
       });
     });
-    context("<textarea>", () => {
+    describe("<textarea>", () => {
       beforeEach(() => {
         document.body.innerHTML = `<textarea id='test-textarea'></textarea>`;
       });
@@ -151,7 +151,7 @@ describe("InputHint", () => {
       });
     });
 
-    context("<button>", () => {
+    describe("<button>", () => {
       beforeEach(() => {
         document.body.innerHTML = `<button id='test-button'></button>`;
       });

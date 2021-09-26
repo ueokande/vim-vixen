@@ -5,9 +5,7 @@
 import { NavigationPresenterImpl } from "../../../src/content/presenters/NavigationPresenter";
 import { expect } from "chai";
 
-describe("NavigationPresenterImpl", function () {
-  this.timeout(5000);
-
+describe("NavigationPresenterImpl", () => {
   let sut: NavigationPresenterImpl;
 
   const testRel = (done: () => void, rel: string, html: string) => {
@@ -25,7 +23,7 @@ describe("NavigationPresenterImpl", function () {
   const testNext = (html: string) => (done: () => void) =>
     testRel(done, "next", html);
 
-  before(() => {
+  beforeEach(() => {
     sut = new NavigationPresenterImpl();
   });
 

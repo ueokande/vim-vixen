@@ -65,14 +65,14 @@ describe("completion reducer", () => {
   });
 
   describe("selectNext", () => {
-    context("when no completion groups", () => {
+    describe("when no completion groups", () => {
       it("does nothing", () => {
         const nextState = reducer(defaultState, selectNext());
         expect(nextState.select).equals(-1);
       });
     });
 
-    context("when no completion items", () => {
+    describe("when no completion items", () => {
       it("does nothing", () => {
         const state = {
           ...defaultState,
@@ -83,7 +83,7 @@ describe("completion reducer", () => {
       });
     });
 
-    context("when completions exist", () => {
+    describe("when completions exist", () => {
       it("selects next selection", () => {
         let state: State = {
           ...defaultState,
@@ -116,13 +116,13 @@ describe("completion reducer", () => {
   });
 
   describe("selectPrev", () => {
-    context("when no completion groups", () => {
+    describe("when no completion groups", () => {
       it("does nothing", () => {
         const nextState = reducer(defaultState, selectPrev());
         expect(nextState.select).equals(-1);
       });
 
-      context("when no completion items", () => {
+      describe("when no completion items", () => {
         it("does nothing", () => {
           const state = {
             ...defaultState,
@@ -134,7 +134,7 @@ describe("completion reducer", () => {
       });
     });
 
-    context("when completions exist", () => {
+    describe("when completions exist", () => {
       it("selects a previous completion", () => {
         let state: State = {
           ...defaultState,

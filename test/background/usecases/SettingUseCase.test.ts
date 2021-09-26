@@ -87,7 +87,7 @@ describe("SettingUseCase", () => {
   });
 
   describe("reload", () => {
-    context("when sync is not set", () => {
+    describe("when sync is not set", () => {
       it("loads settings from local storage", async () => {
         const settings = new Settings({
           keymaps: DefaultSetting.keymaps,
@@ -116,7 +116,7 @@ describe("SettingUseCase", () => {
       });
     });
 
-    context("when local is not set", () => {
+    describe("when local is not set", () => {
       it("loads settings from sync storage", async () => {
         const settings = new Settings({
           keymaps: DefaultSetting.keymaps,
@@ -145,23 +145,21 @@ describe("SettingUseCase", () => {
       });
     });
 
-    context("neither local nor sync not set", () => {
-      it("loads default settings", async () => {
-        it("loads settings from sync storage", async () => {
-          sinon
-            .stub(syncSettingRepository, "load")
-            .returns(Promise.resolve(null));
-          sinon
-            .stub(localSettingRepository, "load")
-            .returns(Promise.resolve(null));
+    describe("neither local nor sync not set", () => {
+      it("loads settings from sync storage", async () => {
+        sinon
+          .stub(syncSettingRepository, "load")
+          .returns(Promise.resolve(null));
+        sinon
+          .stub(localSettingRepository, "load")
+          .returns(Promise.resolve(null));
 
-          await sut.reload();
+        await sut.reload();
 
-          const current = await cachedSettingRepository.get();
-          expect(current.properties.hintchars).to.equal(
-            DefaultSetting.properties.hintchars
-          );
-        });
+        const current = await cachedSettingRepository.get();
+        expect(current.properties.hintchars).to.equal(
+          DefaultSetting.properties.hintchars
+        );
       });
     });
   });

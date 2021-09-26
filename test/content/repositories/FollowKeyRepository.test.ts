@@ -6,7 +6,7 @@ import { expect } from "chai";
 describe("FollowKeyRepositoryImpl", () => {
   let sut: FollowKeyRepository;
 
-  before(() => {
+  beforeEach(() => {
     sut = new FollowKeyRepositoryImpl();
   });
 

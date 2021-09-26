@@ -56,7 +56,7 @@ describe("AddonEnabledUseCase", () => {
     });
   });
 
-  describe("#disable", async () => {
+  describe("#disable", () => {
     it("store and indicate as disabled", async () => {
       await sut.disable();
 

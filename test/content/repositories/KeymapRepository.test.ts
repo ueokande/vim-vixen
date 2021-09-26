@@ -7,7 +7,7 @@ import Key from "../../../src/shared/settings/Key";
 describe("KeymapRepositoryImpl", () => {
   let sut: KeymapRepository;
 
-  before(() => {
+  beforeEach(() => {
     sut = new KeymapRepositoryImpl();
   });
 

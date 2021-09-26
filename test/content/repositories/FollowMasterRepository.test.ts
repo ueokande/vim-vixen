@@ -6,7 +6,7 @@ import { expect } from "chai";
 describe("FollowMasterRepositoryImpl", () => {
   let sut: FollowMasterRepository;
 
-  before(() => {
+  beforeEach(() => {
     sut = new FollowMasterRepositoryImpl();
   });
 
