@@ -9,7 +9,7 @@
     "lint": "eslint --ext .ts,.tsx .",
     "lint:fix": "eslint --ext .ts,.tsx . --fix",
     "type-checks": "tsc --noEmit",
-    "test": "karma start",
+    "test": "jest",
     "test:e2e": "mocha --timeout 20000 --retries 10 --require ts-node/register --extension ts e2e"
   },
   "repository": {
