@@ -25,12 +25,12 @@ describe("background/repositories/FindRepositoryImpl", () => {
 
       await sut.setLocalState(10, {
         keyword: "Hello, world",
-        frameIds: [20, 21],
-        framePos: 0,
+        frameId: 11,
       });
 
       const state = await sut.getLocalState(10);
       expect(state?.keyword).to.equal("Hello, world");
+      expect(state?.frameId).to.equal(11);
 
       expect(await sut.getLocalState(20)).to.be.undefined;
     });

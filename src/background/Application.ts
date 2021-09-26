@@ -1,9 +1,11 @@
 import { injectable, inject } from "tsyringe";
 import ContentMessageListener from "./infrastructures/ContentMessageListener";
+import FindPortListener from "./infrastructures/FindPortListener";
 import SettingController from "./controllers/SettingController";
 import VersionController from "./controllers/VersionController";
 import SettingRepository from "./repositories/SettingRepository";
 import FindRepositoryImpl from "./repositories/FindRepository";
+import ReadyFrameRepository from "./repositories/ReadyFrameRepository";
 
 @injectable()
 export default class Application {
@@ -14,8 +16,15 @@ export default class Application {
     @inject("SyncSettingRepository")
     private syncSettingRepository: SettingRepository,
     @inject("FindRepository")
-    private readonly findRepository: FindRepositoryImpl
+    private readonly findRepository: FindRepositoryImpl,
+    @inject("ReadyFrameRepository")
+    private readonly frameRepository: ReadyFrameRepository
   ) {}
+
+  private readonly findPortListener = new FindPortListener(
+    this.onFindPortConnect.bind(this),
+    this.onFindPortDisconnect.bind(this)
+  );
 
   run() {
     this.settingController.reload();
@@ -36,5 +45,26 @@ export default class Application {
     this.syncSettingRepository.onChange(() => {
       this.settingController.reload();
     });
+    this.findPortListener.run();
+  }
+
+  private onFindPortConnect(port: browser.runtime.Port) {
+    const tabId = port.sender?.tab?.id;
+    const frameId = port.sender?.frameId;
+    if (typeof tabId === "undefined" || typeof frameId === "undefined") {
+      return;
+    }
+
+    this.frameRepository.addFrameId(tabId, frameId);
+  }
+
+  private onFindPortDisconnect(port: browser.runtime.Port) {
+    const tabId = port.sender?.tab?.id;
+    const frameId = port.sender?.frameId;
+    if (typeof tabId === "undefined" || typeof frameId === "undefined") {
+      return;
+    }
+
+    this.frameRepository.removeFrameId(tabId, frameId);
   }
 }

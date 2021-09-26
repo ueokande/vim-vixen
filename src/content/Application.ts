@@ -41,7 +41,21 @@ export default class Application {
     if (window.self === window.top) {
       this.routeMasterComponents();
     }
-    return this.routeCommonComponents();
+    this.routeCommonComponents();
+    // Make sure the background script sends a message to the content script by
+    // establishing a connection.  If the background script tries to send a
+    // message to a frame on which cannot run the content script, it fails with
+    // a message "Could not establish connection."
+    //
+    // The port is never used, and the messages are delivered via
+    // `browser.tabs.sendMessage` API because sending a message via port cannot
+    // receive returned value.
+    //
+    // /* on background script */
+    // port.sendMessage({ type: "do something" });  <- returns void
+    //
+    browser.runtime.connect(undefined, { name: "vimvixen-find" });
+    return Promise.resolve();
   }
 
   private routeMasterComponents() {
