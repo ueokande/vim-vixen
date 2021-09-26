@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import InputDriver, {
   keyFromKeyboardEvent,
 } from "../../src/content/InputDriver";

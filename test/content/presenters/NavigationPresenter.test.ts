@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { NavigationPresenterImpl } from "../../../src/content/presenters/NavigationPresenter";
 import { expect } from "chai";
 
