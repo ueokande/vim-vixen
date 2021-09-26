@@ -13,7 +13,7 @@ describe("zoom test", () => {
   let tab: any;
   let page: Page;
 
-  before(async () => {
+  beforeAll(async () => {
     lanthan = await Builder.forBrowser("firefox")
       .spyAddon(path.join(__dirname, ".."))
       .build();
@@ -23,7 +23,7 @@ describe("zoom test", () => {
     page = await Page.currentContext(webdriver);
   });
 
-  after(async () => {
+  afterAll(async () => {
     await lanthan.quit();
   });
 

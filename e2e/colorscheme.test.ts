@@ -13,7 +13,7 @@ describe("colorscheme test", () => {
   let webdriver: WebDriver;
   let page: Page;
 
-  before(async () => {
+  beforeAll(async () => {
     const opts = (new FirefoxOptions() as any).setPreference(
       "ui.systemUsesDarkTheme",
       1
@@ -28,7 +28,7 @@ describe("colorscheme test", () => {
     await server.start();
   });
 
-  after(async () => {
+  afterAll(async () => {
     await server.stop();
     if (lanthan) {
       await lanthan.quit();

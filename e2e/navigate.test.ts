@@ -56,7 +56,7 @@ describe("navigate test", () => {
   let webdriver: WebDriver;
   let browser: any;
 
-  before(async () => {
+  beforeAll(async () => {
     await server.start();
 
     const opts = (new FirefoxOptions() as any).setPreference(
@@ -71,7 +71,7 @@ describe("navigate test", () => {
     browser = lanthan.getWebExtBrowser();
   });
 
-  after(async () => {
+  afterAll(async () => {
     await server.stop();
     if (lanthan) {
       await lanthan.quit();
