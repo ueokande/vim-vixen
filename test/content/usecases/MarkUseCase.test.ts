@@ -5,7 +5,6 @@ import MarkClient from "../../../src/content/client/MarkClient";
 import MockConsoleClient from "../mock/MockConsoleClient";
 import MockScrollPresenter from "../mock/MockScrollPresenter";
 import Mark from "../../../src/content/domains/Mark";
-import { expect } from "chai";
 
 class MockMarkRepository implements MarkRepository {
   private current: { [key: string]: Mark };
@@ -70,8 +69,8 @@ describe("MarkUseCase", () => {
 
       await sut.set("x");
 
-      expect(repository.get("x")).to.deep.equals({ x: 10, y: 20 });
-      expect(consoleClient.text).to.equal("Set local mark to 'x'");
+      expect(repository.get("x")).toEqual({ x: 10, y: 20 });
+      expect(consoleClient.text).toEqual("Set local mark to 'x'");
     });
 
     it("sets global mark", async () => {
@@ -79,8 +78,8 @@ describe("MarkUseCase", () => {
 
       await sut.set("Z");
 
-      expect(client.marks["Z"]).to.deep.equals({ x: 30, y: 40 });
-      expect(consoleClient.text).to.equal("Set global mark to 'Z'");
+      expect(client.marks["Z"]).toEqual({ x: 30, y: 40 });
+      expect(consoleClient.text).toEqual("Set global mark to 'Z'");
     });
   });
 
@@ -90,7 +89,7 @@ describe("MarkUseCase", () => {
 
       await sut.jump("x");
 
-      expect(scrollPresenter.getScroll()).to.deep.equals({ x: 20, y: 40 });
+      expect(scrollPresenter.getScroll()).toEqual({ x: 20, y: 40 });
     });
 
     it("throws an error when no local marks", () => {
@@ -100,7 +99,7 @@ describe("MarkUseCase", () => {
           throw new Error("error");
         })
         .catch((e) => {
-          expect(e).to.be.instanceof(Error);
+          expect(e).toBeInstanceOf(Error);
         });
     });
 
@@ -109,7 +108,7 @@ describe("MarkUseCase", () => {
 
       await sut.jump("Z");
 
-      expect(client.last).to.equal("Z");
+      expect(client.last).toEqual("Z");
     });
   });
 });

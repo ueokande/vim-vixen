@@ -1,42 +1,36 @@
 import * as parsers from "../../../src/background/usecases/parsers";
-import { expect } from "chai";
 
 describe("shared/commands/parsers", () => {
   describe("#parsers.parseSetOption", () => {
     it("parse set string", () => {
       const [key, value] = parsers.parseSetOption("hintchars=abcdefgh");
-      expect(key).to.equal("hintchars");
-      expect(value).to.equal("abcdefgh");
+      expect(key).toEqual("hintchars");
+      expect(value).toEqual("abcdefgh");
     });
 
     it("parse set empty string", () => {
       const [key, value] = parsers.parseSetOption("hintchars=");
-      expect(key).to.equal("hintchars");
-      expect(value).to.equal("");
+      expect(key).toEqual("hintchars");
+      expect(value).toEqual("");
     });
 
     it("parse set boolean", () => {
       let [key, value] = parsers.parseSetOption("smoothscroll");
-      expect(key).to.equal("smoothscroll");
-      expect(value).to.be.true;
+      expect(key).toEqual("smoothscroll");
+      expect(value).toBeTruthy;
 
       [key, value] = parsers.parseSetOption("nosmoothscroll");
-      expect(key).to.equal("smoothscroll");
-      expect(value).to.be.false;
+      expect(key).toEqual("smoothscroll");
+      expect(value).toBeFalsy;
     });
 
     it("throws error on unknown property", () => {
-      expect(() => parsers.parseSetOption("encoding=utf-8")).to.throw(
-        Error,
+      expect(() => parsers.parseSetOption("encoding=utf-8")).toThrowError(
         "Unknown"
       );
-      expect(() => parsers.parseSetOption("paste")).to.throw(Error, "Unknown");
-      expect(() => parsers.parseSetOption("nopaste")).to.throw(
-        Error,
-        "Unknown"
-      );
-      expect(() => parsers.parseSetOption("smoothscroll=yes")).to.throw(
-        Error,
+      expect(() => parsers.parseSetOption("paste")).toThrowError("Unknown");
+      expect(() => parsers.parseSetOption("nopaste")).toThrowError("Unknown");
+      expect(() => parsers.parseSetOption("smoothscroll=yes")).toThrowError(
         "Invalid argument"
       );
     });

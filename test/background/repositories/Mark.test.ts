@@ -1,5 +1,4 @@
 import MarkRepository from "../../../src/background/repositories/MarkRepository";
-import { expect } from "chai";
 
 describe("background/repositories/mark", () => {
   let repository: MarkRepository;
@@ -14,12 +13,12 @@ describe("background/repositories/mark", () => {
     await repository.setMark("A", mark);
 
     let got = (await repository.getMark("A"))!;
-    expect(got.tabId).to.equal(1);
-    expect(got.url).to.equal("http://example.com");
-    expect(got.x).to.equal(10);
-    expect(got.y).to.equal(30);
+    expect(got.tabId).toEqual(1);
+    expect(got.url).toEqual("http://example.com");
+    expect(got.x).toEqual(10);
+    expect(got.y).toEqual(30);
 
     got = (await repository.getMark("B"))!;
-    expect(got).to.be.undefined;
+    expect(got).toBeUndefined;
   });
 });

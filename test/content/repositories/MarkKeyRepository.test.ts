@@ -1,7 +1,6 @@
 import MarkRepository, {
   MarkKeyRepositoryImpl,
 } from "../../../src/content/repositories/MarkKeyRepository";
-import { expect } from "chai";
 
 describe("MarkKeyRepositoryImpl", () => {
   let sut: MarkRepository;
@@ -12,25 +11,25 @@ describe("MarkKeyRepositoryImpl", () => {
 
   describe("#isSetMode/#enableSetMode/#disabeSetMode", () => {
     it("enables and disables set mode", () => {
-      expect(sut.isSetMode()).to.be.false;
+      expect(sut.isSetMode()).toBeFalsy;
 
       sut.enableSetMode();
-      expect(sut.isSetMode()).to.be.true;
+      expect(sut.isSetMode()).toBeTruthy;
 
       sut.disabeSetMode();
-      expect(sut.isSetMode()).to.be.false;
+      expect(sut.isSetMode()).toBeFalsy;
     });
   });
 
   describe("#isJumpMode/#enableJumpMode/#disabeJumpMode", () => {
     it("enables and disables jump mode", () => {
-      expect(sut.isJumpMode()).to.be.false;
+      expect(sut.isJumpMode()).toBeFalsy;
 
       sut.enableJumpMode();
-      expect(sut.isJumpMode()).to.be.true;
+      expect(sut.isJumpMode()).toBeTruthy;
 
       sut.disabeJumpMode();
-      expect(sut.isJumpMode()).to.be.false;
+      expect(sut.isJumpMode()).toBeFalsy;
     });
   });
 });

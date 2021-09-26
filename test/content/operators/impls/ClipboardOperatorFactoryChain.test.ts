@@ -1,5 +1,4 @@
 import * as operations from "../../../../src/shared/operations";
-import { expect } from "chai";
 import ClipboardOperatorFactoryChain from "../../../../src/content/operators/impls/ClipboardOperatorFactoryChain";
 import YankURLOperator from "../../../../src/content/operators/impls/YankURLOperator";
 import PasteOperator from "../../../../src/content/operators/impls/PasteOperator";
@@ -19,13 +18,13 @@ describe("ClipboardOperatorFactoryChain", () => {
         new MockSettingRepository(),
         new MockURLRepository()
       );
-      expect(sut.create({ type: operations.URLS_YANK }, 0)).to.be.instanceOf(
+      expect(sut.create({ type: operations.URLS_YANK }, 0)).toBeInstanceOf(
         YankURLOperator
       );
       expect(
         sut.create({ type: operations.URLS_PASTE, newTab: false }, 0)
-      ).to.be.instanceOf(PasteOperator);
-      expect(sut.create({ type: operations.SCROLL_TOP }, 0)).to.be.null;
+      ).toBeInstanceOf(PasteOperator);
+      expect(sut.create({ type: operations.SCROLL_TOP }, 0)).toBeNull;
     });
   });
 });

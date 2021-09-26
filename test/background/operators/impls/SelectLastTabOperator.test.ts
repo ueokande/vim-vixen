@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import SelectLastTabOperator from "../../../../src/background/operators/impls/SelectLastTabOperator";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 
@@ -14,7 +13,7 @@ describe("SelectLastTabOperator", () => {
       await sut.run();
 
       const url = (await tabPresenter.getCurrent()).url;
-      expect(url).to.equal("https://example.com/3");
+      expect(url).toEqual("https://example.com/3");
     });
   });
 });

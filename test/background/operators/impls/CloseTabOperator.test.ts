@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import CloseTabOperator from "../../../../src/background/operators/impls/CloseTabOperator";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 
@@ -14,7 +13,7 @@ describe("CloseTabOperator", () => {
       await sut.run();
 
       const tabs = await tabPresenter.getAll();
-      expect(tabs.map((t) => t.url)).to.deep.equal([
+      expect(tabs.map((t) => t.url)).toEqual([
         "https://example.com/1",
         "https://example.com/3",
       ]);
@@ -39,7 +38,7 @@ describe("CloseTabOperator", () => {
       await sut.run();
 
       const tabs = await tabPresenter.getAll();
-      expect(tabs.map((t) => t.url)).to.deep.equal([
+      expect(tabs.map((t) => t.url)).toEqual([
         "https://example.com/1",
         "https://example.com/3",
       ]);
@@ -55,7 +54,7 @@ describe("CloseTabOperator", () => {
       await sut.run();
 
       const tab = await tabPresenter.getCurrent();
-      expect(tab.url).to.equal("https://example.com/1");
+      expect(tab.url).toEqual("https://example.com/1");
     });
   });
 });

@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import ScrollToTopOperator from "../../../../src/content/operators/impls/ScrollToTopOperator";
 import MockScrollPresenter from "../../mock/MockScrollPresenter";
 import MockSettingRepository from "../../mock/MockSettingRepository";
@@ -12,7 +11,7 @@ describe("ScrollToTopOperator", () => {
 
       await sut.run();
 
-      expect(presenter.getScroll()).to.deep.equal({ x: 10, y: 0 });
+      expect(presenter.getScroll()).toEqual({ x: 10, y: 0 });
     });
   });
 });

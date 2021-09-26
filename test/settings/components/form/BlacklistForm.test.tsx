@@ -6,7 +6,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ReactTestRenderer from "react-test-renderer";
 import ReactTestUtils from "react-dom/test-utils";
-import { expect } from "chai";
 
 import BlacklistForm from "../../../../src/settings/components/form/BlacklistForm";
 import Blacklist from "../../../../src/shared/settings/Blacklist";
@@ -24,15 +23,15 @@ describe("settings/form/BlacklistForm", () => {
       const rows = root
         .findAllByType("div")
         .filter((instance) => instance.props.role === "listitem");
-      expect(rows).to.have.lengthOf(2);
-      expect(rows[0].findByProps({ name: "url" }).props.value).to.equal(
+      expect(rows).toHaveLength(2);
+      expect(rows[0].findByProps({ name: "url" }).props.value).toEqual(
         "*.slack.com"
       );
-      expect(rows[1].findByProps({ name: "url" }).props.value).to.equal(
+      expect(rows[1].findByProps({ name: "url" }).props.value).toEqual(
         "www.google.com/maps"
       );
 
-      expect(() => root.findByType(AddButton)).not.throw();
+      expect(() => root.findByType(AddButton)).not.toThrow();
     });
 
     it("renders blank value", () => {
@@ -41,7 +40,7 @@ describe("settings/form/BlacklistForm", () => {
       const rows = root.findAllByProps({
         className: "form-blacklist-form-row",
       });
-      expect(rows).to.be.empty;
+      expect(rows).toHaveLength(0);
     });
   });
 
@@ -64,10 +63,7 @@ describe("settings/form/BlacklistForm", () => {
             value={Blacklist.fromJSON(["*.slack.com", "www.google.com/maps*"])}
             onChange={(value) => {
               const urls = value.items.map((item) => item.pattern);
-              expect(urls).to.have.members([
-                "gitter.im",
-                "www.google.com/maps*",
-              ]);
+              expect(urls).toEqual(["gitter.im", "www.google.com/maps*"]);
               done();
             }}
           />,
@@ -89,7 +85,7 @@ describe("settings/form/BlacklistForm", () => {
             value={Blacklist.fromJSON(["*.slack.com", "www.google.com/maps*"])}
             onChange={(value) => {
               const urls = value.items.map((item) => item.pattern);
-              expect(urls).to.have.members(["www.google.com/maps*"]);
+              expect(urls).toEqual(["www.google.com/maps*"]);
               done();
             }}
           />,
@@ -108,7 +104,7 @@ describe("settings/form/BlacklistForm", () => {
             value={Blacklist.fromJSON(["*.slack.com"])}
             onChange={(value) => {
               const urls = value.items.map((item) => item.pattern);
-              expect(urls).to.have.members(["*.slack.com", ""]);
+              expect(urls).toEqual(["*.slack.com", ""]);
               done();
             }}
           />,

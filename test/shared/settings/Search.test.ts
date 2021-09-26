@@ -1,5 +1,4 @@
 import Search from "../../../src/shared/settings/Search";
-import { expect } from "chai";
 
 describe("Search", () => {
   it("returns search settings by valid settings", () => {
@@ -11,12 +10,12 @@ describe("Search", () => {
       },
     });
 
-    expect(search.defaultEngine).to.equal("google");
-    expect(search.engines).to.deep.equals({
+    expect(search.defaultEngine).toEqual("google");
+    expect(search.engines).toEqual({
       google: "https://google.com/search?q={}",
       yahoo: "https://search.yahoo.com/search?p={}",
     });
-    expect(search.toJSON()).to.deep.equal({
+    expect(search.toJSON()).toEqual({
       default: "google",
       engines: {
         google: "https://google.com/search?q={}",
@@ -34,7 +33,7 @@ describe("Search", () => {
           yahoo: "https://search.yahoo.com/search?p={}",
         },
       })
-    ).to.throw(TypeError);
+    ).toThrow(TypeError);
     expect(() =>
       Search.fromJSON({
         default: "g o o g l e",
@@ -42,7 +41,7 @@ describe("Search", () => {
           "g o o g l e": "https://google.com/search?q={}",
         },
       })
-    ).to.throw(TypeError);
+    ).toThrow(TypeError);
     expect(() =>
       Search.fromJSON({
         default: "google",
@@ -50,7 +49,7 @@ describe("Search", () => {
           google: "https://google.com/search",
         },
       })
-    ).to.throw(TypeError);
+    ).toThrow(TypeError);
     expect(() =>
       Search.fromJSON({
         default: "google",
@@ -58,6 +57,6 @@ describe("Search", () => {
           google: "https://google.com/search?q={}&r={}",
         },
       })
-    ).to.throw(TypeError);
+    ).toThrow(TypeError);
   });
 });

@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import sinon from "sinon";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 import SelectPreviousSelectedTabOperator from "../../../../src/background/operators/impls/SelectPreviousSelectedTabOperator";
@@ -16,7 +15,7 @@ describe("SelectPreviousSelectedTabOperator", () => {
       await sut.run();
 
       const url = (await tabPresenter.getCurrent()).url;
-      expect(url).to.equal("https://example.com/1");
+      expect(url).toEqual("https://example.com/1");
     });
 
     it("do nothing if no last-selected tabs", async () => {

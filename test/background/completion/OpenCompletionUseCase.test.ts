@@ -11,7 +11,6 @@ import CachedSettingRepository from "../../../src/background/repositories/Cached
 import Settings, {
   DefaultSetting,
 } from "../../../src/shared/settings/Settings";
-import { expect } from "chai";
 import sinon from "sinon";
 import Properties from "../../../src/shared/settings/Properties";
 import Search from "../../../src/shared/settings/Search";
@@ -73,7 +72,7 @@ describe("OpenCompletionUseCase", () => {
       );
 
       const items = await sut.getCompletionTypes();
-      expect(items).to.deep.equal([
+      expect(items).toEqual([
         CompletionType.SearchEngines,
         CompletionType.History,
         CompletionType.Bookmarks,
@@ -99,17 +98,17 @@ describe("OpenCompletionUseCase", () => {
         )
       );
 
-      expect(await sut.requestSearchEngines("")).to.deep.equal([
+      expect(await sut.requestSearchEngines("")).toEqual([
         "google",
         "yahoo",
         "bing",
         "googleja",
       ]);
-      expect(await sut.requestSearchEngines("go")).to.deep.equal([
+      expect(await sut.requestSearchEngines("go")).toEqual([
         "google",
         "googleja",
       ]);
-      expect(await sut.requestSearchEngines("x")).to.be.empty;
+      expect(await sut.requestSearchEngines("x")).toHaveLength(0);
     });
   });
 
@@ -127,11 +126,11 @@ describe("OpenCompletionUseCase", () => {
         .withArgs("xyz")
         .returns(Promise.resolve([]));
 
-      expect(await sut.requestBookmarks("site")).to.deep.equal([
+      expect(await sut.requestBookmarks("site")).toEqual([
         { title: "site1", url: "https://site1.example.com" },
         { title: "site2", url: "https://site2.example.com/" },
       ]);
-      expect(await sut.requestBookmarks("xyz")).to.be.empty;
+      expect(await sut.requestBookmarks("xyz")).toHaveLength(0);
     });
   });
 
@@ -149,11 +148,11 @@ describe("OpenCompletionUseCase", () => {
         .withArgs("xyz")
         .returns(Promise.resolve([]));
 
-      expect(await sut.requestHistory("site")).to.deep.equal([
+      expect(await sut.requestHistory("site")).toEqual([
         { title: "site1", url: "https://site1.example.com" },
         { title: "site2", url: "https://site2.example.com/" },
       ]);
-      expect(await sut.requestHistory("xyz")).to.be.empty;
+      expect(await sut.requestHistory("xyz")).toHaveLength(0);
     });
   });
 });

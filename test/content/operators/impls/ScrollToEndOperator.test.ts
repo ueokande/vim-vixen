@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import ScrollToEndOperator from "../../../../src/content/operators/impls/ScrollToEndOperator";
 import MockScrollPresenter from "../../mock/MockScrollPresenter";
 import MockSettingRepository from "../../mock/MockSettingRepository";
@@ -12,7 +11,7 @@ describe("ScrollToEndOperator", () => {
 
       await sut.run();
 
-      expect(presenter.getScroll()).to.deep.equal({ x: Infinity, y: 0 });
+      expect(presenter.getScroll()).toEqual({ x: Infinity, y: 0 });
     });
   });
 });

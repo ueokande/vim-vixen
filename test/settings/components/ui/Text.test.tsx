@@ -6,7 +6,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ReactTestUtils from "react-dom/test-utils";
 import Text from "../../../../src/settings/components/ui/Text";
-import { expect } from "chai";
 
 describe("settings/ui/Text", () => {
   let container: HTMLDivElement;
@@ -30,10 +29,10 @@ describe("settings/ui/Text", () => {
 
     const label = document.querySelector("label")!;
     const input = document.querySelector("input")!;
-    expect(label.textContent).to.contain("myfield");
-    expect(input.type).to.contain("text");
-    expect(input.name).to.contain("myname");
-    expect(input.value).to.contain("myvalue");
+    expect(label.textContent?.includes("myfield")).toBeTruthy;
+    expect(input.type).toEqual("text");
+    expect(input.name).toEqual("myname");
+    expect(input.value).toEqual("myvalue");
   });
 
   it("invoke onChange", (done) => {
@@ -44,7 +43,7 @@ describe("settings/ui/Text", () => {
           label="myfield"
           value="myvalue"
           onChange={(e) => {
-            expect((e.target as HTMLInputElement).value).to.equal("newvalue");
+            expect((e.target as HTMLInputElement).value).toEqual("newvalue");
             done();
           }}
         />,

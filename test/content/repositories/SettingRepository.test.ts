@@ -1,5 +1,4 @@
 import { SettingRepositoryImpl } from "../../../src/content/repositories/SettingRepository";
-import { expect } from "chai";
 import Settings from "../../../src/shared/settings/Settings";
 
 describe("SettingRepositoryImpl", () => {
@@ -25,6 +24,6 @@ describe("SettingRepositoryImpl", () => {
     sut.set(settings);
 
     const actual = sut.get();
-    expect(actual.properties.hintchars).to.equal("abcd1234");
+    expect(actual.properties.hintchars).toEqual("abcd1234");
   });
 });

@@ -8,7 +8,6 @@ import ReactTestRenderer from "react-test-renderer";
 import ReactTestUtils from "react-dom/test-utils";
 import SearchForm from "../../../../src/settings/components/form/SearchForm";
 import { FormSearch } from "../../../../src/shared/SettingData";
-import { expect } from "chai";
 
 describe("settings/form/SearchForm", () => {
   describe("render", () => {
@@ -28,16 +27,16 @@ describe("settings/form/SearchForm", () => {
       const names = root
         .findAllByType("input")
         .filter((instance) => instance.props.name === "name");
-      expect(names).to.have.lengthOf(2);
-      expect(names[0].props.value).to.equal("google");
-      expect(names[1].props.value).to.equal("yahoo");
+      expect(names).toHaveLength(2);
+      expect(names[0].props.value).toEqual("google");
+      expect(names[1].props.value).toEqual("yahoo");
 
       const urls = root
         .findAllByType("input")
         .filter((instance) => instance.props.name === "url");
-      expect(urls).to.have.lengthOf(2);
-      expect(urls[0].props.value).to.equal("google.com");
-      expect(urls[1].props.value).to.equal("yahoo.com");
+      expect(urls).toHaveLength(2);
+      expect(urls[0].props.value).toEqual("google.com");
+      expect(urls[1].props.value).toEqual("yahoo.com");
     });
   });
 
@@ -66,9 +65,9 @@ describe("settings/form/SearchForm", () => {
             })}
             onChange={(value) => {
               const json = value.toJSON();
-              expect(json.default).to.equal("louvre");
-              expect(json.engines).to.have.lengthOf(2);
-              expect(json.engines).to.have.deep.members([
+              expect(json.default).toEqual("louvre");
+              expect(json.engines).toHaveLength(2);
+              expect(json.engines).toEqual([
                 ["louvre", "google.com"],
                 ["yahoo", "yahoo.com"],
               ]);
@@ -105,11 +104,9 @@ describe("settings/form/SearchForm", () => {
             })}
             onChange={(value) => {
               const json = value.toJSON();
-              expect(json.default).to.equal("yahoo");
-              expect(json.engines).to.have.lengthOf(1);
-              expect(json.engines).to.have.deep.members([
-                ["yahoo", "yahoo.com"],
-              ]);
+              expect(json.default).toEqual("yahoo");
+              expect(json.engines).toHaveLength(1);
+              expect(json.engines).toEqual([["yahoo", "yahoo.com"]]);
               done();
             }}
           />,
@@ -133,9 +130,9 @@ describe("settings/form/SearchForm", () => {
             })}
             onChange={(value) => {
               const json = value.toJSON();
-              expect(json.default).to.equal("yahoo");
-              expect(json.engines).to.have.lengthOf(2);
-              expect(json.engines).to.have.deep.members([
+              expect(json.default).toEqual("yahoo");
+              expect(json.engines).toHaveLength(2);
+              expect(json.engines).toEqual([
                 ["google", "google.com"],
                 ["", ""],
               ]);

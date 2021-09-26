@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import ScrollOperatorFactoryChain from "../../../../src/content/operators/impls/ScrollOperatorFactoryChain";
 import MockScrollPresenter from "../../mock/MockScrollPresenter";
 import MockSettingRepository from "../../mock/MockSettingRepository";
@@ -20,27 +19,27 @@ describe("ScrollOperatorFactoryChain", () => {
       );
       expect(
         sut.create({ type: operations.SCROLL_HORIZONALLY, count: 10 }, 0)
-      ).to.be.instanceOf(HorizontalScrollOperator);
+      ).toBeInstanceOf(HorizontalScrollOperator);
       expect(
         sut.create({ type: operations.SCROLL_VERTICALLY, count: 10 }, 0)
-      ).to.be.instanceOf(VerticalScrollOperator);
+      ).toBeInstanceOf(VerticalScrollOperator);
       expect(
         sut.create({ type: operations.SCROLL_PAGES, count: 10 }, 0)
-      ).to.be.instanceOf(PageScrollOperator);
-      expect(sut.create({ type: operations.SCROLL_TOP }, 0)).to.be.instanceOf(
+      ).toBeInstanceOf(PageScrollOperator);
+      expect(sut.create({ type: operations.SCROLL_TOP }, 0)).toBeInstanceOf(
         ScrollToTopOperator
       );
-      expect(
-        sut.create({ type: operations.SCROLL_BOTTOM }, 0)
-      ).to.be.instanceOf(ScrollToBottomOperator);
-      expect(sut.create({ type: operations.SCROLL_HOME }, 0)).to.be.instanceOf(
+      expect(sut.create({ type: operations.SCROLL_BOTTOM }, 0)).toBeInstanceOf(
+        ScrollToBottomOperator
+      );
+      expect(sut.create({ type: operations.SCROLL_HOME }, 0)).toBeInstanceOf(
         ScrollToHomeOperator
       );
-      expect(sut.create({ type: operations.SCROLL_END }, 0)).to.be.instanceOf(
+      expect(sut.create({ type: operations.SCROLL_END }, 0)).toBeInstanceOf(
         ScrollToEndOperator
       );
-      expect(sut.create({ type: operations.PAGE_HOME, newTab: false }, 0)).to.be
-        .null;
+      expect(sut.create({ type: operations.PAGE_HOME, newTab: false }, 0))
+        .toBeNull;
     });
   });
 });

@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import { expect } from "chai";
 import TabOperatorFactoryChain from "../../../../src/background/operators/impls/TabOperatorFactoryChain";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 import DuplicateTabOperator from "../../../../src/background/operators/impls/DuplicateTabOperator";
@@ -23,49 +22,49 @@ describe("TabOperatorFactoryChain", () => {
       const tabPresenter = new MockTabPresenter();
       const sut = new TabOperatorFactoryChain(tabPresenter);
 
-      expect(sut.create({ type: operations.TAB_CLOSE })).to.be.instanceOf(
+      expect(sut.create({ type: operations.TAB_CLOSE })).toBeInstanceOf(
         CloseTabOperator
       );
-      expect(sut.create({ type: operations.TAB_CLOSE_RIGHT })).to.be.instanceOf(
+      expect(sut.create({ type: operations.TAB_CLOSE_RIGHT })).toBeInstanceOf(
         CloseTabRightOperator
       );
-      expect(sut.create({ type: operations.TAB_CLOSE_FORCE })).to.be.instanceOf(
+      expect(sut.create({ type: operations.TAB_CLOSE_FORCE })).toBeInstanceOf(
         CloseTabOperator
       );
-      expect(sut.create({ type: operations.TAB_REOPEN })).to.be.instanceOf(
+      expect(sut.create({ type: operations.TAB_REOPEN })).toBeInstanceOf(
         ReopenTabOperator
       );
-      expect(sut.create({ type: operations.TAB_PREV })).to.be.instanceOf(
+      expect(sut.create({ type: operations.TAB_PREV })).toBeInstanceOf(
         SelectTabPrevOperator
       );
-      expect(sut.create({ type: operations.TAB_NEXT })).to.be.instanceOf(
+      expect(sut.create({ type: operations.TAB_NEXT })).toBeInstanceOf(
         SelectTabNextOperator
       );
-      expect(sut.create({ type: operations.TAB_FIRST })).to.be.instanceOf(
+      expect(sut.create({ type: operations.TAB_FIRST })).toBeInstanceOf(
         SelectFirstTabOperator
       );
-      expect(sut.create({ type: operations.TAB_LAST })).to.be.instanceOf(
+      expect(sut.create({ type: operations.TAB_LAST })).toBeInstanceOf(
         SelectLastTabOperator
       );
-      expect(sut.create({ type: operations.TAB_PREV_SEL })).to.be.instanceOf(
+      expect(sut.create({ type: operations.TAB_PREV_SEL })).toBeInstanceOf(
         SelectPreviousSelectedTabOperator
       );
       expect(
         sut.create({ type: operations.TAB_RELOAD, cache: false })
-      ).to.be.instanceOf(ReloadTabOperator);
-      expect(sut.create({ type: operations.TAB_PIN })).to.be.instanceOf(
+      ).toBeInstanceOf(ReloadTabOperator);
+      expect(sut.create({ type: operations.TAB_PIN })).toBeInstanceOf(
         PinTabOperator
       );
-      expect(sut.create({ type: operations.TAB_UNPIN })).to.be.instanceOf(
+      expect(sut.create({ type: operations.TAB_UNPIN })).toBeInstanceOf(
         UnpinTabOperator
       );
-      expect(
-        sut.create({ type: operations.TAB_TOGGLE_PINNED })
-      ).to.be.instanceOf(TogglePinnedTabOperator);
-      expect(sut.create({ type: operations.TAB_DUPLICATE })).to.be.instanceOf(
+      expect(sut.create({ type: operations.TAB_TOGGLE_PINNED })).toBeInstanceOf(
+        TogglePinnedTabOperator
+      );
+      expect(sut.create({ type: operations.TAB_DUPLICATE })).toBeInstanceOf(
         DuplicateTabOperator
       );
-      expect(sut.create({ type: operations.CANCEL })).to.be.null;
+      expect(sut.create({ type: operations.CANCEL })).toBeNull;
     });
   });
 });

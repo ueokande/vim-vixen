@@ -4,7 +4,6 @@ import { Tab } from "../../../src/background/completion/TabRepository";
 import TabPresenter from "../../../src/background/presenters/TabPresenter";
 import TabCompletionUseCase from "../../../src/background/completion/TabCompletionUseCase";
 import sinon from "sinon";
-import { expect } from "chai";
 import TabFlag from "../../../src/shared/TabFlag";
 
 class MockTabRepository implements TabRepositoryImpl {
@@ -182,7 +181,7 @@ describe("TabCompletionUseCase", () => {
           ])
         );
 
-      expect(await sut.queryTabs("", false)).to.deep.equal([
+      expect(await sut.queryTabs("", false)).toEqual([
         {
           index: 1,
           title: "Google",
@@ -206,7 +205,7 @@ describe("TabCompletionUseCase", () => {
         },
       ]);
 
-      expect(await sut.queryTabs("oo", false)).to.deep.equal([
+      expect(await sut.queryTabs("oo", false)).toEqual([
         {
           index: 1,
           title: "Google",
@@ -225,7 +224,7 @@ describe("TabCompletionUseCase", () => {
     });
 
     it("returns a tab by the index", async () => {
-      expect(await sut.queryTabs("1", false)).to.deep.equal([
+      expect(await sut.queryTabs("1", false)).toEqual([
         {
           index: 1,
           title: "Google",
@@ -235,12 +234,12 @@ describe("TabCompletionUseCase", () => {
         },
       ]);
 
-      expect(await sut.queryTabs("10", false)).to.be.empty;
-      expect(await sut.queryTabs("-1", false)).to.be.empty;
+      expect(await sut.queryTabs("10", false)).toHaveLength(0);
+      expect(await sut.queryTabs("-1", false)).toHaveLength(0);
     });
 
     it("returns the current tab by % flag", async () => {
-      expect(await sut.queryTabs("%", false)).to.deep.equal([
+      expect(await sut.queryTabs("%", false)).toEqual([
         {
           index: 2,
           title: "Yahoo",
@@ -252,7 +251,7 @@ describe("TabCompletionUseCase", () => {
     });
 
     it("returns the current tab by # flag", async () => {
-      expect(await sut.queryTabs("#", false)).to.deep.equal([
+      expect(await sut.queryTabs("#", false)).toEqual([
         {
           index: 3,
           title: "Bing",

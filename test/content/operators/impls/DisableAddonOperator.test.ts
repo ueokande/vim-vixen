@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import DisableAddonOperator from "../../../../src/content/operators/impls/DisableAddonOperator";
 import MockAddonIndicatorClient from "../../mock/MockAddonIndicatorClient";
 import MockAddonEnabledRepository from "../../mock/MockAddonEnabledRepository";
@@ -14,9 +13,9 @@ describe("DisableAddonOperator", () => {
 
       await sut.run();
 
-      expect(client.enabled).to.be.false;
-      expect(repository.enabled).to.be.false;
-      expect(presenter.attached).to.be.false;
+      expect(client.enabled).toBeFalsy;
+      expect(repository.enabled).toBeFalsy;
+      expect(presenter.attached).toBeFalsy;
     });
   });
 });

@@ -4,7 +4,6 @@ import SettingUseCase from "../../../src/content/usecases/SettingUseCase";
 import Settings, {
   DefaultSetting,
 } from "../../../src/shared/settings/Settings";
-import { expect } from "chai";
 
 class MockSettingRepository implements SettingRepository {
   private current: Settings;
@@ -64,10 +63,10 @@ describe("AddonEnabledUseCase", () => {
   describe("#reload", () => {
     it("loads settings and store to repository", async () => {
       const settings = await sut.reload();
-      expect(settings.properties.hintchars).to.equal("abcd1234");
+      expect(settings.properties.hintchars).toEqual("abcd1234");
 
       const saved = repository.get();
-      expect(saved.properties.hintchars).to.equal("abcd1234");
+      expect(saved.properties.hintchars).toEqual("abcd1234");
     });
   });
 });

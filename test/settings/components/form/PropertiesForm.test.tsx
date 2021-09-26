@@ -7,7 +7,6 @@ import ReactDOM from "react-dom";
 import ReactTestRenderer from "react-test-renderer";
 import ReactTestUtils from "react-dom/test-utils";
 import PropertiesForm from "../../../../src/settings/components/form/PropertiesForm";
-import { expect } from "chai";
 
 describe("settings/form/PropertiesForm", () => {
   describe("render", () => {
@@ -29,16 +28,16 @@ describe("settings/form/PropertiesForm", () => {
       ).root;
 
       let input = root.findByProps({ name: "mystr" });
-      expect(input.props.type).to.equals("text");
-      expect(input.props.value).to.equal("abc");
+      expect(input.props.type).toEqual("text");
+      expect(input.props.value).toEqual("abc");
 
       input = root.findByProps({ name: "mynum" });
-      expect(input.props.type).to.equals("number");
-      expect(input.props.value).to.equal(123);
+      expect(input.props.type).toEqual("number");
+      expect(input.props.value).toEqual(123);
 
       input = root.findByProps({ name: "mybool" });
-      expect(input.props.type).to.equals("checkbox");
-      expect(input.props.value).to.equal(true);
+      expect(input.props.type).toEqual("checkbox");
+      expect(input.props.value).toEqual(true);
     });
   });
 
@@ -61,7 +60,7 @@ describe("settings/form/PropertiesForm", () => {
             types={{ myvalue: "string" }}
             value={{ myvalue: "abc" }}
             onChange={(value) => {
-              expect(value).to.have.property("myvalue", "abcd");
+              expect(value).toHaveProperty("myvalue", "abcd");
               done();
             }}
           />,
@@ -83,7 +82,7 @@ describe("settings/form/PropertiesForm", () => {
             types={{ myvalue: "number" }}
             value={{ "": 123 }}
             onChange={(value) => {
-              expect(value).to.have.property("myvalue", 1234);
+              expect(value).toHaveProperty("myvalue", 1234);
               done();
             }}
           />,
@@ -105,7 +104,7 @@ describe("settings/form/PropertiesForm", () => {
             types={{ myvalue: "boolean" }}
             value={{ myvalue: false }}
             onChange={(value) => {
-              expect(value).to.have.property("myvalue", true);
+              expect(value).toHaveProperty("myvalue", true);
               done();
             }}
           />,

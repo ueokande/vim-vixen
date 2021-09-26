@@ -1,22 +1,21 @@
 import MemoryStorage from "../../../src/background/infrastructures/MemoryStorage";
-import { expect } from "chai";
 
 describe("background/infrastructures/memory-storage", () => {
   it("stores values", () => {
     const cache = new MemoryStorage();
     cache.set("number", 123);
-    expect(cache.get("number")).to.equal(123);
+    expect(cache.get("number")).toEqual(123);
 
     cache.set("string", "123");
-    expect(cache.get("string")).to.equal("123");
+    expect(cache.get("string")).toEqual("123");
 
     cache.set("object", { hello: "123" });
-    expect(cache.get("object")).to.deep.equal({ hello: "123" });
+    expect(cache.get("object")).toEqual({ hello: "123" });
   });
 
   it("returns undefined if no keys", () => {
     const cache = new MemoryStorage();
-    expect(cache.get("no-keys")).to.be.undefined;
+    expect(cache.get("no-keys")).toBeUndefined;
   });
 
   it("stored on shared memory", () => {
@@ -25,7 +24,7 @@ describe("background/infrastructures/memory-storage", () => {
 
     cache = new MemoryStorage();
     const got = cache.get("red");
-    expect(got).to.equal("apple");
+    expect(got).toEqual("apple");
   });
 
   it("stored cloned objects", () => {
@@ -35,11 +34,11 @@ describe("background/infrastructures/memory-storage", () => {
 
     recipe.salt = "20g";
     const got = cache.get("recipe");
-    expect(got).to.deep.equal({ sugar: "300g", salt: "10g" });
+    expect(got).toEqual({ sugar: "300g", salt: "10g" });
   });
 
   it("throws an error with unserializable objects", () => {
     const cache = new MemoryStorage();
-    expect(() => cache.set("fn", setTimeout)).to.throw();
+    expect(() => cache.set("fn", setTimeout)).toThrow();
   });
 });

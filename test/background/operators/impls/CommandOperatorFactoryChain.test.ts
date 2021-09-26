@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import { expect } from "chai";
 import CommandOperatorFactoryChain from "../../../../src/background/operators/impls/CommandOperatorFactoryChain";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 import MockConsoleClient from "../../mock/MockConsoleClient";
@@ -18,25 +17,25 @@ describe("CommandOperatorFactoryChain", () => {
       const consoleClient = new MockConsoleClient();
       const sut = new CommandOperatorFactoryChain(tabPresenter, consoleClient);
 
-      expect(sut.create({ type: operations.COMMAND_SHOW })).to.be.instanceOf(
+      expect(sut.create({ type: operations.COMMAND_SHOW })).toBeInstanceOf(
         ShowCommandOperator
       );
       expect(
         sut.create({ type: operations.COMMAND_SHOW_TABOPEN, alter: true })
-      ).to.be.instanceOf(ShowTabOpenCommandOperator);
+      ).toBeInstanceOf(ShowTabOpenCommandOperator);
       expect(
         sut.create({ type: operations.COMMAND_SHOW_WINOPEN, alter: true })
-      ).to.be.instanceOf(ShowWinOpenCommandOperator);
+      ).toBeInstanceOf(ShowWinOpenCommandOperator);
       expect(
         sut.create({ type: operations.COMMAND_SHOW_BUFFER })
-      ).to.be.instanceOf(ShowBufferCommandOperator);
+      ).toBeInstanceOf(ShowBufferCommandOperator);
       expect(
         sut.create({ type: operations.COMMAND_SHOW_ADDBOOKMARK, alter: true })
-      ).to.be.instanceOf(ShowAddBookmarkOperator);
-      expect(sut.create({ type: operations.FIND_START })).to.be.instanceOf(
+      ).toBeInstanceOf(ShowAddBookmarkOperator);
+      expect(sut.create({ type: operations.FIND_START })).toBeInstanceOf(
         StartFindOperator
       );
-      expect(sut.create({ type: operations.CANCEL })).to.be.null;
+      expect(sut.create({ type: operations.CANCEL })).toBeNull;
     });
   });
 });

@@ -1,7 +1,6 @@
 import * as operations from "../../../../src/shared/operations";
 import BackgroundOperationOperator from "../../../../src/content/operators/impls/BackgroundOperationOperator";
 import OperationClient from "../../../../src/content/client/OperationClient";
-import { expect } from "chai";
 
 class MockOperationClient implements OperationClient {
   public readonly executedOps: {
@@ -30,7 +29,7 @@ describe("BackgroundOperationOperator", () => {
 
       await sut.run();
 
-      expect(client.executedOps).to.deep.equal([
+      expect(client.executedOps).toEqual([
         { op: { type: operations.TAB_CLOSE }, repeat: 2 },
       ]);
     });

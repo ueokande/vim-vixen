@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import { expect } from "chai";
 import ZoomOperatorFactoryChain from "../../../../src/background/operators/impls/ZoomOperatorFactoryChain";
 import MockZoomPresenter from "../../mock/MockZoomPresenter";
 import ZoomInOperator from "../../../../src/background/operators/impls/ZoomInOperator";
@@ -13,16 +12,16 @@ describe("ZoomOperatorFactoryChain", () => {
       const zoomPresenter = new MockZoomPresenter();
       const sut = new ZoomOperatorFactoryChain(zoomPresenter);
 
-      expect(sut.create({ type: operations.ZOOM_IN })).to.be.instanceOf(
+      expect(sut.create({ type: operations.ZOOM_IN })).toBeInstanceOf(
         ZoomInOperator
       );
-      expect(sut.create({ type: operations.ZOOM_OUT })).to.be.instanceOf(
+      expect(sut.create({ type: operations.ZOOM_OUT })).toBeInstanceOf(
         ZoomOutOperator
       );
-      expect(sut.create({ type: operations.ZOOM_NEUTRAL })).to.be.instanceOf(
+      expect(sut.create({ type: operations.ZOOM_NEUTRAL })).toBeInstanceOf(
         ResetZoomOperator
       );
-      expect(sut.create({ type: operations.CANCEL })).to.be.null;
+      expect(sut.create({ type: operations.CANCEL })).toBeNull;
     });
   });
 });

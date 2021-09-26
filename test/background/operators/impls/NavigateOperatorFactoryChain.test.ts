@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import { expect } from "chai";
 import NavigateOperatorFactoryChain from "../../../../src/background/operators/impls/NavigateOperatorFactoryChain";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 import MockNavigateClient from "../../mock/MockNavigateClient";
@@ -28,29 +27,29 @@ describe("NavigateOperatorFactoryChain", () => {
 
       expect(
         sut.create({ type: operations.NAVIGATE_HISTORY_PREV })
-      ).to.be.instanceOf(NavigateHistoryPrevOperator);
+      ).toBeInstanceOf(NavigateHistoryPrevOperator);
       expect(
         sut.create({ type: operations.NAVIGATE_HISTORY_NEXT })
-      ).to.be.instanceOf(NavigateHistoryNextOperator);
+      ).toBeInstanceOf(NavigateHistoryNextOperator);
       expect(
         sut.create({ type: operations.NAVIGATE_LINK_PREV })
-      ).to.be.instanceOf(NavigateLinkPrevOperator);
+      ).toBeInstanceOf(NavigateLinkPrevOperator);
       expect(
         sut.create({ type: operations.NAVIGATE_LINK_NEXT })
-      ).to.be.instanceOf(NavigateLinkNextOperator);
-      expect(sut.create({ type: operations.NAVIGATE_PARENT })).to.be.instanceOf(
+      ).toBeInstanceOf(NavigateLinkNextOperator);
+      expect(sut.create({ type: operations.NAVIGATE_PARENT })).toBeInstanceOf(
         NavigateParentOperator
       );
-      expect(sut.create({ type: operations.NAVIGATE_ROOT })).to.be.instanceOf(
+      expect(sut.create({ type: operations.NAVIGATE_ROOT })).toBeInstanceOf(
         NavigateRootOperator
       );
-      expect(sut.create({ type: operations.PAGE_SOURCE })).to.be.instanceOf(
+      expect(sut.create({ type: operations.PAGE_SOURCE })).toBeInstanceOf(
         OpenSourceOperator
       );
       expect(
         sut.create({ type: operations.PAGE_HOME, newTab: false })
-      ).to.be.instanceOf(OpenHomeOperator);
-      expect(sut.create({ type: operations.CANCEL })).to.be.null;
+      ).toBeInstanceOf(OpenHomeOperator);
+      expect(sut.create({ type: operations.CANCEL })).toBeNull;
     });
   });
 });

@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import { expect } from "chai";
 import RepeatOperatorFactoryChain from "../../../../src/background/operators/impls/RepeatOperatorFactoryChain";
 import RepeatLastOperator from "../../../../src/background/operators/impls/RepeatLastOperator";
 import OperatorFactory from "../../../../src/background/operators/OperatorFactory";
@@ -23,10 +22,10 @@ describe("RepeatOperatorFactoryChain", () => {
         operatorFactory
       );
 
-      expect(sut.create({ type: operations.REPEAT_LAST })).to.be.instanceOf(
+      expect(sut.create({ type: operations.REPEAT_LAST })).toBeInstanceOf(
         RepeatLastOperator
       );
-      expect(sut.create({ type: operations.CANCEL })).to.be.null;
+      expect(sut.create({ type: operations.CANCEL })).toBeNull;
     });
   });
 });

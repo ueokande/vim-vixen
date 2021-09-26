@@ -3,7 +3,6 @@
  */
 
 import { NavigationPresenterImpl } from "../../../src/content/presenters/NavigationPresenter";
-import { expect } from "chai";
 
 describe("NavigationPresenterImpl", () => {
   let sut: NavigationPresenterImpl;
@@ -14,7 +13,7 @@ describe("NavigationPresenterImpl", () => {
     document.body.innerHTML = html;
     method();
     setTimeout(() => {
-      expect(document.location.hash).to.equal(`#${rel}`);
+      expect(document.location.hash).toEqual(`#${rel}`);
       done();
     }, 0);
   };

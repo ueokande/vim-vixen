@@ -6,7 +6,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ReactTestUtils from "react-dom/test-utils";
 import TextArea from "../../../../src/settings/components/ui/TextArea";
-import { expect } from "chai";
 
 describe("settings/ui/TextArea", () => {
   let container: HTMLDivElement;
@@ -36,11 +35,11 @@ describe("settings/ui/TextArea", () => {
     const label = document.querySelector("label")!;
     const textarea = document.querySelector("textarea")!;
     const error = document.querySelector("[role=alert]")!;
-    expect(label.textContent).to.contain("myfield");
-    expect(textarea.nodeName).to.contain("TEXTAREA");
-    expect(textarea.name).to.contain("myname");
-    expect(textarea.value).to.contain("myvalue");
-    expect(error.textContent).to.contain("myerror");
+    expect(label.textContent).toEqual("myfield");
+    expect(textarea.nodeName).toEqual("TEXTAREA");
+    expect(textarea.name).toEqual("myname");
+    expect(textarea.value).toEqual("myvalue");
+    expect(error.textContent).toEqual("myerror");
   });
 
   it("invoke onChange", (done) => {
@@ -51,9 +50,7 @@ describe("settings/ui/TextArea", () => {
           label="myfield"
           value="myvalue"
           onChange={(e) => {
-            expect((e.target as HTMLTextAreaElement).value).to.equal(
-              "newvalue"
-            );
+            expect((e.target as HTMLTextAreaElement).value).toEqual("newvalue");
             done();
           }}
         />,

@@ -7,7 +7,6 @@ import Settings, {
   DefaultSetting,
 } from "../../../src/shared/settings/Settings";
 import Notifier from "../../../src/background/presenters/Notifier";
-import { expect } from "chai";
 import Properties from "../../../src/shared/settings/Properties";
 import sinon from "sinon";
 
@@ -82,7 +81,7 @@ describe("SettingUseCase", () => {
         .returns(Promise.resolve(settings));
 
       const got = await sut.getCached();
-      expect(got.properties.hintchars).to.equal("abcd1234");
+      expect(got.properties.hintchars).toEqual("abcd1234");
     });
   });
 
@@ -112,7 +111,7 @@ describe("SettingUseCase", () => {
         await sut.reload();
 
         const current = await cachedSettingRepository.get();
-        expect(current.properties.hintchars).to.equal("abcd1234");
+        expect(current.properties.hintchars).toEqual("abcd1234");
       });
     });
 
@@ -141,7 +140,7 @@ describe("SettingUseCase", () => {
         await sut.reload();
 
         const current = await cachedSettingRepository.get();
-        expect(current.properties.hintchars).to.equal("aaaa1111");
+        expect(current.properties.hintchars).toEqual("aaaa1111");
       });
     });
 
@@ -157,7 +156,7 @@ describe("SettingUseCase", () => {
         await sut.reload();
 
         const current = await cachedSettingRepository.get();
-        expect(current.properties.hintchars).to.equal(
+        expect(current.properties.hintchars).toEqual(
           DefaultSetting.properties.hintchars
         );
       });

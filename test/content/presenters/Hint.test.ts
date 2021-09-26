@@ -6,7 +6,6 @@ import AbstractHint, {
   LinkHint,
   InputHint,
 } from "../../../src/content/presenters/Hint";
-import { expect } from "chai";
 
 class Hint extends AbstractHint {}
 
@@ -21,7 +20,7 @@ describe("Hint", () => {
       new Hint(link, "abc");
 
       const elem = document.querySelector(".vimvixen-hint");
-      expect(elem!.textContent!.trim()).to.be.equal("abc");
+      expect(elem!.textContent!.trim()).toEqual("abc");
     });
   });
 
@@ -33,7 +32,7 @@ describe("Hint", () => {
       hint.show();
 
       const elem = document.querySelector(".vimvixen-hint") as HTMLElement;
-      expect(elem.style.display).to.not.equal("none");
+      expect(elem.style.display).not.toEqual("none");
     });
   });
 
@@ -44,7 +43,7 @@ describe("Hint", () => {
       hint.hide();
 
       const elem = document.querySelector(".vimvixen-hint") as HTMLElement;
-      expect(elem.style.display).to.equal("none");
+      expect(elem.style.display).toEqual("none");
     });
   });
 
@@ -54,9 +53,9 @@ describe("Hint", () => {
       const hint = new Hint(link, "abc");
 
       const elem = document.querySelector(".vimvixen-hint")!;
-      expect(elem.parentElement).to.not.be.null;
+      expect(elem.parentElement).not.toBeNull;
       hint.remove();
-      expect(elem.parentElement).to.be.null;
+      expect(elem.parentElement).toBeNull;
     });
   });
 });
@@ -75,7 +74,7 @@ describe("LinkHint", () => {
       const link = document.getElementById("test-link1") as HTMLAnchorElement;
       const hint = new LinkHint(link, "abc");
 
-      expect(hint.getLink()).to.equal("https://google.com/");
+      expect(hint.getLink()).toEqual("https://google.com/");
     });
   });
 
@@ -84,12 +83,12 @@ describe("LinkHint", () => {
       let link = document.getElementById("test-link1") as HTMLAnchorElement;
       let hint = new LinkHint(link, "abc");
 
-      expect(hint.getLinkTarget()).to.be.null;
+      expect(hint.getLinkTarget()).toBeNull;
 
       link = document.getElementById("test-link2") as HTMLAnchorElement;
       hint = new LinkHint(link, "abc");
 
-      expect(hint.getLinkTarget()).to.equal("_blank");
+      expect(hint.getLinkTarget()).toEqual("_blank");
     });
   });
 
@@ -118,7 +117,7 @@ describe("InputHint", () => {
         const hint = new InputHint(input, "abc");
         hint.activate();
 
-        expect(document.activeElement).to.equal(input);
+        expect(document.activeElement).toEqual(input);
       });
     });
 
@@ -132,7 +131,7 @@ describe("InputHint", () => {
         const hint = new InputHint(input, "abc");
         hint.activate();
 
-        expect(input.checked).to.be.true;
+        expect(input.checked).toBeTruthy;
       });
     });
     describe("<textarea>", () => {
@@ -147,7 +146,7 @@ describe("InputHint", () => {
         const hint = new InputHint(textarea, "abc");
         hint.activate();
 
-        expect(document.activeElement).to.equal(textarea);
+        expect(document.activeElement).toEqual(textarea);
       });
     });
 

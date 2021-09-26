@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 import NavigateParentOperator from "../../../../src/background/operators/impls/NavigateParentOperator";
 
@@ -14,7 +13,7 @@ describe("NavigateParentOperator", () => {
       await sut.run();
 
       const url = (await tabPresenter.getCurrent()).url;
-      expect(url).to.be.equal("https://example.com/fruits/yellow/");
+      expect(url).toEqual("https://example.com/fruits/yellow/");
     });
 
     it("opens a parent directory of the directoryin the URL", async () => {
@@ -25,7 +24,7 @@ describe("NavigateParentOperator", () => {
       await sut.run();
 
       const url = (await tabPresenter.getCurrent()).url;
-      expect(url).to.be.equal("https://example.com/fruits/");
+      expect(url).toEqual("https://example.com/fruits/");
     });
 
     it("removes a hash in the URL", async () => {
@@ -36,7 +35,7 @@ describe("NavigateParentOperator", () => {
       await sut.run();
 
       const url = (await tabPresenter.getCurrent()).url;
-      expect(url).to.be.equal("https://example.com/fruits/yellow/");
+      expect(url).toEqual("https://example.com/fruits/yellow/");
     });
 
     it("removes query parameters in the URL", async () => {
@@ -47,7 +46,7 @@ describe("NavigateParentOperator", () => {
       await sut.run();
 
       const url = (await tabPresenter.getCurrent()).url;
-      expect(url).to.be.equal("https://example.com/search");
+      expect(url).toEqual("https://example.com/search");
     });
   });
 });
