@@ -1,4 +1,3 @@
-import sinon from "sinon";
 import ShowTabOpenCommandOperator from "../../../../src/background/operators/impls/ShowTabOpenCommandOperator";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 import MockConsoleClient from "../../mock/MockConsoleClient";
@@ -11,10 +10,9 @@ describe("ShowTabOpenCommandOperator", () => {
       await tabPresenter.create("https://example.com/2", { active: true });
       await tabPresenter.create("https://example.com/3", { active: false });
       const consoleClient = new MockConsoleClient();
-      const mock = sinon
-        .mock(consoleClient)
-        .expects("showCommand")
-        .withArgs(1, "tabopen ");
+      const showCommandSpy = jest
+        .spyOn(consoleClient, "showCommand")
+        .mockReturnValue(Promise.resolve());
 
       const sut = new ShowTabOpenCommandOperator(
         tabPresenter,
@@ -23,7 +21,7 @@ describe("ShowTabOpenCommandOperator", () => {
       );
       await sut.run();
 
-      mock.verify();
+      expect(showCommandSpy).toBeCalledWith(1, "tabopen ");
     });
 
     it("show command with tabopen command and an URL of the current tab", async () => {
@@ -32,10 +30,9 @@ describe("ShowTabOpenCommandOperator", () => {
       await tabPresenter.create("https://example.com/2", { active: true });
       await tabPresenter.create("https://example.com/3", { active: false });
       const consoleClient = new MockConsoleClient();
-      const mock = sinon
-        .mock(consoleClient)
-        .expects("showCommand")
-        .withArgs(1, "tabopen https://example.com/2");
+      const showCommandSpy = jest
+        .spyOn(consoleClient, "showCommand")
+        .mockReturnValue(Promise.resolve());
 
       const sut = new ShowTabOpenCommandOperator(
         tabPresenter,
@@ -44,7 +41,7 @@ describe("ShowTabOpenCommandOperator", () => {
       );
       await sut.run();
 
-      mock.verify();
+      expect(showCommandSpy).toBeCalledWith(1, "tabopen https://example.com/2");
     });
   });
 });

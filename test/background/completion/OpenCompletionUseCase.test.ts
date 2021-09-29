@@ -11,7 +11,6 @@ import CachedSettingRepository from "../../../src/background/repositories/Cached
 import Settings, {
   DefaultSetting,
 } from "../../../src/shared/settings/Settings";
-import sinon from "sinon";
 import Properties from "../../../src/shared/settings/Properties";
 import Search from "../../../src/shared/settings/Search";
 
@@ -60,15 +59,13 @@ describe("OpenCompletionUseCase", () => {
 
   describe("#getCompletionTypes", () => {
     it("returns completion types from the property", async () => {
-      sinon.stub(settingRepository, "get").returns(
-        Promise.resolve(
-          new Settings({
-            keymaps: DefaultSetting.keymaps,
-            search: DefaultSetting.search,
-            properties: new Properties({ complete: "shb" }),
-            blacklist: DefaultSetting.blacklist,
-          })
-        )
+      jest.spyOn(settingRepository, "get").mockResolvedValueOnce(
+        new Settings({
+          keymaps: DefaultSetting.keymaps,
+          search: DefaultSetting.search,
+          properties: new Properties({ complete: "shb" }),
+          blacklist: DefaultSetting.blacklist,
+        })
       );
 
       const items = await sut.getCompletionTypes();
@@ -82,20 +79,18 @@ describe("OpenCompletionUseCase", () => {
 
   describe("#requestSearchEngines", () => {
     it("returns search engines matches by the query", async () => {
-      sinon.stub(settingRepository, "get").returns(
-        Promise.resolve(
-          new Settings({
-            keymaps: DefaultSetting.keymaps,
-            search: new Search("google", {
-              google: "https://google.com/search?q={}",
-              yahoo: "https://search.yahoo.com/search?q={}",
-              bing: "https://bing.com/search?q={}",
-              googleja: "https://google.co.jp/search?q={}",
-            }),
-            properties: DefaultSetting.properties,
-            blacklist: DefaultSetting.blacklist,
-          })
-        )
+      jest.spyOn(settingRepository, "get").mockResolvedValue(
+        new Settings({
+          keymaps: DefaultSetting.keymaps,
+          search: new Search("google", {
+            google: "https://google.com/search?q={}",
+            yahoo: "https://search.yahoo.com/search?q={}",
+            bing: "https://bing.com/search?q={}",
+            googleja: "https://google.co.jp/search?q={}",
+          }),
+          properties: DefaultSetting.properties,
+          blacklist: DefaultSetting.blacklist,
+        })
       );
 
       expect(await sut.requestSearchEngines("")).toEqual([
@@ -114,45 +109,43 @@ describe("OpenCompletionUseCase", () => {
 
   describe("#requestBookmarks", () => {
     it("returns bookmarks from the repository", async () => {
-      sinon
-        .stub(bookmarkRepository, "queryBookmarks")
-        .withArgs("site")
-        .returns(
-          Promise.resolve([
-            { title: "site1", url: "https://site1.example.com" },
-            { title: "site2", url: "https://site2.example.com/" },
-          ])
-        )
-        .withArgs("xyz")
-        .returns(Promise.resolve([]));
+      const spy = jest
+        .spyOn(bookmarkRepository, "queryBookmarks")
+        .mockResolvedValueOnce([
+          { title: "site1", url: "https://site1.example.com" },
+          { title: "site2", url: "https://site2.example.com/" },
+        ])
+        .mockResolvedValueOnce([]);
 
       expect(await sut.requestBookmarks("site")).toEqual([
         { title: "site1", url: "https://site1.example.com" },
         { title: "site2", url: "https://site2.example.com/" },
       ]);
       expect(await sut.requestBookmarks("xyz")).toHaveLength(0);
+      expect(spy).toBeCalledTimes(2);
+      expect(spy.mock.calls[0][0]).toEqual("site");
+      expect(spy.mock.calls[1][0]).toEqual("xyz");
     });
   });
 
   describe("#requestHistory", () => {
     it("returns histories from the repository", async () => {
-      sinon
-        .stub(historyRepository, "queryHistories")
-        .withArgs("site")
-        .returns(
-          Promise.resolve([
-            { title: "site1", url: "https://site1.example.com" },
-            { title: "site2", url: "https://site2.example.com/" },
-          ])
-        )
-        .withArgs("xyz")
-        .returns(Promise.resolve([]));
+      const spy = jest
+        .spyOn(historyRepository, "queryHistories")
+        .mockResolvedValueOnce([
+          { title: "site1", url: "https://site1.example.com" },
+          { title: "site2", url: "https://site2.example.com/" },
+        ])
+        .mockResolvedValueOnce([]);
 
       expect(await sut.requestHistory("site")).toEqual([
         { title: "site1", url: "https://site1.example.com" },
         { title: "site2", url: "https://site2.example.com/" },
       ]);
       expect(await sut.requestHistory("xyz")).toHaveLength(0);
+      expect(spy).toBeCalledTimes(2);
+      expect(spy.mock.calls[0][0]).toEqual("site");
+      expect(spy.mock.calls[1][0]).toEqual("xyz");
     });
   });
 });

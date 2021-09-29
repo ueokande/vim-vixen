@@ -3,7 +3,6 @@ import TabRepositoryImpl from "../../../src/background/completion/impl/TabReposi
 import { Tab } from "../../../src/background/completion/TabRepository";
 import TabPresenter from "../../../src/background/presenters/TabPresenter";
 import TabCompletionUseCase from "../../../src/background/completion/TabCompletionUseCase";
-import sinon from "sinon";
 import TabFlag from "../../../src/shared/TabFlag";
 
 class MockTabRepository implements TabRepositoryImpl {
@@ -97,43 +96,39 @@ describe("TabCompletionUseCase", () => {
     tabPresenter = new MockTabPresenter();
     sut = new TabCompletionUseCase(tabRepository, tabPresenter);
 
-    sinon.stub(tabPresenter, "getLastSelectedId").returns(Promise.resolve(12));
-    sinon.stub(tabRepository, "getAllTabs").returns(
-      Promise.resolve([
-        {
-          id: 10,
-          index: 0,
-          title: "Google",
-          url: "https://google.com/",
-          faviconUrl: "https://google.com/favicon.ico",
-          active: false,
-        },
-        {
-          id: 11,
-          index: 1,
-          title: "Yahoo",
-          url: "https://yahoo.com/",
-          faviconUrl: "https://yahoo.com/favicon.ico",
-          active: true,
-        },
-        {
-          id: 12,
-          index: 2,
-          title: "Bing",
-          url: "https://bing.com/",
-          active: false,
-        },
-      ])
-    );
+    jest.spyOn(tabPresenter, "getLastSelectedId").mockResolvedValue(12);
+    jest.spyOn(tabRepository, "getAllTabs").mockResolvedValue([
+      {
+        id: 10,
+        index: 0,
+        title: "Google",
+        url: "https://google.com/",
+        faviconUrl: "https://google.com/favicon.ico",
+        active: false,
+      },
+      {
+        id: 11,
+        index: 1,
+        title: "Yahoo",
+        url: "https://yahoo.com/",
+        faviconUrl: "https://yahoo.com/favicon.ico",
+        active: true,
+      },
+      {
+        id: 12,
+        index: 2,
+        title: "Bing",
+        url: "https://bing.com/",
+        active: false,
+      },
+    ]);
   });
 
   describe("#queryTabs", () => {
     it("returns tab items", async () => {
-      sinon
-        .stub(tabRepository, "queryTabs")
-        .withArgs("", false)
-        .returns(
-          Promise.resolve([
+      jest.spyOn(tabRepository, "queryTabs").mockImplementation((keyword) =>
+        Promise.resolve(
+          [
             {
               id: 10,
               index: 0,
@@ -157,29 +152,11 @@ describe("TabCompletionUseCase", () => {
               url: "https://bing.com/",
               active: false,
             },
-          ])
+          ].filter(
+            (item) => item.title.includes(keyword) || item.url.includes(keyword)
+          )
         )
-        .withArgs("oo", false)
-        .returns(
-          Promise.resolve([
-            {
-              id: 10,
-              index: 0,
-              title: "Google",
-              url: "https://google.com/",
-              faviconUrl: "https://google.com/favicon.ico",
-              active: false,
-            },
-            {
-              id: 11,
-              index: 1,
-              title: "Yahoo",
-              url: "https://yahoo.com/",
-              faviconUrl: "https://yahoo.com/favicon.ico",
-              active: true,
-            },
-          ])
-        );
+      );
 
       expect(await sut.queryTabs("", false)).toEqual([
         {

@@ -1,4 +1,3 @@
-import sinon from "sinon";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 import SelectPreviousSelectedTabOperator from "../../../../src/background/operators/impls/SelectPreviousSelectedTabOperator";
 
@@ -9,7 +8,7 @@ describe("SelectPreviousSelectedTabOperator", () => {
       await tabPresenter.create("https://example.com/1", { active: false });
       await tabPresenter.create("https://example.com/2", { active: true });
       await tabPresenter.create("https://example.com/3", { active: false });
-      sinon.stub(tabPresenter, "getLastSelectedId").returns(Promise.resolve(0));
+      jest.spyOn(tabPresenter, "getLastSelectedId").mockResolvedValue(0);
 
       const sut = new SelectPreviousSelectedTabOperator(tabPresenter);
       await sut.run();
@@ -23,15 +22,15 @@ describe("SelectPreviousSelectedTabOperator", () => {
       await tabPresenter.create("https://example.com/1", { active: false });
       await tabPresenter.create("https://example.com/2", { active: true });
       await tabPresenter.create("https://example.com/3", { active: false });
-      sinon
-        .stub(tabPresenter, "getLastSelectedId")
-        .returns(Promise.resolve(undefined));
-      const mock = sinon.mock(tabPresenter).expects("select").never();
+      jest
+        .spyOn(tabPresenter, "getLastSelectedId")
+        .mockResolvedValue(undefined);
+      const selectSpy = jest.spyOn(tabPresenter, "select");
 
       const sut = new SelectPreviousSelectedTabOperator(tabPresenter);
       await sut.run();
 
-      mock.verify();
+      expect(selectSpy).not.toBeCalled();
     });
   });
 });

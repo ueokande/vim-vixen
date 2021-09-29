@@ -1,4 +1,3 @@
-import sinon from "sinon";
 import PasteOperator from "../../../../src/content/operators/impls/PasteOperator";
 import MockClipboardRepository from "../../mock/MockClipboardRepository";
 import MockSettingRepository from "../../mock/MockSettingRepository";
@@ -10,10 +9,9 @@ describe("PasteOperator", () => {
       const clipboardRepository = new MockClipboardRepository("apple");
       const settingRepository = new MockSettingRepository();
       const operationClient = new MockOperationClient();
-      const mockOperationClient = sinon
-        .mock(operationClient)
-        .expects("internalOpenUrl")
-        .withArgs("https://google.com/search?q=apple");
+      const internalOpenUrlSpy = jest
+        .spyOn(operationClient, "internalOpenUrl")
+        .mockReturnValue(Promise.resolve());
       const sut = new PasteOperator(
         clipboardRepository,
         settingRepository,
@@ -23,7 +21,10 @@ describe("PasteOperator", () => {
 
       await sut.run();
 
-      mockOperationClient.verify();
+      expect(internalOpenUrlSpy).toBeCalledWith(
+        "https://google.com/search?q=apple",
+        false
+      );
     });
 
     it("open a url", async () => {
@@ -32,10 +33,9 @@ describe("PasteOperator", () => {
       );
       const settingRepository = new MockSettingRepository();
       const operationClient = new MockOperationClient();
-      const mockOperationClient = sinon
-        .mock(operationClient)
-        .expects("internalOpenUrl")
-        .withArgs("https://example.com/");
+      const internalOpenUrlSpy = jest
+        .spyOn(operationClient, "internalOpenUrl")
+        .mockReturnValue(Promise.resolve());
       const sut = new PasteOperator(
         clipboardRepository,
         settingRepository,
@@ -45,7 +45,7 @@ describe("PasteOperator", () => {
 
       await sut.run();
 
-      mockOperationClient.verify();
+      expect(internalOpenUrlSpy).toBeCalledWith("https://example.com/", false);
     });
   });
 });

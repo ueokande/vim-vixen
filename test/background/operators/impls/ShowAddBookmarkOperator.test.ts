@@ -1,4 +1,3 @@
-import sinon from "sinon";
 import ShowAddBookmarkOperator from "../../../../src/background/operators/impls/ShowAddBookmarkOperator";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 import MockConsoleClient from "../../mock/MockConsoleClient";
@@ -11,10 +10,9 @@ describe("ShowAddBookmarkOperator", () => {
       await tabPresenter.create("https://example.com/2", { active: true });
       await tabPresenter.create("https://example.com/3", { active: false });
       const consoleClient = new MockConsoleClient();
-      const mock = sinon
-        .mock(consoleClient)
-        .expects("showCommand")
-        .withArgs(1, "addbookmark ");
+      const showCommandSpy = jest
+        .spyOn(consoleClient, "showCommand")
+        .mockReturnValue(Promise.resolve());
 
       const sut = new ShowAddBookmarkOperator(
         tabPresenter,
@@ -23,7 +21,7 @@ describe("ShowAddBookmarkOperator", () => {
       );
       await sut.run();
 
-      mock.verify();
+      expect(showCommandSpy).toBeCalledWith(1, "addbookmark ");
     });
 
     it("show command with addbookmark command and an URL of the current tab", async () => {
@@ -32,10 +30,9 @@ describe("ShowAddBookmarkOperator", () => {
       await tabPresenter.create("https://example.com/2", { active: true });
       await tabPresenter.create("https://example.com/3", { active: false });
       const consoleClient = new MockConsoleClient();
-      const mock = sinon
-        .mock(consoleClient)
-        .expects("showCommand")
-        .withArgs(1, "addbookmark welcome, world");
+      const showCommandSpy = jest
+        .spyOn(consoleClient, "showCommand")
+        .mockReturnValue(Promise.resolve());
 
       const sut = new ShowAddBookmarkOperator(
         tabPresenter,
@@ -44,7 +41,7 @@ describe("ShowAddBookmarkOperator", () => {
       );
       await sut.run();
 
-      mock.verify();
+      expect(showCommandSpy).toBeCalledWith(1, "addbookmark welcome, world");
     });
   });
 });
