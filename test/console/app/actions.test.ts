@@ -8,13 +8,7 @@ import {
   SHOW_INFO,
 } from "../../../src/console/app/actions";
 
-import browserFake from "webextensions-api-fake";
-
 describe("console actions", () => {
-  beforeEach(() => {
-    (global as any).browser = browserFake();
-  });
-
   describe("hide", () => {
     it("create CONSOLE_HIDE action", () => {
       const action = consoleActions.hide();
