@@ -1,89 +1,88 @@
-import { expect } from "chai";
 import Key from "../../../src/shared/settings/Key";
 
 describe("Key", () => {
   describe("fromMapKey", () => {
     it("return for X", () => {
       const key = Key.fromMapKey("x");
-      expect(key.key).to.equal("x");
-      expect(key.shift).to.be.false;
-      expect(key.ctrl).to.be.false;
-      expect(key.alt).to.be.false;
-      expect(key.meta).to.be.false;
+      expect(key.key).toEqual("x");
+      expect(key.shift).toBeFalsy;
+      expect(key.ctrl).toBeFalsy;
+      expect(key.alt).toBeFalsy;
+      expect(key.meta).toBeFalsy;
     });
 
     it("return for Shift+X", () => {
       const key = Key.fromMapKey("X");
-      expect(key.key).to.equal("X");
-      expect(key.shift).to.be.true;
-      expect(key.ctrl).to.be.false;
-      expect(key.alt).to.be.false;
-      expect(key.meta).to.be.false;
+      expect(key.key).toEqual("X");
+      expect(key.shift).toBeTruthy;
+      expect(key.ctrl).toBeFalsy;
+      expect(key.alt).toBeFalsy;
+      expect(key.meta).toBeFalsy;
     });
 
     it("return for Ctrl+X", () => {
       const key = Key.fromMapKey("<C-X>");
-      expect(key.key).to.equal("x");
-      expect(key.shift).to.be.false;
-      expect(key.ctrl).to.be.true;
-      expect(key.alt).to.be.false;
-      expect(key.meta).to.be.false;
+      expect(key.key).toEqual("x");
+      expect(key.shift).toBeFalsy;
+      expect(key.ctrl).toBeTruthy;
+      expect(key.alt).toBeFalsy;
+      expect(key.meta).toBeFalsy;
     });
 
     it("returns for Ctrl+Meta+X", () => {
       const key = Key.fromMapKey("<C-M-X>");
-      expect(key.key).to.equal("x");
-      expect(key.shift).to.be.false;
-      expect(key.ctrl).to.be.true;
-      expect(key.alt).to.be.false;
-      expect(key.meta).to.be.true;
+      expect(key.key).toEqual("x");
+      expect(key.shift).toBeFalsy;
+      expect(key.ctrl).toBeTruthy;
+      expect(key.alt).toBeFalsy;
+      expect(key.meta).toBeTruthy;
     });
 
     it("returns for Ctrl+Shift+x", () => {
       const key = Key.fromMapKey("<C-S-x>");
-      expect(key.key).to.equal("X");
-      expect(key.shift).to.be.true;
-      expect(key.ctrl).to.be.true;
-      expect(key.alt).to.be.false;
-      expect(key.meta).to.be.false;
+      expect(key.key).toEqual("X");
+      expect(key.shift).toBeTruthy;
+      expect(key.ctrl).toBeTruthy;
+      expect(key.alt).toBeFalsy;
+      expect(key.meta).toBeFalsy;
     });
 
     it("returns for Shift+Esc", () => {
       const key = Key.fromMapKey("<S-Esc>");
-      expect(key.key).to.equal("Esc");
-      expect(key.shift).to.be.true;
-      expect(key.ctrl).to.be.false;
-      expect(key.alt).to.be.false;
-      expect(key.meta).to.be.false;
+      expect(key.key).toEqual("Esc");
+      expect(key.shift).toBeTruthy;
+      expect(key.ctrl).toBeFalsy;
+      expect(key.alt).toBeFalsy;
+      expect(key.meta).toBeFalsy;
     });
 
     it("returns for Ctrl+Esc", () => {
       const key = Key.fromMapKey("<C-Esc>");
-      expect(key.key).to.equal("Esc");
-      expect(key.shift).to.be.false;
-      expect(key.ctrl).to.be.true;
-      expect(key.alt).to.be.false;
-      expect(key.meta).to.be.false;
+      expect(key.key).toEqual("Esc");
+      expect(key.shift).toBeFalsy;
+      expect(key.ctrl).toBeTruthy;
+      expect(key.alt).toBeFalsy;
+      expect(key.meta).toBeFalsy;
     });
 
     it("returns for Ctrl+Esc", () => {
       const key = Key.fromMapKey("<C-Space>");
-      expect(key.key).to.equal("Space");
-      expect(key.shift).to.be.false;
-      expect(key.ctrl).to.be.true;
-      expect(key.alt).to.be.false;
-      expect(key.meta).to.be.false;
+      expect(key.key).toEqual("Space");
+      expect(key.shift).toBeFalsy;
+      expect(key.ctrl).toBeTruthy;
+      expect(key.alt).toBeFalsy;
+      expect(key.meta).toBeFalsy;
     });
   });
 
   describe("idDigit", () => {
     it("returns true if the key is a digit", () => {
-      expect(new Key({ key: "0" }).isDigit()).to.be.true;
-      expect(new Key({ key: "9" }).isDigit()).to.be.true;
-      expect(new Key({ key: "9", alt: true }).isDigit()).to.be.false;
+      expect(new Key({ key: "0" }).isDigit()).toBeTruthy;
+      expect(new Key({ key: "9" }).isDigit()).toBeTruthy;
+      expect(new Key({ key: "9", alt: true }).isDigit()).toBeFalsy;
 
-      expect(new Key({ key: "a" }).isDigit()).to.be.false;
-      expect(new Key({ key: "０" }).isDigit()).to.be.false;
+      expect(new Key({ key: "a" }).isDigit()).toBeFalsy;
+      expect(new Key({ key: "０" }).isDigit()).toBeFalsy;
     });
   });
 
@@ -105,7 +104,7 @@ describe("Key", () => {
             meta: false,
           })
         )
-      ).to.be.true;
+      ).toBeTruthy;
 
       expect(
         new Key({
@@ -123,7 +122,7 @@ describe("Key", () => {
             meta: false,
           })
         )
-      ).to.be.false;
+      ).toBeFalsy;
     });
   });
 });

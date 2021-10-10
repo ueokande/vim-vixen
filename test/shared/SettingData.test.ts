@@ -4,7 +4,6 @@ import SettingData, {
   FormSettings,
 } from "../../src/shared/SettingData";
 import Settings from "../../src/shared/settings/Settings";
-import { expect } from "chai";
 import Keymaps from "../../src/shared/settings/Keymaps";
 import ColorScheme from "../../src/shared/ColorScheme";
 
@@ -18,7 +17,7 @@ describe("shared/SettingData", () => {
         };
 
         const keymaps = FormKeymaps.fromJSON(data).toKeymaps().toJSON();
-        expect(keymaps).to.deep.equal({
+        expect(keymaps).toEqual({
           j: { type: "scroll.vertically", count: 1 },
           "0": { type: "scroll.home" },
         });
@@ -33,7 +32,7 @@ describe("shared/SettingData", () => {
         });
 
         const form = FormKeymaps.fromKeymaps(keymaps).toJSON();
-        expect(form).to.deep.equal({
+        expect(form).toEqual({
           'scroll.vertically?{"count":1}': "j",
           "scroll.home": "0",
         });
@@ -62,7 +61,7 @@ describe("shared/SettingData", () => {
         }`;
 
         const settings = JSONTextSettings.fromText(o).toSettings();
-        expect(settings.toJSON()).to.deep.equal(JSON.parse(o));
+        expect(settings.toJSON()).toEqual(JSON.parse(o));
       });
     });
 
@@ -85,7 +84,7 @@ describe("shared/SettingData", () => {
         });
 
         const json = JSONTextSettings.fromSettings(o).toJSONText();
-        expect(JSON.parse(json)).to.deep.equal(o.toJSON());
+        expect(JSON.parse(json)).toEqual(o.toJSON());
       });
     });
   });
@@ -112,7 +111,7 @@ describe("shared/SettingData", () => {
         };
 
         const settings = FormSettings.fromJSON(data).toSettings();
-        expect(settings.toJSON()).to.deep.equal({
+        expect(settings.toJSON()).toEqual({
           keymaps: {
             j: { type: "scroll.vertically", count: 1 },
             "0": { type: "scroll.home" },
@@ -157,7 +156,7 @@ describe("shared/SettingData", () => {
         });
 
         const json = FormSettings.fromSettings(data).toJSON();
-        expect(json).to.deep.equal({
+        expect(json).toEqual({
           keymaps: {
             'scroll.vertically?{"count":1}': "j",
             "scroll.home": "0",
@@ -202,8 +201,8 @@ describe("shared/SettingData", () => {
         };
 
         const j = SettingData.fromJSON(data).toJSON();
-        expect(j.source).to.equal("json");
-        expect(j.json).to.be.a("string");
+        expect(j.source).toEqual("json");
+        expect(typeof j.json).toEqual("string");
       });
 
       it("parse object from form source", () => {
@@ -226,8 +225,8 @@ describe("shared/SettingData", () => {
         };
 
         const j = SettingData.fromJSON(data).toJSON();
-        expect(j.source).to.equal("form");
-        expect(j.form).to.deep.equal({
+        expect(j.source).toEqual("form");
+        expect(j.form).toEqual({
           keymaps: {},
           search: {
             default: "yahoo",
@@ -266,7 +265,7 @@ describe("shared/SettingData", () => {
         };
 
         const settings = SettingData.fromJSON(data).toSettings();
-        expect(settings.search.defaultEngine).to.equal("google");
+        expect(settings.search.defaultEngine).toEqual("google");
       });
 
       it("parse object from form source", () => {
@@ -288,7 +287,7 @@ describe("shared/SettingData", () => {
         };
 
         const settings = SettingData.fromJSON(data).toSettings();
-        expect(settings.search.defaultEngine).to.equal("yahoo");
+        expect(settings.search.defaultEngine).toEqual("yahoo");
       });
     });
   });

@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import PageScrollOperator from "../../../../src/content/operators/impls/PageScrollOperator";
 import MockScrollPresenter from "../../mock/MockScrollPresenter";
 import MockSettingRepository from "../../mock/MockSettingRepository";
@@ -12,7 +11,7 @@ describe("PageScrollOperator", () => {
 
       await sut.run();
 
-      expect(presenter.getScroll()).to.deep.equal({ x: 1, y: 0 });
+      expect(presenter.getScroll()).toEqual({ x: 1, y: 0 });
     });
 
     it("scroll by a page with repeats", async () => {
@@ -22,7 +21,7 @@ describe("PageScrollOperator", () => {
 
       await sut.run();
 
-      expect(presenter.getScroll()).to.deep.equal({ x: 5, y: 0 });
+      expect(presenter.getScroll()).toEqual({ x: 5, y: 0 });
     });
   });
 });

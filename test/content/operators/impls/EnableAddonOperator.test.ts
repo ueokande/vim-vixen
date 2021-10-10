@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import EnableAddonOperator from "../../../../src/content/operators/impls/EnableAddonOperator";
 import MockAddonIndicatorClient from "../../mock/MockAddonIndicatorClient";
 import MockAddonEnabledRepository from "../../mock/MockAddonEnabledRepository";
@@ -14,9 +13,9 @@ describe("EnableAddonOperator", () => {
 
       await sut.run();
 
-      expect(client.enabled).to.be.true;
-      expect(repository.enabled).to.be.true;
-      expect(presenter.attached).to.be.true;
+      expect(client.enabled).toBeTruthy;
+      expect(repository.enabled).toBeTruthy;
+      expect(presenter.attached).toBeTruthy;
     });
   });
 });

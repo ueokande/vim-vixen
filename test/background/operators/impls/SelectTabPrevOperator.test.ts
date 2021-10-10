@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 import SelectTabPrevOperator from "../../../../src/background/operators/impls/SelectTabPrevOperator";
 
@@ -14,7 +13,7 @@ describe("SelectTabPrevOperator", () => {
       await sut.run();
 
       const url = (await tabPresenter.getCurrent()).url;
-      expect(url).to.equal("https://example.com/1");
+      expect(url).toEqual("https://example.com/1");
     });
   });
 
@@ -29,7 +28,7 @@ describe("SelectTabPrevOperator", () => {
       await sut.run();
 
       const url = (await tabPresenter.getCurrent()).url;
-      expect(url).to.equal("https://example.com/3");
+      expect(url).toEqual("https://example.com/3");
     });
   });
 });

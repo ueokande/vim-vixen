@@ -1,4 +1,3 @@
-import sinon from "sinon";
 import ShowCommandOperator from "../../../../src/background/operators/impls/ShowCommandOperator";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 import MockConsoleClient from "../../mock/MockConsoleClient";
@@ -11,15 +10,14 @@ describe("ShowCommandOperator", () => {
       await tabPresenter.create("https://example.com/2", { active: true });
       await tabPresenter.create("https://example.com/3", { active: false });
       const consoleClient = new MockConsoleClient();
-      const mock = sinon
-        .mock(consoleClient)
-        .expects("showCommand")
-        .withArgs(1, "");
+      const showCommandSpy = jest
+        .spyOn(consoleClient, "showCommand")
+        .mockReturnValue(Promise.resolve());
 
       const sut = new ShowCommandOperator(tabPresenter, consoleClient);
       await sut.run();
 
-      mock.verify();
+      expect(showCommandSpy).toBeCalledWith(1, "");
     });
   });
 });

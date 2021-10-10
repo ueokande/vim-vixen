@@ -1,11 +1,10 @@
 import Keymaps from "../../../src/shared/settings/Keymaps";
-import { expect } from "chai";
 
 describe("Keymaps", () => {
   describe("#valueOf", () => {
     it("returns empty object by empty settings", () => {
       const keymaps = Keymaps.fromJSON({}).toJSON();
-      expect(keymaps).to.be.empty;
+      expect(keymaps).toEqual({});
     });
 
     it("returns keymaps by valid settings", () => {
@@ -14,11 +13,11 @@ describe("Keymaps", () => {
         j: { type: "scroll.vertically", count: 1 },
       }).toJSON();
 
-      expect(keymaps["k"]).to.deep.equal({
+      expect(keymaps["k"]).toEqual({
         type: "scroll.vertically",
         count: -1,
       });
-      expect(keymaps["j"]).to.deep.equal({
+      expect(keymaps["j"]).toEqual({
         type: "scroll.vertically",
         count: 1,
       });
@@ -29,7 +28,7 @@ describe("Keymaps", () => {
         Keymaps.fromJSON({
           k: { type: "invalid.operation" },
         })
-      ).to.throw(TypeError);
+      ).toThrow(TypeError);
     });
   });
 
@@ -48,7 +47,7 @@ describe("Keymaps", () => {
       const entries = keymaps
         .entries()
         .sort(([name1], [name2]) => name1.localeCompare(name2));
-      expect(entries).deep.equals([
+      expect(entries).toEqual([
         ["j", { type: "scroll.vertically", count: 1 }],
         ["k", { type: "scroll.vertically", count: -1 }],
         ["n", { type: "find.next" }],
@@ -70,7 +69,7 @@ describe("Keymaps", () => {
       const entries = keymaps
         .entries()
         .sort(([name1], [name2]) => name1.localeCompare(name2));
-      expect(entries).deep.equals([
+      expect(entries).toEqual([
         ["j", { type: "find.prev" }],
         ["k", { type: "scroll.vertically", count: -1 }],
         ["n", { type: "find.next" }],

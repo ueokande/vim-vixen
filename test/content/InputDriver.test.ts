@@ -1,7 +1,10 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import InputDriver, {
   keyFromKeyboardEvent,
 } from "../../src/content/InputDriver";
-import { expect } from "chai";
 import Key from "../../src/shared/settings/Key";
 
 describe("InputDriver", () => {
@@ -20,11 +23,11 @@ describe("InputDriver", () => {
 
   it("register callbacks", (done) => {
     driver.onKey((key: Key): boolean => {
-      expect(key.key).to.equal("a");
-      expect(key.ctrl).to.be.true;
-      expect(key.shift).to.be.false;
-      expect(key.alt).to.be.false;
-      expect(key.meta).to.be.false;
+      expect(key.key).toEqual("a");
+      expect(key.ctrl).toBeTruthy;
+      expect(key.shift).toBeFalsy;
+      expect(key.alt).toBeFalsy;
+      expect(key.meta).toBeFalsy;
       done();
       return true;
     });
@@ -65,8 +68,8 @@ describe("InputDriver", () => {
       target.dispatchEvent(e);
     }
 
-    expect(a).to.equal(1);
-    expect(b).to.equal(1);
+    expect(a).toEqual(1);
+    expect(b).toEqual(1);
   });
 
   it("propagates and stop handler chain", () => {
@@ -88,14 +91,14 @@ describe("InputDriver", () => {
 
     target.dispatchEvent(new KeyboardEvent("keydown", { key: "b" }));
 
-    expect(a).to.equal(1);
-    expect(b).to.equal(1);
-    expect(c).to.equal(0);
+    expect(a).toEqual(1);
+    expect(b).toEqual(1);
+    expect(c).toEqual(0);
   });
 
   it("does not invoke only meta keys", () => {
     driver.onKey((_key: Key): boolean => {
-      expect.fail();
+      throw new Error("unexpected reach");
       return false;
     });
 
@@ -110,7 +113,7 @@ describe("InputDriver", () => {
       const input = window.document.createElement(name);
       const driver = new InputDriver(input);
       driver.onKey((_key: Key): boolean => {
-        expect.fail();
+        throw new Error("unexpected reach");
         return false;
       });
       input.dispatchEvent(new KeyboardEvent("keydown", { key: "x" }));
@@ -121,7 +124,7 @@ describe("InputDriver", () => {
     const div = window.document.createElement("div");
     const driver = new InputDriver(div);
     driver.onKey((_key: Key): boolean => {
-      expect.fail();
+      throw new Error("unexpected reach");
       return false;
     });
 
@@ -144,11 +147,11 @@ describe("#keyFromKeyboardEvent", () => {
         metaKey: true,
       })
     );
-    expect(k.key).to.equal("x");
-    expect(k.shift).to.be.false;
-    expect(k.ctrl).to.be.true;
-    expect(k.alt).to.be.false;
-    expect(k.meta).to.be.true;
+    expect(k.key).toEqual("x");
+    expect(k.shift).toBeFalsy;
+    expect(k.ctrl).toBeTruthy;
+    expect(k.alt).toBeFalsy;
+    expect(k.meta).toBeTruthy;
   });
 
   it("returns from keyboard input Shift+Esc", () => {
@@ -161,11 +164,11 @@ describe("#keyFromKeyboardEvent", () => {
         metaKey: true,
       })
     );
-    expect(k.key).to.equal("Esc");
-    expect(k.shift).to.be.true;
-    expect(k.ctrl).to.be.false;
-    expect(k.alt).to.be.false;
-    expect(k.meta).to.be.true;
+    expect(k.key).toEqual("Esc");
+    expect(k.shift).toBeTruthy;
+    expect(k.ctrl).toBeFalsy;
+    expect(k.alt).toBeFalsy;
+    expect(k.meta).toBeTruthy;
   });
 
   it("returns from keyboard input Ctrl+$", () => {
@@ -179,11 +182,11 @@ describe("#keyFromKeyboardEvent", () => {
         metaKey: false,
       })
     );
-    expect(k.key).to.equal("$");
-    expect(k.shift).to.be.false;
-    expect(k.ctrl).to.be.true;
-    expect(k.alt).to.be.false;
-    expect(k.meta).to.be.false;
+    expect(k.key).toEqual("$");
+    expect(k.shift).toBeFalsy;
+    expect(k.ctrl).toBeTruthy;
+    expect(k.alt).toBeFalsy;
+    expect(k.meta).toBeFalsy;
   });
 
   it("returns from keyboard input Crtl+Space", () => {
@@ -196,10 +199,10 @@ describe("#keyFromKeyboardEvent", () => {
         metaKey: false,
       })
     );
-    expect(k.key).to.equal("Space");
-    expect(k.shift).to.be.false;
-    expect(k.ctrl).to.be.true;
-    expect(k.alt).to.be.false;
-    expect(k.meta).to.be.false;
+    expect(k.key).toEqual("Space");
+    expect(k.shift).toBeFalsy;
+    expect(k.ctrl).toBeTruthy;
+    expect(k.alt).toBeFalsy;
+    expect(k.meta).toBeFalsy;
   });
 });

@@ -1,24 +1,23 @@
 import FollowSlaveRepository, {
   FollowSlaveRepositoryImpl,
 } from "../../../src/content/repositories/FollowSlaveRepository";
-import { expect } from "chai";
 
 describe("FollowSlaveRepository", () => {
   let sut: FollowSlaveRepository;
 
-  before(() => {
+  beforeEach(() => {
     sut = new FollowSlaveRepositoryImpl();
   });
 
   describe("#isFollowMode()/#enableFollowMode()/#disableFollowMode()", () => {
     it("gets, adds updates follow mode", () => {
-      expect(sut.isFollowMode()).to.be.false;
+      expect(sut.isFollowMode()).toBeFalsy;
 
       sut.enableFollowMode();
-      expect(sut.isFollowMode()).to.be.true;
+      expect(sut.isFollowMode()).toBeTruthy;
 
       sut.disableFollowMode();
-      expect(sut.isFollowMode()).to.be.false;
+      expect(sut.isFollowMode()).toBeFalsy;
     });
   });
 });

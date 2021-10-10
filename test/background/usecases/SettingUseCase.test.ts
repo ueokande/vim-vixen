@@ -7,9 +7,7 @@ import Settings, {
   DefaultSetting,
 } from "../../../src/shared/settings/Settings";
 import Notifier from "../../../src/background/presenters/Notifier";
-import { expect } from "chai";
 import Properties from "../../../src/shared/settings/Properties";
-import sinon from "sinon";
 
 class MockSettingRepository implements SettingRepository {
   load(): Promise<SettingData | null> {
@@ -77,17 +75,15 @@ describe("SettingUseCase", () => {
           hintchars: "abcd1234",
         }),
       });
-      sinon
-        .stub(cachedSettingRepository, "get")
-        .returns(Promise.resolve(settings));
+      jest.spyOn(cachedSettingRepository, "get").mockResolvedValue(settings);
 
       const got = await sut.getCached();
-      expect(got.properties.hintchars).to.equal("abcd1234");
+      expect(got.properties.hintchars).toEqual("abcd1234");
     });
   });
 
   describe("reload", () => {
-    context("when sync is not set", () => {
+    describe("when sync is not set", () => {
       it("loads settings from local storage", async () => {
         const settings = new Settings({
           keymaps: DefaultSetting.keymaps,
@@ -102,21 +98,19 @@ describe("SettingUseCase", () => {
           json: JSONTextSettings.fromSettings(settings).toJSONText(),
         });
 
-        sinon
-          .stub(syncSettingRepository, "load")
-          .returns(Promise.resolve(null));
-        sinon
-          .stub(localSettingRepository, "load")
-          .returns(Promise.resolve(settingData));
+        jest.spyOn(syncSettingRepository, "load").mockResolvedValue(null);
+        jest
+          .spyOn(localSettingRepository, "load")
+          .mockResolvedValue(settingData);
 
         await sut.reload();
 
         const current = await cachedSettingRepository.get();
-        expect(current.properties.hintchars).to.equal("abcd1234");
+        expect(current.properties.hintchars).toEqual("abcd1234");
       });
     });
 
-    context("when local is not set", () => {
+    describe("when local is not set", () => {
       it("loads settings from sync storage", async () => {
         const settings = new Settings({
           keymaps: DefaultSetting.keymaps,
@@ -131,37 +125,29 @@ describe("SettingUseCase", () => {
           json: JSONTextSettings.fromSettings(settings).toJSONText(),
         });
 
-        sinon
-          .stub(syncSettingRepository, "load")
-          .returns(Promise.resolve(settingData));
-        sinon
-          .stub(localSettingRepository, "load")
-          .returns(Promise.resolve(null));
+        jest
+          .spyOn(syncSettingRepository, "load")
+          .mockResolvedValue(settingData);
+        jest.spyOn(localSettingRepository, "load").mockResolvedValue(null);
 
         await sut.reload();
 
         const current = await cachedSettingRepository.get();
-        expect(current.properties.hintchars).to.equal("aaaa1111");
+        expect(current.properties.hintchars).toEqual("aaaa1111");
       });
     });
 
-    context("neither local nor sync not set", () => {
-      it("loads default settings", async () => {
-        it("loads settings from sync storage", async () => {
-          sinon
-            .stub(syncSettingRepository, "load")
-            .returns(Promise.resolve(null));
-          sinon
-            .stub(localSettingRepository, "load")
-            .returns(Promise.resolve(null));
+    describe("neither local nor sync not set", () => {
+      it("loads settings from sync storage", async () => {
+        jest.spyOn(syncSettingRepository, "load").mockResolvedValue(null);
+        jest.spyOn(localSettingRepository, "load").mockResolvedValue(null);
 
-          await sut.reload();
+        await sut.reload();
 
-          const current = await cachedSettingRepository.get();
-          expect(current.properties.hintchars).to.equal(
-            DefaultSetting.properties.hintchars
-          );
-        });
+        const current = await cachedSettingRepository.get();
+        expect(current.properties.hintchars).toEqual(
+          DefaultSetting.properties.hintchars
+        );
       });
     });
   });

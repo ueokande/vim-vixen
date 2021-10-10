@@ -1,4 +1,3 @@
-import sinon from "sinon";
 import NavigateLinkPrevOperator from "../../../../src/background/operators/impls/NavigateLinkPrevOperator";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 import MockNavigateClient from "../../mock/MockNavigateClient";
@@ -7,7 +6,9 @@ describe("NavigateLinkPrevOperator", () => {
   describe("#run", () => {
     it("send a message to navigate next page", async () => {
       const navigateClient = new MockNavigateClient();
-      const mock = sinon.mock(navigateClient).expects("linkPrev").withArgs(1);
+      const linkPrevSpy = jest
+        .spyOn(navigateClient, "linkPrev")
+        .mockReturnValueOnce(Promise.resolve());
       const tabPresenter = new MockTabPresenter();
       await tabPresenter.create("https://example.com/1", { active: false });
       await tabPresenter.create("https://example.com/2", { active: true });
@@ -16,7 +17,7 @@ describe("NavigateLinkPrevOperator", () => {
 
       await sut.run();
 
-      mock.verify();
+      expect(linkPrevSpy).toBeCalledWith(1);
     });
   });
 });

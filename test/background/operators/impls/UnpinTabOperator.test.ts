@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import UnpinTabOperator from "../../../../src/background/operators/impls/UnpinTabOperator";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 
@@ -19,7 +18,7 @@ describe("UnpinTabOperator", () => {
       await sut.run();
 
       const pins = (await tabPresenter.getAll()).map((t) => t.pinned);
-      expect(pins).to.deep.equal([false, true]);
+      expect(pins).toEqual([false, true]);
     });
   });
 });

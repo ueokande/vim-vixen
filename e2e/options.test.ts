@@ -17,7 +17,7 @@ describe("options page", () => {
   let webdriver: WebDriver;
   let browser: any;
 
-  before(async () => {
+  beforeAll(async () => {
     lanthan = await Builder.forBrowser("firefox")
       .spyAddon(path.join(__dirname, ".."))
       .build();
@@ -27,7 +27,7 @@ describe("options page", () => {
     await server.start();
   });
 
-  after(async () => {
+  afterAll(async () => {
     if (lanthan) {
       await lanthan.quit();
     }

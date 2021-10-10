@@ -26,7 +26,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
   let browser: any;
   let page: Page;
 
-  before(async () => {
+  beforeAll(async () => {
     lanthan = await Builder.forBrowser("firefox")
       .spyAddon(path.join(__dirname, ".."))
       .build();
@@ -36,7 +36,7 @@ describe("completion on buffer/bdelete/bdeletes", () => {
     await server.start();
   });
 
-  after(async () => {
+  afterAll(async () => {
     await server.stop();
     if (lanthan) {
       await lanthan.quit();

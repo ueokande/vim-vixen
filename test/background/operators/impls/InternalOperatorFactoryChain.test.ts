@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import { expect } from "chai";
 import InternalOperatorFactoryChain from "../../../../src/background/operators/impls/InternalOperatorFactoryChain";
 import MockWindowPresenter from "../../mock/MockWindowPresenter";
 import MockTabPresenter from "../../mock/MockTabPresenter";
@@ -20,7 +19,7 @@ describe("InternalOperatorFactoryChain", () => {
         consoleClient
       );
 
-      expect(sut.create({ type: operations.CANCEL })).to.be.instanceOf(
+      expect(sut.create({ type: operations.CANCEL })).toBeInstanceOf(
         CancelOperator
       );
       expect(
@@ -30,8 +29,8 @@ describe("InternalOperatorFactoryChain", () => {
           newTab: false,
           newWindow: false,
         })
-      ).to.be.instanceOf(InternalOpenURLOperator);
-      expect(sut.create({ type: operations.COMMAND_SHOW })).to.be.null;
+      ).toBeInstanceOf(InternalOpenURLOperator);
+      expect(sut.create({ type: operations.COMMAND_SHOW })).toBeNull;
     });
   });
 });

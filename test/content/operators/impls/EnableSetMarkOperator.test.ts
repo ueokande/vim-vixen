@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import EnableSetMarkOperator from "../../../../src/content/operators/impls/EnableSetMarkOperator";
 import MockMarkKeyRepository from "../../mock/MockMarkKeyRepository";
 
@@ -13,7 +12,7 @@ describe("EnableSetMarkOperator", () => {
 
       await sut.run();
 
-      expect(repository.setMode).to.be.true;
+      expect(repository.setMode).toBeTruthy;
     });
   });
 });

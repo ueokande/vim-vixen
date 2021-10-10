@@ -1,5 +1,4 @@
 import { HintKeyRepositoryImpl } from "../../../src/content/repositories/HintKeyRepository";
-import { expect } from "chai";
 
 describe("HintKeyProducerImpl class", () => {
   describe("#produce", () => {
@@ -27,7 +26,7 @@ describe("HintKeyProducerImpl class", () => {
       const sut = new HintKeyRepositoryImpl();
       sut.reset(charset);
       for (let i = 0; i < sequences.length; ++i) {
-        expect(sut.produce()).to.equal(sequences[i]);
+        expect(sut.produce()).toEqual(sequences[i]);
       }
     });
   });
@@ -37,16 +36,16 @@ describe("HintKeyProducerImpl class", () => {
       const sut = new HintKeyRepositoryImpl();
 
       sut.reset("ab");
-      expect(sut.produce()).to.equal("a");
-      expect(sut.produce()).to.equal("b");
+      expect(sut.produce()).toEqual("a");
+      expect(sut.produce()).toEqual("b");
 
       sut.reset("xy");
-      expect(sut.produce()).to.equal("x");
-      expect(sut.produce()).to.equal("y");
+      expect(sut.produce()).toEqual("x");
+      expect(sut.produce()).toEqual("y");
     });
     it("throws an exception on empty charset", () => {
       const sut = new HintKeyRepositoryImpl();
-      expect(() => sut.reset("")).to.throw(TypeError);
+      expect(() => sut.reset("")).toThrow(TypeError);
     });
   });
 });

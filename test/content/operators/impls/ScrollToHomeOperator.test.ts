@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import ScrollToHomeOperator from "../../../../src/content/operators/impls/ScrollToHomeOperator";
 import MockScrollPresenter from "../../mock/MockScrollPresenter";
 import MockSettingRepository from "../../mock/MockSettingRepository";
@@ -12,7 +11,7 @@ describe("ScrollToHomeOperator", () => {
 
       await sut.run();
 
-      expect(presenter.getScroll()).to.deep.equal({ x: 0, y: 10 });
+      expect(presenter.getScroll()).toEqual({ x: 0, y: 10 });
     });
   });
 });

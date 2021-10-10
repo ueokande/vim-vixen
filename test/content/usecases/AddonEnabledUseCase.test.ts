@@ -1,7 +1,6 @@
 import AddonEnabledRepository from "../../../src/content/repositories/AddonEnabledRepository";
 import AddonEnabledUseCase from "../../../src/content/usecases/AddonEnabledUseCase";
 import AddonIndicatorClient from "../../../src/content/client/AddonIndicatorClient";
-import { expect } from "chai";
 import MockConsoleFramePresenter from "../operators/impls/MockConsoleFramePresenter";
 
 class MockAddonEnabledRepository implements AddonEnabledRepository {
@@ -50,19 +49,19 @@ describe("AddonEnabledUseCase", () => {
     it("store and indicate as enabled", async () => {
       await sut.enable();
 
-      expect(repository.get()).to.be.true;
-      expect(indicator.enabled).to.be.true;
-      expect(presenter.attached).to.be.true;
+      expect(repository.get()).toBeTruthy;
+      expect(indicator.enabled).toBeTruthy;
+      expect(presenter.attached).toBeTruthy;
     });
   });
 
-  describe("#disable", async () => {
+  describe("#disable", () => {
     it("store and indicate as disabled", async () => {
       await sut.disable();
 
-      expect(repository.get()).to.be.false;
-      expect(indicator.enabled).to.be.false;
-      expect(presenter.attached).to.be.false;
+      expect(repository.get()).toBeFalsy;
+      expect(indicator.enabled).toBeFalsy;
+      expect(presenter.attached).toBeFalsy;
     });
   });
 
@@ -71,27 +70,27 @@ describe("AddonEnabledUseCase", () => {
       repository.set(true);
       await sut.toggle();
 
-      expect(repository.get()).to.be.false;
-      expect(indicator.enabled).to.be.false;
-      expect(presenter.attached).to.be.false;
+      expect(repository.get()).toBeFalsy;
+      expect(indicator.enabled).toBeFalsy;
+      expect(presenter.attached).toBeFalsy;
 
       repository.set(false);
 
       await sut.toggle();
 
-      expect(repository.get()).to.be.true;
-      expect(indicator.enabled).to.be.true;
-      expect(presenter.attached).to.be.true;
+      expect(repository.get()).toBeTruthy;
+      expect(indicator.enabled).toBeTruthy;
+      expect(presenter.attached).toBeTruthy;
     });
   });
 
   describe("#getEnabled", () => {
     it("returns current addon enabled", () => {
       repository.set(true);
-      expect(sut.getEnabled()).to.be.true;
+      expect(sut.getEnabled()).toBeTruthy;
 
       repository.set(false);
-      expect(sut.getEnabled()).to.be.false;
+      expect(sut.getEnabled()).toBeFalsy;
     });
   });
 });

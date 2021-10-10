@@ -15,7 +15,7 @@ describe("tab test", () => {
   let win: any;
   let tabs: any[];
 
-  before(async () => {
+  beforeAll(async () => {
     lanthan = await Builder.forBrowser("firefox")
       .spyAddon(path.join(__dirname, ".."))
       .build();
@@ -24,7 +24,7 @@ describe("tab test", () => {
     await server.start();
   });
 
-  after(async () => {
+  afterAll(async () => {
     await server.stop();
     if (lanthan) {
       await lanthan.quit();

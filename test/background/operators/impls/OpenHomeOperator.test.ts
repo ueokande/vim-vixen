@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import OpenHomeOperator from "../../../../src/background/operators/impls/OpenHomeOperator";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 import MockBrowserSettingRepository from "../../mock/MockBrowserSettingRepository";
@@ -20,7 +19,7 @@ describe("OpenHomeOperator", () => {
       await sut.run();
 
       const url = (await tabPresenter.getCurrent()).url;
-      expect(url).to.be.equal("https://example.net/");
+      expect(url).toEqual("https://example.net/");
     });
 
     it("opens a home page of the browser into a new tab", async () => {
@@ -38,10 +37,7 @@ describe("OpenHomeOperator", () => {
       await sut.run();
 
       const urls = (await tabPresenter.getAll()).map((t) => t.url);
-      expect(urls).to.be.deep.equal([
-        "https://example.com/",
-        "https://example.net/",
-      ]);
+      expect(urls).toEqual(["https://example.com/", "https://example.net/"]);
     });
 
     it("opens home pages of the browser", async () => {
@@ -60,7 +56,7 @@ describe("OpenHomeOperator", () => {
       await sut.run();
 
       const urls = (await tabPresenter.getAll()).map((t) => t.url);
-      expect(urls).to.be.deep.equal([
+      expect(urls).toEqual([
         "https://example.com/",
         "https://example.net/",
         "https://example.org/",

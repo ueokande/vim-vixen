@@ -1,13 +1,12 @@
 import KeymapRepository, {
   KeymapRepositoryImpl,
 } from "../../../src/content/repositories/KeymapRepository";
-import { expect } from "chai";
 import Key from "../../../src/shared/settings/Key";
 
 describe("KeymapRepositoryImpl", () => {
   let sut: KeymapRepository;
 
-  before(() => {
+  beforeEach(() => {
     sut = new KeymapRepositoryImpl();
   });
 
@@ -18,9 +17,9 @@ describe("KeymapRepositoryImpl", () => {
       const sequence = sut.enqueueKey(Key.fromMapKey("c"));
 
       const keys = sequence.keys;
-      expect(keys[0].equals(Key.fromMapKey("a"))).to.be.true;
-      expect(keys[1].equals(Key.fromMapKey("b"))).to.be.true;
-      expect(keys[2].equals(Key.fromMapKey("c"))).to.be.true;
+      expect(keys[0].equals(Key.fromMapKey("a"))).toBeTruthy;
+      expect(keys[1].equals(Key.fromMapKey("b"))).toBeTruthy;
+      expect(keys[2].equals(Key.fromMapKey("c"))).toBeTruthy;
     });
   });
 
@@ -32,7 +31,7 @@ describe("KeymapRepositoryImpl", () => {
       sut.clear();
 
       const sequence = sut.enqueueKey(Key.fromMapKey("a"));
-      expect(sequence.length()).to.equal(1);
+      expect(sequence.length()).toEqual(1);
     });
   });
 });

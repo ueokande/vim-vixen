@@ -1,15 +1,14 @@
 import Blacklist, {
   BlacklistItem,
 } from "../../../src/shared/settings/Blacklist";
-import { expect } from "chai";
 import Key from "../../../src/shared/settings/Key";
 
 describe("BlacklistItem", () => {
   describe("#fromJSON", () => {
     it("parses string pattern", () => {
       const item = BlacklistItem.fromJSON("example.com");
-      expect(item.pattern).to.equal("example.com");
-      expect(item.partial).to.be.false;
+      expect(item.pattern).toEqual("example.com");
+      expect(item.partial).toBeFalsy;
     });
 
     it("parses partial blacklist item", () => {
@@ -17,56 +16,56 @@ describe("BlacklistItem", () => {
         url: "example.com",
         keys: ["j", "k"],
       });
-      expect(item.pattern).to.equal("example.com");
-      expect(item.partial).to.be.true;
-      expect(item.keys).to.deep.equal(["j", "k"]);
+      expect(item.pattern).toEqual("example.com");
+      expect(item.partial).toBeTruthy;
+      expect(item.keys).toEqual(["j", "k"]);
     });
   });
 
   describe("#matches", () => {
     it('matches by "*"', () => {
       const item = BlacklistItem.fromJSON("*");
-      expect(item.matches(new URL("https://github.com/abc"))).to.be.true;
+      expect(item.matches(new URL("https://github.com/abc"))).toBeTruthy;
     });
 
     it("matches by hostname", () => {
       const item = BlacklistItem.fromJSON("github.com");
-      expect(item.matches(new URL("https://github.com"))).to.be.true;
-      expect(item.matches(new URL("https://gist.github.com"))).to.be.false;
-      expect(item.matches(new URL("https://github.com/ueokande"))).to.be.true;
-      expect(item.matches(new URL("https://github.org"))).to.be.false;
-      expect(item.matches(new URL("https://google.com/search?q=github.org"))).to
-        .be.false;
+      expect(item.matches(new URL("https://github.com"))).toBeTruthy;
+      expect(item.matches(new URL("https://gist.github.com"))).toBeFalsy;
+      expect(item.matches(new URL("https://github.com/ueokande"))).toBeTruthy;
+      expect(item.matches(new URL("https://github.org"))).toBeFalsy;
+      expect(item.matches(new URL("https://google.com/search?q=github.org")))
+        .toBeFalsy;
     });
 
     it("matches by hostname with wildcard", () => {
       const item = BlacklistItem.fromJSON("*.github.com");
 
-      expect(item.matches(new URL("https://github.com"))).to.be.false;
-      expect(item.matches(new URL("https://gist.github.com"))).to.be.true;
+      expect(item.matches(new URL("https://github.com"))).toBeFalsy;
+      expect(item.matches(new URL("https://gist.github.com"))).toBeTruthy;
     });
 
     it("matches by path", () => {
       const item = BlacklistItem.fromJSON("github.com/abc");
 
-      expect(item.matches(new URL("https://github.com/abc"))).to.be.true;
-      expect(item.matches(new URL("https://github.com/abcdef"))).to.be.false;
-      expect(item.matches(new URL("https://gist.github.com/abc"))).to.be.false;
+      expect(item.matches(new URL("https://github.com/abc"))).toBeTruthy;
+      expect(item.matches(new URL("https://github.com/abcdef"))).toBeFalsy;
+      expect(item.matches(new URL("https://gist.github.com/abc"))).toBeFalsy;
     });
 
     it("matches by path with wildcard", () => {
       const item = BlacklistItem.fromJSON("github.com/abc*");
 
-      expect(item.matches(new URL("https://github.com/abc"))).to.be.true;
-      expect(item.matches(new URL("https://github.com/abcdef"))).to.be.true;
-      expect(item.matches(new URL("https://gist.github.com/abc"))).to.be.false;
+      expect(item.matches(new URL("https://github.com/abc"))).toBeTruthy;
+      expect(item.matches(new URL("https://github.com/abcdef"))).toBeTruthy;
+      expect(item.matches(new URL("https://gist.github.com/abc"))).toBeFalsy;
     });
 
     it("matches address and port", () => {
       const item = BlacklistItem.fromJSON("127.0.0.1:8888");
 
-      expect(item.matches(new URL("http://127.0.0.1:8888/"))).to.be.true;
-      expect(item.matches(new URL("http://127.0.0.1:8888/hello"))).to.be.true;
+      expect(item.matches(new URL("http://127.0.0.1:8888/"))).toBeTruthy;
+      expect(item.matches(new URL("http://127.0.0.1:8888/hello"))).toBeTruthy;
     });
 
     it("matches with partial blacklist", () => {
@@ -75,8 +74,8 @@ describe("BlacklistItem", () => {
         keys: ["j", "k"],
       });
 
-      expect(item.matches(new URL("https://google.com"))).to.be.true;
-      expect(item.matches(new URL("https://yahoo.com"))).to.be.false;
+      expect(item.matches(new URL("https://google.com"))).toBeTruthy;
+      expect(item.matches(new URL("https://yahoo.com"))).toBeFalsy;
     });
   });
 
@@ -89,22 +88,22 @@ describe("BlacklistItem", () => {
 
       expect(
         item.includeKey(new URL("http://google.com/maps"), Key.fromMapKey("j"))
-      ).to.be.true;
+      ).toBeTruthy;
       expect(
         item.includeKey(
           new URL("http://google.com/maps"),
           Key.fromMapKey("<C-U>")
         )
-      ).to.be.true;
+      ).toBeTruthy;
       expect(
         item.includeKey(new URL("http://google.com/maps"), Key.fromMapKey("z"))
-      ).to.be.false;
+      ).toBeFalsy;
       expect(
         item.includeKey(new URL("http://google.com/maps"), Key.fromMapKey("u"))
-      ).to.be.false;
+      ).toBeFalsy;
       expect(
         item.includeKey(new URL("http://maps.google.com/"), Key.fromMapKey("j"))
-      ).to.be.false;
+      ).toBeFalsy;
     });
   });
 });
@@ -113,7 +112,7 @@ describe("Blacklist", () => {
   describe("#fromJSON", () => {
     it("parses string list", () => {
       const blacklist = Blacklist.fromJSON(["example.com", "example.org"]);
-      expect(blacklist.toJSON()).to.deep.equals(["example.com", "example.org"]);
+      expect(blacklist.toJSON()).toEqual(["example.com", "example.org"]);
     });
 
     it("parses mixed blacklist", () => {
@@ -121,7 +120,7 @@ describe("Blacklist", () => {
         { url: "example.com", keys: ["j", "k"] },
         "example.org",
       ]);
-      expect(blacklist.toJSON()).to.deep.equals([
+      expect(blacklist.toJSON()).toEqual([
         { url: "example.com", keys: ["j", "k"] },
         "example.org",
       ]);
@@ -129,7 +128,7 @@ describe("Blacklist", () => {
 
     it("parses empty blacklist", () => {
       const blacklist = Blacklist.fromJSON([]);
-      expect(blacklist.toJSON()).to.deep.equals([]);
+      expect(blacklist.toJSON()).toEqual([]);
     });
   });
 
@@ -137,12 +136,12 @@ describe("Blacklist", () => {
     it("matches a url with entire blacklist", () => {
       const blacklist = Blacklist.fromJSON(["google.com", "*.github.com"]);
       expect(blacklist.includesEntireBlacklist(new URL("https://google.com")))
-        .to.be.true;
+        .toBeTruthy;
       expect(blacklist.includesEntireBlacklist(new URL("https://github.com")))
-        .to.be.false;
+        .toBeFalsy;
       expect(
         blacklist.includesEntireBlacklist(new URL("https://gist.github.com"))
-      ).to.be.true;
+      ).toBeTruthy;
     });
 
     it("does not matches with partial blacklist", () => {
@@ -151,9 +150,9 @@ describe("Blacklist", () => {
         { url: "yahoo.com", keys: ["j", "k"] },
       ]);
       expect(blacklist.includesEntireBlacklist(new URL("https://google.com")))
-        .to.be.true;
-      expect(blacklist.includesEntireBlacklist(new URL("https://yahoo.com"))).to
-        .be.false;
+        .toBeTruthy;
+      expect(blacklist.includesEntireBlacklist(new URL("https://yahoo.com")))
+        .toBeFalsy;
     });
   });
 
@@ -166,13 +165,13 @@ describe("Blacklist", () => {
 
       expect(
         blacklist.includeKey(new URL("https://google.com"), Key.fromMapKey("j"))
-      ).to.be.false;
+      ).toBeFalsy;
       expect(
         blacklist.includeKey(new URL("https://github.com"), Key.fromMapKey("j"))
-      ).to.be.true;
+      ).toBeTruthy;
       expect(
         blacklist.includeKey(new URL("https://github.com"), Key.fromMapKey("a"))
-      ).to.be.false;
+      ).toBeFalsy;
     });
   });
 });

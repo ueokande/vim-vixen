@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import VerticalScrollOperator from "../../../../src/content/operators/impls/VerticalScrollOperator";
 import MockScrollPresenter from "../../mock/MockScrollPresenter";
 import MockSettingRepository from "../../mock/MockSettingRepository";
@@ -12,7 +11,7 @@ describe("VerticalScrollOperator", () => {
 
       await sut.run();
 
-      expect(presenter.getScroll()).to.deep.equal({ x: 0, y: 1 });
+      expect(presenter.getScroll()).toEqual({ x: 0, y: 1 });
     });
 
     it("scroll vertically with repeats", async () => {
@@ -22,7 +21,7 @@ describe("VerticalScrollOperator", () => {
 
       await sut.run();
 
-      expect(presenter.getScroll()).to.deep.equal({ x: 0, y: 5 });
+      expect(presenter.getScroll()).toEqual({ x: 0, y: 5 });
     });
   });
 });

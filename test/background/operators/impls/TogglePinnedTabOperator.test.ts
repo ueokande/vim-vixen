@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import TogglePinnedTabOperator from "../../../../src/background/operators/impls/TogglePinnedTabOperator";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 
@@ -17,13 +16,13 @@ describe("TogglePinnedTabOperator", () => {
       const sut = new TogglePinnedTabOperator(tabPresenter);
 
       await sut.run();
-      expect((await tabPresenter.getAll()).map((t) => t.pinned)).to.deep.equal([
+      expect((await tabPresenter.getAll()).map((t) => t.pinned)).toEqual([
         true,
         false,
       ]);
 
       await sut.run();
-      expect((await tabPresenter.getAll()).map((t) => t.pinned)).to.deep.equal([
+      expect((await tabPresenter.getAll()).map((t) => t.pinned)).toEqual([
         false,
         false,
       ]);

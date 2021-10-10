@@ -13,7 +13,7 @@ describe("bdelete/bdeletes command test", () => {
   let webdriver: WebDriver;
   let browser: any;
 
-  before(async () => {
+  beforeAll(async () => {
     lanthan = await Builder.forBrowser("firefox")
       .spyAddon(path.join(__dirname, ".."))
       .build();
@@ -22,7 +22,7 @@ describe("bdelete/bdeletes command test", () => {
     await server.start();
   });
 
-  after(async () => {
+  afterAll(async () => {
     await server.stop();
     if (lanthan) {
       await lanthan.quit();

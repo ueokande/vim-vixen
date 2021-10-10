@@ -1,5 +1,4 @@
 import Settings from "../../../src/shared/settings/Settings";
-import { expect } from "chai";
 
 describe("Settings", () => {
   describe("#valueOf", () => {
@@ -21,7 +20,7 @@ describe("Settings", () => {
         search: x.search.toJSON(),
         properties: x.properties.toJSON(),
         blacklist: x.blacklist.toJSON(),
-      }).to.deep.equal({
+      }).toEqual({
         keymaps: {},
         search: {
           default: "google",
@@ -41,15 +40,15 @@ describe("Settings", () => {
 
     it("sets default settings", () => {
       const value = Settings.fromJSON({});
-      expect(value.keymaps.toJSON()).to.not.be.empty;
-      expect(value.properties.toJSON()).to.not.be.empty;
-      expect(value.search.defaultEngine).to.be.a("string");
-      expect(value.search.engines).to.be.an("object");
-      expect(value.blacklist.toJSON()).to.be.empty;
+      expect(value.keymaps.toJSON()).not.toEqual({});
+      expect(value.properties.toJSON()).not.toEqual({});
+      expect(typeof value.search.defaultEngine).toEqual("string");
+      expect(typeof value.search.engines).toEqual("object");
+      expect(value.blacklist.toJSON()).toHaveLength(0);
     });
 
     it("throws a TypeError with an unknown field", () => {
-      expect(() => Settings.fromJSON({ name: "alice" })).to.throw(TypeError);
+      expect(() => Settings.fromJSON({ name: "alice" })).toThrow(TypeError);
     });
   });
 });

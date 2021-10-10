@@ -18,7 +18,7 @@ describe("open command test", () => {
   let browser: any;
   let page: Page;
 
-  before(async () => {
+  beforeAll(async () => {
     lanthan = await Builder.forBrowser("firefox")
       .spyAddon(path.join(__dirname, ".."))
       .build();
@@ -39,7 +39,7 @@ describe("open command test", () => {
     );
   });
 
-  after(async () => {
+  afterAll(async () => {
     await server.stop();
     if (lanthan) {
       await lanthan.quit();

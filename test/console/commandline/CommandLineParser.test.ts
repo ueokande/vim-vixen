@@ -2,27 +2,26 @@ import CommandLineParser, {
   InputPhase,
 } from "../../../src/console/commandline/CommandLineParser";
 import { Command } from "../../../src/shared/Command";
-import { expect } from "chai";
 
 describe("CommandLineParser", () => {
   describe("#inputPhase", () => {
     it("returns parsed command-line", () => {
       const sut = new CommandLineParser();
-      expect(sut.inputPhase("")).to.equal(InputPhase.OnCommand);
-      expect(sut.inputPhase("op")).to.equal(InputPhase.OnCommand);
-      expect(sut.inputPhase("open ")).to.equal(InputPhase.OnArgs);
-      expect(sut.inputPhase("open apple")).to.equal(InputPhase.OnArgs);
+      expect(sut.inputPhase("")).toEqual(InputPhase.OnCommand);
+      expect(sut.inputPhase("op")).toEqual(InputPhase.OnCommand);
+      expect(sut.inputPhase("open ")).toEqual(InputPhase.OnArgs);
+      expect(sut.inputPhase("open apple")).toEqual(InputPhase.OnArgs);
     });
   });
   describe("#parse", () => {
     it("returns parsed command-line", () => {
       const sut = new CommandLineParser();
-      expect(sut.parse("open google  apple")).to.deep.equal({
+      expect(sut.parse("open google  apple")).toEqual({
         command: Command.Open,
         args: "google  apple",
       });
 
-      expect(sut.parse("qa")).to.deep.equal({
+      expect(sut.parse("qa")).toEqual({
         command: Command.QuitAll,
         args: "",
       });

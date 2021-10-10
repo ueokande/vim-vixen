@@ -1,4 +1,3 @@
-import * as sinon from "sinon";
 import MockFindClient from "../mock/MockFindClient";
 import MockFindRepository from "../mock/MockFindRepository";
 import MockConsoleClient from "../mock/MockConsoleClient";
@@ -21,160 +20,144 @@ describe("StartFindUseCase", () => {
     frameRepository
   );
 
-  beforeEach(async () => {
-    sinon.restore();
+  const getFrameIdsSpy = jest
+    .spyOn(frameRepository, "getFrameIds")
+    .mockResolvedValue(frameIds);
+  const clearSelectionSpy = jest
+    .spyOn(findClient, "clearSelection")
+    .mockReturnValue(Promise.resolve());
+  const findNextSpy = jest.spyOn(findClient, "findNext");
+  const setLocalStateSpy = jest
+    .spyOn(findRepository, "setLocalState")
+    .mockReturnValue(Promise.resolve());
 
-    sinon
-      .stub(frameRepository, "getFrameIds")
-      .returns(Promise.resolve(frameIds));
+  beforeEach(async () => {
+    getFrameIdsSpy.mockClear();
+    clearSelectionSpy.mockClear();
+    findNextSpy.mockClear();
+    setLocalStateSpy.mockClear();
   });
 
   describe("startFind", () => {
     it("starts a find with a keyword", async () => {
-      const mockFindClient = sinon.mock(findClient);
-      mockFindClient.expects("clearSelection").withArgs(currentTabId, 0);
-      mockFindClient.expects("clearSelection").withArgs(currentTabId, 100);
-      mockFindClient.expects("clearSelection").withArgs(currentTabId, 101);
-      mockFindClient
-        .expects("findNext")
-        .withArgs(currentTabId, 0, keyword)
-        .returns(Promise.resolve(false));
-      mockFindClient
-        .expects("findNext")
-        .withArgs(currentTabId, 100, keyword)
-        .returns(Promise.resolve(true));
-      const mockFindRepository = sinon.mock(findRepository);
-      mockFindRepository
-        .expects("setLocalState")
-        .withArgs(currentTabId, { keyword, frameId: 100 });
-      const mockConsoleClient = sinon.mock(consoleClient);
-      mockConsoleClient
-        .expects("showInfo")
-        .withArgs(currentTabId, "Pattern found: " + keyword);
+      findNextSpy.mockResolvedValueOnce(false).mockResolvedValueOnce(true);
+      const showInfoSpy = jest
+        .spyOn(consoleClient, "showInfo")
+        .mockReturnValue(Promise.resolve());
 
       await sut.startFind(currentTabId, keyword);
 
-      mockFindClient.verify();
-      mockFindRepository.verify();
-      mockConsoleClient.verify();
+      expect(clearSelectionSpy).toBeCalledTimes(3);
+      expect(clearSelectionSpy.mock.calls[0][1]).toEqual(0);
+      expect(clearSelectionSpy.mock.calls[1][1]).toEqual(100);
+      expect(clearSelectionSpy.mock.calls[2][1]).toEqual(101);
+      expect(findNextSpy).toBeCalledTimes(2);
+      expect(findNextSpy.mock.calls[0][1]).toEqual(0);
+      expect(findNextSpy.mock.calls[1][1]).toEqual(100);
+      expect(setLocalStateSpy).toBeCalledWith(currentTabId, {
+        keyword,
+        frameId: 100,
+      });
+      expect(showInfoSpy).toBeCalledWith(
+        currentTabId,
+        "Pattern found: " + keyword
+      );
     });
 
     it("starts a find with last local state", async () => {
-      const mockFindClient = sinon.mock(findClient);
-      mockFindClient.expects("clearSelection").withArgs(currentTabId, 0);
-      mockFindClient.expects("clearSelection").withArgs(currentTabId, 100);
-      mockFindClient.expects("clearSelection").withArgs(currentTabId, 101);
-      mockFindClient
-        .expects("findNext")
-        .withArgs(currentTabId, 0, keyword)
-        .returns(Promise.resolve(false));
-      mockFindClient
-        .expects("findNext")
-        .withArgs(currentTabId, 100, keyword)
-        .returns(Promise.resolve(true));
-      const mockFindRepository = sinon.mock(findRepository);
-      mockFindRepository
-        .expects("getLocalState")
-        .withArgs(currentTabId)
-        .returns(Promise.resolve({ keyword, frameId: 0 }));
-      mockFindRepository
-        .expects("setLocalState")
-        .withArgs(currentTabId, { keyword, frameId: 100 });
-      const mockConsoleClient = sinon.mock(consoleClient);
-      mockConsoleClient
-        .expects("showInfo")
-        .withArgs(currentTabId, "Pattern found: " + keyword);
+      findNextSpy.mockResolvedValueOnce(false).mockResolvedValueOnce(true);
+      const getLocalStateSpy = jest
+        .spyOn(findRepository, "getLocalState")
+        .mockResolvedValue({ keyword, frameId: 0 });
+      const showInfoSpy = jest
+        .spyOn(consoleClient, "showInfo")
+        .mockReturnValue(Promise.resolve());
 
       await sut.startFind(currentTabId, undefined);
 
-      mockFindClient.verify();
-      mockFindRepository.verify();
-      mockConsoleClient.verify();
+      expect(clearSelectionSpy).toBeCalledTimes(3);
+      expect(clearSelectionSpy.mock.calls[0][1]).toEqual(0);
+      expect(clearSelectionSpy.mock.calls[1][1]).toEqual(100);
+      expect(clearSelectionSpy.mock.calls[2][1]).toEqual(101);
+      expect(findNextSpy).toBeCalledTimes(2);
+      expect(findNextSpy.mock.calls[0][1]).toEqual(0);
+      expect(findNextSpy.mock.calls[1][1]).toEqual(100);
+      expect(getLocalStateSpy).toBeCalledWith(currentTabId);
+      expect(setLocalStateSpy).toBeCalledWith(currentTabId, {
+        keyword,
+        frameId: 100,
+      });
+      expect(showInfoSpy).toBeCalledWith(
+        currentTabId,
+        "Pattern found: " + keyword
+      );
     });
 
     it("starts a find with last global state", async () => {
-      const mockFindClient = sinon.mock(findClient);
-      mockFindClient.expects("clearSelection").withArgs(currentTabId, 0);
-      mockFindClient.expects("clearSelection").withArgs(currentTabId, 100);
-      mockFindClient.expects("clearSelection").withArgs(currentTabId, 101);
-      mockFindClient
-        .expects("findNext")
-        .withArgs(currentTabId, 0, keyword)
-        .returns(Promise.resolve(false));
-      mockFindClient
-        .expects("findNext")
-        .withArgs(currentTabId, 100, keyword)
-        .returns(Promise.resolve(true));
-      const mockFindRepository = sinon.mock(findRepository);
-      mockFindRepository
-        .expects("getLocalState")
-        .withArgs(currentTabId)
-        .returns(Promise.resolve(undefined));
-      mockFindRepository
-        .expects("getGlobalKeyword")
-        .returns(Promise.resolve(keyword));
-      mockFindRepository
-        .expects("setLocalState")
-        .withArgs(currentTabId, { keyword, frameId: 100 });
-      const mockConsoleClient = sinon.mock(consoleClient);
-      mockConsoleClient
-        .expects("showInfo")
-        .withArgs(currentTabId, "Pattern found: " + keyword);
+      findNextSpy.mockResolvedValueOnce(false).mockResolvedValueOnce(true);
+      const getLocalStateSpy = jest
+        .spyOn(findRepository, "getLocalState")
+        .mockResolvedValue(undefined);
+      jest.spyOn(findRepository, "getGlobalKeyword").mockResolvedValue(keyword);
+      const showInfoSpy = jest
+        .spyOn(consoleClient, "showInfo")
+        .mockReturnValue(Promise.resolve());
 
       await sut.startFind(currentTabId, undefined);
 
-      mockFindClient.verify();
-      mockFindRepository.verify();
-      mockConsoleClient.verify();
+      expect(clearSelectionSpy).toBeCalledTimes(3);
+      expect(clearSelectionSpy.mock.calls[0][1]).toEqual(0);
+      expect(clearSelectionSpy.mock.calls[1][1]).toEqual(100);
+      expect(clearSelectionSpy.mock.calls[2][1]).toEqual(101);
+      expect(findNextSpy).toBeCalledTimes(2);
+      expect(findNextSpy.mock.calls[0][1]).toEqual(0);
+      expect(findNextSpy.mock.calls[1][1]).toEqual(100);
+      expect(getLocalStateSpy).toBeCalledWith(currentTabId);
+      expect(setLocalStateSpy).toBeCalledWith(currentTabId, {
+        keyword,
+        frameId: 100,
+      });
+      expect(showInfoSpy).toBeCalledWith(
+        currentTabId,
+        "Pattern found: " + keyword
+      );
     });
 
     it("shows an error when pattern not found", async () => {
-      const mockFindClient = sinon.mock(findClient);
-      mockFindClient.expects("clearSelection").withArgs(currentTabId, 0);
-      mockFindClient.expects("clearSelection").withArgs(currentTabId, 100);
-      mockFindClient.expects("clearSelection").withArgs(currentTabId, 101);
-      mockFindClient
-        .expects("findNext")
-        .withArgs(currentTabId, 0, keyword)
-        .returns(Promise.resolve(false));
-      mockFindClient
-        .expects("findNext")
-        .withArgs(currentTabId, 100, keyword)
-        .returns(Promise.resolve(false));
-      mockFindClient
-        .expects("findNext")
-        .withArgs(currentTabId, 101, keyword)
-        .returns(Promise.resolve(false));
-      const mockFindRepository = sinon.mock(findRepository);
-      mockFindRepository.expects("setLocalState").never();
-      const mockConsoleClient = sinon.mock(consoleClient);
-      mockConsoleClient
-        .expects("showError")
-        .withArgs(currentTabId, "Pattern not found: " + keyword);
+      findNextSpy.mockResolvedValue(false);
+      const showErrorSpy = jest
+        .spyOn(consoleClient, "showError")
+        .mockReturnValue(Promise.resolve());
 
       await sut.startFind(currentTabId, keyword);
 
-      mockFindClient.verify();
-      mockFindRepository.verify();
-      mockConsoleClient.verify();
+      expect(clearSelectionSpy).toBeCalledTimes(3);
+      expect(clearSelectionSpy.mock.calls[0][1]).toEqual(0);
+      expect(clearSelectionSpy.mock.calls[1][1]).toEqual(100);
+      expect(clearSelectionSpy.mock.calls[2][1]).toEqual(101);
+      expect(setLocalStateSpy).not.toBeCalled();
+      expect(showErrorSpy).toBeCalledWith(
+        currentTabId,
+        "Pattern not found: " + keyword
+      );
     });
 
     it("shows an error when no last keywords", async () => {
-      sinon
-        .stub(findRepository, "getLocalState")
-        .returns(Promise.resolve(undefined));
-      sinon
-        .stub(findRepository, "getGlobalKeyword")
-        .returns(Promise.resolve(undefined));
+      jest.spyOn(findRepository, "getLocalState").mockResolvedValue(undefined);
+      jest
+        .spyOn(findRepository, "getGlobalKeyword")
+        .mockResolvedValue(undefined);
 
-      const mockConsoleClient = sinon.mock(consoleClient);
-      mockConsoleClient
-        .expects("showError")
-        .withArgs(currentTabId, "No previous search keywords");
+      const showErrorSpy = jest
+        .spyOn(consoleClient, "showError")
+        .mockReturnValue(Promise.resolve());
 
       await sut.startFind(currentTabId, undefined);
 
-      mockConsoleClient.verify();
+      expect(showErrorSpy).toBeCalledWith(
+        currentTabId,
+        "No previous search keywords"
+      );
     });
   });
 });

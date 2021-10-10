@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 import CloseTabRightOperator from "../../../../src/background/operators/impls/CloseTabRightOperator";
 
@@ -15,7 +14,7 @@ describe("CloseTabRightOperator", () => {
       await sut.run();
 
       const tabs = await tabPresenter.getAll();
-      expect(tabs.map((t) => t.url)).to.deep.equal([
+      expect(tabs.map((t) => t.url)).toEqual([
         "https://example.com/1",
         "https://example.com/2",
       ]);

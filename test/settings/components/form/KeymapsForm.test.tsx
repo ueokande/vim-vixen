@@ -1,10 +1,13 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import React from "react";
 import ReactDOM from "react-dom";
 import ReactTestRenderer from "react-test-renderer";
 import ReactTestUtils from "react-dom/test-utils";
 import KeymapsForm from "../../../../src/settings/components/form/KeymapsForm";
 import { FormKeymaps } from "../../../../src/shared/SettingData";
-import { expect } from "chai";
 
 describe("settings/form/KeymapsForm", () => {
   describe("render", () => {
@@ -21,8 +24,8 @@ describe("settings/form/KeymapsForm", () => {
       const inputj = root.findByProps({ id: 'scroll.vertically?{"count":1}' });
       const inputk = root.findByProps({ id: 'scroll.vertically?{"count":-1}' });
 
-      expect(inputj.props.value).to.equal("j");
-      expect(inputk.props.value).to.equal("k");
+      expect(inputj.props.value).toEqual("j");
+      expect(inputk.props.value).toEqual("k");
     });
 
     it("renders blank value", () => {
@@ -31,8 +34,8 @@ describe("settings/form/KeymapsForm", () => {
       const inputj = root.findByProps({ id: 'scroll.vertically?{"count":1}' });
       const inputk = root.findByProps({ id: 'scroll.vertically?{"count":-1}' });
 
-      expect(inputj.props.value).to.be.empty;
-      expect(inputk.props.value).to.be.empty;
+      expect(inputj.props.value).toHaveLength(0);
+      expect(inputk.props.value).toHaveLength(0);
     });
   });
 
@@ -57,7 +60,7 @@ describe("settings/form/KeymapsForm", () => {
               'scroll.vertically?{"count":-1}': "k",
             })}
             onChange={(value) => {
-              expect(value.toJSON()['scroll.vertically?{"count":1}']).to.equal(
+              expect(value.toJSON()['scroll.vertically?{"count":1}']).toEqual(
                 "jjj"
               );
               done();

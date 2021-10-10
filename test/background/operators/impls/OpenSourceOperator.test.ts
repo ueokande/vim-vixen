@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import OpenSourceOperator from "../../../../src/background/operators/impls/OpenSourceOperator";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 
@@ -12,7 +11,7 @@ describe("OpenSourceOperator", () => {
       await sut.run();
 
       const urls = (await tabPresenter.getAll()).map((t) => t.url);
-      expect(urls).to.be.deep.equal([
+      expect(urls).toEqual([
         "https://example.com/",
         "view-source:https://example.com/",
       ]);

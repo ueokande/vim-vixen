@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import EnableJumpMarkOperator from "../../../../src/content/operators/impls/EnableJumpMarkOperator";
 import MockMarkKeyRepository from "../../mock/MockMarkKeyRepository";
 
@@ -13,7 +12,7 @@ describe("EnableJumpMarkOperator", () => {
 
       await sut.run();
 
-      expect(repository.jumpMode).to.be.true;
+      expect(repository.jumpMode).toBeTruthy;
     });
   });
 });

@@ -11,14 +11,14 @@ describe("completion on set commands", () => {
   let webdriver: WebDriver;
   let page: Page;
 
-  before(async () => {
+  beforeAll(async () => {
     lanthan = await Builder.forBrowser("firefox")
       .spyAddon(path.join(__dirname, ".."))
       .build();
     webdriver = lanthan.getWebDriver();
   });
 
-  after(async () => {
+  afterAll(async () => {
     if (lanthan) {
       await lanthan.quit();
     }

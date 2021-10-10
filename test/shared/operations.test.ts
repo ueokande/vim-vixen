@@ -1,5 +1,4 @@
 import * as operations from "../../src/shared/operations";
-import { expect } from "chai";
 
 describe("operations", () => {
   describe("#valueOf", () => {
@@ -8,8 +7,8 @@ describe("operations", () => {
         type: operations.SCROLL_VERTICALLY,
         count: 10,
       }) as operations.ScrollVerticallyOperation;
-      expect(op.type).to.equal(operations.SCROLL_VERTICALLY);
-      expect(op.count).to.equal(10);
+      expect(op.type).toEqual(operations.SCROLL_VERTICALLY);
+      expect(op.count).toEqual(10);
     });
 
     it("throws an Error on missing required parameter", () => {
@@ -17,7 +16,7 @@ describe("operations", () => {
         operations.valueOf({
           type: operations.SCROLL_VERTICALLY,
         })
-      ).to.throw(TypeError);
+      ).toThrow(TypeError);
     });
 
     it("fills default valus of optional parameter", () => {
@@ -25,8 +24,8 @@ describe("operations", () => {
         type: operations.COMMAND_SHOW_OPEN,
       }) as operations.CommandShowOpenOperation;
 
-      expect(op.type).to.equal(operations.COMMAND_SHOW_OPEN);
-      expect(op.alter).to.be.false;
+      expect(op.type).toEqual(operations.COMMAND_SHOW_OPEN);
+      expect(op.alter).toBeFalsy;
     });
 
     it("throws an Error on mismatch of parameter", () => {
@@ -35,14 +34,14 @@ describe("operations", () => {
           type: operations.SCROLL_VERTICALLY,
           count: "10",
         })
-      ).to.throw(TypeError);
+      ).toThrow(TypeError);
 
       expect(() =>
         operations.valueOf({
           type: operations.COMMAND_SHOW_OPEN,
           alter: "true",
         })
-      ).to.throw(TypeError);
+      ).toThrow(TypeError);
     });
   });
 });

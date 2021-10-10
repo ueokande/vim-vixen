@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import MockClipboardRepository from "../../mock/MockClipboardRepository";
 import YankURLOperator from "../../../../src/content/operators/impls/YankURLOperator";
 import MockURLRepository from "../../mock/MockURLRepository";
@@ -18,9 +17,9 @@ describe("YankOperation", () => {
 
       await sut.run();
 
-      expect(clipboardRepository.read()).to.equal("https://example.com/");
-      expect(consoleClient.text).to.equal("Yanked https://example.com/");
-      expect(consoleClient.isError).to.be.false;
+      expect(clipboardRepository.read()).toEqual("https://example.com/");
+      expect(consoleClient.text).toEqual("Yanked https://example.com/");
+      expect(consoleClient.isError).toBeFalsy;
     });
   });
 });

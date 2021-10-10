@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import DuplicateTabOperator from "../../../../src/background/operators/impls/DuplicateTabOperator";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 
@@ -14,7 +13,7 @@ describe("DuplicateTabOperator", () => {
       await sut.run();
 
       const tabs = await tabPresenter.getAll();
-      expect(tabs.map((t) => t.url)).to.deep.equal([
+      expect(tabs.map((t) => t.url)).toEqual([
         "https://example.com/1",
         "https://example.com/2",
         "https://example.com/3",

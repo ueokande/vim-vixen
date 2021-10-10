@@ -1,9 +1,10 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { NavigationPresenterImpl } from "../../../src/content/presenters/NavigationPresenter";
-import { expect } from "chai";
 
-describe("NavigationPresenterImpl", function () {
-  this.timeout(5000);
-
+describe("NavigationPresenterImpl", () => {
   let sut: NavigationPresenterImpl;
 
   const testRel = (done: () => void, rel: string, html: string) => {
@@ -12,7 +13,7 @@ describe("NavigationPresenterImpl", function () {
     document.body.innerHTML = html;
     method();
     setTimeout(() => {
-      expect(document.location.hash).to.equal(`#${rel}`);
+      expect(document.location.hash).toEqual(`#${rel}`);
       done();
     }, 0);
   };
@@ -21,7 +22,7 @@ describe("NavigationPresenterImpl", function () {
   const testNext = (html: string) => (done: () => void) =>
     testRel(done, "next", html);
 
-  before(() => {
+  beforeEach(() => {
     sut = new NavigationPresenterImpl();
   });
 

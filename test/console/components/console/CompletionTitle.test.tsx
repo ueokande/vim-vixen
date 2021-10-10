@@ -1,6 +1,5 @@
 import React from "react";
 import ReactTestRenderer from "react-test-renderer";
-import { expect } from "chai";
 import CompletionTitle from "../../../../src/console/components/console/CompletionTitle";
 
 describe("console/components/console/completion/CompletionTitle", () => {
@@ -10,6 +9,6 @@ describe("console/components/console/completion/CompletionTitle", () => {
     ).root;
 
     const li = root.findByType("li");
-    expect(li.children).to.deep.equal(["Fruits"]);
+    expect(li.children).toEqual(["Fruits"]);
   });
 });

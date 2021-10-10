@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import NavigateRootOperator from "../../../../src/background/operators/impls/NavigateRootOperator";
 import MockTabPresenter from "../../mock/MockTabPresenter";
 
@@ -12,7 +11,7 @@ describe("NavigateRootOperator", () => {
       await sut.run();
 
       const url = (await tabPresenter.getCurrent()).url;
-      expect(url).to.be.equal("https://example.com");
+      expect(url).toEqual("https://example.com");
     });
   });
 });

@@ -1,26 +1,25 @@
 import FollowMasterRepository, {
   FollowMasterRepositoryImpl,
 } from "../../../src/content/repositories/FollowMasterRepository";
-import { expect } from "chai";
 
 describe("FollowMasterRepositoryImpl", () => {
   let sut: FollowMasterRepository;
 
-  before(() => {
+  beforeEach(() => {
     sut = new FollowMasterRepositoryImpl();
   });
 
   describe("#getTags()/#addTag()/#clearTags()", () => {
     it("gets, adds and clears tags", () => {
-      expect(sut.getTags()).to.be.empty;
+      expect(sut.getTags()).toHaveLength(0);
 
       sut.addTag("a");
       sut.addTag("b");
       sut.addTag("c");
-      expect(sut.getTags()).to.deep.equal(["a", "b", "c"]);
+      expect(sut.getTags()).toEqual(["a", "b", "c"]);
 
       sut.clearTags();
-      expect(sut.getTags()).to.be.empty;
+      expect(sut.getTags()).toHaveLength(0);
     });
   });
 
@@ -29,22 +28,22 @@ describe("FollowMasterRepositoryImpl", () => {
       for (const tag of ["a", "aa", "ab", "b", "ba", "bb"]) {
         sut.addTag(tag);
       }
-      expect(sut.getTagsByPrefix("a")).to.deep.equal(["a", "aa", "ab"]);
-      expect(sut.getTagsByPrefix("aa")).to.deep.equal(["aa"]);
-      expect(sut.getTagsByPrefix("b")).to.deep.equal(["b", "ba", "bb"]);
-      expect(sut.getTagsByPrefix("c")).to.be.empty;
+      expect(sut.getTagsByPrefix("a")).toEqual(["a", "aa", "ab"]);
+      expect(sut.getTagsByPrefix("aa")).toEqual(["aa"]);
+      expect(sut.getTagsByPrefix("b")).toEqual(["b", "ba", "bb"]);
+      expect(sut.getTagsByPrefix("c")).toHaveLength(0);
     });
   });
 
   describe("#setCurrentFollowMode()/#getCurrentNewTabMode()/#getCurrentBackgroundMode", () => {
     it("updates and gets follow mode", () => {
       sut.setCurrentFollowMode(false, true);
-      expect(sut.getCurrentNewTabMode()).to.be.false;
-      expect(sut.getCurrentBackgroundMode()).to.be.true;
+      expect(sut.getCurrentNewTabMode()).toBeFalsy;
+      expect(sut.getCurrentBackgroundMode()).toBeTruthy;
 
       sut.setCurrentFollowMode(true, false);
-      expect(sut.getCurrentNewTabMode()).to.be.true;
-      expect(sut.getCurrentBackgroundMode()).to.be.false;
+      expect(sut.getCurrentNewTabMode()).toBeTruthy;
+      expect(sut.getCurrentBackgroundMode()).toBeFalsy;
     });
   });
 });

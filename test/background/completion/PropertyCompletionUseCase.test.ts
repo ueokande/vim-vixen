@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import PropertyCompletionUseCase from "../../../src/background/completion/PropertyCompletionUseCase";
-import { expect } from "chai";
 
 describe("PropertyCompletionUseCase", () => {
   describe("getProperties", () => {
@@ -8,11 +7,11 @@ describe("PropertyCompletionUseCase", () => {
       const sut = new PropertyCompletionUseCase();
 
       const properties = await sut.getProperties();
-      expect(properties).to.deep.contain({
+      expect(properties).toContainEqual({
         name: "smoothscroll",
         type: "boolean",
       });
-      expect(properties).to.deep.contain({ name: "complete", type: "string" });
+      expect(properties).toContainEqual({ name: "complete", type: "string" });
     });
   });
 });

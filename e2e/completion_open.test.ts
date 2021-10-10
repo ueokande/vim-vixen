@@ -16,7 +16,7 @@ describe("completion on open/tabopen/winopen commands", () => {
   let browser: any;
   let page: Page;
 
-  before(async () => {
+  beforeAll(async () => {
     await server.start();
 
     lanthan = await Builder.forBrowser("firefox")
@@ -29,7 +29,7 @@ describe("completion on open/tabopen/winopen commands", () => {
     await webdriver.navigate().to("https://example.com/");
   });
 
-  after(async () => {
+  afterAll(async () => {
     await server.stop();
     if (lanthan) {
       await lanthan.quit();

@@ -1,7 +1,6 @@
 import React from "react";
 import Completion from "../../../../src/console/components/console/Completion";
 import ReactTestRenderer from "react-test-renderer";
-import { expect } from "chai";
 import CompletionTitle from "../../../../src/console/components/console/CompletionTitle";
 import CompletionItem from "../../../../src/console/components/console/CompletionItem";
 
@@ -31,16 +30,16 @@ describe("console/components/console/completion/Completion", () => {
     ).root;
 
     const groups = root.findAllByProps({ role: "group" });
-    expect(groups).to.have.lengthOf(2);
+    expect(groups).toHaveLength(2);
 
     groups.forEach((group, i) => {
       const title = group.findByType(CompletionTitle);
-      expect(title.props.title).to.equal(completions[i].name);
+      expect(title.props.title).toEqual(completions[i].name);
 
       const items = group.findAllByType(CompletionItem);
-      expect(items).to.have.lengthOf(completions[i].items.length);
+      expect(items).toHaveLength(completions[i].items.length);
       items.forEach((item, j) => {
-        expect(item.props.caption).to.equal(completions[i].items[j].caption);
+        expect(item.props.caption).toEqual(completions[i].items[j].caption);
       });
     });
   });
@@ -51,7 +50,7 @@ describe("console/components/console/completion/Completion", () => {
     ).root;
 
     const items = root.findAllByType(CompletionItem);
-    expect(items[3].props.highlight).to.be.true;
+    expect(items[3].props.highlight).toBeTruthy;
   });
 
   it("does not highlight any items", () => {
@@ -60,7 +59,7 @@ describe("console/components/console/completion/Completion", () => {
     ).root;
 
     const items = root.findAllByType(CompletionItem);
-    expect(items.every((item) => item.props.highlight === false)).to.be.true;
+    expect(items.every((item) => item.props.highlight === false)).toBeTruthy;
   });
 
   it("limits completion items", () => {
@@ -78,7 +77,7 @@ describe("console/components/console/completion/Completion", () => {
       )
       .flat();
 
-    expect(showns).to.deep.equal([
+    expect(showns).toEqual([
       true,
       true,
       true,
@@ -96,11 +95,11 @@ describe("console/components/console/completion/Completion", () => {
     const items = root
       .findAllByType(CompletionItem)
       .map((item) => item.props.shown);
-    expect(items[1]).to.be.true;
+    expect(items[1]).toBeTruthy;
   });
 
   it("scrolls up to down with select", () => {
-    let component: ReturnType<ReactTestRenderer["create"]> | null = null;
+    let component: ReactTestRenderer.ReactTestRenderer | null = null;
 
     ReactTestRenderer.act(() => {
       component = ReactTestRenderer.create(
@@ -108,7 +107,7 @@ describe("console/components/console/completion/Completion", () => {
       );
     });
 
-    const root = component.root;
+    const root = component!.root;
 
     let items = root.findAllByType(CompletionItem);
     let showns = root
@@ -120,7 +119,7 @@ describe("console/components/console/completion/Completion", () => {
         ].flat()
       )
       .flat();
-    expect(showns).to.deep.equal([
+    expect(showns).toEqual([
       true,
       true,
       true,
@@ -132,7 +131,7 @@ describe("console/components/console/completion/Completion", () => {
     ]);
 
     ReactTestRenderer.act(() => {
-      component.update(
+      component!.update(
         <Completion completions={completions} size={3} select={2} />
       );
     });
@@ -146,7 +145,7 @@ describe("console/components/console/completion/Completion", () => {
         ].flat()
       )
       .flat();
-    expect(showns).to.deep.equal([
+    expect(showns).toEqual([
       false,
       true,
       true,
@@ -156,10 +155,10 @@ describe("console/components/console/completion/Completion", () => {
       false,
       false,
     ]);
-    expect(items[2].props.highlight).to.be.true;
+    expect(items[2].props.highlight).toBeTruthy;
 
     ReactTestRenderer.act(() => {
-      component.update(
+      component!.update(
         <Completion completions={completions} size={3} select={3} />
       );
     });
@@ -173,7 +172,7 @@ describe("console/components/console/completion/Completion", () => {
         ].flat()
       )
       .flat();
-    expect(showns).to.deep.equal([
+    expect(showns).toEqual([
       false,
       false,
       false,
@@ -183,18 +182,18 @@ describe("console/components/console/completion/Completion", () => {
       false,
       false,
     ]);
-    expect(items[3].props.highlight).to.be.true;
+    expect(items[3].props.highlight).toBeTruthy;
   });
 
   it("scrolls down to up with select", () => {
-    let component: ReturnType<ReactTestRenderer["create"]> | null = null;
+    let component: ReactTestRenderer.ReactTestRenderer | null = null;
 
     ReactTestRenderer.act(() => {
       component = ReactTestRenderer.create(
         <Completion completions={completions} size={3} select={5} />
       );
     });
-    const root = component.root;
+    const root = component!.root;
 
     let items = root.findAllByType(CompletionItem);
     let showns = root
@@ -207,7 +206,7 @@ describe("console/components/console/completion/Completion", () => {
       )
       .flat();
 
-    expect(showns).to.deep.equal([
+    expect(showns).toEqual([
       false,
       false,
       false,
@@ -217,10 +216,10 @@ describe("console/components/console/completion/Completion", () => {
       true,
       true,
     ]);
-    expect(items[5].props.highlight).to.be.true;
+    expect(items[5].props.highlight).toBeTruthy;
 
     ReactTestRenderer.act(() => {
-      component.update(
+      component!.update(
         <Completion completions={completions} size={3} select={4} />
       );
     });
@@ -234,7 +233,7 @@ describe("console/components/console/completion/Completion", () => {
         ].flat()
       )
       .flat();
-    expect(showns).to.deep.equal([
+    expect(showns).toEqual([
       false,
       false,
       false,
@@ -244,10 +243,10 @@ describe("console/components/console/completion/Completion", () => {
       true,
       true,
     ]);
-    expect(items[4].props.highlight).to.be.true;
+    expect(items[4].props.highlight).toBeTruthy;
 
     ReactTestRenderer.act(() => {
-      component.update(
+      component!.update(
         <Completion completions={completions} size={3} select={3} />
       );
     });
@@ -261,7 +260,7 @@ describe("console/components/console/completion/Completion", () => {
         ].flat()
       )
       .flat();
-    expect(showns).to.deep.equal([
+    expect(showns).toEqual([
       false,
       false,
       false,
@@ -271,10 +270,10 @@ describe("console/components/console/completion/Completion", () => {
       true,
       true,
     ]);
-    expect(items[3].props.highlight).to.be.true;
+    expect(items[3].props.highlight).toBeTruthy;
 
     ReactTestRenderer.act(() => {
-      component.update(
+      component!.update(
         <Completion completions={completions} size={3} select={2} />
       );
     });
@@ -288,7 +287,7 @@ describe("console/components/console/completion/Completion", () => {
         ].flat()
       )
       .flat();
-    expect(showns).to.deep.equal([
+    expect(showns).toEqual([
       false,
       false,
       false,
@@ -298,6 +297,6 @@ describe("console/components/console/completion/Completion", () => {
       false,
       false,
     ]);
-    expect(items[2].props.highlight).to.be.true;
+    expect(items[2].props.highlight).toBeTruthy;
   });
 });
