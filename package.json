@@ -26,7 +26,7 @@
     "@types/assert": "^1.4.6",
     "@types/express": "^4.17.2",
     "@types/jest": "^27.0.2",
-    "@types/node": "^14.14.13",
+    "@types/node": "^17.0.12",
     "@types/prop-types": "^15.7.3",
     "@types/react": "^17.0.13",
     "@types/react-dom": "^17.0.8",
