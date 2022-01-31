@@ -35,39 +35,41 @@ const propertyDocs: { [key: string]: string } = {
 
 const completionClient = new CompletionClient();
 
-const useDelayedCallback = <T extends unknown, U extends unknown>(
-  callback: (arg1: T, arg2: U) => void,
-  timeout: number
+// useSampledCallback provides a hooks to reduce high-loaded function calls.
+// It ignore function calls between called within minDuration, so that allow to
+// reduce function calls.
+//
+// The callback specified in the hook is called via invoke() function which the hooks returns,
+// but the calls within minDuration (100ms) are ignored.
+const useSampledCallback = <T1 extends unknown, T2 extends unknown>(
+  callback: (...args: [T1, T2]) => Promise<void>,
+  minDuration: number
 ) => {
   const [timer, setTimer] = React.useState<
     ReturnType<typeof setTimeout> | undefined
   >();
-  const [enabled, setEnabled] = React.useState(false);
+  const synchronize = React.useCallback((...args: [T1, T2]): Promise<void> => {
+    clearTimeout(timer!);
+    setTimer(undefined);
+    return callback.apply(this, args);
+  }, []);
 
-  const enableDelay = React.useCallback(() => {
-    setEnabled(true);
-  }, [setEnabled]);
-
-  const delayedCallback = React.useCallback(
-    (arg1: T, arg2: U) => {
-      if (enabled) {
-        if (typeof timer !== "undefined") {
-          clearTimeout(timer);
-        }
-        const id = setTimeout(() => {
-          callback(arg1, arg2);
-          clearTimeout(timer!);
-          setTimer(undefined);
-        }, timeout);
-        setTimer(id);
-      } else {
-        callback(arg1, arg2);
+  const fire = React.useCallback(
+    (...args: [T1, T2]) => {
+      if (typeof timer !== "undefined") {
+        clearTimeout(timer!);
       }
+      const id = setTimeout(() => {
+        callback.apply(this, args);
+        clearTimeout(timer!);
+        setTimer(undefined);
+      }, minDuration);
+      setTimer(id);
     },
-    [enabled, timer]
+    [timer]
   );
 
-  return { enableDelay, delayedCallback };
+  return { fire, synchronize };
 };
 
 const getCommandCompletions = async (query: string): Promise<Completions> => {
@@ -219,76 +221,86 @@ export const useCompletions = () => {
       dispatch(actions.setCompletionSource(source));
     });
   }, []);
+  const getRemoteCompletions = React.useCallback(
+    (text: string, completionTypes?: CompletionType[]): Promise<void> => {
+      let cmd: CommandLine | null = null;
+      try {
+        cmd = commandLineParser.parse(text);
+      } catch (e) {
+        if (e instanceof UnknownCommandError) {
+          return Promise.resolve();
+        }
+        return Promise.reject(e);
+      }
+      switch (cmd?.command) {
+        case Command.Open:
+        case Command.TabOpen:
+        case Command.WindowOpen:
+          if (!completionTypes) {
+            initCompletion(text);
+            return Promise.resolve();
+          }
 
-  const { delayedCallback: queryCompletions, enableDelay } = useDelayedCallback(
-    React.useCallback(
-      (text: string, completionTypes?: CompletionType[]) => {
-        const phase = commandLineParser.inputPhase(text);
-        if (phase === InputPhase.OnCommand) {
-          getCommandCompletions(text).then((completions) =>
+          return getOpenCompletions(
+            cmd.command,
+            cmd.args,
+            completionTypes
+          ).then((completions) =>
             dispatch(actions.setCompletions(completions))
           );
-        } else {
-          let cmd: CommandLine | null = null;
-          try {
-            cmd = commandLineParser.parse(text);
-          } catch (e) {
-            if (e instanceof UnknownCommandError) {
-              return;
-            }
-          }
-          switch (cmd?.command) {
-            case Command.Open:
-            case Command.TabOpen:
-            case Command.WindowOpen:
-              if (!completionTypes) {
-                initCompletion(text);
-                return;
-              }
-
-              getOpenCompletions(cmd.command, cmd.args, completionTypes).then(
-                (completions) => dispatch(actions.setCompletions(completions))
-              );
-              break;
-            case Command.Buffer:
-              getTabCompletions(cmd.command, cmd.args, false).then(
-                (completions) => dispatch(actions.setCompletions(completions))
-              );
-              break;
-            case Command.BufferDelete:
-            case Command.BuffersDelete:
-              getTabCompletions(cmd.command, cmd.args, true).then(
-                (completions) => dispatch(actions.setCompletions(completions))
-              );
-              break;
-            case Command.BufferDeleteForce:
-            case Command.BuffersDeleteForce:
-              getTabCompletions(cmd.command, cmd.args, false).then(
-                (completions) => dispatch(actions.setCompletions(completions))
-              );
-              break;
-            case Command.Set:
-              getPropertyCompletions(cmd.command, cmd.args).then(
-                (completions) => dispatch(actions.setCompletions(completions))
-              );
-              break;
-          }
-          enableDelay();
-        }
-      },
-      [dispatch]
-    ),
-    100
+        case Command.Buffer:
+          return getTabCompletions(cmd.command, cmd.args, false).then(
+            (completions) => dispatch(actions.setCompletions(completions))
+          );
+        case Command.BufferDelete:
+        case Command.BuffersDelete:
+          return getTabCompletions(cmd.command, cmd.args, true).then(
+            (completions) => dispatch(actions.setCompletions(completions))
+          );
+        case Command.BufferDeleteForce:
+        case Command.BuffersDeleteForce:
+          return getTabCompletions(cmd.command, cmd.args, false).then(
+            (completions) => dispatch(actions.setCompletions(completions))
+          );
+        case Command.Set:
+          return getPropertyCompletions(cmd.command, cmd.args).then(
+            (completions) => dispatch(actions.setCompletions(completions))
+          );
+      }
+      return Promise.resolve();
+    },
+    [dispatch]
   );
 
+  const getCompletion = React.useCallback(
+    (text: string, completionTypes?: CompletionType[]): Promise<void> => {
+      const phase = commandLineParser.inputPhase(text);
+      if (phase === InputPhase.OnCommand) {
+        return getCommandCompletions(text).then((completions) =>
+          dispatch(actions.setCompletions(completions))
+        );
+      } else {
+        return getRemoteCompletions(text, completionTypes);
+      }
+    },
+    []
+  );
+
+  const { fire: asyncGetCompletions, synchronize: syncGetCompletions } =
+    useSampledCallback(getCompletion, 100);
+
   React.useEffect(() => {
-    queryCompletions(state.completionSource, state.completionTypes);
+    asyncGetCompletions(state.completionSource, state.completionTypes);
+  }, [state.completionSource, state.completionTypes]);
+
+  const synchronise = React.useCallback(() => {
+    return syncGetCompletions(state.completionSource, state.completionTypes);
   }, [state.completionSource, state.completionTypes]);
 
   return {
     completions: state.completions,
     updateCompletions,
-    initCompletion,
+    syncCompletions: synchronise,
   };
 };
 

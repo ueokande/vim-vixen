@@ -20,7 +20,7 @@ interface Props {
 const CommandPromptInner: React.FC<Props> = ({ initialInputValue }) => {
   const hide = useHide();
   const [inputValue, setInputValue] = React.useState(initialInputValue);
-  const { completions, updateCompletions } = useCompletions();
+  const { completions, updateCompletions, syncCompletions } = useCompletions();
   const { select, currentValue, selectNext, selectPrev } =
     useSelectCompletion();
   const execCommand = useExecCommand();
@@ -65,9 +65,9 @@ const CommandPromptInner: React.FC<Props> = ({ initialInputValue }) => {
       execCommand(value);
       hide();
     } else if (isNextKey(e)) {
-      selectNext();
+      syncCompletions().then(() => selectNext());
     } else if (isPrevKey(e)) {
-      selectPrev();
+      syncCompletions().then(() => selectPrev());
     } else {
       return;
     }

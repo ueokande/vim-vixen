@@ -33,6 +33,6 @@
     "emitDecoratorMetadata": true
   },
   "include": [
-    "src"
+    "src", "test"
   ]
 }
