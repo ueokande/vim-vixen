@@ -1,61 +1,61 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
 
-const src = path.resolve(__dirname, 'src');
-const dist = path.resolve(__dirname, 'build');
+const src = path.resolve(__dirname, "src");
+const dist = path.resolve(__dirname, "build");
 
 const config = {
   entry: {
-    content: path.join(src, 'content'),
-    settings: path.join(src, 'settings'),
-    background: path.join(src, 'background'),
-    console: path.join(src, 'console')
+    content: path.join(src, "content"),
+    settings: path.join(src, "settings"),
+    background: path.join(src, "background"),
+    console: path.join(src, "console"),
   },
 
   output: {
     path: dist,
-    filename: '[name].js'
+    filename: "[name].js",
   },
 
   optimization: {
-    minimize: false
+    minimize: false,
   },
 
   performance: {
-    hints: false
+    hints: false,
   },
 
   module: {
     rules: [
       {
-        test: [ /\.ts$/, /\.tsx$/],
+        test: [/\.ts$/, /\.tsx$/],
         exclude: /node_modules/,
-        loader: 'ts-loader'
+        use: ["ts-loader"],
       },
       {
         test: /\.css$/,
-        loader: 'style-loader!css-loader',
+        use: ["style-loader", "css-loader"],
       },
-    ]
+    ],
   },
 
   resolve: {
-    extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
-    modules: [path.join(__dirname, 'src'), 'node_modules']
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
+    modules: [path.join(__dirname, "src"), "node_modules"],
   },
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(src, 'console', 'index.html'),
-      filename: path.join(dist, 'console.html'),
-      inject: false
+      template: path.join(src, "console", "index.html"),
+      filename: path.join(dist, "console.html"),
+      inject: false,
     }),
     new HtmlWebpackPlugin({
-      template: path.join(src, 'settings', 'index.html'),
-      filename: path.join(dist, 'settings.html'),
-      inject: false
-    })
-  ]
+      template: path.join(src, "settings", "index.html"),
+      filename: path.join(dist, "settings.html"),
+      inject: false,
+    }),
+  ],
 };
 
-module.exports = config
+module.exports = config;
