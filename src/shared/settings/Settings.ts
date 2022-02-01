@@ -44,7 +44,7 @@ export default class Settings {
     if (!valid) {
       const message = (validate as any)
         .errors!.map((err: Ajv.ErrorObject) => {
-          return `'${err.dataPath}' ${err.message}`;
+          return `'${err.instancePath}' ${err.message}`;
         })
         .join("; ");
       throw new TypeError(message);
