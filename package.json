@@ -46,7 +46,7 @@
     "eslint-plugin-react": "7.28.0",
     "eslint-plugin-standard": "^5.0.0",
     "express": "^4.17.1",
-    "html-webpack-plugin": "4.5.2",
+    "html-webpack-plugin": "5.5.0",
     "jest": "^27.2.2",
     "jsonwebtoken": "^8.5.1",
     "jszip": "^3.7.0",
