@@ -11,6 +11,7 @@ import CommandLineParser, {
 import { UnknownCommandError } from "../commandline/CommandParser";
 import Completions from "../Completions";
 import CompletionType from "../../shared/CompletionType";
+import { useGetCompletionTypes } from "./hooks/clients";
 
 const commandDocs = {
   [Command.Set]: "Set a value of the property",
@@ -208,21 +209,15 @@ export const useCompletions = () => {
   const state = React.useContext(CompletionStateContext);
   const dispatch = React.useContext(CompletionDispatchContext);
   const commandLineParser = React.useMemo(() => new CommandLineParser(), []);
+  const [completionTypes] = useGetCompletionTypes();
 
   const updateCompletions = React.useCallback((source: string) => {
     dispatch(actions.setCompletionSource(source));
   }, []);
 
-  const initCompletion = React.useCallback((source: string) => {
-    completionClient.getCompletionTypes().then((completionTypes) => {
-      dispatch(actions.initCompletion(completionTypes));
-      dispatch(actions.setCompletionSource(source));
-    });
-  }, []);
-
   const { delayedCallback: queryCompletions, enableDelay } = useDelayedCallback(
     React.useCallback(
-      (text: string, completionTypes?: CompletionType[]) => {
+      (text: string, completionTypes: CompletionType[]) => {
         const phase = commandLineParser.inputPhase(text);
         if (phase === InputPhase.OnCommand) {
           getCommandCompletions(text).then((completions) =>
@@ -241,11 +236,6 @@ export const useCompletions = () => {
             case Command.Open:
             case Command.TabOpen:
             case Command.WindowOpen:
-              if (!completionTypes) {
-                initCompletion(text);
-                return;
-              }
-
               getOpenCompletions(cmd.command, cmd.args, completionTypes).then(
                 (completions) => dispatch(actions.setCompletions(completions))
               );
@@ -282,13 +272,15 @@ export const useCompletions = () => {
   );
 
   React.useEffect(() => {
-    queryCompletions(state.completionSource, state.completionTypes);
-  }, [state.completionSource, state.completionTypes]);
+    if (typeof completionTypes === "undefined") {
+      return;
+    }
+    queryCompletions(state.completionSource, completionTypes);
+  }, [state.completionSource, completionTypes]);
 
   return {
     completions: state.completions,
     updateCompletions,
-    initCompletion,
   };
 };
 
