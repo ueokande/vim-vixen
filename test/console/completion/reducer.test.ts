@@ -3,29 +3,13 @@ import reducer, {
   State,
 } from "../../../src/console/completion/reducer";
 import {
-  initCompletion,
   selectNext,
   selectPrev,
   setCompletions,
   setCompletionSource,
 } from "../../../src/console/completion/actions";
-import CompletionType from "../../../src/shared/CompletionType";
 
 describe("completion reducer", () => {
-  describe("initCompletion", () => {
-    it("initializes completions", () => {
-      const nextState = reducer(
-        defaultState,
-        initCompletion([CompletionType.Bookmarks, CompletionType.History])
-      );
-
-      expect(nextState.completionTypes).toEqual([
-        CompletionType.Bookmarks,
-        CompletionType.History,
-      ]);
-    });
-  });
-
   describe("setCompletionSource", () => {
     it("sets a completion source", () => {
       const nextState = reducer(defaultState, setCompletionSource("open "));

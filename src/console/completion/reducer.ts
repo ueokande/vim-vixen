@@ -1,7 +1,6 @@
 import Completions from "../Completions";
 import CompletionType from "../../shared/CompletionType";
 import {
-  INIT_COMPLETIONS,
   SET_COMPLETION_SOURCE,
   SET_COMPLETIONS,
   COMPLETION_NEXT,
@@ -58,13 +57,6 @@ export default function reducer(
   action: CompletionAction
 ): State {
   switch (action.type) {
-    case INIT_COMPLETIONS:
-      return {
-        ...state,
-        completionTypes: action.completionTypes,
-        completions: [],
-        select: -1,
-      };
     case SET_COMPLETION_SOURCE:
       return {
         ...state,
