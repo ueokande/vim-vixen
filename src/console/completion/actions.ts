@@ -13,6 +13,7 @@ export interface SetCompletionSourceAction {
 export interface SetCompletionsAction {
   type: typeof SET_COMPLETIONS;
   completions: Completions;
+  command?: string;
 }
 
 export interface CompletionNextAction {
@@ -39,11 +40,13 @@ export const setCompletionSource = (
 };
 
 export const setCompletions = (
-  completions: Completions
+  completions: Completions,
+  command?: string
 ): SetCompletionsAction => {
   return {
     type: SET_COMPLETIONS,
     completions,
+    command,
   };
 };
 

@@ -8,8 +8,8 @@ describe("console/components/console/completion/CompletionItem", () => {
       <CompletionItem
         shown={true}
         highlight={false}
-        caption="twitter"
-        url="https://twitter.com/"
+        primary="twitter"
+        secondary="https://twitter.com/"
       />
     ).root;
     const spans = root.findAllByType("span");

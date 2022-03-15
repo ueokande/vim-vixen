@@ -25,11 +25,11 @@ describe("completion reducer", () => {
         setCompletions([
           {
             name: "Apple",
-            items: [{}, {}],
+            items: [{ value: "a" }, { value: "b" }],
           },
           {
             name: "Banana",
-            items: [{}],
+            items: [{ value: "c" }],
           },
         ])
       );
@@ -37,11 +37,11 @@ describe("completion reducer", () => {
       expect(nextState.completions).toEqual([
         {
           name: "Apple",
-          items: [{}, {}],
+          items: [{ value: "a" }, { value: "b" }],
         },
         {
           name: "Banana",
-          items: [{}],
+          items: [{ value: "c" }],
         },
       ]);
     });
@@ -74,11 +74,11 @@ describe("completion reducer", () => {
           completions: [
             {
               name: "Apple",
-              items: [{}, {}],
+              items: [{ value: "a" }, { value: "b" }],
             },
             {
               name: "Banana",
-              items: [{}],
+              items: [{ value: "c" }],
             },
           ],
         };
@@ -125,11 +125,11 @@ describe("completion reducer", () => {
           completions: [
             {
               name: "Apple",
-              items: [{}, {}],
+              items: [{ value: "a" }, { value: "b" }],
             },
             {
               name: "Banana",
-              items: [{}],
+              items: [{ value: "c" }],
             },
           ],
         };

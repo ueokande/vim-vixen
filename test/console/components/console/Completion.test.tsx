@@ -9,17 +9,17 @@ describe("console/components/console/completion/Completion", () => {
     {
       name: "Fruit",
       items: [
-        { caption: "apple" },
-        { caption: "banana" },
-        { caption: "cherry" },
+        { primary: "apple", value: "apple" },
+        { primary: "banana", value: "banana" },
+        { primary: "cherry", value: "cherry" },
       ],
     },
     {
       name: "Element",
       items: [
-        { caption: "argon" },
-        { caption: "boron" },
-        { caption: "carbon" },
+        { primary: "argon", value: "argon" },
+        { primary: "boron", value: "boron" },
+        { primary: "carbon", value: "carbon" },
       ],
     },
   ];
@@ -39,7 +39,7 @@ describe("console/components/console/completion/Completion", () => {
       const items = group.findAllByType(CompletionItem);
       expect(items).toHaveLength(completions[i].items.length);
       items.forEach((item, j) => {
-        expect(item.props.caption).toEqual(completions[i].items[j].caption);
+        expect(item.props.primary).toEqual(completions[i].items[j].primary);
       });
     });
   });

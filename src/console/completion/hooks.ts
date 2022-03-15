@@ -75,9 +75,9 @@ const getCommandCompletions = async (query: string): Promise<Completions> => {
   const items = Object.entries(commandDocs)
     .filter(([name]) => name.startsWith(query))
     .map(([name, doc]) => ({
-      caption: name,
-      content: name,
-      url: doc,
+      primary: name,
+      secondary: doc,
+      value: name,
     }));
   return [
     {
@@ -88,7 +88,6 @@ const getCommandCompletions = async (query: string): Promise<Completions> => {
 };
 
 const getOpenCompletions = async (
-  command: string,
   query: string,
   completionTypes: CompletionType[]
 ): Promise<Completions> => {
@@ -103,8 +102,8 @@ const getOpenCompletions = async (
         completions.push({
           name: "Search Engines",
           items: items.map((key) => ({
-            caption: key.title,
-            content: command + " " + key.title,
+            primary: key.title,
+            value: key.title,
           })),
         });
         break;
@@ -117,9 +116,9 @@ const getOpenCompletions = async (
         completions.push({
           name: "History",
           items: items.map((item) => ({
-            caption: item.title,
-            content: command + " " + item.url,
-            url: item.url,
+            primary: item.title,
+            secondary: item.url,
+            value: item.url,
           })),
         });
         break;
@@ -132,9 +131,9 @@ const getOpenCompletions = async (
         completions.push({
           name: "Bookmarks",
           items: items.map((item) => ({
-            caption: item.title,
-            content: command + " " + item.url,
-            url: item.url,
+            primary: item.title,
+            secondary: item.url,
+            value: item.url,
           })),
         });
         break;
@@ -145,7 +144,6 @@ const getOpenCompletions = async (
 };
 
 export const getTabCompletions = async (
-  command: string,
   query: string,
   excludePinned: boolean
 ): Promise<Completions> => {
@@ -158,11 +156,11 @@ export const getTabCompletions = async (
     {
       name: "Buffers",
       items: items.map((item) => ({
-        content: command + " " + item.url,
-        caption: `${item.index}: ${
+        primary: `${item.index}: ${
           item.flag != TabFlag.None ? item.flag : " "
         } ${item.title}`,
-        url: item.url,
+        secondary: item.url,
+        value: item.url,
         icon: item.faviconUrl,
       })),
     },
@@ -170,7 +168,6 @@ export const getTabCompletions = async (
 };
 
 export const getPropertyCompletions = async (
-  command: string,
   query: string
 ): Promise<Completions> => {
   const properties = await completionClient.getProperties();
@@ -180,28 +177,28 @@ export const getPropertyCompletions = async (
       if (item.type === "boolean") {
         return [
           {
-            caption: item.name,
-            content: command + " " + item.name,
-            url: "Enable " + desc,
+            primary: item.name,
+            secondary: "Enable " + desc,
+            value: item.name,
           },
           {
-            caption: "no" + item.name,
-            content: command + " no" + item.name,
-            url: "Disable " + desc,
+            primary: "no" + item.name,
+            secondary: "Disable " + desc,
+            value: item.name,
           },
         ];
       } else {
         return [
           {
-            caption: item.name,
-            content: command + " " + item.name,
-            url: "Set " + desc,
+            primary: item.name,
+            secondary: "Set " + desc,
+            value: item.name,
           },
         ];
       }
     })
     .reduce((acc, val) => acc.concat(val), [])
-    .filter((item) => item.caption.startsWith(query));
+    .filter((item) => item.primary.startsWith(query));
   return [{ name: "Properties", items }];
 };
 
@@ -239,30 +236,31 @@ export const useCompletions = () => {
               if (loading || typeof completionTypes === "undefined") {
                 return;
               }
-              getOpenCompletions(cmd.command, cmd.args, completionTypes).then(
-                (completions) => dispatch(actions.setCompletions(completions))
+              getOpenCompletions(cmd.command, completionTypes).then(
+                (completions) =>
+                  dispatch(actions.setCompletions(completions, cmd!.command))
               );
               break;
             case Command.Buffer:
-              getTabCompletions(cmd.command, cmd.args, false).then(
-                (completions) => dispatch(actions.setCompletions(completions))
+              getTabCompletions(cmd.args, false).then((completions) =>
+                dispatch(actions.setCompletions(completions, cmd!.command))
               );
               break;
             case Command.BufferDelete:
             case Command.BuffersDelete:
-              getTabCompletions(cmd.command, cmd.args, true).then(
-                (completions) => dispatch(actions.setCompletions(completions))
+              getTabCompletions(cmd.args, true).then((completions) =>
+                dispatch(actions.setCompletions(completions, cmd!.command))
               );
               break;
             case Command.BufferDeleteForce:
             case Command.BuffersDeleteForce:
-              getTabCompletions(cmd.command, cmd.args, false).then(
-                (completions) => dispatch(actions.setCompletions(completions))
+              getTabCompletions(cmd.args, false).then((completions) =>
+                dispatch(actions.setCompletions(completions, cmd!.command))
               );
               break;
             case Command.Set:
-              getPropertyCompletions(cmd.command, cmd.args).then(
-                (completions) => dispatch(actions.setCompletions(completions))
+              getPropertyCompletions(cmd.args).then((completions) =>
+                dispatch(actions.setCompletions(completions, cmd!.command))
               );
               break;
           }
@@ -300,7 +298,12 @@ export const useSelectCompletion = () => {
       return state.completionSource;
     }
     const items = state.completions.map((g) => g.items).flat();
-    return items[state.select]?.content || "";
+    const value = items[state.select]?.value || "";
+    if (typeof state.completionCommand === "string") {
+      return state.completionCommand + " " + value;
+    } else {
+      return value;
+    }
   }, [state.completionSource, state.select]);
 
   return {

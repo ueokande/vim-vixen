@@ -13,6 +13,7 @@ export interface State {
   completionSource: string;
   completions: Completions;
   select: number;
+  completionCommand?: string;
 }
 
 export const defaultState = {
@@ -67,6 +68,7 @@ export default function reducer(
       return {
         ...state,
         completions: action.completions,
+        completionCommand: action.command,
       };
     case COMPLETION_NEXT: {
       const select = nextSelection(state);
