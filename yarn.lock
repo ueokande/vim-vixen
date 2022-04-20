@@ -1069,10 +1069,10 @@
   resolved "https://registry.npmjs.org/@types/scheduler/-/scheduler-0.16.1.tgz"
   integrity sha512-EaCxbanVeyxDRTQBkdLb3Bvl/HK7PBK6UJjsSixB0iHKoWxE5uu2Q/DgtpOhPIojN0Zl1whvOd7PoHs2P0s5eA==
 
-"@types/selenium-webdriver@^4.0.16":
-  version "4.0.16"
-  resolved "https://registry.yarnpkg.com/@types/selenium-webdriver/-/selenium-webdriver-4.0.16.tgz#c3205c6691a1d645cf4163684bd119230a60e6f5"
-  integrity sha512-0UAzu2lFXpLK4lU4yhgUtM/KxoN8hIpyI+q22KAwzIDHNk4kLJ/Ut5mJZLFSxfQx58OBQ9SJXZkSL065fe/WdQ==
+"@types/selenium-webdriver@^4.0.19":
+  version "4.0.19"
+  resolved "https://registry.yarnpkg.com/@types/selenium-webdriver/-/selenium-webdriver-4.0.19.tgz#25699713552a63ee70215effdfd2e5d6dda19f8e"
+  integrity sha512-Irrh+iKc6Cxj6DwTupi4zgWhSBm1nK+JElOklIUiBVE6rcLYDtT1mwm9oFkHie485BQXNmZRoayjwxhowdInnA==
 
 "@types/serve-static@*":
   version "1.13.5"
