@@ -4,8 +4,8 @@ import CompletionTitle from "./CompletionTitle";
 
 interface Item {
   icon?: string;
-  caption?: string;
-  url?: string;
+  primary?: string;
+  secondary?: string;
 }
 
 interface Group {
@@ -75,8 +75,8 @@ const Completion: React.FC<Props> = ({ select, size, completions }) => {
           shown={viewOffset <= viewIndex && viewIndex < viewOffset + size}
           key={`item-${itemIndex}`}
           icon={item.icon}
-          caption={item.caption}
-          url={item.url}
+          primary={item.primary}
+          secondary={item.secondary}
           highlight={itemIndex === select}
           aria-selected={itemIndex === select}
           role="menuitem"

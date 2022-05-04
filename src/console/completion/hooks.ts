@@ -74,9 +74,9 @@ const getCommandCompletions = async (query: string): Promise<Completions> => {
   const items = Object.entries(commandDocs)
     .filter(([name]) => name.startsWith(query))
     .map(([name, doc]) => ({
-      caption: name,
-      content: name,
-      url: doc,
+      primary: name,
+      secondary: doc,
+      value: name,
     }));
   return [
     {
@@ -102,8 +102,8 @@ const getOpenCompletions = async (
         completions.push({
           name: "Search Engines",
           items: items.map((key) => ({
-            caption: key.title,
-            content: command + " " + key.title,
+            primary: key.title,
+            value: command + " " + key.title,
           })),
         });
         break;
@@ -116,9 +116,9 @@ const getOpenCompletions = async (
         completions.push({
           name: "History",
           items: items.map((item) => ({
-            caption: item.title,
-            content: command + " " + item.url,
-            url: item.url,
+            primary: item.title,
+            secondary: item.url,
+            value: command + " " + item.url,
           })),
         });
         break;
@@ -131,9 +131,9 @@ const getOpenCompletions = async (
         completions.push({
           name: "Bookmarks",
           items: items.map((item) => ({
-            caption: item.title,
-            content: command + " " + item.url,
-            url: item.url,
+            primary: item.title,
+            secondary: item.url,
+            value: command + " " + item.url,
           })),
         });
         break;
@@ -157,11 +157,11 @@ export const getTabCompletions = async (
     {
       name: "Buffers",
       items: items.map((item) => ({
-        content: command + " " + item.url,
-        caption: `${item.index}: ${
+        primary: `${item.index}: ${
           item.flag != TabFlag.None ? item.flag : " "
         } ${item.title}`,
-        url: item.url,
+        secondary: item.url,
+        value: command + " " + item.url,
         icon: item.faviconUrl,
       })),
     },
@@ -179,28 +179,28 @@ export const getPropertyCompletions = async (
       if (item.type === "boolean") {
         return [
           {
-            caption: item.name,
-            content: command + " " + item.name,
-            url: "Enable " + desc,
+            primary: item.name,
+            secondary: "Enable " + desc,
+            value: command + " " + item.name,
           },
           {
-            caption: "no" + item.name,
-            content: command + " no" + item.name,
-            url: "Disable " + desc,
+            primary: "no" + item.name,
+            secondary: "Disable " + desc,
+            value: command + " no" + item.name,
           },
         ];
       } else {
         return [
           {
-            caption: item.name,
-            content: command + " " + item.name,
-            url: "Set " + desc,
+            primary: item.name,
+            secondary: "Set " + desc,
+            value: command + " " + item.name,
           },
         ];
       }
     })
     .reduce((acc, val) => acc.concat(val), [])
-    .filter((item) => item.caption.startsWith(query));
+    .filter((item) => item.primary.startsWith(query));
   return [{ name: "Properties", items }];
 };
 
@@ -308,7 +308,7 @@ export const useSelectCompletion = () => {
       return state.completionSource;
     }
     const items = state.completions.map((g) => g.items).flat();
-    return items[state.select]?.content || "";
+    return items[state.select]?.value || "";
   }, [state.completionSource, state.select]);
 
   return {
