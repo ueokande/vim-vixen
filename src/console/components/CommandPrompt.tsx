@@ -3,6 +3,7 @@ import Completion from "./console/Completion";
 import Input from "./console//Input";
 import styled from "styled-components";
 import { useCompletions, useSelectCompletion } from "../completion/hooks";
+import useDebounce from "../hooks/useDebounce";
 import useAutoResize from "../hooks/useAutoResize";
 import { CompletionProvider } from "../completion/provider";
 import { useExecCommand, useHide } from "../app/hooks";
@@ -20,6 +21,7 @@ interface Props {
 const CommandPromptInner: React.FC<Props> = ({ initialInputValue }) => {
   const hide = useHide();
   const [inputValue, setInputValue] = React.useState(initialInputValue);
+  const debouncedValue = useDebounce(inputValue, 100);
   const { completions, updateCompletions } = useCompletions();
   const { select, currentValue, selectNext, selectPrev } =
     useSelectCompletion();
@@ -82,8 +84,8 @@ const CommandPromptInner: React.FC<Props> = ({ initialInputValue }) => {
   };
 
   React.useEffect(() => {
-    updateCompletions(inputValue);
-  }, [inputValue]);
+    updateCompletions(debouncedValue);
+  }, [debouncedValue]);
 
   return (
     <ConsoleWrapper>
