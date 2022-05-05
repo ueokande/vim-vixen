@@ -175,6 +175,7 @@ export const useCompletions = (source: string) => {
   const dispatch = React.useContext(CompletionDispatchContext);
   const commandLineParser = React.useMemo(() => new CommandLineParser(), []);
   const [completionTypes] = useGetCompletionTypes();
+  const [loading, setLoading] = React.useState(false);
 
   const queryCompletions = React.useCallback(
     (text: string, completionTypes: CompletionType[]) => {
@@ -192,40 +193,57 @@ export const useCompletions = (source: string) => {
             return;
           }
         }
+
+        setLoading(true);
         switch (cmd?.command) {
           case Command.Open:
           case Command.TabOpen:
           case Command.WindowOpen:
             getOpenCompletions(cmd.command, cmd.args, completionTypes).then(
-              (completions) => dispatch(actions.setCompletions(completions))
+              (completions) => {
+                dispatch(actions.setCompletions(completions));
+                setLoading(false);
+              }
             );
             break;
           case Command.Buffer:
             getTabCompletions(cmd.command, cmd.args, false).then(
-              (completions) => dispatch(actions.setCompletions(completions))
+              (completions) => {
+                dispatch(actions.setCompletions(completions));
+                setLoading(false);
+              }
             );
             break;
           case Command.BufferDelete:
           case Command.BuffersDelete:
-            getTabCompletions(cmd.command, cmd.args, true).then((completions) =>
-              dispatch(actions.setCompletions(completions))
+            getTabCompletions(cmd.command, cmd.args, true).then(
+              (completions) => {
+                dispatch(actions.setCompletions(completions));
+                setLoading(false);
+              }
             );
             break;
           case Command.BufferDeleteForce:
           case Command.BuffersDeleteForce:
             getTabCompletions(cmd.command, cmd.args, false).then(
-              (completions) => dispatch(actions.setCompletions(completions))
+              (completions) => {
+                dispatch(actions.setCompletions(completions));
+                setLoading(false);
+              }
             );
             break;
           case Command.Set:
-            getPropertyCompletions(cmd.command, cmd.args).then((completions) =>
-              dispatch(actions.setCompletions(completions))
+            getPropertyCompletions(cmd.command, cmd.args).then(
+              (completions) => {
+                dispatch(actions.setCompletions(completions));
+                setLoading(false);
+              }
             );
             break;
         }
       }
     },
-    [dispatch]
+    [dispatch, source]
   );
 
   React.useEffect(() => {
@@ -237,7 +255,7 @@ export const useCompletions = (source: string) => {
     queryCompletions(source, completionTypes);
   }, [source, completionTypes]);
 
-  return { completions: state.completions };
+  return { completions: state.completions, loading };
 };
 
 export const useSelectCompletion = () => {
@@ -257,7 +275,7 @@ export const useSelectCompletion = () => {
     }
     const items = state.completions.map((g) => g.items).flat();
     return items[state.select]?.value || "";
-  }, [state.completionSource, state.select]);
+  }, [state.completionSource, state.select, state.completions]);
 
   return {
     select: state.select,
