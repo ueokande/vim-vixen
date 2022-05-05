@@ -41,11 +41,13 @@ describe("general completion test", () => {
     const console = await page.showConsole();
     await console.inputKeys("b");
 
-    const groups = await console.getCompletions();
-    const items = groups[0].items;
-    assert.ok(items[0].text.startsWith("buffer"));
-    assert.ok(items[1].text.startsWith("bdelete"));
-    assert.ok(items[2].text.startsWith("bdeletes"));
+    await eventually(async () => {
+      const groups = await console.getCompletions();
+      const items = groups[0].items;
+      assert.ok(items[0].text.startsWith("buffer"));
+      assert.ok(items[1].text.startsWith("bdelete"));
+      assert.ok(items[2].text.startsWith("bdeletes"));
+    });
   });
 
   // > byffer
