@@ -170,15 +170,11 @@ export const getPropertyCompletions = async (
   return [{ name: "Properties", items }];
 };
 
-export const useCompletions = () => {
+export const useCompletions = (source: string) => {
   const state = React.useContext(CompletionStateContext);
   const dispatch = React.useContext(CompletionDispatchContext);
   const commandLineParser = React.useMemo(() => new CommandLineParser(), []);
   const [completionTypes] = useGetCompletionTypes();
-
-  const updateCompletions = React.useCallback((source: string) => {
-    dispatch(actions.setCompletionSource(source));
-  }, []);
 
   const queryCompletions = React.useCallback(
     (text: string, completionTypes: CompletionType[]) => {
@@ -233,16 +229,15 @@ export const useCompletions = () => {
   );
 
   React.useEffect(() => {
+    dispatch(actions.setCompletionSource(source));
+
     if (typeof completionTypes === "undefined") {
       return;
     }
-    queryCompletions(state.completionSource, completionTypes);
-  }, [state.completionSource, completionTypes]);
+    queryCompletions(source, completionTypes);
+  }, [source, completionTypes]);
 
-  return {
-    completions: state.completions,
-    updateCompletions,
-  };
+  return { completions: state.completions };
 };
 
 export const useSelectCompletion = () => {

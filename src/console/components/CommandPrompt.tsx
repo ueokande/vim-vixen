@@ -22,7 +22,7 @@ const CommandPromptInner: React.FC<Props> = ({ initialInputValue }) => {
   const hide = useHide();
   const [inputValue, setInputValue] = React.useState(initialInputValue);
   const debouncedValue = useDebounce(inputValue, 100);
-  const { completions, updateCompletions } = useCompletions();
+  const { completions } = useCompletions(debouncedValue);
   const { select, currentValue, selectNext, selectPrev } =
     useSelectCompletion();
   const execCommand = useExecCommand();
@@ -82,10 +82,6 @@ const CommandPromptInner: React.FC<Props> = ({ initialInputValue }) => {
     const text = e.target.value;
     setInputValue(text);
   };
-
-  React.useEffect(() => {
-    updateCompletions(debouncedValue);
-  }, [debouncedValue]);
 
   return (
     <ConsoleWrapper>
