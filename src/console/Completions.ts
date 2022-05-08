@@ -1,9 +1,9 @@
 type Completions = {
   readonly name: string;
   readonly items: {
-    readonly caption?: string;
-    readonly content?: string;
-    readonly url?: string;
+    readonly primary?: string;
+    readonly secondary?: string;
+    readonly value?: string;
     readonly icon?: string;
   }[];
 }[];

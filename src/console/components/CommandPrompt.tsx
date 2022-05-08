@@ -3,6 +3,7 @@ import Completion from "./console/Completion";
 import Input from "./console//Input";
 import styled from "styled-components";
 import { useCompletions, useSelectCompletion } from "../completion/hooks";
+import useDebounce from "../hooks/useDebounce";
 import useAutoResize from "../hooks/useAutoResize";
 import { CompletionProvider } from "../completion/provider";
 import { useExecCommand, useHide } from "../app/hooks";
@@ -17,13 +18,22 @@ interface Props {
   initialInputValue: string;
 }
 
+enum SelectQueueType {
+  SelectNext,
+  SelectPrev,
+}
+
 const CommandPromptInner: React.FC<Props> = ({ initialInputValue }) => {
   const hide = useHide();
   const [inputValue, setInputValue] = React.useState(initialInputValue);
-  const { completions, updateCompletions } = useCompletions();
+  const debouncedValue = useDebounce(inputValue, 100);
+  const { completions, loading } = useCompletions(debouncedValue);
   const { select, currentValue, selectNext, selectPrev } =
     useSelectCompletion();
   const execCommand = useExecCommand();
+
+  // The value is set after the user presses Tab (or Shift+Tab) key and waiting the completion
+  const [selecting, setSelecting] = React.useState<SelectQueueType>();
 
   useAutoResize();
 
@@ -65,9 +75,9 @@ const CommandPromptInner: React.FC<Props> = ({ initialInputValue }) => {
       execCommand(value);
       hide();
     } else if (isNextKey(e)) {
-      selectNext();
+      setSelecting(SelectQueueType.SelectNext);
     } else if (isPrevKey(e)) {
-      selectPrev();
+      setSelecting(SelectQueueType.SelectPrev);
     } else {
       return;
     }
@@ -76,14 +86,24 @@ const CommandPromptInner: React.FC<Props> = ({ initialInputValue }) => {
     e.preventDefault();
   };
 
+  React.useEffect(() => {
+    if (inputValue !== debouncedValue || loading) {
+      // The completions of the latest input value are not fetched
+      return;
+    }
+    if (selecting === SelectQueueType.SelectNext) {
+      selectNext();
+      setSelecting(undefined);
+    } else if (selecting === SelectQueueType.SelectPrev) {
+      selectPrev();
+      setSelecting(undefined);
+    }
+  }, [inputValue, debouncedValue, selecting, loading]);
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
     setInputValue(text);
   };
-
-  React.useEffect(() => {
-    updateCompletions(inputValue);
-  }, [inputValue]);
 
   return (
     <ConsoleWrapper>
@@ -97,7 +117,7 @@ const CommandPromptInner: React.FC<Props> = ({ initialInputValue }) => {
         onBlur={onBlur}
         onKeyDown={onKeyDown}
         onChange={onChange}
-        value={select == -1 ? inputValue : currentValue}
+        value={select == -1 || loading ? inputValue : currentValue}
       />
     </ConsoleWrapper>
   );
