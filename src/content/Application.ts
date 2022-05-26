@@ -4,6 +4,7 @@ import MarkController from "./controllers/MarkController";
 import FollowMasterController from "./controllers/FollowMasterController";
 import FollowSlaveController from "./controllers/FollowSlaveController";
 import FollowKeyController from "./controllers/FollowKeyController";
+import InputIndicator from "./InputIndicator";
 import InputDriver from "./InputDriver";
 import KeymapController from "./controllers/KeymapController";
 import AddonEnabledUseCase from "./usecases/AddonEnabledUseCase";
@@ -125,6 +126,7 @@ export default class Application {
       }
     });
 
+    new InputIndicator();
     const inputDriver = new InputDriver(window.document.body);
     inputDriver.onKey((key) => this.followKeyController.press(key));
     inputDriver.onKey((key) => this.markKeyController.press(key));
