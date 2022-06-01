@@ -68,7 +68,12 @@ export default class FollowSlaveUseCase {
         openNewTab = true;
       }
       // eslint-disable-next-line no-script-url
-      if (!url || url === "#" || url.toLowerCase().startsWith("javascript:")) {
+      if (
+        !newTab ||
+        !url ||
+        url === "#" ||
+        url.toLowerCase().startsWith("javascript:")
+      ) {
         hint.click();
         return;
       }
