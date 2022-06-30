@@ -10,6 +10,7 @@ export default `
   border: none !important;
   background-color: unset !important;
   pointer-events:none;
+  color-scheme: light;
 }
 
 .vimvixen-hint {
