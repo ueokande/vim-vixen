@@ -42,6 +42,7 @@ export class ConsoleFramePresenterImpl implements ConsoleFramePresenter {
     if (!ele) {
       return;
     }
+    this.resize(0, 0)
     ele.blur();
   }
 
