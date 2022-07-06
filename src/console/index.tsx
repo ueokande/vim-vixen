@@ -7,7 +7,7 @@ import "./index.css";
 
 const colorScheme = (new URLSearchParams(window.location.search)).get('colorScheme')
 /* @ts-ignore */
-window.document.documentElement.style.colorScheme = colorScheme
+window.document.documentElement.style.colorScheme = colorScheme ?? ''
 
 window.addEventListener("DOMContentLoaded", () => {
   const wrapper = document.getElementById("vimvixen-console");
