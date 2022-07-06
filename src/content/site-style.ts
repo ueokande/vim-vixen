@@ -6,7 +6,7 @@ export default `
   left: 0;
   width: 100%;
   position: fixed;
-  z-index: 2147483647;
+  z-index: -999;
   border: none !important;
   background-color: unset !important;
   pointer-events:none;
