@@ -19,8 +19,10 @@ export class ConsoleFramePresenterImpl implements ConsoleFramePresenter {
       return;
     }
 
+    /* @ts-ignore */
+    const colorScheme = getComputedStyle(document.getElementsByTagName('body')[0]).colorScheme
     const iframe = document.createElement("iframe");
-    iframe.src = browser.runtime.getURL("build/console.html");
+    iframe.src = browser.runtime.getURL("build/console.html?colorScheme=" + colorScheme);
     iframe.id = ConsoleFramePresenterImpl.IframeId;
     iframe.className = "vimvixen-console-frame";
     document.body.append(iframe);
