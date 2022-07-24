@@ -20,7 +20,7 @@ export class ConsoleFramePresenterImpl implements ConsoleFramePresenter {
     }
 
     /* @ts-ignore */
-    const colorScheme = getComputedStyle(document.getElementsByTagName('body')[0]).colorScheme
+    const colorScheme = getComputedStyle(document.body).colorScheme
     const iframe = document.createElement("iframe");
     iframe.src = browser.runtime.getURL("build/console.html?colorScheme=" + colorScheme);
     iframe.id = ConsoleFramePresenterImpl.IframeId;
