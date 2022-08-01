@@ -6,7 +6,7 @@ import App from "./App";
 import "./index.css";
 
 const colorScheme = (new URLSearchParams(window.location.search)).get('colorScheme')
-/* @ts-ignore */
+/* @ts-expect-error: The colorScheme property is not on the CSSStyleDeclaration type in TypeScript v4.3.5 */
 window.document.documentElement.style.colorScheme = colorScheme ?? ''
 
 window.addEventListener("DOMContentLoaded", () => {
