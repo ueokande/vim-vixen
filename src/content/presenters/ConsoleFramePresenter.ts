@@ -42,12 +42,8 @@ export class ConsoleFramePresenterImpl implements ConsoleFramePresenter {
     ele.blur();
   }
 
-  resize(_width: number, height: number): void {
-    const ele = document.getElementById("vimvixen-console-frame");
-    if (!ele) {
-      return;
-    }
-    ele.style.height = `${height}px`;
+  resize(_width: number, _height: number): void {
+    return;
   }
 
   isTopWindow(): boolean {
