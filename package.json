@@ -33,7 +33,7 @@
     "@types/react-redux": "^7.1.7",
     "@types/react-test-renderer": "^17.0.0",
     "@types/redux-promise": "^0.5.28",
-    "@types/selenium-webdriver": "^4.0.16",
+    "@types/selenium-webdriver": "^4.1.7",
     "@types/styled-components": "^5.1.23",
     "@typescript-eslint/eslint-plugin": "3.9.0",
     "@typescript-eslint/parser": "3.10.1",
