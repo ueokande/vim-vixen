@@ -19,10 +19,13 @@ export class ConsoleFramePresenterImpl implements ConsoleFramePresenter {
       return;
     }
 
+    /* @ts-expect-error: The colorScheme property is not on the CSSStyleDeclaration type in TypeScript v4.3.5 */
+    const colorScheme = getComputedStyle(document.body).colorScheme
     const iframe = document.createElement("iframe");
-    iframe.src = browser.runtime.getURL("build/console.html");
+    iframe.src = browser.runtime.getURL("build/console.html?colorScheme=" + colorScheme);
     iframe.id = ConsoleFramePresenterImpl.IframeId;
     iframe.className = "vimvixen-console-frame";
+    iframe.style.height = '0px';
     document.body.append(iframe);
   }
 
@@ -39,6 +42,7 @@ export class ConsoleFramePresenterImpl implements ConsoleFramePresenter {
     if (!ele) {
       return;
     }
+    this.resize(0, 0)
     ele.blur();
   }
 
