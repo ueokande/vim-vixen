@@ -4,7 +4,7 @@
 [![GitHub Actions](https://github.com/ueokande/vim-vixen/workflows/Build/badge.svg)](https://github.com/ueokande/vim-vixen/actions?query=workflow%3ABuild)
 
 * * *
-:warning: **This project is no longer under active maintainenance.  Try out the new project [Vimmatic](https://github.com/ueokande/vimmatic).  See [the announcement](https://github.com/ueokande/vim-vixen/issues/1494) in more details.**
+:warning: **This project is no longer under active maintainenance.  Check the new project [Vimmatic](https://github.com/ueokande/vimmatic).  See [the announcement](https://github.com/ueokande/vim-vixen/issues/1494) in more details.**
 * * *
 
 Vim Vixen is a Firefox add-on which allows you to easily navigate the web by
